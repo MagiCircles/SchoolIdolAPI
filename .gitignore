@@ -47,9 +47,15 @@ coverage.xml
 # Django stuff:
 *.log
 db.sqlite3
+api/migrations
 
 # Sphinx documentation
 docs/_build/
 
 # PyBuilder
 target/
+
+# Project specific
+decaf.html
+events.html
+wikia.html

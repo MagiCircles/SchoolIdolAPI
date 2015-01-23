@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand, CommandError
 import urllib2
 from bs4 import BeautifulSoup
@@ -6,6 +7,9 @@ import re
 import HTMLParser
 import unicodedata
 import sys
+import datetime
+import time
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -25,11 +29,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        # models.Card.objects.all().delete()
+        # models.Event.objects.all().delete()
+
         h = HTMLParser.HTMLParser()
 
         types = {'Normals': 'N', 'Rares': 'R', 'Super Rares': 'SR', 'Ultra Rares': 'UR'}
         specials = {'None': 0, 'Promo Cards': 1, 'Special Cards': 2}
-        
+
+        # f = open('decaf.html', 'r')
         f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Cards&action=edit')
 
         currentType = types['Normals']
@@ -43,21 +51,28 @@ class Command(BaseCommand):
                     currentType = types[name]
                     special = specials['None']
                     note = ""
-                    center = ""
+                    center = None
                 if name in specials.keys():
                     special = specials[name]
                     note = ""
-                    center = ""
+                    center = None
             elif len(data) > 2:
                 id = int(clean(data[0]))
                 name = clean(data[1].split('|')[1])
                 type = clean(data[2])
+
                 hp = 0
                 minStats = (0, 0, 0)
                 intStats = (0, 0, 0)
                 maxStats = (0, 0, 0)
                 nextData = 7
-                skill = ''
+                skill = None
+                promo = None
+                release_date = None
+                event_en = ''
+                event_jp = ''
+                event = None
+
                 if len(data) > 3:
                     if special != 2:
                         hp = int(clean(data[3]))
@@ -77,11 +92,31 @@ class Command(BaseCommand):
                 if len(data) > nextData + 1:
                     center = clean(data[nextData + 1].split('|')[-1])
 
-                models.Card.objects.update_or_create(id=id, defaults={
+                soup = BeautifulSoup(data[1])
+                soupsmall = soup.small
+                if soupsmall is not None:
+                    soupspan = soupsmall.span
+                    if soupspan is not None:
+                        if special == 1:
+                            promo = soupspan.text.split('c/w ')[-1].replace('[[', '').replace('|', ' (').replace(']]', ') ')
+                        else:
+                            if 'Added on' in soupspan.text:
+                                release_date_str = soupspan.text.split('Added on ')[1]
+                                release_date = datetime.datetime.fromtimestamp(time.mktime(time.strptime(release_date_str, '%B %d, %Y')))
+                            elif 'event prize' in soupspan.text:
+                                event_name = soupspan.text.split(' event prize')[0].replace(']]', '').replace('[[', '')
+                                event_jp = event_name.split('|')[0]
+                                event_en = event_name.split('|')[-1]
+                                event, created = models.Event.objects.get_or_create(japanese_name=event_jp, defaults={
+                                    'english_name': event_en,
+                                })
+
+                defaults = {
                     'name': name,
                     'rarity': currentType,
                     'attribute': type,
                     'is_promo': special == 1,
+                    'promo_item': promo,
                     'is_special': special == 2,
                     'hp': hp,
                     'minimum_statistics_smile': minStats[0],
@@ -95,19 +130,45 @@ class Command(BaseCommand):
                     'idolized_maximum_statistics_cool': maxStats[2],
                     'skill': skill,
                     'center_skill': center,
+                }
+                if promo:
+                    defaults['release_date'] = None
+                if release_date is not None:
+                    defaults['release_date'] = release_date
+                if event is not None:
+                    defaults['event'] = event
+                card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
+        f.close()
+
+        # f = open('events.html', 'r')
+        f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit')
+
+        for line in f.readlines():
+            line = h.unescape(line)
+            data = str(line).split('||')
+            if len(data) > 1:
+                dates = data[0].replace('|', '').split(' - ')
+                beginning = datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(dates[0]), '%Y/%m/%d')))
+                end = datetime.datetime.fromtimestamp(time.mktime(time.strptime(str(beginning.year) + '/' + clean(dates[1]), '%Y/%m/%d')))
+                name = clean(data[1].replace('[[', '').replace(']]', '').split('|')[-1]).replace('μs', 'μ\'s')
+                event, created = models.Event.objects.update_or_create(japanese_name=name, defaults={
+                    'beginning': beginning,
+                    'end': end,
                 })
-        
-        from bs4 import BeautifulSoup
-        # f = open('list.html', 'r')
+
+        f.close()
+
+        # f = open('wikia.html', 'r')
         f = urllib2.urlopen('http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List')
         soup = BeautifulSoup(f.read())
-        
+
         for tr in soup.find_all('tr'):
             tds = tr.find_all('td')
             if len(tds) > 4:
                 id = ""
                 normal = ""
                 idolized = ""
+                skill = None
                 id = tds[0].string
                 if id is not None:
                     id = int(clean(str(id)))
@@ -123,7 +184,8 @@ class Command(BaseCommand):
                     skill = clean(tds[3].text)
                 if id is not None:
                     models.Card.objects.update_or_create(id=id, defaults={
-                        'skill_details': skill,
+                        'skill_details': (skill if skill else None),
                         'card_url': normal,
                         'card_idolized_url': idolized,
                     })
+        f.close()

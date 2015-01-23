@@ -9,57 +9,103 @@ REST API to get cards from the mobile game Love Live! School Idol Festival.
 ### Get the list of cards
 
 ```json
-GET /cards/
+GET /api/cards/
 
 {
     count: 525,
-    next: "http://localhost:8000/cards/?page=2",
+    next: "http://localhost:8000/api/cards/?page=2",
     previous: null,
     results: [
-	{
-	    id: 1,
-	    name: "Ousaka Shizuku",
-	    rarity: "N",
-	    attribute: "Smile",
-	    is_promo: false,
-	    is_special: false,
-	    hp: 2,
-	    minimum_statistics_smile: 960,
-	    minimum_statistics_pure: 450,
-	    minimum_statistics_cool: 308,
-	    non_idolized_maximum_statistics_smile: 0,
-	    non_idolized_maximum_statistics_pure: 0,
-	    non_idolized_maximum_statistics_cool: 0,
-	    idolized_maximum_statistics_smile: 1340,
-	    idolized_maximum_statistics_pure: 690,
-	    idolized_maximum_statistics_cool: 500,
-	    skill: "",
-	    skill_details: "",
-	    center_skill: "",
-	    card_url: "http://vignette3.wikia.nocookie.net/love-live/images/6/6b/N_1_Shizuku_Osaka.jpg/revision/latest?cb=20140717040003",
-	    card_idolized_url: "http://vignette1.wikia.nocookie.net/love-live/images/b/b1/N_1_Transformed_Shizuku_Osaka.jpg/revision/latest?cb=20140717040004"
-	},
+        {
+            id: 64,
+            name: "Koizumi Hanayo",
+            rarity: "UR",
+            attribute: "Pure",
+            is_promo: false,
+            promo_item: null,
+            release_date: "2013-04-16",
+            japan_only: false,
+            is_event: false,
+            event: null,
+            is_special: false,
+            hp: 5,
+            minimum_statistics_smile: 3000,
+            minimum_statistics_pure: 3740,
+            minimum_statistics_cool: 2580,
+            non_idolized_maximum_statistics_smile: 4190,
+            non_idolized_maximum_statistics_pure: 4930,
+            non_idolized_maximum_statistics_cool: 3770,
+            idolized_maximum_statistics_smile: 4490,
+            idolized_maximum_statistics_pure: 5230,
+            idolized_maximum_statistics_cool: 4070,
+            skill: "Healer",
+            skill_details: "For every 20 notes, there is a 36% chance of recovering players HP by 3. (Level 1)",
+            center_skill: "Pure Angel",
+            card_url: "http://vignette3.wikia.nocookie.net/love-live/images/c/cf/UR_64_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233",
+            card_idolized_url: "http://vignette4.wikia.nocookie.net/love-live/images/2/27/UR_64_Transformed_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233"
+        },
 	...
     ]
 }
+
 ```
+
+#### Navigate, Search, Filter & Order
+
+* Navigate through pages using the `page` parameter:
+  * `GET /api/cards/?page=6`
+* Search through name, skill and center skill using `search`:
+  * `GET /api/cards/?search=Eli`
+* Filter results using the exact values of `name`, `rarity`, `attribute`, `hp`, `skill`, `center_skill`:
+  * `GET /api/cards/?rarity=UR&attribute=Smile`
+* Filter results using `True` or `False` for `is_promo`, `is_special` or `is_event`:
+  * `GET /api/cards/?is_event=True`
+* Sort results by any field using `ordering`:
+  * `GET /api/cards/?ordering=name`
 
 ### Get a single card
 
 ```
-GET /cards/{id}/
+GET /api/cards/{id}/
 
 See output above.
 ```
 
-### Navigate, Search & Filter
+### Get the list of events
+
+```
+GET /api/events/
+
+{
+    count: 42,
+    next: "http://localhost:9000/api/events/?page=2",
+    previous: null,
+    results: [
+        {
+            japanese_name: "みんな集まれ! Sweet Holiday ことりのおやつ",
+            english_name": "Sweet Holiday",
+            beginning": "2013-05-03",
+            end": "2013-05-16",
+            japan_current": false,
+            world_current": false,
+            cards: [
+                    74,
+                    75
+                ]
+        },
+        ...
+    ]
+}
+```
+
+#### Navitate, Search
 
 * Navigate through pages using the `page` parameter:
-  * `GET /cards/?page=6`
-* You can search through name, skill and center skill using the GET parameter `search`:
-  * `GET /cards/?search=Eli`
-* You can filter results using the exact values of: `name`, `rarity`, `attribute`, `is_promo`, `is_special`, `hp`, `skill`, `center_skill`:
-  * `GET /cards/?rarity=UR&attribute=Smile`
+  * `GET /api/events/?page=2`
+* Search through english or japanese names using the `search` parameter:
+  * `GET /api/events/?search=medley`
+* Sort results by any field using `ordering`:
+  * `GET /api/events/?ordering=english_name`
 
 ## Install
 
@@ -111,7 +157,7 @@ python manage.py migrate
 python manage.py syncdb
 ```
 
-##### Update the cards from the internet
+##### Update the cards & events from the internet
 
 ```shell
 python manage.py importcards

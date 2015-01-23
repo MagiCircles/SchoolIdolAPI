@@ -73,21 +73,21 @@ See output above.
 
 ### Get the list of events
 
-```
+```json
 GET /api/events/
 
 {
     count: 42,
-    next: "http://localhost:9000/api/events/?page=2",
+    next: "http://localhost:8000/api/events/?page=2",
     previous: null,
     results: [
         {
             japanese_name: "みんな集まれ! Sweet Holiday ことりのおやつ",
-            english_name": "Sweet Holiday",
-            beginning": "2013-05-03",
-            end": "2013-05-16",
-            japan_current": false,
-            world_current": false,
+            english_name: "Sweet Holiday",
+            beginning: "2013-05-03",
+            end: "2013-05-16",
+            japan_current: false,
+            world_current: false,
             cards: [
                     74,
                     75

@@ -8,7 +8,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     email = serializers.SerializerMethodField()
 
     def get_email(self, obj):
-        if self.context['request'].user == obj:
+        if self.context['request'].method == 'POST' or self.context['request'].user == obj:
             return obj.email
         return None
 

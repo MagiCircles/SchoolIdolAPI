@@ -2,7 +2,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 import api.views as api_views
-import web.views as web_views
+#import web.views as web_views
 
 admin.autodiscover()
 

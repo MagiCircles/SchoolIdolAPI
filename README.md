@@ -25,7 +25,6 @@ GET /api/cards/
             promo_item: null,
             release_date: "2013-04-16",
             japan_only: false,
-            is_event: false,
             event: null,
             is_special: false,
             hp: 5,

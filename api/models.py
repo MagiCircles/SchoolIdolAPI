@@ -18,6 +18,24 @@ RARITY_CHOICES = (
     ('UR', 'Ultra Rare'),
 )
 
+LANGUAGE_CHOICES = (
+    ('JP', 'Japanese'),
+    ('EN', 'English'),
+    ('KR', 'Korean'),
+    ('CH', 'Chinese'),
+)
+
+OS_CHOICES = (
+    ('Android', 'Android'),
+    ('iOs', 'iOs'),
+)
+
+STORED_CHOICES = (
+    ('Deck', 'In deck'),
+    ('Album', 'In album'),
+    ('Box', 'In present box'),
+)
+
 class Event(models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
     english_name = models.CharField(max_length=100)
@@ -71,3 +89,27 @@ class Card(models.Model):
         return '#' + str(self.id) + ' ' + self.name + ' ' + self.rarity
 
 admin.site.register(Card)
+
+class Account(models.Model):
+    owner = models.ForeignKey(User, related_name='account')
+    nickname = models.CharField(blank=True, max_length=20)
+    friend_id = models.PositiveIntegerField(blank=True, null=True)
+    transfer_code = models.CharField(blank=True, max_length=30)
+    language = models.CharField(choices=LANGUAGE_CHOICES, default='JP', max_length=10)
+    os = models.CharField(choices=OS_CHOICES, default='iOs', max_length=10)
+    center = models.ForeignKey('OwnedCard', null=True, blank=True)
+    rank = models.PositiveIntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.owner.username + ' ' + self.language
+
+admin.site.register(Account)
+
+class OwnedCard(models.Model):
+    owner_account = models.ForeignKey(Account, related_name='ownedcard')
+    card = models.ForeignKey(Card, related_name='ownedcard')
+    idolized = models.BooleanField(default=False)
+    stored = models.CharField(choices=STORED_CHOICES, default='Deck', max_length=30)
+    expiration = models.DateTimeField(default=None, null=True, blank=True)
+
+admin.site.register(OwnedCard)

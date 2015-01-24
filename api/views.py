@@ -28,7 +28,7 @@ class CardFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Card
-        fields = ('name', 'rarity', 'attribute', 'is_promo', 'is_special', 'hp', 'skill', 'center_skill', 'event', 'is_event')
+        fields = ('name', 'rarity', 'attribute', 'is_promo', 'is_special', 'hp', 'skill', 'center_skill', 'is_event')
 
 class CardViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -52,3 +52,22 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ('japanese_name', 'english_name')
     ordering_fields = '__all__'
     ordering = ('beginning',)
+
+class AccountViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows accounts to be viewed or edited.
+    """
+    queryset = models.Account.objects.all()
+    serializer_class = serializers.AccountSerializer
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend)
+    search_fields = ('owner', 'nickname')
+    filter_fields = ('owner', 'nickname', 'language', 'center', 'rank')
+
+class OwnedCardViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows owned cards to be viewed or edited.
+    """
+    queryset = models.OwnedCard.objects.all()
+    serializer_class = serializers.OwnedCardSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_fields = ('owner_account', 'card', 'idolized', 'stored')

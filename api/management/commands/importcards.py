@@ -155,6 +155,7 @@ class Command(BaseCommand):
                     'beginning': beginning,
                     'end': end,
                 })
+                models.Card.objects.filter(event=event).update(release_date=beginning)
 
         f.close()
 

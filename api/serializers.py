@@ -61,8 +61,7 @@ class CardSerializer(serializers.ModelSerializer):
     event = EventSerializer()
 
     def get_japan_only(self, obj):
-        return (obj.is_promo
-                or obj.release_date + relativedelta(years=1) > datetime.date.today())
+        return obj.is_japan_only()
 
     class Meta:
         model = models.Card

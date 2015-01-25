@@ -85,6 +85,10 @@ class Card(models.Model):
     card_url = models.CharField(max_length=200, blank=True)
     card_idolized_url = models.CharField(max_length=200, blank=True)
 
+    def is_japan_only(self):
+        return (self.is_promo
+                or self.release_date + relativedelta(years=1) > datetime.date.today())
+
     def __unicode__(self):
         return '#' + str(self.id) + ' ' + self.name + ' ' + self.rarity
 

@@ -71,3 +71,14 @@ class OwnedCardViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.OwnedCardSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('owner_account', 'card', 'idolized', 'stored')
+
+class CardIdViewSet(CardViewSet):
+    """
+    API endpoint to get cards ids only.
+    """
+    paginate_by = None
+
+    def list(self, request):
+        r = super(CardIdViewSet, self).list(request)
+        r.data = [card['id'] for card in r.data]
+        return r

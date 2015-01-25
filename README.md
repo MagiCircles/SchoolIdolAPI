@@ -64,11 +64,27 @@ GET /api/cards/
 
 ### Get a single card
 
-```
+```json
 GET /api/cards/{id}/
 
 See output above.
 ```
+
+### Get only card ids
+
+```json
+GET /api/cardids/
+
+[
+    1,
+    2,
+    3,
+    ...
+]
+```
+This endpoint allows you to get only the card ids instead of the whole card objects
+and is not paginated, so you get all the results at once.
+All search, filter and order parameters of the regular card endpoint work here as well.
 
 ### Get the list of events
 

@@ -129,6 +129,7 @@ class Command(BaseCommand):
                     'idolized_maximum_statistics_pure': maxStats[1],
                     'idolized_maximum_statistics_cool': maxStats[2],
                     'skill': skill,
+                    'skill_details': (note if note else None),
                     'center_skill': center,
                 }
                 if promo:
@@ -184,9 +185,11 @@ class Command(BaseCommand):
                     skill_title = tds[3].b.extract()
                     skill = clean(tds[3].text)
                 if id is not None:
-                    models.Card.objects.update_or_create(id=id, defaults={
-                        'skill_details': (skill if skill else None),
+                    defaults = {
                         'card_url': normal,
                         'card_idolized_url': idolized,
-                    })
+                    }
+                    if skill:
+                        defaults['skill_details'] = skill
+                    models.Card.objects.update_or_create(id=id, defaults=defaults)
         f.close()

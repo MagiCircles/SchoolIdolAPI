@@ -41,7 +41,8 @@ GET /api/cards/
             skill_details: "For every 20 notes, there is a 36% chance of recovering players HP by 3. (Level 1)",
             center_skill: "Pure Angel",
             card_url: "http://vignette3.wikia.nocookie.net/love-live/images/c/cf/UR_64_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233",
-            card_idolized_url: "http://vignette4.wikia.nocookie.net/love-live/images/2/27/UR_64_Transformed_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233"
+            card_idolized_url: "http://vignette4.wikia.nocookie.net/love-live/images/2/27/UR_64_Transformed_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233",
+            owned_cards: null
         },
 	...
     ]
@@ -61,6 +62,20 @@ GET /api/cards/
   * `GET /api/cards/?is_event=True`
 * Sort results by any field using `ordering`:
   * `GET /api/cards/?ordering=name`
+* To get the cards owned by a user, use `account`:
+```json
+GET /api/cards/?account=1
+
+...
+            owned_cards: [
+                {
+                    idolized: true,
+                    stored: "Deck",
+                    expiration": null
+                }
+            ]
+...
+```
 
 ### Get a single card
 

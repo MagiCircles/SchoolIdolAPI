@@ -59,13 +59,20 @@ class EventSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     japan_only = serializers.SerializerMethodField()
     event = EventSerializer()
+    owned_cards = serializers.SerializerMethodField()
 
     def get_japan_only(self, obj):
         return obj.is_japan_only()
 
+    def get_owned_cards(self, obj):
+        if 'account' not in self.context['request'].query_params:
+            return None
+        account = int(self.context['request'].query_params['account'])
+        return OwnedCardWithoutCardSerializer(models.OwnedCard.objects.filter(owner_account=account, card=obj), many=True, context=self.context).data
+
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'rarity', 'attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'skill_details', 'center_skill', 'card_url', 'card_idolized_url')
+        fields = ('id', 'name', 'rarity', 'attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'skill_details', 'center_skill', 'card_url', 'card_idolized_url', 'owned_cards')
 
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()
@@ -92,6 +99,11 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Account
         fields = ('pk', 'owner', 'nickname', 'friend_id', 'transfer_code', 'language', 'os', 'center', 'rank')
+
+class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.OwnedCard
+        fields = ('idolized', 'stored', 'expiration')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
     card = CardSerializer()

@@ -116,4 +116,7 @@ class OwnedCard(models.Model):
     stored = models.CharField(choices=STORED_CHOICES, default='Deck', max_length=30)
     expiration = models.DateTimeField(default=None, null=True, blank=True)
 
+    def __unicode__(self):
+        return str(self.owner_account) + ' owns ' + str(self.card)
+
 admin.site.register(OwnedCard)

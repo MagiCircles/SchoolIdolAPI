@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         if 'password' not in self.context['request'].data:
             raise serializers.ValidationError(detail={'password': ['This field is required.']})
         user = super(UserSerializer, self).create(data)
-        user.set_password(self.context['request'].data)
+        user.set_password(self.context['request'].data['password'])
         user.save()
         return user
 

@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/db0company/SchoolIdolAPI.png?label=ready&title=Ready)](https://waffle.io/db0company/SchoolIdolAPI)
 ![LoveLive! School Idol API Logo](http://i.imgur.com/iICRSYZ.png)
 
 # LoveLive! School Idol API

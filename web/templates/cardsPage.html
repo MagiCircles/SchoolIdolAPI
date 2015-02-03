@@ -1,0 +1,222 @@
+{% load mod %}
+{% load getattribute %}
+
+    {% if cards and total_cards != 0 %}
+    <div class="page" data-page="{{ page }}">
+    <div class="row">
+      {% for i, card in cards %}
+      {% if i|mod:3 %}
+    </div><div class="row">
+      {% endif%}
+      <div class="col-sm-{% if total_cards == 1 %}12{% elif total_cards == 2 %}6{% else %}4{% endif %}">
+	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}">
+	  <div class="panel panel-{{ card.attribute }}">
+	    <div class="panel-body">
+	      {% if single %}<div class="row"><div class="col-md-6">{% endif %}
+		  <div class="text-center">
+		    {% if not single %}
+		<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
+		  {% if card.card_url %}
+		  <img src="{{ card.card_url }}" class="non_idolized" width="49%">
+		  {% endif %}
+		  <img src="{{ card.card_idolized_url }}" class="idolized" width="49%">
+		{% if not single %}</a>{% endif %}
+	      </div>
+	      {% if single %}</div><div class="col-md-6">{% endif %}
+	      <div class="more {% if card.non_idolized_maximum_statistics_smile %}levels3{% else %}levels2 {% endif %} {% if total_cards > 3 %}collapse{% endif %}" id="collapseMore{{ card.id }}">
+		{% if card.minimum_statistics_smile %}
+		<div class="statistics">
+		  <div class="text-center level-buttons">
+		    <div class="btn-group btn-group-justified" data-toggle="buttons">
+		      <label class="btn btn-{{ card.attribute }} minimum_statistics">
+			<input type="radio" name="options" autocomplete="off"> Level 1
+		      </label>
+		      {% if card.non_idolized_maximum_statistics_smile %}
+		      <label class="btn btn-{{ card.attribute }} active non_idolized_statistics">
+			<input type="radio" name="options" autocomplete="off" checked>
+			Level
+			{% if card.rarity == 'R' %}40
+			{% elif card.rarity == 'SR' %}60
+			{% elif card.rarity == 'UR' %}80
+			{% endif %}
+		      </label>
+		      {% endif %}
+		      <label class="btn btn-{{ card.attribute }} idolized_statistics {% if card.non_idolized_maximum_statistics_smile == 0 %}active{% endif %}">
+			<input type="radio" name="options" autocomplete="off" {% if card.non_idolized_maximum_statistics_smile == 0 %}checked{% endif %}>
+			Level
+			{% if card.rarity == 'N' %}40
+			{% elif card.rarity == 'R' %}60
+			{% elif card.rarity == 'SR' %}80
+			{% elif card.rarity == 'UR' %}100
+			{% endif %}
+		      </label>
+		    </div>
+		  </div>
+		  {% for level, stats in card.percent_stats.items %}
+		  <div class="statistics_bars statistics_{{ level }}">
+		    {% for attribute, stat in stats.items %}
+		    {% with level|add:"_statistics_"|add:attribute|lower as valuenow %}
+		    {% if card|getattribute:valuenow %}
+		    <div class="row">
+		      <div class="col-xs-2 text-{{ attribute }} text-right">
+			{{ card|getattribute:valuenow }}
+		      </div>
+		      <div class="col-xs-10">
+			<div class="progress">
+			  <div class="progress-bar progress-bar-{{ attribute }}"
+			       role="progressbar"
+			       aria-valuenow="{{ card|getattribute:valuenow }}"
+			       aria-valuemin="0"
+			       aria-valuemax="{{ max_stats|getattribute:attribute }}"
+			       style="width: {{ stat }}%">
+			    <span class="sr-only">{{ stat }}% Complete (success)</span>
+			  </div>
+			</div> <!-- progress -->
+		      </div>
+		    </div>
+		    {% endif %}
+		    {% endwith %}
+		    {% endfor %}
+		  </div>
+		  {% endfor %}
+		</div> <!-- statistics -->
+		{% endif %}
+		<table class="table">
+		  <tbody>
+		    <tr>
+		      <th>Id</th>
+		      <td>
+			<a href="/cards/{{ card.id }}">
+			  #{{ card.id }}
+			</a>
+			<div class="pull-right">
+			  <i class="flaticon-id"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% if card.release_date %}
+		    <tr>
+		      <th>Release date</th>
+		      <td>
+			{{ card.release_date }}
+			<div class="pull-right">
+			  <i class="flaticon-date"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% endif %}
+		    {% if card.event %}
+		    <tr>
+		      <th>Event</th>
+		      <td>
+			<a href="http://decaf.kouhi.me/lovelive/index.php?title={{ card.event.japanese_name }}" target="_blank">
+			  {{ card.event.japanese_name }}
+			</a>
+			<div class="pull-right">
+			  <i class="flaticon-event"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% endif %}
+		    <tr>
+		      <th>HP</th>
+		      <td>
+			<span class="hp_non_idolized">{{ card.hp }}</span>
+			<span class="hp_idolized">{{ card.hp|add:1 }}</span>
+			<div class="pull-right">
+			  <i class="flaticon-hp"></i>
+			</div>
+		      </td>
+		    </tr>
+		    <tr>
+		      <th>Skill</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-skill"></i>
+			</div>
+			{% if card.skill %}<strong>{{ card.skill }}</strong><br />
+			<small>{% endif %}{{ card.skill_details }}{% if card.skill %}</small>{% endif %}
+		      </td>
+		    </tr>
+		    <tr>
+		      <th>Center Skill</th>
+		      <td>
+			{{ card.center_skill }}
+			<div class="pull-right">
+			  <i class="flaticon-center"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% if not single %}
+		    <tr>
+		      <th>Comments</th>
+		      <td>
+			<a href="/cards/{{ card.id }}#disqus_thread" target="_blank">Comments</a>
+			<div class="pull-right">
+			  <i class="flaticon-edit"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% endif %}
+		  </tbody>
+		</table>
+	      </div> <!-- more -->
+	      {% if single %}</div></div>{% endif %}
+	    </div> <!-- panel-body -->
+	    <div class="panel-footer">
+	      {% for owned in card.owned_cards %}
+	      {% include "ownedCardOnBottomCard.html" with owned=owned %}
+	      {% with card.owned_cards|length as length %}{% if length > 1 %}|{% endif %}{% endwith %}
+	      {% endfor %}
+	      <a href="{% if user.is_authenticated %}#addCard{% else %}/create{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" title="Add this card" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}A{% else %}Create an account to a{% endif %}dd this card to your collection" data-trigger="hover"></i></a>
+	      <div class="pull-right">
+		{% if card.is_promo %}
+		<i class="flaticon-promo" title="Promo Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card comes with {{ card.promo_item }}" data-trigger="hover"></i>
+		{% endif %}
+		{% if card.event %}
+		<i class="flaticon-event" title="Event Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card first appeared during the event {{ card.event.japanese_name }}" data-trigger="hover"></i>
+		{% endif %}
+		{% if card.is_special %}
+	      <i class="flaticon-skill" title="Special Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card cannot be added in a team. {{ card.skill_details }}" data-trigger="hover"></i>
+	      {% endif %}
+	      {% if card.japan_only %}
+	      <i class="flaticon-JP" title="Japan Only Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card is only available in the Japanese version of the game." data-trigger="hover"></i>
+	      {% else %}
+	      <i class="flaticon-world" title="Worldwide Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card is available on all the versions of the game in the world." data-trigger="hover"></i>
+	      {% endif %}
+	      {% if not single %}<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}"><i class="flaticon-more"></i></a>{% endif %}
+	      </div>
+	    </div>
+	  </div> <!-- panel -->
+	</div> <!-- card -->
+      </div> <!-- col -->
+      {% endfor %}
+    </div> <!-- row -->
+    </div>
+    {% if single %}
+    <div class="margin20" style="height: 300px" id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'schoolidol';
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    {% else %}
+    <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}"></div>
+    {% endif %}
+    {% elif not ajax %}
+    <div class="container">
+      <br><br>
+      <div class="jumbotron">
+    	<h1>No results.</h1>
+    	<p>No idols match your search.</p>
+    	<p><a class="btn btn-Smile btn-lg sidebar-toggle" href="#" role="button">
+    	    Change filters
+    	    <i class="flaticon-filter"></i>
+    	</a></p>
+      </div>
+    </div>
+    {% endif %}

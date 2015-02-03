@@ -1,0 +1,11 @@
+
+.a-variant(@color) {
+    a {
+	color: @color;
+	&:hover,
+	&:focus {
+            color: darken(@color, 20%);
+	}
+    }
+}
+	

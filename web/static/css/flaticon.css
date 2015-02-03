@@ -1,0 +1,124 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("flaticon.eot");
+	src: url("flaticon.eot#iefix") format("embedded-opentype"),
+	url("flaticon.woff") format("woff"),
+	url("flaticon.ttf") format("truetype"),
+	url("flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}.flaticon-add:before {
+	content: "\e000";
+}
+.flaticon-contact:before {
+	content: "\e001";
+}
+.flaticon-present:before {
+	content: "\e002";
+}
+.flaticon-date:before {
+	content: "\e003";
+}
+.flaticon-checked:before {
+	content: "\e004";
+}
+.flaticon-CH:before {
+	content: "\e005";
+}
+.flaticon-developer:before {
+	content: "\e006";
+}
+.flaticon-settings:before {
+	content: "\e007";
+}
+.flaticon-deck:before {
+	content: "\e008";
+}
+.flaticon-delete:before {
+	content: "\e009";
+}
+.flaticon-world:before {
+	content: "\e00a";
+}
+.flaticon-edit:before {
+	content: "\e00b";
+}
+.flaticon-event:before {
+	content: "\e00c";
+}
+.flaticon-filter:before {
+	content: "\e00d";
+}
+.flaticon-max-bond:before {
+	content: "\e00e";
+}
+.flaticon-album:before {
+	content: "\e00f";
+}
+.flaticon-center:before {
+	content: "\e010";
+}
+.flaticon-help:before {
+	content: "\e011";
+}
+.flaticon-id:before {
+	content: "\e012";
+}
+.flaticon-about:before {
+	content: "\e013";
+}
+.flaticon-JP:before {
+	content: "\e014";
+}
+.flaticon-back:before {
+	content: "\e015";
+}
+.flaticon-skill:before {
+	content: "\e016";
+}
+.flaticon-more:before {
+	content: "\e017";
+}
+.flaticon-users:before {
+	content: "\e018";
+}
+.flaticon-logout:before {
+	content: "\e019";
+}
+.flaticon-profile:before {
+	content: "\e01a";
+}
+.flaticon-hp:before {
+	content: "\e01b";
+}
+.flaticon-promo:before {
+	content: "\e01c";
+}
+.flaticon-cards:before {
+	content: "\e01d";
+}
+.flaticon-KR:before {
+	content: "\e01e";
+}
+.flaticon-empty-star:before {
+	content: "\e01f";
+}
+.flaticon-star:before {
+	content: "\e020";
+}
+.flaticon-idolized:before {
+	content: "\e021";
+}
+.flaticon-max-level:before {
+	content: "\e022";
+}
+.flaticon-EN:before {
+	content: "\e023";
+}

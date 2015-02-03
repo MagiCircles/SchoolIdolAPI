@@ -36,8 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap_form_horizontal',
     'rest_framework',
     'api',
+    'web',
 )
 
 REST_FRAMEWORK = {

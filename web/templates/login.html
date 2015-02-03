@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+{% block loginviewactive %}active{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <br><br>
+  <div class="jumbotron">
+    <h1>Login</h1>
+    <br>
+    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<a href="/create" class="btn btn-lg btn-link">Sign Up</a>
+	<input type="submit" class="btn btn-lg btn-Cool" value="Login" />
+      </div>
+      <input type="hidden" name="next" value="/setaccountonlogin" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}

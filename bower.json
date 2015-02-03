@@ -1,0 +1,13 @@
+{
+    "name": "School Idol API",
+    "version": "0.0.0",
+    "authors": [
+	"db0company <db0company@gmail.com>"
+    ],
+    "description": "The ultimate resource for the game School Idol Festival",
+    "license": "Apache2",
+    "dependencies": {
+	"less": "~2.0.0",
+	"bootstrap": "~3.3.1"
+    }
+}

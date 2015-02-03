@@ -1,0 +1,20 @@
+	      {% if not nolink %}<a href="#editCard" data-id="{{ owned.pk }}">{% endif %}
+		{% if owned.stored == 'Deck' %}
+		<i class="flaticon-deck" title="In deck"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="You own this card in your deck." data-trigger="hover"{% endif %}></i>
+		{% elif owned.stored == 'Album' %}
+		<i class="flaticon-album" title="In album"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="This card is in your album." data-trigger="hover"{% endif %}></i>
+		{% elif owned.stored == 'Box' %}
+		<i class="flaticon-present" title="In present box"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="This card is in your present box.{% if owned.expiration %}Expiration: owned.exiration{% endif %}" data-trigger="hover"{% endif %}></i>
+		{% elif owned.stored == 'Favorite' %}
+		<i class="flaticon-star" title="Favorite"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="You love this card." data-trigger="hover"{% endif %}></i>
+		{% endif %}
+		{% if owned.idolized %}
+		<i class="flaticon-idolized" title="Idolized"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="You idolized this card. Congratulations!" data-trigger="hover"{% endif %}></i>
+		{% endif %}
+		{% if owned.max_level %}
+		<i class="flaticon-max-level" title="Max level"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="You max leveled this card. Congratulations!" data-trigger="hover"{% endif %}></i>
+		{% endif %}
+		{% if owned.max_bond %}
+		<i class="flaticon-max-bond" title="Max bond"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="You max bonded (kizuna) this card. Congratulations!" data-trigger="hover"{% endif %}></i>
+		{% endif %}
+	      {% if not nolink %}</a>{% endif %}

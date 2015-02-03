@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}User Settings{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <br><br>
+  <div class="jumbotron">
+    <h1>User Settings</h1>
+    <br>
+    <form method="post" action="">
+      <div class="alert alert-warning">You will be disconnected and will have to login with your new password.</div>
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<a href="/user/{{ user.username }}" class="btn btn-lg btn-link">Back to my profile</a>
+	<input type="submit" class="btn btn-lg btn-Cool" value="Save your settings" />
+      </div>
+      <input type="hidden" name="next" value="/login" />
+    </form>
+  </div>
+</div>
+
+{% endblock %}

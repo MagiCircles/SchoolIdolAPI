@@ -1,0 +1,30 @@
+	    <div class="row">
+	      <div class="col-md-8">
+		<form class="form-horizontal {% if edit %}edit{% else %}add{% endif%}" method="post" action="/ajax/{% if edit %}editcard/{{ edit.pk }}/{% else %}addcard/{% endif %}" role="form">
+		  {% csrf_token %}
+		  {% include "bootstrap_form_horizontal.html" with form=addcard_form wrap=0 %}
+		  <br><br>
+		  <div class="text-right">
+		    <input type="submit" class="btn btn-lg btn-Cool" value="{% if edit%}Edit{% else %}Add{% endif %} Card" />
+		  </div>
+		</form>
+	      </div>
+	      <div class="col-md-4">
+		<img src="{% if edit %}{{ edit.card.card_url }}{% endif %}" class="non_idolized" width="100%">
+		<img src="{% if edit %}{{ edit.card.card_idolized_url }}{% endif %}" class="idolized" width="100%">
+	      </div>
+	    </div>
+	    {% if edit %}
+	    <hr>
+	    <div class="row">
+	      <div class="col-md-8">
+		<div class="alert alert-warning">You can't cancel this action afterwards.</div>
+	      </div>
+	      <div class="col-md-4">
+		<form method="post" action="/ajax/deletecard/{{ edit.pk }}/" role="form" class="delete">
+		  {% csrf_token %}
+		  <input class="btn btn-danger btn-block btn-lg" type="submit" value="Delete this card">
+		</form>
+	      </div>
+	    </div>
+	    {% endif %}

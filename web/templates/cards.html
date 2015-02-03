@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Cards Album{% endblock %}
+{% block js %}<script src="/static/js/cards.js"></script>
+<script src="/static/js/addcard.js"></script>{% endblock %}
+{% block content %}
+
+<div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
+  <nav id="sidebar-wrapper">
+    <form method="GET">
+      <h4>Search</h4>
+      <div class="section search">
+	<input type="text" id="search" placeholder="Search" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="Search through name, skill and center skill." data-trigger="focus" value="{{ request_get.search }}">
+      </div>
+      <h4>Filter</h4>
+      <div class="section filter">
+	<label for="id_name">Idol</label>
+	<select id="id_name" name="name">
+	  <option value=""></option>
+	  {% for idol in filters.idols %}
+	  <option value="{{ idol.name }}"{% if request_get.name == idol.name %} selected{% endif %}>{{ idol.name }} ({{ idol.total }})</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<label for="id_rarity">Rarity</label>
+	<select id="id_rarity" name="rarity">
+	  <option value=""></option>
+	  {% for i, rarity in filters.rarity_choices %}
+	  <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<label for="id_attribute">Attribute</label>
+	<select id="id_attribute" name="attribute">
+	  <option value=""></option>
+	  {% for i, attribute in filters.attribute_choices %}
+	  <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{{ attribute }}</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<label for="id_skill">Skill</label>
+	<select id="id_skill" name="skill">
+	  <option value=""></option>
+	  {% for idol in filters.skills %}
+	  <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{{ idol.skill }} ({{ idol.total }})</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<br>
+	<div>
+	  <div class="pull-right"><input id="id_is_promo" name="is_promo" type="checkbox"{% if request_get.is_promo %} checked{% endif %}></div>
+	  <label for="id_is_promo"><i class="flaticon-promo"></i> Promo Cards only</label>
+	</div>
+	<br>
+	<div>
+	  <div class="pull-right"><input id="id_is_special" name="is_special" type="checkbox"{% if request_get.is_special %} checked{% endif %}></div>
+	  <label for="id_is_special"><i class="flaticon-skill"></i> Special Cards only</label>
+	</div>
+	<br>
+	<div>
+	  <div class="pull-right"><input id="id_is_event" name="is_event" type="checkbox"{% if request_get.is_event %} checked{% endif %}></div>
+	  <label for="id_is_event"><i class="flaticon-event"></i> Event Cards only</label>
+	</div>
+	<br>
+	<div>
+	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
+	  <label for="id_is_world"><i class="flaticon-world"></i> Worldwide Cards only</label>
+	</div>
+      </div>
+      <h4>Order</h4>
+      <div class="section order">
+	<select id="id_ordering" name="ordering">
+	  {% for i, order in filters.ordering_choices %}
+	  <option value="{{ i }}"{% if request_get.ordering == i %} selected{% endif %}>{{ order }}</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<div>
+	  <div class="pull-right"><input id="id_reverse_order" name="reverse_order" type="checkbox"{% if request_get.reverse_order %} checked{% endif %}></div>
+	  <label for="id_reverse_order">Reverse order</label>
+	</div>
+      </div>
+      {% if user.is_authenticated %}
+      <h4>{{ accounts.0 }}</h4>
+      <div class="section yours">
+	<label for="id_stored">Stored</label>
+	<select id="id_stored" name="stored">
+	  <option value=""></option>
+	  {% for i, stored in filters.stored_choices %}
+	  <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<label for="id_max_level">Max Level</label>
+	<select id="id_max_level" name="max_level">
+	  <option value=""></option>
+	  <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>Max Leveled</option>
+	  <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>Not Max Leveled</option>
+	</select>
+	<br>
+	<label for="id_max_bond">Max Bond (Kizuna)</label>
+	<select id="id_max_bond" name="max_bond">
+	  <option value=""></option>
+	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>Max Bonded</option>
+	  <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>Not Max Bonded</option>
+	</select>
+	<br>
+	<label for="id_idolized">Idolized</label>
+	<select id="id_idolized" name="idolized">
+	  <option value=""></option>
+	  <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>Idolized</option>
+	  <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>Not Idolized</option>
+	</select>
+      </div>
+      {% endif %}
+      <div class="section order">
+	<input type="submit" class="btn btn-Smile btn-block" value="Go">
+	<br><br><br><br><br>
+      </div>
+    </form>
+  </nav>
+  <div id="page-content-wrapper">
+    {% include "cardsPage.html" %}
+  </div> <!-- page-content-wrapper -->
+</div> <!-- wrapper -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="Addcard" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title">Add card to your account {{ active_account }}</h4>
+	  </div>
+	  <div class="modal-body">
+	    {% include "addCardForm.html" %}
+	  </div>
+	</div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var disqus_developer = 1;
+      var disqus_shortname = 'schoolidol';
+      (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+    
+{% endblock %}
+

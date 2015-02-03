@@ -1,0 +1,91 @@
+#wrapper {
+    padding-right: 250px;
+    transition: all 0.4s ease 0s;
+}
+
+#sidebar-wrapper {
+    margin-right: -250px;
+    right: 250px;
+    width: 250px;
+    background: @BarColor;
+    color: #fff;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.4s ease 0s;
+    .btn-Smile {
+	.button-variant(#fff, darken(@BarColor, 5%), darken(darken(@BarColor, 5%), 5%));
+    }
+    h4 {
+	background: darken(@BarColor, 5%);
+	padding: 10px;
+	margin: 0;
+    }
+    .section {
+	padding: 20px;
+	label {
+	    font-weight: normal;
+	}
+	.helptext {
+    	    font-size: 0.7em;
+	}
+    }
+}
+
+#page-content-wrapper {
+    width: 100%;
+}
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* .sidebar-nav li { */
+/*     line-height: 40px; */
+/*     text-indent: 20px; */
+/* } */
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    line-height: 60px;
+    font-size: 18px;
+}
+
+.inset {
+    padding: 20px;
+}
+
+#wrapper {
+    padding-right: 0;
+}
+
+#sidebar-wrapper {
+    right: 0;
+}
+
+#wrapper.active {
+    #page-content-wrapper {
+	margin-right: 250px;
+	width: auto;
+    }
+}
+
+#wrapper.active #sidebar-wrapper {
+    right: 250px;
+    width: 250px;
+    transition: all 0.4s ease 0s;
+}
+
+.sidebar-toggle {
+    display: inline-block;
+}
+
+.inset {
+    padding: 15px;
+}

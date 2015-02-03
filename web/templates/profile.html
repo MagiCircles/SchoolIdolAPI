@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+{% block js %}<script src="/static/js/profile.js"></script>{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <br><br>
+  <div class="jumbotron">
+    <h1>{{ profile_user.username }}</h1>
+    {% if is_me %}<div class="text-center"><a href="/edit"><i class="flaticon-edit"></i> Edit your settings</a></div>{% endif %}
+    {% with user_accounts|length as length %}
+    {% if length == 0 %}
+    <h2>No account.</h2>
+    {% else %}
+    <h2>Accounts:</h2>
+    {% for account in user_accounts %}
+    {% with account.center.card.attribute|default:'All' as attribute %}
+    <div class="panel panel-{{ attribute }} profile-account">
+      <div class="panel-heading">
+	<h3>
+	  {% if is_me %}
+	  <div class="pull-right" style="letter-spacing: 10px;">
+	    <a href="/editaccount/{{ account.pk }}">
+	      <i class="flaticon-edit"></i>
+	    </a>
+	    <a href="/deleteaccount/{{ account.pk }}">
+	      <i class="flaticon-cross106"></i>
+	    </a>
+	  </div>
+	  {% endif %}
+	  {{ account }}</h3>
+      </div>
+      <div class="panel-body">
+	<div class="padding20 padding-novertical">
+	  <div class="pull-right" style="padding: 20px;">
+	    {% if account.center %}
+	    <div class="circled_card_200 {{ account.center.card.attribute }}"
+		 style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
+	    {% else %}
+	    <div style="width: 200px; padding: 50px; text-align: center;">
+	      <strong>No Center Specified</strong>
+	    </div>
+	    {% endif %}
+	  </div>
+	  <div class="table-responsive">
+	    <table class="table">
+	      <tr>
+		<th><br>Nickname</th>
+		<td><br>{{ account.nickname }}</td>
+	      </tr>
+	      <tr>
+		<th>Friend ID</th>
+		<td>{{ account.friend_id }}</td>
+	      </tr>
+	      {% if account.is_me %}
+	      <tr>
+		<th>Transfer Code <small>Omly you can see it</small></th>
+		<td>{{ account.transfer_code }}</td>
+	      </tr>
+	      {% endif %}
+	      <tr>
+		<th>Game Version</th>
+		<td>
+		  <div class="pull-right">
+		    <i class="flaticon-{{ account.language }}"></i>
+		  </div>
+		  {{ account.language }}</td>
+	      </tr>
+	      <tr>
+		<th>Device Operating System</th>
+		<td>{{ account.os }}</td>
+	      </tr>
+	      <tr>
+		<th>Rank</th>
+		<td><h3>{{ account.rank }}</h3></td>
+	      </tr>
+	    </table>
+	  </div>
+
+	  <div role="tabpanel" class="tabpanel">
+	    <div class="btn-group btn-group-justified" data-toggle="buttons">
+	      <label for="optDeck" class="cardstype btn btn-{{ attribute }} active">
+		<input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck" >
+		<i class="flaticon flaticon-deck"></i>
+		Deck
+	      </label>
+	      <label for="optAlbum" class="cardstype btn btn-{{ attribute }}">
+		<input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum" >
+		<i class="flaticon flaticon-album"></i>
+		Album
+	      </label>
+	      <label for="optFavorite" class="cardstype btn btn-{{ attribute }}">
+		<input id="optFavorite" name="cardstype" type="radio" data-target="#cardtabFavorite" >
+		<i class="flaticon flaticon-favorite"></i>
+		Favorite Cards
+	      </label>
+	      {% if is_me %}
+	      <label for="optBox" class="cardstype btn btn-{{ attribute }}">
+		<input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox" >
+		<i class=".flaticon flaticon-present"></i>
+		Present Box
+	      </label>
+	      {% endif %}
+	    </div>
+	  </div>
+	  <div class="tab-content">
+	    {% if is_me %}
+	    <br>
+	    <div class="alert alert-info">To search through your cards, order them, edit them or add some new, go to <a href="/cards?search=">the cards page and use the filters <i class="flaticon-filter"></i></a></div>
+	    {% endif %}
+	    <div id="cardtabDeck" class="tab-pane fade in active cardtab-pane text-center">
+	      {% include 'ownedcards.html' with cards=account.deck %}
+	    </div>
+	    <div id="cardtabAlbum" class="tab-pane fade cardtab-pane text-center">
+	      {% include 'ownedcards.html' with cards=account.album %}
+	    </div>
+	    {% if is_me %}
+	    <div id="cardtabBox" class="tab-pane fade cardtab-pane text-center">
+	      {% include 'ownedcards.html' with cards=account.box %}
+	    </div>
+	    <div id="cardtabFavorite" class="tab-pane fade cardtab-pane text-center">
+	      {% include 'ownedcards.html' with cards=account.favorite %}
+	    </div>
+	    {% endif %}
+	    <br>
+	  </div>
+	</div>
+      </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'schoolidol';
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</div>
+
+{% endblock %}

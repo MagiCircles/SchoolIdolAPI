@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}The Ultimate Resource For LoveLive! School Idol Festival players{% endblock %}
+{% block back_button %}0{% endblock %}
+{% block js %}<script src="/static/js/index.js"></script>{% endblock %}
+
+{% block content %}
+
+<div class="link-stars-side" style="display: none;">
+  {% for i, link in links3 %}
+  <div class="color-Rainbow-{{ i|add:1 }}">
+    <a href="#{{ link.link }}"><span class="name">{{ link.name }}</span><span class="btn btn-Rainbow-{{ i|add:1 }}"><i class="flaticon-star fontx2"></i></span></a>
+  </div>
+  {% endfor %}
+</div>
+
+<div id="home" class="text-center">
+    <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+    <div class="link-stars">
+      {% for i, link in links %}
+      <a href="#{{ link.link }}" class="btn btn-Rainbow-{{ i|add:1 }} btn-lg"><i class="flaticon-star fontx2"></i></a>
+      {% endfor %}
+    </div>
+    <div class="link-details">
+      {% for i, link in links1 %}
+      <a href="#{{ link.link }}" style="display: none;" class="fontx2 color-Rainbow-{{ i|add:1 }}">{{ link.name }}</a>
+      {% endfor %}
+  </div>
+</div>
+
+{% for i, link in links2 %}
+<div id="{{ link.link }}" class="bg-Rainbow-{{ i|add:1 }} home-section">
+  <div class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <a href="/cards/{{ link.card.id }}" target="_blank">
+	<img src="{% if link.card.idolized %}{{ link.card.card_idolized_url }}{% else %}{{ link.card.card_url }}{% endif %}" alt="{{link.card}}">
+      </a>
+    </div>
+    <div class="col-md-7">
+      <h1>{{ link.name }}</h1>
+
+      <ul class="list-group">
+	{% for url in link.links %}
+	<a href="{{ url.url }}" target="_blank" class="list-group-item"{% if url.type == 'tutorial' %}
+	   data-toggle="popover" data-placement="right" data-content="Tutorial" data-trigger="hover"
+	   {% elif url.type == 'info' %}
+	   data-toggle="popover" data-placement="right" data-content="Information" data-trigger="hover"
+	   {% elif url.type == 'tool' %}
+	   data-toggle="popover" data-placement="right" data-content="Tool" data-trigger="hover"
+	   {% endif %}>
+	  {% if url.type == 'tutorial' %}
+	  <div class="pull-right{% if url.x2 %} fontx2{% endif %}"><i class="flaticon-help"></i></div>
+	  {% elif url.type == 'info' %}
+	  <div class="pull-right{% if url.x2 %} fontx2{% endif %}"><i class="flaticon-about"></i></div>
+	  {% elif url.type == 'tool' %}
+	  <div class="pull-right{% if url.x2 %} fontx2{% endif %}"><i class="flaticon-settings"></i></div>
+	  {% endif %}
+	  {% if url.language == 'japanese' %}
+	  <div class="pull-right{% if url.x2 or url.description %} fontx2{% endif %}"><i class="flaticon-JP"></i></div>
+	  {% elif url.language == 'english' %}
+	  <div class="pull-right{% if url.x2 or url.description %} fontx2{% endif %}"><i class="flaticon-EN"></i></div>
+	  {% elif url.language == 'world' %}
+	  <!-- <div class="pull-right{% if url.x2 or url.description %} fontx2{% endif %}"><i class="flaticon-world"></i></div> -->
+	  {% endif %}
+	  <h4 class="list-group-item-heading{% if url.x2 %} fontx2{% endif %}">{{ url.name }}</h4>
+	  {% if url.description %}
+	  <p class="list-group-item-text">{{ url.description }}</p>
+	  {% endif %}
+	</a>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div></div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,26 @@
+
+// + set background-image
+.head_card(@width: 200px) {
+    width: @width;
+    height: @width;
+    background-size: @width * 2;
+    background-repeat: no-repeat;
+    background-position: (0.55 * @width * -1) (0.25 * @width * -1);
+}
+
+// + set Smile/Pure/Cool/All class
+.circled_card(@width) {
+    .head_card(@width);
+    border-radius: 50%;
+    border: (0.04 * @width) solid;
+    &.Smile { border-color: @SmileColor }
+    &.Pure { border-color: @PureColor }
+    &.Cool { border-color: @CoolColor }
+    &.All { border-color: @AllColor }
+}
+
+.circled_card_30 { .circled_card(30px); }
+.circled_card_50 { .circled_card(50px); }
+.circled_card_100 { .circled_card(100px); }
+.circled_card_150 { .circled_card(150px); }
+.circled_card_200 { .circled_card(200px); }

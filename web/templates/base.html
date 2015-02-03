@@ -1,0 +1,205 @@
+{% with "LoveLive! School Idol Tomodachi" as mainTitle %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>{{ mainTitle }} - {% block title %}The ultimate resource for the game.{% endblock %}</title>
+
+    <link rel="stylesheet" href="/static/bower/bootstrap/dist/css/bootstrap.min.css">
+    <link href="/static/bower/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" />
+    <script src="/static/bower/less/dist/less.min.js"></script>
+    <!-- <link rel="stylesheet" href="/static/css/style.css"> -->
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+    </script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <nav class="navbar navbar-Smile navbar-fixed-top">
+      <div class="container">
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+	    <span class="sr-only">Toggle navigation</span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
+	  </button>
+	  <a class="navbar-brand" href="/">
+	    {% if not hide_back_button %}
+	    <i class="flaticon-back"></i>
+	    {% endif %}
+	    {{ mainTitle }}</a>
+	</div>
+	<div class="collapse navbar-collapse collapse">
+	  <ul class="nav navbar-nav navbar-right">
+	    <li class="{% if current == 'cards' %}active{% endif %}"><a href="/cards">Cards</a></li>
+	    {% if user.is_authenticated %}
+	    <li class="dropdown">	
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		{{ user.username }}
+		<span class="caret"></span>
+	      </a>
+	      <ul class="dropdown-menu" role="menu">
+		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-profile"></i> Your Profile</a></li>
+		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit"><i class="flaticon-settings"></i> Your Settings</a></li>
+		<li role="presentation" class="divider"></li>
+		{% include "baseMenu.html" %}
+		<li role="presentation" class="divider"></li>
+		<li><a href="/logout"><i class="flaticon-logout"></i> Logout</a></li>
+	      </ul>
+	    </li>
+	    <li class="dropdown">	
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		{{ active_account }}
+		<span class="caret"></span>
+	      </a>
+	      <ul class="dropdown-menu" role="menu">
+		{% if accounts %}
+		 <li role="presentation" class="dropdown-header">Switch account:</li>
+		{% endif %}
+		{% for account in accounts %}
+		<li class="{% if account == active_account %}disabled{% endif %}"><a href="/switchaccount/{{ account.pk }}" class="account">
+		    {% if account.center %}
+		    <div class="pull-left">
+		      <div class="center {{ account.center.card.attribute }}"
+			   style="background-image: url('{% if not account.center.idolized and account.center.card.card_idolized_url %}{{ account.center.card.card_idolized_url }}{% else %}{{ account.center.card.card_url}}{% endif %}')"></div>
+		    </div>
+		    {% else %}
+		    <div class="padding pull-left"></div>
+		    {% endif %}
+		    {% if account == active_account %}
+		    <div class="pull-right"><i class="flaticon-checked"></i></div>
+		    {% endif %}
+		    {{ account }}</a></li>
+		{% endfor %}
+		<li role="presentation" class="divider"></li>
+		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount"><i class="flaticon-add"></i> Add an account</a></li>
+		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-edit"></i> Edit your accounts</a></li>
+	      </ul>
+	    </li>
+	    {% else %}
+	    <li class="{% block loginviewactive %}{% endblock %}"><a href="/login">Login {{ name }}</a></li>
+	    <li class="{% if current == 'create' %}active{% endif %}"><a href="/create">Sign Up</a></li>
+	    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		<span class="caret"></span>
+	      </a>
+	      <ul class="dropdown-menu" role="menu">
+		{% include "baseMenu.html" %}
+	      </ul>
+	    </li>
+	    {% endif %}
+	    {% if show_filter_button %}
+	    <li><a href="#" class="sidebar-toggle"><i class="flaticon-filter"></i></a></li>
+	    {% endif %}
+	  </ul>
+      </div>
+    </nav>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="About" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title" id="myModalLabel">About {{ mainTitle }}</h4>
+	  </div>
+	  <div class="modal-body">
+	    <h3>LoveLive! Franchise</h3>
+	    <p>
+	      {{ mainTitle }} is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab.
+	    </p>
+	    <h3>Thanks</h3>
+	    <p>Informations about the cards come from:</p>
+	    <ul>
+	      <li><a href="http://decaf.kouhi.me/lovelive/" target="_blank">LoveLive! School Idol Wiki decaf.kouhi.me</a></li>
+	      <li><a href="http://love-live.wikia.com/wiki/Main_Page" target="_blank">LoveLive! Wikia</a></li>
+	    </ul>
+	    <h3>Icon Credits</h3>
+	    <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a>, <a href="http://yanlu.de" title="Yannick">Yannick</a>, <a href="http://www.icomoon.io" title="Icomoon">Icomoon</a>, <a href="http://www.icons8.com" title="Icons8">Icons8</a>, <a href="http://catalinfertu.com" title="Catalin Fertu">Catalin Fertu</a>, <a href="http://pixelkit.com" title="Sergiu Bagrin">Sergiu Bagrin</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>         is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" class="btn btn-Smile" data-dismiss="modal">Got it!</button>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="Contact" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title" id="myModalLabel">Contact Us</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p>
+	      Send us an email to <a href="mailto:contact@schoolido.lu">contact@schoolido.lu</a>.
+	    </p>
+	    <p>
+	      For suggestions or bug report, we recommend you to use <a href="https://github.com/db0company/SchoolIdolAPI/issues">Issues on GitHub</a>. Simply <a href="https://github.com/db0company/SchoolIdolAPI/issues/new">create a new issue</a> or reply to an existing one to get updates about it.</p>
+	    <p>
+	      You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.
+	    </p>
+	  </div>
+	  <div class="modal-footer">
+	    <a class="btn btn-Smile" href="mailto:contact@schoolido.lu">Send Email</a>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="developersModal" tabindex="-1" role="dialog" aria-labelledby="Developers" aria-hidden="true">
+      <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-body">
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h3>Public API</h3>
+	    <p>
+	      If you're a developer and you would like to get the cards of the game in a convenient format, we provide a public <strong>REST API to get the cards and events</strong>.
+	    </p>
+	    <p>
+	      It returns <strong>JSON objects</strong> that you can easily parse and use in your own tools or services.
+	    </p>
+	    <p>
+	      Note that since we provide this service for free, unfortunately, we cannot 100% guarantee its uptime. However, we believe our architecture is reliable enough to be used in a production environment.
+	    </p>
+	    <div class="text-right">
+	      <a href="https://github.com/db0company/SchoolIdolAPI#readme" target="_blank" class="btn btn-Smile">
+		API Documentation
+	      </a>
+	    </div>
+	    <h3>Contribute</h3>
+	    <p>
+	      Our project is <strong>open-source</strong> and open for contributions. We would be more than happy to accept your <strong>pull-requests</strong> on GitHub.
+	    </p>
+	    <p>The website has been made using <a href="https://docs.djangoproject.com/" target="_blank">Django</a>, and the public API has been made using <a href="http://www.django-rest-framework.org/" target="_blank">Django-Rest-Framework</a>, so in Python. We also use <a href="http://lesscss.org/" target="_blank">LESS CSS</a>, <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>, <a href="http://jquery.com/" target="_blank">JQuery</a> and <a href="http://bower.io/" target="_blank">Bower</a> for the front-end of the website.</p>
+	    <p>
+	      If you wish to contribute but you don't know what to do, feel free to <a href="https://github.com/db0company/SchoolIdolAPI/issues">browse the opened issues</a>.
+	    </p>
+	    <div class="text-right">
+	      <a href="https://github.com/db0company/SchoolIdolAPI" target="_blank" class="btn btn-Smile">
+		GitHub Repositories
+	      </a>
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    
+    <script src="/static/bower/jquery/dist/jquery.min.js"></script>
+    <script src="/static/js/jquery.form.min.js"></script>
+    <script src="/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+    {% block js %}{% endblock %}
+  </body>
+</html>
+{% endwith %}
+

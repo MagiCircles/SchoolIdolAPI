@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{% if edit %}Edit{% else %}Add{% endif %} a game Account{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <br><br>
+  <div class="jumbotron">
+    <h1>{% if edit %}Edit your account</h1><h2 class="text-center">{{ edit }}</h2>{% else %}Add a Game Account</h1>{% endif %}
+    <br>
+    <form class="form-horizontal" method="post" action="" role="form">
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<a href="/user/{{ user.username }}" class="btn btn-lg btn-link">Back to my profile</a>
+	<input type="submit" class="btn btn-lg btn-Cool" value="{% if edit %}Edit{% else %}Add{%endif %} Account" />
+      </div>
+      <input type="hidden" name="next" value="/cards" />
+    </form>
+    {% if edit %}
+    <hr>
+    <form method="post" action="">
+      {% csrf_token %}
+      <h2>Delete this account</h2>
+      <div class="alert alert-warning">This cannot be undone, so make sure you really want to delete your account.<br>
+	Note that we can transfer your account to another user.
+	<a href="#" data-toggle="modal" data-target="#contactModal">Contact us.</a>
+      </div>
+      <div class="text-right">
+	<input type="submit" class="btn btn-danger" name="deleteAccount" value="Delete your account">
+      </div>
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

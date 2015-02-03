@@ -34,6 +34,7 @@ STORED_CHOICES = (
     ('Deck', 'In deck'),
     ('Album', 'In album'),
     ('Box', 'In present box'),
+    ('Favorite', 'Favorite Cards'),
 )
 
 class Event(models.Model):
@@ -89,6 +90,9 @@ class Card(models.Model):
         return (self.is_promo
                 or self.release_date + relativedelta(years=1) > datetime.date.today())
 
+    def get_owned_cards_for_account(self, account):
+        return OwnedCard.objects.filter(owner_account=account, card=self)
+
     def __unicode__(self):
         return '#' + str(self.id) + ' ' + self.name + ' ' + self.rarity
 
@@ -97,24 +101,26 @@ admin.site.register(Card)
 class Account(models.Model):
     owner = models.ForeignKey(User, related_name='account')
     nickname = models.CharField(blank=True, max_length=20)
-    friend_id = models.PositiveIntegerField(blank=True, null=True)
-    transfer_code = models.CharField(blank=True, max_length=30)
-    language = models.CharField(choices=LANGUAGE_CHOICES, default='JP', max_length=10)
+    friend_id = models.PositiveIntegerField(blank=True, null=True, help_text='You can find your friend id by going to the "Friends" section from the home, then "ID Search". Players will be able to send you friend requests or messages using this number.')
+    transfer_code = models.CharField(blank=True, max_length=30, help_text='It\'s important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.')
+    language = models.CharField(choices=LANGUAGE_CHOICES, default='JP', max_length=10, help_text='This is the version of the game you play.')
     os = models.CharField(choices=OS_CHOICES, default='iOs', max_length=10)
-    center = models.ForeignKey('OwnedCard', null=True, blank=True)
+    center = models.ForeignKey('OwnedCard', null=True, blank=True, help_text='The character that talks to you on your home screen.')
     rank = models.PositiveIntegerField(blank=True, null=True)
 
     def __unicode__(self):
-        return self.owner.username + ' ' + self.language
+        return (self.owner.username if self.nickname == '' else self.nickname) + ' ' + self.language
 
 admin.site.register(Account)
 
 class OwnedCard(models.Model):
     owner_account = models.ForeignKey(Account, related_name='ownedcard')
     card = models.ForeignKey(Card, related_name='ownedcard')
-    idolized = models.BooleanField(default=False)
     stored = models.CharField(choices=STORED_CHOICES, default='Deck', max_length=30)
     expiration = models.DateTimeField(default=None, null=True, blank=True)
+    idolized = models.BooleanField(default=False)
+    max_level = models.BooleanField(default=False)
+    max_bond = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.owner_account) + ' owns ' + str(self.card)

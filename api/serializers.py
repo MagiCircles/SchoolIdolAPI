@@ -65,10 +65,12 @@ class CardSerializer(serializers.ModelSerializer):
         return obj.is_japan_only()
 
     def get_owned_cards(self, obj):
-        if 'account' not in self.context['request'].query_params:
+        if (not self.context['request'] or not self.context['request']
+            or not self.context['request'].query_params
+            or 'account' not in self.context['request'].query_params):
             return None
         account = int(self.context['request'].query_params['account'])
-        return OwnedCardWithoutCardSerializer(models.OwnedCard.objects.filter(owner_account=account, card=obj), many=True, context=self.context).data
+        return OwnedCardWithoutCardSerializer(obj.get_owned_cards_for_account(account), many=True, context=context).data
 
     class Meta:
         model = models.Card
@@ -103,11 +105,11 @@ class AccountSerializer(serializers.ModelSerializer):
 class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OwnedCard
-        fields = ('idolized', 'stored', 'expiration')
+        fields = ('idolized', 'stored', 'expiration', 'max_level', 'max_bond')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
     card = CardSerializer()
 
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'card', 'idolized', 'stored', 'expiration')
+        fields = ('owner_account', 'card', 'idolized', 'max_level', 'max_bond', 'stored', 'expiration')

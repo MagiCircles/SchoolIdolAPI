@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.contrib import admin
@@ -63,6 +64,8 @@ admin.site.register(Event)
 class Card(models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
     name = models.CharField(max_length=100)
+    japanese_name = models.CharField(max_length=100, blank=True, null=True)
+    japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     rarity = models.CharField(choices=RARITY_CHOICES, max_length=10)
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
@@ -70,21 +73,35 @@ class Card(models.Model):
     release_date = models.DateField(default=datetime.date(2013, 4, 16), null=True, blank=True)
     event = models.ForeignKey(Event, related_name='card', blank=True, null=True)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
-    hp = models.PositiveIntegerField()
-    minimum_statistics_smile = models.PositiveIntegerField()
-    minimum_statistics_pure = models.PositiveIntegerField()
-    minimum_statistics_cool = models.PositiveIntegerField()
-    non_idolized_maximum_statistics_smile = models.PositiveIntegerField()
-    non_idolized_maximum_statistics_pure = models.PositiveIntegerField()
-    non_idolized_maximum_statistics_cool = models.PositiveIntegerField()
-    idolized_maximum_statistics_smile = models.PositiveIntegerField()
-    idolized_maximum_statistics_pure = models.PositiveIntegerField()
-    idolized_maximum_statistics_cool = models.PositiveIntegerField()
+    hp = models.PositiveIntegerField(null=True)
+    minimum_statistics_smile = models.PositiveIntegerField(null=True)
+    minimum_statistics_pure = models.PositiveIntegerField(null=True)
+    minimum_statistics_cool = models.PositiveIntegerField(null=True)
+    non_idolized_maximum_statistics_smile = models.PositiveIntegerField(null=True)
+    non_idolized_maximum_statistics_pure = models.PositiveIntegerField(null=True)
+    non_idolized_maximum_statistics_cool = models.PositiveIntegerField(null=True)
+    idolized_maximum_statistics_smile = models.PositiveIntegerField(null=True)
+    idolized_maximum_statistics_pure = models.PositiveIntegerField(null=True)
+    idolized_maximum_statistics_cool = models.PositiveIntegerField(null=True)
     skill = models.TextField(null=True)
+    japanese_skill = models.TextField(null=True)
     skill_details = models.TextField(null=True)
+    japanese_skill_details = models.TextField(null=True)
     center_skill = models.TextField(null=True)
+    japanese_center_skill = models.TextField(null=True)
+    japanese_center_skill_details = models.TextField(null=True)
     card_url = models.CharField(max_length=200, blank=True)
     card_idolized_url = models.CharField(max_length=200, blank=True)
+    round_card_url = models.CharField(max_length=200, blank=True, null=True)
+
+    def japanese_attribute(self):
+        if self.attribute == 'Smile':
+            return 'スマイル'
+        elif self.attribute == 'Pure':
+            return 'ピュア'
+        elif self.attribute == 'Cool':
+            return 'クール'
+        return ''
 
     def is_japan_only(self):
         return (self.is_promo

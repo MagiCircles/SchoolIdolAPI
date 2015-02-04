@@ -47,7 +47,6 @@ coverage.xml
 # Django stuff:
 *.log
 db.sqlite3
-api/migrations
 
 # Sphinx documentation
 docs/_build/
@@ -59,4 +58,5 @@ target/
 decaf.html
 events.html
 wikia.html
+jpcards.html
 web/static/bower

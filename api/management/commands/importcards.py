@@ -17,12 +17,31 @@ def removeHTML(str):
     return re.sub('<[^<]+?>', '', str)
 
 def clean(string):
+    if string is None:
+        return None
     return removeHTML(str(string)).strip().translate(None, '\'\"|[]')
 
 def wikiaImageURL(string):
     if string is None:
         return ""
     return clean(string)
+
+def extract_skill(td):
+    if td.span is not None:
+        name = td.span.extract()
+        details = td.string
+        if details is None:
+            if td.br is None:
+                details = None
+            else:
+                details = td.br.extract()
+    elif td.strong is not None:
+        name = td.strong.extract()
+        details = td.string
+    else:
+        name = td.string
+        details = None
+    return clean(name), clean(details)
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -141,8 +160,8 @@ class Command(BaseCommand):
                 card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
         f.close()
 
-        # f = open('events.html', 'r')
-        f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit')
+        f = open('events.html', 'r')
+        # f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit')
 
         for line in f.readlines():
             line = h.unescape(line)
@@ -168,8 +187,8 @@ class Command(BaseCommand):
             tds = tr.find_all('td')
             if len(tds) > 4:
                 id = ""
-                normal = ""
-                idolized = ""
+                normal = ''
+                idolized = ''
                 skill = None
                 id = tds[0].string
                 if id is not None:
@@ -191,5 +210,58 @@ class Command(BaseCommand):
                     }
                     if skill:
                         defaults['skill_details'] = skill
+                    models.Card.objects.update_or_create(id=id, defaults=defaults)
+        f.close()
+
+        # f = open('jpcards.html', 'r')
+        f = urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/34.html')
+        soup = BeautifulSoup(f.read())
+
+        for tr in soup.find_all('tr'):
+            tds = tr.find_all('td')
+            if len(tds) > 4:
+                id = tds[0].string
+                if id != None:
+                    picture = tds[1].img
+                    if picture is not None:
+                        picture = wikiaImageURL(picture.get('src'))
+                    if tds[2].span is not None:
+                        tmp = tds[2].span.extract()
+                    if tds[2].br is not None:
+                        tmp = tds[2].br.extract()
+                    name = clean(tds[2].string)
+                    if '(' in name:
+                        version = clean(name.split('(')[-1].split(')')[0])
+                        name = clean(name.split('(')[0])
+                    elif '（' in name:
+                        version = clean(name.split('（')[-1].split('）')[0])
+                        name = clean(name.split('（')[0])
+                    else:
+                        version = ''
+                    if len(tds) == 5: # special card
+                        skill_name = None
+                        skill_details = clean(tds[-1].string)
+                        center_skill_name = None
+                        center_skill_details = None
+                    elif len(tds) == 18: # all info specified
+                        skill_name, skill_details = extract_skill(tds[-2])
+                        center_skill_name, center_skill_details = extract_skill(tds[-1])
+                    elif len(tds) == 16: # take center skill from previous line
+                        skill_name, skill_details = extract_skill(tds[-1])
+                    # elif len(tds) == 15: # take skill + center skill from previous line
+                    defaults = {
+                        'japanese_name': name,
+                        'round_card_url': picture,
+                    }
+                    if version is not None:
+                        defaults['japanese_collection'] = version
+                    if skill_name is not None:
+                        defaults['japanese_skill'] = skill_name
+                    if skill_details is not None:
+                        defaults['japanese_skill_details'] = skill_details
+                    if center_skill_name is not None:
+                        defaults['japanese_center_skill'] = center_skill_name
+                    if center_skill_details is not None:
+                        defaults['japanese_center_skill_details'] = center_skill_details
                     models.Card.objects.update_or_create(id=id, defaults=defaults)
         f.close()

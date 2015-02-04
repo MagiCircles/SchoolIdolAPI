@@ -46,6 +46,7 @@ function load_more_function() {
 	button.replaceWith(data);
 	pagination();
 	addCardButtonHandler();
+	editCardFormHandler();
 	$('[data-toggle="popover"]').popover();
     });
 }

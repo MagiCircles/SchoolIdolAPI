@@ -17,9 +17,9 @@
 		    {% if not single %}
 		<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
 		  {% if card.card_url %}
-		  <img src="{{ card.card_url }}" class="non_idolized" width="49%">
+		  <img src="{{ card.card_url }}" class="non_idolized" width="49%" alt="{{ card }}">
 		  {% endif %}
-		  <img src="{{ card.card_idolized_url }}" class="idolized" width="49%">
+		  <img src="{{ card.card_idolized_url }}" class="idolized" width="49%" alt="{{ card }} idolized">
 		{% if not single %}</a>{% endif %}
 	      </div>
 	      {% if single %}</div><div class="col-md-6">{% endif %}
@@ -88,9 +88,14 @@
 		      <td>
 			<a href="/cards/{{ card.id }}">
 			  #{{ card.id }}
-			</a>
+			</a><br>
+			<small>{{ card.name }}{% if card.japanese_name %} ({{ card.japanese_name }}){% endif %} {{ card.rarity }} {{ card.attribute }} ({{ card|getattribute:'japanese_attribute' }})</small>
 			<div class="pull-right">
+			  {% if card.round_card_url %}
+			  <img src="{{ card.round_card_url }}" alt="{{ card }}">
+			  {% else %}
 			  <i class="flaticon-id"></i>
+			  {% endif %}
 			</div>
 		      </td>
 		    </tr>
@@ -118,6 +123,7 @@
 		      </td>
 		    </tr>
 		    {% endif %}
+		    {% if card.hp %}
 		    <tr>
 		      <th>HP</th>
 		      <td>
@@ -128,23 +134,51 @@
 			</div>
 		      </td>
 		    </tr>
+		    {% endif %}
+		    {% if card.japanese_collection %}
+		    <tr>
+		      <th>Collection</th>
+		      <td>
+			{{ card.japanese_collection }}
+			<div class="pull-right">
+			  <i class="flaticon-album"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% endif %}
 		    <tr>
 		      <th>Skill</th>
 		      <td>
 			<div class="pull-right">
 			  <i class="flaticon-skill"></i>
 			</div>
-			{% if card.skill %}<strong>{{ card.skill }}</strong><br />
-			<small>{% endif %}{{ card.skill_details }}{% if card.skill %}</small>{% endif %}
+			<p>
+			  {% if card.skill %}<strong>{{ card.skill }}</strong><br />
+			  <small>{% endif %}{{ card.skill_details }}{% if card.skill %}</small>{% endif %}
+			  </p>
+			{% if card.japanese_skill_details or card.japanese_skill %}
+			<p>
+			  {% if card.japanese_skill %}<strong>{{ card.japanese_skill }}</strong><br />
+			  <small>{% endif %}{% if card.japanese_skill_details and card.japanese_skill_details != 'None' %}{{ card.japanese_skill_details }}{% endif %}{% if card.japanese_skill %}</small>{% endif %}
+			</p>
+			{% endif %}
 		      </td>
 		    </tr>
 		    <tr>
 		      <th>Center Skill</th>
 		      <td>
-			{{ card.center_skill }}
-			<div class="pull-right">
-			  <i class="flaticon-center"></i>
-			</div>
+			<p>
+			  {{ card.center_skill }}
+			  <div class="pull-right">
+			    <i class="flaticon-center"></i>
+			  </div>
+			</p>
+			{% if card.japanese_center_skill_details or card.japanese_center_skill %}
+			<p>
+			  {% if card.japanese_center_skill %}<strong>{{ card.japanese_center_skill }}</strong><br />
+			  <small>{% endif %}{% if card.japanese_center_skill_details and card.japanese_center_skill_details != 'None' %}{{ card.japanese_center_skill_details }}{% endif %}{% if card.japanese_center_skill %}</small>{% endif %}
+			</p>
+			{% endif %}
 		      </td>
 		    </tr>
 		    {% if not single %}

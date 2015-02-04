@@ -10,7 +10,7 @@
     <form method="GET">
       <h4>Search</h4>
       <div class="section search">
-	<input type="text" id="search" placeholder="Search" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="Search through name, skill and center skill." data-trigger="focus" value="{{ request_get.search }}">
+	<input type="text" id="search" placeholder="Search" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="Search through name, skills, collection, promo item, event name, ..." data-trigger="focus" value="{{ request_get.search }}">
       </div>
       <h4>Filter</h4>
       <div class="section filter">
@@ -43,6 +43,14 @@
 	  <option value=""></option>
 	  {% for idol in filters.skills %}
 	  <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{{ idol.skill }} ({{ idol.total }})</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<label for="id_collection">Collection</label>
+	<select id="id_collection" name="collection">
+	  <option value=""></option>
+	  {% for collection in filters.collections %}
+	  <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
 	  {% endfor %}
 	</select>
 	<br>

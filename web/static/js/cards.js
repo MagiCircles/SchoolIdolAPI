@@ -44,6 +44,7 @@ function load_more_function() {
     $.get('/ajax/cards/' + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {
 	button.replaceWith(data);
 	pagination();
+	addCardButtonHandler();
 	$('[data-toggle="popover"]').popover();
     });
 }

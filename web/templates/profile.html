@@ -36,7 +36,7 @@
 	<div class="padding20 padding-novertical">
 	  <div class="pull-right" style="padding: 20px;">
 	    {% if account.center %}
-	    <div class="circled_card_200 {{ account.center.card.attribute }}"
+	    <div class="circled_card_200 {{ account.center.card.attribute }} {{ account.center.card.rarity }}"
 		 style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
 	    {% else %}
 	    <div style="width: 200px; padding: 50px; text-align: center;">
@@ -86,24 +86,24 @@
 	  <div role="tabpanel" class="tabpanel">
 	    <div class="btn-group btn-group-justified" data-toggle="buttons">
 	      <label for="optDeck" class="cardstype btn btn-{{ attribute }} active">
-		<input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck" >
+		<input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck{{ account.pk }}" >
 		<i class="flaticon flaticon-deck"></i>
 		Deck
 	      </label>
 	      <label for="optAlbum" class="cardstype btn btn-{{ attribute }}">
-		<input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum" >
+		<input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum{{ account.pk }}" >
 		<i class="flaticon flaticon-album"></i>
 		Album
 	      </label>
 	      {% if is_me %}
 	      <label for="optBox" class="cardstype btn btn-{{ attribute }}">
-		<input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox" >
+		<input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox{{ account.pk }}" >
 		<i class=".flaticon flaticon-present"></i>
 		Present Box
 	      </label>
 	      {% endif %}
 	      <label for="optFavorite" class="cardstype btn btn-{{ attribute }}">
-		<input id="optFavorite" name="cardstype" type="radio" data-target="#cardtabFavorite" >
+		<input id="optFavorite" name="cardstype" type="radio" data-target="#cardtabFavorite{{ account.pk }}" >
 		<i class="flaticon flaticon-star"></i>
 		Favorite Cards
 	      </label>
@@ -114,17 +114,17 @@
 	    <br>
 	    <div class="alert alert-info">To search through your cards, order them, edit them or add some new, go to <a href="/cards?search=">the cards page and use the filters <i class="flaticon-filter"></i></a></div>
 	    {% endif %}
-	    <div id="cardtabDeck" class="tab-pane fade in active cardtab-pane text-center">
+	    <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.deck %}
 	    </div>
-	    <div id="cardtabAlbum" class="tab-pane fade cardtab-pane text-center">
+	    <div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.album %}
 	    </div>
 	    {% if is_me %}
-	    <div id="cardtabBox" class="tab-pane fade cardtab-pane text-center">
+	    <div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.box %}
 	    </div>
-	    <div id="cardtabFavorite" class="tab-pane fade cardtab-pane text-center">
+	    <div id="cardtabFavorite{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.favorite %}
 	    </div>
 	    {% endif %}

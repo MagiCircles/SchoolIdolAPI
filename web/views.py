@@ -99,12 +99,26 @@ def cards(request, card=None, ajax=False):
         cards = models.Card.objects.filter()
         if 'search' in request.GET and request.GET['search']:
             cards = cards.filter(Q(name__contains=request.GET['search'])
+                                 | Q(japanese_name__contains=request.GET['search'])
                                  | Q(skill__contains=request.GET['search'])
-                                 | Q(center_skill__contains=request.GET['search']))
+                                 | Q(japanese_skill__contains=request.GET['search'])
+                                 | Q(skill_details__contains=request.GET['search'])
+                                 | Q(japanese_skill_details__contains=request.GET['search'])
+                                 | Q(center_skill__contains=request.GET['search'])
+                                 | Q(japanese_center_skill__contains=request.GET['search'])
+                                 | Q(japanese_center_skill_details__contains=request.GET['search'])
+                                 | Q(japanese_collection__contains=request.GET['search'])
+                                 | Q(promo_item__contains=request.GET['search'])
+                                 | Q(event__english_name__contains=request.GET['search'])
+                                 | Q(event__japanese_name__contains=request.GET['search'])
+            )
             request_get['search'] = request.GET['search']
         if 'name' in request.GET and request.GET['name']:
             cards = cards.filter(name__exact=request.GET['name'])
             request_get['name'] = request.GET['name']
+        if 'collection' in request.GET and request.GET['collection']:
+            cards = cards.filter(japanese_collection__exact=request.GET['collection'])
+            request_get['collection'] = request.GET['collection']
         if 'rarity' in request.GET and request.GET['rarity']:
             cards = cards.filter(rarity__exact=request.GET['rarity'])
             request_get['rarity'] = request.GET['rarity']
@@ -204,6 +218,7 @@ def cards(request, card=None, ajax=False):
        # Get filters info for the form
         context['filters'] = {
             'idols': models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name'),
+            'collections': models.Card.objects.filter(japanese_collection__isnull=False).exclude(japanese_collection__exact='').values('japanese_collection').annotate(total=Count('name')).order_by('-total', 'japanese_collection'),
             'skills': models.Card.objects.filter(skill__isnull=False).values('skill').annotate(total=Count('skill')).order_by('-total'),
             'rarity_choices': models.RARITY_CHOICES,
             'attribute_choices': models.ATTRIBUTE_CHOICES,

@@ -9,6 +9,7 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
 	$('#addCardModal #id_idolized').parent().hide();
 	$('#addCardModal img.non_idolized').hide();
     } else {
+	$('#addCardModal #id_idolized').parent().show();
 	$('#addCardModal img.non_idolized').prop('src', non_idolized_card_url);
 	$('#addCardModal img.idolized').prop('src', idolized_card_url).hide();
 

@@ -37,6 +37,7 @@ select {
 .color-Cool { color: @CoolColor; }
 .color-All { color: @AllColor; }
 
+.fontx1-5 { font-size: 1.5em; }
 .fontx2 { font-size: 2em; }
 
 .custom-panel(@color, @background:#fff) {
@@ -374,9 +375,18 @@ a.panel {
 	    }
 	}
     }
+    a.center {
+	&:hover {
+	    text-decoration: none!important;
+	}
+    }
     .owned_card {
 	display: inline-block;
 	margin: 0 5px;
+	margin-bottom: 10px;
+	&:hover {
+	    text-decoration: none!important;
+	}
     }
 }
 

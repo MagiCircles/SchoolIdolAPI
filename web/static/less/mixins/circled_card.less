@@ -13,12 +13,60 @@
     .head_card(@width);
     border-radius: 50%;
     border: (0.04 * @width) solid;
-    &.Smile { border-color: @SmileColor }
-    &.Pure { border-color: @PureColor }
-    &.Cool { border-color: @CoolColor }
-    &.All { border-color: @AllColor }
 
-    &.UR { border-style: dashed; }
+    &.N {
+	border-style: double;
+	&:before { content: 'N'; }
+    }
+    &.R {
+	&:before { content: 'R'; }
+    }
+    &.SR {
+	border-style: outset;
+	&:before { content: 'SR'; }
+    }
+    &.UR {
+	border-style: dotted;
+	&:before { content: 'UR'; }
+    }
+    &:before {
+	color: #fff;
+	text-align: left;
+	display: block;
+	font-size: @width / 5;
+
+    }
+    -webkit-transition: border-color ease-in-out .15s, border-radius ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, border-radius ease-in-out .15s;
+    transition: border-color ease-in-out .15s, border-radius ease-in-out .15s;
+    &.hover:hover {
+	border-radius: 10%;
+    }
+    &.Smile {
+	border-color: @SmileColor;
+	&:before {
+	    text-shadow: -0.1em -0.1em 0em @SmileColor, -0.01em 0.1em 0em @SmileColor, 0.1em -0.1em 0em @SmileColor, 0.1em 0.1em 0em @SmileColor;
+	}
+    }
+    &.Pure {
+	border-color: lighten(@PureColor, 15%);
+	&:before {
+	    text-shadow: -0.1em -0.1em 0em @PureColor, -0.01em 0.1em 0em @PureColor, 0.1em -0.1em 0em @PureColor, 0.1em 0.1em 0em @PureColor;
+	}
+    }
+    &.Cool {
+	border-color: @CoolColor;
+	&:before {
+	    text-shadow: -0.1em -0.1em 0em @CoolColor, -0.01em 0.1em 0em @CoolColor, 0.1em -0.1em 0em @CoolColor, 0.1em 0.1em 0em @CoolColor;
+	}
+    }
+    &.All {
+	border-color: @AllColor;
+	&:before {
+	    text-shadow: -0.1em -0.1em 0em @AllColor, -0.01em 0.1em 0em @AllColor, 0.1em -0.1em 0em @AllColor, 0.1em 0.1em 0em @AllColor;
+	}
+    }
+
 }
 
 .circled_card_30 { .circled_card(30px); }

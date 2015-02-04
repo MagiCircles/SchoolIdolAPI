@@ -17,7 +17,7 @@
     <h2>Accounts:</h2>
     {% for account in user_accounts %}
     {% with account.center.card.attribute|default:'All' as attribute %}
-    <div class="panel panel-{{ attribute }} profile-account">
+    <div class="panel panel-{{ attribute }} profile-account" id="{{ account.pk }}">
       <div class="panel-heading">
 	<h3>
 	  {% if is_me %}
@@ -25,23 +25,24 @@
 	    <a href="/editaccount/{{ account.pk }}">
 	      <i class="flaticon-edit"></i>
 	    </a>
-	    <a href="/deleteaccount/{{ account.pk }}">
-	      <i class="flaticon-cross106"></i>
-	    </a>
 	  </div>
 	  {% endif %}
-	  {{ account }}</h3>
+	  <a href="#{{ account.pk }}">{{ account }}</a></h3>
       </div>
       <div class="panel-body">
 	<div class="padding20 padding-novertical">
 	  <div class="pull-right" style="padding: 20px;">
 	    {% if account.center %}
-	    <div class="circled_card_200 {{ account.center.card.attribute }} {{ account.center.card.rarity }}"
-		 style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
+	    <a href="{% if is_me %}/editaccount/{{ account.pk }}{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
+	      <div class="circled_card_200 {{ account.center.card.attribute }} {{ account.center.card.rarity }} hover"
+		   style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
+	    </a>
 	    {% else %}
+	    {% if is_me %}<a href="/editaccount/{{ account.pk }}">{% endif %}
 	    <div style="width: 200px; padding: 50px; text-align: center;">
 	      <strong>No Center Specified</strong>
 	    </div>
+	    {% if is_me %}</a>{% endif %}
 	    {% endif %}
 	  </div>
 	  <div class="table-responsive">
@@ -64,7 +65,7 @@
 		<th>Game Version</th>
 		<td>
 		  <div class="pull-right">
-		    <i class="flaticon-{{ account.language }}"></i>
+		    <i class="flaticon-{{ account.language }} fontx2"></i>
 		  </div>
 		  {{ account.language }}</td>
 	      </tr>
@@ -124,10 +125,10 @@
 	    <div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.box %}
 	    </div>
+	    {% endif %}
 	    <div id="cardtabFavorite{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.favorite %}
 	    </div>
-	    {% endif %}
 	    <br>
 	  </div>
 	</div>

@@ -124,7 +124,10 @@ def cards(request, card=None, ajax=False):
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = request.GET['is_event']
         if 'active_account' in context and 'stored' in request.GET and request.GET['stored']:
-            cards = cards.filter(ownedcard__owner_account=context['active_account'], ownedcard__stored=request.GET['stored'])
+            if request.GET['stored'] == 'Album':
+                cards = cards.filter(ownedcard__owner_account=context['active_account']).filter(Q(ownedcard__stored='Deck') | Q(ownedcard__stored='Album'))
+            else:
+                cards = cards.filter(ownedcard__owner_account=context['active_account'], ownedcard__stored=request.GET['stored'])
             request_get['stored'] = request.GET['stored']
         if 'active_account' in context and 'max_level' in request.GET and request.GET['max_level'] == '1':
             cards = cards.filter(ownedcard__owner_account=context['active_account'],
@@ -263,6 +266,8 @@ def profile(request, username):
         context['user_accounts'] = models.Account.objects.filter(owner=user)
     for account in context['user_accounts']:
         account.deck = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('card__id')
+        account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
+        account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
         account.album = models.OwnedCard.objects.filter(owner_account=account).filter((Q(stored='Album') | Q(stored='Deck'))).order_by('card__id')
         if context['is_me']:
             account.box = models.OwnedCard.objects.filter(owner_account=account, stored='Box').order_by('card__id')

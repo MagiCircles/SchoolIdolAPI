@@ -64,7 +64,7 @@
 		<li class="{% if account == active_account %}disabled{% endif %}"><a href="/switchaccount/{{ account.pk }}" class="account">
 		    {% if account.center %}
 		    <div class="pull-left">
-		      <div class="center {{ account.center.card.attribute }}"
+		      <div class="center circled {{ account.center.card.attribute }} {{ account.center.card.rarity }}"
 			   style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
 		    </div>
 		    {% else %}

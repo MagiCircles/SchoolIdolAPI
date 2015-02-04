@@ -91,11 +91,6 @@
 		<i class="flaticon flaticon-album"></i>
 		Album
 	      </label>
-	      <label for="optFavorite" class="cardstype btn btn-{{ attribute }}">
-		<input id="optFavorite" name="cardstype" type="radio" data-target="#cardtabFavorite" >
-		<i class="flaticon flaticon-favorite"></i>
-		Favorite Cards
-	      </label>
 	      {% if is_me %}
 	      <label for="optBox" class="cardstype btn btn-{{ attribute }}">
 		<input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox" >
@@ -103,6 +98,11 @@
 		Present Box
 	      </label>
 	      {% endif %}
+	      <label for="optFavorite" class="cardstype btn btn-{{ attribute }}">
+		<input id="optFavorite" name="cardstype" type="radio" data-target="#cardtabFavorite" >
+		<i class="flaticon flaticon-star"></i>
+		Favorite Cards
+	      </label>
 	    </div>
 	  </div>
 	  <div class="tab-content">

@@ -266,6 +266,7 @@ def profile(request, username):
         account.album = models.OwnedCard.objects.filter(owner_account=account).filter((Q(stored='Album') | Q(stored='Deck'))).order_by('card__id')
         if context['is_me']:
             account.box = models.OwnedCard.objects.filter(owner_account=account, stored='Box').order_by('card__id')
+        account.favorite = models.OwnedCard.objects.filter(owner_account=account, stored='Favorite').order_by('card__id')
     context['current'] = 'profile'
     return render(request, 'profile.html', context)
 

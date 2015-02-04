@@ -34,8 +34,10 @@
 		{% endif %}
 		<h4 class="padding20 padding-novertical">{{ account }}</h4>
 	      </td>
-	      <td>
+	      <td class="text-right fontx2">
+		{% if account.rank %}
 		{{ account.rank }}
+		{% endif %}
 	      </td>
 	    </tr>
 	    {% endfor %}

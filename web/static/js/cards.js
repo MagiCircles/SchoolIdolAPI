@@ -47,6 +47,7 @@ function load_more_function() {
 	pagination();
 	addCardButtonHandler();
 	editCardFormHandler();
+	statistics_buttons();
 	$('[data-toggle="popover"]').popover();
     });
 }
@@ -64,7 +65,8 @@ function pagination() {
 	});
 }
 
-$(document).ready(function() {
+function statistics_buttons() {
+    $('.btn.minimum_statistics').unbind('click');
     $('.btn.minimum_statistics').click(function() {
 	card = $(this).closest('.card')
 	card.find('.statistics_minimum').show()
@@ -73,6 +75,7 @@ $(document).ready(function() {
 	card.find('.hp_non_idolized').show()
 	card.find('.hp_idolized').hide()
     })
+    $('.btn.non_idolized_statistics').unbind('click');
     $('.btn.non_idolized_statistics').click(function() {
 	card = $(this).closest('.card')
 	card.find('.statistics_minimum').hide()
@@ -81,6 +84,7 @@ $(document).ready(function() {
 	card.find('.hp_non_idolized').show()
 	card.find('.hp_idolized').hide()
     })
+    $('.btn.idolized_statistics').unbind('click');
     $('.btn.idolized_statistics').click(function() {
 	card = $(this).closest('.card')
 	card.find('.statistics_minimum').hide()
@@ -89,8 +93,10 @@ $(document).ready(function() {
 	card.find('.hp_non_idolized').hide()
 	card.find('.hp_idolized').show()
     })
+}
 
+$(document).ready(function() {
     addCardButtonHandler();
-
+    statistics_buttons();
     pagination();
 });

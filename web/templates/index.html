@@ -15,8 +15,9 @@
 </div>
 
 <div id="home" class="text-center">
-    <img src="/static/logo_shadow.png" class="logo" alt="Logo">
-    <div class="link-stars">
+  <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+  <br>
+  <div class="link-stars btn-group">
       {% for i, link in links %}
       <a href="#{{ link.link }}" class="btn btn-Rainbow-{{ i|add:1 }} btn-lg"><i class="flaticon-star fontx2"></i></a>
       {% endfor %}

@@ -26,6 +26,7 @@ function addCardButtonHandler() {
 		    addCardButton.before(data + '|');
 		    $('#addCardModal').modal('hide');
 		    editCardFormHandler();
+		    $('[data-toggle="popover"]').popover();
 		},
 		error: function() {
 		    onDone();

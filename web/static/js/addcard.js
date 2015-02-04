@@ -74,6 +74,7 @@ function editCardFormHandler() {
 			cardButton.replaceWith(data);
 			onDone();
 			editCardFormHandler();
+			$('[data-toggle="popover"]').popover();
 		    },
 		    error: function() {
 			onDone();

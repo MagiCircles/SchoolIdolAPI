@@ -65,7 +65,7 @@
 		    {% if account.center %}
 		    <div class="pull-left">
 		      <div class="center {{ account.center.card.attribute }}"
-			   style="background-image: url('{% if not account.center.idolized and account.center.card.card_idolized_url %}{{ account.center.card.card_idolized_url }}{% else %}{{ account.center.card.card_url}}{% endif %}')"></div>
+			   style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
 		    </div>
 		    {% else %}
 		    <div class="padding pull-left"></div>

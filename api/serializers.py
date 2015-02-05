@@ -67,6 +67,7 @@ class CardSerializer(serializers.ModelSerializer):
     round_card_image = serializers.SerializerMethodField()
     owned_cards = serializers.SerializerMethodField()
     japanese_attribute = serializers.SerializerMethodField()
+    website_url = serializers.SerializerMethodField()
 
     def _image_file_to_url(self, path):
         return path.replace('web', 'http://' + self.context['request'].META['HTTP_HOST'])
@@ -84,6 +85,9 @@ class CardSerializer(serializers.ModelSerializer):
     def get_round_card_image(self, obj):
         return self._image_file_to_url(str(obj.round_card_image))
 
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/cards/' + str(obj.id) + '/'
+
     def get_owned_cards(self, obj):
         if (not self.context['request'] or not self.context['request']
             or not self.context['request'].query_params
@@ -94,7 +98,7 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'owned_cards')
+        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'website_url', 'owned_cards')
 
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()

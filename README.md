@@ -61,6 +61,7 @@ GET /api/cards/
             "card_image": "http://localhost:9000/static/cards/509_xBZqEQn.jpg",
             "card_idolized_image": "http://localhost:9000/static/cards/509idolized_Zn9r7Dn.jpg",
             "round_card_image": "http://localhost:9000/static/cards/509round.jpg",
+            "website_url": "http://schoolido.lu/cards/509/",
             "owned_cards": null
         },
         ...

@@ -59,18 +59,6 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=200, blank=True),
             preserve_default=True,
         ),
-        migrations.AddField(
-            model_name='ownedcard',
-            name='max_bond',
-            field=models.BooleanField(default=False),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='ownedcard',
-            name='max_level',
-            field=models.BooleanField(default=False),
-            preserve_default=True,
-        ),
         migrations.AlterField(
             model_name='account',
             name='center',

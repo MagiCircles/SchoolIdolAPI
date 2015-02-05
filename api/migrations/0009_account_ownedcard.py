@@ -37,6 +37,8 @@ class Migration(migrations.Migration):
                 ('stored', models.CharField(default=b'Deck', max_length=30, choices=[(b'Deck', b'In deck'), (b'Album', b'In album'), (b'Box', b'In present box')])),
                 ('expiration', models.DateTimeField(default=None, null=True, blank=True)),
                 ('card', models.ForeignKey(related_name='ownedcard', editable=False, to='api.Card')),
+		('max_level', models.BooleanField(default=False)),
+		('max_bond', models.BooleanField(default=False)),
             ],
             options={
             },

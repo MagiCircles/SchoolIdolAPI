@@ -37,7 +37,7 @@
 	</a>
       </div>
       <div class="col-md-4 color-Pure">
-	<a href="/create/">
+	<a href="{% if user.is_authenticated %}/cards/{% else %}/create/{% endif %}">
 	  <i class="flaticon flaticon-cards"></i>
 	  <h2>Track Cards</h2>
 	  <p>Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts.</p>

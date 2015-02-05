@@ -18,14 +18,39 @@
   <img src="/static/logo_shadow.png" class="logo" alt="Logo">
   <br>
   <div class="link-stars btn-group">
-      {% for i, link in links %}
-      <a href="#{{ link.link }}" class="btn btn-Rainbow-{{ i|add:1 }} btn-lg"><i class="flaticon-star fontx2"></i></a>
-      {% endfor %}
+    {% for i, link in links %}
+    <a href="#{{ link.link }}" class="btn btn-Rainbow-{{ i|add:1 }} btn-lg"><i class="flaticon-star fontx2"></i></a>
+    {% endfor %}
+  </div>
+  <div class="link-details">
+    {% for i, link in links1 %}
+    <a href="#{{ link.link }}" style="display: none;" class="fontx2 color-Rainbow-{{ i|add:1 }}">{{ link.name }}</a>
+    {% endfor %}
+  </div>
+  <div class="container">
+    <div class="row what">
+      <div class="col-md-4 color-Smile">
+	<a href="/cards/">
+	  <i class="flaticon flaticon-album"></i>
+	  <h2>Browse Cards</h2>
+	  <p>Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering.</p>
+	</a>
+      </div>
+      <div class="col-md-4 color-Pure">
+	<a href="/create/">
+	  <i class="flaticon flaticon-cards"></i>
+	  <h2>Track Cards</h2>
+	  <p>Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts.</p>
+	</a>
+      </div>
+      <div class="col-md-4 color-Cool">
+	<a href="/contest/">
+	  <i class="flaticon flaticon-idolized"></i>
+	  <h2>Show your love</h2>
+	  <p>Add cards to your favorites, comment on the cards and VOTE FOR THE BEST GIRL on the Facemash.</p>
+	</a>
+      </div>
     </div>
-    <div class="link-details">
-      {% for i, link in links1 %}
-      <a href="#{{ link.link }}" style="display: none;" class="fontx2 color-Rainbow-{{ i|add:1 }}">{{ link.name }}</a>
-      {% endfor %}
   </div>
 </div>
 

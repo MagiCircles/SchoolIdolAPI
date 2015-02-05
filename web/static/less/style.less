@@ -32,10 +32,10 @@ select {
     margin: 10px 0;
 }
 
-.color-Smile { color: @SmileColor; }
-.color-Pure { color: @PureColor; }
-.color-Cool { color: @CoolColor; }
-.color-All { color: @AllColor; }
+.color-Smile { color: @SmileColor; .a-variant(@SmileColor); }
+.color-Pure { color: @PureColor; .a-variant(@PureColor); }
+.color-Cool { color: @CoolColor; .a-variant(@CoolColor); }
+.color-All { color: @AllColor; .a-variant(@AllColor); }
 
 .fontx1-5 { font-size: 1.5em; }
 .fontx2 { font-size: 2em; }
@@ -189,8 +189,24 @@ main {
     }
     .link-details {
 	margin: 20px;
+	height: 40px;
 	a {
 	    font-weight: bold;
+	    .white-shadow;
+	}
+    }
+    .what {
+	margin: 50px 0;
+	margin-bottom: 100px;
+	.color-Smile { color: lighten(@SmileColor, 20%); .a-variant(lighten(@SmileColor, 20%)); }
+	.color-Pure { color: lighten(@PureColor, 20%); .a-variant(lighten(@PureColor, 20%)); }
+	.color-Cool { color: lighten(@CoolColor, 20%); .a-variant(lighten(@CoolColor, 20%)); }
+	.color-All { color: lighten(@AllColor, 20%); .a-variant(lighten(@AllColor, 20%)); }
+	a:hover {
+	    text-decoration: none;
+	}
+	.flaticon {
+	    font-size: 5em;
 	    .white-shadow;
 	}
     }

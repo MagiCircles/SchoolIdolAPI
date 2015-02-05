@@ -298,9 +298,9 @@ def ajaxaddcard(request):
     form = forms.OwnedCardForm(request.POST)
     if form.is_valid():
         ownedcard = form.save(commit=False)
-        if 'expires_in' in request.POST:
+        if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
             try: expires_in = int(request.POST['expires_in'])
-            except TypeError: expires_in = 0
+            except (TypeError, ValueError): expires_in = 0
             if expires_in < 0: expires_in = 0
             if expires_in:
                 ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)
@@ -328,9 +328,9 @@ def ajaxeditcard(request, ownedcard):
         form = forms.OwnedCardForm(request.POST, instance=owned_card)
         if form.is_valid():
             ownedcard = form.save(commit=False)
-        if 'expires_in' in request.POST:
+        if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
             try: expires_in = int(request.POST['expires_in'])
-            except TypeError: expires_in = 0
+            except (TypeError, ValueError): expires_in = 0
             if expires_in < 0: expires_in = 0
             if expires_in:
                 ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)

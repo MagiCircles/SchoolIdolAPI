@@ -29,7 +29,7 @@ function addCardButtonHandler() {
 		    $('[data-toggle="popover"]').popover();
 		},
 		error: function() {
-		    onDone();
+		    $('#addCardModal').modal('hide');
 		    alert('Opps! Something bad happened. Try again.');
 		}
 	    });

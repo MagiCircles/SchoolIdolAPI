@@ -12,39 +12,58 @@ REST API to get cards from the mobile game Love Live! School Idol Festival.
 GET /api/cards/
 
 {
-    count: 525,
-    next: "http://localhost:8000/api/cards/?page=2",
-    previous: null,
-    results: [
+    "count": 533,
+    "next": "http://schoolido.lu/api/cards/?page=2",
+    "previous": null,
+    "results": [
         {
-            id: 64,
-            name: "Koizumi Hanayo",
-            rarity: "UR",
-            attribute: "Pure",
-            is_promo: false,
-            promo_item: null,
-            release_date: "2013-04-16",
-            japan_only: false,
-            event: null,
-            is_special: false,
-            hp: 5,
-            minimum_statistics_smile: 3000,
-            minimum_statistics_pure: 3740,
-            minimum_statistics_cool: 2580,
-            non_idolized_maximum_statistics_smile: 4190,
-            non_idolized_maximum_statistics_pure: 4930,
-            non_idolized_maximum_statistics_cool: 3770,
-            idolized_maximum_statistics_smile: 4490,
-            idolized_maximum_statistics_pure: 5230,
-            idolized_maximum_statistics_cool: 4070,
-            skill: "Healer",
-            skill_details: "For every 20 notes, there is a 36% chance of recovering players HP by 3. (Level 1)",
-            center_skill: "Pure Angel",
-            card_url: "http://vignette3.wikia.nocookie.net/love-live/images/c/cf/UR_64_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233",
-            card_idolized_url: "http://vignette4.wikia.nocookie.net/love-live/images/2/27/UR_64_Transformed_Hanayo_Initial_Ver..jpg/revision/latest?cb=20140717163233",
-            owned_cards: null
+            "id": 509,
+            "name": "Minami Kotori",
+            "japanese_name": "南ことり",
+            "japanese_collection": "おせち編",
+            "rarity": "SR",
+            "attribute": "Cool",
+            "japanese_attribute": "クール",
+            "is_promo": false,
+            "promo_item": null,
+            "release_date": "2015-01-05",
+            "japan_only": true,
+            "event": {
+                "japanese_name": "Score Match Round 15",
+                "english_name": "Score Match Round 15",
+                "beginning": "2015-01-05",
+                "end": "2015-01-15",
+                "japan_current": false,
+                "world_current": false,
+                "cards": [
+                    508,
+                    509
+                ]
+            },
+            "is_special": false,
+            "hp": 3,
+            "minimum_statistics_smile": 2760,
+            "minimum_statistics_pure": 2420,
+            "minimum_statistics_cool": 3610,
+            "non_idolized_maximum_statistics_smile": 3590,
+            "non_idolized_maximum_statistics_pure": 3250,
+            "non_idolized_maximum_statistics_cool": 4440,
+            "idolized_maximum_statistics_smile": 3870,
+            "idolized_maximum_statistics_pure": 3530,
+            "idolized_maximum_statistics_cool": 4720,
+            "skill": "Perfect Lock",
+            "japanese_skill": "幸せの香り",
+            "skill_details": null,
+            "japanese_skill_details": "",
+            "center_skill": "Cool Heart",
+            "japanese_center_skill": "クールハート",
+            "japanese_center_skill_details": "",
+            "card_image": "http://localhost:9000/static/cards/509_xBZqEQn.jpg",
+            "card_idolized_image": "http://localhost:9000/static/cards/509idolized_Zn9r7Dn.jpg",
+            "round_card_image": "http://localhost:9000/static/cards/509round.jpg",
+            "owned_cards": null
         },
-	...
+        ...
     ]
 }
 
@@ -54,24 +73,27 @@ GET /api/cards/
 
 * Navigate through pages using the `page` parameter:
   * `GET /api/cards/?page=6`
-* Search through name, skill and center skill using `search`:
+* Search using `search`:
   * `GET /api/cards/?search=Eli`
-* Filter results using the exact values of `name`, `rarity`, `attribute`, `hp`, `skill`, `center_skill`:
+  * _Will search through 'name', 'japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill','japanese_center_skill_details','japanese_collection','promo_item','event__english_name','event__japanese_name'_
+* Filter results using the exact values of `name`, `rarity`, `attribute`, `japanese_collection`, `hp`, `skill`, `center_skill`:
   * `GET /api/cards/?rarity=UR&attribute=Smile`
 * Filter results using `True` or `False` for `is_promo`, `is_special` or `is_event`:
   * `GET /api/cards/?is_event=True`
 * Sort results by any field using `ordering`:
   * `GET /api/cards/?ordering=name`
-* To get the cards owned by a user, use `account`:
+* To fill information about the cards owned by a user, use `account` (otherwise the field is null):
 ```json
 GET /api/cards/?account=1
 
 ...
             owned_cards: [
                 {
-                    idolized: true,
-                    stored: "Deck",
-                    expiration": null
+                    "idolized": false,
+                    "stored": "Deck",
+                    "expiration": null,
+                    "max_level": false,
+                    "max_bond": false
                 }
             ]
 ...
@@ -107,23 +129,22 @@ All search, filter and order parameters of the regular card endpoint work here a
 GET /api/events/
 
 {
-    count: 42,
-    next: "http://localhost:8000/api/events/?page=2",
-    previous: null,
-    results: [
+    "count": 43,
+    "next": "http://localhost:9000/api/events/?page=2",
+    "previous": null,
+    "results": [
         {
-            japanese_name: "みんな集まれ! Sweet Holiday ことりのおやつ",
-            english_name: "Sweet Holiday",
-            beginning: "2013-05-03",
-            end: "2013-05-16",
-            japan_current: false,
-            world_current: false,
-            cards: [
-                    74,
-                    75
-                ]
-        },
-        ...
+            "japanese_name": "みんな集まれ! Sweet Holiday ことりのおやつ",
+            "english_name": "Sweet Holiday",
+            "beginning": "2013-05-03",
+            "end": "2013-05-16",
+            "japan_current": false,
+            "world_current": false,
+            "cards": [
+                74,
+                75
+            ]
+        }, ...
     ]
 }
 ```
@@ -136,6 +157,8 @@ GET /api/events/
   * `GET /api/events/?search=medley`
 * Sort results by any field using `ordering`:
   * `GET /api/events/?ordering=english_name`
+
+---
 
 ## Install
 
@@ -157,7 +180,7 @@ cd SchoolIdolAPI
 pip install -r requirements.txt
 
 # Create tables, initialize database
-python manage.py syncdb
+python manage.py migrate
 
 # Fill database with cards
 python manage.py importcards
@@ -184,7 +207,6 @@ No need to restart it to see your modifications, the server reloads itself autom
 ```shell
 python manage.py makemigrations
 python manage.py migrate
-python manage.py syncdb
 ```
 
 ##### Update the cards & events from the internet
@@ -192,6 +214,11 @@ python manage.py syncdb
 ```shell
 python manage.py importcards
 ```
+
+Extra command line arguments:
+- `redownload` will download the images for the cards, even when they already have been downloaded
+- `delete` will remove all information about `cards` and `events` in the database
+- `local` will consider you already have the `*.html` files with information at the root of the repo and will not download them from the internet (good for testing & development)
 
 ## Credits & Thanks
 

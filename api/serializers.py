@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from api import models
@@ -65,9 +66,13 @@ class CardSerializer(serializers.ModelSerializer):
     card_idolized_image = serializers.SerializerMethodField()
     round_card_image = serializers.SerializerMethodField()
     owned_cards = serializers.SerializerMethodField()
+    japanese_attribute = serializers.SerializerMethodField()
 
     def _image_file_to_url(self, path):
         return path.replace('web', 'http://' + self.context['request'].META['HTTP_HOST'])
+
+    def get_japanese_attribute(self, obj):
+        return obj.japanese_attribute()
 
     def get_japan_only(self, obj):
         return obj.is_japan_only()
@@ -85,11 +90,11 @@ class CardSerializer(serializers.ModelSerializer):
             or 'account' not in self.context['request'].query_params):
             return None
         account = int(self.context['request'].query_params['account'])
-        return OwnedCardWithoutCardSerializer(obj.get_owned_cards_for_account(account), many=True, context=context).data
+        return OwnedCardWithoutCardSerializer(obj.get_owned_cards_for_account(account), many=True, context=self.context).data
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'owned_cards')
+        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'owned_cards')
 
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()

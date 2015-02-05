@@ -68,6 +68,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         local = 'local' in args
+        redownload = 'redownload' in args
 
         if 'delete' in args:
              models.Card.objects.all().delete()
@@ -248,14 +249,14 @@ class Command(BaseCommand):
                     if skill:
                         defaults['skill_details'] = skill
                     card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
-                    if normal:
+                    if normal and (redownload or not card.card_image):
                         card.card_image.save(str(card.id) + '.jpg', downloadBestWikiaImage(normal))
-                    if idolized:
+                    if idolized and (redownload or not card.card_idolized_image):
                         card.card_idolized_image.save(str(card.id) + 'idolized.jpg', downloadBestWikiaImage(idolized))
                     print 'Done'
         f.close()
 
-        print '### Import japanese information'
+        print '### Import japanese information for R/SR/UR'
         if local:
             f = open('jpcards.html', 'r')
         else:
@@ -276,8 +277,6 @@ class Command(BaseCommand):
                     if tds[2].br is not None:
                         tmp = tds[2].br.extract()
                     name = clean(tds[2].string)
-                    if name is None:
-                        break
                     if name is not None and '(' in name:
                         version = clean(name.split('(')[-1].split(')')[0])
                         name = clean(name.split('(')[0])
@@ -313,7 +312,41 @@ class Command(BaseCommand):
                     if center_skill_details is not None:
                         defaults['japanese_center_skill_details'] = center_skill_details
                     card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
-                    if picture:
+                    if picture and (redownload or not card.round_card_image):
+                        print 'Download image...',; sys.stdout.flush()
+                        card.round_card_image.save(str(card.id) + 'round.jpg', downloadFile(picture))
+                    print 'Done'
+
+        f.close()
+
+        print '### Import japanese information for N (round image + name)'
+        if local:
+            f = open('jpcardsN.html', 'r')
+        else:
+            f = urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/101.html')
+        soup = BeautifulSoup("".join(line.strip() for line in f.read().split("\n")))
+
+        for tr in soup.find_all('tr'):
+            tds = tr.find_all('td')
+            if len(tds) > 4:
+                id = tds[0].string
+                if id != None:
+                    print 'Import for #', id, '...',; sys.stdout.flush()
+                    picture = tds[1].img
+                    if picture is not None:
+                        picture = wikiaImageURL(picture.get('src'))
+                    if tds[2].span is not None:
+                        tmp = tds[2].span.extract()
+                    if tds[2].br is not None:
+                        tmp = tds[2].br.extract()
+                    name = clean(tds[2].string)
+                    defaults = {
+                        'japanese_name': name,
+                    }
+                    if picture is not None:
+                        defaults['round_card_url'] = picture
+                    card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
+                    if picture and (redownload or not card.round_card_image):
                         print 'Download image...',; sys.stdout.flush()
                         card.round_card_image.save(str(card.id) + 'round.jpg', downloadFile(picture))
                     print 'Done'

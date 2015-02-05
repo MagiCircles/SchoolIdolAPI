@@ -99,12 +99,12 @@ class Card(models.Model):
 
     def japanese_attribute(self):
         if self.attribute == 'Smile':
-            return 'スマイル'
+            return u'スマイル'
         elif self.attribute == 'Pure':
-            return 'ピュア'
+            return u'ピュア'
         elif self.attribute == 'Cool':
-            return 'クール'
-        return ''
+            return u'クール'
+        return u''
 
     def is_japan_only(self):
         return (self.is_promo

@@ -28,7 +28,7 @@ class CardFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Card
-        fields = ('name', 'rarity', 'attribute', 'is_promo', 'is_special', 'hp', 'skill', 'center_skill', 'is_event')
+        fields = ('name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'hp', 'skill', 'center_skill', 'is_event')
 
 class CardViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -37,7 +37,7 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Card.objects.all()
     serializer_class = serializers.CardSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
-    search_fields = ('name', 'skill', 'center_skill')
+    search_fields = ('name', 'japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill','japanese_center_skill_details','japanese_collection','promo_item','event__english_name','event__japanese_name')
     filter_class = CardFilter
     ordering_fields = '__all__'
     ordering = ('id',)

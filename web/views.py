@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
 from django.db.models import Count, Q
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from api import models
 from web import forms, links
@@ -297,6 +298,12 @@ def ajaxaddcard(request):
     form = forms.OwnedCardForm(request.POST)
     if form.is_valid():
         ownedcard = form.save(commit=False)
+        if 'expires_in' in request.POST:
+            try: expires_in = int(request.POST['expires_in'])
+            except TypeError: expires_in = 0
+            if expires_in < 0: expires_in = 0
+            if expires_in:
+                ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)
         ownedcard.owner_account = context['active_account']
         ownedcard.save()
         context['owned'] = ownedcard
@@ -321,6 +328,12 @@ def ajaxeditcard(request, ownedcard):
         form = forms.OwnedCardForm(request.POST, instance=owned_card)
         if form.is_valid():
             ownedcard = form.save(commit=False)
+        if 'expires_in' in request.POST:
+            try: expires_in = int(request.POST['expires_in'])
+            except TypeError: expires_in = 0
+            if expires_in < 0: expires_in = 0
+            if expires_in:
+                ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)
             ownedcard.owner_account = owned_card.owner_account # owner & card change not allowed
             ownedcard.card = owned_card.card
             ownedcard.save()
@@ -328,6 +341,8 @@ def ajaxeditcard(request, ownedcard):
             return render(request, 'ownedCardOnBottomCard.html', context)
     else:
         raise PermissionDenied()
+    if owned_card.expiration:
+         owned_card.expires_in = (owned_card.expiration - timezone.now()).days
     context['addcard_form'] = form
     context['edit'] = owned_card
     return render(request, 'addCardForm.html', context)

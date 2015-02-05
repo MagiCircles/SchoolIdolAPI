@@ -2,10 +2,21 @@
 function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
     $('#addCardModal #id_max_level').parent().hide();
     $('#addCardModal #id_max_bond').parent().hide();
-    $('#addCardModal label[for=id_expiration]').parent().hide();
+
+    var expirationHandler = function() {
+	if ($('#addCardModal #id_stored').val() == 'Box') {
+	    $('#addCardModal label[for=id_expires_in]').parent().show();
+	} else {
+	    $('#addCardModal label[for=id_expires_in]').parent().hide();
+	    $('#addCardModal label[for=id_expires_in]').parent().find('input').val('');
+	}
+    };
+    expirationHandler();
 
     if (typeof non_idolized_card_url == 'undefined') {
 	$('#addCardModal #id_idolized').prop('checked', true);
+	$('#addCardModal #id_max_level').parent().show();
+	$('#addCardModal #id_max_bond').parent().show();
 	$('#addCardModal #id_idolized').parent().hide();
 	$('#addCardModal img.non_idolized').hide();
 	$('#addCardModal img.idolized').prop('src', idolized_card_url);
@@ -37,12 +48,7 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
 
     $('#addCardModal #id_stored').unbind('change');
     $('#addCardModal #id_stored').change(function() {
-	if ($(this).val() == 'Box') {
-	    $('#addCardModal label[for=id_expiration]').parent().show();
-	} else {
-	    $('#addCardModal label[for=id_expiration]').parent().hide();
-	    $('#addCardModal label[for=id_expiration]').parent().find('input[type=date]').val('');
-	}
+	expirationHandler();
     });
 }
 

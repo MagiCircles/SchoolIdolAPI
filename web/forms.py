@@ -29,4 +29,4 @@ class FullAccountForm(ModelForm):
 class OwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('card', 'stored', 'expiration', 'idolized', 'max_level', 'max_bond')
+        fields = ('card', 'stored', 'idolized', 'max_level', 'max_bond')

@@ -4,6 +4,14 @@
 		<form class="form-horizontal {% if edit %}edit{% else %}add{% endif%}" method="post" action="/ajax/{% if edit %}editcard/{{ edit.pk }}/{% else %}addcard/{% endif %}" role="form">
 		  {% csrf_token %}
 		  {% include "bootstrap_form_horizontal.html" with form=addcard_form wrap=0 %}
+		  <div class="row form-group">
+		    <label for="id_expires_in" class="col-sm-4 control-label" style="text-align: right;">
+		      Expires In:
+		    </label>
+		    <div class="col-sm-8">
+		      <input class="form-control" id="id_expires_in" min="0" name="expires_in" placeholder="days" type="number"{% if edit.expires_in %} value="{{ edit.expires_in }}"{% endif %}>
+		    </div>
+		  </div>
 		  <br><br>
 		  <div class="text-right">
 		    <input type="submit" class="btn btn-lg btn-Cool" value="{% if edit%}Edit{% else %}Add{% endif %} Card" />

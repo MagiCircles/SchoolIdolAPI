@@ -4,7 +4,7 @@
 {% block js %}<script src="/static/js/profile.js"></script>{% endblock %}
 
 {% block content %}
-
+{% load imageurl %}
 <div class="container">
   <br><br>
   <div class="jumbotron">
@@ -35,7 +35,7 @@
 	    {% if account.center %}
 	    <a href="{% if is_me %}/editaccount/{{ account.pk }}{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
 	      <div class="circled_card_200 {{ account.center.card.attribute }} {{ account.center.card.rarity }} hover"
-		   style="background-image: url('{% if not account.center.idolized and account.center.card.card_url %}{{ account.center.card.card_url }}{% else %}{{ account.center.card.card_idolized_url}}{% endif %}')"></div>
+		   style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card.card_image|imageurl }}{% else %}{{ account.center.card.card_idolized_image|imageurl }}{% endif %}')"></div>
 	    </a>
 	    {% else %}
 	    {% if is_me %}<a href="/editaccount/{{ account.pk }}">{% endif %}

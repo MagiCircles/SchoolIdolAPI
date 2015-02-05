@@ -1,3 +1,4 @@
+{% load imageurl %}
 
 <br>
 {% if cards %}
@@ -5,7 +6,7 @@
 <a href="/cards/{{ card.card.id }}" class="owned_card">
   <div class="owned_card_details" style="display: none"><div class="fontx2 color-{{ card.card.attribute }}">{% include "ownedCardOnBottomCard.html" with owned=card nolink=True %}</div></div>
   <div class="circled_card_100 {{ card.card.attribute }} {{ card.card.rarity }} hover"
-       style="background-image: url('{% if not card.idolized and card.card.card_url %}{{ card.card.card_url }}{% else %}{{ card.card.card_idolized_url}}{% endif %}')"></div>
+       style="background-image: url('{% if not card.idolized and card.card.card_image %}{{ card.card.card_image|imageurl }}{% else %}{{ card.card.card_idolized_image|imageurl }}{% endif %}')"></div>
 </a>
 {% endfor %}
 <br>

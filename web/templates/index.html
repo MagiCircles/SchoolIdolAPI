@@ -5,7 +5,7 @@
 {% block js %}<script src="/static/js/index.js"></script>{% endblock %}
 
 {% block content %}
-
+{% load imageurl %}
 <div class="link-stars-side" style="display: none;">
   {% for i, link in links3 %}
   <div class="color-Rainbow-{{ i|add:1 }}">
@@ -35,7 +35,7 @@
   <div class="row">
     <div class="col-md-5">
       <a href="/cards/{{ link.card.id }}" target="_blank">
-	<img src="{% if link.card.idolized %}{{ link.card.card_idolized_url }}{% else %}{{ link.card.card_url }}{% endif %}" alt="{{link.card}}">
+	<img src="{% if link.card.idolized %}{{ link.card.card_idolized_image|imageurl }}{% else %}{{ link.card.card_image|imageurl }}{% endif %}" alt="{{link.card}}">
       </a>
     </div>
     <div class="col-md-7">

@@ -1,4 +1,5 @@
-	    <div class="row">
+{% load imageurl %}
+<div class="row">
 	      <div class="col-md-8">
 		<form class="form-horizontal {% if edit %}edit{% else %}add{% endif%}" method="post" action="/ajax/{% if edit %}editcard/{{ edit.pk }}/{% else %}addcard/{% endif %}" role="form">
 		  {% csrf_token %}
@@ -10,8 +11,8 @@
 		</form>
 	      </div>
 	      <div class="col-md-4">
-		<img src="{% if edit %}{{ edit.card.card_url }}{% endif %}" class="non_idolized" width="100%">
-		<img src="{% if edit %}{{ edit.card.card_idolized_url }}{% endif %}" class="idolized" width="100%">
+		<img src="{% if edit %}{{ edit.card.card_image|imageurl }}{% endif %}" class="non_idolized" width="100%">
+		<img src="{% if edit %}{{ edit.card.card_idolized_image|imageurl }}{% endif %}" class="idolized" width="100%">
 	      </div>
 	    </div>
 	    {% if edit %}

@@ -91,8 +91,11 @@ class Card(models.Model):
     japanese_center_skill = models.TextField(null=True)
     japanese_center_skill_details = models.TextField(null=True)
     card_url = models.CharField(max_length=200, blank=True)
+    card_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
     card_idolized_url = models.CharField(max_length=200, blank=True)
+    card_idolized_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
     round_card_url = models.CharField(max_length=200, blank=True, null=True)
+    round_card_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
 
     def japanese_attribute(self):
         if self.attribute == 'Smile':

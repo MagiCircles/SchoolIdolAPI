@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand, CommandError
+from django.core.files.images import ImageFile
+from django.core.files.temp import NamedTemporaryFile
 import urllib2
 from bs4 import BeautifulSoup
 from api import models
@@ -43,21 +45,45 @@ def extract_skill(td):
         details = None
     return clean(name), clean(details)
 
+def downloadFile(url):
+    img_temp = NamedTemporaryFile(delete=True)
+    req = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.94 Safari/537.36' })
+    img_temp.write(urllib2.urlopen(req).read())
+    img_temp.flush()
+    return ImageFile(img_temp)
+
+def downloadBestWikiaImage(url):
+    url2 = url.split('/revision')[0]
+    file1 = downloadFile(url)
+    print 'File 1 Downloaded. ',; sys.stdout.flush()
+    file2 = downloadFile(url2)
+    print 'File 2 Downloaded. ',; sys.stdout.flush()
+    if file1.width > file2.width:
+        return file1
+    return file2
+
 class Command(BaseCommand):
     can_import_settings = True
 
     def handle(self, *args, **options):
 
-        # models.Card.objects.all().delete()
-        # models.Event.objects.all().delete()
+        local = 'local' in args
+
+        if 'delete' in args:
+             models.Card.objects.all().delete()
+             models.Event.objects.all().delete()
+             return
 
         h = HTMLParser.HTMLParser()
 
         types = {'Normals': 'N', 'Rares': 'R', 'Super Rares': 'SR', 'Ultra Rares': 'UR'}
         specials = {'None': 0, 'Promo Cards': 1, 'Special Cards': 2}
 
-        # f = open('decaf.html', 'r')
-        f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Cards&action=edit')
+        print '### Import card ids & stats from decaf wiki'
+        if local:
+            f = open('decaf.html', 'r')
+        else:
+            f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Cards&action=edit')
 
         currentType = types['Normals']
         special = specials['None']
@@ -77,6 +103,7 @@ class Command(BaseCommand):
                     center = None
             elif len(data) > 2:
                 id = int(clean(data[0]))
+                print 'Importing card #', id, '...',; sys.stdout.flush()
                 name = clean(data[1].split('|')[1])
                 type = clean(data[2])
 
@@ -158,10 +185,14 @@ class Command(BaseCommand):
                 if event is not None:
                     defaults['event'] = event
                 card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
+                print 'Done'
         f.close()
 
-        f = open('events.html', 'r')
-        # f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit')
+        print '### Import events from decaf wiki'
+        if local:
+            f = open('events.html', 'r')
+        else:
+            f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit')
 
         for line in f.readlines():
             line = h.unescape(line)
@@ -171,16 +202,21 @@ class Command(BaseCommand):
                 beginning = datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(dates[0]), '%Y/%m/%d')))
                 end = datetime.datetime.fromtimestamp(time.mktime(time.strptime(str(beginning.year) + '/' + clean(dates[1]), '%Y/%m/%d')))
                 name = clean(data[1].replace('[[', '').replace(']]', '').split('|')[-1]).replace('μs', 'μ\'s')
+                print 'Import event ', name, '...',; sys.stdout.flush()
                 event, created = models.Event.objects.update_or_create(japanese_name=name, defaults={
                     'beginning': beginning,
                     'end': end,
                 })
                 models.Card.objects.filter(event=event).update(release_date=beginning)
+                print 'Done'
 
         f.close()
 
-        # f = open('wikia.html', 'r')
-        f = urllib2.urlopen('http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List')
+        print '### Import card pictures and skills details from wikia'
+        if local:
+            f = open('wikia.html', 'r')
+        else:
+            f = urllib2.urlopen('http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List')
         soup = BeautifulSoup(f.read())
 
         for tr in soup.find_all('tr'):
@@ -193,6 +229,7 @@ class Command(BaseCommand):
                 id = tds[0].string
                 if id is not None:
                     id = int(clean(str(id)))
+                    print 'Import images & skill for #', id, '...',; sys.stdout.flush()
                 normaltd = tds[1].a
                 if normaltd is not None:
                     normal = wikiaImageURL(normaltd.get('href'))
@@ -210,18 +247,27 @@ class Command(BaseCommand):
                     }
                     if skill:
                         defaults['skill_details'] = skill
-                    models.Card.objects.update_or_create(id=id, defaults=defaults)
+                    card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
+                    if normal:
+                        card.card_image.save(str(card.id) + '.jpg', downloadBestWikiaImage(normal))
+                    if idolized:
+                        card.card_idolized_image.save(str(card.id) + 'idolized.jpg', downloadBestWikiaImage(idolized))
+                    print 'Done'
         f.close()
 
-        # f = open('jpcards.html', 'r')
-        f = urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/34.html')
-        soup = BeautifulSoup(f.read())
+        print '### Import japanese information'
+        if local:
+            f = open('jpcards.html', 'r')
+        else:
+            f = urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/34.html')
+        soup = BeautifulSoup("".join(line.strip() for line in f.read().split("\n")))
 
         for tr in soup.find_all('tr'):
             tds = tr.find_all('td')
             if len(tds) > 4:
                 id = tds[0].string
                 if id != None:
+                    print 'Import for #', id, '...',; sys.stdout.flush()
                     picture = tds[1].img
                     if picture is not None:
                         picture = wikiaImageURL(picture.get('src'))
@@ -230,10 +276,12 @@ class Command(BaseCommand):
                     if tds[2].br is not None:
                         tmp = tds[2].br.extract()
                     name = clean(tds[2].string)
-                    if '(' in name:
+                    if name is None:
+                        break
+                    if name is not None and '(' in name:
                         version = clean(name.split('(')[-1].split(')')[0])
                         name = clean(name.split('(')[0])
-                    elif '（' in name:
+                    elif name is not None and '（' in name:
                         version = clean(name.split('（')[-1].split('）')[0])
                         name = clean(name.split('（')[0])
                     else:
@@ -251,8 +299,9 @@ class Command(BaseCommand):
                     # elif len(tds) == 15: # take skill + center skill from previous line
                     defaults = {
                         'japanese_name': name,
-                        'round_card_url': picture,
                     }
+                    if picture is not None:
+                        defaults['round_card_url'] = picture
                     if version is not None:
                         defaults['japanese_collection'] = version
                     if skill_name is not None:
@@ -263,5 +312,10 @@ class Command(BaseCommand):
                         defaults['japanese_center_skill'] = center_skill_name
                     if center_skill_details is not None:
                         defaults['japanese_center_skill_details'] = center_skill_details
-                    models.Card.objects.update_or_create(id=id, defaults=defaults)
+                    card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
+                    if picture:
+                        print 'Download image...',; sys.stdout.flush()
+                        card.round_card_image.save(str(card.id) + 'round.jpg', downloadFile(picture))
+                    print 'Done'
+
         f.close()

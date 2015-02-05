@@ -1,4 +1,5 @@
 {% load mod %}
+{% load imageurl %}
 {% load getattribute %}
 
     {% if cards and total_cards != 0 %}
@@ -16,10 +17,10 @@
 		  <div class="text-center">
 		    {% if not single %}
 		<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
-		  {% if card.card_url %}
-		  <img src="{{ card.card_url }}" class="non_idolized" width="49%" alt="{{ card }}">
+		  {% if card.card_image %}
+		  <img src="{{ card.card_image|imageurl }}" class="non_idolized" width="49%" alt="{{ card }}">
 		  {% endif %}
-		  <img src="{{ card.card_idolized_url }}" class="idolized" width="49%" alt="{{ card }} idolized">
+		  <img src="{{ card.card_idolized_image|imageurl }}" class="idolized" width="49%" alt="{{ card }} idolized">
 		{% if not single %}</a>{% endif %}
 	      </div>
 	      {% if single %}</div><div class="col-md-6">{% endif %}
@@ -87,16 +88,16 @@
 		      <th>Id</th>
 		      <td>
 			<a href="/cards/{{ card.id }}">
+			  <div class="pull-right">
+			    {% if card.round_card_image %}
+			    <img src="{{ card.round_card_image|imageurl }}" alt="{{ card }}">
+			    {% else %}
+			    <i class="flaticon-id"></i>
+			    {% endif %}
+			  </div>
 			  #{{ card.id }}
 			</a><br>
 			<small>{{ card.name }}{% if card.japanese_name %} ({{ card.japanese_name }}){% endif %} {{ card.rarity }} {{ card.attribute }} ({{ card|getattribute:'japanese_attribute' }})</small>
-			<div class="pull-right">
-			  {% if card.round_card_url %}
-			  <img src="{{ card.round_card_url }}" alt="{{ card }}">
-			  {% else %}
-			  <i class="flaticon-id"></i>
-			  {% endif %}
-			</div>
 		      </td>
 		    </tr>
 		    {% if card.release_date %}

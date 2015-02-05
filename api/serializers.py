@@ -2,6 +2,8 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from api import models
 from dateutil.relativedelta import relativedelta
+from django.core.urlresolvers import reverse as django_reverse
+
 import datetime
 
 class UserSerializer(serializers.ModelSerializer):
@@ -59,10 +61,23 @@ class EventSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     japan_only = serializers.SerializerMethodField()
     event = EventSerializer()
+    card_image = serializers.SerializerMethodField()
+    card_idolized_image = serializers.SerializerMethodField()
+    round_card_image = serializers.SerializerMethodField()
     owned_cards = serializers.SerializerMethodField()
+
+    def _image_file_to_url(self, path):
+        return path.replace('web', 'http://' + self.context['request'].META['HTTP_HOST'])
 
     def get_japan_only(self, obj):
         return obj.is_japan_only()
+
+    def get_card_image(self, obj):
+        return self._image_file_to_url(str(obj.card_image))
+    def get_card_idolized_image(self, obj):
+        return self._image_file_to_url(str(obj.card_idolized_image))
+    def get_round_card_image(self, obj):
+        return self._image_file_to_url(str(obj.round_card_image))
 
     def get_owned_cards(self, obj):
         if (not self.context['request'] or not self.context['request']
@@ -74,7 +89,7 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_url', 'card_idolized_url', 'owned_cards', 'round_card_url')
+        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'owned_cards')
 
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()

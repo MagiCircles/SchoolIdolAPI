@@ -263,6 +263,7 @@ main {
 	font-weight: bold;
     }
     .col-md-5 {
+	text-align: center;
 	img {
 	    border: 15px solid @color;
 	}
@@ -300,6 +301,27 @@ main {
 .color-Rainbow-7 { color:(#662D91); }
 .color-Rainbow-8 { color:(#EC008C); }
 .color-Rainbow-9 { color:(#ED145B); }
+
+@media (max-width: 970px) {
+    .link-stars-side {
+	display: none!important;
+    }
+    .home-section {
+	.col-md-5 {
+	    img {
+		width: 80% !important;
+	    }
+	}
+	.list-group {
+	    margin: 0!important;
+	}
+	h1 {
+	    font-size: 3em;
+	    margin-bottom: 10%;
+	}
+    }
+}
+
 
 .navbar-Smile { .navbar-variant(@BarColor, #fff); }
 

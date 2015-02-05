@@ -328,12 +328,12 @@ def ajaxeditcard(request, ownedcard):
         form = forms.OwnedCardForm(request.POST, instance=owned_card)
         if form.is_valid():
             ownedcard = form.save(commit=False)
-        if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
-            try: expires_in = int(request.POST['expires_in'])
-            except (TypeError, ValueError): expires_in = 0
-            if expires_in < 0: expires_in = 0
-            if expires_in:
-                ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)
+            if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
+                try: expires_in = int(request.POST['expires_in'])
+                except (TypeError, ValueError): expires_in = 0
+                if expires_in < 0: expires_in = 0
+                if expires_in:
+                    ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)
             ownedcard.owner_account = owned_card.owner_account # owner & card change not allowed
             ownedcard.card = owned_card.card
             ownedcard.save()

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Cards Album{% endblock %}
+{% block title %}Cards Album{% if single %}: {{ single }}{% endif %}{% endblock %}
 {% block js %}<script src="/static/js/cards.js"></script>
 <script src="/static/js/addcard.js"></script>{% endblock %}
 {% block content %}
 
+{% if not single %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
   <nav id="sidebar-wrapper">
     <form method="GET">
@@ -128,9 +129,12 @@
     </form>
   </nav>
   <div id="page-content-wrapper">
+    {% endif %}
     {% include "cardsPage.html" %}
+    {% if not single %}
   </div> <!-- page-content-wrapper -->
 </div> <!-- wrapper -->
+{% endif %}
 
     <!-- Modal -->
     <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="Addcard" aria-hidden="true">

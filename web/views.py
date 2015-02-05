@@ -184,7 +184,7 @@ def cards(request, card=None, ajax=False):
         cards = cards[(page * page_size):((page * page_size) + page_size)]
     else:
         cards = [get_object_or_404(models.Card, id=int(card))]
-        context['single'] = True
+        context['single'] = cards[0]
 
     # Get statistics & other information to show in cards
     max_stats = {
@@ -237,7 +237,7 @@ def cards(request, card=None, ajax=False):
     context['total_cards'] = len(cards)
     context['cards'] = enumerate(cards)
     context['max_stats'] = max_stats
-    context['show_filter_button'] = True
+    context['show_filter_button'] = False if 'single' in context and context['single'] else True
     context['request_get'] = request_get
     context['show_filter_bar'] = True if request.GET else False
     context['current'] = 'cards'

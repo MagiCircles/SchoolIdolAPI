@@ -35,7 +35,7 @@
   <div class="row">
     <div class="col-md-5">
       <a href="/cards/{{ link.card.id }}" target="_blank">
-	<img src="{% if link.card.idolized %}{{ link.card.card_idolized_image|imageurl }}{% else %}{{ link.card.card_image|imageurl }}{% endif %}" alt="{{link.card}}">
+	<img src="{% if link.card.idolized %}{{ link.card|imageurl:'card_idolized_image' }}{% else %}{{ link.card|imageurl:'card_image' }}{% endif %}" alt="{{link.card}}">
       </a>
     </div>
     <div class="col-md-7">

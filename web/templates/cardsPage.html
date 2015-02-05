@@ -17,10 +17,10 @@
 		  <div class="text-center">
 		    {% if not single %}
 		<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
-		  {% if card.card_image %}
-		  <img src="{{ card.card_image|imageurl }}" class="non_idolized" width="49%" alt="{{ card }}">
+		  {% if not card.is_special and not card.is_promo %}
+		  <img src="{{ card|imageurl:'card_image' }}" class="non_idolized" width="49%" alt="{{ card }}">
 		  {% endif %}
-		  <img src="{{ card.card_idolized_image|imageurl }}" class="idolized" width="49%" alt="{{ card }} idolized">
+		  <img src="{{ card|imageurl:'card_idolized_image' }}" class="idolized" width="49%" alt="{{ card }} idolized">
 		{% if not single %}</a>{% endif %}
 	      </div>
 	      {% if single %}</div><div class="col-md-6">{% endif %}
@@ -90,7 +90,7 @@
 			<a href="/cards/{{ card.id }}">
 			  <div class="pull-right">
 			    {% if card.round_card_image %}
-			    <img src="{{ card.round_card_image|imageurl }}" alt="{{ card }}">
+			    <img src="{{ card|imageurl:'round_card_image' }}" alt="{{ card }}">
 			    {% else %}
 			    <i class="flaticon-id"></i>
 			    {% endif %}

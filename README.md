@@ -171,9 +171,13 @@ GET /api/events/
 
 ---
 
-## Install
+## Contribute
 
-#### 1st time
+Browse issues to find something to do: [![Stories in Ready](https://badge.waffle.io/db0company/SchoolIdolAPI.png?label=ready&title=Ready)](https://waffle.io/db0company/SchoolIdolAPI)
+
+_Note: To contribute to [School Idol Contest](http://schoolido.lu/contest/), go to [the other repo](https://github.com/Engil/SchoolIdolContest)._
+
+#### Install the 1st time
 
 ```shell
 # Install pre-requirements

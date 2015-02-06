@@ -72,7 +72,7 @@ class CardSerializer(serializers.ModelSerializer):
     def _image_file_to_url(self, path, card, circle=False, idolized=False):
         url = 'http://' + self.context['request'].META['HTTP_HOST']
         if (not path and 'imagedefault' in self.context['request'].GET and self.context['request'].GET['imagedefault'] and self.context['request'].GET['imagedefault'].title() != 'False' and
-            idolized or circle or (not card.is_special and not card.is_promo)):
+            (idolized or circle or (not card.is_special and not card.is_promo))):
             if circle:
                 return url + '/static/circle-' + card.attribute + '.png'
             return url + '/static/default-' + card.attribute + '.png'

@@ -281,7 +281,7 @@ def profile(request, username):
         context['is_me'] = False
         context['user_accounts'] = models.Account.objects.filter(owner=user)
     for account in context['user_accounts']:
-        account.deck = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('card__id')
+        account.deck = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
         account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
         account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
         account.album = models.OwnedCard.objects.filter(owner_account=account).filter((Q(stored='Album') | Q(stored='Deck'))).order_by('card__id')

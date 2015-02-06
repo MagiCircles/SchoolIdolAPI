@@ -69,12 +69,13 @@ class CardSerializer(serializers.ModelSerializer):
     japanese_attribute = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
 
-    def _image_file_to_url(self, path, attribute, circle=False):
+    def _image_file_to_url(self, path, card, circle=False, idolized=False):
         url = 'http://' + self.context['request'].META['HTTP_HOST']
-        if not path and 'imagedefault' in self.context['request'].GET and self.context['request'].GET['imagedefault'] and self.context['request'].GET['imagedefault'].title() != 'False':
+        if (not path and 'imagedefault' in self.context['request'].GET and self.context['request'].GET['imagedefault'] and self.context['request'].GET['imagedefault'].title() != 'False' and
+            idolized or circle or (not card.is_special and not card.is_promo)):
             if circle:
-                return url + '/static/circle-' + attribute + '.png'
-            return url + '/static/default-' + attribute + '.png'
+                return url + '/static/circle-' + card.attribute + '.png'
+            return url + '/static/default-' + card.attribute + '.png'
         return path.replace('web', 'http://' + self.context['request'].META['HTTP_HOST'])
 
     def get_japanese_attribute(self, obj):
@@ -84,11 +85,11 @@ class CardSerializer(serializers.ModelSerializer):
         return obj.is_japan_only()
 
     def get_card_image(self, obj):
-        return self._image_file_to_url(str(obj.card_image), obj.attribute)
+        return self._image_file_to_url(str(obj.card_image), obj)
     def get_card_idolized_image(self, obj):
-        return self._image_file_to_url(str(obj.card_idolized_image), obj.attribute)
+        return self._image_file_to_url(str(obj.card_idolized_image), obj, idolized=True)
     def get_round_card_image(self, obj):
-        return self._image_file_to_url(str(obj.round_card_image), obj.attribute, circle=True)
+        return self._image_file_to_url(str(obj.round_card_image), obj, circle=True)
 
     def get_website_url(self, obj):
         return 'http://schoolido.lu/cards/' + str(obj.id) + '/'

@@ -58,9 +58,9 @@ GET /api/cards/
             "center_skill": "Cool Heart",
             "japanese_center_skill": "クールハート",
             "japanese_center_skill_details": "",
-            "card_image": "http://localhost:9000/static/cards/509_xBZqEQn.jpg",
-            "card_idolized_image": "http://localhost:9000/static/cards/509idolized_Zn9r7Dn.jpg",
-            "round_card_image": "http://localhost:9000/static/cards/509round.jpg",
+            "card_image": "http://schoolido.lu/static/cards/509.jpg",
+            "card_idolized_image": "http://schoolido.lu/static/cards/509idolized.jpg",
+            "round_card_image": "http://schoolido.lu/static/cards/509round.jpg",
             "website_url": "http://schoolido.lu/cards/509/",
             "owned_cards": null
         },
@@ -83,6 +83,16 @@ GET /api/cards/
   * `GET /api/cards/?is_event=True`
 * Sort results by any field using `ordering`:
   * `GET /api/cards/?ordering=name`
+* To get default images instead of empty fields, use `imagedefault` with `True` or `False`:
+```json
+GET /api/cards/?ordering=name
+
+...
+            "card_image": "http://localhost:9000/static/default-Cool.png",
+	    "card_idolized_image": "http://localhost:9000/static/default-Cool.png",
+	    "round_card_image": "http://localhost:9000/static/circle-Cool.png",
+...
+```
 * To fill information about the cards owned by a user, use `account` (otherwise the field is null):
 ```json
 GET /api/cards/?account=1
@@ -131,7 +141,7 @@ GET /api/events/
 
 {
     "count": 43,
-    "next": "http://localhost:9000/api/events/?page=2",
+    "next": "http://schoolido.lu/api/events/?page=2",
     "previous": null,
     "results": [
         {

@@ -404,15 +404,12 @@ def editaccount(request, account):
 
 def users(request):
     context = globalContext(request)
-    page = 0
-    page_size = 9
-    if 'page' in request.GET and request.GET['page']:
-        page = int(request.GET['page']) - 1
-        if page < 0:
-            page = 0
-    users = User.objects.all().order_by('-last_login')#[(page * page_size):((page * page_size) + page_size)]
+    users = User.objects.all()
     for user in users:
         user.accounts = models.Account.objects.filter(owner=user)
+        user.accounts = sorted(user.accounts, key=lambda a: a.rank, reverse=True)
+        user.best_rank = user.accounts[0].rank if user.accounts else 0
+    users = sorted(users, key=lambda u: u.best_rank, reverse=True)
     context['total_users'] = len(users)
     context['users'] = enumerate(users)
     return render(request, 'users.html', context)

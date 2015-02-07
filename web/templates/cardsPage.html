@@ -9,22 +9,22 @@
       {% if i|mod:3 %}
     </div><div class="row">
       {% endif%}
-      <div class="col-sm-{% if total_cards == 1 %}12{% elif total_cards == 2 %}6{% else %}4{% endif %}">
+      <div class="col-sm-{% if ajax %}4{% elif total_cards == 1 %}12{% elif total_cards == 2 %}6{% else %}4{% endif %}">
 	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}">
 	  <div class="panel panel-{{ card.attribute }}">
 	    <div class="panel-body">
 	      {% if single %}<div class="row"><div class="col-md-6">{% endif %}
 		  <div class="text-center">
 		    {% if not single %}
-		<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
-		  {% if not card.is_special and not card.is_promo %}
-		  <img src="{{ card|imageurl:'card_image' }}" class="non_idolized" width="49%" alt="{{ card }}">
-		  {% endif %}
-		  <img src="{{ card|imageurl:'card_idolized_image' }}" class="idolized" width="49%" alt="{{ card }} idolized">
-		{% if not single %}</a>{% endif %}
-	      </div>
-	      {% if single %}</div><div class="col-md-6">{% endif %}
-	      <div class="more {% if card.non_idolized_maximum_statistics_smile %}levels3{% else %}levels2 {% endif %} {% if total_cards > 3 %}collapse{% endif %}" id="collapseMore{{ card.id }}">
+		    <a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
+		      {% if not card.is_special and not card.is_promo %}
+		      <img src="{{ card|imageurl:'card_image' }}" class="non_idolized" width="49%" alt="{{ card }}">
+		      {% endif %}
+		      <img src="{{ card|imageurl:'card_idolized_image' }}" class="idolized" width="49%" alt="{{ card }} idolized">
+		      {% if not single %}</a>{% endif %}
+		  </div>
+		  {% if single %}</div><div class="col-md-6">{% endif %}
+		  <div class="more {% if card.non_idolized_maximum_statistics_smile %}levels3{% else %}levels2 {% endif %} {% if ajax or total_cards > 3 %}collapse{% endif %}" id="collapseMore{{ card.id }}">
 		{% if card.minimum_statistics_smile %}
 		<div class="statistics">
 		  <div class="text-center level-buttons">

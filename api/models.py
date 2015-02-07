@@ -35,7 +35,7 @@ STORED_CHOICES = (
     ('Deck', 'In deck'),
     ('Album', 'In album'),
     ('Box', 'In present box'),
-    ('Favorite', 'Favorite Cards'),
+    ('Favorite', 'Wish List'),
 )
 
 class Event(models.Model):

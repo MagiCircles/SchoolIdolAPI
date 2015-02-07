@@ -23,7 +23,8 @@ LANGUAGE_CHOICES = (
     ('JP', 'Japanese'),
     ('EN', 'English'),
     ('KR', 'Korean'),
-    ('CH', 'Chinese'),
+    ('CN', 'Chinese'),
+    ('TW', 'Taiwanese'),
 )
 
 OS_CHOICES = (

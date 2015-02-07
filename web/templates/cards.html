@@ -17,10 +17,18 @@
       <div class="section filter">
 	<label for="id_name">Idol</label>
 	<select id="id_name" name="name">
-	  <option value=""></option>
-	  {% for idol in filters.idols %}
-	  <option value="{{ idol.name }}"{% if request_get.name == idol.name %} selected{% endif %}>{{ idol.name }} ({{ idol.total }})</option>
-	  {% endfor %}
+	  <optgroup>
+	    <option value=""></option>
+	  </optgroup>
+	  <optgroup>
+	    {% for idol in filters.idols %}
+	    <option value="{{ idol.name }}"{% if request_get.name == idol.name %} selected{% endif %}>{{ idol.name }} ({{ idol.total }})</option>
+	    {% if forloop.counter == 9 %}
+	  </optgroup>
+	  <optgroup>
+	    {% endif %}
+	    {% endfor %}
+	  </optgroup>
 	</select>
 	<br>
 	<label for="id_rarity">Rarity</label>

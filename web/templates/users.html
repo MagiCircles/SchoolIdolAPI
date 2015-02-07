@@ -16,9 +16,9 @@
     {% endif%}
     <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">
       {% with user.accounts|length as length %}
-      <a href="/user/{{ user.username }}" class="panel panel-Smile" style="display: block;">
+      <div class="panel panel-Smile">
 	<div class="panel-heading">
-	  <h3 class="padding-novertical margin-novertical">{{ user }}</h3>
+	  <a href="/user/{{ user.username }}/"><h3 class="padding-novertical margin-novertical">{{ user }}</h3></a>
 	</div>
 	<div class="panel-body">
 	  {% if length == 0 %}
@@ -27,7 +27,7 @@
 	  <h5 class="padding20 padding-novertical">{{ length }} account{% if length > 1 %}s{% endif %}:</h5>
 	  <table class="table margin-novertical">
 	    {% for account in user.accounts %}
-	    <tr>
+	    <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';">
 	      <td>
 		{% if account.center %}
 		<div class="circled_card_30 {{ account.center.card.attribute }} {{ account.center.card.rarity }} pull-left margin5"
@@ -44,8 +44,9 @@
 	    {% endfor %}
 	  </table>
 	  {% endif %}
+	  <small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/user/{{ user.username }}/#disqus_thread">Start the discussion</a></small>
 	</div>
-      </a>
+      </div>
       {% endwith %}
     </div>
     {% endfor %}

@@ -410,7 +410,7 @@ def users(request):
         page = int(request.GET['page']) - 1
         if page < 0:
             page = 0
-    users = User.objects.all().order_by('-last_login')[(page * page_size):((page * page_size) + page_size)]
+    users = User.objects.all().order_by('-last_login')#[(page * page_size):((page * page_size) + page_size)]
     for user in users:
         user.accounts = models.Account.objects.filter(owner=user)
     context['total_users'] = len(users)

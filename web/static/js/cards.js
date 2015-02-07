@@ -61,6 +61,10 @@ function pagination() {
 		&& ($(window).scrollTop() + $(window).height())
 		>= ($(document).height() - button.height())) {
 		load_more_function();
+
+		// Reload disqus comments count
+		window.DISQUSWIDGETS = undefined;
+		$.getScript("http://schoolidol.disqus.com/count.js");
 	    }
 	});
 }

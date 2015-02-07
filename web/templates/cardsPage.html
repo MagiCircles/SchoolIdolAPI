@@ -4,7 +4,10 @@
 
     {% if cards and total_cards != 0 %}
     <div class="page" data-page="{{ page }}">
-    <div class="row">
+      {% if show_filter_bar and total_cards > 0 and not ajax %}
+      <h4 class="padding20 nomargin">{{ total_results }} card{% if total_results > 1 %}s{% endif %} match{% if total_results == 1 %}es{% endif %} your search:</h4>
+      {% endif %}
+      <div class="row">
       {% for i, card in cards %}
       {% if i|mod:3 %}
     </div><div class="row">

@@ -88,6 +88,7 @@ def cards(request, card=None, ajax=False):
 
     page = 0
     context = globalContext(request)
+    context['total_results'] = 0
 
     # Set defaults
     request_get = {
@@ -176,6 +177,7 @@ def cards(request, card=None, ajax=False):
             request_get['reverse_order'] = 'reverse_order' in request.GET and request.GET['reverse_order']
         cards = cards.order_by(('-' if request_get['reverse_order'] else '') + request_get['ordering'])
 
+        context['total_results'] = cards.count()
         # Set limit
         page_size = 9
         if 'page' in request.GET and request.GET['page']:
@@ -184,6 +186,7 @@ def cards(request, card=None, ajax=False):
                 page = 0
         cards = cards[(page * page_size):((page * page_size) + page_size)]
     else:
+        context['total_results'] = 1
         cards = [get_object_or_404(models.Card, id=int(card))]
         context['single'] = cards[0]
 

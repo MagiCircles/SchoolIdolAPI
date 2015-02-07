@@ -389,7 +389,7 @@ def get_links(current_en, current_jp):
                 },
                 {
                     'name': 'Japanese Event Tracker',
-                    'description': 'Track statistics about the urrent Japanese event.',
+                    'description': 'Track statistics about the current Japanese event.',
                     'url': 'http://atsites.jp/llborder/',
                     'type': 'info',
                     'language': 'japanese',

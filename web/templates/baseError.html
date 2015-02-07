@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found{% endblock %}
+
+{% block content %}
+<div class="container">
+  <br><br>
+  <div class="jumbotron">
+    <h1>{% block titlepage %}Page not found{% endblock %}</h1>
+    <p>{% block details %}404. This is not the page you are looking for.{% endblock %}</p>
+    <p class="text-right"><a class="btn btn-Smile btn-lg" href="/" role="button">Back to homepage</a></p>
+    <br>
+  </div>
+</div>
+{% endblock %}

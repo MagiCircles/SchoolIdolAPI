@@ -103,7 +103,7 @@ def get_links(current_en, current_jp):
                 },
                 {
                     'name': 'Save your Transfer Code',
-                    'description': 'First thing to do! In case you loose your device, it will allow you to retrieve your precious account.',
+                    'description': 'First thing to do! In case you lose your device, it will allow you to retrieve your precious account.',
                     'url': 'http://www.reddit.com/r/SchoolIdolFestival/wiki/passcode',
                     'type': 'tutorial',
                     'language': 'world',

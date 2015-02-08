@@ -30,7 +30,7 @@
 	    <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';">
 	      <td>
 		{% if account.center %}
-		<div class="circled_card_30 {{ account.center.card.attribute }} {{ account.center.card.rarity }} pull-left margin5"
+		<div class="circled_card_70 {{ account.center.card.attribute }} {{ account.center.card.rarity }} pull-left margin10"
 		     style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
 		{% endif %}
 		<h4 class="padding20 padding-novertical">{{ account }}</h4>

@@ -5,6 +5,7 @@
 
 {% block content %}
 {% load imageurl %}
+{% load padzeros %}
 <div class="container">
   <br><br>
   <div class="jumbotron">
@@ -53,7 +54,7 @@
 	      </tr>
 	      <tr>
 		<th>Friend ID</th>
-		<td>{{ account.friend_id }}</td>
+		<td>{{ account.friend_id|padzeros:9 }}</td>
 	      </tr>
 	      {% if account.is_me %}
 	      <tr>

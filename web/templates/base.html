@@ -214,14 +214,16 @@
       </div>
     </div>
 
-    {% if LANGUAGE_CODE == 'ja' %}
     <script>
+    {% if LANGUAGE_CODE == 'ja' %}
     var disqus_config = function () {
     this.language = "ja";
     };
     var is_japanese = true;
-    </script>
+    {% else %}
+    var is_japanese = false;
     {% endif %}
+    </script>
 
     <script src="/static/bower/jquery/dist/jquery.min.js"></script>
     <script src="/static/js/jquery.form.min.js"></script>

@@ -1,23 +1,23 @@
-{% with "School Idol Tomodachi" as mainTitle %}
 {% load imageurl %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>{{ mainTitle }} - {% block title %}The ultimate resource for the game.{% endblock %}</title>
+    <title>{% trans "School Idol Tomodachi" %} - {% block title %}{% trans 'The ultimate resource for the game.' %}{% endblock %}</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
     <link rel="stylesheet" href="/static/bower/bootstrap/dist/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" /> -->
-    <!-- <script src="/static/bower/less/dist/less.min.js"></script> -->
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" />
+    <script src="/static/bower/less/dist/less.min.js"></script>
+    <!-- <link rel="stylesheet" href="/static/css/style.css"> -->
 
-    <meta property="og:image" content="http://schoolido.lu/static/screenshot.png"/>
+    <meta property="og:image" content="{% block shareimage %}http://schoolido.lu/static/screenshot.png{% endblock %}"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="description" content="The ultimate resource for LLSIF game players. Browse & track your cards. Vote for the best girl.">
+    <meta name="description" content="{% trans 'The ultimate resource for LLSIF game players.' %} {% trans 'Browse & track your cards. Vote for the best girl.' %}">
     <meta name="keywords" content="LLSIF, Love Live, LoveLive, School Idol Festival, School Idol, School Idol Project, Android game, rhythm game, ラブライブ, cards, card, tracker, スクールアイドルフェスティバル">
     <meta name="twitter:card" value="LLSIF Cards Browser & Tracker + Vote for the BEST girl">
-    <meta name="twitter:image" content="http://schoolido.lu/static/screenshot.png">
+    <meta name="twitter:image" content="{% block shareimagetwitter %}http://schoolido.lu/static/screenshot.png{% endblock %}">
     <meta name="twitter:creator" content="@db0company">
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
@@ -39,11 +39,11 @@
 	    {% if not hide_back_button %}
 	    <i class="flaticon-back"></i>
 	    {% endif %}
-	    {{ mainTitle }}</a>
+	    {% trans "School Idol Tomodachi" %}</a>
 	</div>
 	<div class="collapse navbar-collapse collapse">
 	  <ul class="nav navbar-nav navbar-right">
-	    <li class="{% if current == 'cards' %}active{% endif %}"><a href="/cards">Cards</a></li>
+	    <li class="{% if current == 'cards' %}active{% endif %}"><a href="/cards">{% trans 'Cards' %}</a></li>
 	    {% if user.is_authenticated %}
 	    <li class="dropdown">	
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -51,12 +51,12 @@
 		<span class="caret"></span>
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
-		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-profile"></i> Your Profile</a></li>
-		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit"><i class="flaticon-settings"></i> Your Settings</a></li>
+		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-profile"></i> {% trans 'Your Profile' %}</a></li>
+		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		{% include "baseMenu.html" %}
 		<li role="presentation" class="divider"></li>
-		<li><a href="/logout"><i class="flaticon-logout"></i> Logout</a></li>
+		<li><a href="/logout"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
 	      </ul>
 	    </li>
 	    <li class="dropdown">	
@@ -66,7 +66,7 @@
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
 		{% if accounts %}
-		 <li role="presentation" class="dropdown-header">Switch account:</li>
+		 <li role="presentation" class="dropdown-header">{% trans 'Switch account' %}:</li>
 		{% endif %}
 		{% for account in accounts %}
 		<li class="{% if account == active_account %}disabled{% endif %}"><a href="/switchaccount/{{ account.pk }}" class="account">
@@ -84,13 +84,13 @@
 		    {{ account }}</a></li>
 		{% endfor %}
 		<li role="presentation" class="divider"></li>
-		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount"><i class="flaticon-add"></i> Add an account</a></li>
-		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-edit"></i> Edit your accounts</a></li>
+		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount"><i class="flaticon-add"></i> {% trans 'Add an account' %}</a></li>
+		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-edit"></i> {% trans 'Edit your accounts' %}</a></li>
 	      </ul>
 	    </li>
 	    {% else %}
-	    <li class="{% block loginviewactive %}{% endblock %}"><a href="/login">Login {{ name }}</a></li>
-	    <li class="{% if current == 'create' %}active{% endif %}"><a href="/create">Sign Up</a></li>
+	    <li class="{% block loginviewactive %}{% endblock %}"><a href="/login">{% trans 'Login' %}</a></li>
+	    <li class="{% if current == 'create' %}active{% endif %}"><a href="/create">{% trans 'Sign Up' %}</a></li>
 	    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		<span class="caret"></span>
 	      </a>
@@ -100,7 +100,7 @@
 	    </li>
 	    {% endif %}
 	    {% if show_filter_button %}
-	    <li><a href="#" class="sidebar-toggle"><i class="flaticon-filter"></i><span class="visible-xs-inline"> Filters</span></a></li>
+	    <li><a href="#" class="sidebar-toggle"><i class="flaticon-filter"></i><span class="visible-xs-inline"> {% trans 'Filters' %}</span></a></li>
 	    {% endif %}
 	  </ul>
       </div>
@@ -116,29 +116,29 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title" id="myModalLabel">About {{ mainTitle }}</h4>
+	    <h4 class="modal-title" id="myModalLabel">{% trans 'About' %} {% trans 'School Idol Tomodachi' %}</h4>
 	  </div>
 	  <div class="modal-body">
-	    <h3>LoveLive! Franchise</h3>
+	    <h3>{% trans 'LoveLive! Franchise' %}</h3>
 	    <p>
-	      {{ mainTitle }} is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab.
+	      {% trans 'School Idol Tomodachi' %} {% blocktrans %}is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab.{% endblocktrans %}
 	    </p>
-	    <h3>Thanks</h3>
-	    <p>Informations about the cards come from:</p>
+	    <h3>{% trans 'Thanks' %}</h3>
+	    <p>{% trans 'Informations about the cards come from:' %}</p>
 	    <ul>
 	      <li><a href="http://decaf.kouhi.me/lovelive/" target="_blank">LoveLive! School Idol Wiki decaf.kouhi.me</a></li>
 	      <li><a href="http://love-live.wikia.com/wiki/Main_Page" target="_blank">LoveLive! Wikia</a></li>
 	      <li><a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">ラブライブ！スクフェス 情報まとめwiki</a></li>
 	    </ul>
-	    <p>Tutorials and links come from:</p>
+	    <p>{% trans 'Tutorials and links come from:' %}</p>
 	    <ul>
 	      <li><a href="http://www.reddit.com/r/SchoolIdolFestival/" target="_blank">Reddit Community</a></li>
 	    </ul>
-	    <h3>Icon Credits</h3>
+	    <h3>{% trans 'Icon Credits' %}</h3>
 	    <div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a>, <a href="http://yanlu.de" title="Yannick">Yannick</a>, <a href="http://www.icomoon.io" title="Icomoon">Icomoon</a>, <a href="http://www.icons8.com" title="Icons8">Icons8</a>, <a href="http://catalinfertu.com" title="Catalin Fertu">Catalin Fertu</a>, <a href="http://pixelkit.com" title="Sergiu Bagrin">Sergiu Bagrin</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>         is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 	  </div>
 	  <div class="modal-footer">
-	    <button type="button" class="btn btn-Smile" data-dismiss="modal">Got it!</button>
+	    <button type="button" class="btn btn-Smile" data-dismiss="modal">{% trans 'Go' %}</button>
 	  </div>
 	</div>
       </div>
@@ -149,20 +149,21 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title" id="myModalLabel">Contact Us</h4>
+	    <h4 class="modal-title" id="myModalLabel">{% trans 'Contact Us' %}</h4>
 	  </div>
 	  <div class="modal-body">
 	    <p>
-	      Send us an email to <a href="mailto:contact@schoolido.lu">contact@schoolido.lu</a>.
+	      {% trans 'Send us an email to' %} <a href="mailto:contact@schoolido.lu">contact@schoolido.lu</a>.
 	    </p>
 	    <p>
-	      For suggestions or bug report, we recommend you to use <a href="https://waffle.io/db0company/SchoolIdolAPI">our Tasks manager</a>. Simply <a href="https://waffle.io/db0company/SchoolIdolAPI">create a new issue</a> or reply to an existing one to get updates about it.</p>
+	      For suggestions or bug report, we recommend you to use <a href="https://waffle.io/db0company/SchoolIdolAPI">our Tasks manager</a>. Simply <a href="https://waffle.io/db0company/SchoolIdolAPI">create a new issue</a> or reply to an existing one to get updates about it.
+	    </p>
 	    <p>
 	      You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.
 	    </p>
 	  </div>
 	  <div class="modal-footer">
-	    <a class="btn btn-Smile" href="mailto:contact@schoolido.lu">Send Email</a>
+	    <a class="btn btn-Smile" href="mailto:contact@schoolido.lu">{% trans 'Send Email' %}</a>
 	  </div>
 	</div>
       </div>
@@ -212,7 +213,16 @@
 	</div>
       </div>
     </div>
-    
+
+    {% if LANGUAGE_CODE == 'ja' %}
+    <script>
+    var disqus_config = function () {
+    this.language = "ja";
+    };
+    var is_japanese = true;
+    </script>
+    {% endif %}
+
     <script src="/static/bower/jquery/dist/jquery.min.js"></script>
     <script src="/static/js/jquery.form.min.js"></script>
     <script src="/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -232,5 +242,4 @@
 
   </body>
 </html>
-{% endwith %}
 

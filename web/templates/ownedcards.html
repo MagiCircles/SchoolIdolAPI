@@ -1,4 +1,5 @@
 {% load imageurl %}
+{% load i18n %}
 
 <br>
 {% if cards %}
@@ -15,11 +16,11 @@
   {% if is_me %}
   <div class="pull-right">
     <a href="/cards" target="_blank" class="btn btn-{{ attribute }}">
-      Browse cards
+      {% trans 'Browse cards' %}
     </a>
   </div>
   <br>
   {% endif %}
-  No cards registered yet.
+  {% trans 'No cards registered yet.' %}
 </div>
 {% endif %}

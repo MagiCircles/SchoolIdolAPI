@@ -6,6 +6,12 @@ $(document).ready(function() {
 	    $('#' + hash).modal('show');
 	}
     }
+
+    $('.switchLanguage').click(function(e) {
+	e.preventDefault();
+	$('#switchLanguage').find('select').val($(this).attr('data-lang'));
+	$('#switchLanguage').submit();
+    });
 });
 
 var disqus_developer = 1;

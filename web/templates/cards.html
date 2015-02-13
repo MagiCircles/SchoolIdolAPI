@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 
-{% block title %}Cards Album{% if single %}: {{ single }}{% endif %}{% endblock %}
+{% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% endif %}{% endblock %}
 {% block js %}<script src="/static/js/cards.js"></script>
 <script src="/static/js/addcard.js"></script>{% endblock %}
 {% block content %}
@@ -9,20 +11,20 @@
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
   <nav id="sidebar-wrapper">
     <form method="GET">
-      <h4>Search</h4>
+      <h4>{% trans 'Search' %}</h4>
       <div class="section search">
-	<input type="text" id="search" placeholder="Search" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="Search through name, skills, collection, promo item, event name, ..." data-trigger="focus" value="{{ request_get.search }}">
+	<input type="text" id="search" placeholder="{% trans 'Search' %}" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="{% blocktrans %}Search through name, skills, collection, promo item, event name, ...{% endblocktrans %}" data-trigger="focus" value="{{ request_get.search }}">
       </div>
-      <h4>Filter</h4>
+      <h4>{% trans 'Filter' %}</h4>
       <div class="section filter">
-	<label for="id_name">Idol</label>
+	<label for="id_name">{% trans 'Idol' %}</label>
 	<select id="id_name" name="name">
 	  <optgroup>
 	    <option value=""></option>
 	  </optgroup>
 	  <optgroup>
 	    {% for idol in filters.idols %}
-	    <option value="{{ idol.name }}"{% if request_get.name == idol.name %} selected{% endif %}>{{ idol.name }} ({{ idol.total }})</option>
+	    <option value="{{ idol.name }}"{% if request_get.name == idol.name %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %} ({{ idol.total }})</option>
 	    {% if forloop.counter == 9 %}
 	  </optgroup>
 	  <optgroup>
@@ -31,7 +33,7 @@
 	  </optgroup>
 	</select>
 	<br>
-	<label for="id_rarity">Rarity</label>
+	<label for="id_rarity">{% trans 'Rarity' %}</label>
 	<select id="id_rarity" name="rarity">
 	  <option value=""></option>
 	  {% for i, rarity in filters.rarity_choices %}
@@ -39,23 +41,23 @@
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_attribute">Attribute</label>
+	<label for="id_attribute">{% trans 'Attribute' %}</label>
 	<select id="id_attribute" name="attribute">
 	  <option value=""></option>
 	  {% for i, attribute in filters.attribute_choices %}
-	  <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{{ attribute }}</option>
+	  <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_skill">Skill</label>
+	<label for="id_skill">{% trans 'Skill' %}</label>
 	<select id="id_skill" name="skill">
 	  <option value=""></option>
 	  {% for idol in filters.skills %}
-	  <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{{ idol.skill }} ({{ idol.total }})</option>
+	  <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_collection">Collection</label>
+	<label for="id_collection">{% trans 'Collection' %}</label>
 	<select id="id_collection" name="collection">
 	  <option value=""></option>
 	  {% for collection in filters.collections %}
@@ -66,25 +68,25 @@
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_promo" name="is_promo" type="checkbox"{% if request_get.is_promo %} checked{% endif %}></div>
-	  <label for="id_is_promo"><i class="flaticon-promo"></i> Promo Cards only</label>
+	  <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards only' %}</label>
 	</div>
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_special" name="is_special" type="checkbox"{% if request_get.is_special %} checked{% endif %}></div>
-	  <label for="id_is_special"><i class="flaticon-skill"></i> Special Cards only</label>
+	  <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards only' %}</label>
 	</div>
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_event" name="is_event" type="checkbox"{% if request_get.is_event %} checked{% endif %}></div>
-	  <label for="id_is_event"><i class="flaticon-event"></i> Event Cards only</label>
+	  <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards only' %}</label>
 	</div>
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
-	  <label for="id_is_world"><i class="flaticon-world"></i> Worldwide Cards only</label>
+	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide Cards only' %}</label>
 	</div>
       </div>
-      <h4>Order</h4>
+      <h4>{% trans 'Order' %}</h4>
       <div class="section order">
 	<select id="id_ordering" name="ordering">
 	  {% for i, order in filters.ordering_choices %}
@@ -94,13 +96,13 @@
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_reverse_order" name="reverse_order" type="checkbox"{% if request_get.reverse_order %} checked{% endif %}></div>
-	  <label for="id_reverse_order">Reverse order</label>
+	  <label for="id_reverse_order">{% trans 'Reverse order' %}</label>
 	</div>
       </div>
       {% if user.is_authenticated %}
       <h4>{{ accounts.0 }}</h4>
       <div class="section yours">
-	<label for="id_stored">Stored</label>
+	<label for="id_stored">{% trans 'Stored' %}</label>
 	<select id="id_stored" name="stored">
 	  <option value=""></option>
 	  {% for i, stored in filters.stored_choices %}
@@ -108,30 +110,30 @@
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_max_level">Max Level</label>
+	<label for="id_max_level">{% trans 'Max Level' %}</label>
 	<select id="id_max_level" name="max_level">
 	  <option value=""></option>
-	  <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>Max Leveled</option>
-	  <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>Not Max Leveled</option>
+	  <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
+	  <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
 	</select>
 	<br>
-	<label for="id_max_bond">Max Bond (Kizuna)</label>
+	<label for="id_max_bond">{% trans  'Max Bond (Kizuna)' %}</label>
 	<select id="id_max_bond" name="max_bond">
 	  <option value=""></option>
-	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>Max Bonded</option>
-	  <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>Not Max Bonded</option>
+	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded' %}</option>
+	  <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
 	</select>
 	<br>
-	<label for="id_idolized">Idolized</label>
+	<label for="id_idolized">{% trans 'Idolized' %}</label>
 	<select id="id_idolized" name="idolized">
 	  <option value=""></option>
-	  <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>Idolized</option>
-	  <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>Not Idolized</option>
+	  <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
+	  <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
 	</select>
       </div>
       {% endif %}
       <div class="section order">
-	<input type="submit" class="btn btn-Smile btn-block" value="Go">
+	<input type="submit" class="btn btn-Smile btn-block" value="{% trans 'Go' %}">
 	<br><br><br><br><br>
       </div>
     </form>
@@ -150,7 +152,7 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title">Add card to your account {{ active_account }}</h4>
+	    <h4 class="modal-title">{% trans 'Add card to your account' %} {{ active_account }}</h4>
 	  </div>
 	  <div class="modal-body">
 	    {% include "addCardForm.html" %}

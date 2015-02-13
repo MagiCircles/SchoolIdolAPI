@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+{% block title %}{{ profile_user.username }}'{% trans 's Profile'%}{% endblock %}
 {% block js %}<script src="/static/js/profile.js"></script>{% endblock %}
 
 {% block content %}
@@ -10,12 +11,12 @@
   <br><br>
   <div class="jumbotron">
     <h1>{{ profile_user.username }}</h1>
-    {% if is_me %}<div class="text-center"><a href="/edit"><i class="flaticon-edit"></i> Edit your settings</a></div>{% endif %}
+    {% if is_me %}<div class="text-center"><a href="/edit"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
     {% with user_accounts|length as length %}
     {% if length == 0 %}
-    <h2>No account.</h2>
+    <h2>{% trans 'No account.' %}</h2>
     {% else %}
-    <h2>Accounts:</h2>
+    <h2>{% trans 'Accounts:' %}</h2>
     {% for account in user_accounts %}
     {% with account.center.card.attribute|default:'All' as attribute %}
     <div class="panel panel-{{ attribute }} profile-account" id="{{ account.pk }}">
@@ -41,7 +42,7 @@
 	    {% else %}
 	    {% if is_me %}<a href="/editaccount/{{ account.pk }}">{% endif %}
 	    <div style="width: 200px; padding: 50px; text-align: center;">
-	      <strong>No Center Specified</strong>
+	      <strong>{% trans 'No Center Specified' %}</strong>
 	    </div>
 	    {% if is_me %}</a>{% endif %}
 	    {% endif %}
@@ -49,21 +50,21 @@
 	  <div class="table-responsive">
 	    <table class="table">
 	      <tr>
-		<th><br>Nickname</th>
+		<th><br>{% trans 'Nickname' %}</th>
 		<td><br>{{ account.nickname }}</td>
 	      </tr>
 	      <tr>
-		<th>Friend ID</th>
+		<th>{% trans 'Friend ID' %}</th>
 		<td>{{ account.friend_id|padzeros:9 }}</td>
 	      </tr>
-	      {% if account.is_me %}
+	      {% if is_me and account.transfer_code %}
 	      <tr>
-		<th>Transfer Code <small>Omly you can see it</small></th>
+		<th>{% trans 'Transfer Code' %} <small>{% trans 'Only you can see it' %}</small></th>
 		<td>{{ account.transfer_code }}</td>
 	      </tr>
 	      {% endif %}
 	      <tr>
-		<th>Game Version</th>
+		<th>{% trans 'Game Version' %}</th>
 		<td>
 		  <div class="pull-right">
 		    <i class="flaticon-{{ account.language }} fontx2"></i>
@@ -71,15 +72,15 @@
 		  {{ account.language }}</td>
 	      </tr>
 	      <tr>
-		<th>Device Operating System</th>
+		<th>{% trans 'Device Operating System' %}</th>
 		<td>{{ account.os }}</td>
 	      </tr>
 	      <tr>
-		<th>Significant Cards</th>
-		<td><strong>{{ account.deck_total_sr }} SR</strong> and <strong>{{ account.deck_total_ur }} UR</strong></td>
+		<th>{% trans 'Significant Cards' %}</th>
+		<td><strong>{{ account.deck_total_sr }} SR</strong> {% trans 'and' %} <strong>{{ account.deck_total_ur }} UR</strong></td>
 	      </tr>
 	      <tr>
-		<th>Rank</th>
+		<th>{% trans 'Rank' %}</th>
 		<td><h3>{{ account.rank }}</h3></td>
 	      </tr>
 	    </table>
@@ -90,31 +91,31 @@
 	      <label for="optDeck" class="cardstype btn btn-{{ attribute }} active">
 		<input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck{{ account.pk }}" >
 		<i class="flaticon flaticon-deck"></i>
-		Deck
+		{% trans 'Deck' %}
 	      </label>
 	      <label for="optAlbum" class="cardstype btn btn-{{ attribute }}">
 		<input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum{{ account.pk }}" >
 		<i class="flaticon flaticon-album"></i>
-		Album
+		{% trans 'Album' %}
 	      </label>
 	      {% if is_me %}
 	      <label for="optBox" class="cardstype btn btn-{{ attribute }}">
 		<input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox{{ account.pk }}" >
 		<i class=".flaticon flaticon-present"></i>
-		Present Box
+		{% trans 'Present Box' %}
 	      </label>
 	      {% endif %}
 	      <label for="optWishlist" class="cardstype btn btn-{{ attribute }}">
 		<input id="optWishlist" name="cardstype" type="radio" data-target="#cardtabWishlist{{ account.pk }}" >
 		<i class="flaticon flaticon-star"></i>
-		Wish List
+		{% trans 'Wish List' %}
 	      </label>
 	    </div>
 	  </div>
 	  <div class="tab-content">
 	    {% if is_me %}
 	    <br>
-	    <div class="alert alert-info">To search through your cards, order them, edit them or add some new, go to <a href="/cards?search=">the cards page and use the filters <i class="flaticon-filter"></i></a></div>
+	    <div class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to <a href="/cards?search=">the cards page and use the filters {% endblocktrans %}<i class="flaticon-filter"></i></a></div>
 	    {% endif %}
 	    <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.deck %}

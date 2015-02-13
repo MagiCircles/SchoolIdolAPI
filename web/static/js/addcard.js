@@ -62,7 +62,7 @@ function editCardFormHandler() {
 	var card = $(this).closest('.card');
 	$.get('/ajax/editcard/' + $(this).attr('data-id'), function(data) {
 	    $('#addCardModal .modal-body').html(data);
-	    $('#addCardModal .modal-title').text('Edit card');
+	    $('#addCardModal .modal-title').text((is_japanese ? 'カードの変更' : 'Edit card'));
 	    $('#addCardModal').modal('show');
 
 	    addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),

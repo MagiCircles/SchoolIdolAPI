@@ -199,6 +199,9 @@ python manage.py migrate
 
 # Fill database with cards
 python manage.py importcards
+
+# Compile localized messages
+python manage.py compilemessages
 ```
 
 #### Anytime
@@ -222,6 +225,14 @@ No need to restart it to see your modifications, the server reloads itself autom
 ```shell
 python manage.py makemigrations
 python manage.py migrate
+```
+
+##### Whenever you add messages that should be translated
+
+```shell
+python manage.py makemessages -l ja --ignore=env/*
+# Edit the language file with the translation
+python manage.py compilemessages
 ```
 
 ##### Update the cards & events from the internet

@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login
 from django.db.models import Count, Q
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 from dateutil.relativedelta import relativedelta
 from api import models
 from web import forms, links
@@ -228,13 +229,13 @@ def cards(request, card=None, ajax=False):
             'attribute_choices': models.ATTRIBUTE_CHOICES,
             'stored_choices': models.STORED_CHOICES,
             'ordering_choices': (
-                ('release_date', 'Release date'),
-                ('id', 'Card #ID'),
-                ('name', 'Idol\'s names'),
-                ('idolized_maximum_statistics_smile', 'Smile\'s statistics'),
-                ('idolized_maximum_statistics_pure', 'Pure\'s statistics'),
-                ('idolized_maximum_statistics_cool', 'Cool\'s statistics'),
-                ('hp', 'HP')
+                ('release_date', _('Release date')),
+                ('id', _('Card #ID')),
+                ('name', _('Idol\'s names')),
+                ('idolized_maximum_statistics_smile', _('Smile\'s statistics')),
+                ('idolized_maximum_statistics_pure', _('Pure\'s statistics')),
+                ('idolized_maximum_statistics_cool', _('Cool\'s statistics')),
+                ('hp', _('HP'))
             )
         }
 

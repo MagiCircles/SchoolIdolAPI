@@ -1,11 +1,19 @@
 {% load mod %}
 {% load imageurl %}
 {% load getattribute %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 
     {% if cards and total_cards != 0 %}
     <div class="page" data-page="{{ page }}">
       {% if show_filter_bar and total_cards > 0 and not ajax %}
-      <h4 class="padding20 nomargin">{{ total_results }} card{% if total_results > 1 %}s{% endif %} match{% if total_results == 1 %}es{% endif %} your search:</h4>
+      <h4 class="padding20 nomargin">
+	{% blocktrans count counter=total_results %}
+	{{ counter }} card matches your search:
+	{% plural %}
+	{{ counter }} cards match your search:
+	{% endblocktrans %}
+      </h4>
       {% endif %}
       <div class="row">
       {% for i, card in cards %}
@@ -33,12 +41,12 @@
 		  <div class="text-center level-buttons">
 		    <div class="btn-group btn-group-justified" data-toggle="buttons">
 		      <label class="btn btn-{{ card.attribute }} minimum_statistics">
-			<input type="radio" name="options" autocomplete="off"> Level 1
+			<input type="radio" name="options" autocomplete="off"> {% trans 'Level' %} 1
 		      </label>
 		      {% if card.non_idolized_maximum_statistics_smile %}
 		      <label class="btn btn-{{ card.attribute }} active non_idolized_statistics">
 			<input type="radio" name="options" autocomplete="off" checked>
-			Level
+			{% trans 'Level' %}
 			{% if card.rarity == 'R' %}40
 			{% elif card.rarity == 'SR' %}60
 			{% elif card.rarity == 'UR' %}80
@@ -47,7 +55,7 @@
 		      {% endif %}
 		      <label class="btn btn-{{ card.attribute }} idolized_statistics {% if card.non_idolized_maximum_statistics_smile == 0 %}active{% endif %}">
 			<input type="radio" name="options" autocomplete="off" {% if card.non_idolized_maximum_statistics_smile == 0 %}checked{% endif %}>
-			Level
+			{% trans 'Level' %}
 			{% if card.rarity == 'N' %}40
 			{% elif card.rarity == 'R' %}60
 			{% elif card.rarity == 'SR' %}80
@@ -73,7 +81,7 @@
 			       aria-valuemin="0"
 			       aria-valuemax="{{ max_stats|getattribute:attribute }}"
 			       style="width: {{ stat }}%">
-			    <span class="sr-only">{{ stat }}% Complete (success)</span>
+			    <span class="sr-only">{{ stat }}%</span>
 			  </div>
 			</div> <!-- progress -->
 		      </div>
@@ -88,7 +96,7 @@
 		<table class="table">
 		  <tbody>
 		    <tr>
-		      <th>Id</th>
+		      <th>{% trans 'Id' %}</th>
 		      <td>
 			<a href="/cards/{{ card.id }}">
 			  <div class="pull-right">
@@ -100,12 +108,13 @@
 			  </div>
 			  #{{ card.id }}
 			</a><br>
-			<small>{{ card.name }}{% if card.japanese_name %} ({{ card.japanese_name }}){% endif %} {{ card.rarity }} {{ card.attribute }} ({{ card|getattribute:'japanese_attribute' }})</small>
+			<small>{{ card.name }}{% if card.japanese_name %} {{ card.japanese_name }}{% endif %}<br>
+			  {{ card.rarity }} {{ card.attribute }} {{ card|getattribute:'japanese_attribute' }}</small>
 		      </td>
 		    </tr>
 		    {% if card.release_date %}
 		    <tr>
-		      <th>Release date</th>
+		      <th>{% trans 'Release date' %}</th>
 		      <td>
 			{{ card.release_date }}
 			<div class="pull-right">
@@ -116,10 +125,10 @@
 		    {% endif %}
 		    {% if card.event %}
 		    <tr>
-		      <th>Event</th>
+		      <th>{% trans 'Event' %}</th>
 		      <td>
 			<a href="http://decaf.kouhi.me/lovelive/index.php?title={{ card.event.japanese_name }}" target="_blank">
-			  {{ card.event.japanese_name }}
+			  {{ card.event.japanese_name }} {% if card.event.english_name != card.event.japanese_name %}{{ card.event.english_name }}{% endif %}
 			</a>
 			<div class="pull-right">
 			  <i class="flaticon-event"></i>
@@ -129,7 +138,7 @@
 		    {% endif %}
 		    {% if card.hp %}
 		    <tr>
-		      <th>HP</th>
+		      <th>{% trans 'HP' %}</th>
 		      <td>
 			<span class="hp_non_idolized">{{ card.hp }}</span>
 			<span class="hp_idolized">{{ card.hp|add:1 }}</span>
@@ -141,7 +150,7 @@
 		    {% endif %}
 		    {% if card.japanese_collection %}
 		    <tr>
-		      <th>Collection</th>
+		      <th>{% trans 'Collection' %}</th>
 		      <td>
 			<a href="/cards/?search=&collection={{ card.japanese_collection }}">{{ card.japanese_collection }}</a>
 			<div class="pull-right">
@@ -151,7 +160,7 @@
 		    </tr>
 		    {% endif %}
 		    <tr>
-		      <th>Skill</th>
+		      <th>{% trans 'Skill' %}</th>
 		      <td>
 			<div class="pull-right">
 			  <i class="flaticon-skill"></i>
@@ -169,7 +178,7 @@
 		      </td>
 		    </tr>
 		    <tr>
-		      <th>Center Skill</th>
+		      <th>{% trans 'Center Skill' %}</th>
 		      <td>
 			<p>
 			  {{ card.center_skill }}
@@ -187,7 +196,7 @@
 		    </tr>
 		    {% if not single %}
 		    <tr>
-		      <th>Comments</th>
+		      <th>{% trans 'Comments' %}</th>
 		      <td>
 			<a href="http://schoolido.lu/cards/{{ card.id }}/#disqus_thread" target="_blank">Comments</a>
 			<div class="pull-right">
@@ -206,21 +215,21 @@
 	      {% include "ownedCardOnBottomCard.html" with owned=owned %}
 	      {% with card.owned_cards|length as length %}{% if length > 1 %}|{% endif %}{% endwith %}
 	      {% endfor %}
-	      <a href="{% if user.is_authenticated %}#addCard{% else %}/create{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" title="Add this card" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}A{% else %}Create an account to a{% endif %}dd this card to your collection" data-trigger="hover"></i></a>
+	      <a href="{% if user.is_authenticated %}#addCard{% else %}/create{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" title="{% trans 'Add this card'%}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}{% trans 'Add this card to your collection' %}{% else %}{% trans 'Create an account to add this card to your collection' %}{% endif %}" data-trigger="hover"></i></a>
 	      <div class="pull-right">
 		{% if card.is_promo %}
-		<i class="flaticon-promo" title="Promo Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card comes with {{ card.promo_item }}" data-trigger="hover"></i>
+		<i class="flaticon-promo" title="{% trans 'Promo Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card comes with ' %}{{ card.promo_item }}" data-trigger="hover"></i>
 		{% endif %}
 		{% if card.event %}
-		<i class="flaticon-event" title="Event Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card first appeared during the event {{ card.event.japanese_name }}" data-trigger="hover"></i>
+		<i class="flaticon-event" title="{% trans 'Event Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card first appeared during the event' %} {{ card.event.japanese_name }}" data-trigger="hover"></i>
 		{% endif %}
 		{% if card.is_special %}
-	      <i class="flaticon-skill" title="Special Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card cannot be added in a team. {{ card.skill_details }}" data-trigger="hover"></i>
+	      <i class="flaticon-skill" title="{% trans 'Special Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card cannot be added in a team.' %} {% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% else %}{{ card.skill_details }}{% endif %}" data-trigger="hover"></i>
 	      {% endif %}
 	      {% if card.japan_only %}
-	      <i class="flaticon-JP" title="Japan Only Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card is only available in the Japanese version of the game." data-trigger="hover"></i>
+	      <i class="flaticon-JP" title="{% trans 'Japan Only Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card is only available in the Japanese version of the game.' %}" data-trigger="hover"></i>
 	      {% else %}
-	      <i class="flaticon-world" title="Worldwide Card" data-container="body" data-toggle="popover" data-placement="top" data-content="This card is available on all the versions of the game in the world." data-trigger="hover"></i>
+	      <i class="flaticon-world" title="{% trans 'Worldwide Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card is available on all the versions of the game in the world.' %}" data-trigger="hover"></i>
 	      {% endif %}
 	      {% if total_cards > 1 %}<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}"><i class="flaticon-more"></i></a>{% endif %}
 	      </div>

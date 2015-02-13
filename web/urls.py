@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import include, patterns, url
 from web import views
 
 urlpatterns = patterns('',
@@ -22,4 +22,6 @@ urlpatterns = patterns('',
     url(r'^ajax/editcard/(?P<ownedcard>\d+)[/]+$', views.ajaxeditcard, name='ajaxeditcard'),
     url(r'^ajax/deletecard/(?P<ownedcard>\d+)[/]+$', views.ajaxdeletecard, name='ajaxdeletecard'),
     url(r'^ajax/cards[/]+$', views.ajaxcards, name='ajaxcards'),
+
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 )

@@ -1,22 +1,23 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}User Settings{% endblock %}
+{% block title %}{% trans 'User Settings' %}{% endblock %}
 
 {% block content %}
 
 <div class="container">
   <br><br>
   <div class="jumbotron">
-    <h1>User Settings</h1>
+    <h1>{% trans 'User Settings' %}</h1>
     <br>
     <form method="post" action="">
-      <div class="alert alert-warning">You will be disconnected and will have to login with your new password.</div>
+      <div class="alert alert-warning">{% blocktrans %}You will be disconnected and will have to login with your new password.{% endblocktrans %}</div>
       {% csrf_token %}
       {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
       <br><br>
       <div class="text-right">
-	<a href="/user/{{ user.username }}" class="btn btn-lg btn-link">Back to my profile</a>
-	<input type="submit" class="btn btn-lg btn-Cool" value="Save your settings" />
+	<a href="/user/{{ user.username }}" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Save your settings' %}" />
       </div>
       <input type="hidden" name="next" value="/login" />
     </form>

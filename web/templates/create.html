@@ -1,21 +1,22 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}{% trans 'Sign Up' %}{% endblock %}
 
 {% block content %}
 
 <div class="container">
   <br><br>
   <div class="jumbotron">
-    <h1>Sign Up</h1>
+    <h1>{% trans 'Sign Up' %}</h1>
     <br>
     <form method="post" action="">
       {% csrf_token %}
       {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
       <br><br>
       <div class="text-right">
-	<a href="/login" class="btn btn-lg btn-link">Login</a>
-	<input type="submit" class="btn btn-lg btn-Cool" value="Sign Up" />
+	<a href="/login" class="btn btn-lg btn-link">{% trans 'Login' %}</a>
+	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Sign Up' %}" />
       </div>
       <input type="hidden" name="next" value="/addaccount" />
     </form>

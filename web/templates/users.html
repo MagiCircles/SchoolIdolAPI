@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Players{% endblock %}
+{% block title %}{% trans 'Players' %}{% endblock %}
 
 {% block content %}
 
@@ -8,7 +9,7 @@
 {% load imageurl %}
 
 <div class="container">
-  <h1 class="text-center margin50">Players</h1>
+  <h1 class="text-center margin50">{% trans 'Players' %}</h1>
   <div class="row">
     {% for i, user in users %}
     {% if i|mod:3 %}
@@ -22,9 +23,14 @@
 	</div>
 	<div class="panel-body">
 	  {% if length == 0 %}
-	  <h5 class="margin20">No account.</h5>
+	  <h5 class="margin20">{% trans 'No account.' %}</h5>
 	  {% else %}
-	  <h5 class="padding20 padding-novertical">{{ length }} account{% if length > 1 %}s{% endif %}:</h5>
+	  <h5 class="padding20 padding-novertical">{% blocktrans count counter=length %}
+	    {{ length }} account:
+	    {% plural %}
+	    {{ length }} accounts:
+	    {% endblocktrans %}
+	  </h5>
 	  <table class="table margin-novertical">
 	    {% for account in user.accounts %}
 	    <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';">
@@ -44,7 +50,7 @@
 	    {% endfor %}
 	  </table>
 	  {% endif %}
-	  <small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/user/{{ user.username }}/#disqus_thread">Start the discussion</a></small>
+	  <small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/user/{{ user.username }}/#disqus_thread">{% trans 'Start the discussion' %}</a></small>
 	</div>
       </div>
       {% endwith %}

@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load imageurl %}
 <div class="row">
 	      <div class="col-md-8">
@@ -6,15 +7,15 @@
 		  {% include "bootstrap_form_horizontal.html" with form=addcard_form wrap=0 %}
 		  <div class="row form-group">
 		    <label for="id_expires_in" class="col-sm-4 control-label" style="text-align: right;">
-		      Expires In:
+		      {% trans 'Expires In' %}:
 		    </label>
 		    <div class="col-sm-8">
-		      <input class="form-control" id="id_expires_in" min="0" name="expires_in" placeholder="days" type="number"{% if edit.expires_in %} value="{{ edit.expires_in }}"{% endif %}>
+		      <input class="form-control" id="id_expires_in" min="0" name="expires_in" placeholder="{% trans 'days' %}" type="number"{% if edit.expires_in %} value="{{ edit.expires_in }}"{% endif %}>
 		    </div>
 		  </div>
 		  <br><br>
 		  <div class="text-right">
-		    <input type="submit" class="btn btn-lg btn-Cool" value="{% if edit%}Apply Changes{% else %}Add Card{% endif %}" />
+		    <input type="submit" class="btn btn-lg btn-Cool" value="{% if edit %}{% trans 'Apply Changes' %}{% else %}{% trans 'Add Card' %}{% endif %}" />
 		  </div>
 		</form>
 	      </div>
@@ -27,12 +28,12 @@
 	    <hr>
 	    <div class="row">
 	      <div class="col-md-8">
-		<div class="alert alert-warning">You can't cancel this action afterwards.</div>
+		<div class="alert alert-warning">{% blocktrans %}You can't cancel this action afterwards.{% endblocktrans %}</div>
 	      </div>
 	      <div class="col-md-4">
 		<form method="post" action="/ajax/deletecard/{{ edit.pk }}/" role="form" class="delete">
 		  {% csrf_token %}
-		  <input class="btn btn-danger btn-block btn-lg" type="submit" value="Delete this card">
+		  <input class="btn btn-danger btn-block btn-lg" type="submit" value="{% trans 'Delete this card' %}">
 		</form>
 	      </div>
 	    </div>

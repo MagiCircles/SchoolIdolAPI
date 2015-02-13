@@ -1,4 +1,24 @@
-		<li><a href="/users"><i class="flaticon-users"></i> Players</a></li>
-		<li><a href="#" data-toggle="modal" data-target="#aboutModal"><i class="flaticon-about"></i> About</a></li>
-		<li><a href="#" data-toggle="modal" data-target="#contactModal"><i class="flaticon-contact"></i> Contact</a></li>
-		<li><a href="#" data-toggle="modal" data-target="#developersModal"><i class="flaticon-developer"></i> Developers</a></li>
+{% load i18n %}
+<li><a href="/users"><i class="flaticon-users"></i> {% trans 'Players' %}</a></li>
+<li><a href="#" data-toggle="modal" data-target="#aboutModal"><i class="flaticon-about"></i> {% trans 'About' %}</a></li>
+<li><a href="#" data-toggle="modal" data-target="#contactModal"><i class="flaticon-contact"></i> {% trans 'Contact' %}</a></li>
+<li><a href="#" data-toggle="modal" data-target="#developersModal"><i class="flaticon-developer"></i> {% trans 'Developers' %}</a></li>
+<li role="presentation" class="divider"></li>
+<li role="presentation" class="dropdown-header">{% trans 'Switch language:' %}</li>
+{% for lang in LANGUAGES %}
+<li{% if LANGUAGE_CODE == lang.0 %} class="disabled"{% endif %}>
+  <a href="#" class="switchLanguage" data-lang="{{ lang.0 }}">
+    {% if LANGUAGE_CODE == lang.0 %}<div class="pull-right"><i class="flaticon-checked"></i></div>{% endif %}
+    {{ lang.1 }}
+  </a>
+</li>
+{% endfor %}
+<form action="/i18n/setlang/" method="post" class="hidden" id="switchLanguage">
+  {% csrf_token %}
+  <input name="next" type="hidden" value="/" />
+  <select name="language">
+    {% for lang in LANGUAGES %}
+    <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+    {% endfor %}
+  </select>
+</form>

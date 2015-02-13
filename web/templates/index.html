@@ -1,11 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 
-{% block title %}The Ultimate Resource For LoveLive! School Idol Festival players{% endblock %}
+{% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}
 {% block back_button %}0{% endblock %}
 {% block js %}<script src="/static/js/index.js"></script>{% endblock %}
 
 {% block content %}
 {% load imageurl %}
+
+{% if LANGUAGE_CODE != 'ja' %}
 <div class="link-stars-side" style="display: none;">
   {% for i, link in links3 %}
   <div class="color-Rainbow-{{ i|add:1 }}">
@@ -13,10 +17,18 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}
 
 <div id="home" class="text-center">
+  {% if LANGUAGE_CODE == 'ja' %}
+  <br><br>
+  <img src="/static/roburaibu_shadow.png" class="logo" alt="Logo">
+  <br><br>
+  {% else %}
   <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+  {% endif %}
   <br>
+  {% if LANGUAGE_CODE != 'ja' %}
   <div class="link-stars btn-group">
     {% for i, link in links %}
     <a href="#{{ link.link }}" class="btn btn-Rainbow-{{ i|add:1 }} btn-lg"><i class="flaticon-star fontx2"></i></a>
@@ -27,33 +39,35 @@
     <a href="#{{ link.link }}" style="display: none;" class="fontx2 color-Rainbow-{{ i|add:1 }}">{{ link.name }}</a>
     {% endfor %}
   </div>
+  {% endif %}
   <div class="container">
     <div class="row what">
       <div class="col-md-4 color-Smile">
 	<a href="/cards/">
 	  <i class="flaticon flaticon-album"></i>
-	  <h2>Browse Cards</h2>
-	  <p>Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering.</p>
+	  <h2>{% trans 'Browse Cards' %}</h2>
+	  <p>{% blocktrans %}Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering.{% endblocktrans %}</p>
 	</a>
       </div>
       <div class="col-md-4 color-Pure">
 	<a href="{% if user.is_authenticated %}/cards/{% else %}/create/{% endif %}">
 	  <i class="flaticon flaticon-cards"></i>
-	  <h2>Track Cards</h2>
-	  <p>Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts.</p>
+	  <h2>{% trans 'Track Cards' %}</h2>
+	  <p>{% blocktrans %}Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts.{% endblocktrans %}</p>
 	</a>
       </div>
       <div class="col-md-4 color-Cool">
 	<a href="/contest/">
 	  <i class="flaticon flaticon-idolized"></i>
-	  <h2>Show your love</h2>
-	  <p>Add cards to your favorites, comment on the cards and VOTE FOR THE BEST GIRL on the Facemash.</p>
+	  <h2>{% trans 'Show your love' %}</h2>
+	  <p>{% blocktrans %}Add cards to your favorites, comment on the cards and VOTE FOR THE BEST GIRL on the Facemash.{% endblocktrans %}</p>
 	</a>
       </div>
     </div>
   </div>
 </div>
 
+{% if LANGUAGE_CODE != 'ja' %}
 {% for i, link in links2 %}
 <div id="{{ link.link }}" class="bg-Rainbow-{{ i|add:1 }} home-section">
   <div class="container">
@@ -100,5 +114,5 @@
   </div>
 </div></div>
 {% endfor %}
-
+{% endif %}
 {% endblock %}

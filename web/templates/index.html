@@ -9,7 +9,7 @@
 {% block content %}
 {% load imageurl %}
 
-{% if LANGUAGE_CODE != 'ja' %}
+{% if LANGUAGE_CODE == 'en' %}
 <div class="link-stars-side" style="display: none;">
   {% for i, link in links3 %}
   <div class="color-Rainbow-{{ i|add:1 }}">
@@ -28,7 +28,7 @@
   <img src="/static/logo_shadow.png" class="logo" alt="Logo">
   {% endif %}
   <br>
-  {% if LANGUAGE_CODE != 'ja' %}
+  {% if LANGUAGE_CODE == 'en' %}
   <div class="link-stars btn-group">
     {% for i, link in links %}
     <a href="#{{ link.link }}" class="btn btn-Rainbow-{{ i|add:1 }} btn-lg"><i class="flaticon-star fontx2"></i></a>
@@ -67,7 +67,7 @@
   </div>
 </div>
 
-{% if LANGUAGE_CODE != 'ja' %}
+{% if LANGUAGE_CODE == 'en' %}
 {% for i, link in links2 %}
 <div id="{{ link.link }}" class="bg-Rainbow-{{ i|add:1 }} home-section">
   <div class="container">

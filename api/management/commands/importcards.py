@@ -267,6 +267,10 @@ class Command(BaseCommand):
             tds = tr.find_all('td')
             if len(tds) > 4:
                 id = tds[0].string
+                try:
+                    id = int(id)
+                except (ValueError, TypeError):
+                    continue
                 if id != None:
                     print 'Import for #', id, '...',; sys.stdout.flush()
                     picture = tds[1].img

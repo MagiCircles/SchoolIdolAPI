@@ -44,7 +44,7 @@
 	<h1>{{ profile_user.username }}</h1>
 	{% if is_me %}<div><a href="/edit"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
 	<br>
-	{{ preferences.description|markdown }}
+	<div class="description">{{ preferences.description|markdown }}</div>
       </div>
     </div>
     {% with user_accounts|length as length %}

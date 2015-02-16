@@ -44,16 +44,21 @@ select {
     .panel-variant(lighten(@color, 20%), #fff, @color, lighten(@color, 20%));
     >.panel-heading {
 	a {
-	    color: #fff;
+	    color: #fff!important;
 	    &:hover {
-		color: lighten(@color, 30%);
+		color: lighten(@color, 30%)!important;
 		text-decoration: none;
 	    }
+	}
+	.avatar {
+	    border-color: @color!important;
 	}
     }
     >.panel-body {
 	background: @background;
 	overflow: hidden;
+	color: @TextColor;
+	.a-variant-important(@color);
     }
     >.panel-footer {
 	color: darken(@color, 5%);
@@ -74,6 +79,7 @@ select {
 	    cursor: pointer;
 	}
     }
+    .a-variant(@color);
 }
 
 body {
@@ -95,6 +101,7 @@ main {
 .panel-Pure { .custom-panel(@PureColor); .a-variant(lighten(@PureColor, 10%)) }
 .panel-Cool { .custom-panel(@CoolColor); .a-variant(lighten(@CoolColor, 10%)) }
 .panel-All { .custom-panel(@AllColor); .a-variant(lighten(@AllColor, 10%)) }
+.panel-default { .custom-panel(@DefaultColor); .a-variant(lighten(@DefaultColor, 10%)) }
 
 .card {
     .level-buttons {
@@ -413,6 +420,36 @@ a.panel {
     }
 }
 
+#profile.jumbotron {
+    &.Smile { background-color: lighten(@SmileColor, 45%); color: darken(@SmileColor, 10%); .a-variant(@SmileColor); }
+    &.Pure { background-color: lighten(@PureColor, 45%); color: darken(@PureColor, 10%); .a-variant(@PureColor); }
+    &.Cool { background-color: lighten(@CoolColor, 45%); color: darken(@CoolColor, 10%); .a-variant(@CoolColor); }
+    &.All { background-color: lighten(@AllColor, 35%); color: darken(@AllColor, 10%); .a-variant(@AllColor); }
+}
+.topprofile {
+    min-height: 200px;
+    margin-bottom: 30px;
+    .avatar {
+	border-radius: 20%;
+	border: 5px solid #999;
+	width: 200px;
+	height: 200px;
+    }
+    .info {
+	margin-left: 230px;
+	h1 {
+	    text-align: left;
+	}
+    }
+    .table {
+	background-color: white;
+    }
+    &.Smile { .avatar { border-color: @SmileColor; }}
+    &.Pure { .avatar { border-color: @PureColor; }}
+    &.Cool { .avatar { border-color: @CoolColor; }}
+    &.All { .avatar { border-color: @AllColor; }}
+}
+
 .profile-account {
     .tabpanel {
 	.btn {
@@ -433,6 +470,22 @@ a.panel {
 	margin-bottom: 10px;
 	&:hover {
 	    text-decoration: none!important;
+	}
+    }
+}
+
+#users {
+    .panel {
+	.panel-heading {
+	    .avatar {
+		background: white;
+		float: right;
+		width: 70px;
+		height: 70px;
+		margin: -20px 0;
+		border-radius: 20%;
+		border: 4px solid #ddd;
+	    }
 	}
     }
 }

@@ -149,3 +149,15 @@ class OwnedCard(models.Model):
         return str(self.owner_account) + ' owns ' + str(self.card)
 
 admin.site.register(OwnedCard)
+
+class UserPreferences(models.Model):
+    user = models.ForeignKey(User, related_name='preferences')
+    color = models.CharField(_('Color'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
+    description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'))
+    best_girl = models.CharField(_('Best girl'), max_length=200, null=True, blank=True)
+    location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in.'))
+    twitter = models.CharField(max_length=20, null=True, blank=True)
+    accept_friend_requests = models.BooleanField(_('Accept friend requests'), default=True)
+    private = models.BooleanField(_('Private Profile'), default=False, help_text=_('If your profile is private, people will only see your center.'))
+
+admin.site.register(UserPreferences)

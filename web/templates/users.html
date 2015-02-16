@@ -8,7 +8,7 @@
 {% load mod %}
 {% load imageurl %}
 
-<div class="container">
+<div class="container" id="users">
   <h1 class="text-center margin50">{% trans 'Players' %}</h1>
   <div class="row">
     {% for i, user in users %}
@@ -17,9 +17,12 @@
     {% endif%}
     <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">
       {% with user.accounts|length as length %}
-      <div class="panel panel-Smile">
+      <div class="panel panel-{% if user.prefs.color %}{{ user.prefs.color }}{% else %}default{% endif %}">
 	<div class="panel-heading">
-	  <a href="/user/{{ user.username }}/"><h3 class="padding-novertical margin-novertical">{{ user }}</h3></a>
+	  <a href="/user/{{ user.username }}/"><h3 class="padding-novertical margin-novertical">
+	      <img src="{{ user.avatar }}" alt="{{ user.username }} avatar" class="avatar">
+	      <div class="text">{{ user }}</div>
+	  </h3></a>
 	</div>
 	<div class="panel-body">
 	  {% if length == 0 %}

@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from dateutil.relativedelta import relativedelta
 from api import models
 from web import forms, links
-
+import urllib, hashlib
 import datetime
 import random
 
@@ -33,6 +33,11 @@ def globalContext(request):
     if not 'active_account' in context and 'accounts' in context and context['accounts']:
         context['active_account'] = context['accounts'][0]
     return context
+
+def getUserAvatar(user, size):
+    return ("http://www.gravatar.com/avatar/"
+            + hashlib.md5(user.email.lower()).hexdigest()
+            + "?" + urllib.urlencode({'d': 'http://schoolido.lu/static/kotori.jpg', 's': str(size)}))
 
 def index(request):
     context = globalContext(request)
@@ -281,21 +286,24 @@ def profile(request, username):
     context = globalContext(request)
     user = get_object_or_404(User, username=username)
     context['profile_user'] = user
+    context['preferences'], created = models.UserPreferences.objects.get_or_create(user=user)
     if user == request.user:
         context['is_me'] = True
         context['user_accounts'] = context['accounts']
     else:
         context['is_me'] = False
         context['user_accounts'] = models.Account.objects.filter(owner=user)
-    for account in context['user_accounts']:
-        account.deck = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
-        account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
-        account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
-        account.album = models.OwnedCard.objects.filter(owner_account=account).filter((Q(stored='Album') | Q(stored='Deck'))).order_by('card__id')
-        if context['is_me']:
-            account.box = models.OwnedCard.objects.filter(owner_account=account, stored='Box').order_by('card__id')
-        account.wishlist = models.OwnedCard.objects.filter(owner_account=account, stored='Favorite').order_by('-card__rarity', '-idolized', 'card__id')
+    if not context['preferences'].private or context['is_me']:
+        for account in context['user_accounts']:
+            account.deck = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
+            account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
+            account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
+            account.album = models.OwnedCard.objects.filter(owner_account=account).filter((Q(stored='Album') | Q(stored='Deck'))).order_by('card__id')
+            if context['is_me']:
+                account.box = models.OwnedCard.objects.filter(owner_account=account, stored='Box').order_by('card__id')
+            account.wishlist = models.OwnedCard.objects.filter(owner_account=account, stored='Favorite').order_by('-card__rarity', '-idolized', 'card__id')
     context['current'] = 'profile'
+    context['avatar'] = getUserAvatar(user, 200)
     return render(request, 'profile.html', context)
 
 def ajaxaddcard(request):
@@ -371,17 +379,25 @@ def ajaxcards(request):
 def edit(request):
     if not request.user.is_authenticated or request.user.is_anonymous():
         raise PermissionDenied()
-    if request.method == "POST":
-        form = forms.UserForm(request.POST, instance=request.user)
-        if form.is_valid():
-            edited_user = form.save(commit=False)
-            edited_user.set_password(form.cleaned_data['password'])
-            edited_user.save()
-            return redirect('/login/')
-    else:
-        form = forms.UserForm(instance=request.user)
     context = globalContext(request)
+    context['preferences'], created = models.UserPreferences.objects.get_or_create(user=request.user)
+    form = forms.UserForm(instance=request.user)
+    form_preferences = forms.UserPreferencesForm(instance=context['preferences'])
+    if request.method == "POST":
+        if 'editPreferences' in request.POST:
+            form_preferences = forms.UserPreferencesForm(request.POST, instance=context['preferences'])
+            if form_preferences.is_valid():
+                form_preferences.save()
+                return redirect('/user/' + request.user.username)
+        else:
+            form = forms.UserForm(request.POST, instance=request.user)
+            if form.is_valid():
+                edited_user = form.save(commit=False)
+                edited_user.set_password(form.cleaned_data['password'])
+                edited_user.save()
+                return redirect('/login/')
     context['form'] = form
+    context['form_preferences'] = form_preferences
     context['current'] = 'edit'
     return render(request, 'edit.html', context)
 
@@ -413,6 +429,9 @@ def users(request):
     context = globalContext(request)
     users = User.objects.all()
     for user in users:
+        user.avatar = getUserAvatar(user, 100)
+        preferences, created = models.UserPreferences.objects.get_or_create(user=user)
+        user.prefs = preferences
         user.accounts = models.Account.objects.filter(owner=user)
         user.accounts = sorted(user.accounts, key=lambda a: a.rank, reverse=True)
         user.best_rank = user.accounts[0].rank if user.accounts else 0

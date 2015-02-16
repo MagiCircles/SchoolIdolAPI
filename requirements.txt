@@ -3,7 +3,9 @@ Pillow==2.7.0
 beautifulsoup4==4.3.2
 django-bootstrap-form-horizontal==0.0.4
 django-filter==0.9.1
+django-markdown-deux==1.0.5
 djangorestframework==3.0.3
+markdown2==2.3.0
 python-dateutil==2.4.0
 six==1.9.0
 wsgiref==0.1.2

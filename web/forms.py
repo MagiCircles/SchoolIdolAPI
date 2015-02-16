@@ -1,6 +1,7 @@
 from django import forms
-from django.forms import ModelForm, ModelChoiceField
+from django.forms import ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
+from django.db.models import Count
 from api import models
 
 class UserForm(ModelForm):
@@ -8,6 +9,17 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
+
+def getGirls():
+    girls = models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name')
+    return [('', '')] + [(girl['name'], girl['name']) for girl in girls]
+
+class UserPreferencesForm(ModelForm):
+    #best_girl = UserPreferencesModelChoiceField(queryset=models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name'), required=False)
+    best_girl = ChoiceField(choices=getGirls(), required=False)
+    class Meta:
+        model = models.UserPreferences
+        fields = ('color', 'description', 'best_girl', 'location', 'twitter', 'accept_friend_requests', 'private')
 
 class AccountForm(ModelForm):
     class Meta:

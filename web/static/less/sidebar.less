@@ -7,18 +7,58 @@
     margin-right: -250px;
     right: 250px;
     width: 250px;
-    background: @BarColor;
+    &.default {
+	background: @BarColor;
+	h4 { background: darken(@BarColor, 5%); }
+	.btn-default { .button-variant(#fff, darken(@BarColor, 5%), darken(darken(@BarColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@BarColor, 10%);
+	    color: darken(@BarColor, 10%);
+	}
+    }
+    &.Smile {
+        background: @SmileColor;
+	h4 { background: darken(@SmileColor, 5%); }
+	.btn-Smile { .button-variant(#fff, darken(@SmileColor, 5%), darken(darken(@SmileColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@SmileColor, 10%);
+	    color: darken(@SmileColor, 10%);
+	}
+    }
+    &.Pure {
+        background: @PureColor;
+	h4 { background: darken(@PureColor, 5%); }
+	.btn-Pure { .button-variant(#fff, darken(@PureColor, 5%), darken(darken(@PureColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@PureColor, 10%);
+	    color: darken(@PureColor, 10%);
+	}
+    }
+    &.Cool {
+        background: @CoolColor;
+	h4 { background: darken(@CoolColor, 5%); }
+	.btn-Cool { .button-variant(#fff, darken(@CoolColor, 5%), darken(darken(@CoolColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@CoolColor, 10%);
+	    color: darken(@CoolColor, 10%);
+	}
+    }
+    &.All {
+        background: @AllColor;
+	h4 { background: darken(@AllColor, 5%); }
+	.btn-All { .button-variant(#fff, darken(@AllColor, 5%), darken(darken(@AllColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@AllColor, 10%);
+	    color: darken(@AllColor, 10%);
+	}
+    }
     color: #fff;
     position: fixed;
     height: 100%;
     overflow-y: auto;
     z-index: 1000;
     transition: all 0.4s ease 0s;
-    .btn-Smile {
-	.button-variant(#fff, darken(@BarColor, 5%), darken(darken(@BarColor, 5%), 5%));
-    }
     h4 {
-	background: darken(@BarColor, 5%);
 	padding: 10px;
 	margin: 0;
     }

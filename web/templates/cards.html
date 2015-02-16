@@ -14,7 +14,7 @@
 
 {% if not single %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
-  <nav id="sidebar-wrapper">
+  <nav id="sidebar-wrapper" class="{{ interfaceColor }}">
     <form method="GET">
       <h4>{% trans 'Search' %}</h4>
       <div class="section search">
@@ -138,7 +138,7 @@
       </div>
       {% endif %}
       <div class="section order">
-	<input type="submit" class="btn btn-Smile btn-block" value="{% trans 'Go' %}">
+	<input type="submit" class="btn btn-{{ interfaceColor }} btn-block" value="{% trans 'Go' %}">
 	<br><br><br><br><br>
       </div>
     </form>

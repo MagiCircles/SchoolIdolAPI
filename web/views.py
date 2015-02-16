@@ -22,9 +22,12 @@ def globalContext(request):
         'hide_back_button': False,
         'show_filter_button': False,
         'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
+        'interfaceColor': 'default',
     }
     if request.user.is_authenticated and not request.user.is_anonymous():
         context['accounts'] = models.Account.objects.filter(owner=request.user)
+        preferences, created = models.UserPreferences.objects.get_or_create(user=request.user)
+        context['interfaceColor'] = preferences.color
     active_account_id = request.session.get('active_account')
     if active_account_id:
         for account in context['accounts']:

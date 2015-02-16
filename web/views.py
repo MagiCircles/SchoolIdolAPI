@@ -1,4 +1,5 @@
 from __future__ import division
+import math
 from django.shortcuts import render, redirect, get_object_or_404
 from django import template
 from django.http import HttpResponse
@@ -20,6 +21,7 @@ def globalContext(request):
     context ={
         'hide_back_button': False,
         'show_filter_button': False,
+        'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
     }
     if request.user.is_authenticated and not request.user.is_anonymous():
         context['accounts'] = models.Account.objects.filter(owner=request.user)
@@ -186,6 +188,7 @@ def cards(request, card=None, ajax=False):
             if page < 0:
                 page = 0
         cards = cards[(page * page_size):((page * page_size) + page_size)]
+        context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     else:
         context['total_results'] = 1
         cards = [get_object_or_404(models.Card, id=int(card))]

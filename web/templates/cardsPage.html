@@ -1,4 +1,5 @@
 {% load mod %}
+{% load times %}
 {% load imageurl %}
 {% load getattribute %}
 {% load i18n %}
@@ -252,7 +253,17 @@
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     {% else %}
-    <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}"></div>
+    <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
+      <nav>
+	<ul class="pagination pagination-sm">
+	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+	  {% for i in total_pages|times %}
+	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+	  {% endfor %}
+	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+	</ul>
+      </nav>
+    </div>
     {% endif %}
     {% elif not ajax %}
     <div class="container">

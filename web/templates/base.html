@@ -215,10 +215,10 @@
     </div>
 
     <script>
-    {% if LANGUAGE_CODE == 'ja' %}
     var disqus_config = function () {
-    this.language = "ja";
+    this.language = "{{ LANGUAGE_CODE }}";
     };
+    {% if LANGUAGE_CODE == 'ja' %}
     var is_japanese = true;
     {% else %}
     var is_japanese = false;

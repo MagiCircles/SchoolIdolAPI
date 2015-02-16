@@ -30,9 +30,13 @@
 		    {% if total_cards > 1 %}
 		    <a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
 		      {% if not card.is_special and not card.is_promo %}
-		      <img src="{{ card|imageurl:'card_image' }}" class="non_idolized" width="49%" alt="{{ card }}">
+		      {% if total_cards == 1 %}<a href="{{ card|imageurl:'card_image' }}" target="_blank">{% endif %}
+			<img src="{{ card|imageurl:'card_image' }}" class="non_idolized" width="49%" alt="{{ card }}">
+			{% if total_cards == 1 %}</a>{% endif %}
 		      {% endif %}
-		      <img src="{{ card|imageurl:'card_idolized_image' }}" class="idolized" width="49%" alt="{{ card }} idolized">
+		      {% if total_cards == 1 %}<a href="{{ card|imageurl:'card_idolized_image' }}" target="_blank">{% endif %}
+			<img src="{{ card|imageurl:'card_idolized_image' }}" class="idolized" width="49%" alt="{{ card }} idolized">
+			{% if total_cards == 1 %}</a>{% endif %}
 		      {% if total_cards > 1 %}</a>{% endif %}
 		  </div>
 		  {% if total_cards == 1 %}</div><div class="col-md-6">{% endif %}

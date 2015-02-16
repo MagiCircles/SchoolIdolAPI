@@ -15,7 +15,7 @@
 {% endfor %}
 <form action="/i18n/setlang/" method="post" class="hidden" id="switchLanguage">
   {% csrf_token %}
-  <input name="next" type="hidden" value="/" />
+  <input name="next" type="hidden" value="{{ current_url }}" />
   <select name="language">
     {% for lang in LANGUAGES %}
     <option value="{{ lang.0 }}">{{ lang.1 }}</option>

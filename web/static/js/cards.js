@@ -99,6 +99,7 @@ function statistics_buttons() {
     })
 }
 
+addCardButtonHandler();
 $(document).ready(function() {
     addCardButtonHandler();
     statistics_buttons();

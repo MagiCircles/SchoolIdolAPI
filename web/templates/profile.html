@@ -11,42 +11,51 @@
   <br><br>
   <div class="jumbotron {{ preferences.color }}" id="profile">
     <div class="topprofile {{ preferences.color }}">
-      <div class="pull-left">
-	<img src="{{ avatar }}" class="avatar">
-      </div>
-      <div class="pull-right text-right">
-	<br><br>
-	<table class="table table-bordered">
-	  {% if preferences.best_girl %}
-	  <tr>
-	    <th>{% trans 'Best Girl' %}</th>
-	    <td><a href="/cards/?name={{ preferences.best_girl }}" target="_blank">{{ preferences.best_girl }}</a></td>
-	  </tr>
+      <div class="row">
+	<div class="col-md-8">
+	  <div class="row">
+	    <div class="col-sm-4">
+	      <img src="{{ avatar }}" class="avatar">
+	    </div>
+	    <div class="col-sm-8">
+	      <div class="info">
+		<h1>{{ profile_user.username }}</h1>
+		{% if is_me %}<div><a href="/edit"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
+		<br>
+		<div class="description">{{ preferences.description|markdown }}</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="col-md-4 text-right">
+	  <br><br>
+	  <table class="table table-bordered">
+	    {% if preferences.best_girl %}
+	    <tr>
+	      <th>{% trans 'Best Girl' %}</th>
+	      <td><a href="/cards/?name={{ preferences.best_girl }}" target="_blank">{{ preferences.best_girl }}</a></td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.location %}
+	    <tr>
+	      <th>{% trans 'Location' %}</th>
+	      <td><a href="http://maps.google.com/?q={{ preferences.location }}" target="_blank">{{ preferences.location }}</a></td>
+	    </tr>
+	    {% endif %}
+	    <tr>
+	      <th>{% trans 'Accept Friend Requests' %}</th>
+	      <td>{% if preferences.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
+	    </tr>
+	  </table>
+	  {% if preferences.twitter %}
+	  <br>
+	  <a href="https://twitter.com/{{ preferences.twitter }}" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @{{ preferences.twitter }}</a>
+	  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 	  {% endif %}
-	  {% if preferences.location %}
-	  <tr>
-	    <th>{% trans 'Location' %}</th>
-	    <td><a href="http://maps.google.com/?q={{ preferences.location }}" target="_blank">{{ preferences.location }}</a></td>
-	  </tr>
-	  {% endif %}
-	  <tr>
-	    <th>{% trans 'Accept Friend Requests' %}</th>
-	    <td>{% if preferences.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
-	  </tr>
-	</table>
-	{% if preferences.twitter %}
-	<br>
-	<a href="https://twitter.com/{{ preferences.twitter }}" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @{{ preferences.twitter }}</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-	{% endif %}
-      </div>
-      <div class="info">
-	<h1>{{ profile_user.username }}</h1>
-	{% if is_me %}<div><a href="/edit"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
-	<br>
-	<div class="description">{{ preferences.description|markdown }}</div>
+	</div>
       </div>
     </div>
+  </div>
     {% with user_accounts|length as length %}
     {% if length == 0 %}
     <h2>{% trans 'No account.' %}</h2>
@@ -173,6 +182,7 @@
 	</div>
       </div>
     </div>
+    <br><br>
     {% endwith %}
     {% endfor %}
     {% endif %}
@@ -188,7 +198,6 @@
       })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
 </div>
 
 {% endblock %}

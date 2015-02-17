@@ -3,7 +3,7 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% load imageurl %}
 
-{% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% endif %}{% endblock %}
+{% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endblock %}
 {% block js %}<script src="/static/js/cards.js"></script>
 <script src="/static/js/addcard.js"></script>{% endblock %}
 

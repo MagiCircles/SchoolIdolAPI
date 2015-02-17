@@ -224,6 +224,7 @@ class Command(BaseCommand):
                     t2_new_rank = optInt(clean(data[i].split('|')[-1]))
                     if t2_new_rank: t2_rank = t2_new_rank
                     i = i + 1
+                note = None
                 if len(data) > i:
                     note = optString(clean(data[i].split('|')[-1]))
                 print 'Import event ', name, '...',; sys.stdout.flush()

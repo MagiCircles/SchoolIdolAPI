@@ -23,6 +23,15 @@ def clean(string):
         return None
     return removeHTML(str(string)).strip().translate(None, '\'\"|[]')
 
+def optInt(i):
+    try:
+        i = int(i)
+    except (ValueError, TypeError):
+        i = None
+    return i
+def optString(s):
+    return None if not s else s
+
 def wikiaImageURL(string):
     if string is None:
         return ""
@@ -203,11 +212,31 @@ class Command(BaseCommand):
                 beginning = datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(dates[0]), '%Y/%m/%d')))
                 end = datetime.datetime.fromtimestamp(time.mktime(time.strptime(str(beginning.year) + '/' + clean(dates[1]), '%Y/%m/%d')))
                 name = clean(data[1].replace('[[', '').replace(']]', '').split('|')[-1]).replace('μs', 'μ\'s')
+                t1_points = optInt(clean(data[3]))
+                i = 4
+                if 'rowspan' in data[i] or len(data) == 7 or len(data) == 8:
+                    t1_new_rank = optInt(clean(data[i].split('|')[-1]))
+                    if t1_new_rank: t1_rank = t1_new_rank
+                    i = i + 1
+                t2_points = optInt(data[i])
+                i = i + 1
+                if len(data) > i and ('rowspan' in data[i] or len(data) == 7 or len(data) == 8):
+                    t2_new_rank = optInt(clean(data[i].split('|')[-1]))
+                    if t2_new_rank: t2_rank = t2_new_rank
+                    i = i + 1
+                if len(data) > i:
+                    note = optString(clean(data[i].split('|')[-1]))
                 print 'Import event ', name, '...',; sys.stdout.flush()
-                event, created = models.Event.objects.update_or_create(japanese_name=name, defaults={
+                defaults = {
                     'beginning': beginning,
                     'end': end,
-                })
+                    'japanese_t1_points': t1_points,
+                    'japanese_t1_rank': (None if not t1_points else t1_rank),
+                    'japanese_t2_points': t2_points,
+                    'japanese_t2_rank': t2_rank,
+                    'note': note,
+                }
+                event, created = models.Event.objects.update_or_create(japanese_name=name, defaults=defaults)
                 models.Card.objects.filter(event=event).update(release_date=beginning)
                 print 'Done'
 

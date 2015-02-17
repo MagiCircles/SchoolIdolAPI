@@ -46,6 +46,11 @@ class Event(models.Model):
     english_name = models.CharField(max_length=100)
     beginning = models.DateField(blank=True, null=True)
     end = models.DateField(blank=True, null=True)
+    japanese_t1_points = models.PositiveIntegerField(null=True)
+    japanese_t1_rank = models.PositiveIntegerField(null=True)
+    japanese_t2_points = models.PositiveIntegerField(null=True)
+    japanese_t2_rank = models.PositiveIntegerField(null=True)
+    note = models.CharField(max_length=200, null=True, blank=True)
 
     def is_japan_current(self):
         return (self.beginning is not None

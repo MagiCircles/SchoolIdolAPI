@@ -111,10 +111,12 @@
 			    <i class="flaticon-id"></i>
 			    {% endif %}
 			  </div>
-			  #{{ card.id }}
+			  #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			</a><br>
-			<small>{{ card.name }}{% if card.japanese_name %} {{ card.japanese_name }}{% endif %}<br>
-			  {{ card.rarity }} {{ card.attribute }} {{ card|getattribute:'japanese_attribute' }}</small>
+			<small>{% if card.japanese_name %} {{ card.japanese_name }}{% endif %} {{ card.name }}
+			  <span class="tiny"><a target="_blank" href="/cards/?name={{ card.name }}">
+			      <i class="flaticon-link"></i></a></span><br>
+			  {{ card.rarity }} {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}</small>
 		      </td>
 		    </tr>
 		    {% if card.release_date %}
@@ -133,7 +135,7 @@
 		      <th>{% trans 'Event' %}</th>
 		      <td>
 			<a href="http://decaf.kouhi.me/lovelive/index.php?title={{ card.event.japanese_name }}" target="_blank">
-			  {{ card.event.japanese_name }} {% if card.event.english_name != card.event.japanese_name %}{{ card.event.english_name }}{% endif %}
+			  {{ card.event.japanese_name }} {% if card.event.english_name != card.event.japanese_name %}<br>{{ card.event.english_name }}{% endif %}
 			</a>
 			<div class="pull-right">
 			  <i class="flaticon-event"></i>
@@ -170,33 +172,35 @@
 			<div class="pull-right">
 			  <i class="flaticon-skill"></i>
 			</div>
-			<p>
-			  {% if card.skill %}<strong>{{ card.skill }}</strong><br />
-			  <small>{% endif %}{{ card.skill_details }}{% if card.skill %}</small>{% endif %}
-			  </p>
 			{% if card.japanese_skill_details or card.japanese_skill %}
 			<p>
 			  {% if card.japanese_skill %}<strong>{{ card.japanese_skill }}</strong><br />
 			  <small>{% endif %}{% if card.japanese_skill_details and card.japanese_skill_details != 'None' %}{{ card.japanese_skill_details }}{% endif %}{% if card.japanese_skill %}</small>{% endif %}
 			</p>
 			{% endif %}
+			<p>
+			  {% if card.skill %}<strong>{{ card.skill }}</strong>
+			  <span class="tiny"><a target="_blank" href="/cards/?skill={{ card.skill }}">
+			      <i class="flaticon-link"></i></a></span><br>
+			  <small>{% endif %}{{ card.skill_details }}{% if card.skill %}</small>{% endif %}
+			  </p>
 		      </td>
 		    </tr>
 		    <tr>
 		      <th>{% trans 'Center Skill' %}</th>
 		      <td>
-			<p>
-			  {{ card.center_skill }}
-			  <div class="pull-right">
-			    <i class="flaticon-center"></i>
-			  </div>
-			</p>
+			<div class="pull-right">
+			  <i class="flaticon-center"></i>
+			</div>
 			{% if card.japanese_center_skill_details or card.japanese_center_skill %}
 			<p>
 			  {% if card.japanese_center_skill %}<strong>{{ card.japanese_center_skill }}</strong><br />
 			  <small>{% endif %}{% if card.japanese_center_skill_details and card.japanese_center_skill_details != 'None' %}{{ card.japanese_center_skill_details }}{% endif %}{% if card.japanese_center_skill %}</small>{% endif %}
 			</p>
 			{% endif %}
+			<p>
+			  {{ card.center_skill }}
+			</p>
 		      </td>
 		    </tr>
 		    {% if not single %}

@@ -7,6 +7,21 @@
 
     {% if cards and total_cards != 0 %}
     <div class="page" data-page="{{ page }}">
+      {% if not ajax and request_get.name %}
+      <br>
+      <div class="panel panel-{{ interfaceColor }}">
+	<div class="panel-heading">
+	  <h1>{{ request_get.name }}</h1>
+	</div>
+	<div class="panel-body">
+	  <div class="row">
+	    <div class="col-lg-12">
+	      {% include 'disqus.html' with disqus_identifier=request_get.name %}
+	    </div>
+	  </div>
+	</div>
+      </div>
+      {% endif %}
       {% if show_filter_bar and total_cards > 0 and not ajax %}
       <h4 class="padding20 nomargin">
 	{% blocktrans count counter=total_results %}
@@ -103,7 +118,7 @@
 		    <tr>
 		      <th>{% trans 'Id' %}</th>
 		      <td>
-			<a href="/cards/{{ card.id }}">
+			<a href="/cards/{{ card.id }}" target="_blank">
 			  <div class="pull-right">
 			    {% if card.round_card_image %}
 			    <img src="{{ card|imageurl:'round_card_image' }}" alt="{{ card }}">
@@ -250,16 +265,7 @@
     </div> <!-- row -->
     </div>
     {% if single %}
-    <div class="margin20" style="height: 300px" id="disqus_thread"></div>
-    <script type="text/javascript">
-      var disqus_shortname = 'schoolidol';
-      (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    {% include "disqus.html" %}
     {% else %}
     <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
       <nav>

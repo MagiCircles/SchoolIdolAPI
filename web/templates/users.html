@@ -28,11 +28,7 @@
 	  {% if length == 0 %}
 	  <h5 class="margin20">{% trans 'No account.' %}</h5>
 	  {% else %}
-	  <h5 class="padding20 padding-novertical">{% blocktrans count counter=length %}
-	    {{ length }} account:
-	    {% plural %}
-	    {{ length }} accounts:
-	    {% endblocktrans %}
+	  <h5 class="padding20 padding-novertical">{% blocktrans count counter=length %}{{ length }} account:{% plural %}{{ length }} accounts:{% endblocktrans %}
 	  </h5>
 	  <table class="table margin-novertical">
 	    {% for account in user.accounts %}

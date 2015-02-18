@@ -24,11 +24,7 @@
       {% endif %}
       {% if show_filter_bar and total_cards > 0 and not ajax %}
       <h4 class="padding20 nomargin">
-	{% blocktrans count counter=total_results %}
-	{{ counter }} card matches your search:
-	{% plural %}
-	{{ counter }} cards match your search:
-	{% endblocktrans %}
+	{% blocktrans count counter=total_results %}{{ counter }} card matches your search:{% plural %}{{ counter }} cards match your search:{% endblocktrans %}
       </h4>
       {% endif %}
       <div class="row">
@@ -283,10 +279,10 @@
     <div class="container">
       <br><br>
       <div class="jumbotron">
-    	<h1>No results.</h1>
-    	<p>No idols match your search.</p>
+    	<h1>{% trans 'No results.' %}</h1>
+    	<p>{% trans 'No idols match your search.' %}</p>
     	<p><a class="btn btn-Smile btn-lg sidebar-toggle" href="#" role="button">
-    	    Change filters
+    	    {% trans 'Change filters' %}
     	    <i class="flaticon-filter"></i>
     	</a></p>
       </div>

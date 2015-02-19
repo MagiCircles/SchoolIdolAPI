@@ -635,7 +635,7 @@ msgstr "Max bond"
 #. i'm having trouble trying to translate this,can you explain me this phrase better?
 #: web/templates/ownedCardOnBottomCard.html:19
 msgid "You max bonded (kizuna) this card. Congratulations!"
-msgstr ""
+msgstr "Você maximizou a kizuna deste card. Parabéns!"
 
 #: web/templates/ownedcards.html:19
 msgid "Browse cards"
@@ -647,7 +647,7 @@ msgstr "Nenhum card registrado ainda."
 
 #: web/templates/profile.html:4
 msgid "s Profile"
-msgstr ": Perfil"
+msgstr "Perfil"
 
 #: web/templates/profile.html:23
 msgid "Edit your settings"
@@ -819,5 +819,5 @@ msgstr "No"
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s conta:"
-msgstr[1] "Plural: %(length)s contas:"
+msgstr[1] "%(length)s contas:"
 

@@ -28,7 +28,7 @@ $(document).ready(function() {
 	$(this).parent().find('.name').hide();
     });
 
-    $('#home').css('min-height', $(window).height() - $('.navbar-Smile').height());
+    $('.mainhome').css('min-height', $(window).height() - $('.navbar-Smile').height());
 
     $('.link-stars-side').hide();
     $(window).scroll(

@@ -14,7 +14,7 @@
 
 {% if not single %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
-  <nav id="sidebar-wrapper" class="{{ interfaceColor }}">
+  <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
     <form method="GET">
       <h4>{% trans 'Search' %}</h4>
       <div class="section search">

@@ -16,6 +16,10 @@
 
 body {
     font-family: 'Maven Pro', sans-serif;
+    &.interface-Smile { .a-variant(@SmileColor); }
+    &.interface-Pure { .a-variant(@PureColor); }
+    &.interface-Cool { .a-variant(@CoolColor); }
+    &.interface-All { .a-variant(@AllColor); }
 }
 
 input[type="text"],
@@ -80,10 +84,6 @@ select {
 	}
     }
     .a-variant(@color);
-}
-
-body {
-    .a-variant(@SmileColor);
 }
 
 .panel-Smile, .panel-Pure, .panel-Cool, .panel-All {
@@ -200,6 +200,9 @@ main {
     }
     .link-stars {
 	margin: 10px;
+	a {
+	    color: white!important;
+	}
     }
     .link-details {
 	margin: 20px;
@@ -224,6 +227,17 @@ main {
 	    .white-shadow;
 	}
     }
+    .social-section {
+	background: url('/static/pattern.png');
+	padding: 100px 0;
+	#disqus_thread {
+	    background-color: white;
+	    padding: 2%;
+	    border-radius: 5px;
+	    border: 1px solid #e8e8e8;
+	    margin: 0!important;
+	}
+    }
 }
 
 .link-stars-side {
@@ -236,7 +250,7 @@ main {
 	margin: 20px;
 	display: block;
 	&:hover {
-	    color: inherit;
+	    color: inherit!important;
 	    text-decoration: none;
 	}
 	.btn {
@@ -410,11 +424,6 @@ a.panel {
     &:hover {
 	text-decoration: none;
     }
-}
-
-.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus,
-.dropdown-menu>.active>a:hover {
-    background-color: @BarColor;
 }
 
 .dropdown-menu {

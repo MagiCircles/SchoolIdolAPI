@@ -15,3 +15,7 @@ $(".owned_card").popover({
 	return $(this).find('.owned_card_details').html();
     },
 });
+
+$(document).ready(function() {
+    $('.topprofile .description').html(Autolinker.link($('.topprofile .description').html(), { newWindow: true, stripPrefix: true } ));
+});

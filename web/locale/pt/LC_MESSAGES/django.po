@@ -30,23 +30,19 @@ msgstr "Normal"
 
 #: api/models.py:19
 msgid "Rare"
-msgstr "Rare\n"
-""
+msgstr "Rare"
 
 #: api/models.py:20
 msgid "Super Rare"
-msgstr "Super Rare\n"
-""
+msgstr "Super Rare"
 
 #: api/models.py:21
 msgid "Ultra Rare"
-msgstr "Ultra Rare\n"
-""
+msgstr "Ultra Rare"
 
 #: api/models.py:25 schoolidolapi/settings.py:91
 msgid "Japanese"
-msgstr "Japonês\n"
-""
+msgstr "Japonês"
 
 #: api/models.py:26 schoolidolapi/settings.py:90
 msgid "English"
@@ -384,8 +380,7 @@ msgstr "Contato"
 
 #: web/templates/baseMenu.html:5
 msgid "Developers"
-msgstr "Desenvolvedores\n"
-""
+msgstr "Desenvolvedores"
 
 #: web/templates/baseMenu.html:7
 msgid "Switch language:"
@@ -453,15 +448,15 @@ msgstr "Ordem reversa"
 
 #: web/templates/cards.html:121
 msgid "Max Leveled"
-msgstr "Max Leveled"
+msgstr "Nível maximizado"
 
 #: web/templates/cards.html:122
 msgid "Not Max Leveled"
-msgstr "Not Max Leveled"
+msgstr "Nível não maximizado"
 
 #: web/templates/cards.html:128
 msgid "Max Bonded"
-msgstr "Max Bonded"
+msgstr "Kizuna maximizado"
 
 #: web/templates/cards.html:129
 msgid "Not Max Bonded"
@@ -651,7 +646,7 @@ msgstr "Perfil"
 
 #: web/templates/profile.html:23
 msgid "Edit your settings"
-msgstr "Edite as suas configurações"
+msgstr "Editar as suas configurações"
 
 #: web/templates/profile.html:61 web/templates/users.html:29
 msgid "No account."

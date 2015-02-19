@@ -180,7 +180,7 @@ msgstr "nous contacter"
 
 #: web/templates/addCardForm.html:10
 msgid "Expires In"
-msgstr "Expira dans"
+msgstr "Expirera dans"
 
 #: web/templates/addCardForm.html:13
 msgid "days"
@@ -196,7 +196,7 @@ msgstr "Ajouter une carte"
 
 #: web/templates/addCardForm.html:31
 msgid "You can't cancel this action afterwards."
-msgstr "Il n'est pas possible de revenir en arrière."
+msgstr "Il n'est pas possible d'annuler cette action."
 
 #: web/templates/addCardForm.html:36
 msgid "Delete this card"
@@ -439,7 +439,7 @@ msgstr "Uniquement les cartes de toutes les versions"
 
 #: web/templates/cards.html:94
 msgid "Order"
-msgstr "Ordre"
+msgstr "Tri"
 
 #: web/templates/cards.html:104
 msgid "Reverse order"
@@ -568,7 +568,7 @@ msgstr "L'ultime resource pour les joueurs de LoveLive! School Idol Festival."
 
 #: web/templates/index.html:48
 msgid "Browse Cards"
-msgstr "Découvrir les cartes"
+msgstr "Découvrez les cartes"
 
 #: web/templates/index.html:49
 msgid "Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering."
@@ -576,7 +576,7 @@ msgstr "Parcourez et recherchez facilement les cartes de LoveLive! School Idol F
 
 #: web/templates/index.html:55
 msgid "Track Cards"
-msgstr "Votre collection de cartes"
+msgstr "Collectionnez les cartes"
 
 #: web/templates/index.html:56
 msgid "Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts."

@@ -3,6 +3,7 @@
 {% load imageurl %}
 {% load getattribute %}
 {% load i18n %}
+{% load l10n %}
 {% get_current_language as LANGUAGE_CODE %}
 
     {% if cards and total_cards != 0 %}
@@ -96,7 +97,7 @@
 			       aria-valuenow="{{ card|getattribute:valuenow }}"
 			       aria-valuemin="0"
 			       aria-valuemax="{{ max_stats|getattribute:attribute }}"
-			       style="width: {{ stat }}%">
+			       style="width: {% localize off %}{{ stat }}{% endlocalize %}%">
 			    <span class="sr-only">{{ stat }}%</span>
 			  </div>
 			</div> <!-- progress -->

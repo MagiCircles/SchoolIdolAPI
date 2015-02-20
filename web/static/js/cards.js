@@ -42,6 +42,9 @@ function youtubeRatio() {
 	if (embed_video.length > 0) {
 	    embed_video.html('<iframe style="width: 100%" height="200" src="' + embed_video.attr('data-url') + '?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe><div class="text-right padding20 padding-novertical"><small class="padding-"><a href="https://www.youtube.com/user/Umidahh/playlists" target="_blank">Watch all the stories</a></small></div><br>');
 	    var width = embed_video.width();
+	    if (!width) {
+		width = 200;
+	    }
 	    embed_video.find('iframe').height(width * (450 / 800));
 	}
     };

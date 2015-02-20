@@ -37,6 +37,30 @@ function addCardButtonHandler() {
     });
 }
 
+function youtubeRatio() {
+    var showYoutubeIframe = function(embed_video) {
+	if (embed_video.length > 0) {
+	    embed_video.html('<iframe style="width: 100%" height="200" src="' + embed_video.attr('data-url') + '?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>');
+	    var width = embed_video.width;
+	    embed_video.find('iframe').height(width * (450 / 800));
+	}
+    };
+    $('.more.collapse').on('show.bs.collapse', function() { showYoutubeIframe($(this).find('.embed_video')) });
+    $('.already_collapsed').each(function() {
+	console.log($(this));
+	showYoutubeIframe($(this).find('.embed_video'));
+    });
+}
+
+function center_images() {
+    $('.card_images').each(function() {
+	if ($(this).closest('.panel-body').children('.row').length > 0) {
+	    var height = $(this).closest('.panel-body').height();
+	    $(this).css('margin-top', (height / 2) - ($(this).find('.idolized').height() / 2));
+	}
+    });
+}
+
 function load_more_function() {
     var button = $("#load_more");
     var oldButtonContent = button.html();
@@ -48,6 +72,13 @@ function load_more_function() {
 	addCardButtonHandler();
 	editCardFormHandler();
 	statistics_buttons();
+	youtubeRatio();
+	center_images();
+
+	// Reload disqus comments count
+	window.DISQUSWIDGETS = undefined;
+	$.getScript("http://schoolidol.disqus.com/count.js");
+
 	$('[data-toggle="popover"]').popover();
     });
 }
@@ -61,10 +92,6 @@ function pagination() {
 		&& ($(window).scrollTop() + $(window).height())
 		>= ($(document).height() - button.height())) {
 		load_more_function();
-
-		// Reload disqus comments count
-		window.DISQUSWIDGETS = undefined;
-		$.getScript("http://schoolidol.disqus.com/count.js");
 	    }
 	});
 }
@@ -103,5 +130,7 @@ addCardButtonHandler();
 $(document).ready(function() {
     addCardButtonHandler();
     statistics_buttons();
+    center_images();
     pagination();
+    youtubeRatio();
 });

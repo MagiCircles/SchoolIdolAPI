@@ -7,11 +7,10 @@
 {% block js %}<script src="/static/js/cards.js"></script>
 <script src="/static/js/addcard.js"></script>{% endblock %}
 
-{% block shareimage %}{% if total_cards == 1 %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
-{% block shareimagetwitter %}{% if total_cards == 1 %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
+{% block shareimage %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
 
 {% block content %}
-
 {% if not single %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
   <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
@@ -138,7 +137,7 @@
       </div>
       {% endif %}
       <div class="section order">
-	<input type="submit" class="btn btn-{{ interfaceColor }} btn-block" value="{% trans 'Go' %}">
+	<input type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" value="{% trans 'Go' %}">
 	<br><br><br><br><br>
       </div>
     </form>

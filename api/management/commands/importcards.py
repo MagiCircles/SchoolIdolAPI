@@ -11,6 +11,7 @@ import unicodedata
 import sys
 import datetime
 import time
+import csv
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -241,6 +242,21 @@ class Command(BaseCommand):
                 models.Card.objects.filter(event=event).update(release_date=beginning)
                 print 'Done'
 
+        f.close()
+
+        print '### Import video stories'
+        if local:
+            f = open('videos.csv', 'r')
+        else:
+            f = urllib2.urlopen('https://docs.google.com/spreadsheets/d/1AlLTBEuxEBXSVcxE6PpyE8ZcjWfvAQQCsgnKQyFQlPY/export?gid=0&format=csv')
+        reader = csv.reader(f)
+        for line in reader:
+            id = optInt(line[0])
+            video = optString(clean(line[1]))
+            if id is not None and video is not None:
+                print 'Add video story to #', id, '... ',
+                card, created = models.Card.objects.update_or_create(id=id, defaults={'video_story': video})
+                print 'Done'
         f.close()
 
         print '### Import card pictures and skills details from wikia'

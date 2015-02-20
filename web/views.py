@@ -186,7 +186,8 @@ def cards(request, card=None, ajax=False):
         if 'ordering' in request.GET and request.GET['ordering']:
             request_get['ordering'] = request.GET['ordering']
             request_get['reverse_order'] = 'reverse_order' in request.GET and request.GET['reverse_order']
-        cards = cards.order_by(('-' if request_get['reverse_order'] else '') + request_get['ordering'])
+        prefix = '-' if request_get['reverse_order'] else ''
+        cards = cards.order_by(prefix + request_get['ordering'], prefix +'id')
 
         context['total_results'] = cards.count()
         # Set limit

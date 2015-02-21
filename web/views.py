@@ -315,9 +315,17 @@ def ajaxownedcards(request, account, stored):
     if stored not in models.STORED_DICT:
         raise Http404
     account = get_object_or_404(models.Account, pk=account)
-    if account.owner.username != request.user.username and account.owner.preferences.get_or_create()[0].private:
+    if account.owner.username != request.user.username and (account.owner.preferences.get_or_create()[0].private or stored == 'Box'):
         raise PermissionDenied()
-    ownedcards = account.ownedcards.filter(stored=stored)
+    ownedcards = account.ownedcards.filter()
+    if stored == 'Album':
+        ownedcards = ownedcards.filter(Q(stored='Album') | Q(stored='Deck')).order_by('card__id')
+    else:
+        ownedcards = ownedcards.filter(stored=stored)
+        if stored == 'Box':
+            ownedcards = ownedcards.order_by('card__id')
+        elif stored == 'Favorite':
+            ownedcards == ownedcards.order_by('-card__rarity', '-idolized', 'card__id')
     context = { 'cards': ownedcards, 'nolink': True }
     return render(request, 'ownedcards.html', context)
 

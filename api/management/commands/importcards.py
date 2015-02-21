@@ -306,7 +306,7 @@ class Command(BaseCommand):
                         card.card_idolized_image.save(str(card.id) + 'idolized.jpg', downloadBestWikiaImage(idolized))
                     print 'Done'
         f.close()
-
+        
         print '### Import japanese information for R/SR/UR'
         if local:
             f = open('jpcards.html', 'r')

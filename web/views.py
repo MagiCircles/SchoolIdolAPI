@@ -16,6 +16,7 @@ from web import forms, links
 import urllib, hashlib
 import datetime
 import random
+import json
 
 def globalContext(request):
     context ={
@@ -25,8 +26,8 @@ def globalContext(request):
         'interfaceColor': 'default',
     }
     if request.user.is_authenticated and not request.user.is_anonymous():
-        context['accounts'] = models.Account.objects.filter(owner=request.user)
-        preferences, created = models.UserPreferences.objects.get_or_create(user=request.user)
+        context['accounts'] = request.user.accounts_set.all().select_related('center')
+        preferences, created = request.user.preferences.get_or_create()
         context['interfaceColor'] = preferences.color
     active_account_id = request.session.get('active_account')
     if active_account_id:
@@ -34,7 +35,9 @@ def globalContext(request):
             if account.pk == active_account_id:
                 context['active_account'] = account
     if not 'active_account' in context and 'accounts' in context and context['accounts']:
-        context['active_account'] = context['accounts'][0]
+        active_account = context['accounts'][0]
+        request.session['active_account'] = active_account
+        context['active_account'] = active_account
     return context
 
 def getUserAvatar(user, size):
@@ -100,6 +103,11 @@ def cards(request, card=None, ajax=False):
     page = 0
     context = globalContext(request)
     context['total_results'] = 0
+
+    f = open('cardsinfo.json', 'r')
+    cardsinfo = json.load(f)
+    f.close()
+    max_stats = cardsinfo['max_stats']
 
     # Set defaults
     request_get = {
@@ -196,7 +204,7 @@ def cards(request, card=None, ajax=False):
             page = int(request.GET['page']) - 1
             if page < 0:
                 page = 0
-        cards = cards[(page * page_size):((page * page_size) + page_size)]
+        cards = cards.select_related('event')[(page * page_size):((page * page_size) + page_size)]
         context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     else:
         context['total_results'] = 1
@@ -204,11 +212,6 @@ def cards(request, card=None, ajax=False):
         context['single'] = cards[0]
 
     # Get statistics & other information to show in cards
-    max_stats = {
-        'Smile': models.Card.objects.order_by('-idolized_maximum_statistics_smile')[:1][0].idolized_maximum_statistics_smile,
-        'Pure': models.Card.objects.order_by('-idolized_maximum_statistics_pure')[:1][0].idolized_maximum_statistics_pure,
-        'Cool': models.Card.objects.order_by('-idolized_maximum_statistics_cool')[:1][0].idolized_maximum_statistics_cool,
-        }
     for card in cards:
         card.japan_only = card.is_japan_only()
         if card.video_story:
@@ -236,9 +239,9 @@ def cards(request, card=None, ajax=False):
     if not ajax:
        # Get filters info for the form
         context['filters'] = {
-            'idols': models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name'),
-            'collections': models.Card.objects.filter(japanese_collection__isnull=False).exclude(japanese_collection__exact='').values('japanese_collection').annotate(total=Count('name')).order_by('-total', 'japanese_collection'),
-            'skills': models.Card.objects.filter(skill__isnull=False).values('skill').annotate(total=Count('skill')).order_by('-total'),
+            'idols': cardsinfo['idols'],
+            'collections': cardsinfo['collections'],
+            'skills': cardsinfo['skills'],
             'rarity_choices': models.RARITY_CHOICES,
             'attribute_choices': models.ATTRIBUTE_CHOICES,
             'stored_choices': models.STORED_CHOICES,
@@ -301,7 +304,7 @@ def profile(request, username):
         context['user_accounts'] = user.accounts_set.all()
     if not context['preferences'].private or context['is_me']:
         for account in context['user_accounts']:
-            account.deck = account.ownedcards.filter(stored='Deck').prefetch_related('card').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
+            account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
     context['current'] = 'profile'

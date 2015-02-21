@@ -2,6 +2,8 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.images import ImageFile
 from django.core.files.temp import NamedTemporaryFile
+from django.db.models import Count
+from django.forms.models import model_to_dict
 import urllib2
 from bs4 import BeautifulSoup, Comment
 from api import models
@@ -12,9 +14,13 @@ import sys
 import datetime
 import time
 import csv
+import json
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+def ValuesQuerySetToDict(vqs):
+    return [item for item in vqs]
 
 def removeHTML(str):
     return re.sub('<[^<]+?>', '', str)
@@ -406,4 +412,19 @@ class Command(BaseCommand):
                         card.round_card_image.save(str(card.id) + 'round.jpg', downloadFile(picture))
                     print 'Done'
 
+        f.close()
+
+        print "### Update cardsinfo.json"
+        j = json.dumps({
+            'max_stats': {
+                'Smile': models.Card.objects.order_by('-idolized_maximum_statistics_smile')[:1][0].idolized_maximum_statistics_smile,
+                'Pure': models.Card.objects.order_by('-idolized_maximum_statistics_pure')[:1][0].idolized_maximum_statistics_pure,
+                'Cool': models.Card.objects.order_by('-idolized_maximum_statistics_cool')[:1][0].idolized_maximum_statistics_cool,
+            },
+            'idols': ValuesQuerySetToDict(models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name')),
+            'collections': ValuesQuerySetToDict(models.Card.objects.filter(japanese_collection__isnull=False).exclude(japanese_collection__exact='').values('japanese_collection').annotate(total=Count('name')).order_by('-total', 'japanese_collection')),
+            'skills': ValuesQuerySetToDict(models.Card.objects.filter(skill__isnull=False).values('skill').annotate(total=Count('skill')).order_by('-total'))
+        })
+        f = open('cardsinfo.json', 'w')
+        print >> f, j
         f.close()

@@ -15,7 +15,6 @@ def getGirls():
     return [('', '')] + [(girl['name'], girl['name']) for girl in girls]
 
 class UserPreferencesForm(ModelForm):
-    #best_girl = UserPreferencesModelChoiceField(queryset=models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name'), required=False)
     best_girl = ChoiceField(choices=getGirls(), required=False)
     class Meta:
         model = models.UserPreferences

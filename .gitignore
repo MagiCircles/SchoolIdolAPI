@@ -61,3 +61,5 @@ wikia.html
 jpcards.html
 web/static/bower
 web/static/cards
+cardsinfo.json
+web/static/css/style.css

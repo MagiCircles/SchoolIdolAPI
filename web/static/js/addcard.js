@@ -60,7 +60,7 @@ function editCardFormHandler() {
 	var saveAddForm = $('#addCardModal .modal-body').html();
 	var saveAddTitle = $('#addCardModal .modal-title').text();
 	var card = $(this).closest('.card');
-	$.get('/ajax/editcard/' + $(this).attr('data-id'), function(data) {
+	$.get('/ajax/editcard/' + $(this).attr('data-id') + '/', function(data) {
 	    $('#addCardModal .modal-body').html(data);
 	    $('#addCardModal .modal-title').text((is_japanese ? 'カードの変更' : 'Edit card'));
 	    $('#addCardModal').modal('show');

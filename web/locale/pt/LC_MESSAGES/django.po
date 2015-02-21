@@ -192,7 +192,7 @@ msgstr "Mudanças Aplicadas"
 
 #: web/templates/addCardForm.html:18
 msgid "Add Card"
-msgstr "Adicionar Cards"
+msgstr "Adicionar Card"
 
 #: web/templates/addCardForm.html:31
 msgid "You can't cancel this action afterwards."
@@ -460,7 +460,7 @@ msgstr "Kizuna maximizado"
 
 #: web/templates/cards.html:129
 msgid "Not Max Bonded"
-msgstr "Not Max Bonded"
+msgstr "Kizuna não maximizado"
 
 #: web/templates/cards.html:136
 msgid "Not Idolized"
@@ -589,7 +589,7 @@ msgstr "Mostre seu amor"
 
 #: web/templates/index.html:63
 msgid "Add cards to your favorites, comment on the cards and VOTE FOR THE BEST GIRL on the Facemash."
-msgstr "Adicione cards aos seus favoritos, comente nos cards e VOTE PARA A MELHOR GAROTA no Facemash."
+msgstr "Adicione cards aos seus favoritos, comente nos cards e VOTE PARA BEST GIRL no Facemash."
 
 #: web/templates/ownedCardOnBottomCard.html:4
 msgid "You own this card in your deck."
@@ -694,11 +694,11 @@ msgstr "Caixa de Presente"
 
 #: web/templates/profile.html:163
 msgid "To search through your cards, order them, edit them or add some new, go to <a href=\"/cards?search=\">the cards page and use the filters "
-msgstr "Para pesquisar através de seus cartões, escolha-os, edite-os ou adicione algum novo, vá para <a href=\"/cards?search=\">a página de cards e use os filtros␣"
+msgstr "Para pesquisar através de seus cards, escolha-os, edite-os ou adicione algum novo, vá para <a href=\"/cards?search=\">a página de cards e use os filtros␣"
 
 #: web/templates/users.html:52
 msgid "Start the discussion"
-msgstr "Começar a discussão"
+msgstr "Comentar"
 
 #: web/views.py:244
 msgid "Card #ID"
@@ -734,7 +734,7 @@ msgstr "Escreva o que você quiser. Você pode adicionar formatações e links u
 
 #: api/models.py:162
 msgid "Best girl"
-msgstr "Melhor garota"
+msgstr "Best girl"
 
 #: api/models.py:163 web/templates/profile.html:41
 msgid "Location"
@@ -746,7 +746,7 @@ msgstr "A cidade em que você mora."
 
 #: api/models.py:165
 msgid "Accept friend requests"
-msgstr "Pedidos de amizade aceitados."
+msgstr "Aceitar pedidos de amizade"
 
 #: api/models.py:166
 msgid "Private Profile"
@@ -796,11 +796,11 @@ msgstr "Mudar Avatar"
 
 #: web/templates/profile.html:35
 msgid "Best Girl"
-msgstr "Melhor Garota"
+msgstr "Best Girl"
 
 #: web/templates/profile.html:46
 msgid "Accept Friend Requests"
-msgstr "Aceitar Pedidos de Amizade"
+msgstr "Aceita Pedidos de Amizade"
 
 #: web/templates/profile.html:47
 msgid "Yes"
@@ -813,6 +813,7 @@ msgstr "No"
 #: web/templates/users.html:31
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
-msgstr[0] "%(length)s conta:"
+msgstr[0] "%(length)s conta:\n"
+"Plural: %(length)s contas:"
 msgstr[1] "%(length)s contas:"
 

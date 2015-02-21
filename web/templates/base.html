@@ -43,7 +43,7 @@
 	</div>
 	<div class="collapse navbar-collapse collapse">
 	  <ul class="nav navbar-nav navbar-right">
-	    <li class="{% if current == 'cards' %}active{% endif %}"><a href="/cards">{% trans 'Cards' %}</a></li>
+	    <li class="{% if current == 'cards' %}active{% endif %}"><a href="/cards/">{% trans 'Cards' %}</a></li>
 	    <li><a href="/contest/">{% trans 'Contest' %}</a></li>
 	    {% if user.is_authenticated %}
 	    <li class="dropdown">	
@@ -52,12 +52,12 @@
 		<span class="caret"></span>
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
-		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-profile"></i> {% trans 'Your Profile' %}</a></li>
-		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
+		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Your Profile' %}</a></li>
+		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit/"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		{% include "baseMenu.html" %}
 		<li role="presentation" class="divider"></li>
-		<li><a href="/logout"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
+		<li><a href="/logout/"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
 	      </ul>
 	    </li>
 	    <li class="dropdown">	
@@ -70,7 +70,7 @@
 		 <li role="presentation" class="dropdown-header">{% trans 'Switch account' %}:</li>
 		{% endif %}
 		{% for account in accounts %}
-		<li class="{% if account == active_account %}disabled{% endif %}"><a href="/switchaccount/{{ account.pk }}" class="account">
+		<li class="{% if account == active_account %}disabled{% endif %}"><a href="/switchaccount/{{ account.pk }}/" class="account">
 		    {% if account.center %}
 		    <div class="pull-left">
 		      <div class="center circled {{ account.center.card.attribute }} {{ account.center.card.rarity }}"
@@ -85,13 +85,13 @@
 		    {{ account }}</a></li>
 		{% endfor %}
 		<li role="presentation" class="divider"></li>
-		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount"><i class="flaticon-add"></i> {% trans 'Add an account' %}</a></li>
-		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}"><i class="flaticon-edit"></i> {% trans 'Edit your accounts' %}</a></li>
+		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount/"><i class="flaticon-add"></i> {% trans 'Add an account' %}</a></li>
+		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-edit"></i> {% trans 'Edit your accounts' %}</a></li>
 	      </ul>
 	    </li>
 	    {% else %}
-	    <li class="{% block loginviewactive %}{% endblock %}"><a href="/login">{% trans 'Login' %}</a></li>
-	    <li class="{% if current == 'create' %}active{% endif %}"><a href="/create">{% trans 'Sign Up' %}</a></li>
+	    <li class="{% block loginviewactive %}{% endblock %}"><a href="/login/">{% trans 'Login' %}</a></li>
+	    <li class="{% if current == 'create' %}active{% endif %}"><a href="/create/">{% trans 'Sign Up' %}</a></li>
 	    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		<span class="caret"></span>
 	      </a>

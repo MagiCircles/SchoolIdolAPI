@@ -20,7 +20,7 @@
 	    <div class="col-sm-8">
 	      <div class="info">
 		<h1>{{ profile_user.username }}</h1>
-		{% if is_me %}<div><a href="/edit"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
+		{% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
 		<br>
 		<div class="description">{{ preferences.description|markdown }}</div>
 	      </div>
@@ -68,7 +68,7 @@
 	<h3>
 	  {% if is_me %}
 	  <div class="pull-right" style="letter-spacing: 10px;">
-	    <a href="/editaccount/{{ account.pk }}">
+	    <a href="/editaccount/{{ account.pk }}/">
 	      <i class="flaticon-edit"></i>
 	    </a>
 	  </div>
@@ -84,7 +84,7 @@
 		   style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
 	    </a>
 	    {% else %}
-	    {% if is_me %}<a href="/editaccount/{{ account.pk }}">{% endif %}
+	    {% if is_me %}<a href="/editaccount/{{ account.pk }}/">{% endif %}
 	    <div style="width: 200px; padding: 50px; text-align: center;">
 	      <strong>{% trans 'No Center Specified' %}</strong>
 	    </div>
@@ -160,7 +160,7 @@
 	  <div class="tab-content">
 	    {% if is_me %}
 	    <br>
-	    <div class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to <a href="/cards?search=">the cards page and use the filters {% endblocktrans %}<i class="flaticon-filter"></i></a></div>
+	    <div class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to <a href="/cards/?search=">the cards page and use the filters {% endblocktrans %}<i class="flaticon-filter"></i></a></div>
 	    {% endif %}
 	    <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.deck %}

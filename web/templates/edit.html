@@ -16,7 +16,7 @@
       {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
       <br><br>
       <div class="text-right">
-	<a href="/user/{{ user.username }}" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
 	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Save your settings' %}" />
       </div>
       <input type="hidden" name="next" value="/login" />
@@ -31,7 +31,7 @@
       {% include "bootstrap_form_horizontal.html" with form=form_preferences wrap=0 %}
       <br><br>
       <div class="text-right">
-	<a href="/user/{{ user.username }}" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
 	<input name="editPreferences" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Save your settings' %}" />
       </div>
       <input type="hidden" name="next" value="/login" />

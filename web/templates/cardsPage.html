@@ -115,7 +115,7 @@
 		    <tr>
 		      <th>{% trans 'Id' %}</th>
 		      <td>
-			<a href="/cards/{{ card.id }}" target="_blank">
+			<a href="/cards/{{ card.id }}/" target="_blank">
 			  <div class="pull-right">
 			    {% if card.round_card_image %}
 			    <img src="{{ card|imageurl:'round_card_image' }}" alt="{{ card }}">
@@ -126,7 +126,7 @@
 			  #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			</a><br>
 			<small>{% if card.japanese_name %} {{ card.japanese_name }}{% endif %} {{ card.name }}
-			  <span class="tiny"><a target="_blank" href="/cards/?name={{ card.name }}">
+			  <span class="tiny"><a target="_blank" href="/cards/?name={{ card.name }}/">
 			      <i class="flaticon-link"></i></a></span><br>
 			  {{ card.rarity }} {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}</small>
 		      </td>
@@ -240,7 +240,7 @@
 	      {% include "ownedCardOnBottomCard.html" with owned=owned %}
 	      {% with card.owned_cards|length as length %}{% if length > 1 %}|{% endif %}{% endwith %}
 	      {% endfor %}
-	      <a href="{% if user.is_authenticated %}#addCard{% else %}/create{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" title="{% trans 'Add this card'%}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}{% trans 'Add this card to your collection' %}{% else %}{% trans 'Create an account to add this card to your collection' %}{% endif %}" data-trigger="hover"></i></a>
+	      <a href="{% if user.is_authenticated %}#addCard{% else %}/create/{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" title="{% trans 'Add this card'%}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}{% trans 'Add this card to your collection' %}{% else %}{% trans 'Create an account to add this card to your collection' %}{% endif %}" data-trigger="hover"></i></a>
 	      <div class="pull-right">
 		{% if card.is_promo %}
 		<i class="flaticon-promo" title="{% trans 'Promo Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card comes with ' %}{{ card.promo_item }}" data-trigger="hover"></i>

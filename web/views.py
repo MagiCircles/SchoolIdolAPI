@@ -433,7 +433,16 @@ def editaccount(request, account):
 
 def users(request):
     context = globalContext(request)
-    users = User.objects.all()
+    page = 0
+    page_size = 18
+    if 'page' in request.GET and request.GET['page']:
+        page = int(request.GET['page']) - 1
+        if page < 0:
+            page = 0
+    users = User.objects.all().order_by('-last_login')
+    context['total_results'] = users.count()
+    users = users[(page * page_size):((page * page_size) + page_size)]
+    # users = User.objects.all()
     for user in users:
         user.avatar = getUserAvatar(user, 100)
         preferences, created = models.UserPreferences.objects.get_or_create(user=user)
@@ -441,7 +450,9 @@ def users(request):
         user.accounts = models.Account.objects.filter(owner=user)
         user.accounts = sorted(user.accounts, key=lambda a: a.rank, reverse=True)
         user.best_rank = user.accounts[0].rank if user.accounts else 0
-    users = sorted(users, key=lambda u: u.best_rank, reverse=True)
+    # users = sorted(users, key=lambda u: u.best_rank, reverse=True)
     context['total_users'] = len(users)
+    context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     context['users'] = enumerate(users)
+    context['page'] = page + 1
     return render(request, 'users.html', context)

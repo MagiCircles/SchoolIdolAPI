@@ -6,10 +6,11 @@
 {% block content %}
 
 {% load mod %}
+{% load times %}
 {% load imageurl %}
 
 <div class="container" id="users">
-  <h1 class="text-center margin50">{% trans 'Players' %}</h1>
+  <h1 class="text-center margin50">{% trans 'Players' %} <small>{{ total_results }}</small></h1>
   <div class="row">
     {% for i, user in users %}
     {% if i|mod:3 %}
@@ -56,6 +57,18 @@
     </div>
     {% endfor %}
   </div>
+
+  <nav>
+    <ul class="pagination pagination-sm">
+      <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+      {% for i in total_pages|times %}
+      <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+      {% endfor %}
+      <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+    </ul>
+  </nav>
+
+
 </div>
 
 {% endblock %}

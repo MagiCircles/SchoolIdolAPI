@@ -40,6 +40,7 @@ STORED_CHOICES = (
     ('Box', _('In present box')),
     ('Favorite', _('Wish List')),
 )
+STORED_DICT = dict(STORED_CHOICES)
 
 class Event(models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
@@ -128,7 +129,7 @@ class Card(models.Model):
 admin.site.register(Card)
 
 class Account(models.Model):
-    owner = models.ForeignKey(User, related_name='account')
+    owner = models.ForeignKey(User, related_name='accounts_set')
     nickname = models.CharField(_("Nickname"), blank=True, max_length=20)
     friend_id = models.PositiveIntegerField(_("Friend ID"), blank=True, null=True, help_text=_('You can find your friend id by going to the "Friends" section from the home, then "ID Search". Players will be able to send you friend requests or messages using this number.'))
     transfer_code = models.CharField(_("Transfer Code"), blank=True, max_length=30, help_text=_('It\'s important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.'))
@@ -143,8 +144,8 @@ class Account(models.Model):
 admin.site.register(Account)
 
 class OwnedCard(models.Model):
-    owner_account = models.ForeignKey(Account, related_name='ownedcard')
-    card = models.ForeignKey(Card, related_name='ownedcard')
+    owner_account = models.ForeignKey(Account, related_name='ownedcards')
+    card = models.ForeignKey(Card, related_name='ownedcards')
     stored = models.CharField(_("Stored"),  choices=STORED_CHOICES, default='Deck', max_length=30)
     expiration = models.DateTimeField(_("Expiration"), default=None, null=True, blank=True)
     idolized = models.BooleanField(_("Idolized"), default=False)

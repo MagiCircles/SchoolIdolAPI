@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^ajax/editcard/(?P<ownedcard>\d+)[/]+$', views.ajaxeditcard, name='ajaxeditcard'),
     url(r'^ajax/deletecard/(?P<ownedcard>\d+)[/]+$', views.ajaxdeletecard, name='ajaxdeletecard'),
     url(r'^ajax/cards[/]+$', views.ajaxcards, name='ajaxcards'),
+    url(r'^ajax/ownedcards/(?P<account>\d+)/(?P<stored>\w+)[/]+$', views.ajaxownedcards, name='ajaxownedcards'),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
 )

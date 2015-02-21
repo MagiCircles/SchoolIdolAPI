@@ -1,7 +1,18 @@
 
 $('label.cardstype').click(function () {
     $(this).find('input').tab('show');
+
 });
+$('label.cardstype').on('show.bs.tab', function (e) {
+    var tab = $($(e.target).attr('data-target'));
+    var account = tab.closest('.panel').prop('id');
+    if (tab.text() == '') {
+	tab.html('<div class="alert alert-warning">Loading...</div>');
+	$.get('/ajax/ownedcards/' + account + '/' + tab.attr('data-stored') + '/', function(data) {
+	    tab.html(data);
+	})
+    }
+})
 
 $(function () {
     $('[data-toggle="popover"]').popover();

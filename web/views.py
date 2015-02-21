@@ -2,7 +2,7 @@ from __future__ import division
 import math
 from django.shortcuts import render, redirect, get_object_or_404
 from django import template
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import RequestContext, loader
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
@@ -292,25 +292,31 @@ def profile(request, username):
     context = globalContext(request)
     user = get_object_or_404(User, username=username)
     context['profile_user'] = user
-    context['preferences'], created = models.UserPreferences.objects.get_or_create(user=user)
+    context['preferences'], created = user.preferences.get_or_create()
     if user == request.user:
         context['is_me'] = True
         context['user_accounts'] = context['accounts']
     else:
         context['is_me'] = False
-        context['user_accounts'] = models.Account.objects.filter(owner=user)
+        context['user_accounts'] = user.accounts_set.all()
     if not context['preferences'].private or context['is_me']:
         for account in context['user_accounts']:
-            account.deck = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
+            account.deck = account.ownedcards.filter(stored='Deck').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
-            account.album = models.OwnedCard.objects.filter(owner_account=account).filter((Q(stored='Album') | Q(stored='Deck'))).order_by('card__id')
-            if context['is_me']:
-                account.box = models.OwnedCard.objects.filter(owner_account=account, stored='Box').order_by('card__id')
-            account.wishlist = models.OwnedCard.objects.filter(owner_account=account, stored='Favorite').order_by('-card__rarity', '-idolized', 'card__id')
     context['current'] = 'profile'
     context['avatar'] = getUserAvatar(user, 200)
     return render(request, 'profile.html', context)
+
+def ajaxownedcards(request, account, stored):
+    if stored not in models.STORED_DICT:
+        raise Http404
+    account = get_object_or_404(models.Account, pk=account)
+    if account.owner.username != request.user.username and account.owner.preferences.get_or_create()[0].private:
+        raise PermissionDenied()
+    ownedcards = account.ownedcards.filter(stored=stored)
+    context = { 'cards': ownedcards, 'nolink': True }
+    return render(request, 'ownedcards.html', context)
 
 def ajaxaddcard(request):
     context = globalContext(request)
@@ -445,9 +451,9 @@ def users(request):
     # users = User.objects.all()
     for user in users:
         user.avatar = getUserAvatar(user, 100)
-        preferences, created = models.UserPreferences.objects.get_or_create(user=user)
+        preferences, created = user.preferences.get_or_create()
         user.prefs = preferences
-        user.accounts = models.Account.objects.filter(owner=user)
+        user.accounts = user.accounts_set.all()
         user.accounts = sorted(user.accounts, key=lambda a: a.rank, reverse=True)
         user.best_rank = user.accounts[0].rank if user.accounts else 0
     # users = sorted(users, key=lambda u: u.best_rank, reverse=True)

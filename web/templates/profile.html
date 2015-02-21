@@ -165,17 +165,11 @@
 	    <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.deck %}
 	    </div>
-	    <div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
-	      {% include 'ownedcards.html' with cards=account.album %}
-	    </div>
+	    <div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Album"></div>
 	    {% if is_me %}
-	    <div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
-	      {% include 'ownedcards.html' with cards=account.box %}
-	    </div>
+	    <div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Box"></div>
 	    {% endif %}
-	    <div id="cardtabWishlist{{ account.pk }}" class="tab-pane fade cardtab-pane text-center">
-	      {% include 'ownedcards.html' with cards=account.wishlist %}
-	    </div>
+	    <div id="cardtabWishlist{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Favorite"></div>
 	    <br>
 	  </div>
 	  {% endif %}

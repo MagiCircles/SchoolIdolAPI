@@ -77,7 +77,7 @@ class CardSerializer(serializers.ModelSerializer):
             if circle:
                 return base_url + '/static/circle-' + card.attribute + '.png'
             return base_url + '/static/default-' + card.attribute + '.png'
-        return '%s%s' % (base_url, path)
+        return '%s%s' % (base_url, path) if path else ''
 
     def get_japanese_attribute(self, obj):
         return obj.japanese_attribute()

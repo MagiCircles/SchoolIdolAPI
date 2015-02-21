@@ -52,14 +52,14 @@ function youtubeRatio() {
     });
 }
 
-function center_images() {
-    $('.card_images').each(function() {
-	if ($(this).closest('.panel-body').children('.row').length > 0) {
-	    var height = $(this).closest('.panel-body').height();
-	    $(this).css('margin-top', (height / 2) - ($(this).find('.idolized').height() / 2));
-	}
-    });
-}
+// function center_images() {
+//     $('.card_images').each(function() {
+// 	if ($(this).closest('.panel-body').children('.row').length > 0) {
+// 	    var height = $(this).closest('.panel-body').height();
+// 	    $(this).css('margin-top', (height / 2) - ($(this).find('.idolized').height() / 2));
+// 	}
+//     });
+// }
 
 function load_more_function() {
     var button = $("#load_more");
@@ -73,7 +73,7 @@ function load_more_function() {
 	editCardFormHandler();
 	statistics_buttons();
 	youtubeRatio();
-	center_images();
+	// center_images();
 
 	// Reload disqus comments count
 	window.DISQUSWIDGETS = undefined;
@@ -130,7 +130,7 @@ addCardButtonHandler();
 $(document).ready(function() {
     addCardButtonHandler();
     statistics_buttons();
-    center_images();
+    // center_images();
     pagination();
     youtubeRatio();
 });

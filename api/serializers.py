@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User, Group
+from django.conf import settings
 from rest_framework import serializers
 from api import models
 from dateutil.relativedelta import relativedelta
@@ -70,13 +71,13 @@ class CardSerializer(serializers.ModelSerializer):
     website_url = serializers.SerializerMethodField()
 
     def _image_file_to_url(self, path, card, circle=False, idolized=False):
-        url = 'http://' + self.context['request'].META['HTTP_HOST']
+        base_url = settings.IMAGES_HOSTING_PATH
         if (not path and 'imagedefault' in self.context['request'].GET and self.context['request'].GET['imagedefault'] and self.context['request'].GET['imagedefault'].title() != 'False' and
             (idolized or circle or (not card.is_special and not card.is_promo))):
             if circle:
-                return url + '/static/circle-' + card.attribute + '.png'
-            return url + '/static/default-' + card.attribute + '.png'
-        return path.replace('web', 'http://' + self.context['request'].META['HTTP_HOST'])
+                return base_url + '/static/circle-' + card.attribute + '.png'
+            return base_url + '/static/default-' + card.attribute + '.png'
+        return '%s%s' % (base_url, path)
 
     def get_japanese_attribute(self, obj):
         return obj.japanese_attribute()

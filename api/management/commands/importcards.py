@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.files.images import ImageFile
 from django.core.files.temp import NamedTemporaryFile
 import urllib2
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 from api import models
 import re
 import HTMLParser
@@ -38,15 +38,20 @@ def wikiaImageURL(string):
         return ""
     return clean(string)
 
+def remove_all_comments(soup):
+    comments = soup.findAll(text=lambda text:isinstance(text, Comment))
+    [comment.extract() for comment in comments]
+    return soup
+
 def extract_skill(td):
+    td = remove_all_comments(td)
     if td.span is not None:
         name = td.span.extract()
         details = td.string
         if details is None:
-            if td.br is None:
-                details = None
-            else:
-                details = td.br.extract()
+            if td.br is not None:
+                td.br.extract()
+            details = td.string
     elif td.strong is not None:
         name = td.strong.extract()
         details = td.string

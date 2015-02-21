@@ -115,3 +115,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
 AWS_STORAGE_BUCKET_NAME = 'schoolido.lu-assets'
+# S3
+# IMAGES_HOSTING_PATH = 'http://schoolido.lu-assets.s3-website-ap-northeast-1.amazonaws.com/'
+# CloudFront
+IMAGES_HOSTING_PATH = 'http://datjr36easq2c.cloudfront.net/'

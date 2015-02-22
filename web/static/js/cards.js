@@ -37,6 +37,16 @@ function addCardButtonHandler() {
     });
 }
 
+function shareButtons() {
+    stLight.options({
+	publisher: "f651d0dd-8213-437a-be4a-5ccc4d544d03",
+	doNotHash: true,
+	doNotCopy: true,
+	hashAddressBar: false,
+    });
+    stButtons.locateElements();
+}
+
 function youtubeRatio() {
     var showYoutubeIframe = function(embed_video) {
 	if (embed_video.length > 0) {
@@ -73,6 +83,7 @@ function load_more_function() {
 	editCardFormHandler();
 	statistics_buttons();
 	youtubeRatio();
+	shareButtons();
 	// center_images();
 
 	// Reload disqus comments count
@@ -133,4 +144,5 @@ $(document).ready(function() {
     // center_images();
     pagination();
     youtubeRatio();
+    shareButtons();
 });

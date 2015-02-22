@@ -166,5 +166,16 @@ class UserPreferences(models.Model):
     twitter = models.CharField(max_length=20, null=True, blank=True)
     accept_friend_requests = models.BooleanField(_('Accept friend requests'), default=True)
     private = models.BooleanField(_('Private Profile'), default=False, help_text=_('If your profile is private, people will only see your center.'))
+    following = models.ManyToManyField(User, symmetrical=False, related_name='followers')
 
 admin.site.register(UserPreferences)
+
+# Add card to deck/album/wish list
+# Level up
+# Idolized / Max leveled / Max bonded
+class Activity(models.Model):
+    user = models.ForeignKey(User, related_name='activities')
+    message = models.CharField(max_length=300)
+    card = models.ForeignKey(Card, null=True, blank=True)
+
+admin.site.register(Activity)

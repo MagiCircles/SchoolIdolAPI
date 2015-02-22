@@ -7,10 +7,12 @@ from django.template import RequestContext, loader
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login
 from django.db.models import Count, Q
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from dateutil.relativedelta import relativedelta
+from django.forms.models import model_to_dict
 from api import models
 from web import forms, links
 import urllib, hashlib
@@ -27,8 +29,13 @@ def globalContext(request):
     }
     if request.user.is_authenticated and not request.user.is_anonymous():
         context['accounts'] = request.user.accounts_set.all().select_related('center')
-        preferences, created = request.user.preferences.get_or_create()
-        context['interfaceColor'] = preferences.color
+        session_preferences = request.session.get('preferences')
+        if not session_preferences:
+            preferences, created = request.user.preferences.get_or_create()
+            request.session['preferences'] = model_to_dict(preferences)
+            request.session['preferences']['following'] = [f.username for f in preferences.following.all()]
+        context['session_preferences'] = request.session['preferences']
+        context['interfaceColor'] = context['session_preferences']['color']
     active_account_id = request.session.get('active_account')
     if active_account_id:
         for account in context['accounts']:
@@ -309,6 +316,9 @@ def profile(request, username):
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
     context['current'] = 'profile'
     context['avatar'] = getUserAvatar(user, 200)
+    context['following'] = isFollowing(user, context)
+    context['total_following'] = context['preferences'].following.count()
+    context['total_followers'] = user.followers.count()
     return render(request, 'profile.html', context)
 
 def ajaxownedcards(request, account, stored):
@@ -398,6 +408,47 @@ def ajaxdeletecard(request, ownedcard):
 
 def ajaxcards(request):
     return cards(request, ajax=True)
+
+def isFollowing(user, context): # must have globalContext
+    for followed in context['session_preferences']['following']:
+        if followed == user.username:
+            return True
+    return False
+
+def _ajaxfollowcontext(follow):
+    for user in follow:
+        user.prefs = user.preferences.get()
+        user.avatar = getUserAvatar(user, 100)
+    return { 'follow': follow }
+
+def ajaxfollowers(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'followlist.html', _ajaxfollowcontext([p.user for p in user.followers.all()]))
+
+def ajaxfollowing(request, username):
+    preferences = get_object_or_404(models.UserPreferences, user__username=username)
+    return render(request, 'followlist.html', _ajaxfollowcontext(preferences.following.all()))
+
+@csrf_exempt
+def ajaxfollow(request, username):
+    context = globalContext(request)
+    if (not request.user.is_authenticated or request.user.is_anonymous()
+        or request.method != 'POST' or request.user.username == username):
+        raise PermissionDenied()
+    user = get_object_or_404(User, username=username)
+    if 'follow' in request.POST and not isFollowing(user, context):
+        preferences = request.user.preferences.get()
+        preferences.following.add(user)
+        preferences.save()
+        del request.session['preferences']
+        return HttpResponse('followed')
+    if 'unfollow' in request.POST and isFollowing(user, context):
+        preferences = request.user.preferences.get()
+        preferences.following.remove(user)
+        preferences.save()
+        del request.session['preferences']
+        return HttpResponse('unfollowed')
+    raise PermissionDenied()
 
 def edit(request):
     if not request.user.is_authenticated or request.user.is_anonymous():

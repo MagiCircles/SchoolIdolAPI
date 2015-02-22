@@ -1,0 +1,6 @@
+{% for user in follow %}
+<a href="/user/{{ user.username }}/" class="btn btn-{% if user.prefs.color %}{{ user.prefs.color }}{% else %}default{% endif %} btn-lg">
+  <img src="{{ user.avatar }}" alt="{{ user.username }}" width="100" height="100" style="border-radius: 5px;"><br>
+  <h4>{{ user.username }}</h4>
+</a>
+{% endfor %}

@@ -23,6 +23,9 @@ urlpatterns = patterns('',
     url(r'^ajax/deletecard/(?P<ownedcard>\d+)[/]+$', views.ajaxdeletecard, name='ajaxdeletecard'),
     url(r'^ajax/cards[/]+$', views.ajaxcards, name='ajaxcards'),
     url(r'^ajax/ownedcards/(?P<account>\d+)/(?P<stored>\w+)[/]+$', views.ajaxownedcards, name='ajaxownedcards'),
+    url(r'^ajax/follow/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollow, name='ajaxfollow'),
+    url(r'^ajax/followers/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollowers, name='ajaxfollowers'),
+    url(r'^ajax/following/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollowing, name='ajaxfollowing'),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
 )

@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, ModelChoiceField, ChoiceField
+from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from api import models
@@ -41,3 +41,5 @@ class OwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard
         fields = ('card', 'stored', 'idolized', 'max_level', 'max_bond')
+
+# class FollowForm(Form):

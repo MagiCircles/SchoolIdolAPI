@@ -1,4 +1,10 @@
 
+function freeModal(title, body) {
+    $('#freeModal .modal-header h4').html(title);
+    $('#freeModal .modal-body').html(body);
+    $('#freeModal').modal('show');
+}
+
 $(document).ready(function() {
     var hash = window.location.hash.substring(1);
     if (hash.indexOf("Modal") >= 0) {

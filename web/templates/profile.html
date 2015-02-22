@@ -19,7 +19,7 @@
 	    </div>
 	    <div class="col-sm-8">
 	      <div class="info">
-		<h1>{{ profile_user.username }}</h1>
+		<h1 id="username">{{ profile_user.username }}</h1>
 		{% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
 		<br>
 		<div class="description">{{ preferences.description|markdown }}</div>
@@ -28,8 +28,28 @@
 	  </div>
 	</div>
 	<div class="col-md-4 text-right">
+	  {% if not preferences.private and not is_me %}
+	  <br><br>
+	  <form method="POST" class="noform" id="follow" action="/ajax/follow/{{ profile_user.username }}/">
+	    {% csrf_token %}
+	    <input type="hidden" name="{% if following %}unfollow{% else %}follow{% endif %}">
+	    <input type="submit" class="btn btn-lg btn-{{ preference.color }}" value="{% if following %}{% trans 'Unfollow' %}{% else %}{% trans 'Follow' %}{% endif %}" data-reverse="{% if following %}{% trans 'Follow' %}{% else %}{% trans 'Unfollow' %}{% endif %}">
+	  </form>
+	  {% endif %}
 	  <br><br>
 	  <table class="table table-bordered">
+	    {% if total_followers %}
+	    <tr>
+	      <th>{% trans 'Followers' %}</th>
+	      <td><a href="#followers">{{ total_followers }}</a></td>
+	    </tr>
+	    {% endif %}
+	    {% if total_following %}
+	    <tr>
+	      <th>{% trans 'Following' %}</th>
+	      <td><a href="#following">{{ total_following }}</a></td>
+	    </tr>
+	    {% endif %}
 	    {% if preferences.best_girl %}
 	    <tr>
 	      <th>{% trans 'Best Girl' %}</th>

@@ -410,14 +410,15 @@ def ajaxcards(request):
     return cards(request, ajax=True)
 
 def isFollowing(user, context): # must have globalContext
-    for followed in context['session_preferences']['following']:
-        if followed == user.username:
-            return True
+    if 'session_preferences' in context:
+        for followed in context['session_preferences']['following']:
+            if followed == user.username:
+                return True
     return False
 
 def _ajaxfollowcontext(follow):
     for user in follow:
-        user.prefs = user.preferences.get()
+        user.prefs, created = user.preferences.get_or_create()
         user.avatar = getUserAvatar(user, 100)
     return { 'follow': follow }
 
@@ -437,13 +438,13 @@ def ajaxfollow(request, username):
         raise PermissionDenied()
     user = get_object_or_404(User, username=username)
     if 'follow' in request.POST and not isFollowing(user, context):
-        preferences = request.user.preferences.get()
+        preferences, created = request.user.preferences.get_or_create()
         preferences.following.add(user)
         preferences.save()
         del request.session['preferences']
         return HttpResponse('followed')
     if 'unfollow' in request.POST and isFollowing(user, context):
-        preferences = request.user.preferences.get()
+        preferences, created = request.user.preferences.get_or_create()
         preferences.following.remove(user)
         preferences.save()
         del request.session['preferences']

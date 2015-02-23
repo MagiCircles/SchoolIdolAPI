@@ -28,13 +28,15 @@
 	  </div>
 	</div>
 	<div class="col-md-4 text-right">
-	  {% if not preferences.private and not is_me %}
+	  {% if user.is_authenticated and not preferences.private and not is_me %}
 	  <br><br>
 	  <form method="POST" class="noform" id="follow" action="/ajax/follow/{{ profile_user.username }}/">
 	    {% csrf_token %}
 	    <input type="hidden" name="{% if following %}unfollow{% else %}follow{% endif %}">
-	    <input type="submit" class="btn btn-lg btn-{{ preferences.color }}" value="{% if following %}{% trans 'Unfollow' %}{% else %}{% trans 'Follow' %}{% endif %}" data-reverse="{% if following %}{% trans 'Follow' %}{% else %}{% trans 'Unfollow' %}{% endif %}">
+	    <input type="submit" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}" value="{% if following %}{% trans 'Unfollow' %}{% else %}{% trans 'Follow' %}{% endif %}" data-reverse="{% if following %}{% trans 'Follow' %}{% else %}{% trans 'Unfollow' %}{% endif %}">
 	  </form>
+	  {% elif not user.is_authenticated %}
+	  <a href="/create/" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">Follow</a>
 	  {% endif %}
 	  <br><br>
 	  <table class="table table-bordered">

@@ -233,11 +233,11 @@
 		</div>
 		{% endif %}
 		<div class="share text-center padding20">
-		  <span class='st_facebook_large' displayText='Facebook'></span>
-		  <span class='st_twitter_large' st_via="schoolidolu" displayText='Tweet'></span>
-		  <span class='st_reddit_large' displayText='Reddit'></span>
-		  <span class='st_tumblr_large' displayText='Tumblr'></span>
-		  <span class='st_pinterest_large' displayText='Pinterest'></span>
+		  <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{{ card|imageurl:'card_idolized_image' }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		  <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{{ card|imageurl:'card_idolized_image' }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		  <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{{ card|imageurl:'card_idolized_image' }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		  <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{{ card|imageurl:'card_idolized_image' }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		  <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{{ card|imageurl:'card_idolized_image' }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
 		</div>
 	      </div> <!-- more -->
 	      {% if total_cards == 1 %}</div></div>{% endif %}

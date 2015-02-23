@@ -137,6 +137,10 @@ function statistics_buttons() {
     })
 }
 
+stLight.options({
+    publisher:'f651d0dd-8213-437a-be4a-5ccc4d544d03',
+});
+
 addCardButtonHandler();
 $(document).ready(function() {
     addCardButtonHandler();

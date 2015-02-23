@@ -4,9 +4,10 @@
 {% load imageurl %}
 
 {% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endblock %}
-{% block js %}<script src="/static/js/cards.js"></script>
-<script src="/static/js/addcard.js"></script>
+{% block js %}
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script src="/static/js/cards.js"></script>
+<script src="/static/js/addcard.js"></script>
 {% endblock %}
 
 {% block shareimage %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}

@@ -126,7 +126,7 @@
 			  #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			</a><br>
 			<small>{% if card.japanese_name %} {{ card.japanese_name }}{% endif %} {{ card.name }}
-			  <span class="tiny"><a target="_blank" href="/cards/?name={{ card.name }}/">
+			  <span class="tiny"><a target="_blank" href="/cards/?name={{ card.name }}">
 			      <i class="flaticon-link"></i></a></span><br>
 			  {{ card.rarity }} {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}</small>
 		      </td>

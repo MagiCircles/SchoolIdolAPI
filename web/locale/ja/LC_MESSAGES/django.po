@@ -629,7 +629,7 @@ msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
 
 #: web/templates/index.html:48
 msgid "Browse Cards"
-msgstr "カードを探す"
+msgstr "カードのデータ"
 
 #: web/templates/index.html:49
 msgid "Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering."
@@ -638,7 +638,7 @@ msgstr "スクフェスのカードについてのデータを見ることがで
 #. This is on the homepage. You can also write something like "Your collection of cards"
 #: web/templates/index.html:55
 msgid "Track Cards"
-msgstr "カードを集める"
+msgstr "カードのコレクション"
 
 #. This is on the homepage. You don't have to translate it exactly. You can just write a message that explains the website differently. For example: "you could write something different that explains the website, such as "Collect cards! Add the cards you have to show your collection! Use several accounts!'"
 #: web/templates/index.html:56

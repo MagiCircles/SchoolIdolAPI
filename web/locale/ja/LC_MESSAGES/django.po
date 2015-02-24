@@ -293,12 +293,12 @@ msgstr "スクールアイドル友達"
 #. This is the catch phrase of the website. It means that it's the best "tool" for the people who play the game.
 #: web/templates/base.html:7
 msgid "The ultimate resource for the game."
-msgstr ""
+msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
 
 #. This is the catch phrase of the website. It means that it's the best "tool" for the people who play the game.
 #: web/templates/base.html:17
 msgid "The ultimate resource for LLSIF game players."
-msgstr ""
+msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
 
 #. A short summary of what the website can do.
 #: web/templates/base.html:17
@@ -625,7 +625,7 @@ msgstr "設定を保存"
 
 #: web/templates/index.html:5
 msgid "The Ultimate Resource For LoveLive! School Idol Festival players"
-msgstr ""
+msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
 
 #: web/templates/index.html:48
 msgid "Browse Cards"
@@ -633,7 +633,7 @@ msgstr "カードを探す"
 
 #: web/templates/index.html:49
 msgid "Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering."
-msgstr ""
+msgstr "スクフェスのカードについてのデータを見ることができます"
 
 #. This is on the homepage. You can also write something like "Your collection of cards"
 #: web/templates/index.html:55
@@ -643,16 +643,16 @@ msgstr "カードを集める"
 #. This is on the homepage. You don't have to translate it exactly. You can just write a message that explains the website differently. For example: "you could write something different that explains the website, such as "Collect cards! Add the cards you have to show your collection! Use several accounts!'"
 #: web/templates/index.html:56
 msgid "Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts."
-msgstr ""
+msgstr "プロフィールを作ってあなたの持っているカードを登録することができます。プロフィールを他のプレイヤーと共有することもできます。"
 
 #: web/templates/index.html:62
 msgid "Show your love"
-msgstr "あなたの愛を見せて"
+msgstr "誰が好きですか？"
 
 #. This is on the homepage. You don't have to translate it exactly. You can just write a message that explains the website differently. For example: "you could write something different that explains the website, such as "Vote for your favorite idol'"
 #: web/templates/index.html:63
 msgid "Add cards to your favorites, comment on the cards and VOTE FOR THE BEST GIRL on the Facemash."
-msgstr ""
+msgstr "コンテストであなたの推しメンに投票しよう。"
 
 #. Info on the list of cards you added.
 #: web/templates/ownedCardOnBottomCard.html:4

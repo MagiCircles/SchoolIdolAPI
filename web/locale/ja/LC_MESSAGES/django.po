@@ -8,165 +8,126 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: api/models.py:11
+#: api/models.py:12
 msgid "Smile"
 msgstr "スマイル"
 
-#: api/models.py:12
+#: api/models.py:13
 msgid "Pure"
 msgstr "ピュア"
 
-#: api/models.py:13
+#: api/models.py:14
 msgid "Cool"
 msgstr "クール"
 
-#: api/models.py:14
+#: api/models.py:15
 msgid "All"
 msgstr "全般"
 
-#: api/models.py:18
+#: api/models.py:19
 msgid "Normal"
 msgstr "N"
 
-#: api/models.py:19
+#: api/models.py:20
 msgid "Rare"
 msgstr "R"
 
-#: api/models.py:20
+#: api/models.py:21
 msgid "Super Rare"
 msgstr "SR"
 
-#: api/models.py:21
+#: api/models.py:22
 msgid "Ultra Rare"
 msgstr "UR"
 
-#: api/models.py:25 schoolidolapi/settings.py:91
-msgid "Japanese"
-msgstr "日本語"
-
-#: api/models.py:26 schoolidolapi/settings.py:90
-msgid "English"
-msgstr "英語"
-
-#: api/models.py:27
-msgid "Korean"
-msgstr "韓国語"
-
-#: api/models.py:28
-msgid "Chinese"
-msgstr "中国語"
-
-#: api/models.py:29
-msgid "Taiwanese"
-msgstr "台湾語"
-
 #. This card is in your deck
-#: api/models.py:38 web/templates/ownedCardOnBottomCard.html:4
+#: web/templates/ownedCardOnBottomCard.html:4
 msgid "In deck"
 msgstr "デッキに入れる"
 
 #. This card is in your album
-#: api/models.py:39 web/templates/ownedCardOnBottomCard.html:6
+#: web/templates/ownedCardOnBottomCard.html:6
 msgid "In album"
 msgstr "アルバム"
 
 #. This card is in your present box
-#: api/models.py:40 web/templates/ownedCardOnBottomCard.html:8
+#: web/templates/ownedCardOnBottomCard.html:8
 msgid "In present box"
 msgstr "プレゼント一覧"
 
 #. List of cards you would like to have
-#: api/models.py:41 web/templates/ownedCardOnBottomCard.html:10
-#: web/templates/profile.html:156
+#: api/models.py:34 web/templates/ownedCardOnBottomCard.html:10
+#: web/templates/profile.html:179
 msgid "Wish List"
 msgstr "欲しいカード"
 
-#: api/models.py:73
-msgid "Number of the card in the album"
-msgstr "アルバムの順番"
-
-#: api/models.py:79
-msgid "Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions."
-msgstr "プロモカードはもう覚醒されています。特別な行事やグッズで手に入るので勧誘することは出来ません。"
-
-#: api/models.py:83
-msgid "Special cards cannot be added in a team but they can be used in training."
-msgstr " サポートカードはユニットで使えませんが、練習で使えます。"
-
-#: api/models.py:131 web/templates/profile.html:97
+#: api/models.py:132 web/templates/profile.html:120
 msgid "Nickname"
 msgstr "名前"
 
-#: api/models.py:132 web/templates/profile.html:101
+#: api/models.py:133 web/templates/profile.html:124
 msgid "Friend ID"
 msgstr "友達のID"
 
 #. This is an instruction dialog for users to find their "friend ID" so they can fill it in a form
-#: api/models.py:132
+#: api/models.py:133
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
 msgstr " "
 
 #. This is a form field for players to specify a transfer code, used to recover their account alter.
-#: api/models.py:133 web/templates/profile.html:106
+#: api/models.py:134 web/templates/profile.html:129
 msgid "Transfer Code"
 msgstr "引き継ぎパスワード"
 
 #. s/loose/lose/
-#: api/models.py:133
+#: api/models.py:134
 msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
 msgstr ""
 
 #. This is a form field to specify the user's language
-#: api/models.py:134
+#: api/models.py:135
 msgid "Language"
 msgstr "言語"
 
 #. There are different versions of the game in different languages. So the "language" field corresponds to the version of the game.
-#: api/models.py:134
+#: api/models.py:135
 msgid "This is the version of the game you play."
 msgstr "プレイするゲーム版を選んで下さい"
 
 #. This is a form field for the user to specify the operating system of their cell phone
-#: api/models.py:135
+#: api/models.py:136 web/templates/profile.html:142
 msgid "Operating System"
 msgstr "オペレーティングシステム"
 
 #. Card in the center position of your idol band
-#: api/models.py:136
+#: api/models.py:137
 msgid "Center"
 msgstr "センター"
 
-#: api/models.py:136
+#: api/models.py:137
 msgid "The character that talks to you on your home screen."
 msgstr " ホームで話しているキャラクターです。"
 
-#: api/models.py:137 web/templates/profile.html:127
+#: api/models.py:138 web/templates/profile.html:150
 msgid "Rank"
 msgstr "ランク"
 
 #. Where the card is: in deck, in album or in present box.
-#: api/models.py:147 web/templates/cards.html:110
+#: api/models.py:148 web/templates/cards.html:112
 #, fuzzy
 msgid "Stored"
 msgstr "ショップ"
 
 #. Some cards expire. This is the date of expiration.
-#: api/models.py:148 web/templates/ownedCardOnBottomCard.html:8
+#: api/models.py:149 web/templates/addCardForm.html:10
+#: web/templates/ownedCardOnBottomCard.html:8
 msgid "Expiration"
 msgstr "期限"
 
-#: api/models.py:149 web/templates/cards.html:132
-#: web/templates/cards.html.py:135 web/templates/ownedCardOnBottomCard.html:13
+#: api/models.py:150 web/templates/cards.html:134
+#: web/templates/cards.html.py:137 web/templates/ownedCardOnBottomCard.html:13
 msgid "Idolized"
 msgstr "覚醒"
-
-#: api/models.py:150 web/templates/cards.html:118
-msgid "Max Level"
-msgstr "LvMAX"
-
-#: api/models.py:151 web/templates/cards.html:125
-msgid "Max Bond (Kizuna)"
-msgstr "絆MAX"
 
 #. This is the title of the page shown to users when they try to access a page they can't access
 #: web/templates/403.html:3 web/templates/403.html.py:4
@@ -179,29 +140,9 @@ msgid "You are not supposed to do this, so we blocked you. Sorry!"
 msgstr " "
 
 #. This is the title of an error page.
-#: web/templates/500.html:3
-msgid "Internal Server Error"
-msgstr "インターネットサーバーエラー"
-
-#. This is the title of an error page.
-#: web/templates/500.html:4
+#: web/templates/500.html:3 web/templates/500.html.py:4
 msgid "Unexpected Error"
 msgstr "予期しないエラー"
-
-#. This is an error message on error pages
-#: web/templates/500.html:5
-msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please "
-msgstr " "
-
-#. This is a link to contact the site's team
-#: web/templates/500.html:5
-msgid "contact us"
-msgstr "お問合せ"
-
-#. This is a sentence that will be followed by the date when the card expires.
-#: web/templates/addCardForm.html:10
-msgid "Expires In"
-msgstr "期限　後"
 
 #: web/templates/addCardForm.html:13
 msgid "days"
@@ -209,16 +150,12 @@ msgstr "日"
 
 #. The text in the button to save the changes on some forms
 #: web/templates/addCardForm.html:18 web/templates/addaccount.html:19
+#: web/templates/edit.html:20
 msgid "Apply Changes"
 msgstr "変更を保存"
 
-#. This is an action button to add a card that is visible on screen to the player's collection
-#: web/templates/addCardForm.html:18
-msgid "Add Card"
-msgstr "カードを追加"
-
 #. This is a warning dialog when the user is about to delete data
-#: web/templates/addCardForm.html:31
+#: web/templates/addCardForm.html:31 web/templates/addaccount.html:28
 msgid "You can't cancel this action afterwards."
 msgstr "あなたはこの行動を後で取り消す事はできません"
 
@@ -227,172 +164,114 @@ msgstr "あなたはこの行動を後で取り消す事はできません"
 msgid "Delete this card"
 msgstr "このカードを削除する"
 
-#: web/templates/addaccount.html:4
-msgid "Edit"
-msgstr "編集"
-
-#: web/templates/addaccount.html:4
-msgid "Add"
-msgstr "追加"
-
-#. is this part of a sentence?
-#: web/templates/addaccount.html:4
-msgid "a game Account"
-msgstr "ゲーム・アカウントを追加"
-
-#. This is an action button to edit the player's profile
-#: web/templates/addaccount.html:11
-msgid "Edit your account"
-msgstr "アカウント設定を変更"
-
-#. This is an action button for the player to create a new account (players can have multiple accounts)
-#: web/templates/addaccount.html:11
-msgid "Add a Game Account"
-msgstr "ゲームアカウントを追加"
-
 #. This is a link to go back to the player's profile
 #: web/templates/addaccount.html:18 web/templates/edit.html:19
 #: web/templates/edit.html.py:34
 msgid "Back to my profile"
 msgstr "プロフィールに戻る"
 
-#: web/templates/addaccount.html:19
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:11
+#: web/templates/addaccount.html:19 web/templates/base.html:88
 msgid "Add Account"
 msgstr "アカウントを追加"
-
-#. This is an action button to delete one of the player's accounts (a player can have multiple accounts)
-#: web/templates/addaccount.html:27
-msgid "Delete this account"
-msgstr "このアカウントを削除する"
-
-#. This is a warning dialog show to the player when they are about to delete their account.
-#: web/templates/addaccount.html:28
-msgid "This cannot be undone, so make sure you really want to delete your account."
-msgstr "あなたはこの行動を後で取り消す事はできません。"
 
 #. This message appears when the user want to delete an account. We tell them they don't have to if they want to give it to someone else.
 #: web/templates/addaccount.html:29
 msgid "Note that we can transfer your account to another user."
 msgstr ""
 
-#. This is an action button to send a message to the website's team
-#: web/templates/addaccount.html:30
-msgid "Contact us."
-msgstr "お問合せ"
-
-#. This is an action button for the user to delete their account permanently
-#: web/templates/addaccount.html:33
-msgid "Delete your account"
-msgstr "アカウントを削除する"
-
 #: web/templates/base.html:7 web/templates/base.html.py:42
-#: web/templates/base.html:119 web/templates/base.html.py:124
+#: web/templates/base.html:120 web/templates/base.html.py:125
+#: web/templates/cardsPage.html:236 web/templates/cardsPage.html.py:237
+#: web/templates/cardsPage.html:238 web/templates/cardsPage.html.py:239
+#: web/templates/cardsPage.html:240 web/templates/index.html:25
 msgid "School Idol Tomodachi"
 msgstr "スクールアイドル友達"
-
-#. This is the catch phrase of the website. It means that it's the best "tool" for the people who play the game.
-#: web/templates/base.html:7
-msgid "The ultimate resource for the game."
-msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
-
-#. This is the catch phrase of the website. It means that it's the best "tool" for the people who play the game.
-#: web/templates/base.html:17
-msgid "The ultimate resource for LLSIF game players."
-msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
 
 #. A short summary of what the website can do.
 #: web/templates/base.html:17
 msgid "Browse & track your cards. Vote for the best girl."
-msgstr ""
+msgstr "スクフェスのカードについてのデータを見ることができます"
 
 #: web/templates/base.html:46
 msgid "Cards"
 msgstr "カード"
 
-#: web/templates/base.html:54
-msgid "Your Profile"
-msgstr "プロフィール"
-
-#: web/templates/base.html:55
+#: web/templates/base.html:56 web/templates/edit.html:4
+#: web/templates/edit.html.py:11 web/templates/profile.html:23
 msgid "Your Settings"
 msgstr "設定"
 
-#: web/templates/base.html:59
+#: web/templates/base.html:60
 msgid "Logout"
 msgstr "ログアウト"
 
-#: web/templates/base.html:69
+#: web/templates/base.html:70
 msgid "Switch account"
 msgstr "アカウント切り替え"
 
-#: web/templates/base.html:87
-msgid "Add an account"
-msgstr "アカウント追加"
-
-#: web/templates/base.html:88
+#: web/templates/base.html:89
 msgid "Edit your accounts"
 msgstr "アカウント作成"
 
-#: web/templates/base.html:92 web/templates/create.html:18
+#: web/templates/base.html:93 web/templates/create.html:18
 #: web/templates/login.html:4 web/templates/login.html.py:12
 #: web/templates/login.html:20
 msgid "Login"
 msgstr "ログイン"
 
-#: web/templates/base.html:93 web/templates/create.html:4
+#: web/templates/base.html:94 web/templates/create.html:4
 #: web/templates/create.html.py:11 web/templates/create.html:19
 #: web/templates/login.html:19
 msgid "Sign Up"
 msgstr "会員登録"
 
-#: web/templates/base.html:103
+#: web/templates/base.html:104
 msgid "Filters"
 msgstr "フィルター"
 
-#: web/templates/base.html:119 web/templates/baseMenu.html:3
+#: web/templates/base.html:120 web/templates/baseMenu.html:3
 msgid "About"
 msgstr "スク友について"
 
-#: web/templates/base.html:122
+#: web/templates/base.html:123
 msgid "LoveLive! Franchise"
 msgstr "ラブライブ選挙"
 
 #. this is part of an interpolated sentence, this should use proper interpolation
-#: web/templates/base.html:124
+#: web/templates/base.html:125
 msgid "is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab."
 msgstr ""
 
-#: web/templates/base.html:126
+#: web/templates/base.html:127
 msgid "Thanks"
 msgstr "ありがとう"
 
 #. Sentence just before the list of source we use to get info about cards
-#: web/templates/base.html:127
+#: web/templates/base.html:128
 msgid "Informations about the cards come from:"
 msgstr ""
 
-#: web/templates/base.html:133
+#: web/templates/base.html:134
 msgid "Tutorials and links come from:"
 msgstr " "
 
-#: web/templates/base.html:137
+#: web/templates/base.html:138
 #, fuzzy
 msgid "Icon Credits"
 msgstr "アイコンクレジット。"
 
-#: web/templates/base.html:141 web/templates/cards.html:141
+#: web/templates/base.html:142 web/templates/base.html.py:228
+#: web/templates/cards.html:143
 msgid "Go"
 msgstr "OK"
 
-#: web/templates/base.html:152
+#: web/templates/500.html:5 web/templates/addaccount.html:30
+#: web/templates/base.html:153 web/templates/baseMenu.html:4
 msgid "Contact Us"
 msgstr "お問合せ"
 
-#: web/templates/base.html:156
-msgid "Send us an email to"
-msgstr "私達にEメールを送って"
-
-#: web/templates/base.html:166
+#: web/templates/base.html:157 web/templates/base.html.py:167
 msgid "Send Email"
 msgstr "電子メールを送信"
 
@@ -409,13 +288,9 @@ msgid "Back to homepage"
 msgstr "ホームページに戻る"
 
 #: web/templates/baseMenu.html:2 web/templates/users.html:4
-#: web/templates/users.html.py:12
+#: web/templates/users.html.py:13
 msgid "Players"
 msgstr "プレイヤー"
-
-#: web/templates/baseMenu.html:4
-msgid "Contact"
-msgstr "接点"
 
 #: web/templates/baseMenu.html:5
 msgid "Developers"
@@ -429,187 +304,165 @@ msgstr "言語設定を変更"
 msgid "Cards Album"
 msgstr "アルバム"
 
-#: web/templates/cards.html:19 web/templates/cards.html.py:21
+#: web/templates/cards.html:21 web/templates/cards.html.py:23
 msgid "Search"
 msgstr "検索"
 
-#. skill = 特技
-#: web/templates/cards.html:21
-msgid "Search through name, skills, collection, promo item, event name, ..."
-msgstr ""
-
-#: web/templates/cards.html:23
+#: web/templates/cards.html:25
 msgid "Filter"
 msgstr "フィルター"
 
-#: web/templates/cards.html:25
+#: web/templates/cards.html:23 web/templates/cards.html.py:27 web/views.py:261
 msgid "Idol"
 msgstr "アイドル"
 
-#: web/templates/cards.html:41
+#: web/templates/cards.html:43
 msgid "Rarity"
 msgstr "レアリティ"
 
-#: web/templates/cards.html:49
+#: web/templates/cards.html:51
 msgid "Attribute"
 msgstr "属性"
 
-#: web/templates/cards.html:57 web/templates/cardsPage.html:181
+#: web/templates/cards.html:23 web/templates/cards.html.py:59
+#: web/templates/cardsPage.html:182 web/templates/cardsPage.html.py:259
 msgid "Skill"
 msgstr "特技"
 
 #. This is a filter in the form used to search for cards in the database. It restricts the search to cards in a specific collection that the player selects from a drop-down menu.
-#: web/templates/cards.html:65 web/templates/cardsPage.html:171
+#: web/templates/cards.html:23 web/templates/cards.html.py:67
+#: web/templates/cardsPage.html:172
 msgid "Collection"
 msgstr "コレクション"
 
 #. This is a filter in the form used to search for cards in the database. It restricts the search to only cards that were obtained through special events
-#: web/templates/cards.html:76
+#: web/templates/cards.html:78
 msgid "Promo Cards only"
 msgstr "限定カードのみ"
 
 #. This is a filter in the form used to search for cards in the database. It restricts the search to only cards that are used to increase the level of other cards.
-#: web/templates/cards.html:81
+#: web/templates/cards.html:83
 msgid "Special Cards only"
 msgstr "スペシャルカードのみ"
 
 #. This is a filter in the form used to search for cards in the database. It restricts the search to only cards obtained through regularly scheduled events.
-#: web/templates/cards.html:86
+#: web/templates/cards.html:88
 msgid "Event Cards only"
 msgstr "イベントカードのみ"
 
 #. This is a filter in the form used to search for cards in the database. It restricts the search to only cards that are available in all countries (the Japanese version of the game has more cards than the US version)
-#: web/templates/cards.html:91
+#: web/templates/cards.html:93
 msgid "Worldwide Cards only"
 msgstr "全世界のカードのみ"
 
 #. This is a form field to sort the search results in a specific order, picked from a drop-down menu
-#: web/templates/cards.html:94
+#: web/templates/cards.html:96
 msgid "Order"
 msgstr "順番"
 
 #. This is a drop-down menu option to sort cards in a reverse order in search results.
-#: web/templates/cards.html:104
+#: web/templates/cards.html:106
 msgid "Reverse order"
 msgstr "逆順"
 
 #. This is a checkbox that restricts search results to only cards that are at the maximum level, among the player's collection.
-#: web/templates/cards.html:121
+#: api/models.py:151 web/templates/cards.html:120
+#: web/templates/cards.html.py:123 web/templates/ownedCardOnBottomCard.html:16
 msgid "Max Leveled"
 msgstr "LvMAX"
 
 #. This is a checkbox that restricts search results to only cards that are not at the maximum level, among the player's collection.
-#: web/templates/cards.html:122
+#: web/templates/cards.html:124
 msgid "Not Max Leveled"
 msgstr "未レベルMAX"
 
-#. This is a checkbox that restricts search results to only cards that are at the maximum amount of bond points (kizuna), among the player's collection.
-#: web/templates/cards.html:128
-msgid "Max Bonded"
-msgstr "絆MAX"
-
 #. This is a checkbox that restricts search results to only cards that are not at the maximum amount of bond points (kizuna), among the player's collection.
-#: web/templates/cards.html:129
+#: web/templates/cards.html:131
 msgid "Not Max Bonded"
 msgstr "未絆MAX"
 
 #. This is a checkbox that restricts search results to only cards that are not idolized among the player's collection.
-#: web/templates/cards.html:136
+#: web/templates/cards.html:138
 msgid "Not Idolized"
 msgstr "未覚醒"
 
-#: web/templates/cards.html:160
-msgid "Add card to your account"
-msgstr "あなたのアカウントにカードを追加"
-
-#: web/templates/cardsPage.html:60 web/templates/cardsPage.html.py:65
-#: web/templates/cardsPage.html:74
+#: web/templates/cardsPage.html:61 web/templates/cardsPage.html.py:66
+#: web/templates/cardsPage.html:75
 msgid "Level"
 msgstr "レベル"
 
-#: web/templates/cardsPage.html:115
-msgid "Id"
-msgstr "ID"
-
-#: web/templates/cardsPage.html:135 web/views.py:243
+#: web/templates/cardsPage.html:136 web/views.py:259
 msgid "Release date"
 msgstr "公表日時"
 
-#: web/templates/cardsPage.html:146
+#: web/templates/cards.html:23 web/templates/cardsPage.html:147
 msgid "Event"
 msgstr "イベント"
 
-#: web/templates/cardsPage.html:159 web/views.py:249
+#: web/templates/cardsPage.html:160 web/views.py:265
 msgid "HP"
 msgstr "体力"
 
-#: web/templates/cardsPage.html:201
+#: web/templates/cardsPage.html:202
 msgid "Center Skill"
 msgstr "センタースキル"
 
 #. This is the title of the Comments section on a card's page. The comments are about the card itself.
-#: web/templates/cardsPage.html:219
+#: web/templates/cardsPage.html:220 web/templates/users.html:52
 msgid "Comments"
 msgstr "コメント"
 
-#: web/templates/cardsPage.html:238
+#: web/templates/addCardForm.html:18 web/templates/cards.html:162
+#: web/templates/cardsPage.html:250
 msgid "Add this card"
 msgstr "カードを追加"
 
-#: web/templates/cardsPage.html:238
-msgid "Add this card to your collection"
-msgstr "あなたのコレクションにカードを追加"
-
-#: web/templates/cardsPage.html:238
+#: web/templates/cardsPage.html:250
 msgid "Create an account to add this card to your collection"
 msgstr "あなたのコレクションにカードを追加するためのアカウントを作る"
 
 #. In the wiki it says "限定カード" (cards that you get when you buy a CD or magazine)
-#: web/templates/cardsPage.html:241
+#: web/templates/cardsPage.html:253
 msgid "Promo Card"
 msgstr "限定カード"
 
 #. The promotion item (CD, magazine, etc) you have to buy to get the card
-#: web/templates/cardsPage.html:241
+#: web/templates/cardsPage.html:253
 msgid "This card comes with "
 msgstr "このカードは〜から来ました"
 
-#: web/templates/cardsPage.html:244
+#: web/templates/cardsPage.html:256
 msgid "Event Card"
 msgstr "イベントカード"
 
 #. needs interpolation
-#: web/templates/cardsPage.html:244
+#: web/templates/cardsPage.html:256
 msgid "This card first appeared during the event"
 msgstr "このカードはイベントの間に初めてでました"
 
-#: web/templates/cardsPage.html:247
+#: web/templates/cardsPage.html:259
 msgid "Special Card"
 msgstr "スペシャルカード"
 
-#: web/templates/cardsPage.html:247
+#: web/templates/cardsPage.html:259
 msgid "This card cannot be added in a team."
 msgstr "このカードはチームに追加できません"
 
-#: web/templates/cardsPage.html:250
+#: web/templates/cardsPage.html:262
 msgid "Japan Only Card"
 msgstr "日本だけのカード"
 
-#: web/templates/cardsPage.html:250
+#: web/templates/cardsPage.html:262
 msgid "This card is only available in the Japanese version of the game."
 msgstr "このカードは日本のバージョンでのみ利用できます"
 
-#: web/templates/cardsPage.html:252
+#: web/templates/cardsPage.html:264
 msgid "Worldwide Card"
 msgstr "世界中のカード"
 
-#: web/templates/cardsPage.html:252
+#: web/templates/cardsPage.html:264
 msgid "This card is available on all the versions of the game in the world."
 msgstr "このカードは全世界のどのバージョンでも利用できます"
-
-#: web/templates/edit.html:4 web/templates/edit.html.py:11
-msgid "User Settings"
-msgstr "ユーザー設定"
 
 #. eng: "log in"
 #. 
@@ -619,38 +472,39 @@ msgid "You will be disconnected and will have to login with your new password."
 msgstr "パスワードを変更すればまた新しいパスワードを使ってログインして下さい"
 
 #. This is an action button to confirm the action of modifying one's settings.
-#: web/templates/edit.html:20 web/templates/edit.html.py:35
+#: web/templates/edit.html:35
 msgid "Save your settings"
 msgstr "設定を保存"
 
+#: web/templates/base.html:7 web/templates/base.html.py:17
 #: web/templates/index.html:5
 msgid "The Ultimate Resource For LoveLive! School Idol Festival players"
 msgstr "スクフェスプレイヤーに1番役立つ便利なツール"
 
-#: web/templates/index.html:48
+#: web/templates/index.html:51
 msgid "Browse Cards"
 msgstr "カードのデータ"
 
-#: web/templates/index.html:49
+#: web/templates/index.html:52
 msgid "Browse all the cards from the LoveLive! School Idol Festival mobile game using smart searching, filters and ordering."
 msgstr "スクフェスのカードについてのデータを見ることができます"
 
 #. This is on the homepage. You can also write something like "Your collection of cards"
-#: web/templates/index.html:55
+#: web/templates/index.html:58
 msgid "Track Cards"
 msgstr "カードのコレクション"
 
 #. This is on the homepage. You don't have to translate it exactly. You can just write a message that explains the website differently. For example: "you could write something different that explains the website, such as "Collect cards! Add the cards you have to show your collection! Use several accounts!'"
-#: web/templates/index.html:56
+#: web/templates/index.html:59
 msgid "Track the cards in your deck, in your album and your present box. Sign up and easily switch between your multiple game accounts."
 msgstr "プロフィールを作ってあなたの持っているカードを登録することができます。プロフィールを他のプレイヤーと共有することもできます。"
 
-#: web/templates/index.html:62
+#: web/templates/index.html:65
 msgid "Show your love"
 msgstr "誰が好きですか？"
 
 #. This is on the homepage. You don't have to translate it exactly. You can just write a message that explains the website differently. For example: "you could write something different that explains the website, such as "Vote for your favorite idol'"
-#: web/templates/index.html:63
+#: web/templates/index.html:66
 msgid "Add cards to your favorites, comment on the cards and VOTE FOR THE BEST GIRL on the Facemash."
 msgstr "コンテストであなたの推しメンに投票しよう。"
 
@@ -686,16 +540,8 @@ msgid "You idolized this card. Congratulations!"
 msgstr "おめでとう！あなたはこのカードを覚醒することができました"
 
 #: web/templates/ownedCardOnBottomCard.html:16
-msgid "Max level"
-msgstr "LvMAX"
-
-#: web/templates/ownedCardOnBottomCard.html:16
 msgid "You max leveled this card. Congratulations!"
 msgstr "おめでとう！あなたのこのカードはレベルMAXになりました"
-
-#: web/templates/ownedCardOnBottomCard.html:19
-msgid "Max bond"
-msgstr "絆MAX"
 
 #: web/templates/ownedCardOnBottomCard.html:19
 msgid "You max bonded (kizuna) this card. Congratulations!"
@@ -711,147 +557,107 @@ msgstr "カードを探す"
 msgid "No cards registered yet."
 msgstr "まだ登録したカードがありません"
 
-#: web/templates/profile.html:4
-msgid "s Profile"
-msgstr "プロフィール"
-
-#. This is an action button
-#: web/templates/profile.html:23
-msgid "Edit your settings"
-msgstr "あなたの設定を編集する"
-
-#: web/templates/profile.html:61 web/templates/users.html:29
+#: web/templates/profile.html:84 web/templates/users.html:30
 msgid "No account."
 msgstr "アカウントがありません"
 
-#. This introduce the list of a player's accounts
-#: web/templates/profile.html:63
-msgid "Accounts:"
-msgstr "アカウント"
-
 #. center = センター
-#: web/templates/profile.html:89
+#: web/templates/profile.html:112
 msgid "No Center Specified"
 msgstr "センターを特定できません"
 
 #. This is shown next to form fields to indicate that the information entered in this field will not be shown to other players.
-#: web/templates/profile.html:106
+#: web/templates/profile.html:129
 msgid "Only you can see it"
 msgstr "あなたはそれだけ見ることができます"
 
-#: web/templates/profile.html:111
+#: web/templates/profile.html:134
 msgid "Game Version"
 msgstr "ゲームバージョン"
 
-#: web/templates/profile.html:119
-msgid "Device Operating System"
-msgstr "機器オペレーティングシステム"
-
 #. You can also say "important cards"
-#: web/templates/profile.html:123
+#: web/templates/profile.html:146
 msgid "Significant Cards"
 msgstr "重要なカード"
 
-#: web/templates/profile.html:124
+#: web/templates/profile.html:147
 msgid "and"
 msgstr "そして"
 
-#: web/templates/profile.html:139
+#: api/models.py:31 web/templates/profile.html:162
 msgid "Deck"
 msgstr "デッキ"
 
-#: web/templates/profile.html:144
+#: api/models.py:32 web/templates/profile.html:167
 msgid "Album"
 msgstr "アルバム"
 
-#: web/templates/profile.html:150
+#: web/templates/profile.html:173
 msgid "Present Box"
 msgstr "プレゼント一覧"
 
-#. eng: html tags in the string
-#: web/templates/profile.html:163
-msgid "To search through your cards, order them, edit them or add some new, go to <a href=\"/cards?search=\">the cards page and use the filters "
-msgstr ""
-
-#. This is a link prompting the user to be the first to leave a comment on this page.
-#: web/templates/users.html:52
-msgid "Start the discussion"
-msgstr "話し合いを始める"
-
-#: web/views.py:244
+#: web/templates/cardsPage.html:116 web/views.py:260
 msgid "Card #ID"
 msgstr "カードID"
 
-#: web/views.py:245
-msgid "Idol's names"
-msgstr "アイドルの名前"
-
-#: web/views.py:246
+#: web/views.py:262
 msgid "Smile's statistics"
 msgstr "スマイル統計"
 
-#: web/views.py:247
+#: web/views.py:263
 msgid "Pure's statistics"
 msgstr "ピュア統計"
 
-#: web/views.py:248
+#: web/views.py:264
 msgid "Cool's statistics"
 msgstr "クール統計"
 
-#: api/models.py:160
+#: api/models.py:161
 msgid "Color"
-msgstr ""
+msgstr "色"
 
-#: api/models.py:161
+#: api/models.py:162
 msgid "Description"
-msgstr ""
+msgstr "説明"
 
-#: api/models.py:161
+#: api/models.py:162
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr ""
 
-#: api/models.py:162
-msgid "Best girl"
-msgstr ""
-
-#: api/models.py:163 web/templates/profile.html:41
+#: api/models.py:164 web/templates/profile.html:64
 msgid "Location"
-msgstr ""
+msgstr "場所"
 
-#: api/models.py:163
+#: api/models.py:164
 msgid "The city you live in."
 msgstr ""
 
-#: api/models.py:165
+#: api/models.py:166 web/templates/profile.html:69
 msgid "Accept friend requests"
 msgstr ""
 
-#: api/models.py:166
+#: api/models.py:167
 msgid "Private Profile"
 msgstr ""
 
-#: api/models.py:166
+#: api/models.py:167
 msgid "If your profile is private, people will only see your center."
 msgstr ""
 
-#: schoolidolapi/settings.py:92
-msgid "French"
-msgstr ""
-
-#: web/templates/cardsPage.html:27
+#: web/templates/cardsPage.html:28
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
 msgstr[0] ""
 
-#: web/templates/cardsPage.html:282
+#: web/templates/cardsPage.html:295
 msgid "No results."
 msgstr ""
 
-#: web/templates/cardsPage.html:283
+#: web/templates/cardsPage.html:296
 msgid "No idols match your search."
 msgstr ""
 
-#: web/templates/cardsPage.html:285
+#: web/templates/cardsPage.html:298
 msgid "Change filters"
 msgstr ""
 
@@ -871,24 +677,73 @@ msgstr ""
 msgid "Change Avatar"
 msgstr ""
 
-#: web/templates/profile.html:35
+#: api/models.py:163 web/templates/profile.html:58
 msgid "Best Girl"
 msgstr ""
 
-#: web/templates/profile.html:46
-msgid "Accept Friend Requests"
-msgstr ""
-
-#: web/templates/profile.html:47
+#: web/templates/profile.html:70
 msgid "Yes"
 msgstr ""
 
-#: web/templates/profile.html:47
+#: web/templates/profile.html:70
 msgid "No"
 msgstr ""
 
-#: web/templates/users.html:31
+#: web/templates/profile.html:86 web/templates/users.html:32
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] ""
+
+#: api/models.py:33
+msgid "Present box"
+msgstr "プレゼント一覧"
+
+#: api/models.py:152 web/templates/cards.html:127
+#: web/templates/cards.html.py:130 web/templates/ownedCardOnBottomCard.html:19
+msgid "Max Bonded (Kizuna)"
+msgstr "絆MAX"
+
+#: web/templates/500.html:5
+msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us."
+msgstr ""
+
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:11
+msgid "Edit Account"
+msgstr "アカウント設定を変更"
+
+#: web/templates/addaccount.html:27 web/templates/addaccount.html.py:33
+msgid "Delete Account"
+msgstr "このアカウントを削除する"
+
+#: web/templates/base.html:47
+msgid "Contest"
+msgstr "コンテスト"
+
+#: web/templates/base.html:55 web/templates/profile.html:4
+msgid "Profile"
+msgstr "プロフィール"
+
+#: web/templates/cards.html:23
+msgid "Promo Item"
+msgstr ""
+
+#: web/templates/profile.html:36
+msgid "Unfollow"
+msgstr "解除"
+
+#: web/templates/profile.html:36
+msgid "Follow"
+msgstr "フォロー"
+
+#: web/templates/profile.html:46
+msgid "Followers"
+msgstr "フォロワー"
+
+#: web/templates/profile.html:52
+msgid "Following"
+msgstr "フォロー"
+
+#: web/templates/profile.html:186
+msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
+msgstr ""
 

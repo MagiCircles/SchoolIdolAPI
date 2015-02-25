@@ -2,6 +2,7 @@ from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
+from django.utils.translation import ugettext_lazy as _
 from api import models
 
 class UserForm(ModelForm):
@@ -15,7 +16,7 @@ def getGirls():
     return [('', '')] + [(girl['name'], girl['name']) for girl in girls]
 
 class UserPreferencesForm(ModelForm):
-    best_girl = ChoiceField(choices=getGirls(), required=False)
+    best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
     class Meta:
         model = models.UserPreferences
         fields = ('color', 'description', 'best_girl', 'location', 'twitter', 'accept_friend_requests', 'private')

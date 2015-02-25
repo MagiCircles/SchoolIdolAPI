@@ -50,8 +50,7 @@ msgstr "相簿"
 
 #: web/templates/ownedCardOnBottomCard.html:8
 msgid "In present box"
-msgstr "社員一覽\n"
-""
+msgstr "社員一覽"
 
 #: api/models.py:34 web/templates/ownedCardOnBottomCard.html:10
 #: web/templates/profile.html:179
@@ -588,8 +587,7 @@ msgstr "如果你的個人資料是私密的，其他人將只能看到你的主
 #: web/templates/cardsPage.html:28
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
-msgstr[0] "%(counter)s 張卡片符合條件:\n"
-"Plural:%(counter)s 張卡片符合條件:"
+msgstr[0] "%(counter)s 張卡片符合條件:"
 
 #: web/templates/cardsPage.html:295
 msgid "No results."

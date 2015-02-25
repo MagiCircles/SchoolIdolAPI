@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib import admin
 from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _
+from api.models_languages import LANGUAGE_CHOICES
 
 import datetime
 
@@ -21,23 +22,15 @@ RARITY_CHOICES = (
     ('UR', _('Ultra Rare')),
 )
 
-LANGUAGE_CHOICES = (
-    ('JP', _('Japanese')),
-    ('EN', _('English')),
-    ('KR', _('Korean')),
-    ('CN', _('Chinese')),
-    ('TW', _('Taiwanese')),
-)
-
 OS_CHOICES = (
     ('Android', 'Android'),
     ('iOs', 'iOs'),
 )
 
 STORED_CHOICES = (
-    ('Deck', _('In deck')),
-    ('Album', _('In album')),
-    ('Box', _('In present box')),
+    ('Deck', _('Deck')),
+    ('Album', _('Album')),
+    ('Box', _('Present Box')),
     ('Favorite', _('Wish List')),
 )
 STORED_DICT = dict(STORED_CHOICES)
@@ -71,17 +64,17 @@ class Event(models.Model):
 admin.site.register(Event)
 
 class Card(models.Model):
-    id = models.PositiveIntegerField(unique=True, help_text=_("Number of the card in the album"), primary_key=3)
+    id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
     name = models.CharField(max_length=100)
     japanese_name = models.CharField(max_length=100, blank=True, null=True)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     rarity = models.CharField(choices=RARITY_CHOICES, max_length=10)
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
-    is_promo = models.BooleanField(default=False, help_text=_("Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions."))
+    is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
     promo_item = models.CharField(max_length=100, blank=True, null=True)
     release_date = models.DateField(default=datetime.date(2013, 4, 16), null=True, blank=True)
     event = models.ForeignKey(Event, related_name='card', blank=True, null=True)
-    is_special = models.BooleanField(default=False, help_text=_("Special cards cannot be added in a team but they can be used in training."))
+    is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
     hp = models.PositiveIntegerField(null=True)
     minimum_statistics_smile = models.PositiveIntegerField(null=True)
     minimum_statistics_pure = models.PositiveIntegerField(null=True)
@@ -149,8 +142,8 @@ class OwnedCard(models.Model):
     stored = models.CharField(_("Stored"),  choices=STORED_CHOICES, default='Deck', max_length=30)
     expiration = models.DateTimeField(_("Expiration"), default=None, null=True, blank=True)
     idolized = models.BooleanField(_("Idolized"), default=False)
-    max_level = models.BooleanField(_("Max Level"), default=False)
-    max_bond = models.BooleanField(_("Max Bond (Kizuna)"), default=False)
+    max_level = models.BooleanField(_("Max Leveled"), default=False)
+    max_bond = models.BooleanField(_("Max Bonded (Kizuna)"), default=False)
 
     def __unicode__(self):
         return str(self.owner_account) + ' owns ' + str(self.card)
@@ -161,7 +154,7 @@ class UserPreferences(models.Model):
     user = models.ForeignKey(User, related_name='preferences')
     color = models.CharField(_('Color'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'))
-    best_girl = models.CharField(_('Best girl'), max_length=200, null=True, blank=True)
+    best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
     location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in.'))
     twitter = models.CharField(max_length=20, null=True, blank=True)
     accept_friend_requests = models.BooleanField(_('Accept friend requests'), default=True)

@@ -13,9 +13,9 @@
 		<i class="flaticon-idolized" title="{% trans 'Idolized' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="{% if owned.stored == 'Favorite' %}{% trans 'You prefer the idolized version.'%}{% else %}{% trans 'You idolized this card. Congratulations!' %}{% endif %}" data-trigger="hover"{% endif %}></i>
 		{% endif %}
 		{% if owned.max_level %}
-		<i class="flaticon-max-level" title="{% trans 'Max level' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'You max leveled this card. Congratulations!' %}" data-trigger="hover"{% endif %}></i>
+		<i class="flaticon-max-level" title="{% trans 'Max Leveled' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'You max leveled this card. Congratulations!' %}" data-trigger="hover"{% endif %}></i>
 		{% endif %}
 		{% if owned.max_bond %}
-		<i class="flaticon-max-bond" title="{% trans 'Max bond' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'You max bonded (kizuna) this card. Congratulations!' %}" data-trigger="hover"{% endif %}></i>
+		<i class="flaticon-max-bond" title="{% trans 'Max Bonded (Kizuna)' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'You max bonded (kizuna) this card. Congratulations!' %}" data-trigger="hover"{% endif %}></i>
 		{% endif %}
 	      {% if not nolink %}</a>{% endif %}

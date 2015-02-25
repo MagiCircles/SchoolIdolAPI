@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'User Settings' %}{% endblock %}
+{% block title %}{% trans 'Your Settings' %}{% endblock %}
 
 {% block content %}
 
 <div class="container">
   <br><br>
   <div class="jumbotron">
-    <h1>{% trans 'User Settings' %}</h1>
+    <h1>{% trans 'Your Settings' %}</h1>
     <br>
     <form method="post" action="">
       <div class="alert alert-warning">{% blocktrans %}You will be disconnected and will have to login with your new password.{% endblocktrans %}</div>
@@ -17,7 +17,7 @@
       <br><br>
       <div class="text-right">
 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
-	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Save your settings' %}" />
+	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
       </div>
       <input type="hidden" name="next" value="/login" />
     </form>

@@ -1,5 +1,5 @@
 {% extends "baseError.html" %}
 {% load i18n %}
-{% block title %}{% trans 'Internal Server Error' %}{% endblock %}
+{% block title %}{% trans 'Unexpected Error' %}{% endblock %}
 {% block titlepage %}{% trans 'Unexpected Error' %}{% endblock %}
-{% block details %}{% blocktrans %}Something weird happened, and it looks like it's our server's fault. If the error persists, please {% endblocktrans %}<a href="/#contactModal">{% trans 'contact us' %}</a>.{% endblock %}
+{% block details %}{% blocktrans %}Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us.{% endblocktrans %} <a href="/#contactModal">{% trans 'Contact Us' %}</a>.{% endblock %}

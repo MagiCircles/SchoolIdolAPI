@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load markdown_deux_tags %}
-{% block title %}{{ profile_user.username }}'{% trans 's Profile'%}{% endblock %}
+{% block title %}{{ profile_user.username }}: {% trans 'Profile'%}{% endblock %}
 {% block js %}<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script><script src="/static/js/profile.js"></script>{% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
 	    <div class="col-sm-8">
 	      <div class="info">
 		<h1 id="username">{{ profile_user.username }}</h1>
-		{% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Edit your settings' %}</a></div>{% endif %}
+		{% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Your Settings' %}</a></div>{% endif %}
 		<br>
 		<div class="description">{{ preferences.description|markdown }}</div>
 	      </div>
@@ -66,7 +66,7 @@
 	    </tr>
 	    {% endif %}
 	    <tr>
-	      <th>{% trans 'Accept Friend Requests' %}</th>
+	      <th>{% trans 'Accept friend requests' %}</th>
 	      <td>{% if preferences.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
 	    </tr>
 	  </table>
@@ -83,7 +83,7 @@
     {% if length == 0 %}
     <h2>{% trans 'No account.' %}</h2>
     {% else %}
-    <h2>{% trans 'Accounts:' %}</h2>
+    <h2>{% blocktrans count counter=length %}{{ length }} account:{% plural %}{{ length }} accounts:{% endblocktrans %}</h2>
     {% for account in user_accounts %}
     {% with account.center.card.attribute|default:'All' as attribute %}
     <div class="panel panel-{{ attribute }} profile-account" id="{{ account.pk }}">
@@ -139,7 +139,7 @@
 		  {{ account.language }}</td>
 	      </tr>
 	      <tr>
-		<th>{% trans 'Device Operating System' %}</th>
+		<th>{% trans 'Operating System' %}</th>
 		<td>{{ account.os }}</td>
 	      </tr>
 	      <tr>
@@ -183,7 +183,7 @@
 	  <div class="tab-content">
 	    {% if is_me %}
 	    <br>
-	    <div class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to <a href="/cards/?search=">the cards page and use the filters {% endblocktrans %}<i class="flaticon-filter"></i></a></div>
+	    <a style="display: block;" href="/cards/?search=" class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to the cards page and use the filters.{% endblocktrans %} <i class="flaticon-filter"></i></a>
 	    {% endif %}
 	    <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
 	      {% include 'ownedcards.html' with cards=account.deck %}

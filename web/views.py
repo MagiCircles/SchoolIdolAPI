@@ -255,7 +255,7 @@ def cards(request, card=None, ajax=False):
             'ordering_choices': (
                 ('release_date', _('Release date')),
                 ('id', _('Card #ID')),
-                ('name', _('Idol\'s names')),
+                ('name', _('Idol')),
                 ('idolized_maximum_statistics_smile', _('Smile\'s statistics')),
                 ('idolized_maximum_statistics_pure', _('Pure\'s statistics')),
                 ('idolized_maximum_statistics_cool', _('Cool\'s statistics')),

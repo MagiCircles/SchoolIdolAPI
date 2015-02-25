@@ -20,7 +20,7 @@
     <form method="GET">
       <h4>{% trans 'Search' %}</h4>
       <div class="section search">
-	<input type="text" id="search" placeholder="{% trans 'Search' %}" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="{% blocktrans %}Search through name, skills, collection, promo item, event name, ...{% endblocktrans %}" data-trigger="focus" value="{{ request_get.search }}">
+	<input type="text" id="search" placeholder="{% trans 'Search' %}" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="{% trans 'Search' %}: {% trans 'Idol' %}, {% trans 'Skill' %}, {% trans 'Collection' %}, {% trans 'Promo Item' %}, {% trans 'Event' %}, ..." data-trigger="focus" value="{{ request_get.search }}">
       </div>
       <h4>{% trans 'Filter' %}</h4>
       <div class="section filter">
@@ -117,17 +117,17 @@
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_max_level">{% trans 'Max Level' %}</label>
+	<label for="id_max_level">{% trans 'Max Leveled' %}</label>
 	<select id="id_max_level" name="max_level">
 	  <option value=""></option>
 	  <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
 	  <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
 	</select>
 	<br>
-	<label for="id_max_bond">{% trans  'Max Bond (Kizuna)' %}</label>
+	<label for="id_max_bond">{% trans  'Max Bonded (Kizuna)' %}</label>
 	<select id="id_max_bond" name="max_bond">
 	  <option value=""></option>
-	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded' %}</option>
+	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
 	  <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
 	</select>
 	<br>
@@ -159,7 +159,7 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title">{% trans 'Add card to your account' %} {{ active_account }}</h4>
+	    <h4 class="modal-title">{% trans 'Add this card' %} {{ active_account }}</h4>
 	  </div>
 	  <div class="modal-body">
 	    {% include "addCardForm.html" %}

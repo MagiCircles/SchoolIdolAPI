@@ -181,7 +181,7 @@ _Note: To contribute to [School Idol Contest](http://schoolido.lu/contest/), go 
 
 ```shell
 # Install pre-requirements
-apt-get install libpython-dev libffi-dev python-virtualenv libmysqlclient-dev
+apt-get install libpython-dev libffi-dev python-virtualenv libmysqlclient-dev nodejs
 
 # Create a virtualenv to isolate the package dependencies locally
 virtualenv env
@@ -202,6 +202,13 @@ python manage.py importcards
 
 # Compile localized messages
 python manage.py compilemessages
+
+# Download front-end dependencies
+npm install -g bower lessc
+bower install
+
+# Compile LESS to CSS
+lessc -x web/static/less/style.less web/static/css/style.less
 ```
 
 #### Anytime
@@ -229,9 +236,15 @@ python manage.py migrate
 
 ##### Whenever you add messages that should be translated
 
+Generate terms:
 ```shell
-python manage.py makemessages -l ja --ignore=env/*
-# Edit the language file with the translation
+python manage.py makemessages -l ja --ignore=env/* --ignore=schoolidolapi/settings.py --ignore=api/models_languages.py
+```
+
+Then go to [POEditor](https://poeditor.com/projects/view?id=29518) and import the tems. When the new terms are translated in all languages, generate the new files and put them in the repo. Either manually or using the [POEditor integration](https://poeditor.com/github/projects).
+
+Compile all languages
+```shell
 python manage.py compilemessages
 ```
 
@@ -245,6 +258,12 @@ Extra command line arguments:
 - `redownload` will download the images for the cards, even when they already have been downloaded
 - `delete` will remove all information about `cards` and `events` in the database
 - `local` will consider you already have the `*.html` files with information at the root of the repo and will not download them from the internet (good for testing & development)
+
+##### When you edit the style
+
+Edit `web/templates/base.html` and uncomment the LESS lines + comment the CSS line.
+
+Modify only the LESS files. To see the changes while changing the code, add `#!watch` at the end of the URL. Do not commit the CSS files nor the changes in `base.html`.
 
 ## Credits & Thanks
 

@@ -294,9 +294,11 @@ class Command(BaseCommand):
                 idolizedtd = tds[2].a
                 if idolizedtd is not None:
                     idolized = wikiaImageURL(idolizedtd.get('href'))
-                skilltd = tds[3].text
-                if skilltd is not None:
-                    skill_title = tds[3].b.extract()
+                if tds[3].b is not None:
+                    skill_title = clean(tds[3].b.extract())
+                if tds[3].br is not None:
+                    tds[3].br.extract()
+                if tds[3].text is not None:
                     skill = clean(tds[3].text)
                 if id is not None:
                     defaults = {

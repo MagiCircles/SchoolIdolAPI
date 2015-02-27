@@ -7,7 +7,7 @@
 {% load imageurl %}
 <div class="container text-center">
   <br><br>
-  <img src="{{ event.image }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
+  <img src="{{ event|eventimageurl }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
   <br><br>
   <h1>{{ event.japanese_name }}{% if event.english_name != event.japanese_name %}<br><small>{{ event.english_name }}</small>{% endif %}</h1>
   <br><br>

@@ -13,4 +13,11 @@ def imageurl(card, image):
                 return url
     return '/static/default-' + card.attribute + '.png'
 
+def eventimageurl(event):
+    print event
+    if event.image:
+        return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
+    return ''
+
 register.filter('imageurl', imageurl)
+register.filter('eventimageurl', eventimageurl)

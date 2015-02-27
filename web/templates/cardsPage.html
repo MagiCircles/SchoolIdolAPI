@@ -149,7 +149,7 @@
 			<a href="/events/{{ card.event.japanese_name }}" target="_blank">
 			  <div class="pull-right">
 			    {% if card.event.image %}
-			    <img src="{{ card.event.image }}" alt="{{ card.event.japanese_name }}" width="100">
+			    <img src="{{ card.event|eventimageurl }}" alt="{{ card.event.japanese_name }}" width="100">
 			    {% else %}
 			    <i class="flaticon-event"></i>
 			    {% endif %}

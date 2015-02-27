@@ -44,6 +44,13 @@ class EventSerializer(serializers.ModelSerializer):
     japan_current = serializers.SerializerMethodField()
     world_current = serializers.SerializerMethodField()
     cards = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        if obj.image:
+            base_url = settings.IMAGES_HOSTING_PATH
+            return u'%s%s' % (base_url, obj.image) if obj.image else ''
+        return None
 
     def get_japan_current(self, obj):
         return obj.is_japan_current()

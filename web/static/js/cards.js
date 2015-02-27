@@ -57,7 +57,6 @@ function youtubeRatio() {
     };
     $('.more.collapse').on('show.bs.collapse', function() { showYoutubeIframe($(this).find('.embed_video')) });
     $('.already_collapsed').each(function() {
-	console.log($(this));
 	showYoutubeIframe($(this).find('.embed_video'));
     });
 }
@@ -137,9 +136,11 @@ function statistics_buttons() {
     })
 }
 
-stLight.options({
-    publisher:'f651d0dd-8213-437a-be4a-5ccc4d544d03',
-});
+if (typeof stLight != 'undefined') { // Adblocks prevents loading
+    stLight.options({
+	publisher:'f651d0dd-8213-437a-be4a-5ccc4d544d03',
+    });
+}
 
 addCardButtonHandler();
 $(document).ready(function() {

@@ -4,12 +4,12 @@
 {% for activity in activities %}
 <div class="activity">
   <div class="row">
-    <div class="col-sm-3">
+    <div class="col-xs-3">
       <a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}">
 	<img src="{{ activity.account.owner.avatar }}" alt="{{ activity.account.owner.username }}" class="avatar">
       </a>
     </div>
-    <div class="col-sm-9">
+    <div class="col-xs-9">
       <div class="pull-right">
 	{% if activity.message == 'Rank Up' %}
 	<a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}" target="_blank">

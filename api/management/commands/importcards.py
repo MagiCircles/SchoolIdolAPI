@@ -252,7 +252,7 @@ class Command(BaseCommand):
                 event, created = models.Event.objects.update_or_create(japanese_name=name, defaults=defaults)
                 models.Card.objects.filter(event=event).update(release_date=beginning)
                 print 'Done'
-                if not local:
+                if not local and (redownload or not event.image):
                     print "  Import event image...",
                     try:
                         f_event = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(name))

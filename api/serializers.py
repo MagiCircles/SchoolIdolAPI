@@ -58,7 +58,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Event
-        fields=('japanese_name', 'english_name', 'beginning', 'end', 'japan_current', 'world_current', 'cards', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'note')
+        fields=('japanese_name', 'english_name', 'image', 'beginning', 'end', 'japan_current', 'world_current', 'cards', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'note')
 
 class CardSerializer(serializers.ModelSerializer):
     japan_only = serializers.SerializerMethodField()

@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^ajax/follow/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollow, name='ajaxfollow'),
     url(r'^ajax/followers/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollowers, name='ajaxfollowers'),
     url(r'^ajax/following/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollowing, name='ajaxfollowing'),
+    url(r'^ajax/activities[/]+$', views.ajaxactivities, name='ajaxactivities'),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
 )

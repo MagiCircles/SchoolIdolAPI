@@ -2,6 +2,7 @@
 @import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700);
 
 @import "../css/flaticon.css";
+@import "../bower/css-hexagon/hexagon.less";
 
 @import "variables.less";
 
@@ -230,7 +231,7 @@ main {
     .social-section {
 	background: url('/static/pattern.png');
 	padding: 100px 0;
-	#disqus_thread {
+	#disqus_thread, #activities {
 	    background-color: white;
 	    padding: 2%;
 	    border-radius: 5px;
@@ -523,5 +524,28 @@ a.panel {
     nobr
     {
 	display: none;
+    }
+}
+
+.activity {
+    padding:  5%;
+    border-bottom: 1px solid #e8e8e8;
+    text-align: left;
+    &:last-child {
+	border-bottom: 0;
+    }
+    .date {
+	color: #ccc;
+    }
+    .avatar {
+	width: 100%;
+	border: 1px solid #e8e8e8;
+	border-radius: 10%;
+    }
+    .rank {
+	.hexagon(34px, @SmileColor);
+	&:hover {
+	    .hexagon-changecolor(darken(@SmileColor, 10%));
+	}
     }
 }

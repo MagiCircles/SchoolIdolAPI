@@ -11,6 +11,19 @@ $("a[href^='#']").on('click', function(e) {
     }
 });
 
+function loadMoreActivities() {
+    $('a[href="#loadMoreActivities"]').click(function(e) {
+	e.preventDefault();
+	var div = $(this).parent();
+	var page = div.attr('data-page');
+	div.html('Loading...');
+	$.get('/ajax/activities/?page=' + page, function(data) {
+	    div.replaceWith(data);
+	    loadMoreActivities();
+	});
+    });
+}
+
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 
@@ -38,6 +51,15 @@ $(document).ready(function() {
 		$('.link-stars-side').show();
 	    } else {
 		$('.link-stars-side').hide();
+	    }
+	    if ($('#activities').html() == ''
+		&& ($(window).scrollTop() + $(window).height())
+		>= $("#home").height() + $('.navbar-Smile').height() - $('.social-section').height()) {
+		$('#activities').text('Loading...');
+		$.get('/ajax/activities/', function(data) {
+		    $('#activities').html(data);
+		    loadMoreActivities();
+		});
 	    }
 	});
     $('.navbar-fixed-top').on('activate.bs.scrollspy', function () {

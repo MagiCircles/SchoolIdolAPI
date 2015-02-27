@@ -35,6 +35,12 @@ STORED_CHOICES = (
 )
 STORED_DICT = dict(STORED_CHOICES)
 
+def storedChoiceToString(stored):
+    for key, string in STORED_CHOICES:
+        if stored == key:
+            return string
+    return None
+
 class Event(models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
     english_name = models.CharField(max_length=100)
@@ -167,8 +173,10 @@ admin.site.register(UserPreferences)
 # Level up
 # Idolized / Max leveled / Max bonded
 class Activity(models.Model):
-    user = models.ForeignKey(User, related_name='activities')
+    creation = models.DateTimeField(auto_now_add=True)
+    account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
     message = models.CharField(max_length=300)
-    card = models.ForeignKey(Card, null=True, blank=True)
+    rank = models.PositiveIntegerField(null=True, blank=True)
+    ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
 
 admin.site.register(Activity)

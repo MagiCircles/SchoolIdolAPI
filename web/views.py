@@ -52,6 +52,9 @@ def getUserAvatar(user, size):
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': 'http://schoolido.lu/static/kotori.jpg', 's': str(size)}))
 
+def pushActivity(account, message, rank=None, ownedcard=None):
+    models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard)
+
 def index(request):
     context = globalContext(request)
     context['hide_back_button'] = True
@@ -355,6 +358,9 @@ def ajaxaddcard(request):
         ownedcard.owner_account = context['active_account']
         ownedcard.save()
         context['owned'] = ownedcard
+        pushActivity(account=context['active_account'],
+                     message="Added a card",
+                     ownedcard=ownedcard)
         return render(request, 'ownedCardOnBottomCard.html', context)
     form = forms.OwnedCardForm(initial={
         'card': request.POST['card']
@@ -373,6 +379,7 @@ def ajaxeditcard(request, ownedcard):
     if request.method == 'GET':
         form = forms.OwnedCardForm(instance=owned_card)
     elif request.method == 'POST':
+        (was_idolized, was_max_leveled, was_max_bonded) = (owned_card.idolized, owned_card.max_level, owned_card.max_bond)
         form = forms.OwnedCardForm(request.POST, instance=owned_card)
         if form.is_valid():
             ownedcard = form.save(commit=False)
@@ -386,6 +393,12 @@ def ajaxeditcard(request, ownedcard):
             ownedcard.card = owned_card.card
             ownedcard.save()
             context['owned'] = ownedcard
+            if not was_idolized and ownedcard.idolized:
+                pushActivity(ownedcard.owner_account, "Idolized a card", ownedcard=ownedcard)
+            if not was_max_leveled and ownedcard.max_level:
+                pushActivity(ownedcard.owner_account, "Max Leveled a card", ownedcard=ownedcard)
+            if not was_max_bonded and ownedcard.max_bond:
+                pushActivity(ownedcard.owner_account, "Max Bonded a card", ownedcard=ownedcard)
             return render(request, 'ownedCardOnBottomCard.html', context)
     else:
         raise PermissionDenied()
@@ -430,6 +443,23 @@ def ajaxfollowing(request, username):
     preferences = get_object_or_404(models.UserPreferences, user__username=username)
     return render(request, 'followlist.html', _ajaxfollowcontext(preferences.following.all()))
 
+def ajaxactivities(request):
+    page = 0
+    page_size = 6
+    if 'page' in request.GET and request.GET['page']:
+        page = int(request.GET['page']) - 1
+        if page < 0:
+            page = 0
+    activities = models.Activity.objects.all().order_by('-creation')
+    activities = activities[(page * page_size):((page * page_size) + page_size)]
+    for activity in activities:
+        activity.account.owner.avatar = getUserAvatar(activity.account.owner, 100)
+    return render(request, 'activities.html', {
+        'activities': activities,
+        'page': page + 1,
+        'page_size': page_size,
+    })
+
 @csrf_exempt
 def ajaxfollow(request, username):
     context = globalContext(request)
@@ -463,6 +493,7 @@ def edit(request):
             form_preferences = forms.UserPreferencesForm(request.POST, instance=context['preferences'])
             if form_preferences.is_valid():
                 form_preferences.save()
+                request.session['preferences'] = model_to_dict(form_preferences.instance)
                 return redirect('/user/' + request.user.username)
         else:
             form = forms.UserForm(request.POST, instance=request.user)
@@ -489,9 +520,12 @@ def editaccount(request, account):
                 if 'deleteAccount' in request.POST:
                     owned_account.delete()
                     return redirect('/user/' + request.user.username)
+                old_rank = owned_account.rank
                 form = forms.FullAccountForm(request.POST, instance=owned_account)
                 if form.is_valid():
                     account = form.save()
+                    if old_rank < account.rank:
+                        pushActivity(account, "Rank Up", rank=account.rank)
                     return redirect('/user/' + request.user.username)
             form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id')
             context['form'] = form

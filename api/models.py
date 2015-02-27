@@ -80,7 +80,7 @@ class Card(models.Model):
     is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
     promo_item = models.CharField(max_length=100, blank=True, null=True)
     release_date = models.DateField(default=datetime.date(2013, 4, 16), null=True, blank=True)
-    event = models.ForeignKey(Event, related_name='card', blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='cards', blank=True, null=True)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
     hp = models.PositiveIntegerField(null=True)
     minimum_statistics_smile = models.PositiveIntegerField(null=True)

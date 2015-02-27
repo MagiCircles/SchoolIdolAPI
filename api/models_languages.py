@@ -7,3 +7,7 @@ LANGUAGE_CHOICES = (
     ('CN', _('Chinese')),
     ('TW', _('Taiwanese')),
 )
+LANGUAGE_DICT = dict(LANGUAGE_CHOICES)
+
+def languageToString(val):
+    return LANGUAGE_DICT[val]

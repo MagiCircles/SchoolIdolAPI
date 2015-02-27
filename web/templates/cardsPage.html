@@ -146,12 +146,16 @@
 		    <tr>
 		      <th>{% trans 'Event' %}</th>
 		      <td>
-			<a href="http://decaf.kouhi.me/lovelive/index.php?title={{ card.event.japanese_name }}" target="_blank">
-			  {{ card.event.japanese_name }} {% if card.event.english_name != card.event.japanese_name %}<br>{{ card.event.english_name }}{% endif %}
+			<a href="/events/{{ card.event.japanese_name }}" target="_blank">
+			  <div class="pull-right">
+			    {% if card.event.image %}
+			    <img src="{{ card.event.image }}" alt="{{ card.event.japanese_name }}" width="100">
+			    {% else %}
+			    <i class="flaticon-event"></i>
+			    {% endif %}
+			  </div>
+			  {{ card.event.japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event.english_name != card.event.japanese_name %}<br>{{ card.event.english_name }}{% endif %} 
 			</a>
-			<div class="pull-right">
-			  <i class="flaticon-event"></i>
-			</div>
 		      </td>
 		    </tr>
 		    {% endif %}
@@ -171,7 +175,7 @@
 		    <tr>
 		      <th>{% trans 'Collection' %}</th>
 		      <td>
-			<a href="/cards/?search=&collection={{ card.japanese_collection }}">{{ card.japanese_collection }}</a>
+			<a href="/cards/?search=&collection={{ card.japanese_collection }}" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
 			<div class="pull-right">
 			  <i class="flaticon-album"></i>
 			</div>

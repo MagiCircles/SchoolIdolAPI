@@ -559,3 +559,10 @@ def users(request):
     context['users'] = enumerate(users)
     context['page'] = page + 1
     return render(request, 'users.html', context)
+
+def event(request, event):
+    context = globalContext(request)
+    event = get_object_or_404(models.Event, japanese_name=event)
+    event.all_cards = event.cards.all()
+    context['event'] = event
+    return render(request, 'event.html', context)

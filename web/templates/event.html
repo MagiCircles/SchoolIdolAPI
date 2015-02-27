@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
+
+{% block content %}
+{% load languageToString %}
+{% load imageurl %}
+<div class="container text-center">
+  <br><br>
+  <img src="{{ event.image }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
+  <br><br>
+  <h1>{{ event.japanese_name }}{% if event.english_name != event.japanese_name %}<br><small>{{ event.english_name }}</small>{% endif %}</h1>
+  <br><br>
+  <div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+      <table class="table">
+	{% with 'JP'|languageToString as lang %}
+	<caption class="text-center">{% trans lang %}</caption>
+	<tr>
+	  <th>{% trans 'Dates' %}</th>
+	  <td class="text-right">{{ event.beginning }} - {{ event.end }}</td>
+	</tr>
+	<tr>
+	  <th>T1 {% trans 'Points' %}</th>
+      <td class="text-right">{{ event.japanese_t1_points }}</td>
+	</tr>
+	<tr>
+	  <th>T1 {% trans 'Rank' %}</th>
+	  <td class="text-right">{{ event.japanese_t1_rank }}</td>
+	</tr>
+	<tr>
+	  <th>T2 {% trans 'Points' %}</th>
+      <td class="text-right">{{ event.japanese_t2_points }}</td>
+	</tr>
+	<tr>
+	  <th>T2 {% trans 'Rank' %}</th>
+	  <td class="text-right">{{ event.japanese_t2_rank }}</td>
+	</tr>
+	{% if event.note %}
+	<tr>
+	  <th>{% trans 'Note' %}</th>
+	  <td class="text-right">{{ event.note }}</td>
+	</tr>
+	{% endif %}
+	{% endwith %}
+      </table>
+
+      <table class="table">
+	<caption class="text-center">{% trans 'Cards' %}</caption>
+	{% for card in event.all_cards %}
+	<tr>
+	  <th valign="middle">
+	    {{ card }}
+	    {% if card.skill %}
+	    <br>
+	    <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+	    {% endif %}
+	  </th>
+	  <td class="text-right">
+	    <a href="/cards/{{ card.id }}/" class="owned_card">
+	      {% if card.card_image %}
+	      <div class="circled_card_100 {{ card.attribute }} {{ card.rarity }} hover"
+		   style="display: inline-block; background-image: url('{{ card|imageurl:'card_image' }}')"></div>
+	      {% endif %}
+	      <div class="circled_card_100 {{ card.attribute }} {{ card.rarity }} hover"
+		   style="display: inline-block; background-image: url('{{ card|imageurl:'card_idolized_image' }}')"></div>
+	    </a>
+	  </td>
+	</tr>
+	{% endfor %}
+      </table>
+    </div>
+    <div class="col-lg-3"></div>
+  </div>
+
+  <div>
+    <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ event.japanese_name }}" target="_blank"
+       class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+      Wiki
+    </a>
+  </div>
+  <br><br>
+  {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
+</div>
+{% endblock %}
+  

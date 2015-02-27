@@ -28,7 +28,7 @@
 	<span class="message">{% trans activity.message %}
 	  {% if activity.message == 'Rank Up' %}
 	  {% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
-	  {% trans 'in' %} <i>{% trans activity.ownedcard.stored|storedChoiceToString %}</i>
+	  {% trans 'in' %} <i>{% with activity.ownedcard.stored|storedChoiceToString as stored %}{% trans stored %}{% endwith %}</i>
 	  {% endif %}
 	</span><br>
 	<small>

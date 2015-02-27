@@ -198,7 +198,7 @@ def cards(request, card=None, ajax=False):
 
         if ('active_account' in context and context['active_account'].language != 'JP'
             and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
-            cards = cards.filter(is_promo__exact=False, release_date__lte=(datetime.date.today() - relativedelta(years=1)))
+            cards = cards.filter(is_promo__exact=False, release_date__lte=(datetime.date.today() - relativedelta(years=1) + relativedelta(days=2)))
             request_get['is_world'] = True
 
         if 'ordering' in request.GET and request.GET['ordering']:

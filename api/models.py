@@ -117,7 +117,7 @@ class Card(models.Model):
 
     def is_japan_only(self):
         return (self.is_promo
-                or self.release_date + relativedelta(years=1) > datetime.date.today())
+                or self.release_date + relativedelta(years=1) - relativedelta(days=2) > datetime.date.today())
 
     def get_owned_cards_for_account(self, account):
         return OwnedCard.objects.filter(owner_account=account, card=self)

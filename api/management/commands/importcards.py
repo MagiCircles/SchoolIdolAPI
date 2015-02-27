@@ -4,7 +4,7 @@ from django.core.files.images import ImageFile
 from django.core.files.temp import NamedTemporaryFile
 from django.db.models import Count
 from django.forms.models import model_to_dict
-import urllib2
+import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
 from api import models
 import re
@@ -252,7 +252,21 @@ class Command(BaseCommand):
                 event, created = models.Event.objects.update_or_create(japanese_name=name, defaults=defaults)
                 models.Card.objects.filter(event=event).update(release_date=beginning)
                 print 'Done'
-
+                if not local:
+                    print "  Import event image...",
+                    try:
+                        f_event = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(name))
+                        event_soup = BeautifulSoup(f_event.read())
+                        content = event_soup.find('div', { 'id': 'mw-content-text'})
+                        if content is not None:
+                            image = content.find('img')
+                            if image is not None:
+                                image = 'http://decaf.kouhi.me/' + image.get('src')
+                                event.image.save(name + '.jpg', downloadFile(image))
+                                print 'Done'
+                        f_event.close()
+                    except:
+                        print "No page found"
         f.close()
 
         print '### Import video stories'

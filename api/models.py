@@ -51,6 +51,7 @@ class Event(models.Model):
     japanese_t2_points = models.PositiveIntegerField(null=True)
     japanese_t2_rank = models.PositiveIntegerField(null=True)
     note = models.CharField(max_length=200, null=True, blank=True)
+    image = models.ImageField(upload_to='web/static/events/', null=True, blank=True)
 
     def is_japan_current(self):
         return (self.beginning is not None

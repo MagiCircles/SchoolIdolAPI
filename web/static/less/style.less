@@ -164,6 +164,7 @@ main {
 .text-Pure { color: @PureColor }
 .text-Cool { color: @CoolColor }
 .text-All { color: @AllColor }
+.text-grey { color: @GreyColor }
 
 .custom-btn(@color, @inverse: #fff) {
     .button-variant(@inverse, lighten(@color, 25%), darken(lighten(@color, 25%), 5%));
@@ -535,7 +536,7 @@ a.panel {
 	border-bottom: 0;
     }
     .date {
-	color: #ccc;
+	color: @GreyColor;
     }
     .avatar {
 	width: 100%;

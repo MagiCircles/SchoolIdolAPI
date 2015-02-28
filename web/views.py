@@ -560,9 +560,48 @@ def users(request):
     context['page'] = page + 1
     return render(request, 'users.html', context)
 
+def _event_valid_form(form, context, event):
+    if form.is_valid():
+        participation = form.save(commit=False)
+        participation.account = context['active_account']
+        participation.event = event
+        participation.save()
+        return redirect(context['current_url'])
+
 def event(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
+
+    if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name:
+        formClass = forms.EventParticipationNoSongForm
+    else:
+        formClass = forms.EventParticipationForm
+        context['with_song'] = True
+    if request.user.is_authenticated and not request.user.is_anonymous() and 'active_account' in context:
+        try:
+            participation = event.participations.get(event=event, account=context['active_account'])
+            context['form_type'] = 'edit'
+            if request.method == 'POST':
+                if 'deleteParticipation' in request.POST:
+                    participation.delete()
+                    return redirect('/event/' + unicode(event.japanese_name))
+                form = formClass(request.POST, instance=participation)
+                return _event_valid_form(form, context, event)
+            else:
+                form = formClass(instance=participation)
+            context['form'] = form
+        except models.EventParticipation.DoesNotExist:
+            context['form_type'] = 'create'
+            if request.method == 'POST':
+                form = formClass(request.POST)
+                return _event_valid_form(form, context, event)
+            else:
+                form = formClass()
+            context['form'] = form
+    else:
+        context['form_type'] = 'none'
+
     event.all_cards = event.cards.all()
+    event.all_participations = event.participations.all().order_by('account__language', 'ranking')
     context['event'] = event
     return render(request, 'event.html', context)

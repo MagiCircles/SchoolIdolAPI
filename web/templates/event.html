@@ -5,6 +5,7 @@
 {% block content %}
 {% load languageToString %}
 {% load imageurl %}
+{% load gravatar %}
 <div class="container text-center">
   <br><br>
   <img src="{{ event|eventimageurl }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
@@ -17,6 +18,7 @@
       <table class="table">
 	{% with 'JP'|languageToString as lang %}
 	<caption class="text-center">{% trans lang %}</caption>
+	{% endwith %}
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
 	  <td class="text-right">{{ event.beginning }} - {{ event.end }}</td>
@@ -43,7 +45,15 @@
 	  <td class="text-right">{{ event.note }}</td>
 	</tr>
 	{% endif %}
-	{% endwith %}
+	<tr>
+	  <th>{% trans 'Wiki' %}</th>
+	  <td class="text-right">
+	    <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ event.japanese_name }}" target="_blank"
+	       class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+	      Wiki
+	    </a>
+	  </td>
+	</tr>
       </table>
 
       <table class="table">
@@ -70,15 +80,58 @@
 	</tr>
 	{% endfor %}
       </table>
+      <br><br>
+
+      {% for participation in event.all_participations %}
+      {% ifchanged participation.account.language %}
+      {% if forloop.counter0 != 0 %}
+      </table>
+      {% endif %}
+      <table class="table text-right">
+	{% with participation.account.language|languageToString as lang %}
+	<caption class="text-center">{% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}</caption>
+	{% endwith %}
+	{% endifchanged %}
+	<tr>
+	  <td class="text-left"><a href="/user/{{ participation.account.owner.username }}/#{{ participation.account.pk }}">
+	      <img src="{{ participation.account.owner|gravatar:20 }}" alt="avatar" width="20">
+	      {{ participation.account.nickname }}</a></td>
+	  {% if with_song %}
+	  <td class="text-right">{% if participation.song_ranking %}<small class="text-grey">{% trans 'Song Ranking' %} # {{ participation.song_ranking }}{% endif %} </small></td>
+	  {% endif %}
+	  <td class="text-right">{% if participation.points %}{{ participation.points }} {% trans 'Points' %}{% endif %}</td>
+	  <td class="text-right">{% if participation.ranking %}<strong># {{ participation.ranking }}</strong>{% endif %}</td>
+	</tr>
+	{% endfor %}
+      </table>
+
+      <div>
+	{% if not user.is_authenticated %}
+	<a href="/create/"
+	   class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+	  {% trans 'Share your ranking' %}!
+	</a>
+	{% endif %}
+      </div>
+      {% if form %}
+      <br><br>
+      <div class="jumbotron">
+	<form method="post" class="noform">
+	  {% csrf_token %}
+	  {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+	  <br><br>
+	  <div class="text-right">
+	    {% if form_type == 'edit' %}
+	    <input type="submit" class="btn btn-danger" name="deleteParticipation" value="{% trans 'Delete' %}">
+	    {% endif %}
+	    <input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
+		   value="{% if form_type == 'create' %}{% trans 'Share your ranking' %}{% else %}{% trans 'Apply Changes' %}{% endif %}" />
+	  </div>
+	</form>
+      </div>
+      {% endif %}
     </div>
     <div class="col-lg-3"></div>
-  </div>
-
-  <div>
-    <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ event.japanese_name }}" target="_blank"
-       class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-      Wiki
-    </a>
   </div>
   <br><br>
   {% include 'disqus.html' with disqus_identifier=event.japanese_name %}

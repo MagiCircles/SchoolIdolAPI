@@ -43,4 +43,12 @@ class OwnedCardForm(ModelForm):
         model = models.OwnedCard
         fields = ('card', 'stored', 'idolized', 'max_level', 'max_bond')
 
-# class FollowForm(Form):
+class EventParticipationForm(ModelForm):
+    class Meta:
+        model = models.EventParticipation
+        fields = ('ranking', 'song_ranking', 'points')
+
+class EventParticipationNoSongForm(ModelForm):
+    class Meta:
+        model = models.EventParticipation
+        fields = ('ranking', 'points')

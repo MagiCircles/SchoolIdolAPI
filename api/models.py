@@ -157,6 +157,18 @@ class OwnedCard(models.Model):
 
 admin.site.register(OwnedCard)
 
+class EventParticipation(models.Model):
+    event = models.ForeignKey(Event, related_name='participations')
+    account = models.ForeignKey(Account, related_name='events')
+    ranking = models.PositiveIntegerField(_('Ranking'), null=True, blank=True)
+    song_ranking = models.PositiveIntegerField(_('Song Ranking'), null=True, blank=True)
+    points = models.PositiveIntegerField(_('Points'), null=True, blank=True)
+
+    class Meta:
+        unique_together = (('event', 'account'))
+
+admin.site.register(EventParticipation)
+
 class UserPreferences(models.Model):
     user = models.ForeignKey(User, related_name='preferences')
     color = models.CharField(_('Color'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)

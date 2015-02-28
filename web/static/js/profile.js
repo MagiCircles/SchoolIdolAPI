@@ -1,13 +1,39 @@
 
-$('label.cardstype').click(function () {
-    $(this).find('input').tab('show');
+var loadingHTML = '<br><div class="alert alert-warning">Loading...</div>';
 
+$('ul.nav-tabs li a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
 });
+$('ul.nav-tabs li a').on('show.bs.tab', function (e) {
+    var id = $(e.target).attr('href');
+    var tab = $(id);
+    var account = tab.closest('.panel').prop('id');
+    if (tab.text() == '') {
+	if (id.indexOf('#accountTabActivities') == 0) {
+	    tab.html(loadingHTML);
+	    $.get('/ajax/activities/?avatar_size=1&account=' + account, function(data) {
+		tab.html(data);
+	    });
+	} else if (id.indexOf('#accountTabEvents') == 0) {
+	    tab.html(loadingHTML);
+	    $.get('/ajax/eventparticipations/' + account + '/', function(data) {
+		tab.html(data);
+	    });
+	}
+    }
+});
+
+$('label.cardstype').click(function (e) {
+    e.preventDefault();
+    $(this).find('input').tab('show');
+});
+
 $('label.cardstype').on('show.bs.tab', function (e) {
     var tab = $($(e.target).attr('data-target'));
     var account = tab.closest('.panel').prop('id');
     if (tab.text() == '') {
-	tab.html('<div class="alert alert-warning">Loading...</div>');
+	tab.html(loadingHTML);
 	$.get('/ajax/ownedcards/' + account + '/' + tab.attr('data-stored') + '/', function(data) {
 	    tab.html(data);
 	})

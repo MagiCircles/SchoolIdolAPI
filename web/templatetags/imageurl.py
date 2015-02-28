@@ -16,7 +16,6 @@ def imageurl(card, image):
     return '/static/default-' + card.attribute + '.png'
 
 def eventimageurl(event):
-    print event
     if event.image:
         if settings.DEBUG:
             event.image = unicode(event.image).replace('web/', '')

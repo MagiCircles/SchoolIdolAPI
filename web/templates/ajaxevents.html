@@ -1,0 +1,42 @@
+{% load i18n %}
+{% if eventparticipations|length == 0 %}
+<div class="text-center alert alert-warning">{% trans 'No results.' %}</div>
+{% else %}
+{% load imageurl %}
+<table class="table">
+  {% for participation in eventparticipations %}
+  <tr>
+    <td class="text-right">
+      <a href="/event/{{ participation.event.japanese_name|urlencode }}">
+	<img src="{{ participation.event|eventimageurl }}" alt="{{ participation.event.japanese_name }}" height="50">
+      </a>
+    </td>
+    <td>
+      <a href="/event/{{ participation.event.japanese_name|urlencode }}">
+	{{ participation.event.japanese_name }}
+	{% if participation.event.japanese_name != participation.event.english_name %}
+	{{ participation.event.english_name }}
+	{% endif %}
+      </a>
+    </td>
+    <td class="text-right">
+      {% if participation.song_ranking %}
+      <small class="text-grey">
+	{% trans 'Song Ranking' %} # {{ participation.song_ranking }}
+      </small>
+      {% endif %}
+    </td>
+    <td class="text-right">
+      {% if participation.points %}
+      {{ participation.points }} {% trans 'Points' %}
+      {% endif %}
+    </td>
+    <td class="text-right">
+      {% if participation.ranking %}
+      <strong># {{ participation.ranking }}</strong>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}

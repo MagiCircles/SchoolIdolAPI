@@ -4,12 +4,12 @@
 {% for activity in activities %}
 <div class="activity">
   <div class="row">
-    <div class="col-xs-3">
+    <div class="col-xs-{{ avatar_size }}">
       <a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}">
 	<img src="{{ activity.account.owner.avatar }}" alt="{{ activity.account.owner.username }}" class="avatar">
       </a>
     </div>
-    <div class="col-xs-9">
+    <div class="col-xs-{{ content_size }}">
       <div class="pull-right text-right">
 	{% if activity.message == 'Rank Up' %}
 	<a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}" target="_blank">
@@ -51,4 +51,7 @@
 {% endfor %}
 {% if activities|length >= page_size %}
 <div data-page="{{ page|add:1 }}"><a href="#loadMoreActivities">⟱</a></div>
+{% endif %}
+{% if activities|length == 0 %}
+<div class="text-center alert alert-warning">{% trans 'No results.' %}</div>
 {% endif %}

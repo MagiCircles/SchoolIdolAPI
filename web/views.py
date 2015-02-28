@@ -451,6 +451,11 @@ def ajaxactivities(request):
         if page < 0:
             page = 0
     activities = models.Activity.objects.all().order_by('-creation')
+    if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit():
+        activities = activities.filter(account=request.GET['account'])
+    avatar_size = 3
+    if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit():
+        avatar_size = int(request.GET['avatar_size'])
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     for activity in activities:
         activity.account.owner.avatar = getUserAvatar(activity.account.owner, 100)
@@ -458,6 +463,8 @@ def ajaxactivities(request):
         'activities': activities,
         'page': page + 1,
         'page_size': page_size,
+        'avatar_size': avatar_size,
+        'content_size': 12 - avatar_size,
     })
 
 @csrf_exempt
@@ -480,6 +487,10 @@ def ajaxfollow(request, username):
         del request.session['preferences']
         return HttpResponse('unfollowed')
     raise PermissionDenied()
+
+def ajaxeventparticipations(request, account):
+    eventparticipations = models.EventParticipation.objects.filter(account=account).order_by('-event__end')
+    return render(request, 'ajaxevents.html', { 'eventparticipations': eventparticipations })
 
 def edit(request):
     if not request.user.is_authenticated or request.user.is_anonymous():

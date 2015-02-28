@@ -154,49 +154,67 @@
 	  </div>
 
 	  {% if not preferences.private or is_me %}
-	  <div role="tabpanel" class="tabpanel">
-	    <div class="btn-group btn-group-justified" data-toggle="buttons">
-	      <label for="optDeck" class="cardstype btn btn-{{ attribute }} active">
-		<input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck{{ account.pk }}" >
-		<i class="flaticon flaticon-deck"></i>
-		{% trans 'Deck' %}
-	      </label>
-	      <label for="optAlbum" class="cardstype btn btn-{{ attribute }}">
-		<input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum{{ account.pk }}" >
-		<i class="flaticon flaticon-album"></i>
-		{% trans 'Album' %}
-	      </label>
-	      {% if is_me %}
-	      <label for="optBox" class="cardstype btn btn-{{ attribute }}">
-		<input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox{{ account.pk }}" >
-		<i class=".flaticon flaticon-present"></i>
-		{% trans 'Present Box' %}
-	      </label>
-	      {% endif %}
-	      <label for="optWishlist" class="cardstype btn btn-{{ attribute }}">
-		<input id="optWishlist" name="cardstype" type="radio" data-target="#cardtabWishlist{{ account.pk }}" >
-		<i class="flaticon flaticon-star"></i>
-		{% trans 'Wish List' %}
-	      </label>
-	    </div>
-	  </div>
+	  <ul class="nav nav-tabs">
+	    <li role="presentation" class="active"><a href="#accountTabCards{{ account.pk }}" data-toggle="tab"><i class="flaticon-cards"></i> {% trans 'Cards' %}</a></li>
+	    <li role="presentation"><a href="#accountTabActivities{{ account.pk }}" data-toggle="tab"><i class="flaticon-activities"></i> {% trans 'Activities' %}</a></li>
+	    <li role="presentation"><a href="#accountTabEvents{{ account.pk }}" data-toggle="tab"><i class="flaticon-event"></i> {% trans 'Events' %}</a></li>
+	  </ul>
+	  <br>
+
 	  <div class="tab-content">
-	    {% if is_me %}
-	    <br>
-	    <a style="display: block;" href="/cards/?search=" class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to the cards page and use the filters.{% endblocktrans %} <i class="flaticon-filter"></i></a>
-	    {% endif %}
-	    <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
-	      {% include 'ownedcards.html' with cards=account.deck %}
+	    <div id="accountTabCards{{ account.pk }}" class="tab-pane fade in active">
+	    <div role="tabpanel" class="tabpanel">
+	      <div class="btn-group btn-group-justified" data-toggle="buttons">
+		<label for="optDeck" class="cardstype btn btn-{{ attribute }} active">
+		  <input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck{{ account.pk }}" >
+		  <i class="flaticon flaticon-deck"></i>
+		  {% trans 'Deck' %}
+		</label>
+		<label for="optAlbum" class="cardstype btn btn-{{ attribute }}">
+		  <input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum{{ account.pk }}" >
+		  <i class="flaticon flaticon-album"></i>
+		  {% trans 'Album' %}
+		</label>
+		{% if is_me %}
+		<label for="optBox" class="cardstype btn btn-{{ attribute }}">
+		  <input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox{{ account.pk }}" >
+		  <i class=".flaticon flaticon-present"></i>
+		  {% trans 'Present Box' %}
+		</label>
+		{% endif %}
+		<label for="optWishlist" class="cardstype btn btn-{{ attribute }}">
+		  <input id="optWishlist" name="cardstype" type="radio" data-target="#cardtabWishlist{{ account.pk }}" >
+		  <i class="flaticon flaticon-star"></i>
+		  {% trans 'Wish List' %}
+		</label>
+	      </div>
 	    </div>
-	    <div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Album"></div>
-	    {% if is_me %}
-	    <div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Box"></div>
-	    {% endif %}
-	    <div id="cardtabWishlist{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Favorite"></div>
-	    <br>
+	    <div class="tab-content">
+	      {% if is_me %}
+	      <br>
+	      <a style="display: block;" href="/cards/?search=" class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to the cards page and use the filters.{% endblocktrans %} <i class="flaticon-filter"></i></a>
+	      {% endif %}
+	      <div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
+		{% include 'ownedcards.html' with cards=account.deck %}
+	      </div>
+	      <div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Album"></div>
+	      {% if is_me %}
+	      <div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Box"></div>
+	      {% endif %}
+	      <div id="cardtabWishlist{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Favorite"></div>
+	      <br>
+	    </div>
+
 	  </div>
-	  {% endif %}
+
+	  <div id="accountTabActivities{{ account.pk}}" class="tab-pane fade"></div>
+
+	  <div id="accountTabEvents{{ account.pk }}" class="tab-pane fade"></div>
+
 	</div>
+	</div>
+	{% endif %}
+
       </div>
     </div>
     <br><br>

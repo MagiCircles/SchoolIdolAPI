@@ -484,7 +484,7 @@ def ajaxactivities(request):
 def _contextfeed(request):
     if not request.user.is_authenticated or request.user.is_anonymous():
         raise PermissionDenied()
-    return _activities(request, follower=request.user, avatar_size=1)
+    return _activities(request, follower=request.user, avatar_size=2)
 
 def ajaxfeed(request):
     return render(request, 'activities.html', _contextfeed(request))

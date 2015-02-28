@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans 'Activities' %}{% endblock %}
+
+{% block js %}
+<script src="/static/js/loadactivities.js"></script>
+<script src="/static/js/feed.js"></script>
+{% endblock %}
+
+{% block content %}
+{% load imageurl %}
+{% load mod %}
+<div class="container" id="events">
+  <h1 class="text-center margin50">{% trans 'Activities' %} <small>{{ total_results }}</small></h1>
+  {% if total_results %}
+  <div id="activities">
+    {% include 'activities.html' %}
+  </div>
+  {% else %}
+  <div class="text-center">
+    <a href="/users/" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-xl">{% trans 'Start following players to follow their activities!' %}</a>
+  </div>
+  {% endif %}
+  <br><br>
+</div>
+{% endblock %}

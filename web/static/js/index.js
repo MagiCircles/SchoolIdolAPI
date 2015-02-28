@@ -11,19 +11,6 @@ $("a[href^='#']").on('click', function(e) {
     }
 });
 
-function loadMoreActivities() {
-    $('a[href="#loadMoreActivities"]').click(function(e) {
-	e.preventDefault();
-	var div = $(this).parent();
-	var page = div.attr('data-page');
-	div.html('Loading...');
-	$.get('/ajax/activities/?page=' + page, function(data) {
-	    div.replaceWith(data);
-	    loadMoreActivities();
-	});
-    });
-}
-
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 
@@ -58,7 +45,7 @@ $(document).ready(function() {
 		$('#activities').text('Loading...');
 		$.get('/ajax/activities/', function(data) {
 		    $('#activities').html(data);
-		    loadMoreActivities();
+		    loadMoreActivities($('#activities'));
 		});
 	    }
 	});

@@ -50,7 +50,7 @@
 </div>
 {% endfor %}
 {% if activities|length >= page_size %}
-<div data-page="{{ page|add:1 }}"><a href="#loadMoreActivities">⟱</a></div>
+<div class="padding20 text-center" data-page="{{ page|add:1 }}"><a href="#loadMoreActivities">⟱</a></div>
 {% endif %}
 {% if activities|length == 0 %}
 <div class="text-center alert alert-warning">{% trans 'No results.' %}</div>

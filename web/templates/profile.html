@@ -2,7 +2,11 @@
 {% load i18n %}
 {% load markdown_deux_tags %}
 {% block title %}{{ profile_user.username }}: {% trans 'Profile'%}{% endblock %}
-{% block js %}<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script><script src="/static/js/profile.js"></script>{% endblock %}
+{% block js %}
+<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="/static/js/loadactivities.js"></script>
+<script src="/static/js/profile.js"></script>
+{% endblock %}
 
 {% block content %}
 {% load imageurl %}

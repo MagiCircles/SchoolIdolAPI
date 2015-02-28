@@ -14,6 +14,7 @@ $('ul.nav-tabs li a').on('show.bs.tab', function (e) {
 	    tab.html(loadingHTML);
 	    $.get('/ajax/activities/?avatar_size=1&account=' + account, function(data) {
 		tab.html(data);
+		loadMoreActivities(tab, account, undefined, 1);
 	    });
 	} else if (id.indexOf('#accountTabEvents') == 0) {
 	    tab.html(loadingHTML);

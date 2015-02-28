@@ -443,7 +443,7 @@ def ajaxfollowing(request, username):
     preferences = get_object_or_404(models.UserPreferences, user__username=username)
     return render(request, 'followlist.html', _ajaxfollowcontext(preferences.following.all()))
 
-def ajaxactivities(request):
+def _activities(request, account=None, follower=None, avatar_size=3):
     page = 0
     page_size = 6
     if 'page' in request.GET and request.GET['page']:
@@ -451,21 +451,46 @@ def ajaxactivities(request):
         if page < 0:
             page = 0
     activities = models.Activity.objects.all().order_by('-creation')
-    if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit():
-        activities = activities.filter(account=request.GET['account'])
-    avatar_size = 3
-    if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit():
-        avatar_size = int(request.GET['avatar_size'])
+    if account is not None:
+        activities = activities.filter(account=account)
+    if follower is not None:
+        follower = get_object_or_404(User, username=follower)
+        preferences, created = follower.preferences.get_or_create()
+        accounts = models.Account.objects.filter(owner__in=preferences.following.all())
+        activities = activities.filter(account__in=accounts)
+    total = activities.count()
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     for activity in activities:
         activity.account.owner.avatar = getUserAvatar(activity.account.owner, 100)
-    return render(request, 'activities.html', {
+    context = {
         'activities': activities,
         'page': page + 1,
         'page_size': page_size,
         'avatar_size': avatar_size,
         'content_size': 12 - avatar_size,
-    })
+        'total_results': total,
+        'current': 'activities',
+    }
+    return context
+
+def ajaxactivities(request):
+    account = int(request.GET['account']) if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit() else None
+    follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
+    avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
+    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size))
+
+def _contextfeed(request):
+    if not request.user.is_authenticated or request.user.is_anonymous():
+        raise PermissionDenied()
+    return _activities(request, follower=request.user, avatar_size=1)
+
+def ajaxfeed(request):
+    return render(request, 'activities.html', _contextfeed(request))
+
+def activities(request):
+    context = globalContext(request)
+    context.update(_contextfeed(request))
+    return render(request, 'feed.html', context)
 
 @csrf_exempt
 def ajaxfollow(request, username):

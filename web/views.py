@@ -560,6 +560,12 @@ def users(request):
     context['page'] = page + 1
     return render(request, 'users.html', context)
 
+def events(request):
+    context = globalContext(request)
+    events = models.Event.objects.all().order_by('-end')
+    context['events'] = events
+    return render(request, 'events.html', context)
+
 def _event_valid_form(form, context, event, old_ranking=None):
     if form.is_valid():
         participation = form.save(commit=False)

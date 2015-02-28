@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^switchaccount/(?P<account>\d+)[/]+$', views.switchaccount, name='switchaccount'),
     url(r'^user[s]?/(?P<username>[\w.@+-]+)[/]+$', views.profile, name='profile'),
     url(r'^users[/]+$', views.users, name='users'),
+    url(r'^events[/]+$', views.events, name='events'),
     url(r'^event[s]?/(?P<event>[^/]+)[/]+$', views.event, name='event'),
 
     url(r'^ajax/addcard[/]+$', views.ajaxaddcard, name='ajaxaddcard'),

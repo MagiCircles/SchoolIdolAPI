@@ -54,10 +54,9 @@
 	      <ul class="dropdown-menu" role="menu">
 		<li class="{% if current == 'profile' %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>
 		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit/"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
+		<li><a href="/logout/"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		{% include "baseMenu.html" %}
-		<li role="presentation" class="divider"></li>
-		<li><a href="/logout/"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
 	      </ul>
 	    </li>
 	    <li class="dropdown">	

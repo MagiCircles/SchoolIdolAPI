@@ -55,11 +55,11 @@ docs/_build/
 target/
 
 # Project specific
-decaf.html
-events.html
-wikia.html
-jpcards.html
+/decaf.html
+/events.html
+/wikia.html
+/jpcards.html
 web/static/bower
 web/static/cards
-cardsinfo.json
+/cardsinfo.json
 web/static/css/style.css

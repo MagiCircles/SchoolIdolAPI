@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans 'Events' %}{% endblock %}
+
+{% block content %}
+{% load imageurl %}
+{% load mod %}
+<div class="container" id="events">
+  <h1 class="text-center margin50">{% trans 'Events' %} <small>{{ events|length }}</small></h1>
+  <div class="row">
+    {% for event in events %}
+    {% if forloop.counter0|mod:2 %}
+  </div><div class="row">
+    {% endif%}
+    <div class="col-lg-6">
+      <a href="/events/{{ event.japanese_name|urlencode }}/" class="event" style="background-image: url('{{ event|eventimageurl }}');">
+	<span class="hidden">{{ event }}</span>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  <br><br><br>
+</div>
+{% endblock %}
+  

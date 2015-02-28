@@ -191,5 +191,6 @@ class Activity(models.Model):
     message = models.CharField(max_length=300)
     rank = models.PositiveIntegerField(null=True, blank=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
+    eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
 
 admin.site.register(Activity)

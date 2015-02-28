@@ -10,10 +10,15 @@
       </a>
     </div>
     <div class="col-xs-9">
-      <div class="pull-right">
+      <div class="pull-right text-right">
 	{% if activity.message == 'Rank Up' %}
 	<a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}" target="_blank">
 	  <div class="rank">{{ activity.rank }}</div>
+	</a>
+	{% elif activity.message == 'Ranked in event' %}
+	<a href="/event/{{ activity.eventparticipation.event.japanese_name|urlencode }}/#ranking{{ activity.account.language }}" target="_blank">
+	  <img src="{{ activity.eventparticipation.event|eventimageurl }}" alt="{{ activity.eventparticipation.event }}" width="100"><br>
+	  <strong># {{ activity.eventparticipation.ranking }}</strong>
 	</a>
 	{% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
 	<a href="/cards/{{ activity.ownedcard.card.id }}/" class="owned_card">
@@ -27,6 +32,8 @@
 	<strong class="account">{{ activity.account }}</strong><br>
 	<span class="message">{% trans activity.message %}
 	  {% if activity.message == 'Rank Up' %}
+	  {% elif activity.message == 'Ranked in event' %}
+	  <br><small>{{ activity.eventparticipation.event }}</small>
 	  {% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
 	  {% trans 'in' %} <i>{% with activity.ownedcard.stored|storedChoiceToString as stored %}{% trans stored %}{% endwith %}</i>
 	  {% endif %}

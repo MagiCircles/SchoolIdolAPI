@@ -146,7 +146,7 @@
 		    <tr>
 		      <th>{% trans 'Event' %}</th>
 		      <td>
-			<a href="/events/{{ card.event.japanese_name|urlencode }}" target="_blank">
+			<a href="/events/{{ card.event.japanese_name|urlencode }}/" target="_blank">
 			  <div class="pull-right">
 			    {% if card.event.image %}
 			    <img src="{{ card.event|eventimageurl }}" alt="{{ card.event.japanese_name }}" width="100">

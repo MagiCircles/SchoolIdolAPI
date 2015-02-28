@@ -52,8 +52,8 @@ def getUserAvatar(user, size):
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': 'http://schoolido.lu/static/kotori.jpg', 's': str(size)}))
 
-def pushActivity(account, message, rank=None, ownedcard=None):
-    models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard)
+def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
+    models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard, eventparticipation=eventparticipation)
 
 def index(request):
     context = globalContext(request)
@@ -560,12 +560,16 @@ def users(request):
     context['page'] = page + 1
     return render(request, 'users.html', context)
 
-def _event_valid_form(form, context, event):
+def _event_valid_form(form, context, event, old_ranking=None):
     if form.is_valid():
         participation = form.save(commit=False)
         participation.account = context['active_account']
         participation.event = event
         participation.save()
+        if (participation.ranking is not None
+            and old_ranking is None
+            or old_ranking < participation.ranking):
+            pushActivity(context['active_account'], 'Ranked in event', eventparticipation=participation)
         return redirect(context['current_url'])
 
 def event(request, event):
@@ -580,13 +584,14 @@ def event(request, event):
     if request.user.is_authenticated and not request.user.is_anonymous() and 'active_account' in context:
         try:
             participation = event.participations.get(event=event, account=context['active_account'])
+            old_ranking = participation.ranking
             context['form_type'] = 'edit'
             if request.method == 'POST':
                 if 'deleteParticipation' in request.POST:
                     participation.delete()
                     return redirect('/event/' + unicode(event.japanese_name))
                 form = formClass(request.POST, instance=participation)
-                return _event_valid_form(form, context, event)
+                return _event_valid_form(form, context, event, old_ranking)
             else:
                 form = formClass(instance=participation)
             context['form'] = form

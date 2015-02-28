@@ -87,7 +87,7 @@
       {% if forloop.counter0 != 0 %}
       </table>
       {% endif %}
-      <table class="table text-right">
+      <table class="table text-right" id="ranking{{ participation.account.language }}">
 	{% with participation.account.language|languageToString as lang %}
 	<caption class="text-center">{% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}</caption>
 	{% endwith %}

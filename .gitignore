@@ -61,5 +61,6 @@ target/
 /jpcards.html
 web/static/bower
 web/static/cards
+web/static/events
 /cardsinfo.json
 web/static/css/style.css

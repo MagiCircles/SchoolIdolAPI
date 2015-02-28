@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.forms.models import model_to_dict
 from api import models
@@ -26,6 +27,7 @@ def globalContext(request):
         'show_filter_button': False,
         'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
         'interfaceColor': 'default',
+        'debug': settings.DEBUG,
     }
     if request.user.is_authenticated and not request.user.is_anonymous():
         context['accounts'] = request.user.accounts_set.all().select_related('center')

@@ -170,33 +170,35 @@ def cards(request, card=None, ajax=False):
         if 'is_event' in request.GET and request.GET['is_event']:
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = request.GET['is_event']
-        if 'active_account' in context and 'stored' in request.GET and request.GET['stored']:
-            if request.GET['stored'] == 'Album':
-                cards = cards.filter(ownedcards__owner_account=context['active_account']).filter(Q(ownedcards__stored='Deck') | Q(ownedcards__stored='Album'))
-            else:
-                cards = cards.filter(ownedcards__owner_account=context['active_account'], ownedcards__stored=request.GET['stored'])
-            request_get['stored'] = request.GET['stored']
         if 'active_account' in context and 'max_level' in request.GET and request.GET['max_level'] == '1':
             cards = cards.filter(ownedcards__owner_account=context['active_account'],
                                  ownedcards__max_level=True)
             request_get['max_level'] = '1'
         elif 'active_account' in context and 'max_level' in request.GET and request.GET['max_level'] == '-1':
-            cards = cards.exclude(ownedcards__owner_account=context['active_account'], ownedcards__max_level=True)
+            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], max_level=True).values('card'))
             request_get['max_level'] = '-1'
         if 'active_account' in context and 'max_bond' in request.GET and request.GET['max_bond'] == '1':
             cards = cards.filter(ownedcards__owner_account=context['active_account'],
                                  ownedcards__max_bond=True)
-            request_get['max_bond'] = 1
+            request_get['max_bond'] = '1'
         elif 'active_account' in context and 'max_bond' in request.GET and request.GET['max_bond'] == '-1':
-            cards = cards.exclude(ownedcards__owner_account=context['active_account'], ownedcards__max_bond=True)
+            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], max_bond=True).values('card'))
             request_get['max_bond'] = '-1'
         if 'active_account' in context and 'idolized' in request.GET and request.GET['idolized'] == '1':
             cards = cards.filter(ownedcards__owner_account=context['active_account'],
                                  ownedcards__idolized=True)
-            request_get['idolized'] = 1
+            request_get['idolized'] = '1'
         elif 'active_account' in context and 'idolized' in request.GET and request.GET['idolized'] == '-1':
-            cards = cards.exclude(ownedcards__owner_account=context['active_account'], ownedcards__idolized=True)
+            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], idolized=True).values('card'))
             request_get['idolized'] = '-1'
+
+        if 'active_account' in context and 'stored' in request.GET and request.GET['stored']:
+            if request.GET['stored'] == 'Album':
+                cards = cards.filter(ownedcards__owner_account=context['active_account']).filter(Q(ownedcards__stored='Deck') | Q(ownedcards__stored='Album'))
+            else:
+                cards = cards.filter(ownedcards__owner_account=context['active_account'], ownedcards__stored=request.GET['stored'])
+            cards = cards.distinct()
+            request_get['stored'] = request.GET['stored']
 
         if ('active_account' in context and context['active_account'].language != 'JP'
             and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):

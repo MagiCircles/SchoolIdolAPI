@@ -233,8 +233,16 @@
 		  </tbody>
 		</table>
 		{% if card.embed_video %}
+		{% if LANGUAGE_CODE != 'ja' or not card.embed_japanese_video %}
 		<div class="embed_video" data-url="{{ card.embed_video }}">
 		</div>
+		{% endif %}
+		{% endif %}
+		{% if card.embed_japanese_video %}
+		{% if LANGUAGE_CODE == 'ja' or not card.embed_video %}
+		<div class="embed_japanese_video" data-url="{{ card.embed_japanese_video }}">
+		</div>
+		{% endif %}
 		{% endif %}
 		<div class="share text-center padding20">
 		  <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{{ card|imageurl:'card_idolized_image' }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>

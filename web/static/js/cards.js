@@ -48,16 +48,20 @@ function shareButtons() {
 }
 
 function youtubeRatio() {
-    var showYoutubeIframe = function(embed_video) {
+    var showYoutubeIframe = function(embed_video, link) {
 	if (embed_video.length > 0) {
-	    embed_video.html('<iframe style="width: 100%" height="200" src="' + embed_video.attr('data-url') + '?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe><div class="text-right padding20 padding-novertical"><small class="padding-"><a href="https://www.youtube.com/user/Umidahh/playlists" target="_blank">Watch all the stories</a></small></div><br>');
+	    embed_video.html('<iframe style="width: 100%" height="200" src="' + embed_video.attr('data-url') + '?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>' + (link ? '<div class="text-right padding20 padding-novertical"><small class="padding-"><a href="https://www.youtube.com/user/Umidahh/playlists" target="_blank">Watch all the stories</a></small></div>' : '') + '<br>');
 	    var width = embed_video.parent().width();
 	    embed_video.find('iframe').height(width * (450 / 800));
 	}
     };
-    $('.more.collapse').on('show.bs.collapse', function() { showYoutubeIframe($(this).find('.embed_video')) });
+    $('.more.collapse').on('show.bs.collapse', function() {
+	showYoutubeIframe($(this).find('.embed_video'), true);
+	showYoutubeIframe($(this).find('.embed_japanese_video'), false);
+    });
     $('.already_collapsed').each(function() {
-	showYoutubeIframe($(this).find('.embed_video'));
+	showYoutubeIframe($(this).find('.embed_video'), true);
+	showYoutubeIframe($(this).find('.embed_japanese_video'), false);
     });
 }
 

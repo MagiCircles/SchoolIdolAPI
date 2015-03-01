@@ -230,6 +230,8 @@ def cards(request, card=None, ajax=False):
         card.japan_only = card.is_japan_only()
         if card.video_story:
             card.embed_video = card.video_story.replace('/watch?v=', '/embed/')
+        if card.japanese_video_story:
+            card.embed_japanese_video = card.japanese_video_story.replace('/watch?v=', '/embed/')
         card.percent_stats = {
             'minimum': {
                 'Smile': (card.minimum_statistics_smile / max_stats['Smile']) * 100,

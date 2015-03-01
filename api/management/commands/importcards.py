@@ -276,11 +276,15 @@ class Command(BaseCommand):
             f = urllib2.urlopen('https://docs.google.com/spreadsheets/d/1AlLTBEuxEBXSVcxE6PpyE8ZcjWfvAQQCsgnKQyFQlPY/export?gid=0&format=csv')
         reader = csv.reader(f)
         for line in reader:
-            id = optInt(line[0])
-            video = optString(clean(line[1]))
-            if id is not None and video is not None:
+            id = optInt(line[1])
+            video = optString(clean(line[2]))
+            japanese_video = optString(clean(line[3]))
+            if id is not None and (video is not None or japanese_video is not None):
                 print 'Add video story to #', id, '... ',
-                card, created = models.Card.objects.update_or_create(id=id, defaults={'video_story': video})
+                card, created = models.Card.objects.update_or_create(id=id, defaults={
+                    'video_story': video,
+                    'japanese_video_story': japanese_video,
+                })
                 print 'Done'
         f.close()
 

@@ -106,6 +106,7 @@ class Card(models.Model):
     round_card_url = models.CharField(max_length=200, blank=True, null=True)
     round_card_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
+    japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
 
     def japanese_attribute(self):
         if self.attribute == 'Smile':

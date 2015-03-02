@@ -186,10 +186,10 @@ def cards(request, card=None, ajax=False):
             request_get['max_bond'] = '-1'
         if 'active_account' in context and 'idolized' in request.GET and request.GET['idolized'] == '1':
             cards = cards.filter(ownedcards__owner_account=context['active_account'],
-                                 ownedcards__idolized=True)
+                                 ownedcards__idolized=True).exclude(ownedcards__stored='Favorite')
             request_get['idolized'] = '1'
         elif 'active_account' in context and 'idolized' in request.GET and request.GET['idolized'] == '-1':
-            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], idolized=True).values('card'))
+            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], idolized=True).exclude(stored='Favorite').values('card'))
             request_get['idolized'] = '-1'
 
         if 'active_account' in context and 'stored' in request.GET and request.GET['stored']:

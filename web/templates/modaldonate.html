@@ -1,0 +1,20 @@
+{% load i18n %}
+          <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h4 class="modal-title">{% trans 'Donate' %}</h4>
+	  </div>
+	  <div class="modal-body">
+	    <p>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
+	    <br><br>
+	    <div class="text-center">
+	      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+		<input type="hidden" name="cmd" value="_s-xclick">
+		<input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+		<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+	      </form>
+	      <br><br>
+	      <span class="text-danger" style="font-size: 3em;"><i class="flaticon-heart"></i></span>
+	    </div>
+	    <br><br>
+	  </div>

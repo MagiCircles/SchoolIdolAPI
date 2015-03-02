@@ -1,22 +1,37 @@
 
+function getInterfaceColor() {
+    return $('body').attr('class').replace('interface-', '');
+}
+
 function freeModal(title, body) {
     $('#freeModal .modal-header h4').html(title);
     $('#freeModal .modal-body').html(body);
     $('#freeModal').modal('show');
 }
 
+function globalModal(hash) {
+    $.get('/ajax/modal/' + hash +
+	  '/?interfaceColor=' + getInterfaceColor(), function(data) {
+	      $('#modal .modal-content').html(data);
+	      $('#modal').modal('show');
+	  });
+}
+
 $(document).ready(function() {
     var hash = window.location.hash.substring(1);
     if (hash.indexOf("Modal") >= 0) {
-	if ($('#' + hash).length > 0) {
-	    $('#' + hash).modal('show');
-	}
+	globalModal(hash.replace('Modal', ''));
     }
 
     $('.switchLanguage').click(function(e) {
 	e.preventDefault();
 	$('#switchLanguage').find('select').val($(this).attr('data-lang'));
 	$('#switchLanguage').submit();
+    });
+
+    $('[data-toggle=ajaxmodal]').click(function(e) {
+	e.preventDefault();
+	globalModal($(this).attr('href').replace('#', '').replace('Modal', ''));
     });
 });
 

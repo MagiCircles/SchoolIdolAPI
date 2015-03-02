@@ -1,0 +1,38 @@
+{% load i18n %}
+<div class="modal-body">
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    <h3>Public API</h3>
+	    <p>
+	      If you're a developer and you would like to get the cards of the game in a convenient format, we provide a public <strong>REST API to get the cards and events</strong>.
+	    </p>
+	    <p>
+	      It returns <strong>JSON objects</strong> that you can easily parse and use in your own tools or services.
+	    </p>
+	    <p>
+	      Note that since we provide this service for free, unfortunately, we cannot 100% guarantee its uptime. However, we believe our architecture is reliable enough to be used in a production environment.
+	    </p>
+	    <div class="text-right">
+	      <a href="https://github.com/db0company/SchoolIdolAPI#readme" target="_blank" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+		API Documentation
+	      </a>
+	    </div>
+	    <h3>Contribute</h3>
+	    <p>
+	      Our project is <strong>open-source</strong> and open for contributions. We would be more than happy to accept your <strong>pull-requests</strong> on GitHub.
+	    </p>
+	    <p>The website has been made using <a href="https://docs.djangoproject.com/" target="_blank">Django</a>, the facemash has been made using <a href="http://www.pylonsproject.org/" target="_blank">Pyramid</a>, and the public API has been made using <a href="http://www.django-rest-framework.org/" target="_blank">Django-Rest-Framework</a>, so in Python. We also use <a href="http://lesscss.org/" target="_blank">LESS CSS</a>, <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>, <a href="http://jquery.com/" target="_blank">JQuery</a> and <a href="http://bower.io/" target="_blank">Bower</a> for the front-end of the website.</p>
+	    <p>
+	      If you wish to contribute but you don't know what to do, feel free to <a href="https://waffle.io/db0company/SchoolIdolAPI">browse tasks that are ready to be implemented</a>.
+	    </p>
+	    <p>
+	      <small>Main contributors are <a href="http://github.com/db0company/" target="_blank">db0</a> and <a href="http://github.com/Engil/" target="_blank">Lamagicien</a>.</small>
+	    </p>
+	    <div class="text-right">
+	      <a href="https://github.com/db0company/SchoolIdolAPI" target="_blank" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+		SchoolIdolAPI GitHub Repository
+	      </a>
+	      <a href="https://github.com/Engil/SchoolIdolContest" target="_blank" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+		SchoolIdolContest GitHub Repository
+	      </a>
+	    </div>
+	  </div>

@@ -529,6 +529,22 @@ def ajaxeventparticipations(request, account):
     eventparticipations = models.EventParticipation.objects.filter(account=account).order_by('-event__end')
     return render(request, 'ajaxevents.html', { 'eventparticipations': eventparticipations })
 
+def ajaxmodal(request, hash):
+    context = {}
+    if 'interfaceColor' in request.GET:
+        context['interfaceColor'] = request.GET['interfaceColor']
+    if hash == 'about':
+        return render(request, 'modalabout.html', context)
+    elif hash == 'developers':
+        return render(request, 'modaldevelopers.html', context)
+    elif hash == 'contact':
+        return render(request, 'modalcontact.html', context)
+    elif hash == 'donate':
+        return render(request, 'modaldonate.html', context)
+    elif hash == 'thanks':
+        return render(request, 'modalthanks.html', context)
+    raise Http404
+
 def edit(request):
     if not request.user.is_authenticated or request.user.is_anonymous():
         raise PermissionDenied()

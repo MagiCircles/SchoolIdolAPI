@@ -11,6 +11,7 @@
 {% block content %}
 {% load imageurl %}
 {% load padzeros %}
+<div id="fb-root"></div>
 <div class="container">
   <br><br>
   <div class="jumbotron {{ preferences.color }}" id="profile">
@@ -44,7 +45,7 @@
 	  <a href="/create/" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">Follow</a>
 	  {% endif %}
 	  <br><br>
-	  <table class="table table-bordered">
+	  <table class="white-table table-responsive">
 	    {% if total_followers %}
 	    <tr>
 	      <th>{% trans 'Followers' %}</th>
@@ -69,16 +70,56 @@
 	      <td><a href="http://maps.google.com/?q={{ preferences.location }}" target="_blank">{{ preferences.location }}</a></td>
 	    </tr>
 	    {% endif %}
+	  </table>
+	  <table class="white-table table-responsive">
 	    <tr>
 	      <th>{% trans 'Accept friend requests' %}</th>
 	      <td>{% if preferences.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
 	    </tr>
 	  </table>
-	  {% if preferences.twitter %}
-	  <br>
-	  <a href="https://twitter.com/{{ preferences.twitter }}" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @{{ preferences.twitter }}</a>
-	  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-	  {% endif %}
+	  <table class="white-table table-responsive">
+	    {% if preferences.twitter %}
+	    <tr>
+	      <th>Twitter</th>
+	      <td>
+		<a href="https://twitter.com/{{ preferences.twitter }}" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @{{ preferences.twitter }}</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	      </td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.facebook %}
+	    <tr>
+	      <th>Facebook</th>
+	      <td>
+		<div class="fb-follow" data-href="https://www.facebook.com/{{ preferences.facebook }}" data-width="174" data-height="28" data-colorscheme="light" data-layout="standard" data-show-faces="false"></div>
+	      </td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.reddit %}
+	    <tr>
+	      <th>Reddit</th>
+	      <td>
+		<a href="http://www.reddit.com/user/{{ preferences.reddit }}" target="_blank">/u/{{ preferences.reddit }} <img src="http://www.redditstatic.com/spreddit4.gif" alt="Reddit"></a>
+	      </td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.line %}
+	    <tr>
+	      <th>LINE Messenger</th>
+	      <td>
+		<a href="http://line.me/" target="_blank">{{ preferences.line }} <img width="20" height="20" src="http://media.line.me/img/button/en/20x20.png" alt="Line"></a>
+	      </td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.tumblr %}
+	    <tr>
+	      <th>Tumblr</th>
+	      <td>
+		<iframe class="btn" frameborder="0" border="0" scrolling="no" allowtransparency="true" style="padding: 0; margin: 0; border: 0;" height="25" width="160" src="http://platform.tumblr.com/v1/follow_button.html?button_type=1&tumblelog={{ preferences.tumblr }}&color_scheme=light"></iframe>
+	      </td>
+	    </tr>
+	    {% endif %}
+	  </table>
 	</div>
       </div>
     </div>

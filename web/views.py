@@ -50,9 +50,15 @@ def globalContext(request):
     return context
 
 def getUserAvatar(user, size):
+    default = 'http://schoolido.lu/static/kotori.jpg'
+    preferences, created = user.preferences.get_or_create()
+    if preferences.twitter:
+        default = 'http://avatars.io/twitter/' + preferences.twitter + '?size=large'
+    elif preferences.facebook:
+        default = 'http://avatars.io/facebook/' + preferences.facebook + '?size=large'
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
-            + "?" + urllib.urlencode({'d': 'http://schoolido.lu/static/kotori.jpg', 's': str(size)}))
+            + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
     models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard, eventparticipation=eventparticipation)

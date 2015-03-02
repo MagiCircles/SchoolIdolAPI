@@ -1,7 +1,16 @@
 {% load i18n %}
 {% load imageurl %}
+{% load activitychange %}
 {% load storedChoiceToString %}
 {% for activity in activities %}
+{% with activity|activitychange as checkchange %}
+{% ifchanged checkchange %}
+{% if forloop.counter0 != 0 %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 <div class="activity">
   <div class="row">
     <div class="col-xs-{{ avatar_size }}">
@@ -38,16 +47,17 @@
 	  {% trans 'in' %} <i>{% with activity.ownedcard.stored|storedChoiceToString as stored %}{% trans stored %}{% endwith %}</i>
 	  {% endif %}
 	</span><br>
-	<small>
-	  {% if activity.message == 'Rank Up' %}
-	  {% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
-	  {{ activity.ownedcard.card }}
-	  {% endif %}
-	</small>
+      {% include 'activitytext.html' %}
+{% else %}
+{% include 'activitytext.html' with small=True %}
+{% endifchanged %}
+{% if forloop.counter == activities|length %}
       </div>
     </div>
   </div>
 </div>
+{% endif %}
+{% endwith %}
 {% endfor %}
 {% if activities|length >= page_size %}
 <div class="padding20 text-center" data-page="{{ page|add:1 }}"><a href="#loadMoreActivities">⟱</a></div>

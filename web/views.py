@@ -457,7 +457,7 @@ def ajaxfollowing(request, username):
 
 def _activities(request, account=None, follower=None, avatar_size=3):
     page = 0
-    page_size = 6
+    page_size = 25
     if 'page' in request.GET and request.GET['page']:
         page = int(request.GET['page']) - 1
         if page < 0:

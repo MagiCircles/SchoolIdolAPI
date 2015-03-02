@@ -2,7 +2,7 @@
 $("a[href^='#']").on('click', function(e) {
     e.preventDefault();
     var hash = this.hash;
-    if (hash != '') {
+    if (hash != '' && hash.indexOf('Modal') < 0) {
 	$('html, body').animate({
 	    scrollTop: $(hash).offset().top
 	}, 300, function(){

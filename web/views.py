@@ -351,7 +351,7 @@ def ajaxownedcards(request, account, stored):
             ownedcards = ownedcards.order_by('card__id')
         elif stored == 'Favorite':
             ownedcards == ownedcards.order_by('-card__rarity', '-idolized', 'card__id')
-    context = { 'cards': ownedcards, 'nolink': True }
+    context = { 'cards': ownedcards, 'nolink': True, 'stored': stored }
     return render(request, 'ownedcards.html', context)
 
 def ajaxaddcard(request):

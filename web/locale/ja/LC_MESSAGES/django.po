@@ -796,7 +796,7 @@ msgstr "削除"
 #: web/templates/base.html:59 web/templates/feed.html:3
 #: web/templates/feed.html.py:14 web/templates/profile.html:204
 msgid "Activities"
-msgstr ""
+msgstr "新着情報"
 
 #: api/models.py:179 api/models.py:180 api/models.py:181 api/models.py:182
 #: api/models.py:183

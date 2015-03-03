@@ -11,9 +11,17 @@
 
 <div class="container" id="users">
   <h1 class="text-center margin50">{% trans 'Players' %} <small>{{ total_results }}</small></h1>
+  <div class="jumbotron">
+    <form method="get">
+      {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+      <div class="text-right submitarea">
+	<input type="submit" class="btn btn-Cool btn-sm" value="{% trans 'Search' %}">
+      </div>
+    </form>
+  </div>
   <div class="row">
-    {% for i, user in users %}
-    {% if i|mod:3 %}
+    {% for user in users %}
+    {% if forloop.counter0|mod:3 %}
   </div><div class="row">
     {% endif%}
     <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">

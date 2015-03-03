@@ -52,3 +52,11 @@ class EventParticipationNoSongForm(ModelForm):
     class Meta:
         model = models.EventParticipation
         fields = ('ranking', 'points')
+
+class UserSearchForm(Form):
+    term = forms.CharField(required=False, label=_('Search'))
+    ordering = forms.ChoiceField(required=False, label='', widget=forms.RadioSelect, choices=[
+        ('-accounts_set__rank', _('Ranking')),
+        ('-date_joined', _('New players')),
+        ('username', _('Name')),
+    ], initial='-accounts_set__rank')

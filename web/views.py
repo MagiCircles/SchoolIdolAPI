@@ -606,21 +606,48 @@ def users(request):
         page = int(request.GET['page']) - 1
         if page < 0:
             page = 0
-    users = User.objects.all().order_by('-last_login')
+    users = User.objects.all()
+    flag = False
+    if request.GET:
+        form = forms.UserSearchForm(request.GET)
+        if form.is_valid():
+            if 'term' in form.cleaned_data and form.cleaned_data['term']:
+                terms = request.GET['term'].split(' ')
+                for term in terms:
+                    if term.isdigit():
+                        users = users.filter(Q(accounts_set__rank__exact=term)
+                                             | Q(accounts_set__friend_id__exact=term)
+                                         )
+                    else:
+                        users = users.filter(Q(username__contains=term)
+                                             | Q(preferences__description__contains=term)
+                                             | Q(preferences__location__contains=term)
+                                             | Q(preferences__twitter__contains=term)
+                                             | Q(preferences__facebook__contains=term)
+                                             | Q(email__exact=term)
+                                             | Q(preferences__reddit__contains=term)
+                                             | Q(preferences__line__contains=term)
+                                             | Q(preferences__tumblr__contains=term)
+                                             | Q(accounts_set__nickname__contains=term)
+                                         )
+            if 'ordering' in form.cleaned_data and form.cleaned_data['ordering']:
+                flag = True
+                users = users.order_by(form.cleaned_data['ordering'])
+    else:
+        form = forms.UserSearchForm()
+    if not flag:
+        users = users.order_by('-accounts_set__rank')
+    context['form'] = form
     context['total_results'] = users.count()
     users = users[(page * page_size):((page * page_size) + page_size)]
-    # users = User.objects.all()
     for user in users:
         user.avatar = getUserAvatar(user, 100)
         preferences, created = user.preferences.get_or_create()
         user.prefs = preferences
-        user.accounts = user.accounts_set.all()
-        user.accounts = sorted(user.accounts, key=lambda a: a.rank, reverse=True)
-        user.best_rank = user.accounts[0].rank if user.accounts else 0
-    # users = sorted(users, key=lambda u: u.best_rank, reverse=True)
+        user.accounts = user.accounts_set.all().order_by('-rank')
     context['total_users'] = len(users)
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
-    context['users'] = enumerate(users)
+    context['users'] = users
     context['page'] = page + 1
     return render(request, 'users.html', context)
 

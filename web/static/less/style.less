@@ -520,6 +520,44 @@ a.panel {
 }
 
 #users {
+    .jumbotron {
+	background-color: transparent;
+	padding-top: 0;
+	padding-bottom: 0;
+	form {
+	    .col-sm-8 {
+		width: 100%;
+	    }
+	    .form-group {
+		margin-bottom: 0;
+		&:nth-child(2) {
+		    width: 90%;
+		}
+	    }
+	    .control-label { display: none }
+	    .submitarea {
+		height: 0;
+		input {
+		    margin-top: -60px;
+		}
+	    }
+	    #id_ordering {
+		li {
+		    list-style-type: none;
+		    display: inline-block;
+		    margin-right: 10px;
+		    input {
+			display: inline-block;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+			margin: 0;
+			width: auto;
+		    height: auto;
+		    }
+		}
+	    }
+	}
+    }
     .panel {
 	.panel-heading {
 	    .avatar {
@@ -579,5 +617,11 @@ a.panel {
 	&:hover {
 	    opacity: 0.6;
 	}
+    }
+}
+
+@media (max-width: 768px) {
+    .jumbotron form {
+	width: 80%;
     }
 }

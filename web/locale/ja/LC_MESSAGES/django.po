@@ -43,7 +43,7 @@ msgstr "UR"
 #. This card is in your deck
 #: web/templates/ownedCardOnBottomCard.html:4
 msgid "In deck"
-msgstr "コレクションに入れる"
+msgstr "部員に入れる"
 
 #. This card is in your album
 #: web/templates/ownedCardOnBottomCard.html:6
@@ -591,7 +591,7 @@ msgstr "そして"
 
 #: api/models.py:31 web/templates/profile.html:216
 msgid "Deck"
-msgstr "コレクション"
+msgstr "部員"
 
 #: api/models.py:32 web/templates/profile.html:221
 msgid "Album"

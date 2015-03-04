@@ -1,0 +1,61 @@
+{% if users|length %}
+{% load i18n %}
+{% load mod %}
+{% load times %}
+{% load imageurl %}
+  <div class="row">
+    {% for user in users %}
+    {% if forloop.counter0|mod:3 %}
+  </div><div class="row">
+    {% endif%}
+    <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">
+      {% with user.accounts|length as length %}
+      <div class="panel panel-{% if user.prefs.color %}{{ user.prefs.color }}{% else %}default{% endif %}">
+	<div class="panel-heading">
+	  <a href="/user/{{ user.username }}/"><h3 class="padding-novertical margin-novertical">
+	      <img src="{{ user.avatar }}" alt="{{ user.username }} avatar" class="avatar">
+	      <div class="text">{{ user }}</div>
+	  </h3></a>
+	</div>
+	<div class="panel-body">
+	  {% if length == 0 %}
+	  <h5 class="margin20">{% trans 'No account.' %}</h5>
+	  {% else %}
+	  <h5 class="padding20 padding-novertical">{% blocktrans count counter=length %}{{ length }} account:{% plural %}{{ length }} accounts:{% endblocktrans %}</h5>
+	  <table class="table margin-novertical">
+	    {% for account in user.accounts %}
+	    <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';">
+	      <td>
+		{% if account.center %}
+		<div class="circled_card_70 {{ account.center.card.attribute }} {{ account.center.card.rarity }} pull-left margin10"
+		     style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+		{% endif %}
+		<h4 class="padding20 padding-novertical">{{ account }}</h4>
+	      </td>
+	      <td class="text-right fontx2">
+		{% if account.rank %}
+		{{ account.rank }}
+		{% endif %}
+	      </td>
+	    </tr>
+	    {% endfor %}
+	  </table>
+	  {% endif %}
+	  <small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/user/{{ user.username }}/#disqus_thread">{% trans 'Comments' %}</a></small>
+	</div>
+      </div>
+      {% endwith %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <nav id="load_more" data-next-page="{{ page|add:1 }}">
+    <ul class="pagination pagination-sm">
+      <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+      {% for i in total_pages|times %}
+      <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+      {% endfor %}
+      <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+    </ul>
+  </nav>
+{% endif %}

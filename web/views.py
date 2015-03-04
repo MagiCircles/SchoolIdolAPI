@@ -434,6 +434,9 @@ def ajaxdeletecard(request, ownedcard):
 def ajaxcards(request):
     return cards(request, ajax=True)
 
+def ajaxusers(request):
+    return users(request, ajax=True)
+
 def isFollowing(user, context): # must have globalContext
     if 'session_preferences' in context:
         for followed in context['session_preferences']['following']:
@@ -598,8 +601,11 @@ def editaccount(request, account):
             return render(request, 'addaccount.html', context)
     raise PermissionDenied()
 
-def users(request):
-    context = globalContext(request)
+def users(request, ajax=False):
+    if ajax:
+        context = {}
+    else:
+        context = globalContext(request)
     page = 0
     page_size = 18
     if 'page' in request.GET and request.GET['page']:
@@ -649,7 +655,7 @@ def users(request):
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     context['users'] = users
     context['page'] = page + 1
-    return render(request, 'users.html', context)
+    return render(request, 'usersPage.html' if ajax else 'users.html', context)
 
 def events(request):
     context = globalContext(request)

@@ -58,5 +58,5 @@ class UserSearchForm(Form):
     ordering = forms.ChoiceField(required=False, label='', widget=forms.RadioSelect, choices=[
         ('-accounts_set__rank', _('Ranking')),
         ('-date_joined', _('New players')),
-        ('username', _('Name')),
+        ('username', _('Nickname')),
     ], initial='-accounts_set__rank')

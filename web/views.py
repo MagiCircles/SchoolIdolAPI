@@ -713,3 +713,10 @@ def event(request, event):
     event.all_participations = event.participations.all().order_by('account__language', 'ranking')
     context['event'] = event
     return render(request, 'event.html', context)
+
+def twitter(request):
+    if not request.user.is_authenticated or request.user.is_anonymous():
+        raise PermissionDenied()
+    context = globalContext(request)
+    context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).values_list('twitter', flat=True)
+    return render(request, 'twitter.html', context)

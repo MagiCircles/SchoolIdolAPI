@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^events[/]+$', views.events, name='events'),
     url(r'^event[s]?/(?P<event>[^/]+)[/]+$', views.event, name='event'),
     url(r'^activities[/]+$', views.activities, name='activities'),
+    url(r'^twitter[/]+$', views.twitter, name='twitter'),
 
     url(r'^ajax/modal/(?P<hash>\w+)[/]+$', views.ajaxmodal, name='ajaxmodal'),
     url(r'^ajax/addcard[/]+$', views.ajaxaddcard, name='ajaxaddcard'),

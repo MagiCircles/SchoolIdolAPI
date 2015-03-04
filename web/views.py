@@ -718,5 +718,5 @@ def twitter(request):
     if not request.user.is_authenticated or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
-    context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).values_list('twitter', flat=True)
+    context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).exclude(twitter__exact='').values_list('twitter', flat=True)
     return render(request, 'twitter.html', context)

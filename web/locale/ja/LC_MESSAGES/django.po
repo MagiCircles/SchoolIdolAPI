@@ -43,7 +43,7 @@ msgstr "UR"
 #. This card is in your deck
 #: web/templates/ownedCardOnBottomCard.html:4
 msgid "In deck"
-msgstr "デッキに入れる"
+msgstr "コレクションに入れる"
 
 #. This card is in your album
 #: web/templates/ownedCardOnBottomCard.html:6
@@ -61,7 +61,7 @@ msgstr "プレゼント一覧"
 msgid "Wish List"
 msgstr "欲しいカード"
 
-#: api/models.py:134 web/templates/profile.html:165
+#: api/models.py:134 web/forms.py:61 web/templates/profile.html:165
 msgid "Nickname"
 msgstr "名前"
 
@@ -117,7 +117,7 @@ msgstr "ランク"
 #: api/models.py:150 web/templates/cards.html:112
 #, fuzzy
 msgid "Stored"
-msgstr "ショップ"
+msgstr "コレクション"
 
 #. Some cards expire. This is the date of expiration.
 #: api/models.py:151 web/templates/addCardForm.html:10
@@ -306,7 +306,8 @@ msgstr "言語設定を変更"
 msgid "Cards Album"
 msgstr "アルバム"
 
-#: web/templates/cards.html:21 web/templates/cards.html.py:23
+#: web/forms.py:57 web/templates/cards.html:21 web/templates/cards.html.py:23
+#: web/templates/users.html:18
 msgid "Search"
 msgstr "検索"
 
@@ -411,7 +412,7 @@ msgid "Center Skill"
 msgstr "センタースキル"
 
 #. This is the title of the Comments section on a card's page. The comments are about the card itself.
-#: web/templates/cardsPage.html:224 web/templates/users.html:52
+#: web/templates/cardsPage.html:224 web/templates/users.html:60
 msgid "Comments"
 msgstr "コメント"
 
@@ -552,16 +553,16 @@ msgid "You max bonded (kizuna) this card. Congratulations!"
 msgstr "おめでとうございます！このカードは絆MAXになりました"
 
 #. This is on the homepage. You can write something different like "Search card" or "See cards"
-#: web/templates/ownedcards.html:19
+#: web/templates/ownedcards.html:22
 msgid "Browse cards"
 msgstr "カードを探す"
 
 #. Message you see when you look at someone's profile and the person didn't register any card
-#: web/templates/ownedcards.html:24
+#: web/templates/ownedcards.html:27
 msgid "No cards registered yet."
 msgstr "まだ登録したカードがありません"
 
-#: web/templates/profile.html:129 web/templates/users.html:30
+#: web/templates/profile.html:129 web/templates/users.html:38
 msgid "No account."
 msgstr "アカウントがありません"
 
@@ -590,7 +591,7 @@ msgstr "そして"
 
 #: api/models.py:31 web/templates/profile.html:216
 msgid "Deck"
-msgstr "デッキ"
+msgstr "コレクション"
 
 #: api/models.py:32 web/templates/profile.html:221
 msgid "Album"
@@ -684,7 +685,7 @@ msgstr ""
 
 #: api/models.py:177 web/forms.py:19 web/templates/profile.html:63
 msgid "Best Girl"
-msgstr ""
+msgstr "最高のアイドル"
 
 #: web/templates/profile.html:77
 msgid "Yes"
@@ -694,7 +695,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: web/templates/profile.html:131 web/templates/users.html:32
+#: web/templates/profile.html:131 web/templates/users.html:40
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] ""
@@ -727,7 +728,7 @@ msgstr "プロフィール"
 #. Item you can buy (bluray, CD, books, ...) that comes with a card.
 #: web/templates/cards.html:23
 msgid "Promo Item"
-msgstr ""
+msgstr "グッズ"
 
 #: web/templates/profile.html:41
 msgid "Unfollow"
@@ -749,7 +750,7 @@ msgstr "フォロー"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr ""
 
-#: api/models.py:164 web/templates/event.html:92
+#: api/models.py:164 web/forms.py:59 web/templates/event.html:92
 msgid "Ranking"
 msgstr "ランキング"
 
@@ -775,11 +776,11 @@ msgstr "イベント"
 
 #: web/templates/event.html:23
 msgid "Dates"
-msgstr ""
+msgstr "期間"
 
 #: web/templates/event.html:44
 msgid "Note"
-msgstr ""
+msgstr "特殊性"
 
 #: web/templates/event.html:49
 msgid "Wiki"
@@ -787,7 +788,7 @@ msgstr "wiki"
 
 #: web/templates/event.html:112 web/templates/event.html.py:129
 msgid "Share your ranking"
-msgstr ""
+msgstr "ランキングを共有！"
 
 #: web/templates/event.html:126
 msgid "Delete"
@@ -818,4 +819,8 @@ msgstr ""
 #: web/templates/modalthanks.html:4 web/templates/modalthanks.html.py:8
 msgid "Thank you"
 msgstr "ありがとう"
+
+#: web/forms.py:60
+msgid "New players"
+msgstr "新しいプレーヤー"
 

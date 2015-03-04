@@ -3,7 +3,7 @@ function loadMoreUsers() {
     var button = $("#load_more");
     button.html('<span class="loader">Loading...</span>');
     var next_page = button.attr('data-next-page');
-    $.get('/ajax/users/?page=' + next_page, function(data) {
+    $.get('/ajax/users/' + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {
 	button.replaceWith(data);
     });
 }

@@ -422,13 +422,9 @@ def get_links(current_en, current_jp):
             'idol': 'Sonoda Umi',
             'links': [
                 {
-                    'name': 'Main Story Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Story',
-                    'type': 'info',
-                    'language': 'japanese',
-                },
-                {
-                    'name': 'Watch all the English stories directly on the cards',
+                    'name': 'Watch all the English Side Stories',
+                    'x2': True,
+                    'description': 'Click on a card, scroll down and play the video!',
                     'url': '/cards/?is_world=True',
                     'type': 'info',
                     'language': 'world',
@@ -438,6 +434,13 @@ def get_links(current_en, current_jp):
                     'url': 'https://www.youtube.com/playlist?list=PLpXLEE3mSzRjyKa6nEH0CXm-bJcOXpKjU',
                     'type': 'info',
                     'language': 'english',
+                },
+                {},
+                {
+                    'name': 'Main Story Translation',
+                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Story',
+                    'type': 'info',
+                    'language': 'japanese',
                 },
                   {
                     'name': 'Kousaka Honoka Side Stories Translation',

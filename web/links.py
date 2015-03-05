@@ -340,12 +340,6 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
-                    'name': 'How to Create the Perfect Team',
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2pg7ap/basic_guide_creating_the_perfect_team/',
-                    'type': 'tutorial',
-                    'language': 'world',
-                },
-                {
                     'name': 'Advanced Scoring Guide',
                     'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2r5nx6/guide_advanced_scoring_guide/',
                     'type': 'tutorial',
@@ -407,24 +401,6 @@ def get_links(current_en, current_jp):
                     'url': 'http://www.usagi.org/doi-bin/llcutoff.pl',
                     'type': 'info',
                     'language': 'japanese',
-                },
-                {
-                    'name': 'Regular Events: Efficient Token Collection',
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2hylbz/basic_guide_efficient_token_collection/',
-                    'type': 'tutorial',
-                    'language': 'world',
-                },
-                {
-                    'name': 'Score Match Events: Efficient Playing',
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2hylze/basic_guide_efficient_score_match/',
-                    'type': 'tutorial',
-                    'language': 'world',
-                },
-                {
-                    'name': 'How to spend your lovecas during events (and why)',
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2fvm3y/advanced_guide_making_the_most_out_of_events/',
-                    'type': 'tutorial',
-                    'language': 'world',
                 },
                 {
                     'name': 'Event Cards',
@@ -535,19 +511,6 @@ def get_links(current_en, current_jp):
                     'name': 'Points required to rank up',
                     'url': 'http://www59.atwiki.jp/lovelive-sif/pages/23.html',
                     'type': 'info',
-                    'language': 'world',
-                },
-                {
-                    'name': 'How to predict the future?',
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2eqp2y/advanced_guide_how_to_predict_future_releases_and/',
-                    'type': 'tutorial',
-                    'language': 'world',
-                },
-                {
-                    'name': 'Start a new account',
-                    'description': 'This guide for players who already know the game basics. Otherwise, read the guides for beginners instead.',
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/2elxb5/advanced_guide_starting_a_new_account_for_en_and/',
-                    'type': 'tutorial',
                     'language': 'world',
                 },
                 {

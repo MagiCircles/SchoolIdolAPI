@@ -352,7 +352,7 @@ def get_links(current_en, current_jp):
                 {
                     'name': ('Current' if current_en.is_world_current() else 'Latest') + ' Event English Version',
                     'description': current_en.english_name,
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=' + current_en.japanese_name,
+                    'url': '/event/' + current_en.japanese_name + '/',
                     'x2': True,
                     'type': 'info',
                     'language': 'english',
@@ -360,7 +360,7 @@ def get_links(current_en, current_jp):
                 {
                     'name': ('Current' if current_en.is_japan_current() else 'Latest') + ' Event Japanese Version',
                     'description': current_jp.japanese_name,
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=' + current_jp.japanese_name,
+                    'url': '/event/' + current_jp.japanese_name + '/',
                     'x2': True,
                     'type': 'info',
                     'language': 'japanese',
@@ -422,7 +422,7 @@ def get_links(current_en, current_jp):
                 },
                 {
                     'name': 'Watch all the English stories directly on the cards',
-                    'url': '/cards?is_world=True',
+                    'url': '/cards/?is_world=True',
                     'type': 'info',
                     'language': 'world',
                 },

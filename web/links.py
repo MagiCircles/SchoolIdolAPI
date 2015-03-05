@@ -504,7 +504,7 @@ def get_links(current_en, current_jp):
                 },
                  {
                     'name': 'Love Live music on videos',
-                    'description': 'by the Reddit /r/LoveLive community'
+                    'description': 'by the Reddit /r/LoveLive community',
                     'url': 'https://vimeo.com/lovelivereddit',
                     'type': 'info',
                     'language': 'world',

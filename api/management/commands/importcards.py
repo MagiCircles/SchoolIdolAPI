@@ -126,7 +126,7 @@ class Command(BaseCommand):
             elif len(data) > 2:
                 id = int(clean(data[0]))
                 print 'Importing card #', id, '...',; sys.stdout.flush()
-                name = clean(data[1].split('|')[1])
+                name = clean(data[1].split('|')[1].split('#')[0])
                 type = clean(data[2])
 
                 hp = 0

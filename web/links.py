@@ -116,9 +116,16 @@ def get_links(current_en, current_jp):
             'idol': 'Ayase Eli',
             'links': [
                 {
-                    'name': 'Facebook Page',
+                    'name': 'Game Facebook Page',
                     'url': 'https://www.facebook.com/schoolidolfestival',
                     'description': 'Official page with news about the game.',
+                    'type': '',
+                    'language': 'english',
+                },
+                {
+                    'name': 'Love Live Facebook Page',
+                    'url': 'https://www.facebook.com/LoveLive.Muse',
+                    'description': '',
                     'type': '',
                     'language': 'english',
                 },
@@ -480,6 +487,31 @@ def get_links(current_en, current_jp):
                     'name': 'LoveLive! School Idol Paradise',
                     'description': 'PS Vita Game',
                     'url': 'http://love-live.wikia.com/wiki/Love_Live!_School_idol_paradise',
+                    'type': 'info',
+                    'language': 'world',
+                },
+                {
+                    'name': 'Youtube Channel μ\'s（ラブライブ！） by Lantis',
+                    'url': 'https://www.youtube.com/playlist?list=PLmgGL3shzkGM9akfMoobnVhE3XCP42lHb',
+                    'type': 'info',
+                    'language': 'japanese',
+                },
+                {
+                    'name': 'Buy μ\'s music on iTunes',
+                    'url': 'https://itunes.apple.com/jp/artist/ms/id411582529?l=en',
+                    'type': 'info',
+                    'language': 'japanese',
+                },
+                 {
+                    'name': 'Love Live music on videos',
+                    'description': 'by the Reddit /r/LoveLive community'
+                    'url': 'https://vimeo.com/lovelivereddit',
+                    'type': 'info',
+                    'language': 'world',
+                },
+                {
+                    'name': 'Download μ\'s music torrents',
+                    'url': 'http://www.nyaa.se/?page=search&cats=3_0&filter=0&term=love+live',
                     'type': 'info',
                     'language': 'world',
                 },

@@ -129,7 +129,7 @@ def cards(request, card=None, ajax=False):
 
     # Set defaults
     request_get = {
-        'ordering': 'release_date',
+        'ordering': 'id',
         'reverse_order': True,
     }
 
@@ -208,7 +208,7 @@ def cards(request, card=None, ajax=False):
 
         if ('active_account' in context and context['active_account'].language != 'JP'
             and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
-            cards = cards.filter(is_promo__exact=False, release_date__lte=(datetime.date.today() - relativedelta(years=1) + relativedelta(days=2)))
+            cards = cards.filter(Q(release_date__isnull=True) | Q(release_date__lte=(datetime.date.today() - relativedelta(years=1) + relativedelta(days=2)))).exclude(is_promo__exact=True, video_story__isnull=True).exclude(is_special__exact=True, id__gte=379)
             request_get['is_world'] = True
 
         if 'ordering' in request.GET and request.GET['ordering']:
@@ -268,8 +268,8 @@ def cards(request, card=None, ajax=False):
             'attribute_choices': models.ATTRIBUTE_CHOICES,
             'stored_choices': models.STORED_CHOICES,
             'ordering_choices': (
-                ('release_date', _('Release date')),
                 ('id', _('Card #ID')),
+                ('release_date', _('Release date')),
                 ('name', _('Idol')),
                 ('idolized_maximum_statistics_smile', _('Smile\'s statistics')),
                 ('idolized_maximum_statistics_pure', _('Pure\'s statistics')),

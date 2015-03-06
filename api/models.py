@@ -118,8 +118,9 @@ class Card(models.Model):
         return u'❤'
 
     def is_japan_only(self):
-        return (self.is_promo
-                or self.release_date + relativedelta(years=1) - relativedelta(days=2) > datetime.date.today())
+        return ((self.release_date and self.release_date + relativedelta(years=1) - relativedelta(days=2) > datetime.date.today())
+                or (self.is_promo and not self.video_story)
+                or (self.is_special and self.id >= 379))
 
     def get_owned_cards_for_account(self, account):
         return OwnedCard.objects.filter(owner_account=account, card=self)

@@ -720,3 +720,8 @@ def twitter(request):
     context = globalContext(request)
     context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).exclude(twitter__exact='').values_list('twitter', flat=True)
     return render(request, 'twitter.html', context)
+
+def mapview(request):
+    context = globalContext(request)
+    context['map'] = models.UserPreferences.objects.filter(latitude__isnull=False).order_by('location', 'user__username')
+    return render(request, 'map.html', context)

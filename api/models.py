@@ -177,6 +177,7 @@ class UserPreferences(models.Model):
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'))
     best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
     location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in.'))
+    location_changed = models.BooleanField(default=False)
     latitude = models.IntegerField(null=True, blank=True)
     longitude = models.IntegerField(null=True, blank=True)
     twitter = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'))

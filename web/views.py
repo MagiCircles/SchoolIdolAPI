@@ -558,8 +558,12 @@ def edit(request):
     if request.method == "POST":
         if 'editPreferences' in request.POST:
             form_preferences = forms.UserPreferencesForm(request.POST, instance=context['preferences'])
+            old_location = context['preferences'].location
             if form_preferences.is_valid():
-                form_preferences.save()
+                prefs = form_preferences.save(commit=False)
+                if old_location != prefs.location:
+                    prefs.location_changed = True
+                prefs.save()
                 request.session['preferences'] = model_to_dict(form_preferences.instance)
                 return redirect('/user/' + request.user.username)
         else:

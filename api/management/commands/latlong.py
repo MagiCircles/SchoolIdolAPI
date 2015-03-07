@@ -10,6 +10,7 @@ def getLatLong(geolocator, user):
         if location is not None:
             user.latitude = location.latitude
             user.longitude = location.longitude
+            user.location_changed = False
             user.save()
             print user.user, user.location, user.latitude, user.longitude
         else:
@@ -23,7 +24,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        map = models.UserPreferences.objects.filter(location__isnull=False).exclude(location__exact='')
+        map = models.UserPreferences.objects.filter(location_changed__exact=True, location__isnull=False).exclude(location__exact='')
         geolocator = Nominatim()
         for user in map:
             getLatLong(geolocator, user)

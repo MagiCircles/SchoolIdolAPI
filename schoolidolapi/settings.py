@@ -49,6 +49,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         'api.permissions.IsAdminOrSelf',
     ),
+    'DEFAULT_RENDERER_CLASSES': (
+        #'rest_framework.renderers.JSONRenderer',
+        'api.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
     'PAGINATE_BY': 10,
     'MAX_PAGINATE_BY': 100,
@@ -111,11 +116,11 @@ LOCALE_PATHS = (
 STATIC_URL = '/static/'
 
 # Store media on S3
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
-AWS_STORAGE_BUCKET_NAME = 'schoolido.lu-assets'
-# S3
-# IMAGES_HOSTING_PATH = 'http://schoolido.lu-assets.s3-website-ap-northeast-1.amazonaws.com/'
-# CloudFront
-IMAGES_HOSTING_PATH = 'http://datjr36easq2c.cloudfront.net/'
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_ACCESS_KEY_ID = ''
+    AWS_SECRET_ACCESS_KEY = ''
+    AWS_STORAGE_BUCKET_NAME = 'schoolido.lu-assets'
+    IMAGES_HOSTING_PATH = 'http://datjr36easq2c.cloudfront.net/'
+else:
+    IMAGES_HOSTING_PATH = '/'

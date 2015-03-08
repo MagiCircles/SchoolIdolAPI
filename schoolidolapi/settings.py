@@ -50,9 +50,7 @@ REST_FRAMEWORK = {
         'api.permissions.IsAdminOrSelf',
     ),
     'DEFAULT_RENDERER_CLASSES': (
-        #'rest_framework.renderers.JSONRenderer',
         'api.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
     'PAGINATE_BY': 10,
@@ -95,7 +93,11 @@ from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
+    ('zh', _('Chinese')),
+    ('es', _('Spanish')),
+    ('de', _('German')),
     ('fr', _('French')),
+    ('pt', _('Portuguese')),
 )
 
 TIME_ZONE = 'UTC'
@@ -115,12 +117,16 @@ LOCALE_PATHS = (
 
 STATIC_URL = '/static/'
 
-# Store media on S3
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    AWS_ACCESS_KEY_ID = ''
-    AWS_SECRET_ACCESS_KEY = ''
-    AWS_STORAGE_BUCKET_NAME = 'schoolido.lu-assets'
-    IMAGES_HOSTING_PATH = 'http://datjr36easq2c.cloudfront.net/'
-else:
-    IMAGES_HOSTING_PATH = '/'
+IMAGES_HOSTING_PATH = '/'
+
+try:
+    from local_settings import *
+except ImportError, e:
+    pass
+
+# In production, use these in the local_settings file
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+# AWS_ACCESS_KEY_ID = ''
+# AWS_SECRET_ACCESS_KEY = ''
+# AWS_STORAGE_BUCKET_NAME = 'schoolido.lu-assets'
+# IMAGES_HOSTING_PATH = 'http://datjr36easq2c.cloudfront.net/'

@@ -42,6 +42,18 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = '__all__'
     ordering = ('id',)
 
+class IdolViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows idols to be viewed.
+    """
+    queryset = models.Idol.objects.all()
+    serializer_class = serializers.IdolSerializer
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'summary')
+    filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year')
+    ordering_fields = '__all__'
+    ordering = ('name')
+
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows events to be viewed.

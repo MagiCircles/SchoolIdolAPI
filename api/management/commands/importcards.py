@@ -7,6 +7,7 @@ from django.forms.models import model_to_dict
 import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
 from api import models
+from web.forms import getGirls
 import re
 import HTMLParser
 import unicodedata
@@ -15,6 +16,7 @@ import datetime
 import time
 import csv
 import json
+import dateutil.parser
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -25,10 +27,15 @@ def ValuesQuerySetToDict(vqs):
 def removeHTML(str):
     return re.sub('<[^<]+?>', '', str)
 
-def clean(string):
+def cleanwithquotes(string):
+    return clean(string, '|[]')
+
+def clean(string, removecharacters=None):
     if string is None:
         return None
-    return removeHTML(str(string)).strip().translate(None, '\'\"|[]')
+    if removecharacters is None:
+        removecharacters = '\'\"|[]'
+    return removeHTML(str(string)).strip().translate(None, removecharacters).replace(u'\xc2', '').replace(u'\xa0', '')
 
 def optInt(i):
     try:
@@ -94,6 +101,7 @@ class Command(BaseCommand):
         if 'delete' in args:
              models.Card.objects.all().delete()
              models.Event.objects.all().delete()
+             models.Idol.objects.all().delete()
              return
 
         h = HTMLParser.HTMLParser()
@@ -126,7 +134,7 @@ class Command(BaseCommand):
             elif len(data) > 2:
                 id = int(clean(data[0]))
                 print 'Importing card #', id, '...',; sys.stdout.flush()
-                name = clean(data[1].split('|')[1].split('#')[0])
+                name = cleanwithquotes(data[1].split('|')[1].split('#')[0])
                 type = clean(data[2])
 
                 hp = 0
@@ -434,7 +442,95 @@ class Command(BaseCommand):
 
         f.close()
 
-        print "### Update cardsinfo.json"
+        idols = getGirls()
+        if not local:
+            print "### Import idols"
+            for (idx, (idol, _)) in enumerate(idols):
+                if not idol:
+                    continue
+                print '  Import Idol', idol, '...',
+                f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(idol))
+                soup = BeautifulSoup(f.read())
+                content = soup.find('div', { 'id': 'mw-content-text'})
+                if content is not None:
+                    content.find('div', { 'id', 'toc' }).extract()
+                    defaults = {}
+                    wikitable = None
+                    if idx <= 9:
+                        wikitable = content.find('table', { 'class': 'wikitable' })
+                    ul_ = content.find('ul')
+                    ul = ul_.find_all('li')
+                    for li in ul:
+                        if li.b is not None:
+                            title = clean(clean(li.b.extract()).replace(':', ''))
+                            content = clean(li.text)
+                            if title is not None and content is not None and content != '?' and content != ' ?' and content != 'B? / W? / H?' and content != '' and content != '?cm':
+                                if title == 'Age':
+                                    defaults['age'] = content
+                                elif title == 'Birthday':
+                                    split = content.replace(')', '').split('(')
+                                    birthday = dateutil.parser.parse(clean(split[0]))
+                                    sign = clean(split[-1])
+                                    defaults['birthday'] = birthday
+                                    defaults['astrological_sign'] = sign
+                                elif title == 'Japanese Name':
+                                    defaults['japanese_name'] = content
+                                elif title == 'Blood Type':
+                                    defaults['blood'] = content
+                                elif title == 'Height':
+                                    defaults['height'] = content.replace('cm', '')
+                                elif title == 'Three Sizes':
+                                    defaults['measurements'] = content
+                                elif title == 'Favorite Food' or title == 'Favorite Foods':
+                                    defaults['favorite_food'] = content
+                                elif title == 'Least Favorite Food' or title == 'Least Favorite Foods':
+                                    defaults['least_favorite_food'] = content
+                                elif title == 'Hobbies':
+                                    defaults['hobbies'] = content
+                                elif title == 'Main Attribute':
+                                    defaults['attribute'] = content
+                                elif title == 'Year':
+                                    defaults['year'] = content
+                                elif title == 'CV':
+                                    defaults['cv'] = content
+                                else:
+                                    print '/!\\ Unknown content', title, content
+                    if wikitable is not None:
+                        ps = wikitable.find_all('p')
+                        if len(ps) >= 2:
+                            if ps[0].br is not None:
+                                ps[0].br.extract()
+                            defaults['summary'] = clean(ps[0].text)
+                            if ps[1].a is not None:
+                                url = ps[1].a.get('href')
+                                defaults['official_url'] = url
+
+                    idol, created = models.Idol.objects.update_or_create(name=idol, defaults=defaults)
+
+                f.close()
+                print 'Done'
+
+        print "#### Update main idols japanese names and years"
+        years = {
+            'Kousaka Honoka': 'Second',
+            'Nishikino Maki': 'First',
+            'Ayase Eli': 'Third',
+            'Minami Kotori': 'Second',
+            'Hoshizora Rin': 'First',
+            'Koizumi Hanayo': 'First',
+            'Sonoda Umi': 'Second',
+            'Toujou Nozomi': 'Third',
+            'Yazawa Nico': 'Third',
+        }
+        for idol in years.keys():
+            card = models.Card.objects.filter(name=idol).order_by('id')[0]
+            idol, created = models.Idol.objects.update_or_create(name=idol, defaults={
+                'year': years[idol],
+                'japanese_name': card.japanese_name,
+                'main': True,
+            })
+
+        print "#### Update cardsinfo.json"
         j = json.dumps({
             'max_stats': {
                 'Smile': models.Card.objects.order_by('-idolized_maximum_statistics_smile')[:1][0].idolized_maximum_statistics_smile,

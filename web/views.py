@@ -224,7 +224,7 @@ def cards(request, card=None, ajax=False):
             page = int(request.GET['page']) - 1
             if page < 0:
                 page = 0
-        cards = cards.select_related('event')[(page * page_size):((page * page_size) + page_size)]
+        cards = cards.select_related('event', 'idol')[(page * page_size):((page * page_size) + page_size)]
         context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     else:
         context['total_results'] = 1

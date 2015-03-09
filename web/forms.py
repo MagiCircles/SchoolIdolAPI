@@ -12,8 +12,8 @@ class UserForm(ModelForm):
         fields = ('username', 'email', 'password')
 
 def getGirls():
-    girls = models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name')
-    return [('', '')] + [(girl['name'], girl['name']) for girl in girls]
+    girls = models.Card.objects.values('idol__name').annotate(total=Count('idol__name')).order_by('-total', 'idol__name')
+    return [('', '')] + [(girl['idol__name'], girl['idol__name']) for girl in girls]
 
 class UserPreferencesForm(ModelForm):
     best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)

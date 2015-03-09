@@ -70,10 +70,31 @@ class Event(models.Model):
 
 admin.site.register(Event)
 
+class Idol(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    japanese_name = models.CharField(max_length=100, blank=True, null=True)
+    main = models.BooleanField(default=False)
+    age = models.PositiveIntegerField(blank=True, null=True)
+    birthday = models.DateField(null=True, blank=True, default=None)
+    astrological_sign = models.CharField(max_length=20, blank=True, null=True)
+    blood = models.CharField(max_length=3, blank=True, null=True)
+    height = models.PositiveIntegerField(blank=True, null=True)
+    measurements = models.CharField(max_length=20, blank=True, null=True)
+    favorite_food = models.CharField(max_length=100, blank=True, null=True)
+    least_favorite_food = models.CharField(max_length=100, blank=True, null=True)
+    hobbies = models.CharField(max_length=100, blank=True, null=True)
+    attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
+    year = models.CharField(max_length=10, blank=True, null=True)
+    cv = models.CharField(max_length=100, blank=True, null=True)
+    official_url = models.CharField(max_length=200, blank=True, null=True)
+    summary = models.TextField(null=True, blank=True)
+
+admin.site.register(Idol)
+
 class Card(models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
-    name = models.CharField(max_length=100)
-    japanese_name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100) # duplicate with idol, used only in __unicode__ because otherwise it makes another query everytime
+    idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     rarity = models.CharField(choices=RARITY_CHOICES, max_length=10)
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
@@ -129,27 +150,6 @@ class Card(models.Model):
         return '#' + str(self.id) + ' ' + self.name + ' ' + self.rarity
 
 admin.site.register(Card)
-
-class Idol(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    japanese_name = models.CharField(max_length=100, blank=True, null=True)
-    main = models.BooleanField(default=False)
-    age = models.PositiveIntegerField(blank=True, null=True)
-    birthday = models.DateField(null=True, blank=True, default=None)
-    astrological_sign = models.CharField(max_length=20, blank=True, null=True)
-    blood = models.CharField(max_length=3, blank=True, null=True)
-    height = models.PositiveIntegerField(blank=True, null=True)
-    measurements = models.CharField(max_length=20, blank=True, null=True)
-    favorite_food = models.CharField(max_length=100, blank=True, null=True)
-    least_favorite_food = models.CharField(max_length=100, blank=True, null=True)
-    hobbies = models.CharField(max_length=100, blank=True, null=True)
-    attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
-    year = models.CharField(max_length=10, blank=True, null=True)
-    cv = models.CharField(max_length=100, blank=True, null=True)
-    official_url = models.CharField(max_length=200, blank=True, null=True)
-    summary = models.TextField(null=True, blank=True)
-
-admin.site.register(Idol)
 
 class Account(models.Model):
     owner = models.ForeignKey(User, related_name='accounts_set')

@@ -214,6 +214,8 @@ class Command(BaseCommand):
                     defaults['release_date'] = release_date
                 if event is not None:
                     defaults['event'] = event
+                idol, created = models.Idol.objects.get_or_create(name=name)
+                defaults['idol'] = idol
                 card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
                 print 'Done'
         f.close()
@@ -385,9 +387,7 @@ class Command(BaseCommand):
                     elif len(tds) == 16: # take center skill from previous line
                         skill_name, skill_details = extract_skill(tds[-1])
                     # elif len(tds) == 15: # take skill + center skill from previous line
-                    defaults = {
-                        'japanese_name': name,
-                    }
+                    defaults = {}
                     if picture is not None:
                         defaults['round_card_url'] = picture
                     if version is not None:
@@ -401,6 +401,8 @@ class Command(BaseCommand):
                     if center_skill_details is not None:
                         defaults['japanese_center_skill_details'] = center_skill_details
                     card, created = models.Card.objects.update_or_create(id=id, defaults=defaults)
+                    card.idol.japanese_name = name
+                    card.save()
                     if picture and (redownload or not card.round_card_image):
                         print 'Download image...',; sys.stdout.flush()
                         card.round_card_image.save(str(card.id) + 'round.jpg', downloadFile(picture))
@@ -526,7 +528,6 @@ class Command(BaseCommand):
             card = models.Card.objects.filter(name=idol).order_by('id')[0]
             idol, created = models.Idol.objects.update_or_create(name=idol, defaults={
                 'year': years[idol],
-                'japanese_name': card.japanese_name,
                 'main': True,
             })
 

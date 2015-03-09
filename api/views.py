@@ -34,10 +34,10 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows cards to be viewed.
     """
-    queryset = models.Card.objects.all()
+    queryset = models.Card.objects.all().select_related('event', 'idol')
     serializer_class = serializers.CardSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
-    search_fields = ('name', 'japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill','japanese_center_skill_details','japanese_collection','promo_item','event__english_name','event__japanese_name')
+    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill','japanese_center_skill_details','japanese_collection','promo_item','event__english_name','event__japanese_name')
     filter_class = CardFilter
     ordering_fields = '__all__'
     ordering = ('id',)
@@ -52,7 +52,7 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'summary')
     filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year')
     ordering_fields = '__all__'
-    ordering = ('name')
+    ordering = ('main', 'name')
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -69,7 +69,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows accounts to be viewed or edited.
     """
-    queryset = models.Account.objects.all()
+    queryset = models.Account.objects.all().select_related('owner', 'center')
     serializer_class = serializers.AccountSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend)
     search_fields = ('owner', 'nickname')
@@ -79,7 +79,7 @@ class OwnedCardViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows owned cards to be viewed or edited.
     """
-    queryset = models.OwnedCard.objects.all()
+    queryset = models.OwnedCard.objects.all().select_related('owner_account', 'card')
     serializer_class = serializers.OwnedCardSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('owner_account', 'card', 'idolized', 'stored')

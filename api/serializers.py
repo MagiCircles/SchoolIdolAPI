@@ -5,7 +5,7 @@ from rest_framework import serializers
 from api import models
 from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse as django_reverse
-
+import urllib
 import datetime
 
 class UserSerializer(serializers.ModelSerializer):
@@ -67,9 +67,32 @@ class EventSerializer(serializers.ModelSerializer):
         model = models.Event
         fields=('japanese_name', 'english_name', 'image', 'beginning', 'end', 'japan_current', 'world_current', 'cards', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'note')
 
+class IdolSerializer(serializers.ModelSerializer):
+    birthday = serializers.SerializerMethodField()
+    website_url = serializers.SerializerMethodField()
+    wiki_url = serializers.SerializerMethodField()
+
+    def get_birthday(self, obj):
+        if obj.birthday:
+            return obj.birthday.strftime('%m-%d')
+        return None
+
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/cards/?name=' + urllib.quote(obj.name)
+
+    def get_wiki_url(self, obj):
+        return 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(obj.name)
+
+    class Meta:
+        model = models.Idol
+        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'cv', 'summary', 'website_url', 'wiki_url', 'official_url')
+
 class CardSerializer(serializers.ModelSerializer):
     japan_only = serializers.SerializerMethodField()
     event = EventSerializer()
+    idol = IdolSerializer()
+    name = serializers.SerializerMethodField() # left for backward compatibility
+    japanese_name = serializers.SerializerMethodField() # left for backward compatibility
     card_image = serializers.SerializerMethodField()
     card_idolized_image = serializers.SerializerMethodField()
     round_card_image = serializers.SerializerMethodField()
@@ -85,6 +108,12 @@ class CardSerializer(serializers.ModelSerializer):
                 return base_url + '/static/circle-' + card.attribute + '.png'
             return base_url + '/static/default-' + card.attribute + '.png'
         return '%s%s' % (base_url, path) if path else ''
+
+    def get_name(self, obj):
+        return obj.idol.name
+
+    def get_japanese_name(self, obj):
+        return obj.idol.japanese_name
 
     def get_japanese_attribute(self, obj):
         return obj.japanese_attribute()
@@ -112,12 +141,7 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'video_story', 'japanese_video_story', 'website_url', 'owned_cards')
-
-class IdolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Idol
-        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'cv', 'official_url', 'summary')
+        fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'video_story', 'japanese_video_story', 'website_url', 'owned_cards')
 
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()

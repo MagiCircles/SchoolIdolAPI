@@ -138,7 +138,7 @@ def cards(request, card=None, ajax=False):
         cards = models.Card.objects.filter()
         if 'search' in request.GET and request.GET['search']:
             cards = cards.filter(Q(name__contains=request.GET['search'])
-                                 | Q(japanese_name__contains=request.GET['search'])
+                                 | Q(idol__japanese_name__contains=request.GET['search'])
                                  | Q(skill__contains=request.GET['search'])
                                  | Q(japanese_skill__contains=request.GET['search'])
                                  | Q(skill_details__contains=request.GET['search'])

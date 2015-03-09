@@ -18,6 +18,7 @@
 	  <img class="idol-img hover" src="{{ idol|standimage:4 }}" alt="{{ idol.name }}">
 	  <br><div class="name">{% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
 	</a>
+	<small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/cards/?name={{ idol.name|urlencode }}#disqus_thread" data-disqus-identifier="{{ idol.name }}"><span class="tiny">{% trans 'Comments' %}</span></a></small>
       </div>
       {% endfor %}
     </div>
@@ -43,6 +44,7 @@
 	       style="display: inline-block; background-image: url('{{ idol.card|imageurl:'card_idolized_image' }}')"></div><br>
 	  {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
 	</a>
+	<small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/cards/?name={{ idol.name|urlencode }}#disqus_thread" data-disqus-identifier="{{ idol.name }}"><span class="tiny">{% trans 'Comments' %}</span></a></small>
       </div>
       {% endfor %}
     </div>

@@ -104,6 +104,19 @@ main {
 .panel-All { .custom-panel(@AllColor); .a-variant(lighten(@AllColor, 10%)) }
 .panel-default { .custom-panel(@DefaultColor); .a-variant(lighten(@DefaultColor, 10%)) }
 
+.panel-nolimit .panel-body {
+    overflow: visible;
+}
+
+.flip {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
 .card {
     .level-buttons {
 	padding-bottom: 5%;
@@ -621,6 +634,22 @@ a.panel {
 	&:hover {
 	    opacity: 0.6;
 	}
+    }
+}
+
+.idol {
+    .side-idol {
+	width: 400%;
+	display: block;
+	&.left {
+	    margin-left: -150%;
+	}
+	&.right {
+	    margin-left: -150%;
+	}
+    }
+    #disqus_thread {
+	overflow: hidden;
     }
 }
 

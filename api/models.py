@@ -41,6 +41,15 @@ def storedChoiceToString(stored):
             return string
     return None
 
+def japanese_attribute(attribute):
+    if attribute == 'Smile':
+        return u'スマイル'
+    elif attribute == 'Pure':
+        return u'ピュア'
+    elif attribute == 'Cool':
+        return u'クール'
+    return u'❤'
+
 class Event(models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
     english_name = models.CharField(max_length=100)
@@ -130,13 +139,7 @@ class Card(models.Model):
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
 
     def japanese_attribute(self):
-        if self.attribute == 'Smile':
-            return u'スマイル'
-        elif self.attribute == 'Pure':
-            return u'ピュア'
-        elif self.attribute == 'Cool':
-            return u'クール'
-        return u'❤'
+        return japanese_attribute(self.attribute)
 
     def is_japan_only(self):
         return ((self.release_date and self.release_date + relativedelta(years=1) - relativedelta(days=2) > datetime.date.today())

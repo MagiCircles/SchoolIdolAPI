@@ -21,6 +21,13 @@ def getattribute(value, arg):
 
 register.filter('getattribute', getattribute)
 
+from api.models import japanese_attribute as jpa
+
+def japanese_attribute(attribute):
+    return jpa(attribute)
+
+register.filter('japanese_attribute', japanese_attribute)
+
 # Then, in template:
 # {% load getattribute %}
 # {{ object|getattribute:dynamic_string_var }}

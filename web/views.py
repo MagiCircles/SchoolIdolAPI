@@ -279,6 +279,8 @@ def cards(request, card=None, ajax=False):
         }
 
     context['total_cards'] = len(cards)
+    if context['total_cards'] > 0:
+        context['idol'] = cards[0].idol
     context['cards'] = enumerate(cards)
     context['max_stats'] = max_stats
     context['show_filter_button'] = False if 'single' in context and context['single'] else True

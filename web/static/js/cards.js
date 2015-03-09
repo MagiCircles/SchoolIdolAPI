@@ -154,4 +154,8 @@ $(document).ready(function() {
     pagination();
     youtubeRatio();
     shareButtons();
+
+    $('.idol #disqus_thread').bind('DOMNodeInserted', function() {
+	$(this).height($('.idol table').height());
+    });
 });

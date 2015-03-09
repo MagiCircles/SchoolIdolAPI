@@ -1,4 +1,4 @@
-    <div class="margin20" style="min-height: 300px" id="disqus_thread"></div>
+    <div class="{% if not nomargin %}margin20{% endif %}" style="min-height: 300px" id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_shortname = 'schoolidol';
       {% if disqus_identifier %}

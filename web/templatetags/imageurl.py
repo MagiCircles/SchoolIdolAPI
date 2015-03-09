@@ -1,5 +1,7 @@
 from django import template
 from django.conf import settings
+import re
+
 register = template.Library()
 
 def imageurl(card, image):
@@ -22,5 +24,13 @@ def eventimageurl(event):
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
     return ''
 
+def standimage(idol, number):
+    if idol is not None:
+        m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
+        member_number = m.group('number')
+        return 'http://www.lovelive-anime.jp/img/member/member' + member_number + '_0'+ str(number) + '.png'
+    return ''
+
 register.filter('imageurl', imageurl)
+register.filter('standimage', standimage)
 register.filter('eventimageurl', eventimageurl)

@@ -12,7 +12,7 @@
       <br>
       <div class="idol panel panel-{{ idol.attribute }}-light panel-nolimit">
 	<div class="panel-heading">
-	  <h1>{{ request_get.name }}</h1>
+	  <h1>{% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</h1>
 	</div>
 	<div class="panel-body">
 	  <div class="row">
@@ -26,7 +26,7 @@
 		<div class="col-lg-6">
 		  <table class="table margin20 margin-novertical">
 		    <tr>
-		      <th>{% trans 'Name' %}</th>
+		      <th>{% trans 'Idol' %}</th>
 		      <td>{{ idol.name }}
 			{% if idol.japanese_name %}
 			<br>{{ idol.japanese_name }}{% endif %}</td>
@@ -44,7 +44,7 @@
 		    {% if idol.birthday %}
 		    <tr>
 		      <th>{% trans 'Birthday' %}</th>
-		      <td>{{ idol.birthday }}</td>
+		      <td>{{ idol.birthday|date:"M d" }}</td>
 		    </tr>
 		    {% endif %}
 		    {% if idol.astrological_sign %}

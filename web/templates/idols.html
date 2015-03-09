@@ -16,7 +16,7 @@
 	<a class="idol" href="/cards/?name={{ idol.name|urlencode }}">
 	  <img class="idol-img" src="{{ idol|standimage:1 }}" alt="{{ idol.name }}">
 	  <img class="idol-img hover" src="{{ idol|standimage:4 }}" alt="{{ idol.name }}">
-	  <br><div class="name">{{ idol.name }}</div>
+	  <br><div class="name">{% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
 	</a>
       </div>
       {% endfor %}
@@ -41,7 +41,7 @@
 	<a class="n" href="/cards/?name={{ idol.name|urlencode }}">
 	  <div class="circled_card_70 {{ idol.card.attribute }} {{ idol.card.rarity }} hover"
 	       style="display: inline-block; background-image: url('{{ idol.card|imageurl:'card_idolized_image' }}')"></div><br>
-	  {{ idol.name }}
+	  {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
 	</a>
       </div>
       {% endfor %}

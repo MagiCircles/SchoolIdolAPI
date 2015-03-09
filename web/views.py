@@ -136,22 +136,23 @@ def cards(request, card=None, ajax=False):
     if card is None:
         # Apply filters
         cards = models.Card.objects.filter()
-        if 'search' in request.GET and request.GET['search']:
-            cards = cards.filter(Q(name__contains=request.GET['search'])
-                                 | Q(idol__japanese_name__contains=request.GET['search'])
-                                 | Q(skill__contains=request.GET['search'])
-                                 | Q(japanese_skill__contains=request.GET['search'])
-                                 | Q(skill_details__contains=request.GET['search'])
-                                 | Q(japanese_skill_details__contains=request.GET['search'])
-                                 | Q(center_skill__contains=request.GET['search'])
-                                 | Q(japanese_center_skill__contains=request.GET['search'])
-                                 | Q(japanese_center_skill_details__contains=request.GET['search'])
-                                 | Q(japanese_collection__contains=request.GET['search'])
-                                 | Q(promo_item__contains=request.GET['search'])
-                                 | Q(event__english_name__contains=request.GET['search'])
-                                 | Q(event__japanese_name__contains=request.GET['search'])
-            )
+        if 'search' in request.GET:
             request_get['search'] = request.GET['search']
+            if request.GET['search']:
+                cards = cards.filter(Q(name__contains=request.GET['search'])
+                                     | Q(idol__japanese_name__contains=request.GET['search'])
+                                     | Q(skill__contains=request.GET['search'])
+                                     | Q(japanese_skill__contains=request.GET['search'])
+                                     | Q(skill_details__contains=request.GET['search'])
+                                     | Q(japanese_skill_details__contains=request.GET['search'])
+                                     | Q(center_skill__contains=request.GET['search'])
+                                     | Q(japanese_center_skill__contains=request.GET['search'])
+                                     | Q(japanese_center_skill_details__contains=request.GET['search'])
+                                     | Q(japanese_collection__contains=request.GET['search'])
+                                     | Q(promo_item__contains=request.GET['search'])
+                                     | Q(event__english_name__contains=request.GET['search'])
+                                     | Q(event__japanese_name__contains=request.GET['search'])
+                )
         if 'name' in request.GET and request.GET['name']:
             cards = cards.filter(name__exact=request.GET['name'])
             request_get['name'] = request.GET['name']
@@ -286,6 +287,8 @@ def cards(request, card=None, ajax=False):
     context['show_filter_button'] = False if 'single' in context and context['single'] else True
     context['request_get'] = request_get
     context['show_filter_bar'] = True if request.GET else False
+    if 'search' not in request_get and 'name' in request_get:
+        context['show_filter_bar'] = False
     context['current'] = 'cards'
     context['addcard_form'] = forms.OwnedCardForm()
     context['page'] = page + 1
@@ -719,6 +722,14 @@ def event(request, event):
     event.all_participations = event.participations.all().order_by('account__language', 'ranking')
     context['event'] = event
     return render(request, 'event.html', context)
+
+def idols(request):
+    context = globalContext(request)
+    context['main_idols'] = models.Idol.objects.filter(main=True).order_by('year', 'name')
+    context['n_idols'] = models.Idol.objects.filter(main=False).order_by('name')
+    for idol in context['n_idols']:
+        idol.card = idol.cards.all().order_by('?')[0]
+    return render(request, 'idols.html', context)
 
 def twitter(request):
     if not request.user.is_authenticated or request.user.is_anonymous():

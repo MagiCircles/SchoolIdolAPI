@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load mod %}
+{% load i18n %}
+{% load imageurl %}
+{% block title %}{% trans 'Idols' %}{% endblock %}
+{% block content %}
+<div id="idols" class="text-center">
+  <div class="row">
+    <div class="col-sm-4">
+      {% for idol in main_idols %}
+      {% if forloop.counter0|mod:3 and forloop.counter0 != 0 %}
+    </div>
+    <div class="col-sm-4">
+      {% endif %}
+      <div class="col-xs-4 {{ idol.attribute }}">
+	<a class="idol" href="/cards/?name={{ idol.name|urlencode }}">
+	  <img class="idol-img" src="{{ idol|standimage:1 }}" alt="{{ idol.name }}">
+	  <img class="idol-img hover" src="{{ idol|standimage:4 }}" alt="{{ idol.name }}">
+	  <br><div class="name">{{ idol.name }}</div>
+	</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br><br><br>
+  <div class="row">
+    <div class="col-sm-4">
+      {% for idol in n_idols %}
+      {% if forloop.counter0|mod:3 and forloop.counter0 != 0 %}
+    </div>
+    <div class="col-sm-4">
+      {% endif %}
+      {% if forloop.counter0|mod:9 and forloop.counter0 != 0 %}
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-sm-4">
+      {% endif %}
+      <div class="col-xs-4 {{ idol.attribute }}">
+	<a class="n" href="/cards/?name={{ idol.name|urlencode }}">
+	  <div class="circled_card_70 {{ idol.card.attribute }} {{ idol.card.rarity }} hover"
+	       style="display: inline-block; background-image: url('{{ idol.card|imageurl:'card_idolized_image' }}')"></div><br>
+	  {{ idol.name }}
+	</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

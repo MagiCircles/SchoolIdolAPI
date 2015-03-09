@@ -75,7 +75,7 @@ select {
 	}
     }
     a.btn {
-	color: #fff;
+	color: #fff!important;
     }
 
     .table-link {
@@ -87,7 +87,7 @@ select {
     .a-variant(@color);
 }
 
-.panel-Smile, .panel-Pure, .panel-Cool, .panel-All, .panel-default {
+.panel-Smile, .panel-Pure, .panel-Cool, .panel-All, .panel-default, .panel-Smile-light, .panel-Pure-light, .panel-Cool-light, .panel-All-light {
     margin: 10px;
     .panel-body {
 	padding: 0;
@@ -102,6 +102,12 @@ main {
 .panel-Pure { .custom-panel(@PureColor); .a-variant(lighten(@PureColor, 10%)) }
 .panel-Cool { .custom-panel(@CoolColor); .a-variant(lighten(@CoolColor, 10%)) }
 .panel-All { .custom-panel(@AllColor); .a-variant(lighten(@AllColor, 10%)) }
+
+.panel-Smile-light { .custom-panel(lighten(@SmileColor, 20%)); .a-variant(lighten(@SmileColor, 10%)) }
+.panel-Pure-light { .custom-panel(lighten(@PureColor, 20%)); .a-variant(lighten(@PureColor, 10%)) }
+.panel-Cool-light { .custom-panel(lighten(@CoolColor, 20%)); .a-variant(lighten(@CoolColor, 10%)) }
+.panel-All-light { .custom-panel(lighten(@AllColor, 20%)); .a-variant(lighten(@AllColor, 10%)) }
+
 .panel-default { .custom-panel(@DefaultColor); .a-variant(lighten(@DefaultColor, 10%)) }
 
 .panel-nolimit .panel-body {
@@ -650,6 +656,35 @@ a.panel {
     }
     #disqus_thread {
 	overflow: hidden;
+    }
+}
+
+#idols {
+    margin-top: 80px;
+    .Smile { .a-variant(@SmileColor) }
+    .Pure { .a-variant(@PureColor) }
+    .Cool { .a-variant(@CoolColor) }
+    .idol {
+	.name {
+	    font-size: 1.2em;
+	    font-weight: bold;
+	}
+	.idol-img {
+	    display: block;
+	    width: 200%;
+	    margin-left: -50%;
+	    &.hover {
+		display: none;
+	    }
+	}
+	&:hover {
+	    .idol-img {
+		display: none;
+		&.hover {
+		    display: block;
+		}
+	    }
+	}
     }
 }
 

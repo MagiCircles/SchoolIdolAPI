@@ -14,7 +14,15 @@ function globalModal(hash) {
 	  '/?interfaceColor=' + getInterfaceColor(), function(data) {
 	      $('#modal .modal-content').html(data);
 	      $('#modal').modal('show');
+	      modalHandler();
 	  });
+}
+
+function modalHandler() {
+    $('[data-toggle=ajaxmodal]').click(function(e) {
+	e.preventDefault();
+	globalModal($(this).attr('href').replace('#', '').replace('Modal', ''));
+    });
 }
 
 $(document).ready(function() {
@@ -23,15 +31,12 @@ $(document).ready(function() {
 	globalModal(hash.replace('Modal', ''));
     }
 
+    modalHandler();
+
     $('.switchLanguage').click(function(e) {
 	e.preventDefault();
 	$('#switchLanguage').find('select').val($(this).attr('data-lang'));
 	$('#switchLanguage').submit();
-    });
-
-    $('[data-toggle=ajaxmodal]').click(function(e) {
-	e.preventDefault();
-	globalModal($(this).attr('href').replace('#', '').replace('Modal', ''));
     });
 });
 

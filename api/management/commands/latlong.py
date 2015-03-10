@@ -24,7 +24,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        map = models.UserPreferences.objects.filter(location_changed__exact=True, location__isnull=False).exclude(location__exact='')
+        reload = 'reload' in args
+
+        map = models.UserPreferences.objects.filter(location__isnull=False).exclude(location__exact='')
+        if not reload:
+            map = map.filter(location_changed__exact=True)
         geolocator = Nominatim()
         for user in map:
             getLatLong(geolocator, user)

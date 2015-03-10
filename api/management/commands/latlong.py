@@ -14,6 +14,8 @@ def getLatLong(geolocator, user):
             user.save()
             print user.user, user.location, user.latitude, user.longitude
         else:
+            user.location_changed = False
+            user.save()
             print user.user, user.location, 'Invalid location'
     except:
         print user.user, user.location, 'Error, ', sys.exc_info()[0], 'retry...'

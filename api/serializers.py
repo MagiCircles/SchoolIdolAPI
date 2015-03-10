@@ -85,6 +85,8 @@ class IdolSerializer(serializers.ModelSerializer):
         return 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(obj.name)
 
     def get_cv(self, obj):
+        if not obj.cv:
+            return None
         return {
             'name': obj.cv,
             'nickname': obj.cv_nickname,

@@ -98,7 +98,18 @@
 		    {% if idol.cv %}
 		    <tr>
 		      <th>{% trans 'CV' %}</th>
-		      <td>{{ idol.cv }}</td>
+		      <td>
+			<div class="pull-right text-right">
+			  <a class="btn btn-{{ idol.attribute }} btn-sm" href="{{ idol.cv_url }}" target="_blank">{% trans 'Profile' %}</a>
+			  {% if idol.cv_instagram %}
+			  {% include 'include/instagram.html' with instagram=idol.cv_instagram %}
+			  {% endif %}
+			  {% if idol.cv_twitter %}
+			  <br>{% include 'include/twitter.html' with twitter=idol.cv_twitter %}
+			  {% endif %}
+			</div>
+			{{ idol.cv }} ({{ idol.cv_nickname }})
+		      </td>
 		    </tr>
 		    {% endif %}
 		    {% if idol.summary %}

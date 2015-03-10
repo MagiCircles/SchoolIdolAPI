@@ -11,24 +11,16 @@
 
   <div id="map-canvas" width="100%" style="height:600px"></div>
 
-  <a class="btn btn-block btn-lg btn-Cool" href="{% if user.is_authenticated %}/edit/{% else %}/create/{% endif %}">
+  <a class="btn btn-block btn-lg btn-Cool" href="{% if user.is_authenticated %}/edit/{% else %}/create/{% endif %}"
+     style="border-top-right-radius: 0; border-top-left-radius: 0;">
     {% if user.is_authenticated and you %}
     {% trans 'Edit your location' %}
     {% else %}
     {% trans 'Add your location' %}
     {% endif %}</a>
 
-  <div class="row">
-    {% for u in map %}
-    {% if forloop.counter0|mod:6 %}
-  </div><br><br><div class="row">
-    {% endif%}
-    <div class="col-md-2">
-      <img src="{{ u.user|gravatar }}" alt="avatar" width="25" height="25"> <a href="/user/{{ u.user.username }}/" target="_blank">{{ u.user.username }}</a><br>
-      <small><a href="http://maps.google.com/?q={{ u.location|urlencode }}" target="_blank">{{ u.location }}</a></small>
-    </div>
-    {% endfor %}
-  </div>
+  {% include 'disqus.html' %}
+
 </div>
 {% endblock %}
 {% block js %}

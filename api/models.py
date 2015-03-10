@@ -5,6 +5,7 @@ from django.contrib import admin
 from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _
 from api.models_languages import LANGUAGE_CHOICES
+from django.core.validators import RegexValidator
 
 import datetime
 
@@ -200,19 +201,20 @@ class EventParticipation(models.Model):
 admin.site.register(EventParticipation)
 
 class UserPreferences(models.Model):
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
     user = models.ForeignKey(User, related_name='preferences')
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
-    description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'))
+    description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
     best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
     location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in.'))
     location_changed = models.BooleanField(default=False)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    twitter = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'))
-    facebook = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'))
-    reddit = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'))
-    line = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'))
-    tumblr = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'))
+    twitter = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
+    facebook = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
+    reddit = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
+    line = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
+    tumblr = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     accept_friend_requests = models.BooleanField(_('Accept friend requests'), default=True)
     private = models.BooleanField(_('Private Profile'), default=False, help_text=_('If your profile is private, people will only see your center.'))
     following = models.ManyToManyField(User, symmetrical=False, related_name='followers')

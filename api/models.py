@@ -201,7 +201,7 @@ admin.site.register(EventParticipation)
 
 class UserPreferences(models.Model):
     user = models.ForeignKey(User, related_name='preferences')
-    color = models.CharField(_('Color'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
+    color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'))
     best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
     location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in.'))

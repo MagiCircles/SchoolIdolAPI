@@ -71,6 +71,7 @@ class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
     wiki_url = serializers.SerializerMethodField()
+    cv = serializers.SerializerMethodField()
 
     def get_birthday(self, obj):
         if obj.birthday:
@@ -82,6 +83,15 @@ class IdolSerializer(serializers.ModelSerializer):
 
     def get_wiki_url(self, obj):
         return 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(obj.name)
+
+    def get_cv(self, obj):
+        return {
+            'name': obj.cv,
+            'nickname': obj.cv_nickname,
+            'url': obj.cv_url,
+            'twitter': obj.cv_twitter,
+            'instagram': obj.cv_instagram,
+        }
 
     class Meta:
         model = models.Idol

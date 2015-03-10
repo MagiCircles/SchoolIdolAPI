@@ -49,10 +49,10 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Idol.objects.all()
     serializer_class = serializers.IdolSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
-    search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'summary')
+    search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'cv_nickname', 'cv_twitter', 'cv_instagram', 'summary')
     filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year')
     ordering_fields = '__all__'
-    ordering = ('main', 'name')
+    ordering = ('-main', 'name')
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """

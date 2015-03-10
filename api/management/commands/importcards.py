@@ -495,6 +495,8 @@ class Command(BaseCommand):
                                     defaults['year'] = content
                                 elif title == 'CV':
                                     defaults['cv'] = content
+                                    if li.a:
+                                        defaults['cv_url'] = li.a.get('href')
                                 else:
                                     print '/!\\ Unknown content', title, content
                     if wikitable is not None:
@@ -512,24 +514,67 @@ class Command(BaseCommand):
                 f.close()
                 print 'Done'
 
-        print "#### Update main idols japanese names and years"
-        years = {
-            'Kousaka Honoka': 'Second',
-            'Nishikino Maki': 'First',
-            'Ayase Eli': 'Third',
-            'Minami Kotori': 'Second',
-            'Hoshizora Rin': 'First',
-            'Koizumi Hanayo': 'First',
-            'Sonoda Umi': 'Second',
-            'Toujou Nozomi': 'Third',
-            'Yazawa Nico': 'Third',
+        print "#### Update raw information"
+        raw_information = {
+            'Kousaka Honoka': {
+                'year': 'Second',
+                'cv_nickname': 'Emitsun',
+                'cv_twitter': 'Nitta_Emi',
+                'cv_instagram': 'Nitta_Emi',
+            },
+            'Nishikino Maki': {
+                'year': 'First',
+                'cv_nickname': 'Pile',
+                'cv_twitter': 'pile_eric',
+                'cv_instagram': 'pile_eric',
+            },
+            'Ayase Eli': {
+                'year': 'Third',
+                'cv_nickname': 'Nanjolno',
+                'cv_twitter': 'nanjolno',
+                'cv_instagram': 'nanjolno',
+            },
+            'Minami Kotori': {
+                'year': 'Second',
+                'cv_nickname': 'Ucchi',
+                'cv_twitter': 'aya_uchida',
+                'cv_instagram': None,
+            },
+            'Hoshizora Rin': {
+                'year': 'First',
+                'cv_nickname': 'Rippi',
+                'cv_twitter': 'rippialoha',
+                'cv_instagram': 'rippialoha',
+            },
+            'Koizumi Hanayo': {
+                'year': 'First',
+                'cv_nickname': 'Shikaco',
+                'cv_twitter': 'shi_ka_co',
+                'cv_instagram': 'shi_ka_co',
+            },
+            'Sonoda Umi': {
+                'year': 'Second',
+                'cv_nickname': 'Mimorin',
+                'cv_twitter': 'mimori_suzuko',
+                'cv_instagram': 'mimori_suzuko',
+            },
+            'Toujou Nozomi': {
+                'year': 'Third',
+                'cv_nickname': 'Kussun',
+                'cv_twitter': 'kusudaaina',
+                'cv_instagram': 'kusudaaina',
+            },
+            'Yazawa Nico': {
+                'year': 'Third',
+                'cv_nickname': 'Soramaru',
+                'cv_twitter': 'tokui_sorangley',
+                'cv_instagram': None,
+            },
         }
-        for idol in years.keys():
+        for idol in raw_information.keys():
             card = models.Card.objects.filter(name=idol).order_by('id')[0]
-            idol, created = models.Idol.objects.update_or_create(name=idol, defaults={
-                'year': years[idol],
-                'main': True,
-            })
+            raw_information[idol]['main'] = True
+            idol, created = models.Idol.objects.update_or_create(name=idol, defaults=raw_information[idol])
 
         print "#### Update cardsinfo.json"
         j = json.dumps({

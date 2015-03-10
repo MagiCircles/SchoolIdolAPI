@@ -95,6 +95,10 @@ class Idol(models.Model):
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     year = models.CharField(max_length=10, blank=True, null=True)
     cv = models.CharField(max_length=100, blank=True, null=True)
+    cv_url = models.CharField(max_length=200, blank=True, null=True)
+    cv_nickname = models.CharField(max_length=20, blank=True, null=True)
+    cv_twitter = models.CharField(max_length=200, blank=True, null=True)
+    cv_instagram = models.CharField(max_length=200, blank=True, null=True)
     official_url = models.CharField(max_length=200, blank=True, null=True)
     summary = models.TextField(null=True, blank=True)
 

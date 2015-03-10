@@ -2,6 +2,7 @@
 {% load mod %}
 {% load i18n %}
 {% load gravatar %}
+{% load imageurl %}
 {% block title %}Map{% endblock %}
 {% block content %}
 <div class="container text-center" id="map">
@@ -33,11 +34,19 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHtAPFTmOCQZrKSjZlIeoZrZYLJjKLupE"></script>
 <script src="/static/js/oms.min.js"></script>
 <script>
+  {% if you %}
+  var center = new google.maps.LatLng({{ you.latitude }}, {{ you.longitude }});
+  var zoom = 2;
+  {% else %}
+  var center = new google.maps.LatLng(30, 0);
+  var zoom = 2;
+  {% endif %}
   var addresses = [
   {% for u in map %}
   {'username': '{{ u.user }}',
   'avatar': '{{ u.user|gravatar }}',
   'location': '{{ u.location }}',
+  'icon': '{{ u.best_girl|chibiimage }}',
   'latlong': new google.maps.LatLng({{ u.latitude }}, {{ u.longitude }}) },
   {% endfor %}
   ];

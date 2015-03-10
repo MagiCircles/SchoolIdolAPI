@@ -31,6 +31,14 @@ def standimage(idol, number):
         return 'http://www.lovelive-anime.jp/img/member/member' + member_number + '_0'+ str(number) + '.png'
     return ''
 
+from api.raw import raw_information
+
+def chibiimage(idol):
+    if idol is None or idol not in raw_information.keys():
+        return '/static/idols/chibi/small_Alpaca.png'
+    return '/static/idols/chibi/small_' + idol.replace(' ', '_') + '.png'
+
 register.filter('imageurl', imageurl)
 register.filter('standimage', standimage)
+register.filter('chibiimage', chibiimage)
 register.filter('eventimageurl', eventimageurl)

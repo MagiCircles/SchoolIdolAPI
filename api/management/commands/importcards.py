@@ -7,6 +7,7 @@ from django.forms.models import model_to_dict
 import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
 from api import models
+from api.raw import raw_information
 from web.forms import getGirls
 import re
 import HTMLParser
@@ -515,62 +516,6 @@ class Command(BaseCommand):
                 print 'Done'
 
         print "#### Update raw information"
-        raw_information = {
-            'Kousaka Honoka': {
-                'year': 'Second',
-                'cv_nickname': 'Emitsun',
-                'cv_twitter': 'Nitta_Emi',
-                'cv_instagram': 'Nitta_Emi',
-            },
-            'Nishikino Maki': {
-                'year': 'First',
-                'cv_nickname': 'Pile',
-                'cv_twitter': 'pile_eric',
-                'cv_instagram': 'pile_eric',
-            },
-            'Ayase Eli': {
-                'year': 'Third',
-                'cv_nickname': 'Nanjolno',
-                'cv_twitter': 'nanjolno',
-                'cv_instagram': 'nanjolno',
-            },
-            'Minami Kotori': {
-                'year': 'Second',
-                'cv_nickname': 'Ucchi',
-                'cv_twitter': 'aya_uchida',
-                'cv_instagram': None,
-            },
-            'Hoshizora Rin': {
-                'year': 'First',
-                'cv_nickname': 'Rippi',
-                'cv_twitter': 'rippialoha',
-                'cv_instagram': 'rippialoha',
-            },
-            'Koizumi Hanayo': {
-                'year': 'First',
-                'cv_nickname': 'Shikaco',
-                'cv_twitter': 'shi_ka_co',
-                'cv_instagram': 'shi_ka_co',
-            },
-            'Sonoda Umi': {
-                'year': 'Second',
-                'cv_nickname': 'Mimorin',
-                'cv_twitter': 'mimori_suzuko',
-                'cv_instagram': 'mimori_suzuko',
-            },
-            'Toujou Nozomi': {
-                'year': 'Third',
-                'cv_nickname': 'Kussun',
-                'cv_twitter': 'kusudaaina',
-                'cv_instagram': 'kusudaaina',
-            },
-            'Yazawa Nico': {
-                'year': 'Third',
-                'cv_nickname': 'Soramaru',
-                'cv_twitter': 'tokui_sorangley',
-                'cv_instagram': None,
-            },
-        }
         for idol in raw_information.keys():
             card = models.Card.objects.filter(name=idol).order_by('id')[0]
             raw_information[idol]['main'] = True

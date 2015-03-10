@@ -742,5 +742,7 @@ def mapview(request):
     context = globalContext(request)
     context['map'] = models.UserPreferences.objects.filter(latitude__isnull=False).order_by('location', 'user__username')
     if request.user.is_authenticated and not request.user.is_anonymous():
-        context['you'] = any(u.user == request.user for u in context['map'])
+        for u in context['map']:
+            if u.user == request.user:
+                context['you'] = u
     return render(request, 'map.html', context)

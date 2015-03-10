@@ -1,9 +1,7 @@
 
-var center = new google.maps.LatLng(30, -40);
-
 function initialize() {
     var googleMapOptions = {
-	zoom: 2,
+	zoom: zoom,
 	center: center
     };
 
@@ -31,6 +29,7 @@ function addMarker(map, address, oms) {
 	position: address.latlong,
 	map: map,
 	title: address.username,
+	icon: new google.maps.MarkerImage(address.icon, null, null, null, new google.maps.Size(45, 45)),
     });
     marker.contentString = contentString;
     oms.addMarker(marker);

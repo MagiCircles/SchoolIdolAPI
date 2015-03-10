@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load mod %}
 {% load i18n %}
+{% load l10n %}
 {% load gravatar %}
 {% load imageurl %}
 {% block title %}Map{% endblock %}
@@ -33,6 +34,7 @@
 {% block js %}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHtAPFTmOCQZrKSjZlIeoZrZYLJjKLupE"></script>
 <script src="/static/js/oms.min.js"></script>
+{% localize off %}
 <script>
   {% if you %}
   var center = new google.maps.LatLng({{ you.latitude }}, {{ you.longitude }});
@@ -51,5 +53,6 @@
   {% endfor %}
   ];
 </script>
+{% endlocalize %}
 <script src="/static/js/map.js"></script>
 {% endblock %}

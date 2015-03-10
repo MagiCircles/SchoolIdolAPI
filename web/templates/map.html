@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load mod %}
+{% load i18n %}
 {% load gravatar %}
 {% block title %}Map{% endblock %}
 {% block content %}
@@ -7,7 +8,14 @@
   <h1 class="margin50">Map <small>{{ map|length }}</small></h1>
 
   <div id="map-canvas" width="100%" style="height:600px"></div>
-  
+
+  <a class="btn btn-block btn-lg btn-Cool" href="{% if user.is_authenticated %}/edit/{% else %}/create/{% endif %}">
+    {% if user.is_authenticated and you %}
+    {% trans 'Edit your location' %}
+    {% else %}
+    {% trans 'Add your location' %}
+    {% endif %}</a>
+
   <div class="row">
     {% for u in map %}
     {% if forloop.counter0|mod:6 %}

@@ -7,25 +7,31 @@ function initialize() {
 	center: center
     };
 
-    map = new google.maps.Map(document.getElementById("map-canvas"), googleMapOptions);
+    var map = new google.maps.Map(document.getElementById("map-canvas"), googleMapOptions);
+    var oms = new OverlappingMarkerSpiderfier(map);
+    var infowindow = new google.maps.InfoWindow();
+    oms.addListener('click', function(marker, event) {
+	infowindow.close();
+	infowindow.setContent(marker.contentString);
+	infowindow.open(map, marker);
+    });
+    oms.addListener('spiderfy', function(markers) {
+	infowindow.close();
+    });
     $.each(addresses, function(idx, address) {
-	addMarker(map, address);
+	addMarker(map, address, oms);
     });
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
-function addMarker(map, address) {
+function addMarker(map, address, oms) {
     var contentString = '<div id="content"><h4 id="firstHeading" class="firstHeading"><a href="/user/' + address.username + '/" target="_blank"><img alt="' + address.username + '" src="' + address.avatar + '" width="50" height="50" style="corner-radius: 10px"><br>' + address.username + '</a></h4><div id="bodyContent"><p>' + address.location + '</p></div></div>';
-    var infowindow = new google.maps.InfoWindow({
-	content: contentString
-    });
     var marker = new google.maps.Marker({
 	position: address.latlong,
 	map: map,
-	title: 'Uluru (Ayers Rock)'
+	title: address.username,
     });
-    google.maps.event.addListener(marker, 'click', function() {
-	infowindow.open(map,marker);
-    });
+    marker.contentString = contentString;
+    oms.addMarker(marker);
 }

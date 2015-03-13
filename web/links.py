@@ -214,13 +214,6 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
-                    'name': '4Chan',
-                    'url': 'http://boards.4chan.org/vg/catalog',
-                    'description': 'Type ctrl+F \'love live\' to get the current thread.',
-                    'type': '',
-                    'language': 'world',
-                },
-                {
                     'name': 'Facebook Group',
                     'url': 'https://www.facebook.com/groups/293090280852174/',
                     'description': 'Mainly casual gamers but very active community.',

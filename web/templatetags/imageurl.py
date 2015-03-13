@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+import os.path
 import re
 
 register = template.Library()
@@ -34,9 +35,11 @@ def standimage(idol, number):
 from api.raw import raw_information
 
 def chibiimage(idol):
-    if idol is None or idol not in raw_information.keys():
-        return '/static/idols/chibi/small_Alpaca.png'
-    return '/static/idols/chibi/small_' + idol.replace(' ', '_') + '.png'
+    if idol is not None:
+        filename = '/static/idols/chibi/small_' + idol.replace(' ', '_') + '.png'
+        if os.path.isfile('web/' + filename):
+            return filename
+    return '/static/idols/chibi/small_Alpaca.png'
 
 register.filter('imageurl', imageurl)
 register.filter('standimage', standimage)

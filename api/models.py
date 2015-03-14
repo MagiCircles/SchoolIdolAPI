@@ -201,7 +201,7 @@ class EventParticipation(models.Model):
 admin.site.register(EventParticipation)
 
 class UserPreferences(models.Model):
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z-_]*$', 'Only alphanumeric and - _ characters are allowed.')
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
     user = models.ForeignKey(User, related_name='preferences')
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 def get_links(current_en, current_jp):
     return [
@@ -277,14 +277,6 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
-                    'name': 'Vote for the BEST GIRL',
-                    'url': '/contest',
-                    'description': 'Vote for your favorite cards on School Idol Contest, the Facemash.',
-                    'size': 'big',
-                    'type': '',
-                    'language': 'world',
-                },
-                {
                     'name': 'Recruitment Simulator',
                     'url': 'http://scfes.mnyk.info/',
                     'type': 'tool',
@@ -319,7 +311,7 @@ def get_links(current_en, current_jp):
             ],
         },
         {
-            'name': 'Play Songs',
+            'name': 'Play Songs & Watch Stories',
             'link': 'songs',
             'idol': 'Nishikino Maki',
             'links': [
@@ -356,84 +348,7 @@ def get_links(current_en, current_jp):
                     'type': 'tutorial',
                     'language': 'world',
                 },
-            ],
-        },
-        {
-            'name': 'Join Events',
-            'link': 'events',
-            'idol': 'Minami Kotori',
-            'links': [
-                {
-                    'name': 'Types of Events & How to Play',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Gameplay#Events',
-                    'type': 'info',
-                    'language': 'world',
-                },
-                {
-                    'name': ('Current' if current_en.is_world_current() else 'Latest') + ' Event English Version',
-                    'description': current_en.english_name,
-                    'url': '/event/' + current_en.japanese_name + '/',
-                    'size': 'big',
-                    'type': 'info',
-                    'language': 'english',
-                },
-                {
-                    'name': ('Current' if current_en.is_japan_current() else 'Latest') + ' Event Japanese Version',
-                    'description': current_jp.japanese_name,
-                    'url': '/event/' + current_jp.japanese_name + '/',
-                    'size': 'big',
-                    'type': 'info',
-                    'language': 'japanese',
-                },
-                {
-                    'name': 'English Event Tracker',
-                    'description': 'Track statistics about the current English event.',
-                    'url': 'https://sites.google.com/site/llsifeneventtracker/',
-                    'type': 'info',
-                    'language': 'english',
-                },
-                {
-                    'name': 'Japanese Event Tracker',
-                    'description': 'Track statistics about the current Japanese event.',
-                    'url': 'http://atsites.jp/llborder/',
-                    'type': 'info',
-                    'language': 'japanese',
-                },
-                {
-                    'name': 'Events Rank Calculator',
-                    'url': 'https://yefta.com/llsif/',
-                    'description': 'A tool to calculate the required loveca and time you will need to get a certain position in the global ranking.',
-                    'size': 'big',
-                    'type': 'tool',
-                    'language': 'world',
-                },
-                {
-                    'name': 'Japanese Events Tier 2 Cutoff Predictor',
-                    'url': 'http://www.usagi.org/doi-bin/llcutoff.pl',
-                    'type': 'info',
-                    'language': 'japanese',
-                },
-                {
-                    'name': 'List of all events',
-                    'url': '/events/',
-                    'size': 'big',
-                    'description': 'Events information + Hall of fame of all scores of the players from the School Idol Tomodachi community.',
-                    'type': 'info',
-                    'language': 'world',
-                },
-                {
-                    'name': 'Event Cards',
-                    'url': '/cards/?is_event=on&ordering=release_date&reverse_order=on',
-                    'type': 'info',
-                    'language': 'world',
-                },
-            ],
-        },
-        {
-            'name': 'Watch Stories',
-            'link': 'stories',
-            'idol': 'Sonoda Umi',
-            'links': [
+               {},
                 {
                     'name': 'Watch all the English Side Stories',
                     'size': 'big',
@@ -524,6 +439,107 @@ def get_links(current_en, current_jp):
                     'type': 'info',
                     'language': 'japanese',
                     'size': 'small',
+                },
+            ],
+        },
+        {
+            'name': 'Join Events',
+            'link': 'events',
+            'idol': 'Minami Kotori',
+            'links': [
+                {
+                    'name': 'Types of Events & How to Play',
+                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Gameplay#Events',
+                    'type': 'info',
+                    'language': 'world',
+                },
+                {
+                    'name': ('Current' if current_en.is_world_current() else 'Latest') + ' Event English Version',
+                    'description': current_en.english_name,
+                    'url': '/event/' + current_en.japanese_name + '/',
+                    'size': 'big',
+                    'type': 'info',
+                    'language': 'english',
+                },
+                {
+                    'name': ('Current' if current_en.is_japan_current() else 'Latest') + ' Event Japanese Version',
+                    'description': current_jp.japanese_name,
+                    'url': '/event/' + current_jp.japanese_name + '/',
+                    'size': 'big',
+                    'type': 'info',
+                    'language': 'japanese',
+                },
+                {
+                    'name': 'English Event Tracker',
+                    'description': 'Track statistics about the current English event.',
+                    'url': 'https://sites.google.com/site/llsifeneventtracker/',
+                    'type': 'info',
+                    'language': 'english',
+                },
+                {
+                    'name': 'Japanese Event Tracker',
+                    'description': 'Track statistics about the current Japanese event.',
+                    'url': 'http://atsites.jp/llborder/',
+                    'type': 'info',
+                    'language': 'japanese',
+                },
+                {
+                    'name': 'Events Rank Calculator',
+                    'url': 'https://yefta.com/llsif/',
+                    'description': 'A tool to calculate the required loveca and time you will need to get a certain position in the global ranking.',
+                    'size': 'big',
+                    'type': 'tool',
+                    'language': 'world',
+                },
+                {
+                    'name': 'Japanese Events Tier 2 Cutoff Predictor',
+                    'url': 'http://www.usagi.org/doi-bin/llcutoff.pl',
+                    'type': 'info',
+                    'language': 'japanese',
+                },
+                {
+                    'name': 'List of all events',
+                    'url': '/events/',
+                    'size': 'big',
+                    'description': 'Events information + Hall of fame of all scores of the players from the School Idol Tomodachi community.',
+                    'type': 'info',
+                    'language': 'world',
+                },
+                {
+                    'name': 'Event Cards',
+                    'url': '/cards/?is_event=on&ordering=release_date&reverse_order=on',
+                    'type': 'info',
+                    'language': 'world',
+                },
+            ],
+        },
+        {
+            'name': 'Fall in love with idols',
+            'link': 'idols',
+            'idol': 'Sonoda Umi',
+            'links': [
+                {
+                    'name': 'All the characters in the game',
+                    'url': '/idols/',
+                    'description': 'Get all the facts about your favorite idols, as well as their cards.',
+                    'size': 'big',
+                    'type': '',
+                    'language': 'world',
+                },
+                {
+                    'name': 'Vote for the BEST GIRL',
+                    'url': '/contest/',
+                    'description': 'Vote for your favorite cards on School Idol Contest, the Facemash.',
+                    'size': 'big',
+                    'type': '',
+                    'language': 'world',
+                },
+                {
+                    'name': 'Personal Idols Ranking Generator',
+                    'url': 'http://kouhi.me/idol/',
+                    'description': 'Check "Love Live!" and press "Music Start!".',
+                    'type': 'tool',
+                    'language': 'world',
                 },
             ],
         },

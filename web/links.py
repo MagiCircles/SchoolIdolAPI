@@ -119,6 +119,27 @@ def get_links(current_en, current_jp):
                 },
                 {},
                 {
+                    'name': 'Japanese Bushimo Love Live! Festival Wiki',
+                    'url': 'http://www59.atwiki.jp/lovelive-sif/',
+                    'type': 'info',
+                    'language': 'japanese',
+                    'size': 'small',
+                },
+                {
+                    'name': 'Japanese Love Live! Festival Gamerch Wiki',
+                    'url': 'http://xn--eck5eb7eb.gamerch.com/',
+                    'type': 'info',
+                    'language': 'japanese',
+                    'size': 'small',
+                },
+                {
+                    'name': 'Chinese MoeGirl Wiki',
+                    'url': 'http://zh.moegirl.org/LoveLive!',
+                    'type': 'info',
+                    'language': 'japanese',
+                    'size': 'small',
+                },
+                {
                     'name': 'Points required to rank up',
                     'url': 'http://www59.atwiki.jp/lovelive-sif/pages/23.html',
                     'type': 'info',
@@ -363,7 +384,6 @@ def get_links(current_en, current_jp):
                     'type': 'info',
                     'language': 'english',
                 },
-                {},
                 {
                     'name': 'Main Story Translation',
                     'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Story',
@@ -371,71 +391,9 @@ def get_links(current_en, current_jp):
                     'language': 'japanese',
                 },
                 {
-                    'name': 'Kousaka Honoka Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Kousaka Honoka#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Sonoda Umi Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Sonoda Umi#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Minami Kotori Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Minami Kotori#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Hoshizora Rin Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Hoshizora Rin#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Nishikino Maki Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Nishikino Maki#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Koizumi Hanayo Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Koizumi Hanayo#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Yazawa Nico Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Yazawa Nico#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Ayase Eli Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Ayase Eli#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Toujou Nozomi Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Toujou Nozomi#Side_Stories',
-                    'type': 'info',
-                    'language': 'japanese',
-                    'size': 'small',
-                },
-                {
-                    'name': 'Other Characters (N) Side Stories Translation',
-                    'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Category:Other_Characters',
+                    'name': 'All Characters Stories Translation',
+                    'url': 'http://decaf.kouhi.me/lovelive/',
+                    'description': 'Go to each characters page from the list on the left.',
                     'type': 'info',
                     'language': 'japanese',
                     'size': 'small',
@@ -515,8 +473,8 @@ def get_links(current_en, current_jp):
         },
         {
             'name': 'Fall in love with idols',
-            'link': 'idols',
-            'idol': 'Sonoda Umi',
+            'link': 'love',
+            'idol': 'Hoshizora Rin',
             'links': [
                 {
                     'name': 'All the characters in the game',
@@ -546,7 +504,7 @@ def get_links(current_en, current_jp):
         {
             'name': 'LoveLive! Franchise',
             'link': 'other',
-            'idol': 'Hoshizora Rin',
+            'idol': 'Sonoda Umi',
             'links': [
                 {
                     'name': 'Official Website',

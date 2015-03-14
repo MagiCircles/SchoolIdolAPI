@@ -29,6 +29,7 @@ $(document).ready(function() {
     });
 
     $('.mainhome').css('min-height', $(window).height() - $('.navbar-Smile').height());
+    $('.home-section').css('min-height', $(window).height());
 
     $('.link-stars-side').hide();
     $(window).scroll(

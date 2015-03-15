@@ -241,17 +241,17 @@ def cards(request, card=None, ajax=False):
             card.embed_japanese_video = card.japanese_video_story.replace('/watch?v=', '/embed/')
         card.percent_stats = {
             'minimum': {
-                'Smile': (card.minimum_statistics_smile / max_stats['Smile']) * 100,
-                'Pure': (card.minimum_statistics_pure / max_stats['Pure']) * 100,
-                'Cool': (card.minimum_statistics_cool / max_stats['Cool']) * 100,
+                'Smile': ((card.minimum_statistics_smile if card.minimum_statistics_smile else 0) / max_stats['Smile']) * 100,
+                'Pure': ((card.minimum_statistics_pure if card.minimum_statistics_pure else 0) / max_stats['Pure']) * 100,
+                'Cool': ((card.minimum_statistics_cool if card.minimum_statistics_cool else 0) / max_stats['Cool']) * 100,
             }, 'non_idolized_maximum': {
-                'Smile': (card.non_idolized_maximum_statistics_smile / max_stats['Smile']) * 100,
-                'Pure': (card.non_idolized_maximum_statistics_pure / max_stats['Pure']) * 100,
-                'Cool': (card.non_idolized_maximum_statistics_cool / max_stats['Cool']) * 100,
+                'Smile': ((card.non_idolized_maximum_statistics_smile if card.non_idolized_maximum_statistics_smile else 0) / max_stats['Smile']) * 100,
+                'Pure': ((card.non_idolized_maximum_statistics_pure if card.non_idolized_maximum_statistics_pure else 0) / max_stats['Pure']) * 100,
+                'Cool': ((card.non_idolized_maximum_statistics_cool if card.non_idolized_maximum_statistics_cool else 0) / max_stats['Cool']) * 100,
             }, 'idolized_maximum': {
-                'Smile': (card.idolized_maximum_statistics_smile / max_stats['Smile']) * 100,
-                'Pure': (card.idolized_maximum_statistics_pure / max_stats['Pure']) * 100,
-                'Cool': (card.idolized_maximum_statistics_cool / max_stats['Cool']) * 100,
+                'Smile': ((card.idolized_maximum_statistics_smile if card.idolized_maximum_statistics_smile else 0) / max_stats['Smile']) * 100,
+                'Pure': ((card.idolized_maximum_statistics_pure if card.idolized_maximum_statistics_pure else 0) / max_stats['Pure']) * 100,
+                'Cool': ((card.idolized_maximum_statistics_cool if card.idolized_maximum_statistics_cool else 0) / max_stats['Cool']) * 100,
             }
         }
         if 'active_account' in context:

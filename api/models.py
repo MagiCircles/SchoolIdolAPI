@@ -103,6 +103,9 @@ class Idol(models.Model):
     official_url = models.CharField(max_length=200, blank=True, null=True)
     summary = models.TextField(null=True, blank=True)
 
+    def __unicode__(self):
+        return self.name
+
 admin.site.register(Idol)
 
 class Card(models.Model):

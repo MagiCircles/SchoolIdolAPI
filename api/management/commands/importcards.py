@@ -451,6 +451,9 @@ class Command(BaseCommand):
             for (idx, (idol, _)) in enumerate(idols):
                 if not idol:
                     continue
+                idol, created = models.Idol.objects.get_or_create(name=idol)
+                if idol.attribute and not redownload:
+                    continue
                 print '  Import Idol', idol, '...',
                 f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(idol))
                 soup = BeautifulSoup(f.read())

@@ -111,14 +111,14 @@ admin.site.register(Idol)
 class Card(models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
     name = models.CharField(max_length=100, blank=True) # duplicate with idol, used only in __unicode__ because otherwise it makes another query everytime
-    idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True)
+    idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     rarity = models.CharField(choices=RARITY_CHOICES, max_length=10)
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
     promo_item = models.CharField(max_length=100, blank=True, null=True)
     release_date = models.DateField(default=datetime.date(2013, 4, 16), null=True, blank=True)
-    event = models.ForeignKey(Event, related_name='cards', blank=True, null=True)
+    event = models.ForeignKey(Event, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
     hp = models.PositiveIntegerField(null=True, default=0, blank=True)
     minimum_statistics_smile = models.PositiveIntegerField(null=True)
@@ -169,7 +169,7 @@ class Account(models.Model):
     transfer_code = models.CharField(_("Transfer Code"), blank=True, max_length=30, help_text=_('It\'s important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.'))
     language = models.CharField(_("Language"), choices=LANGUAGE_CHOICES, default='JP', max_length=10, help_text=_('This is the version of the game you play.'))
     os = models.CharField(_("Operating System"), choices=OS_CHOICES, default='iOs', max_length=10)
-    center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'))
+    center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'), on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(_("Rank"), blank=True, null=True)
 
     def __unicode__(self):

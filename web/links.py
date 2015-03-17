@@ -324,6 +324,13 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': 'Starter Accounts Giveaways with UR on Facebook',
+                    'url': 'https://www.facebook.com/groups/732282656879803/',
+                    'type': '',
+                    'size': 'small',
+                    'language': 'world',
+                },
+                {
                     'name': 'Experience required to level up a card',
                     'url': 'http://www59.atwiki.jp/lovelive-sif/pages/32.html',
                     'type': 'info',

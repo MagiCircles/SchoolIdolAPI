@@ -4,7 +4,7 @@ _School Idol Tomodachi_ is a website that provides a set of resources and inform
 
 - [The Website](http://schoolido.lu/)
 - [API Documentation](https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/LoveLive!-School-Idol-API)
-- [Developer? Contribute!](https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute)
+- [Contributors Guide](https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute#contributors-guide-1)
 - [Credits, Thanks, About](http://schoolido.lu/#aboutModal)
 
 ## Copyright/License

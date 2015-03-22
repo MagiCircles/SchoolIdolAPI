@@ -1,4 +1,4 @@
-![LoveLive! School Idol Tomodachi Logo](http://i.imgur.com/TthCs7p.png)
+![LoveLive! School Idol Tomodachi Logo](http://i.imgur.com/6oHYT4B.png)
 
 _School Idol Tomodachi_ is a website that provides a set of resources and information for _LoveLive! School Idol Festival_ players.
 

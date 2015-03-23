@@ -1,18 +1,22 @@
 {% load i18n %}
 <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title" id="myModalLabel">{% trans 'Contact Us' %}</h4>
+	    <h4 class="modal-title">{% trans 'Contact Us' %}</h4>
 	  </div>
 	  <div class="modal-body">
 	    <p>
 	      {% trans 'Send Email' %}: <a href="mailto:contact@schoolido.lu">contact@schoolido.lu</a>.
 	    </p>
 	    <p>
-	      For suggestions or bug report, we recommend you to use <a href="https://waffle.io/db0company/SchoolIdolAPI">our Tasks manager</a>. Simply <a href="https://waffle.io/db0company/SchoolIdolAPI">create a new issue</a> or reply to an existing one to get updates about it.
+	      {% trans 'You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.' %}
 	    </p>
 	    <p>
-	      You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.
+	      For suggestions or bug reports, we recommend you to:
 	    </p>
+	    <ol>
+	      <li>Browse the upcoming features on <a href="https://waffle.io/schoolidoltomodachi/schoolidolapi">our Tasks manager</a></li>
+	      <li><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/issues/new">Create a new issue</a> with the details about what you would like us to implement</li>
+	    </ol>
 	  </div>
 	  <div class="modal-footer">
 	    <a class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" href="mailto:contact@schoolido.lu">{% trans 'Send Email' %}</a>

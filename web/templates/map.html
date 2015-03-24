@@ -37,8 +37,8 @@
   {% endif %}
   var addresses = [
   {% for u in map %}
-  {'username': '{{ u.user }}',
-  'avatar': '{{ u.user|gravatar }}',
+  {'username': '{{ u.user.username }}',
+  'avatar': '{{ u.user|gravatarpreferences:u }}',
   'location': '{{ u.location }}',
   'icon': '{{ u.best_girl|chibiimage }}',
   'latlong': new google.maps.LatLng({{ u.latitude }}, {{ u.longitude }}) },

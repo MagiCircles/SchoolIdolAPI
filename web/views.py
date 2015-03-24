@@ -49,9 +49,8 @@ def globalContext(request):
         context['active_account'] = active_account
     return context
 
-def getUserAvatar(user, size):
+def getUserPreferencesAvatar(user, preferences, size):
     default = 'http://schoolido.lu/static/kotori.jpg'
-    preferences, created = user.preferences.get_or_create()
     if preferences.twitter:
         default = 'http://avatars.io/twitter/' + preferences.twitter + '?size=large'
     elif preferences.facebook:
@@ -59,6 +58,10 @@ def getUserAvatar(user, size):
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
+
+def getUserAvatar(user, size):
+    preferences, created = user.preferences.get_or_create()
+    return getUserPreferencesAvatar(user, preferences, size)
 
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
     models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard, eventparticipation=eventparticipation)
@@ -335,7 +338,7 @@ def profile(request, username):
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
     context['current'] = 'profile'
-    context['avatar'] = getUserAvatar(user, 200)
+    context['avatar'] = getUserPreferencesAvatar(user, context['preferences'], 200)
     context['following'] = isFollowing(user, context)
     context['total_following'] = context['preferences'].following.count()
     context['total_followers'] = user.followers.count()
@@ -452,7 +455,7 @@ def isFollowing(user, context): # must have globalContext
 def _ajaxfollowcontext(follow):
     for user in follow:
         user.prefs, created = user.preferences.get_or_create()
-        user.avatar = getUserAvatar(user, 100)
+        user.avatar = getUserPreferencesAvatar(user, user.prefs, 100)
     return { 'follow': follow }
 
 def ajaxfollowers(request, username):
@@ -656,9 +659,9 @@ def users(request, ajax=False):
     context['total_results'] = users.count()
     users = users[(page * page_size):((page * page_size) + page_size)]
     for user in users:
-        user.avatar = getUserAvatar(user, 100)
         preferences, created = user.preferences.get_or_create()
         user.prefs = preferences
+        user.avatar = getUserPreferencesAvatar(user, user.prefs, 100)
         user.accounts = user.accounts_set.all().order_by('-rank')
     context['total_users'] = len(users)
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
@@ -740,9 +743,7 @@ def twitter(request):
 
 def mapview(request):
     context = globalContext(request)
-    context['map'] = models.UserPreferences.objects.filter(latitude__isnull=False).order_by('location', 'user__username')
+    context['map'] = models.UserPreferences.objects.filter(latitude__isnull=False).select_related('user')
     if request.user.is_authenticated and not request.user.is_anonymous():
-        for u in context['map']:
-            if u.user == request.user:
-                context['you'] = u
+        context['you'] = context['session_preferences']
     return render(request, 'map.html', context)

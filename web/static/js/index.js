@@ -35,18 +35,40 @@ $(document).ready(function() {
     $(window).scroll(
 	function () {
 	    if (($(window).scrollTop() + $(window).height())
-		>= $("#home").height() + $('.bg-Rainbow-1').height() + $('.navbar-Smile').height()) {
+		>= $("#home").height() + $('.bg-Rainbow-1').height() + $('.navbar-Smile').height()
+		&& ($(window).scrollTop() + $(window).height())
+		<= $("#home").height() + $('.navbar-Smile').height() + $('#links').height() + 100) {
 		$('.link-stars-side').show();
 	    } else {
 		$('.link-stars-side').hide();
 	    }
-	    if ($('#activities').html() == ''
+	    if ($('#activities .activities').html() == ''
 		&& ($(window).scrollTop() + $(window).height())
-		>= $("#home").height() + $('.navbar-Smile').height() - $('.social-section').height()) {
-		$('#activities').text('Loading...');
+		>= $("#home").height() + $('.navbar-Smile').height() + $('#links').height()) {
+		$('#activities .activities').text('Loading...');
 		$.get('/ajax/activities/', function(data) {
-		    $('#activities').html(data);
-		    loadMoreActivities($('#activities'));
+		    $('#activities .activities').html(data);
+		    loadMoreActivities($('#activities .activities'));
+		});
+		if ($('#myactivities').length > 0) {
+		    $('#myactivities .activities').text('Loading...');
+		    $.get('/ajax/feed/', function(data) {
+			$('#myactivities .activities').html(data);
+			loadMoreActivities($('#myactivities .activities'), undefined, true);
+		    });
+		}
+	    }
+	    if (($(window).scrollTop() + $(window).height())
+		>= $(".mainhome").height() - $('.mainhome .events').height() + $('.navbar-Smile').height() && !$('.mainhome .events').hasClass('loaded')) {
+		$('.mainhome .events').addClass('loaded');
+		$.getJSON('http://schoolido.lu/contest/json/current', function(data) {
+		    if (data['current'] == true) {
+			var event = $('.mainhome .events .event').first();
+			event.css('background-image', 'url(\'/static/currentcontest.png\')');
+			event.find('span').text(data['name']);
+			event.find('small').text(data['begin'] + ' ' + data['end']);
+			event.attr('href', '/contest/contest');
+		    }
 		});
 	    }
 	});

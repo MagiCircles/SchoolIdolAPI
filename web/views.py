@@ -71,17 +71,16 @@ def index(request):
     context['hide_back_button'] = True
 
     # Get current events
-    current_jp = models.Event.objects.order_by('-beginning')[0]
-    current_en = models.Event.objects.filter(beginning__lte=(datetime.date.today() - relativedelta(years=1))).order_by('-beginning')[0]
-    context['links'] = links.get_links(current_en, current_jp)
+    context['current_jp'] = models.Event.objects.order_by('-beginning')[0]
+    context['current_jp'].is_current = context['current_jp'].is_japan_current()
+    context['current_en'] = models.Event.objects.filter(beginning__lte=(datetime.date.today() - relativedelta(years=1))).order_by('-beginning')[0]
+    context['current_en'].is_current = context['current_en'].is_world_current()
+
+    context['links'] = links.get_links(context['current_en'], context['current_jp'])
     context['links']
     for link in context['links']:
         link['card'] = models.Card.objects.filter(name=link['idol']).filter(Q(rarity='SR') | Q(rarity='UR')).order_by('?')[0]
         link['card'].idolized = bool(random.getrandbits(1)) if link['card'].card_url else 1
-    context['links1'] = enumerate(context['links'])
-    context['links2'] = enumerate(context['links'])
-    context['links3'] = enumerate(context['links'])
-    context['links'] = enumerate(context['links'])
     return render(request, 'index.html', context)
 
 def create(request):

@@ -104,8 +104,7 @@ msgstr "等級"
 
 #: api/models.py:183 web/templates/cards.html:112
 msgid "Stored"
-msgstr "儲存\n"
-""
+msgstr "儲存"
 
 #: api/models.py:184 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:8

@@ -24,7 +24,7 @@
 </div>
 {% endif %}
 
-<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:4 }}.jpg')">
+<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:6 }}.jpg')">
   <div class="mainhome">
     <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
     {% if LANGUAGE_CODE == 'ja' %}
@@ -98,10 +98,13 @@
       </div>
       <div class="events">
 	<div class="row">
-	  <div class="col-md-{% if current_en.is_current and current_jp.is_current %}4{% else %}6{% endif %}">
+	  {% if not current_en.is_current and not current_jp.is_current %}
+	  <div class="col-md-4"></div>
+	  {% endif %}
+	  <div class="col-md-{% if current_en.is_current and current_jp.is_current %}4{% else %}{% if not current_en.is_current and not current_jp.is_current %}4{% else %}6{% endif %}{% endif %}">
 	    <a href="/contest/" class="event" style="background-image: url('/static/currentcontest_no.png'); background-size: 120%;">
-	      <span>{% trans 'Vote for the best idol' %}</span>
-	      <small class="text-muted">Global Contest</small>
+	      <span class="hidden">{% trans 'Vote for the best idol' %}</span>
+	      <small class="hidden text-muted">Global Contest</small>
 	    </a>
 	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Contest' %}</h3>
 	  </div>

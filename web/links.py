@@ -146,6 +146,13 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                     'size': 'small',
                 },
+                {
+                    'name': 'Edit your "about me" section in the game',
+                    'url': 'https://yefta.com/llsif/proedit.html',
+                    'type': 'tool',
+                    'language': 'world',
+                    'size': 'small',
+                },
             ],
         },
         {

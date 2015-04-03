@@ -65,7 +65,7 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Event
-        fields=('japanese_name', 'english_name', 'image', 'beginning', 'end', 'japan_current', 'world_current', 'cards', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'note')
+        fields=('japanese_name', 'romaji_name', 'english_name', 'image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'cards', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note')
 
 class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()

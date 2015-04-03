@@ -53,13 +53,20 @@ def japanese_attribute(attribute):
 
 class Event(models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
-    english_name = models.CharField(max_length=100)
+    romaji_name = models.CharField(max_length=100, blank=True, null=True)
+    english_name = models.CharField(max_length=100, blank=True, null=True)
     beginning = models.DateField(blank=True, null=True)
     end = models.DateField(blank=True, null=True)
-    japanese_t1_points = models.PositiveIntegerField(null=True)
-    japanese_t1_rank = models.PositiveIntegerField(null=True)
-    japanese_t2_points = models.PositiveIntegerField(null=True)
-    japanese_t2_rank = models.PositiveIntegerField(null=True)
+    english_beginning = models.DateTimeField(blank=True, null=True)
+    english_end = models.DateTimeField(blank=True, null=True)
+    english_t1_points = models.PositiveIntegerField(null=True, blank=True)
+    english_t1_rank = models.PositiveIntegerField(null=True, blank=True)
+    english_t2_points = models.PositiveIntegerField(null=True, blank=True)
+    english_t2_rank = models.PositiveIntegerField(null=True, blank=True)
+    japanese_t1_points = models.PositiveIntegerField(null=True, blank=True)
+    japanese_t1_rank = models.PositiveIntegerField(null=True, blank=True)
+    japanese_t2_points = models.PositiveIntegerField(null=True, blank=True)
+    japanese_t2_rank = models.PositiveIntegerField(null=True, blank=True)
     note = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to='web/static/events/', null=True, blank=True)
 
@@ -74,6 +81,11 @@ class Event(models.Model):
                 and self.end is not None
                 and datetime.date.today() > (self.beginning + relativedelta(years=1))
                 and datetime.date.today() < (self.end + relativedelta(years=1)))
+
+    def did_happen_world(self):
+        return (self.beginning is not None
+                and self.end is not None
+                and datetime.date.today() > (self.beginning + relativedelta(years=1)))
 
     def __unicode__(self):
         return self.japanese_name

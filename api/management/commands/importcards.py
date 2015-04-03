@@ -14,6 +14,7 @@ import HTMLParser
 import unicodedata
 import sys
 import datetime
+import pytz
 import time
 import csv
 import json
@@ -185,7 +186,7 @@ class Command(BaseCommand):
                                 event_jp = event_name.split('|')[0]
                                 event_en = event_name.split('|')[-1]
                                 event, created = models.Event.objects.get_or_create(japanese_name=event_jp, defaults={
-                                    'english_name': event_en,
+                                    'romaji_name': event_en,
                                 })
 
                 defaults = {
@@ -278,6 +279,52 @@ class Command(BaseCommand):
                         f_event.close()
                     except:
                         print "No page found"
+        f.close()
+
+        print '### Import EN events T1/T2 cutoffs from decaf wiki'
+        if local:
+            f = open('eventsEN.html', 'r')
+        else:
+            f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info&action=edit')
+
+        for line in f.readlines():
+            line = h.unescape(line)
+            data = str(line).split('||')
+            if len(data) >= 5 and len(data) <= 8:
+                dates = data[0].replace('|', '').split(' - ')
+                beginning = pytz.utc.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(dates[0]), '%Y/%m/%d %I%p'))))
+                end = pytz.utc.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(str(beginning.year) + '/' + clean(dates[1]), '%Y/%m/%d %I%p'))))
+                names = data[1].replace('[[', '').replace(']]', '').replace('μs', 'μ\'s').split('|')
+                japanese_name = clean(names[-2])
+                english_name = clean(names[-1])
+                t1_points = optInt(clean(data[3]))
+                i = 4
+                if 'rowspan' in data[i] or len(data) == 7 or len(data) == 8:
+                    t1_new_rank = optInt(clean(data[i].split('|')[-1]))
+                    if t1_new_rank: t1_rank = t1_new_rank
+                    i = i + 1
+                t2_points = optInt(data[i])
+                i = i + 1
+                if len(data) > i and ('rowspan' in data[i] or len(data) == 7 or len(data) == 8):
+                    t2_new_rank = optInt(clean(data[i].split('|')[-1]))
+                    if t2_new_rank: t2_rank = t2_new_rank
+                    i = i + 1
+                note = None
+                if len(data) > i:
+                    note = optString(clean(data[i].split('|')[-1]))
+                print 'Import event ', english_name, '...',; sys.stdout.flush()
+                defaults = {
+                    'english_name': english_name,
+                    'english_beginning': beginning,
+                    'english_end': end,
+                    'english_t1_points': t1_points,
+                    'english_t1_rank': (None if not t1_points else t1_rank),
+                    'english_t2_points': t2_points,
+                    'english_t2_rank': t2_rank,
+                }
+                event, created = models.Event.objects.update_or_create(japanese_name=japanese_name, defaults=defaults)
+
+                print 'Done'
         f.close()
 
         print '### Import video stories'

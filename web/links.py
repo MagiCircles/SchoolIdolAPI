@@ -257,6 +257,12 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': 'Otonokizaka Forum',
+                    'url': 'http://otonokizaka.org/',
+                    'type': '',
+                    'language': 'world',
+                },
+                {
                     'name': 'Crunchyroll Forum',
                     'url': 'http://www.crunchyroll.com/forumtopic-855485/love-live-school-idol-festival-app-game?pg=0',
                     'type': '',
@@ -574,12 +580,6 @@ def get_links(current_en, current_jp):
                     'name': 'Love Live music on videos',
                     'description': 'by the Reddit /r/LoveLive community',
                     'url': 'https://vimeo.com/lovelivereddit',
-                    'type': 'info',
-                    'language': 'world',
-                },
-                {
-                    'name': 'Download μ\'s music torrents',
-                    'url': 'http://www.nyaa.se/?page=search&cats=3_0&filter=0&term=love+live',
                     'type': 'info',
                     'language': 'world',
                 },

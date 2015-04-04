@@ -36,6 +36,16 @@ STORED_CHOICES = (
 )
 STORED_DICT = dict(STORED_CHOICES)
 
+VERIFIED_CHOICES = (
+    (0, ''),
+    (1, _('Silver Verification (with screenshots)')),
+    (2, _('Gold Verification (with transfer code)')),
+)
+VERIFIED_DICT = dict(VERIFIED_CHOICES)
+
+def verifiedToString(val):
+    return VERIFIED_DICT[val]
+
 def storedChoiceToString(stored):
     for key, string in STORED_CHOICES:
         if stored == key:
@@ -183,6 +193,7 @@ class Account(models.Model):
     os = models.CharField(_("Operating System"), choices=OS_CHOICES, default='iOs', max_length=10)
     center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'), on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(_("Rank"), blank=True, null=True)
+    verified = models.PositiveIntegerField(default=0, choices=VERIFIED_CHOICES)
 
     def __unicode__(self):
         return (self.owner.username if self.nickname == '' else self.nickname) + ' ' + self.language

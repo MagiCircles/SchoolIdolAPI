@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from dateutil.relativedelta import relativedelta
+from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models
 from web import forms, links
@@ -605,10 +606,15 @@ def editaccount(request, account):
                 old_rank = owned_account.rank
                 form = forms.FullAccountForm(request.POST, instance=owned_account)
                 if form.is_valid():
-                    account = form.save()
-                    if old_rank < account.rank:
-                        pushActivity(account, "Rank Up", rank=account.rank)
-                    return redirect('/user/' + request.user.username)
+                    account = form.save(commit=False)
+                    if account.rank >= 200 and account.verified <= 0:
+                        errors = form._errors.setdefault("rank", ErrorList())
+                        errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
+                    else:
+                        account.save()
+                        if old_rank < account.rank:
+                            pushActivity(account, "Rank Up", rank=account.rank)
+                        return redirect('/user/' + request.user.username)
             form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id')
             context['form'] = form
             context['current'] = 'editaccount'

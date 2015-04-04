@@ -11,6 +11,7 @@
 {% block content %}
 {% load imageurl %}
 {% load padzeros %}
+{% load choicesToString %}
 <div id="fb-root"></div>
 <div class="container">
   <br><br>
@@ -194,6 +195,22 @@
 		<th>{% trans 'Rank' %}</th>
 		<td><h3>{{ account.rank }}</h3></td>
 	      </tr>
+	      {% if account.verified %}
+	      <tr>
+		<th>{% trans 'Verified' %}</th>
+		<td><h3><span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span> <small>{{ account.verified|verifiedToString }}</small></h3>
+		  {% if not is_me and user.is_authenticated %}
+		  <small><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts" target="_blank">{% trans 'Get verified' %}</a></small>
+		  {% endif %}
+		</td>
+	      </tr>
+	      {% elif is_me %}
+	      <tr>
+		<th>{% trans 'Verified' %}</th>
+		<td><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts" target="_blank">{% trans 'Get verified' %}</a>
+		</td>
+	      </tr>
+	      {% endif %}
 	    </table>
 	  </div>
 	  {% if preferences.private %}

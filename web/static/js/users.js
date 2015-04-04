@@ -8,6 +8,10 @@ function loadMoreUsers() {
     });
 }
 
+$(function () {
+    $('[data-toggle="popover"]').popover();
+})
+
 $(document).ready(function() {
     $(window).scroll(
 	function () {

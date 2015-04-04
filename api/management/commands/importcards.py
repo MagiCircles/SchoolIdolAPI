@@ -185,7 +185,7 @@ class Command(BaseCommand):
                                 event_name = soupspan.text.split(' event prize')[0].replace(']]', '').replace('[[', '')
                                 event_jp = event_name.split('|')[0]
                                 event_en = event_name.split('|')[-1]
-                                event, created = models.Event.objects.get_or_create(japanese_name=event_jp, defaults={
+                                event, created = models.Event.objects.update_or_create(japanese_name=event_jp, defaults={
                                     'romaji_name': event_en,
                                 })
 

@@ -1,0 +1,62 @@
+{% load languageToString %}
+{% load i18n %}
+{% load getattribute %}
+{% load gravatar %}
+{% load events %}
+      {% for participation in participations %}
+      {% ifchanged participation.account.language %}
+      {% if forloop.counter0 != 0 %}
+      </table>
+      {% endif %}
+      <table class="table text-right" id="ranking{{ participation.account.language }}">
+	{% with participation.account.language|languageToString as lang %}
+	<caption class="text-center">{% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}</caption>
+	{% endwith %}
+	{% endifchanged %}
+	{% with participation|tier:event as tier %}
+	<tr class="ranking-line {{ tier }}">
+	  <td width="17">
+	    <i class="flaticon-star"></i>
+	    <span class="tier">{{ tier }}</span>
+	  </td>
+	  <td class="text-left"><a href="/user/{{ participation.account.owner.username }}/#{{ participation.account.pk }}">
+	      <img src="{{ participation.account.owner|gravatar:20 }}" alt="avatar" width="20">
+	      {{ participation.account.nickname }}</a></td>
+	  {% if with_song %}
+	  <td class="text-right">{% if participation.song_ranking %}<small class="text-grey">{% trans 'Song Ranking' %} # {{ participation.song_ranking }}{% endif %} </small></td>
+	  {% endif %}
+	  <td class="text-right">{% if participation.points %}{{ participation.points }} {% trans 'Points' %}{% endif %}</td>
+	  <td class="text-right">{% if participation.ranking %}<strong># {{ participation.ranking }}</strong>{% endif %}</td>
+	  {% if participation.account.owner == user %}
+	  <td width="17">
+	    <a href="#edit{{ participation.id }}" class="event-edit">
+	      <i class="flaticon-edit"></i>
+	    </a>
+
+	    <span id="edit{{ participation.id }}title" class="hidden">
+	      {% with participation.account.language|languageToString as lang %}
+	      {% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}
+	      {% endwith %}
+	    </span>
+	    <div id="edit{{ participation.id }}" class="hidden">
+	      <form method="post" class="noform jumbotron padding20" style="background: white;">
+		{% csrf_token %}
+		<input type="hidden" name="id" value="{{ participation.id }}">
+		{% include "bootstrap_form_horizontal.html" with form=edit_forms|getattribute:participation.id wrap=0 %}
+		<br><br>
+		<div class="text-right">
+		  <input type="submit" class="btn btn-danger" name="deleteParticipation" value="{% trans 'Delete' %}">
+		  <input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
+			 value="{% trans 'Apply Changes' %}" />
+		</div>
+	      </form>
+	    </div>
+
+	  </td>
+	  {% else %}
+	  <td></td>
+	  {% endif %}
+	</tr>
+	{% endwith %}
+	{% endfor %}
+      </table>

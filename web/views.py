@@ -29,7 +29,7 @@ def globalContext(request):
         'interfaceColor': 'default',
         'debug': settings.DEBUG,
     }
-    if request.user.is_authenticated and not request.user.is_anonymous():
+    if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = request.user.accounts_set.all().select_related('center')
         session_preferences = request.session.get('preferences')
         if not session_preferences:
@@ -38,23 +38,32 @@ def globalContext(request):
             request.session['preferences']['following'] = [f.username for f in preferences.following.all()]
         context['session_preferences'] = request.session['preferences']
         context['interfaceColor'] = context['session_preferences']['color']
-    active_account_id = request.session.get('active_account')
-    if active_account_id:
-        for account in context['accounts']:
-            if account.pk == active_account_id:
-                context['active_account'] = account
-    if not 'active_account' in context and 'accounts' in context and context['accounts']:
-        active_account = context['accounts'][0]
-        request.session['active_account'] = active_account
-        context['active_account'] = active_account
     return context
 
+def findAccount(id, accounts):
+    try:
+        id = int(id)
+    except:
+        return None
+    for account in accounts:
+        if account.id == id:
+            return account
+    return None
+
+def hasJP(accounts):
+    for account in accounts:
+        if account.language == 'JP':
+            return True
+    return False
+
 def getUserPreferencesAvatar(user, preferences, size):
+    if not isinstance(preferences, dict):
+        preferences = model_to_dict(preferences)
     default = 'http://schoolido.lu/static/kotori.jpg'
-    if preferences.twitter:
-        default = 'http://avatars.io/twitter/' + preferences.twitter + '?size=large'
-    elif preferences.facebook:
-        default = 'http://avatars.io/facebook/' + preferences.facebook + '?size=large'
+    if preferences['twitter']:
+        default = 'http://avatars.io/twitter/' + preferences['twitter'] + '?size=large'
+    elif preferences['facebook']:
+        default = 'http://avatars.io/facebook/' + preferences['facebook'] + '?size=large'
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
@@ -84,7 +93,7 @@ def index(request):
     return render(request, 'index.html', context)
 
 def create(request):
-    if request.user.is_authenticated and not request.user.is_anonymous():
+    if request.user.is_authenticated() and not request.user.is_anonymous():
         raise PermissionDenied()
     if request.method == "POST":
         form = forms.UserForm(request.POST)
@@ -106,16 +115,6 @@ def setaccountonlogin(request):
         account = next(iter(context['accounts']))
     except StopIteration:
         return redirect('addaccount')
-    request.session['active_account'] = account.pk
-    return redirect('cards')
-
-def switchaccount(request, account):
-    context = globalContext(request)
-    account_id = int(account)
-    for account in context['accounts']:
-        if account.pk == account_id:
-            request.session['active_account'] = account.pk
-            break
     return redirect('cards')
 
 def cards(request, card=None, ajax=False):
@@ -179,37 +178,41 @@ def cards(request, card=None, ajax=False):
         if 'is_event' in request.GET and request.GET['is_event']:
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = request.GET['is_event']
-        if 'active_account' in context and 'max_level' in request.GET and request.GET['max_level'] == '1':
-            cards = cards.filter(ownedcards__owner_account=context['active_account'],
-                                 ownedcards__max_level=True)
-            request_get['max_level'] = '1'
-        elif 'active_account' in context and 'max_level' in request.GET and request.GET['max_level'] == '-1':
-            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], max_level=True).values('card'))
-            request_get['max_level'] = '-1'
-        if 'active_account' in context and 'max_bond' in request.GET and request.GET['max_bond'] == '1':
-            cards = cards.filter(ownedcards__owner_account=context['active_account'],
-                                 ownedcards__max_bond=True)
-            request_get['max_bond'] = '1'
-        elif 'active_account' in context and 'max_bond' in request.GET and request.GET['max_bond'] == '-1':
-            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], max_bond=True).values('card'))
-            request_get['max_bond'] = '-1'
-        if 'active_account' in context and 'idolized' in request.GET and request.GET['idolized'] == '1':
-            cards = cards.filter(ownedcards__owner_account=context['active_account'],
-                                 ownedcards__idolized=True).exclude(ownedcards__stored='Favorite')
-            request_get['idolized'] = '1'
-        elif 'active_account' in context and 'idolized' in request.GET and request.GET['idolized'] == '-1':
-            cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=context['active_account'], idolized=True).exclude(stored='Favorite').values('card'))
-            request_get['idolized'] = '-1'
+        if 'account' in request.GET and request.GET['account']:
+            account = findAccount(request.GET['account'], context['accounts'])
+            if account:
+                request_get['account'] = account.id
+                if 'max_level' in request.GET and request.GET['max_level'] == '1':
+                    cards = cards.filter(ownedcards__owner_account=account,
+                                         ownedcards__max_level=True)
+                    request_get['max_level'] = '1'
+                elif 'max_level' in request.GET and request.GET['max_level'] == '-1':
+                    cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, max_level=True).values('card'))
+                    request_get['max_level'] = '-1'
+                if 'max_bond' in request.GET and request.GET['max_bond'] == '1':
+                    cards = cards.filter(ownedcards__owner_account=account,
+                                         ownedcards__max_bond=True)
+                    request_get['max_bond'] = '1'
+                elif 'max_bond' in request.GET and request.GET['max_bond'] == '-1':
+                    cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, max_bond=True).values('card'))
+                    request_get['max_bond'] = '-1'
+                if 'idolized' in request.GET and request.GET['idolized'] == '1':
+                    cards = cards.filter(ownedcards__owner_account=account,
+                                         ownedcards__idolized=True).exclude(ownedcards__stored='Favorite')
+                    request_get['idolized'] = '1'
+                elif 'idolized' in request.GET and request.GET['idolized'] == '-1':
+                    cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, idolized=True).exclude(stored='Favorite').values('card'))
+                    request_get['idolized'] = '-1'
 
-        if 'active_account' in context and 'stored' in request.GET and request.GET['stored']:
-            if request.GET['stored'] == 'Album':
-                cards = cards.filter(ownedcards__owner_account=context['active_account']).filter(Q(ownedcards__stored='Deck') | Q(ownedcards__stored='Album'))
-            else:
-                cards = cards.filter(ownedcards__owner_account=context['active_account'], ownedcards__stored=request.GET['stored'])
-            cards = cards.distinct()
-            request_get['stored'] = request.GET['stored']
+                if 'stored' in request.GET and request.GET['stored']:
+                    if request.GET['stored'] == 'Album':
+                        cards = cards.filter(ownedcards__owner_account=account).filter(Q(ownedcards__stored='Deck') | Q(ownedcards__stored='Album'))
+                    else:
+                        cards = cards.filter(ownedcards__owner_account=account, ownedcards__stored=request.GET['stored'])
+                    cards = cards.distinct()
+                    request_get['stored'] = request.GET['stored']
 
-        if ('active_account' in context and context['active_account'].language != 'JP'
+        if ('accounts' in context and not hasJP(context['accounts'])
             and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
             cards = cards.filter(Q(release_date__isnull=True) | Q(release_date__lte=(datetime.date.today() - relativedelta(years=1) + relativedelta(days=2)))).exclude(is_promo__exact=True, video_story__isnull=True).exclude(is_special__exact=True, id__gte=379)
             request_get['is_world'] = True
@@ -256,8 +259,8 @@ def cards(request, card=None, ajax=False):
                 'Cool': ((card.idolized_maximum_statistics_cool if card.idolized_maximum_statistics_cool else 0) / max_stats['Cool']) * 100,
             }
         }
-        if 'active_account' in context:
-            card.owned_cards = card.get_owned_cards_for_account(context['active_account'])
+        if request.user.is_authenticated() and not request.user.is_anonymous():
+            card.owned_cards = card.ownedcards.filter(owner_account__owner=request.user).order_by('owner_account__language')
         else:
             card.owned_cards = []
 
@@ -288,11 +291,13 @@ def cards(request, card=None, ajax=False):
     context['max_stats'] = max_stats
     context['show_filter_button'] = False if 'single' in context and context['single'] else True
     context['request_get'] = request_get
-    context['show_filter_bar'] = True if request.GET else False
+    context['show_filter_bar'] = context['show_filter_button']
+    context['show_total_results'] = 'search' in request_get
     if 'search' not in request_get and 'name' in request_get:
         context['show_filter_bar'] = False
     context['current'] = 'cards'
-    context['addcard_form'] = forms.OwnedCardForm()
+    if request.user.is_authenticated() and not request.user.is_anonymous():
+        context['addcard_form'] = forms.getOwnedCardForm(forms.OwnedCardForm(), context['accounts'])
     context['page'] = page + 1
     context['ajax'] = ajax
     if ajax:
@@ -300,7 +305,7 @@ def cards(request, card=None, ajax=False):
     return render(request, 'cards.html', context)
 
 def addaccount(request):
-    if not request.user.is_authenticated or request.user.is_anonymous():
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     if request.method == "POST":
         form = forms.AccountForm(request.POST)
@@ -308,8 +313,6 @@ def addaccount(request):
             account = form.save(commit=False)
             account.owner = request.user
             account.save()
-            # account = models.Account.objects.create(form.cleaned_data)
-            request.session['active_account'] = account.pk
             return redirect('cards')
     else:
         form = forms.AccountForm(initial={
@@ -363,43 +366,44 @@ def ajaxownedcards(request, account, stored):
 
 def ajaxaddcard(request):
     context = globalContext(request)
-    if request.method != 'POST' or not context['active_account']:
+    if request.method != 'POST' or not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
-    form = forms.OwnedCardForm(request.POST)
+    form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST), context['accounts'])
     if form.is_valid():
         ownedcard = form.save(commit=False)
+        if not findAccount(ownedcard.owner_account.id, context['accounts']):
+            raise PermissionDenied()
         if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
             try: expires_in = int(request.POST['expires_in'])
             except (TypeError, ValueError): expires_in = 0
             if expires_in < 0: expires_in = 0
             if expires_in:
                 ownedcard.expiration = datetime.date.today() + relativedelta(days=expires_in)
-        ownedcard.owner_account = context['active_account']
         ownedcard.save()
         context['owned'] = ownedcard
-        pushActivity(account=context['active_account'],
+        pushActivity(account=ownedcard.owner_account,
                      message="Added a card",
                      ownedcard=ownedcard)
         return render(request, 'ownedCardOnBottomCard.html', context)
-    form = forms.OwnedCardForm(initial={
+    form = forms.getOwnedCardForm(forms.OwnedCardForm(initial={
         'card': request.POST['card']
-    })
+    }), context['accounts'])
     context['addcard_form'] = form
     return render(request, 'addCardForm.html', context)
 
 def ajaxeditcard(request, ownedcard):
     context = globalContext(request)
-    if 'active_account' not in context:
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     try:
-        owned_card = models.OwnedCard.objects.get(pk=int(ownedcard), owner_account=context['active_account'])
+        owned_card = models.OwnedCard.objects.get(pk=int(ownedcard), owner_account__in=context['accounts'])
     except ObjectDoesNotExist:
         raise PermissionDenied()
     if request.method == 'GET':
-        form = forms.OwnedCardForm(instance=owned_card)
+        form = forms.getOwnedCardForm(forms.OwnedCardForm(instance=owned_card), context['accounts'])
     elif request.method == 'POST':
         (was_idolized, was_max_leveled, was_max_bonded) = (owned_card.idolized, owned_card.max_level, owned_card.max_bond)
-        form = forms.OwnedCardForm(request.POST, instance=owned_card)
+        form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST, instance=owned_card), context['accounts'])
         if form.is_valid():
             ownedcard = form.save(commit=False)
             if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
@@ -429,10 +433,10 @@ def ajaxeditcard(request, ownedcard):
 
 def ajaxdeletecard(request, ownedcard):
     context = globalContext(request)
-    if 'active_account' not in context:
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     try:
-        owned_card = models.OwnedCard.objects.get(pk=int(ownedcard), owner_account=context['active_account'])
+        owned_card = models.OwnedCard.objects.get(pk=int(ownedcard), owner_account__in=context['accounts'])
     except ObjectDoesNotExist:
         raise PermissionDenied()
     owned_card.delete()
@@ -502,7 +506,7 @@ def ajaxactivities(request):
     return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size))
 
 def _contextfeed(request):
-    if not request.user.is_authenticated or request.user.is_anonymous():
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     return _activities(request, follower=request.user, avatar_size=2)
 
@@ -517,7 +521,7 @@ def activities(request):
 @csrf_exempt
 def ajaxfollow(request, username):
     context = globalContext(request)
-    if (not request.user.is_authenticated or request.user.is_anonymous()
+    if (not request.user.is_authenticated() or request.user.is_anonymous()
         or request.method != 'POST' or request.user.username == username):
         raise PermissionDenied()
     user = get_object_or_404(User, username=username)
@@ -556,7 +560,7 @@ def ajaxmodal(request, hash):
     raise Http404
 
 def edit(request):
-    if not request.user.is_authenticated or request.user.is_anonymous():
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
     context['preferences'], created = models.UserPreferences.objects.get_or_create(user=request.user)
@@ -586,7 +590,7 @@ def edit(request):
     return render(request, 'edit.html', context)
 
 def editaccount(request, account):
-    if not request.user.is_authenticated or request.user.is_anonymous():
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
     account = int(account)
@@ -666,67 +670,86 @@ def users(request, ajax=False):
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     context['users'] = users
     context['page'] = page + 1
+    context['current'] = 'users'
     return render(request, 'usersPage.html' if ajax else 'users.html', context)
 
 def events(request):
     context = globalContext(request)
+    context['current'] = 'events'
     events = models.Event.objects.all().order_by('-end')
     context['events'] = events
     return render(request, 'events.html', context)
 
-def _event_valid_form(form, context, event, old_ranking=None):
-    if form.is_valid():
-        participation = form.save(commit=False)
-        participation.account = context['active_account']
-        participation.event = event
-        participation.save()
-        if (participation.ranking is not None
-            and old_ranking is None
-            or old_ranking < participation.ranking):
-            pushActivity(context['active_account'], 'Ranked in event', eventparticipation=participation)
-        return redirect(context['current_url'])
-
 def event(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
+    context['did_happen_world'] = event.did_happen_world()
 
     if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name:
-        formClass = forms.EventParticipationNoSongForm
+        context['with_song'] = False
     else:
-        formClass = forms.EventParticipationForm
         context['with_song'] = True
-    if request.user.is_authenticated and not request.user.is_anonymous() and 'active_account' in context:
-        try:
-            participation = event.participations.get(event=event, account=context['active_account'])
-            old_ranking = participation.ranking
-            context['form_type'] = 'edit'
-            if request.method == 'POST':
-                if 'deleteParticipation' in request.POST:
-                    participation.delete()
-                    return redirect('/event/' + unicode(event.japanese_name))
-                form = formClass(request.POST, instance=participation)
-                return _event_valid_form(form, context, event, old_ranking)
+    if request.user.is_authenticated() and not request.user.is_anonymous():
+        # handle form post
+        if request.method == 'POST':
+            # edit
+            if 'id' in request.POST:
+                try:
+                    participation = event.participations.get(id=request.POST['id'], account__owner=request.user, event=event)
+                    if 'deleteParticipation' in request.POST:
+                        participation.delete()
+                    else:
+                        form = forms.EventParticipationNoAccountForm(request.POST, instance=participation)
+                        if form.is_valid():
+                            form.save()
+                            pushActivity(participation.account, 'Ranked in event', eventparticipation=participation)
+                except models.EventParticipation.DoesNotExist: pass
+            # add
             else:
-                form = formClass(instance=participation)
-            context['form'] = form
-        except models.EventParticipation.DoesNotExist:
-            context['form_type'] = 'create'
-            if request.method == 'POST':
-                form = formClass(request.POST)
-                return _event_valid_form(form, context, event)
-            else:
-                form = formClass()
-            context['form'] = form
-    else:
-        context['form_type'] = 'none'
+                form = forms.EventParticipationForm(request.POST)
+                if form.is_valid():
+                    participation = form.save(commit=False)
+                    if participation.account.owner == request.user:
+                        participation.event = event
+                        participation.save()
 
+        # get forms to add or edit
+        context['your_participations'] = event.participations.filter(account__owner=request.user)
+        add_form_accounts_queryset = request.user.accounts_set.all()
+        context['edit_forms'] = {}
+        if context['with_song']:
+            formClass = forms.EventParticipationNoAccountForm
+        else:
+            formClass = forms.EventParticipationNoSongNoAccountForm
+        for participation in context['your_participations']:
+            context['edit_forms'][participation.id] = formClass(instance=participation)
+            add_form_accounts_queryset = add_form_accounts_queryset.exclude(id=participation.account.id)
+        if not context['did_happen_world']:
+            add_form_accounts_queryset = add_form_accounts_queryset.filter(language='JP')
+        if add_form_accounts_queryset.count() > 0:
+            if context['with_song']:
+                formClass = forms.EventParticipationForm
+            else:
+                formClass = forms.EventParticipationNoSongForm
+            context['add_form'] = forms.getEventParticipationForm(formClass(), add_form_accounts_queryset)
+
+    # get rankings
     event.all_cards = event.cards.all()
-    event.all_participations = event.participations.all().order_by('account__language', 'ranking')
+    event.japanese_participations = event.participations.filter(account__language='JP').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])
+    event.other_participations = event.participations.exclude(account__language='JP')
+    if context['did_happen_world']:
+        event.english_participations = event.participations.filter(account__language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])
+        event.other_participations = event.other_participations.exclude(account__language='EN')
+    event.other_participations = event.other_participations.extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account__language', 'ranking_is_null', 'ranking'])
+
     context['event'] = event
+    context['is_world_current'] = event.is_world_current()
+    context['is_japan_current'] = event.is_japan_current()
     return render(request, 'event.html', context)
 
 def idols(request):
     context = globalContext(request)
+    context['current'] = 'idols'
     context['main_idols'] = models.Idol.objects.filter(main=True).order_by('year', 'name')
     context['n_idols'] = models.Idol.objects.filter(main=False).order_by('name')
     for idol in context['n_idols']:
@@ -734,7 +757,7 @@ def idols(request):
     return render(request, 'idols.html', context)
 
 def twitter(request):
-    if not request.user.is_authenticated or request.user.is_anonymous():
+    if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
     context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).exclude(twitter__exact='').values_list('twitter', flat=True)
@@ -743,7 +766,7 @@ def twitter(request):
 def mapview(request):
     context = globalContext(request)
     context['map'] = models.UserPreferences.objects.filter(latitude__isnull=False).select_related('user')
-    if request.user.is_authenticated and not request.user.is_anonymous():
+    if request.user.is_authenticated() and not request.user.is_anonymous():
         if 'session_preferences' in context and 'latitude' in context['session_preferences'] and context['session_preferences']['latitude']:
             context['you'] = context['session_preferences']
     return render(request, 'map.html', context)

@@ -79,6 +79,33 @@ select {
 	    color: inherit;
 	    text-decoration: none;
 	}
+	.ownedcardonbottom {
+	    display: inline-block;
+	    padding: 0 2px 0 8px;
+	    border-radius: 4px;
+	    text-align: center;
+	    border: 1px @color solid;
+	    margin-bottom: 5px;
+	    [class*=flaticon] {
+		display: inline-block;
+		margin-left: -8px;
+	    }
+	    .language {
+		display: inline-block;
+		background-color: @color;
+		color: lighten(@color, 40%);
+		border-radius: 50%;
+		width: 28px;
+		height: 28px;
+		font-size: 20px;
+		margin-left: -18px;
+		padding: 0 12px;
+	    }
+	    &:hover {
+		background-color: lighten(@color, 45%);
+		color: @color;
+	    }
+	}
     }
     a.btn {
 	color: #fff!important;
@@ -428,6 +455,14 @@ main {
 .navbar-All { .navbar-variant(@AllColor, #fff); }
 
 nav {
+    .avatar {
+	display: inline-block;
+	margin: -4px 0;
+	width: 22px;
+	height: 22px;
+	border-radius: 5px;
+	background: #fff;
+    }
     .account {
 	img {
 	    width: 20px;
@@ -680,6 +715,43 @@ a.panel {
 	.text-muted {
 	    color: rgba(255, 255, 255, 0.5);
 	}
+    }
+}
+
+.ranking-line {
+    .flaticon-star {
+	display: inline-block;
+	color: lighten(@BronzeColor, 30%);
+    }
+    &.T {
+	.a-variant(@BronzeColor);
+	.tier {
+	    display: none;
+	}
+    }
+    &.T1, &.T2 {
+	text-align: left;
+	.tier {
+	    font-size: 8px;
+	    display: block;
+	    margin-top: -14px;
+	    margin-left: 2px;
+	    color: white;
+	}
+    }
+    &.T1 {
+	background-color: lighten(@GoldColor, 50%);
+	.flaticon-star {
+	    color: @GoldColor;
+	}
+	.a-variant(@GoldColor);
+    }
+    &.T2 {
+	background-color: lighten(@SilverColor, 30%);
+	.flaticon-star {
+	    color: @SilverColor;
+	}
+	.a-variant(darken(@SilverColor, 10%));
     }
 }
 

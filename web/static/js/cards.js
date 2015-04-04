@@ -23,7 +23,7 @@ function addCardButtonHandler() {
 	    e.preventDefault();
 	    $(this).ajaxSubmit({
 		success: function(data) {
-		    addCardButton.before(data + '|');
+		    addCardButton.before(data);
 		    $('#addCardModal').modal('hide');
 		    editCardFormHandler();
 		    $('[data-toggle="popover"]').popover();
@@ -140,6 +140,26 @@ function statistics_buttons() {
     })
 }
 
+function changeAccount() {
+    console.log($('#id_select_account').val());
+    if ($('#id_select_account').val() == '') {
+	$('#sidebar-wrapper #id_stored').val('').change();
+	$('#sidebar-wrapper #id_stored').prop('disabled', 'disabled');
+	$('#sidebar-wrapper #id_idolized').val('').change();
+	$('#sidebar-wrapper #id_idolized').prop('disabled', 'disabled');
+	$('#sidebar-wrapper #id_max_level').val('').change();
+	$('#sidebar-wrapper #id_max_level').prop('disabled', 'disabled');
+	$('#sidebar-wrapper #id_max_bond').val('').change();
+	$('#sidebar-wrapper #id_max_bond').prop('disabled', 'disabled');
+    } else {
+	$('#sidebar-wrapper #id_stored').prop('disabled', false);
+	$('#sidebar-wrapper #id_stored').val('Deck').change();
+	$('#sidebar-wrapper #id_idolized').prop('disabled', false);
+	$('#sidebar-wrapper #id_max_level').prop('disabled', false);
+	$('#sidebar-wrapper #id_max_bond').prop('disabled', false);
+    }
+}
+
 if (typeof stLight != 'undefined') { // Adblocks prevents loading
     stLight.options({
 	publisher:'f651d0dd-8213-437a-be4a-5ccc4d544d03',
@@ -154,6 +174,12 @@ $(document).ready(function() {
     pagination();
     youtubeRatio();
     shareButtons();
+
+    changeAccount();
+    $('#id_select_account').change(function(event) {
+	changeAccount();
+    });
+
 
     $('.idol #disqus_thread').bind('DOMNodeInserted', function() {
 	$(this).height($('.idol table').height());

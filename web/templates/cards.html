@@ -107,8 +107,16 @@
 	</div>
       </div>
       {% if user.is_authenticated %}
-      <h4>{{ accounts.0 }}</h4>
+      <h4>{{ user }}</h4>
       <div class="section yours">
+	<label for="id_select_account">{% trans 'Account' %}</label>
+	<select id="id_select_account" name="account">
+	  <option value=""></option>
+	  {% for account in accounts %}
+	  <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
+	  {% endfor %}
+	</select>
+	<br>
 	<label for="id_stored">{% trans 'Stored' %}</label>
 	<select id="id_stored" name="stored">
 	  <option value=""></option>
@@ -159,7 +167,7 @@
 	<div class="modal-content">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title">{% trans 'Add this card' %} {{ active_account }}</h4>
+	    <h4 class="modal-title">{% trans 'Add this card' %}</h4>
 	  </div>
 	  <div class="modal-body">
 	    {% include "addCardForm.html" %}

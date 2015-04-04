@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
-
+{% block js %}<script src="/static/js/event.js"></script>{% endblock %}
 {% block content %}
 {% load languageToString %}
 {% load imageurl %}
@@ -10,11 +10,38 @@
   <br><br>
   <img src="{{ event|eventimageurl }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
   <br><br>
-  <h1>{{ event.japanese_name }}{% if event.english_name != event.japanese_name %}<br><small>{{ event.english_name }}</small>{% endif %}</h1>
-  <br><br>
   <div class="row">
-    <div class="col-lg-3"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="row">
+	{% for card in event.all_cards %}
+	<div class="col-md-6">
+	  <a href="/cards/{{ card.id }}/" class="owned_card">
+	    {% if card.card_image %}
+	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
+		 style="display: inline-block; background-image: url('{{ card|imageurl:'card_image' }}')"></div>
+	    {% endif %}
+	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
+		 style="display: inline-block; background-image: url('{{ card|imageurl:'card_idolized_image' }}')"></div>
+	  </a>
+	  <br>
+	  <h4>{{ card }}</h4>
+	  {% if card.skill %}
+	  <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+	  {% endif %}
+	</div>
+	{% endfor %}
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+  <br><br>
+
+  <div class="row">
+    {% if not did_happen_world %}<div class="col-lg-3"></div>{% endif %}
     <div class="col-lg-6">
+      <h1>{{ event.japanese_name }}<br><small>&nbsp;{% if event.romaji_name and event.romaji_name != event.japanese_name %}{{ event.romaji_name }}{% endif %}</small></h1>
+      <br>
       <table class="table">
 	{% with 'JP'|languageToString as lang %}
 	<caption class="text-center">{% trans lang %}</caption>
@@ -33,7 +60,7 @@
 	</tr>
 	<tr>
 	  <th>T2 {% trans 'Points' %}</th>
-      <td class="text-right">{{ event.japanese_t2_points }}</td>
+	  <td class="text-right">{{ event.japanese_t2_points }}</td>
 	</tr>
 	<tr>
 	  <th>T2 {% trans 'Rank' %}</th>
@@ -55,87 +82,108 @@
 	  </td>
 	</tr>
       </table>
-
+    </div>
+    {% if did_happen_world %}
+    <div class="col-lg-6">
+      <h1>{% if event.english_name %}{{ event.english_name }}{% else %}{{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
+      <br>
       <table class="table">
-	<caption class="text-center">{% trans 'Cards' %}</caption>
-	{% for card in event.all_cards %}
+	{% with 'EN'|languageToString as lang %}
+	<caption class="text-center">{% trans lang %}</caption>
+	{% endwith %}
 	<tr>
-	  <th valign="middle">
-	    {{ card }}
-	    {% if card.skill %}
-	    <br>
-	    <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
-	    {% endif %}
-	  </th>
+	  <th>{% trans 'Dates' %}</th>
+	  <td class="text-right">{{ event.english_beginning }} - {{ event.english_end }}</td>
+	</tr>
+	<tr>
+	  <th>T1 {% trans 'Points' %}</th>
+      <td class="text-right">{{ event.english_t1_points }}</td>
+	</tr>
+	<tr>
+	  <th>T1 {% trans 'Rank' %}</th>
+	  <td class="text-right">{{ event.english_t1_rank }}</td>
+	</tr>
+	<tr>
+	  <th>T2 {% trans 'Points' %}</th>
+      <td class="text-right">{{ event.english_t2_points }}</td>
+	</tr>
+	<tr>
+	  <th>T2 {% trans 'Rank' %}</th>
+	  <td class="text-right">{{ event.english_t2_rank }}</td>
+	</tr>
+	<tr>
+	  <th>{% trans 'Find your ranking' %}</th>
 	  <td class="text-right">
-	    <a href="/cards/{{ card.id }}/" class="owned_card">
-	      {% if card.card_image %}
-	      <div class="circled_card_100 {{ card.attribute }} {{ card.rarity }} hover"
-		   style="display: inline-block; background-image: url('{{ card|imageurl:'card_image' }}')"></div>
-	      {% endif %}
-	      <div class="circled_card_100 {{ card.attribute }} {{ card.rarity }} hover"
-		   style="display: inline-block; background-image: url('{{ card|imageurl:'card_idolized_image' }}')"></div>
+	    <a href="https://ll.idolactiviti.es/en/tracker/#/ranking" target="_blank"
+	       class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-sm">
+	      SIF Tracker
 	    </a>
 	  </td>
 	</tr>
-	{% endfor %}
       </table>
-      <br><br>
+    </div>
+    {% else %}
+    <div class="col-lg-3"></div>
+    {% endif %}
+  </div>
 
-      {% for participation in event.all_participations %}
-      {% ifchanged participation.account.language %}
-      {% if forloop.counter0 != 0 %}
-      </table>
+  <div class="row">
+    {% if not did_happen_world %}<div class="col-lg-3"></div>{% endif %}
+    <div class="col-lg-6">
+      {% include 'event_ranking.html' with participations=event.japanese_participations %}
+    </div>
+    {% if did_happen_world %}
+    <div class="col-lg-6">
+      {% include 'event_ranking.html' with participations=event.english_participations %}
+    </div>
+    {% else %}<div class="col-lg-3"></div>{% endif %}
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+      {% include 'event_ranking.html' with participations=event.other_participations %}
+
+      {% if not user.is_authenticated %}
+      <a href="/create/"
+	 class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+	{% trans 'Share your ranking' %}!
+      </a>
       {% endif %}
-      <table class="table text-right" id="ranking{{ participation.account.language }}">
-	{% with participation.account.language|languageToString as lang %}
-	<caption class="text-center">{% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}</caption>
-	{% endwith %}
-	{% endifchanged %}
-	<tr>
-	  <td class="text-left"><a href="/user/{{ participation.account.owner.username }}/#{{ participation.account.pk }}">
-	      <img src="{{ participation.account.owner|gravatar:20 }}" alt="avatar" width="20">
-	      {{ participation.account.nickname }}</a></td>
-	  {% if with_song %}
-	  <td class="text-right">{% if participation.song_ranking %}<small class="text-grey">{% trans 'Song Ranking' %} # {{ participation.song_ranking }}{% endif %} </small></td>
-	  {% endif %}
-	  <td class="text-right">{% if participation.points %}{{ participation.points }} {% trans 'Points' %}{% endif %}</td>
-	  <td class="text-right">{% if participation.ranking %}<strong># {{ participation.ranking }}</strong>{% endif %}</td>
-	</tr>
-	{% endfor %}
-      </table>
 
-      <div>
-	{% if not user.is_authenticated %}
-	<a href="/create/"
-	   class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-	  {% trans 'Share your ranking' %}!
-	</a>
-	{% endif %}
-      </div>
-      {% if form %}
+      {% if add_form %}
       <br><br>
       <div class="jumbotron">
 	<form method="post" class="noform">
-	  <h4 class="text-right">{{ active_account }}</h4>
 	  {% csrf_token %}
-	  {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+	  {% include "bootstrap_form_horizontal.html" with form=add_form wrap=0 %}
 	  <br><br>
 	  <div class="text-right">
-	    {% if form_type == 'edit' %}
-	    <input type="submit" class="btn btn-danger" name="deleteParticipation" value="{% trans 'Delete' %}">
-	    {% endif %}
 	    <input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
-		   value="{% if form_type == 'create' %}{% trans 'Share your ranking' %}{% else %}{% trans 'Apply Changes' %}{% endif %}" />
+		   value="{% trans 'Share your ranking' %}" />
 	  </div>
 	</form>
+      </div>
+    </div>
+    <div class="col-lg-3"></div>
+  </div>
+
+
+      <div>
+
       </div>
       {% endif %}
     </div>
     <div class="col-lg-3"></div>
   </div>
   <br><br>
-  {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
+
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+      {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
 </div>
 {% endblock %}
-  

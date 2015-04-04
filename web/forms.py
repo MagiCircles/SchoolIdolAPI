@@ -41,17 +41,39 @@ class FullAccountForm(ModelForm):
 class OwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('card', 'stored', 'idolized', 'max_level', 'max_bond')
+        fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond')
+
+def getOwnedCardForm(form, accounts):
+    form.fields['owner_account'].queryset = accounts
+    form.fields['owner_account'].required = True
+    form.fields['owner_account'].empty_label = None
+    return form
 
 class EventParticipationForm(ModelForm):
     class Meta:
         model = models.EventParticipation
-        fields = ('ranking', 'song_ranking', 'points')
+        fields = ('account', 'ranking', 'points', 'song_ranking')
 
 class EventParticipationNoSongForm(ModelForm):
     class Meta:
         model = models.EventParticipation
+        fields = ('account', 'ranking', 'points')
+
+class EventParticipationNoAccountForm(ModelForm):
+    class Meta:
+        model = models.EventParticipation
+        fields = ('ranking', 'points', 'song_ranking')
+
+class EventParticipationNoSongNoAccountForm(ModelForm):
+    class Meta:
+        model = models.EventParticipation
         fields = ('ranking', 'points')
+
+def getEventParticipationForm(form, accounts):
+    form.fields['account'].queryset = accounts
+    form.fields['account'].required = True
+    form.fields['account'].empty_label = None
+    return form
 
 class UserSearchForm(Form):
     term = forms.CharField(required=False, label=_('Search'))

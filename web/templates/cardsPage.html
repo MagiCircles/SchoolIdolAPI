@@ -143,7 +143,7 @@
 	</div>
       </div>
       {% endif %}
-      {% if show_filter_bar and total_cards > 0 and not ajax %}
+      {% if show_total_results and total_cards > 0 and not ajax %}
       <h4 class="padding20 nomargin">
 	{% blocktrans count counter=total_results %}{{ counter }} card matches your search:{% plural %}{{ counter }} cards match your search:{% endblocktrans %}
       </h4>
@@ -375,27 +375,29 @@
 	      {% if total_cards == 1 %}</div></div>{% endif %}
 	    </div> <!-- panel-body -->
 	    <div class="panel-footer">
-	      {% for owned in card.owned_cards %}
-	      {% include "ownedCardOnBottomCard.html" with owned=owned %}
-	      {% with card.owned_cards|length as length %}{% if length > 1 %}|{% endif %}{% endwith %}
-	      {% endfor %}
-	      <a href="{% if user.is_authenticated %}#addCard{% else %}/create/{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" title="{% trans 'Add this card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}{% trans 'Add this card' %}{% else %}{% trans 'Create an account to add this card to your collection' %}{% endif %}" data-trigger="hover"></i></a>
-	      <div class="pull-right">
-		{% if card.is_promo %}
-		<i class="flaticon-promo" title="{% trans 'Promo Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card comes with ' %}: {{ card.promo_item }}" data-trigger="hover"></i>
-		{% endif %}
-		{% if card.event %}
-		<i class="flaticon-event" title="{% trans 'Event Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card first appeared during the event' %}: {{ card.event.japanese_name }}" data-trigger="hover"></i>
-		{% endif %}
-		{% if card.is_special %}
-	      <i class="flaticon-skill" title="{% trans 'Special Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card cannot be added in a team.' %} {% trans 'Skill' %}: « {% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% else %}{{ card.skill_details }}{% endif %} »" data-trigger="hover"></i>
-	      {% endif %}
-	      {% if card.japan_only %}
-	      <i class="flaticon-JP" title="{% trans 'Japan Only Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card is only available in the Japanese version of the game.' %}" data-trigger="hover"></i>
-	      {% else %}
-	      <i class="flaticon-world" title="{% trans 'Worldwide Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card is available on all the versions of the game in the world.' %}" data-trigger="hover"></i>
-	      {% endif %}
-	      {% if total_cards > 1 %}<a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}"><i class="flaticon-more"></i></a>{% endif %}
+	      <div class="row">
+		<div class="col-xs-9">
+		  {% for owned in card.owned_cards %}
+		  {% include "ownedCardOnBottomCard.html" with owned=owned %}
+		  {% endfor %}
+		  <a href="{% if user.is_authenticated %}#addCard{% else %}/create/{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}{% trans 'Add this card' %}{% else %}{% trans 'Create an account to add this card to your collection' %}{% endif %}" data-trigger="hover"></i></a>
+		</div>
+		<div class="col-xs-3 text-right">
+		  {% if card.is_promo %}
+		  <i class="flaticon-promo" title="{% trans 'Promo Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card comes with ' %}: {{ card.promo_item }}" data-trigger="hover"></i>
+		  {% endif %}
+		  {% if card.event %}
+		  <i class="flaticon-event" title="{% trans 'Event Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card first appeared during the event' %}: {{ card.event.japanese_name }}" data-trigger="hover"></i>
+		  {% endif %}
+		  {% if card.is_special %}
+		  <i class="flaticon-skill" title="{% trans 'Special Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card cannot be added in a team.' %} {% trans 'Skill' %}: « {% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% else %}{{ card.skill_details }}{% endif %} »" data-trigger="hover"></i>
+		  {% endif %}
+		  {% if card.japan_only %}
+		  <i class="flaticon-JP" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card is only available in the Japanese version of the game.' %}" data-trigger="hover"></i>
+		  {% else %}
+		  <i class="flaticon-world" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card is available on all the versions of the game in the world.' %}" data-trigger="hover"></i>
+		  {% endif %}
+		</div>
 	      </div>
 	    </div>
 	  </div> <!-- panel -->

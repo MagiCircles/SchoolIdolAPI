@@ -190,7 +190,7 @@ class Account(models.Model):
 admin.site.register(Account)
 
 class OwnedCard(models.Model):
-    owner_account = models.ForeignKey(Account, related_name='ownedcards')
+    owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='ownedcards')
     card = models.ForeignKey(Card, related_name='ownedcards')
     stored = models.CharField(_("Stored"),  choices=STORED_CHOICES, default='Deck', max_length=30)
     expiration = models.DateTimeField(_("Expiration"), default=None, null=True, blank=True)
@@ -205,7 +205,7 @@ admin.site.register(OwnedCard)
 
 class EventParticipation(models.Model):
     event = models.ForeignKey(Event, related_name='participations')
-    account = models.ForeignKey(Account, related_name='events')
+    account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='events')
     ranking = models.PositiveIntegerField(_('Ranking'), null=True, blank=True)
     song_ranking = models.PositiveIntegerField(_('Song Ranking'), null=True, blank=True)
     points = models.PositiveIntegerField(_('Points'), null=True, blank=True)

@@ -3,9 +3,16 @@ function getInterfaceColor() {
     return $('body').attr('class').replace('interface-', '');
 }
 
-function freeModal(title, body) {
+function freeModal(title, body, buttons) {
     $('#freeModal .modal-header h4').html(title);
     $('#freeModal .modal-body').html(body);
+    $('#freeModal .modal-footer').html('<button type="button" class="btn btn-Smile" data-dismiss="modal">Go</button>');
+    if (buttons === 0) {
+	$('#freeModal .modal-footer').hide();
+    } else if (typeof buttons != 'undefined') {
+	$('#freeModal .modal-footer').html(buttons);
+	$('#freeModal .modal-footer').show();
+    }
     $('#freeModal').modal('show');
 }
 

@@ -659,7 +659,7 @@ def users(request, ajax=False):
                                          )
             if 'ordering' in form.cleaned_data and form.cleaned_data['ordering']:
                 flag = True
-                users = users.order_by(form.cleaned_data['ordering'])
+                users = users.order_by(form.cleaned_data['ordering'], ('-accounts_set__rank' if form.cleaned_data['ordering'] == '-accounts_set__verified' else '-date_joined'))
     else:
         form = forms.UserSearchForm()
     if not flag:

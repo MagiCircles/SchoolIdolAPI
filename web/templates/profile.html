@@ -169,12 +169,6 @@
 		<th>{% trans 'Friend ID' %}</th>
 		<td>{{ account.friend_id|padzeros:9 }}</td>
 	      </tr>
-	      {% if is_me and account.transfer_code %}
-	      <tr>
-		<th>{% trans 'Transfer Code' %} <small>{% trans 'Only you can see it' %}</small></th>
-		<td>{{ account.transfer_code }}</td>
-	      </tr>
-	      {% endif %}
 	      <tr>
 		<th>{% trans 'Game Version' %}</th>
 		<td>

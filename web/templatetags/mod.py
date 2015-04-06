@@ -7,4 +7,8 @@ def mod(value, arg):
     else:
         return False
 
+def isnone(value):
+    return value is None
+
 register.filter('mod', mod)
+register.filter('isnone', isnone)

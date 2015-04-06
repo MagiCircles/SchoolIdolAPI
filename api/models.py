@@ -43,8 +43,19 @@ VERIFIED_CHOICES = (
 )
 VERIFIED_DICT = dict(VERIFIED_CHOICES)
 
+PLAYWITH_CHOICES = (
+    ('Thumbs', _('Thumbs')),
+    ('Fingers', _('All fingers')),
+    ('Hand', _('One hand')),
+    ('Other', _('Other')),
+)
+PLAYWITH_DICT = dict(PLAYWITH_CHOICES)
+
 def verifiedToString(val):
     return VERIFIED_DICT[val]
+
+def playWithToString(val):
+    return PLAYWITH_DICT[val]
 
 def storedChoiceToString(stored):
     for key, string in STORED_CHOICES:
@@ -188,7 +199,10 @@ class Account(models.Model):
     owner = models.ForeignKey(User, related_name='accounts_set')
     nickname = models.CharField(_("Nickname"), blank=True, max_length=20)
     friend_id = models.PositiveIntegerField(_("Friend ID"), blank=True, null=True, help_text=_('You can find your friend id by going to the "Friends" section from the home, then "ID Search". Players will be able to send you friend requests or messages using this number.'))
+    accept_friend_requests = models.NullBooleanField(_('Accept friend requests'), blank=True, null=True)
     transfer_code = models.CharField(_("Transfer Code"), blank=True, max_length=30, help_text=_('It\'s important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.'))
+    device = models.CharField(_('Device'), help_text=_('The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ...'), max_length=150, null=True, blank=True)
+    play_with = models.CharField(_('Play with'), blank=True, null=True, max_length=30, choices=PLAYWITH_CHOICES)
     language = models.CharField(_("Language"), choices=LANGUAGE_CHOICES, default='JP', max_length=10, help_text=_('This is the version of the game you play.'))
     os = models.CharField(_("Operating System"), choices=OS_CHOICES, default='iOs', max_length=10)
     center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'), on_delete=models.SET_NULL)

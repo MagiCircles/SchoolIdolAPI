@@ -11,6 +11,7 @@
 {% block content %}
 {% load imageurl %}
 {% load padzeros %}
+{% load mod %}
 {% load choicesToString %}
 <div id="fb-root"></div>
 <div class="container">
@@ -71,12 +72,6 @@
 	      <td><a href="http://maps.google.com/?q={{ preferences.location }}" target="_blank">{{ preferences.location }}</a></td>
 	    </tr>
 	    {% endif %}
-	  </table>
-	  <table class="white-table table-responsive">
-	    <tr>
-	      <th>{% trans 'Accept friend requests' %}</th>
-	      <td>{% if preferences.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
-	    </tr>
 	  </table>
 	  <table class="white-table table-responsive">
 	    {% if preferences.twitter %}
@@ -169,6 +164,12 @@
 		<th>{% trans 'Friend ID' %}</th>
 		<td>{{ account.friend_id|padzeros:9 }}</td>
 	      </tr>
+	      {% if not account.accept_friend_requests|isnone %}
+	      <tr>
+		<th>{% trans 'Accept friend requests' %}</th>
+		<td>{% if account.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
+	      </tr>
+	      {% endif %}
 	      <tr>
 		<th>{% trans 'Game Version' %}</th>
 		<td>
@@ -179,8 +180,28 @@
 	      </tr>
 	      <tr>
 		<th>{% trans 'Operating System' %}</th>
-		<td>{{ account.os }}</td>
+		<td>
+		  <div class="pull-right">
+		    <i class="flaticon-{{ account.os }} fontx2"></i>
+		  </div>
+		  {{ account.os }}</td>
 	      </tr>
+	      {% if account.device %}
+	      <tr>
+		<th>{% trans 'Device' %}</th>
+		<td>{{ account.device }}</td>
+	      </tr>
+	      {% endif %}
+	      {% if account.play_with %}
+	      <tr>
+		<th>{% trans 'Play with' %}</th>
+		<td>
+		  <div class="pull-right">
+		    {% if account.play_with == 'Thumbs' %}<i class="flaticon-thumbs fontx2"></i>{% elif account.play_with == 'Fingers' or account.play_with == 'Hand' %}<i class="flaticon-fingers fontx2"></i>{% endif %}
+		  </div>
+		  {{ account.play_with|playWithToString }}</td>
+	      </tr>
+	      {% endif %}
 	      <tr>
 		<th>{% trans 'Significant Cards' %}</th>
 		<td><strong>{{ account.deck_total_sr }} SR</strong> {% trans 'and' %} <strong>{{ account.deck_total_ur }} UR</strong></td>

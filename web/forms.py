@@ -19,7 +19,7 @@ class UserPreferencesForm(ModelForm):
     best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'best_girl', 'location', 'private', 'accept_friend_requests', 'description', 'private', 'twitter', 'facebook', 'reddit', 'line', 'tumblr')
+        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private', 'twitter', 'facebook', 'reddit', 'line', 'tumblr')
 
 class AccountForm(ModelForm):
     class Meta:
@@ -36,12 +36,12 @@ class FullAccountForm(ModelForm):
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'friend_id', 'transfer_code', 'language', 'os')
+        fields = ('nickname', 'center', 'rank', 'friend_id', 'transfer_code', 'language', 'os', 'device', 'play_with', 'accept_friend_requests')
 
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'transfer_code')
+        fields = ('nickname', 'center', 'rank', 'transfer_code', 'device', 'play_with', 'accept_friend_requests')
 
 class OwnedCardForm(ModelForm):
     class Meta:

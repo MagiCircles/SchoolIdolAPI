@@ -1,6 +1,6 @@
 {% load i18n %}
 	      {% if not nolink %}<a href="#editCard" data-id="{{ owned.pk }}" class="ownedcardonbottom">{% endif %}
-		<span class="language"><i class="flaticon-{% if owned.owner_account.language == 'TW' or owned.owner_account.language == 'CN' %}CH{% else %}{{ owned.owner_account.language }}{% endif %}" data-content="{{ owned.owner_account }}" {% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}></i></span>
+		<span class="language"><i class="flaticon-{{ owned.owner_account.language }}" data-content="{{ owned.owner_account }}" {% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}></i></span>
 		{% if owned.stored == 'Deck' %}
 		<i class="flaticon-deck" data-content="{% trans 'In deck' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}></i>
 		{% elif owned.stored == 'Album' %}

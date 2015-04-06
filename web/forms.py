@@ -38,6 +38,11 @@ class FullAccountForm(ModelForm):
         model = models.Account
         fields = ('nickname', 'center', 'rank', 'friend_id', 'transfer_code', 'language', 'os')
 
+class FullAccountNoFriendIDForm(FullAccountForm):
+    class Meta:
+        model = models.Account
+        fields = ('nickname', 'center', 'rank', 'transfer_code')
+
 class OwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard

@@ -313,8 +313,12 @@ def addaccount(request):
         if form.is_valid():
             account = form.save(commit=False)
             account.owner = request.user
-            account.save()
-            return redirect('cards')
+            if account.rank >= 200:
+                errors = form._errors.setdefault("rank", ErrorList())
+                errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
+            else:
+                account.save()
+                return redirect('cards')
     else:
         form = forms.AccountForm(initial={
             'nickname': request.user.username
@@ -597,14 +601,18 @@ def editaccount(request, account):
     account = int(account)
     for owned_account in context['accounts']:
         if account == owned_account.pk:
+            if owned_account.verified:
+                formClass = forms.FullAccountNoFriendIDForm
+            else:
+                formClass = forms.FullAccountForm
             if request.method == 'GET':
-                form = forms.FullAccountForm(instance=owned_account)
+                form = formClass(instance=owned_account)
             elif request.method == "POST":
                 if 'deleteAccount' in request.POST:
                     owned_account.delete()
                     return redirect('/user/' + request.user.username)
                 old_rank = owned_account.rank
-                form = forms.FullAccountForm(request.POST, instance=owned_account)
+                form = formClass(request.POST, instance=owned_account)
                 if form.is_valid():
                     account = form.save(commit=False)
                     if account.rank >= 200 and account.verified <= 0:

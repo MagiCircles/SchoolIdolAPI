@@ -255,7 +255,6 @@ class UserPreferences(models.Model):
     reddit = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     line = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     tumblr = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
-    accept_friend_requests = models.BooleanField(_('Accept friend requests'), default=True)
     private = models.BooleanField(_('Private Profile'), default=False, help_text=_('If your profile is private, people will only see your center.'))
     following = models.ManyToManyField(User, symmetrical=False, related_name='followers')
 

@@ -19,7 +19,7 @@ class UserPreferencesForm(ModelForm):
     best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private', 'twitter', 'facebook', 'reddit', 'line', 'tumblr')
+        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private', 'twitter', 'facebook', 'reddit', 'line', 'tumblr', 'twitch', 'mal', 'otonokizaka')
 
 class AccountForm(ModelForm):
     class Meta:

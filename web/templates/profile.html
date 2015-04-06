@@ -106,6 +106,30 @@
 	      </td>
 	    </tr>
 	    {% endif %}
+	    {% if preferences.twitch %}
+	    <tr>
+	      <th>Twitch</th>
+	      <td>
+		<a href="http://twitch.tv/{{ preferences.twitch }}" target="_blank">{{ preferences.twitch }} <img src="/static/twitch.png" alt="Twitch"></a>
+	      </td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.mal %}
+	    <tr>
+	      <th>Mal</th>
+	      <td>
+		<a href="http://myanimelist.net/profile/{{ preferences.mal }}" target="_blank">{{ preferences.mal }} <img src="/static/mal.png" alt="MyAnimeList"></a>
+	      </td>
+	    </tr>
+	    {% endif %}
+	    {% if preferences.mal %}
+	    <tr>
+	      <th>Otonokizaka.org forum</th>
+	      <td>
+		<a href="http://otonokizaka.org/member.php?action=profile&name={{ preferences.otonokizaka }}" target="_blank">{{ preferences.otonokizaka }}</a>
+	      </td>
+	    </tr>
+	    {% endif %}
 	    {% if preferences.tumblr %}
 	    <tr>
 	      <th>Tumblr</th>

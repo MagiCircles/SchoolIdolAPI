@@ -21,6 +21,7 @@ $(document).ready(function() {
 		&& ($(window).scrollTop() + $(window).height())
 		>= ($(document).height() - button.height())) {
 		loadMoreUsers();
+		$('[data-toggle="popover"]').popover();
 	    }
 	});
 });

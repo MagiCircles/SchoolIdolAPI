@@ -38,8 +38,8 @@ STORED_DICT = dict(STORED_CHOICES)
 
 VERIFIED_CHOICES = (
     (0, ''),
-    (1, _('Silver Verification (with screenshots)')),
-    (2, _('Gold Verification (with transfer code)')),
+    (1, _('Silver Verified')),
+    (2, _('Gold Verified')),
 )
 VERIFIED_DICT = dict(VERIFIED_CHOICES)
 

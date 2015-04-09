@@ -38,7 +38,7 @@
     </form>
 
     <hr>
-
+    
     <h1>{% trans 'Avatar' %}</h1>
     <br>
     <form>
@@ -47,6 +47,18 @@
 	<a class="btn btn-lg btn-Cool" href="https://{{ LANGUAGE_CODE }}.gravatar.com/" target="_blank">{% trans 'Change Avatar' %}</a>
       </div>
     </form>
+
+    <hr>
+
+    <h1>{% trans 'Edit your accounts' %}</h1>
+    <br>
+    <form>
+      <div class="alert alert-info">{% trans 'On your profile, go to the account you would like to edit then click on the edit button in the top right corner.' %}</div>
+      <div class="text-right">
+	<a class="btn btn-lg btn-Cool" href="/user/{{ user.username }}/" target="_blank">{% trans 'Profile' %}</a>
+      </div>
+    </form>
+
   </div>
 </div>
 

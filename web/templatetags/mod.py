@@ -10,5 +10,9 @@ def mod(value, arg):
 def isnone(value):
     return value is None
 
+def torfc2822(date):
+    return date.strftime("%B %d, %Y %H:%M:%S %z")
+
 register.filter('mod', mod)
 register.filter('isnone', isnone)
+register.filter('torfc2822', torfc2822)

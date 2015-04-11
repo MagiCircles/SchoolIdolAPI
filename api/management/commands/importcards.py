@@ -53,6 +53,9 @@ def wikiaImageURL(string):
         return ""
     return clean(string)
 
+def eventDateFromString(date, format='%Y/%m/%d %I%p', timezone=pytz.utc):
+    return timezone.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(date), format))))
+
 def remove_all_comments(soup):
     comments = soup.findAll(text=lambda text:isinstance(text, Comment))
     [comment.extract() for comment in comments]
@@ -107,6 +110,7 @@ class Command(BaseCommand):
              return
 
         h = HTMLParser.HTMLParser()
+        japantz = pytz.timezone('Asia/Tokyo')
 
         types = {'Normals': 'N', 'Rares': 'R', 'Super Rares': 'SR', 'Ultra Rares': 'UR'}
         specials = {'None': 0, 'Promo Cards': 1, 'Special Cards': 2}
@@ -233,8 +237,8 @@ class Command(BaseCommand):
             data = str(line).split('||')
             if len(data) > 1:
                 dates = data[0].replace('|', '').split(' - ')
-                beginning = datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(dates[0]), '%Y/%m/%d')))
-                end = datetime.datetime.fromtimestamp(time.mktime(time.strptime(str(beginning.year) + '/' + clean(dates[1]), '%Y/%m/%d')))
+                beginning = eventDateFromString(clean(dates[0]) + ' 4pm', timezone=japantz)
+                end = eventDateFromString(str(beginning.year) + '/' + clean(dates[1]) + ' 3pm', timezone=japantz)
                 name = clean(data[1].replace('[[', '').replace(']]', '').split('|')[-1]).replace('μs', 'μ\'s')
                 t1_points = optInt(clean(data[3]))
                 i = 4
@@ -292,8 +296,8 @@ class Command(BaseCommand):
             data = str(line).split('||')
             if len(data) >= 5 and len(data) <= 8:
                 dates = data[0].replace('|', '').split(' - ')
-                beginning = pytz.utc.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(clean(dates[0]), '%Y/%m/%d %I%p'))))
-                end = pytz.utc.localize(datetime.datetime.fromtimestamp(time.mktime(time.strptime(str(beginning.year) + '/' + clean(dates[1]), '%Y/%m/%d %I%p'))))
+                beginning = eventDateFromString(dates[0])
+                end = eventDateFromString(str(beginning.year) + '/' + dates[1])
                 names = data[1].replace('[[', '').replace(']]', '').replace('μs', 'μ\'s').split('|')
                 japanese_name = clean(names[-2])
                 english_name = clean(names[-1])

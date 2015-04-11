@@ -10,6 +10,7 @@
 	"less": "~2.0.0",
 	"bootstrap": "~3.3.1",
 	"Autolinker.js": "0.15.2",
-	"css-hexagon": "0.0.0"
+	"css-hexagon": "0.0.0",
+	"countdown": "2.1.0"
     }
 }

@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
-{% block js %}<script src="/static/js/event.js"></script>{% endblock %}
+{% block js %}
+<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="/static/js/event.js"></script>
+{% endblock %}
 {% block content %}
 {% load languageToString %}
 {% load imageurl %}
 {% load gravatar %}
+{% load mod %}
+{% load tz %}
 <div class="container text-center">
   <br><br>
   <img src="{{ event|eventimageurl }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
@@ -35,8 +40,16 @@
     </div>
     <div class="col-md-2"></div>
   </div>
-  <br><br>
+  <br>
 
+  {% if is_japan_current or is_world_current %}
+  <h1 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+    <script>
+      var countdowndate = "{% if is_japan_current %}{{ event.end|torfc2822 }}{% else %}{{ event.english_end|torfc2822 }}{% endif %}";
+    </script>
+  </h1>
+  {% endif %}
+  <br>
   <div class="row">
     {% if not did_happen_world %}<div class="col-lg-3"></div>{% endif %}
     <div class="col-lg-6">
@@ -48,7 +61,8 @@
 	{% endwith %}
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
-	  <td class="text-right">{{ event.beginning }} - {{ event.end }}</td>
+	  <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }} - {{ event.end|timezone:"Asia/Tokyo" }}<br>
+	  {% trans 'Japanese' %} {% trans 'time' %}</td>
 	</tr>
 	<tr>
 	  <th>T1 {% trans 'Points' %}</th>
@@ -93,7 +107,8 @@
 	{% endwith %}
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
-	  <td class="text-right">{{ event.english_beginning }} - {{ event.english_end }}</td>
+	  <td class="text-right">{{ event.english_beginning }} - {{ event.english_end }}<br>
+	  UTC {% trans 'time' %}</td>
 	</tr>
 	<tr>
 	  <th>T1 {% trans 'Points' %}</th>

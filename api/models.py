@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _
 from api.models_languages import LANGUAGE_CHOICES
 from django.core.validators import RegexValidator
+from django.utils import timezone
 
 import datetime
 
@@ -76,8 +77,8 @@ class Event(models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
     romaji_name = models.CharField(max_length=100, blank=True, null=True)
     english_name = models.CharField(max_length=100, blank=True, null=True)
-    beginning = models.DateField(blank=True, null=True)
-    end = models.DateField(blank=True, null=True)
+    beginning = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
     english_beginning = models.DateTimeField(blank=True, null=True)
     english_end = models.DateTimeField(blank=True, null=True)
     english_t1_points = models.PositiveIntegerField(null=True, blank=True)
@@ -94,19 +95,26 @@ class Event(models.Model):
     def is_japan_current(self):
         return (self.beginning is not None
                 and self.end is not None
-                and datetime.date.today() > self.beginning
-                and datetime.date.today() < self.end)
+                and timezone.now() > self.beginning
+                and timezone.now() < self.end)
 
     def is_world_current(self):
+        if (self.english_beginning is not None
+            and self.english_end is not None):
+            return (timezone.now() > self.english_beginning
+                    and timezone.now() < self.english_end)
         return (self.beginning is not None
                 and self.end is not None
-                and datetime.date.today() > (self.beginning + relativedelta(years=1))
-                and datetime.date.today() < (self.end + relativedelta(years=1)))
+                and timezone.now() > (self.beginning + relativedelta(years=1))
+                and timezone.now() < (self.end + relativedelta(years=1)))
 
     def did_happen_world(self):
+        if (self.english_beginning is not None
+            and self.english_end is not None):
+            return (timezone.now() > self.english_beginning)
         return (self.beginning is not None
                 and self.end is not None
-                and datetime.date.today() > (self.beginning + relativedelta(years=1)))
+                and timezone.now() > (self.beginning + relativedelta(years=1)))
 
     def __unicode__(self):
         return self.japanese_name

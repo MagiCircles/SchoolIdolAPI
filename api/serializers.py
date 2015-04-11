@@ -7,6 +7,12 @@ from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse as django_reverse
 import urllib
 import datetime
+import pytz
+
+class DateTimeJapanField(serializers.DateTimeField):
+    def to_representation(self, value):
+        value = value.astimezone(pytz.timezone('Asia/Tokyo'))
+        return super(DateTimeJapanField, self).to_representation(value)
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
@@ -41,6 +47,8 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('url', 'name')
 
 class EventSerializer(serializers.ModelSerializer):
+    beginning = DateTimeJapanField()
+    end = DateTimeJapanField()
     japan_current = serializers.SerializerMethodField()
     world_current = serializers.SerializerMethodField()
     cards = serializers.SerializerMethodField()

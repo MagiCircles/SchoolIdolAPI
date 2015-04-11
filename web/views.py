@@ -83,7 +83,7 @@ def index(request):
     # Get current events
     context['current_jp'] = models.Event.objects.order_by('-beginning')[0]
     context['current_jp'].is_current = context['current_jp'].is_japan_current()
-    context['current_en'] = models.Event.objects.filter(beginning__lte=(datetime.date.today() - relativedelta(years=1))).order_by('-beginning')[0]
+    context['current_en'] = models.Event.objects.filter(Q(beginning__lte=(timezone.now() - relativedelta(years=1))) | Q(english_beginning__lte=(timezone.now()))).order_by('-beginning')[0]
     context['current_en'].is_current = context['current_en'].is_world_current()
 
     context['links'] = links.get_links(context['current_en'], context['current_jp'])

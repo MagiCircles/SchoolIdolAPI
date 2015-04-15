@@ -18,22 +18,41 @@ function addCardButtonHandler() {
 	addCardFormHandler(card.find('img.non_idolized').prop('src'),
 			   card.find('img.idolized').prop('src'));
 
-	$('#addCardModal form.add').unbind('submit');
-	$('#addCardModal form.add').submit(function(e) {
+	var savedForm = undefined;
+	$('#addCardModal').on('hidden.bs.modal', function () {
+	    if (typeof savedForm != 'undefined') {
+		$('#addCardModal .modal-body').html(savedForm);
+		$('#addCardModal').unbind('hidden.bs.modal');
+	    }
+	})
+	var onSubmit = function(e) {
 	    e.preventDefault();
 	    $(this).ajaxSubmit({
 		success: function(data) {
-		    addCardButton.before(data);
-		    $('#addCardModal').modal('hide');
-		    editCardFormHandler();
-		    $('[data-toggle="popover"]').popover();
+		    if ($(data).hasClass('ownedcardonbottom')) {
+			addCardButton.before(data);
+			$('#addCardModal').modal('hide');
+			editCardFormHandler();
+			$('[data-toggle="popover"]').popover();
+			if (typeof savedForm != 'undefined') {
+			    $('#addCardModal .modal-body').html(savedForm);
+			}
+		    } else {
+			savedForm = $('#addCardModal .modal-body').html();
+			$('#addCardModal .modal-body').html(data);
+			$('#addCardModal form.add').submit(onSubmit);
+			addCardFormHandler(card.find('img.non_idolized').prop('src'),
+					   card.find('img.idolized').prop('src'));
+		    }
 		},
 		error: function() {
 		    $('#addCardModal').modal('hide');
 		    alert('Opps! Something bad happened. Try again.');
 		}
 	    });
-	});
+	};
+	$('#addCardModal form.add').unbind('submit');
+	$('#addCardModal form.add').submit(onSubmit);
     });
 }
 
@@ -141,7 +160,6 @@ function statistics_buttons() {
 }
 
 function changeAccount() {
-    console.log($('#id_select_account').val());
     if ($('#id_select_account').val() == '') {
 	$('#sidebar-wrapper #id_stored').val('').change();
 	$('#sidebar-wrapper #id_stored').prop('disabled', 'disabled');

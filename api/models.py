@@ -3,9 +3,9 @@ from django.contrib.auth.models import User, Group
 from django.db import models
 from django.contrib import admin
 from dateutil.relativedelta import relativedelta
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 from api.models_languages import LANGUAGE_CHOICES
-from django.core.validators import RegexValidator
+from django.core import validators
 from django.utils import timezone
 
 import datetime
@@ -230,6 +230,7 @@ class OwnedCard(models.Model):
     idolized = models.BooleanField(_("Idolized"), default=False)
     max_level = models.BooleanField(_("Max Leveled"), default=False)
     max_bond = models.BooleanField(_("Max Bonded (Kizuna)"), default=False)
+    skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
 
     def __unicode__(self):
         return str(self.owner_account) + ' owns ' + str(self.card)
@@ -249,7 +250,7 @@ class EventParticipation(models.Model):
 admin.site.register(EventParticipation)
 
 class UserPreferences(models.Model):
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
+    alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
     user = models.ForeignKey(User, related_name='preferences')
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)

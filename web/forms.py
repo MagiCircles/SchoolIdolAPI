@@ -46,12 +46,15 @@ class FullAccountNoFriendIDForm(FullAccountForm):
 class OwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond')
+        fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill')
 
-def getOwnedCardForm(form, accounts):
+def getOwnedCardForm(form, accounts, owned_card=None):
     form.fields['owner_account'].queryset = accounts
     form.fields['owner_account'].required = True
     form.fields['owner_account'].empty_label = None
+    if owned_card is not None:
+        if not owned_card.card.skill:
+            form.fields.pop('skill')
     return form
 
 class EventParticipationForm(ModelForm):

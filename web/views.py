@@ -376,6 +376,8 @@ def ajaxaddcard(request):
     form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST), context['accounts'])
     if form.is_valid():
         ownedcard = form.save(commit=False)
+        if not ownedcard.card.skill:
+            ownedcard.skill = 1
         if not findAccount(ownedcard.owner_account.id, context['accounts']):
             raise PermissionDenied()
         if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
@@ -390,9 +392,6 @@ def ajaxaddcard(request):
                      message="Added a card",
                      ownedcard=ownedcard)
         return render(request, 'ownedCardOnBottomCard.html', context)
-    form = forms.getOwnedCardForm(forms.OwnedCardForm(initial={
-        'card': request.POST['card']
-    }), context['accounts'])
     context['addcard_form'] = form
     return render(request, 'addCardForm.html', context)
 
@@ -405,10 +404,10 @@ def ajaxeditcard(request, ownedcard):
     except ObjectDoesNotExist:
         raise PermissionDenied()
     if request.method == 'GET':
-        form = forms.getOwnedCardForm(forms.OwnedCardForm(instance=owned_card), context['accounts'])
+        form = forms.getOwnedCardForm(forms.OwnedCardForm(instance=owned_card), context['accounts'], owned_card=owned_card)
     elif request.method == 'POST':
         (was_idolized, was_max_leveled, was_max_bonded) = (owned_card.idolized, owned_card.max_level, owned_card.max_bond)
-        form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST, instance=owned_card), context['accounts'])
+        form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST, instance=owned_card), context['accounts'], owned_card=owned_card)
         if form.is_valid():
             ownedcard = form.save(commit=False)
             if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:

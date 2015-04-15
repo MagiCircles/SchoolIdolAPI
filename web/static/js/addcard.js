@@ -75,21 +75,29 @@ function editCardFormHandler() {
 	    };
 
 	    $('#addCardModal form.edit').unbind('submit');
-	    $('#addCardModal form.edit').submit(function(e) {
+	    var onSubmit = function(e) {
 		e.preventDefault();
 		$(this).ajaxSubmit({
 		    success: function(data) {
-			cardButton.replaceWith(data);
-			onDone();
-			editCardFormHandler();
-			$('[data-toggle="popover"]').popover();
+			if ($(data).hasClass('ownedcardonbottom')) {
+			    cardButton.replaceWith(data);
+			    onDone();
+			    editCardFormHandler();
+			    $('[data-toggle="popover"]').popover();
+			} else {
+			    $('#addCardModal .modal-body').html(data);
+			    $('#addCardModal form.edit').submit(onSubmit);
+			    addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
+					       $('#addCardModal img.idolized').prop('src'));
+			}
 		    },
 		    error: function() {
 			onDone();
 			alert('Opps! Something bad happened. Try again.');
 		    }
 		});
-	    });
+	    };
+	    $('#addCardModal form.edit').submit(onSubmit);
 	    $('#addCardModal form.delete').unbind('submit');
 	    $('#addCardModal form.delete').submit(function(e) {
 		e.preventDefault();

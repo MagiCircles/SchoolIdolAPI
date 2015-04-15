@@ -37,6 +37,11 @@ select {
     margin: 10px 0;
 }
 
+.neutral-input {
+    border: 1px solid #ccc;
+    color: #555;
+}
+
 .color-Smile { color: @SmileColor; .a-variant(@SmileColor); }
 .color-Pure { color: @PureColor; .a-variant(@PureColor); }
 .color-Cool { color: @CoolColor; .a-variant(@CoolColor); }
@@ -674,6 +679,13 @@ a.panel {
     nobr
     {
 	display: none;
+    }
+    form.add, form.edit {
+	input[type=number] {
+	    .neutral-input();
+	    width: 60px;
+	    text-align: center;
+	}
     }
 }
 

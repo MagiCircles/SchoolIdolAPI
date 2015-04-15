@@ -192,11 +192,11 @@ class AccountSerializer(serializers.ModelSerializer):
 class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OwnedCard
-        fields = ('idolized', 'stored', 'expiration', 'max_level', 'max_bond')
+        fields = ('idolized', 'stored', 'expiration', 'max_level', 'max_bond', 'skill')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
     card = CardSerializer()
 
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'card', 'idolized', 'max_level', 'max_bond', 'stored', 'expiration')
+        fields = ('owner_account', 'card', 'idolized', 'max_level', 'max_bond', 'stored', 'expiration', 'skill')

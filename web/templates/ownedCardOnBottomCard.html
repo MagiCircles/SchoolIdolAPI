@@ -19,4 +19,7 @@
 		{% if owned.max_bond %}
 		<i class="flaticon-max-bond" data-content="{% trans 'Max Bonded (Kizuna)' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}></i>
 		{% endif %}
+		{% if owned.skill > 1 and owned.card.skill %}
+		<span data-content="{% trans 'Skill' %} {% trans 'Level' %} <b>{{ owned.skill }}</b>" {% if not nolink %} data-html="true" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}><i class="flaticon-skill"></i><small><span class="tiny">{{ owned.skill }}</span></small></span>
+		{% endif %}
 	      {% if not nolink %}</a>{% endif %}

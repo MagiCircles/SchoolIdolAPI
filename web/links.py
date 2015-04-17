@@ -13,21 +13,14 @@ def get_links(current_en, current_jp):
                     'language': 'english',
                 },
                 {
-                    'name': 'iOs: Japanese Version',
-                    'url': 'https://itunes.apple.com/jp/app/raburaibu!sukuruaidorufesutibaru/id626776655?mt=8',
-                    'language': 'japanese',
-                },
-                {
-                    'name': 'iOs: Guide to install Japanese games',
-                    'description': 'Follow this tutorial if you couldn\'t download the Japanese game on your iPhone.',
-                    'url': 'http://2p.com/4161143_1/Wanna-Register-for-a-Japanese-iTunes-Account-This-Guide-Teaches-U-How-to-Creat-by-yuko',
-                    'type': 'tutorial',
-                    'language': 'japanese',
-                },
-                {
                     'name': 'Android: English Version',
                     'url': 'https://play.google.com/store/apps/details?id=klb.android.lovelive_en',
                     'language': 'english',
+                },
+                {
+                    'name': 'iOs: Japanese Version',
+                    'url': 'https://itunes.apple.com/jp/app/raburaibu!sukuruaidorufesutibaru/id626776655?mt=8',
+                    'language': 'japanese',
                 },
                 {
                     'name': 'Android: Japanese Version',
@@ -35,14 +28,21 @@ def get_links(current_en, current_jp):
                     'language': 'japanese',
                 },
                 {
+                    'name': 'How to install Japanese apps?',
+                    'description': 'Follow this tutorial to play the Japanese version of the game. Download it directly frome the App Store or Play Store!',
+                    'url': 'https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-install-Japanese-apps%3F',
+                    'language': 'japanese',
+                    'size': 'big',
+                },
+                {
                     'name': 'APKs and Links',
                     'description': 'If none of the Android links worked, that\'s what you\'re searching for.',
                     'url': 'http://platinumdis.co/lovelive',
                     'language': 'world',
+                    'size': 'small',
                 },
                 {
-                    'name': 'Android APKs',
-                    'description': 'Another mirrors to download the APKs directly.',
+                    'name': 'Other Android APKs mirror',
                     'url': 'https://ll.idolactiviti.es/apk/',
                     'language': 'world',
                     'size': 'small',

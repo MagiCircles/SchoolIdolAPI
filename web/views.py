@@ -41,7 +41,7 @@ def globalContext(request):
         context['interfaceColor'] = context['session_preferences']['color']
     return context
 
-def findAccount(id, accounts):
+def findAccount(id, accounts, forceGetAccount=False):
     try:
         id = int(id)
     except:
@@ -49,6 +49,9 @@ def findAccount(id, accounts):
     for account in accounts:
         if account.id == id:
             return account
+    if forceGetAccount:
+        try: return models.Account.objects.get(id=id)
+        except: return None
     return None
 
 def hasJP(accounts):
@@ -180,7 +183,7 @@ def cards(request, card=None, ajax=False):
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = request.GET['is_event']
         if 'account' in request.GET and request.GET['account']:
-            account = findAccount(request.GET['account'], context['accounts'])
+            account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)
             if account:
                 request_get['account'] = account.id
                 if 'max_level' in request.GET and request.GET['max_level'] == '1':

@@ -93,19 +93,6 @@
 	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide Cards only' %}</label>
 	</div>
       </div>
-      <h4>{% trans 'Order' %}</h4>
-      <div class="section order">
-	<select id="id_ordering" name="ordering">
-	  {% for i, order in filters.ordering_choices %}
-	  <option value="{{ i }}"{% if request_get.ordering == i %} selected{% endif %}>{{ order }}</option>
-	  {% endfor %}
-	</select>
-	<br>
-	<div>
-	  <div class="pull-right"><input id="id_reverse_order" name="reverse_order" type="checkbox"{% if request_get.reverse_order %} checked{% endif %}></div>
-	  <label for="id_reverse_order">{% trans 'Reverse order' %}</label>
-	</div>
-      </div>
       {% if user.is_authenticated %}
       <h4>{{ user }}</h4>
       <div class="section yours">
@@ -125,29 +112,42 @@
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_max_level">{% trans 'Max Leveled' %}</label>
+	<label for="id_idolized"><i class="flaticon-idolized"></i> {% trans 'Idolized' %}</label>
+	<select id="id_idolized" name="idolized">
+	  <option value=""></option>
+	  <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
+	  <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
+	</select>
+	<br>
+	<label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
 	<select id="id_max_level" name="max_level">
 	  <option value=""></option>
 	  <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
 	  <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
 	</select>
 	<br>
-	<label for="id_max_bond">{% trans  'Max Bonded (Kizuna)' %}</label>
+	<label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
 	<select id="id_max_bond" name="max_bond">
 	  <option value=""></option>
 	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
 	  <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
 	</select>
-	<br>
-	<label for="id_idolized">{% trans 'Idolized' %}</label>
-	<select id="id_idolized" name="idolized">
-	  <option value=""></option>
-	  <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
-	  <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
-	</select>
       </div>
       {% endif %}
+      <h4>{% trans 'Order' %}</h4>
       <div class="section order">
+	<select id="id_ordering" name="ordering">
+	  {% for i, order in filters.ordering_choices %}
+	  <option value="{{ i }}"{% if request_get.ordering == i %} selected{% endif %}>{{ order }}</option>
+	  {% endfor %}
+	</select>
+	<br>
+	<div>
+	  <div class="pull-right"><input id="id_reverse_order" name="reverse_order" type="checkbox"{% if request_get.reverse_order %} checked{% endif %}></div>
+	  <label for="id_reverse_order">{% trans 'Reverse order' %}</label>
+	</div>
+      </div>
+      <div class="section submit">
 	<input type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" value="{% trans 'Go' %}">
 	<br><br><br><br><br>
       </div>

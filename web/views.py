@@ -182,7 +182,7 @@ def cards(request, card=None, ajax=False):
         if 'is_event' in request.GET and request.GET['is_event']:
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = request.GET['is_event']
-        if 'account' in request.GET and request.GET['account']:
+        if 'account' in request.GET and request.GET['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
             account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)
             if account:
                 request_get['account'] = account.id

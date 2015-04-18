@@ -187,22 +187,19 @@ def cards(request, card=None, ajax=False):
             if account:
                 request_get['account'] = account.id
                 if 'max_level' in request.GET and request.GET['max_level'] == '1':
-                    cards = cards.filter(ownedcards__owner_account=account,
-                                         ownedcards__max_level=True)
+                    cards = cards.filter(id__in=models.OwnedCard.objects.filter(owner_account=account, max_level=True).values('card'))
                     request_get['max_level'] = '1'
                 elif 'max_level' in request.GET and request.GET['max_level'] == '-1':
                     cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, max_level=True).values('card'))
                     request_get['max_level'] = '-1'
                 if 'max_bond' in request.GET and request.GET['max_bond'] == '1':
-                    cards = cards.filter(ownedcards__owner_account=account,
-                                         ownedcards__max_bond=True)
+                    cards = cards.filter(id__in=models.OwnedCard.objects.filter(owner_account=account, max_bond=True).values('card'))
                     request_get['max_bond'] = '1'
                 elif 'max_bond' in request.GET and request.GET['max_bond'] == '-1':
                     cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, max_bond=True).values('card'))
                     request_get['max_bond'] = '-1'
                 if 'idolized' in request.GET and request.GET['idolized'] == '1':
-                    cards = cards.filter(ownedcards__owner_account=account,
-                                         ownedcards__idolized=True).exclude(ownedcards__stored='Favorite')
+                    cards = cards.filter(id__in=models.OwnedCard.objects.filter(owner_account=account, idolized=True).exclude(stored='Favorite').values('card'))
                     request_get['idolized'] = '1'
                 elif 'idolized' in request.GET and request.GET['idolized'] == '-1':
                     cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, idolized=True).exclude(stored='Favorite').values('card'))

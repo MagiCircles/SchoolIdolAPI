@@ -65,9 +65,9 @@ def getUserPreferencesAvatar(user, preferences, size):
         preferences = model_to_dict(preferences)
     default = 'http://schoolido.lu/static/kotori.jpg'
     if preferences['twitter']:
-        default = 'http://img.tweetimag.es/i/' + preferences['twitter'] + '_o'
+        default = 'http://schoolido.lu/avatar/twitter/' + preferences['twitter']
     elif preferences['facebook']:
-        default = 'http://graph.facebook.com/' + preferences['facebook'] + '/picture'
+        default = 'http://schoolido.lu/avatar/facebook/' + preferences['facebook']
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
@@ -783,3 +783,8 @@ def mapview(request):
         if 'session_preferences' in context and 'latitude' in context['session_preferences'] and context['session_preferences']['latitude']:
             context['you'] = context['session_preferences']
     return render(request, 'map.html', context)
+
+def avatar_twitter(request, username):
+    return redirect('http://avatars.io/twitter/' + username + '?size=large')
+def avatar_facebook(request, username):
+    return redirect('http://avatars.io/facebook/' + username + '?size=large')

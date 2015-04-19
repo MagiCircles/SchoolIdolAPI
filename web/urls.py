@@ -37,5 +37,8 @@ urlpatterns = patterns('',
     url(r'^ajax/feed[/]+$', views.ajaxfeed, name='ajaxfeed'),
     url(r'^ajax/eventparticipations/(?P<account>\d+)[/]+$', views.ajaxeventparticipations, name='ajaxeventparticipations'),
 
+    url(r'^avatar/twitter/(?P<username>[\w.@+-]+)[/]+$', views.avatar_twitter, name='avatar_twitter'),
+    url(r'^avatar/facebook/(?P<username>[\w.@+-]+)[/]+$', views.avatar_facebook, name='avatar_facebook'),
+
     url(r'^i18n/', include('django.conf.urls.i18n')),
 )

@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 def get_links(current_en, current_jp):
     return [
         {
-            'name': 'Download',
+            'name': _('Download'),
             'link': 'download',
             'idol': 'Kousaka Honoka',
             'links': [

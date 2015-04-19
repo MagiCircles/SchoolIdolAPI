@@ -171,7 +171,7 @@ function changeAccount() {
 	$('#sidebar-wrapper #id_max_bond').prop('disabled', 'disabled');
     } else {
 	$('#sidebar-wrapper #id_stored').prop('disabled', false);
-	$('#sidebar-wrapper #id_stored').val('Deck').change();
+	$('#sidebar-wrapper #id_stored').val('Album').change();
 	$('#sidebar-wrapper #id_idolized').prop('disabled', false);
 	$('#sidebar-wrapper #id_max_level').prop('disabled', false);
 	$('#sidebar-wrapper #id_max_bond').prop('disabled', false);

@@ -57,62 +57,62 @@ msgstr "Boîte de cadeaux"
 msgid "Wish List"
 msgstr "Souhaitées"
 
-#: api/models.py:221 web/forms.py:92 web/templates/profile.html:184
+#: api/models.py:222 web/forms.py:92 web/templates/profile.html:184
 msgid "Nickname"
 msgstr "Pseudo"
 
-#: api/models.py:222 web/templates/profile.html:188
+#: api/models.py:223 web/templates/profile.html:188
 msgid "Friend ID"
 msgstr "Friend ID"
 
-#: api/models.py:222
+#: api/models.py:223
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
 msgstr "Le Friend ID se trouve dans la section \"Friends\" sur l'écran d'accueil, puis sur \"ID Search\". Grâce à ce numéro, les autres joueurs pourront envoyer des demandes en ami ou envoyer des messages."
 
-#: api/models.py:224
+#: api/models.py:225
 msgid "Transfer Code"
 msgstr "Code de transfert de compte"
 
-#: api/models.py:224
+#: api/models.py:225
 msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
 msgstr "C'est important de toujours conserver une copie du code de transfert, puisque celui-ci vous permettra de récupérer votre compte si vous perdez votre mobile. Vous pouvez le stocker ici : personne d'autre que vous ne pourra le voir. Pour le générer, allez dans \"settings\", puis utilisez le premier bouton juste en dessous de celui pour changer de pseudo."
 
-#: api/models.py:227
+#: api/models.py:228
 msgid "Language"
 msgstr "Langue"
 
-#: api/models.py:227
+#: api/models.py:228
 msgid "This is the version of the game you play."
 msgstr "La version du jeu que vous utilisez."
 
-#: api/models.py:228 web/templates/profile.html:206
+#: api/models.py:229 web/templates/profile.html:206
 msgid "Operating System"
 msgstr "Système d'exploitation"
 
-#: api/models.py:229
+#: api/models.py:230
 msgid "Center"
 msgstr "Centre"
 
-#: api/models.py:229
+#: api/models.py:230
 msgid "The character that talks to you on your home screen."
 msgstr "Le personnage qui vous parle sur l'écran d'accueil."
 
-#: api/models.py:230 web/templates/event.html:72
+#: api/models.py:231 web/templates/event.html:72
 #: web/templates/event.html.py:80 web/templates/event.html:118
 #: web/templates/event.html.py:126 web/templates/profile.html:234
 msgid "Rank"
 msgstr "Niveau"
 
-#: api/models.py:241 web/templates/cards.html:107
+#: api/models.py:242 web/templates/cards.html:107
 msgid "Stored"
 msgstr "Stocké"
 
-#: api/models.py:242 web/templates/addCardForm.html:10
+#: api/models.py:243 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:9
 msgid "Expiration"
 msgstr "Expiration"
 
-#: api/models.py:243 web/templates/cards.html:115
+#: api/models.py:244 web/templates/cards.html:115
 #: web/templates/cards.html.py:118 web/templates/ownedCardOnBottomCard.html:14
 msgid "Idolized"
 msgstr "Idolatrée"
@@ -287,12 +287,12 @@ msgstr "Idole"
 msgid "Rarity"
 msgstr "Rareté"
 
-#: api/models.py:268 web/templates/cards.html:51
+#: api/models.py:269 web/templates/cards.html:51
 #: web/templates/cardsPage.html:35
 msgid "Attribute"
 msgstr "Attribut"
 
-#: api/models.py:246 web/templates/cards.html:23
+#: api/models.py:247 web/templates/cards.html:23
 #: web/templates/cards.html.py:59 web/templates/cardsPage.html:306
 #: web/templates/cardsPage.html.py:393 web/templates/event.html:35
 #: web/templates/ownedCardOnBottomCard.html:23
@@ -328,7 +328,7 @@ msgstr "Tri"
 msgid "Reverse order"
 msgstr "Ordre inversé"
 
-#: api/models.py:244 web/templates/cards.html:122
+#: api/models.py:245 web/templates/cards.html:122
 #: web/templates/cards.html.py:125 web/templates/ownedCardOnBottomCard.html:17
 msgid "Max Leveled"
 msgstr "Niveau MAX"
@@ -345,7 +345,7 @@ msgstr "Pas encore Kizuna MAX"
 msgid "Not Idolized"
 msgstr "Pas encore idolatrée"
 
-#: api/models.py:246 web/templates/cardsPage.html:181
+#: api/models.py:247 web/templates/cardsPage.html:181
 #: web/templates/cardsPage.html.py:186 web/templates/cardsPage.html:195
 #: web/templates/ownedCardOnBottomCard.html:23
 msgid "Level"
@@ -486,31 +486,31 @@ msgstr "Statistiques Pure"
 msgid "Cool's statistics"
 msgstr "Statistiques Cool"
 
-#: api/models.py:269
+#: api/models.py:270
 msgid "Description"
 msgstr "Description"
 
-#: api/models.py:269
+#: api/models.py:270
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr "Cette zone de texte est complètement libre. Il est possible de formater le texte ou d'ajouter des liens en utilisant la syntaxe Markdown."
 
-#: api/models.py:271 web/templates/profile.html:71
+#: api/models.py:272 web/templates/profile.html:71
 msgid "Location"
 msgstr "Lieu"
 
-#: api/models.py:271
+#: api/models.py:272
 msgid "The city you live in."
 msgstr "La ville dans laquelle vous vivez."
 
-#: api/models.py:223 web/templates/profile.html:193
+#: api/models.py:224 web/templates/profile.html:193
 msgid "Accept friend requests"
 msgstr "Accepte les demandes en ami dans le jeu"
 
-#: api/models.py:283
+#: api/models.py:284
 msgid "Private Profile"
 msgstr "Profil privé"
 
-#: api/models.py:283
+#: api/models.py:284
 msgid "If your profile is private, people will only see your center."
 msgstr "Seul le center est visible pour les profils privés."
 
@@ -549,7 +549,7 @@ msgstr "Pour modifier votre avatar, utilisez Gravatar avec la même adresse e-ma
 msgid "Change Avatar"
 msgstr "Modifier l'avatar"
 
-#: api/models.py:270 web/forms.py:19 web/templates/profile.html:65
+#: api/models.py:271 web/forms.py:19 web/templates/profile.html:65
 msgid "Best Girl"
 msgstr "Idole préférée"
 
@@ -568,7 +568,7 @@ msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s compte :"
 msgstr[1] "%(length)s comptes :"
 
-#: api/models.py:245 web/templates/cards.html:129
+#: api/models.py:246 web/templates/cards.html:129
 #: web/templates/cards.html.py:132 web/templates/ownedCardOnBottomCard.html:20
 msgid "Max Bonded (Kizuna)"
 msgstr "Kizuna MAX"
@@ -619,17 +619,17 @@ msgstr "Abonnements"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr "Pour chercher les cartes, les trier, les modifier ou en ajouter de nouvelles, rendez-vous sur la page des cartes et utilisez les filtres."
 
-#: api/models.py:256 web/forms.py:89 web/templates/event_ranking.html:13
+#: api/models.py:257 web/forms.py:89 web/templates/event_ranking.html:13
 #: web/templates/event_ranking.html:38
 msgid "Ranking"
 msgstr "Classement"
 
-#: api/models.py:257 web/templates/ajaxevents.html:25
+#: api/models.py:258 web/templates/ajaxevents.html:25
 #: web/templates/event_ranking.html:26
 msgid "Song Ranking"
 msgstr "Classement Chanson"
 
-#: api/models.py:258 web/templates/ajaxevents.html:31
+#: api/models.py:259 web/templates/ajaxevents.html:31
 #: web/templates/event.html:68 web/templates/event.html.py:76
 #: web/templates/event.html:114 web/templates/event.html.py:122
 #: web/templates/event_ranking.html:28
@@ -674,8 +674,8 @@ msgstr "Supprimer"
 msgid "Activities"
 msgstr "Activités"
 
-#: api/models.py:275 api/models.py:276 api/models.py:277 api/models.py:278
-#: api/models.py:279 api/models.py:281 api/models.py:282
+#: api/models.py:276 api/models.py:277 api/models.py:278 api/models.py:279
+#: api/models.py:280 api/models.py:282 api/models.py:283
 msgid "Write your username only, no URL."
 msgstr "Nom d'utilisateur uniquement, pas d'URL."
 
@@ -865,19 +865,19 @@ msgstr "a augmenté son niveau"
 msgid "Ranked in event"
 msgstr "a ajouté son rang à un événement"
 
-#: api/models.py:225 web/templates/profile.html:215
+#: api/models.py:226 web/templates/profile.html:215
 msgid "Device"
 msgstr "Appareil"
 
-#: api/models.py:225
+#: api/models.py:226
 msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
 msgstr "Modèle de téléphone/tablette. Exemple : Nexus 5, iPhone 4, iPad 2, ..."
 
-#: api/models.py:226 web/templates/profile.html:221
+#: api/models.py:227 web/templates/profile.html:221
 msgid "Play with"
 msgstr "Joue avec"
 
-#: api/models.py:239 api/models.py:255 web/templates/cards.html:99
+#: api/models.py:240 api/models.py:256 web/templates/cards.html:99
 msgid "Account"
 msgstr "Compte"
 
@@ -889,10 +889,6 @@ msgstr "Vérification"
 #: web/links.py:32
 msgid "How to install Japanese apps?"
 msgstr "Comments installer des applications japonaise ?"
-
-#: web/links.py:33
-msgid "Follow this tutorial to play the Japanese version of the game. You'll be able to download it directly frome the App Store or Play Store!"
-msgstr "Suis ce tutorial pour installer la version japonaise directement depuis l'App Store ou le Play Store !"
 
 #: web/links.py:38
 msgid "APKs and Links"
@@ -1210,10 +1206,6 @@ msgstr "Discographie de LoveLive!"
 msgid "LoveLive! The Manga"
 msgstr "Le manga LoveLive!"
 
-#: web/links.py:574
-msgid "Buy μ's music on iTunes"
-msgstr "Achète la musique de μ's sur iTunes"
-
 #: web/links.py:580
 msgid "Love Live music on videos"
 msgstr "Les chansons en vidéos"
@@ -1245,4 +1237,12 @@ msgstr "Demande à être vérifié"
 #: web/views.py:318 web/views.py:619
 msgid "Only verified accounts can have a rank above 200. Contact us to get verified!"
 msgstr "Seuls les comptes vérifiés peuvent avoir un niveau au dessus de 200. Contacte-nous pour obtenir une vérification !"
+
+#: web/links.py:33
+msgid "Follow this tutorial to play the Japanese version of the game. You'll be able to download it directly from the App Store or Play Store!"
+msgstr "Suis ce tutorial pour installer la version japonaise directement depuis l'App Store ou le Play Store !"
+
+#: web/links.py:574
+msgid "Buy music on iTunes"
+msgstr "Achète la musique de μ's sur iTunes"
 

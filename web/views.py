@@ -65,9 +65,9 @@ def getUserPreferencesAvatar(user, preferences, size):
         preferences = model_to_dict(preferences)
     default = 'http://schoolido.lu/static/kotori.jpg'
     if preferences['twitter']:
-        default = 'http://avatars.io/twitter/' + preferences['twitter'] + '?size=large'
+        default = 'http://img.tweetimag.es/i/' + preferences['twitter'] + '_o'
     elif preferences['facebook']:
-        default = 'http://avatars.io/facebook/' + preferences['facebook'] + '?size=large'
+        default = 'http://graph.facebook.com/' + preferences['facebook'] + '/picture'
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))

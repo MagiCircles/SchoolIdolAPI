@@ -11,3 +11,4 @@ def playWithToString(value):
 
 register.filter('verifiedToString', verifiedToString)
 register.filter('playWithToString', playWithToString)
+register.filter('activityMessageToString', models.activityMessageToString)

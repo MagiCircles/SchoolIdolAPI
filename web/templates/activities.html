@@ -2,6 +2,7 @@
 {% load imageurl %}
 {% load activitychange %}
 {% load storedChoiceToString %}
+{% load choicesToString %}
 {% for activity in activities %}
 {% with activity|activitychange as checkchange %}
 {% ifchanged checkchange %}
@@ -39,7 +40,7 @@
       <div>
 	<small class="date">{{ activity.creation }}</small><br>
 	<strong class="account">{{ activity.account }}</strong><br>
-	<span class="message">{% trans activity.message %}
+	<span class="message">{% trans activity.message|activityMessageToString %}
 	  {% if activity.message == 'Rank Up' %}
 	  {% elif activity.message == 'Ranked in event' %}
 	  <br><small>{{ activity.eventparticipation.event }}</small>

@@ -52,8 +52,21 @@ PLAYWITH_CHOICES = (
 )
 PLAYWITH_DICT = dict(PLAYWITH_CHOICES)
 
+ACTIVITY_MESSAGE_CHOICES = (
+    ('Added a card', _('Added a card')),
+    ('Idolized a card', _('Idolized a card')),
+    ('Max Leveled a card', _('Max Leveled a card')),
+    ('Max Bonded a card', _('Max Bonded a card')),
+    ('Rank Up', _('Rank Up')),
+    ('Ranked in event', _('Ranked in event')),
+)
+ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
+
 def verifiedToString(val):
     return VERIFIED_DICT[val]
+
+def activityMessageToString(val):
+    return ACTIVITY_MESSAGE_DICT[val]
 
 def playWithToString(val):
     return PLAYWITH_DICT[val]
@@ -278,7 +291,7 @@ admin.site.register(UserPreferences)
 class Activity(models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
-    message = models.CharField(max_length=300)
+    message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
     rank = models.PositiveIntegerField(null=True, blank=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)

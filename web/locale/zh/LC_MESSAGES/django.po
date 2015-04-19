@@ -57,62 +57,62 @@ msgstr "社員一覽"
 msgid "Wish List"
 msgstr "願望清單"
 
-#: api/models.py:221 web/forms.py:92 web/templates/profile.html:184
+#: api/models.py:222 web/forms.py:92 web/templates/profile.html:184
 msgid "Nickname"
 msgstr "暱稱"
 
-#: api/models.py:222 web/templates/profile.html:188
+#: api/models.py:223 web/templates/profile.html:188
 msgid "Friend ID"
 msgstr "好友 ID"
 
-#: api/models.py:222
+#: api/models.py:223
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
 msgstr "你可以透過首頁的\"好友\"、\"ID 搜尋\"來搜尋你的好友。玩家也可以透過此功能提出好友申請或是寄出短信。"
 
-#: api/models.py:224
+#: api/models.py:225
 msgid "Transfer Code"
 msgstr "資料轉移碼"
 
-#: api/models.py:224
+#: api/models.py:225
 msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
 msgstr "定時發行並保存資料轉移碼是相當重要的，它可以幫助你在遺失裝置時取回你的遊戲帳號。你可以把資料轉移碼記錄在這你，而且只有你能看到它。"
 
-#: api/models.py:227
+#: api/models.py:228
 msgid "Language"
 msgstr "語言"
 
-#: api/models.py:227
+#: api/models.py:228
 msgid "This is the version of the game you play."
 msgstr "這是你的遊戲版本"
 
-#: api/models.py:228 web/templates/profile.html:206
+#: api/models.py:229 web/templates/profile.html:206
 msgid "Operating System"
 msgstr "操作系統"
 
-#: api/models.py:229
+#: api/models.py:230
 msgid "Center"
 msgstr "主力"
 
-#: api/models.py:229
+#: api/models.py:230
 msgid "The character that talks to you on your home screen."
 msgstr "在首頁會和你說話的角色"
 
-#: api/models.py:230 web/templates/event.html:72
+#: api/models.py:231 web/templates/event.html:72
 #: web/templates/event.html.py:80 web/templates/event.html:118
 #: web/templates/event.html.py:126 web/templates/profile.html:234
 msgid "Rank"
 msgstr "等級"
 
-#: api/models.py:241 web/templates/cards.html:107
+#: api/models.py:242 web/templates/cards.html:107
 msgid "Stored"
 msgstr "儲存"
 
-#: api/models.py:242 web/templates/addCardForm.html:10
+#: api/models.py:243 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:9
 msgid "Expiration"
 msgstr "有效日期"
 
-#: api/models.py:243 web/templates/cards.html:115
+#: api/models.py:244 web/templates/cards.html:115
 #: web/templates/cards.html.py:118 web/templates/ownedCardOnBottomCard.html:14
 msgid "Idolized"
 msgstr "特訓"
@@ -287,12 +287,12 @@ msgstr "偶像"
 msgid "Rarity"
 msgstr "稀有度"
 
-#: api/models.py:268 web/templates/cards.html:51
+#: api/models.py:269 web/templates/cards.html:51
 #: web/templates/cardsPage.html:35
 msgid "Attribute"
 msgstr "屬性"
 
-#: api/models.py:246 web/templates/cards.html:23
+#: api/models.py:247 web/templates/cards.html:23
 #: web/templates/cards.html.py:59 web/templates/cardsPage.html:306
 #: web/templates/cardsPage.html.py:393 web/templates/event.html:35
 #: web/templates/ownedCardOnBottomCard.html:23
@@ -328,7 +328,7 @@ msgstr "其他"
 msgid "Reverse order"
 msgstr "順序相反"
 
-#: api/models.py:244 web/templates/cards.html:122
+#: api/models.py:245 web/templates/cards.html:122
 #: web/templates/cards.html.py:125 web/templates/ownedCardOnBottomCard.html:17
 msgid "Max Leveled"
 msgstr "已滿等"
@@ -345,7 +345,7 @@ msgstr "絆未滿"
 msgid "Not Idolized"
 msgstr "尚未特訓"
 
-#: api/models.py:246 web/templates/cardsPage.html:181
+#: api/models.py:247 web/templates/cardsPage.html:181
 #: web/templates/cardsPage.html.py:186 web/templates/cardsPage.html:195
 #: web/templates/ownedCardOnBottomCard.html:23
 msgid "Level"
@@ -486,31 +486,31 @@ msgstr "Pure 的統計"
 msgid "Cool's statistics"
 msgstr "Cool 的統計"
 
-#: api/models.py:269
+#: api/models.py:270
 msgid "Description"
 msgstr "描述"
 
-#: api/models.py:269
+#: api/models.py:270
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr "寫下你想寫的。如果你想要制定文本，請使用\"Markdown\""
 
-#: api/models.py:271 web/templates/profile.html:71
+#: api/models.py:272 web/templates/profile.html:71
 msgid "Location"
 msgstr "地點"
 
-#: api/models.py:271
+#: api/models.py:272
 msgid "The city you live in."
 msgstr "你住的城市"
 
-#: api/models.py:223 web/templates/profile.html:193
+#: api/models.py:224 web/templates/profile.html:193
 msgid "Accept friend requests"
 msgstr "接受交友申請"
 
-#: api/models.py:283
+#: api/models.py:284
 msgid "Private Profile"
 msgstr "私人資料"
 
-#: api/models.py:283
+#: api/models.py:284
 msgid "If your profile is private, people will only see your center."
 msgstr "如果你的個人資料是私密的，其他人將只能看到你的主唱"
 
@@ -548,7 +548,7 @@ msgstr "使用Gravatar和同一個郵件地址來更換你的頭像"
 msgid "Change Avatar"
 msgstr "更換頭像"
 
-#: api/models.py:270 web/forms.py:19 web/templates/profile.html:65
+#: api/models.py:271 web/forms.py:19 web/templates/profile.html:65
 msgid "Best Girl"
 msgstr "最喜歡的女孩"
 
@@ -566,7 +566,7 @@ msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s 個帳號:"
 
-#: api/models.py:245 web/templates/cards.html:129
+#: api/models.py:246 web/templates/cards.html:129
 #: web/templates/cards.html.py:132 web/templates/ownedCardOnBottomCard.html:20
 msgid "Max Bonded (Kizuna)"
 msgstr "絆滿"
@@ -617,17 +617,17 @@ msgstr "正在關注"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr "請到卡片的頁面新增或編輯你的卡片"
 
-#: api/models.py:256 web/forms.py:89 web/templates/event_ranking.html:13
+#: api/models.py:257 web/forms.py:89 web/templates/event_ranking.html:13
 #: web/templates/event_ranking.html:38
 msgid "Ranking"
 msgstr "排名"
 
-#: api/models.py:257 web/templates/ajaxevents.html:25
+#: api/models.py:258 web/templates/ajaxevents.html:25
 #: web/templates/event_ranking.html:26
 msgid "Song Ranking"
 msgstr "活動歌曲排名"
 
-#: api/models.py:258 web/templates/ajaxevents.html:31
+#: api/models.py:259 web/templates/ajaxevents.html:31
 #: web/templates/event.html:68 web/templates/event.html.py:76
 #: web/templates/event.html:114 web/templates/event.html.py:122
 #: web/templates/event_ranking.html:28
@@ -671,8 +671,8 @@ msgstr "刪除"
 msgid "Activities"
 msgstr ""
 
-#: api/models.py:275 api/models.py:276 api/models.py:277 api/models.py:278
-#: api/models.py:279 api/models.py:281 api/models.py:282
+#: api/models.py:276 api/models.py:277 api/models.py:278 api/models.py:279
+#: api/models.py:280 api/models.py:282 api/models.py:283
 msgid "Write your username only, no URL."
 msgstr ""
 
@@ -816,79 +816,75 @@ msgstr ""
 
 #: api/models.py:42
 msgid "Silver Verified"
-msgstr ""
+msgstr "銀色認證"
 
 #: api/models.py:43
 msgid "Gold Verified"
-msgstr ""
+msgstr "金色認證"
 
 #: api/models.py:48
 msgid "Thumbs"
-msgstr ""
+msgstr "拇指"
 
 #: api/models.py:49
 msgid "All fingers"
-msgstr ""
+msgstr "手指"
 
 #: api/models.py:50
 msgid "One hand"
-msgstr ""
+msgstr "單手"
 
 #: api/models.py:51
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: api/models.py:56
 msgid "Added a card"
-msgstr ""
+msgstr "加了卡牌"
 
 #: api/models.py:57
 msgid "Idolized a card"
-msgstr ""
+msgstr "覺醒卡牌"
 
 #: api/models.py:58
 msgid "Max Leveled a card"
-msgstr ""
+msgstr "滿等卡牌"
 
 #: api/models.py:59
 msgid "Max Bonded a card"
-msgstr ""
+msgstr "滿絆在一個卡牌"
 
 #: api/models.py:60
 msgid "Rank Up"
-msgstr ""
+msgstr "升等"
 
 #: api/models.py:61
 msgid "Ranked in event"
-msgstr ""
+msgstr "有排名在活動"
 
-#: api/models.py:225 web/templates/profile.html:215
+#: api/models.py:226 web/templates/profile.html:215
 msgid "Device"
-msgstr ""
+msgstr "手機機型"
 
-#: api/models.py:225
+#: api/models.py:226
 msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
-msgstr ""
+msgstr "你用的手機機型。例:Nexus 5, iPhone 4, iPad 2, ... "
 
-#: api/models.py:226 web/templates/profile.html:221
+#: api/models.py:227 web/templates/profile.html:221
 msgid "Play with"
-msgstr ""
+msgstr "你用哪個手玩"
 
-#: api/models.py:239 api/models.py:255 web/templates/cards.html:99
+#: api/models.py:240 api/models.py:256 web/templates/cards.html:99
 msgid "Account"
-msgstr ""
+msgstr "帳號"
 
 #: web/forms.py:90 web/templates/profile.html:239
 #: web/templates/profile.html.py:248
 msgid "Verified"
-msgstr ""
+msgstr "認證"
 
 #: web/links.py:32
 msgid "How to install Japanese apps?"
-msgstr ""
-
-#: web/links.py:33
-msgid "Follow this tutorial to play the Japanese version of the game. You'll be able to download it directly frome the App Store or Play Store!"
 msgstr ""
 
 #: web/links.py:38
@@ -925,7 +921,7 @@ msgstr ""
 
 #: web/links.py:80
 msgid "Menu's Translation"
-msgstr ""
+msgstr "菜單翻譯"
 
 #: web/links.py:81
 msgid "Useful if you play on the Japanese version."
@@ -937,7 +933,7 @@ msgstr ""
 
 #: web/links.py:93 web/links.py:100
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "常見問題(F.A.Q)"
 
 #: web/links.py:107
 msgid "List of Items"
@@ -965,7 +961,7 @@ msgstr ""
 
 #: web/links.py:159
 msgid "News & Updates"
-msgstr ""
+msgstr "新聞及更新"
 
 #: web/links.py:164
 msgid "Game Facebook Page"
@@ -985,11 +981,11 @@ msgstr ""
 
 #: web/links.py:212
 msgid "English In Game Updates"
-msgstr ""
+msgstr "英服更新新聞"
 
 #: web/links.py:218
 msgid "Japanese In Game Updates"
-msgstr ""
+msgstr "日服更新新聞"
 
 #: web/links.py:219
 msgid "Translated in English."
@@ -1001,7 +997,7 @@ msgstr ""
 
 #: web/links.py:233
 msgid "Communities"
-msgstr ""
+msgstr "社交"
 
 #: web/links.py:247
 msgid "Mainly casual gamers but very active community."
@@ -1149,7 +1145,7 @@ msgstr ""
 
 #: web/links.py:479
 msgid "List of all events"
-msgstr ""
+msgstr "全部活動列表"
 
 #: web/links.py:482
 msgid "Events information + Hall of fame of all scores of the players from the School Idol Tomodachi community."
@@ -1157,7 +1153,7 @@ msgstr ""
 
 #: web/links.py:487
 msgid "Event Cards"
-msgstr ""
+msgstr "活動卡"
 
 #: web/links.py:495
 msgid "Fall in love with idols"
@@ -1207,10 +1203,6 @@ msgstr ""
 msgid "LoveLive! The Manga"
 msgstr ""
 
-#: web/links.py:574
-msgid "Buy μ's music on iTunes"
-msgstr ""
-
 #: web/links.py:580
 msgid "Love Live music on videos"
 msgstr ""
@@ -1237,9 +1229,17 @@ msgstr ""
 
 #: web/templates/profile.html:242 web/templates/profile.html.py:249
 msgid "Get verified"
-msgstr ""
+msgstr "獲取認證"
 
 #: web/views.py:318 web/views.py:619
 msgid "Only verified accounts can have a rank above 200. Contact us to get verified!"
+msgstr ""
+
+#: web/links.py:33
+msgid "Follow this tutorial to play the Japanese version of the game. You'll be able to download it directly from the App Store or Play Store!"
+msgstr ""
+
+#: web/links.py:574
+msgid "Buy music on iTunes"
 msgstr ""
 

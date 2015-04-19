@@ -571,7 +571,7 @@ def get_links(current_en, current_jp):
                     'language': 'japanese',
                 },
                 {
-                    'name': _('Buy μ\'s music on iTunes'),
+                    'name': _('Buy music on iTunes'),
                     'url': 'https://itunes.apple.com/jp/artist/ms/id411582529?l=en',
                     'type': 'info',
                     'language': 'japanese',

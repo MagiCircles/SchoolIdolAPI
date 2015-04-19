@@ -30,7 +30,7 @@ def get_links(current_en, current_jp):
                 },
                 {
                     'name': _('How to install Japanese apps?'),
-                    'description': _('Follow this tutorial to play the Japanese version of the game. You\'ll be able to download it directly frome the App Store or Play Store!'),
+                    'description': _('Follow this tutorial to play the Japanese version of the game. You\'ll be able to download it directly from the App Store or Play Store!'),
                     'url': 'https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-install-Japanese-apps%3F',
                     'language': 'japanese',
                 },

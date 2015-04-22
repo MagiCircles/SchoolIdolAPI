@@ -48,8 +48,16 @@ def get_links(current_en, current_jp):
                     'size': 'small',
                 },
                 {
-                    'name': _('Play on a rooted Android'),
+                    'name': _('APKs to play on rooted Android'),
                     'description': _('"Illegal access detected!"? Here is the solution.'),
+                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/33134h/patched_school_idol_festival_apks_for_rooted/',
+                    'type': 'tutorial',
+                    'language': 'world',
+                    'size': 'small',
+                },
+                {
+                    'name': _('Play on a rooted Android'),
+                    'description': _('If the APKs above didn\'t work, here is a backup solution'),
                     'url': 'http://www.reddit.com/r/SchoolIdolFestival/wiki/rooting',
                     'type': 'tutorial',
                     'language': 'world',

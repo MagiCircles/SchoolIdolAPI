@@ -1,7 +1,10 @@
 from django.core.management.base import BaseCommand, CommandError
 from api import models
+from web.views import getUserAvatar, getUserPreferencesAvatar
+from web.templatetags.imageurl import chibiimage
 from geopy.geocoders import Nominatim
 import time, sys
+from django.utils.html import escape
 
 def getLatLong(geolocator, user):
     time.sleep(1)
@@ -34,3 +37,22 @@ class Command(BaseCommand):
         geolocator = Nominatim()
         for user in map:
             getLatLong(geolocator, user)
+
+        map = models.UserPreferences.objects.filter(latitude__isnull=False).select_related('user')
+
+        mapcount = map.count()
+        f = open('mapcount.json', 'w')
+        print >> f, mapcount
+        f.close()
+
+        mapcache = ""
+        for u in map:
+            mapcache += "  {'username': '%s',\
+  'avatar': '%s',\
+  'location': '%s',\
+  'icon': '%s',\
+  'latlong': new google.maps.LatLng(%f, %f) },\
+" % (escape(u.user.username), escape(getUserPreferencesAvatar(u.user, u, 200)), escape(u.location), escape(chibiimage(u.best_girl)), u.latitude, u.longitude)
+        with open('map.json', 'w') as f:
+            f.write(mapcache.encode('UTF-8'))
+        f.close()

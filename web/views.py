@@ -778,7 +778,10 @@ def twitter(request):
 
 def mapview(request):
     context = globalContext(request)
-    context['map'] = models.UserPreferences.objects.filter(latitude__isnull=False).select_related('user')
+    with open ("map.json", "r") as f:
+        context['map'] = f.read().replace('\n', '')
+    with open ("mapcount.json", "r") as f:
+        context['mapcount'] = f.read().replace('\n', '')
     if request.user.is_authenticated() and not request.user.is_anonymous():
         if 'session_preferences' in context and 'latitude' in context['session_preferences'] and context['session_preferences']['latitude']:
             context['you'] = context['session_preferences']

@@ -440,7 +440,7 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
-                    'name': ('Current' if current_en.is_world_current() else 'Latest') + ' Event English Version',
+                    'name': _('Latest Event English Version'),
                     'description': current_en.english_name,
                     'url': '/event/' + current_en.japanese_name + '/',
                     'size': 'big',
@@ -448,7 +448,7 @@ def get_links(current_en, current_jp):
                     'language': 'english',
                 },
                 {
-                    'name': ('Current' if current_en.is_japan_current() else 'Latest') + ' Event Japanese Version',
+                    'name': _('Latest Event Japanese Version'),
                     'description': current_jp.japanese_name,
                     'url': '/event/' + current_jp.japanese_name + '/',
                     'size': 'big',
@@ -535,21 +535,22 @@ def get_links(current_en, current_jp):
             'idol': 'Sonoda Umi',
             'links': [
                 {
+                    'name': _('LoveLive! Wikia'),
+                    'url': 'http://love-live.wikia.com/wiki/Main_Page',
+                    'image': '/static/links/wikia.png',
+                    'type': 'info',
+                    'language': 'world',
+                    'size': 'big',
+                },
+                {
                     'name': _('Official Website'),
                     'url': 'http://www.lovelive-anime.jp/',
                     'language': 'japanese',
                     'type': 'info',
-                    'size': 'big',
                 },
                 {
                     'name': _('Information about the anime'),
                     'url': 'http://myanimelist.net/anime/15051/Love_Live!_School_Idol_Project',
-                    'type': 'info',
-                    'language': 'world',
-                },
-                {
-                    'name': _('General Wiki about LoveLive!'),
-                    'url': 'http://love-live.wikia.com/wiki/Main_Page',
                     'type': 'info',
                     'language': 'world',
                 },

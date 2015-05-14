@@ -194,6 +194,9 @@
 		{% elif url.language == 'world' %}
 		<!-- <div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-world"></i></div> -->
 		{% endif %}
+		{% if url.image %}
+		<div class="pull-right"><img src="{{ url.image }}" class="image" height="{% if url.size == 'big' %}35{% elif url.size == 'small'%}20{% else %}25{% endif %}"></div>
+		{% endif %}
 		<h{% if url.size == 'small' %}5{% else %}4{% endif %} class="list-group-item-heading{% if url.size == 'big' %} fontx2{% endif %}">{{ url.name }}</h{% if url.size == 'small' %}5{% else %}4{% endif %}>
 		{% if url.description %}
 		<p class="list-group-item-text">{{ url.description }}</p>

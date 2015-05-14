@@ -423,6 +423,15 @@ main {
 	}
 	.list-group-item {
 	    .list-group-item-variant(@color);
+	    .image {
+		border-radius: 5px;
+		padding: 2px;
+	    }
+	    &:hover {
+		.image {
+		    background-color: lighten(@color, 50%);
+		}
+	    }
 	}
     }
 }

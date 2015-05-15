@@ -506,7 +506,7 @@ class Command(BaseCommand):
                 if idol.attribute and not redownload:
                     continue
                 print '  Import Idol', idol, '...',
-                f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(idol))
+                f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(idol.name))
                 soup = BeautifulSoup(f.read())
                 content = soup.find('div', { 'id': 'mw-content-text'})
                 if content is not None:

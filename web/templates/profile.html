@@ -234,7 +234,7 @@
 		<th>{% trans 'Rank' %}</th>
 		<td><h3>{{ account.rank }}</h3></td>
 	      </tr>
-	      {% if account.verified %}
+	      {% if account.verified > 0 and account.verified < 3 %}
 	      <tr>
 		<th>{% trans 'Verified' %}</th>
 		<td><h3><span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span> <small>{{ account.verified|verifiedToString }}</small></h3>
@@ -243,10 +243,14 @@
 		  {% endif %}
 		</td>
 	      </tr>
-	      {% elif is_me %}
+	      {% elif is_me and account.deck and account.friend_id and account.rank >= 50 %}
 	      <tr>
 		<th>{% trans 'Verified' %}</th>
-		<td><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts" target="_blank">{% trans 'Get verified' %}</a>
+		<td>
+		  {% if account.verified == 3 %}
+		  {% trans 'You are Bronze Verified. Only you can see it.' %}<br>
+		  {% endif %}
+		  <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts" target="_blank">{% trans 'Get verified' %}{% if account.verified == 3 %} ({% trans 'Silver' %} / {% trans 'Gold' %}){% endif %}</a>
 		</td>
 	      </tr>
 	      {% endif %}

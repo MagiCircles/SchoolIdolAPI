@@ -26,7 +26,7 @@
 	  <table class="table margin-novertical">
 	    {% for account in user.accounts %}
 	    <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';"
-		{% if account.verified %} data-content="{{ account.verified|verifiedToString }}" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover"{% endif %}>
+		{% if account.verified > 0 and account.verified < 3%} data-content="{{ account.verified|verifiedToString }}" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover"{% endif %}>
 	      <td>
 		{% if account.center %}
 		<div class="circled_card_70 {{ account.center.card.attribute }} {{ account.center.card.rarity }} pull-left margin10"
@@ -40,7 +40,7 @@
 		{% endif %}
 	      </td>
 	      <td class="fontx2">
-		{% if account.verified %}
+		{% if account.verified > 0 and account.verified < 3 %}
 		<span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span>
 		{% endif %}
 	      </td>

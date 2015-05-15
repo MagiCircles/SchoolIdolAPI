@@ -41,6 +41,7 @@ VERIFIED_CHOICES = (
     (0, ''),
     (1, _('Silver Verified')),
     (2, _('Gold Verified')),
+    (3, ''),
 )
 VERIFIED_DICT = dict(VERIFIED_CHOICES)
 

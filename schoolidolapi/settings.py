@@ -119,6 +119,9 @@ STATIC_URL = '/static/'
 
 IMAGES_HOSTING_PATH = '/'
 
+# If empty, importcards will not use TinyPNG
+TINYPNG_API_KEY = ''
+
 try:
     from local_settings import *
 except ImportError, e:

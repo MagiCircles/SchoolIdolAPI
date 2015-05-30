@@ -8,6 +8,7 @@ import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
 from api import models
 from api.raw import raw_information
+from tinypng import shrink_file
 from web.forms import getGirls
 import re
 import HTMLParser
@@ -85,6 +86,24 @@ def downloadFile(url):
     img_temp.flush()
     return ImageFile(img_temp)
 
+def shrunkImage(picture, url):
+    from django.conf import settings
+    api_key = settings.TINYPNG_API_KEY
+    if not api_key or not url.endswith('.png'):
+        return picture
+    img_shrunked = NamedTemporaryFile(delete=False)
+    shrink_info = shrink_file(
+            picture.name,
+            api_key=api_key,
+            out_filepath=img_shrunked.name
+    )
+    img_shrunked.flush()
+    return ImageFile(img_shrunked)
+
+def downloadShrunkedImage(url):
+    downloaded = downloadFile(url)
+    return shrunkImage(downloaded, url)
+
 def downloadBestWikiaImage(url):
     url2 = url.split('/revision')[0]
     file1 = downloadFile(url)
@@ -92,8 +111,8 @@ def downloadBestWikiaImage(url):
     file2 = downloadFile(url2)
     print 'File 2 Downloaded. ',; sys.stdout.flush()
     if file1.width > file2.width:
-        return file1
-    return file2
+        return shrunkImage(file1, url)
+    return shrunkImage(file2, url2)
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -278,7 +297,7 @@ class Command(BaseCommand):
                             image = content.find('img')
                             if image is not None:
                                 image = 'http://decaf.kouhi.me/' + image.get('src')
-                                event.image.save(name + '.jpg', downloadFile(image))
+                                event.image.save(name + '.jpg', downloadShrunkedImage(image))
                                 print 'Done'
                         f_event.close()
                     except:

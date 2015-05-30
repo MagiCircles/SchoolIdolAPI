@@ -341,7 +341,7 @@ def profile(request, username):
         context['user_accounts'] = user.accounts_set.all()
     if not context['preferences'].private or context['is_me']:
         for account in context['user_accounts']:
-            account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-max_level', '-max_bond', 'card__id')
+            account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
     context['current'] = 'profile'

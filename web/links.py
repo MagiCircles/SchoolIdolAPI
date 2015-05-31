@@ -283,6 +283,13 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': 'Player.me Community',
+                    'url': 'https://player.me/lovelive',
+                    'type': '',
+                    'language': 'world',
+                    'size': 'small',
+                },
+                {
                     'name': 'Fuwanovel Forum',
                     'url': 'http://forums.fuwanovel.org/index.php?/topic/5034-love-live-school-idol-festival-thread/',
                     'type': '',

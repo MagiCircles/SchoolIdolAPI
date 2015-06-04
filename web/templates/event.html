@@ -51,8 +51,7 @@
       }
     </script>
   </h1>
-  {% endif %}
-  {% if soon_happen_japan or soon_happen_world %}
+  {% elif soon_happen_japan or soon_happen_world %}
   <h1 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
     <script>
       var countdowndate = "{% if soon_happen_japan %}{{ event.beginning|torfc2822 }}{% else %}{{ event.english_beginning|torfc2822 }}{% endif %}";

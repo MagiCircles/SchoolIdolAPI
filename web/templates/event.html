@@ -46,6 +46,19 @@
   <h1 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
     <script>
       var countdowndate = "{% if is_japan_current %}{{ event.end|torfc2822 }}{% else %}{{ event.english_end|torfc2822 }}{% endif %}";
+      function countdownRender(data) {
+        $(this.el).text(data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds left');
+      }
+    </script>
+  </h1>
+  {% endif %}
+  {% if soon_happen_japan or soon_happen_world %}
+  <h1 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+    <script>
+      var countdowndate = "{% if soon_happen_japan %}{{ event.beginning|torfc2822 }}{% else %}{{ event.english_beginning|torfc2822 }}{% endif %}";
+      function countdownRender(data) {
+        $(this.el).text('Starts in ' + data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
+      }
     </script>
   </h1>
   {% endif %}

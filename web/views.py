@@ -764,6 +764,7 @@ def event(request, event):
     context['event'] = event
     context['is_world_current'] = event.is_world_current()
     context['is_japan_current'] = event.is_japan_current()
+    context['soon_happen_japan'] = event.soon_happen_japan()
     return render(request, 'event.html', context)
 
 def idols(request):

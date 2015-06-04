@@ -51,7 +51,7 @@
   {% endif %}
   <br>
   <div class="row">
-    {% if not did_happen_world %}<div class="col-lg-3"></div>{% endif %}
+    {% if not soon_happen_world %}<div class="col-lg-3"></div>{% endif %}
     <div class="col-lg-6">
       <h1>{{ event.japanese_name }}<br><small>&nbsp;{% if event.romaji_name and event.romaji_name != event.japanese_name %}{{ event.romaji_name }}{% endif %}</small></h1>
       <br>
@@ -97,7 +97,7 @@
 	</tr>
       </table>
     </div>
-    {% if did_happen_world %}
+    {% if soon_happen_world %}
     <div class="col-lg-6">
       <h1>{% if event.english_name %}{{ event.english_name }}{% else %}{{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
       <br>
@@ -143,11 +143,11 @@
   </div>
 
   <div class="row">
-    {% if not did_happen_world %}<div class="col-lg-3"></div>{% endif %}
+    {% if not soon_happen_world %}<div class="col-lg-3"></div>{% endif %}
     <div class="col-lg-6">
       {% include 'event_ranking.html' with participations=event.japanese_participations %}
     </div>
-    {% if did_happen_world %}
+    {% if soon_happen_world %}
     <div class="col-lg-6">
       {% include 'event_ranking.html' with participations=event.english_participations %}
     </div>

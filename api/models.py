@@ -125,10 +125,18 @@ class Event(models.Model):
     def did_happen_world(self):
         if (self.english_beginning is not None
             and self.english_end is not None):
-            return (timezone.now() > self.english_beginning)
+            return (timezone.now() > self.english_end)
         return (self.beginning is not None
                 and self.end is not None
-                and timezone.now() > (self.beginning + relativedelta(years=1)))
+                and timezone.now() > (self.end + relativedelta(years=1)))
+
+    def soon_happen_world(self):
+        if (self.english_beginning is not None
+            and self.english_end is not None):
+            return (timezone.now() > (self.english_beginning - relativedelta(days=3)))
+        return (self.beginning is not None
+                and self.end is not None
+                and timezone.now() > (self.beginning + relativedelta(years=1) - relativedelta(days=3)))
 
     def __unicode__(self):
         return self.japanese_name

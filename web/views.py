@@ -697,6 +697,7 @@ def event(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
     context['did_happen_world'] = event.did_happen_world()
+    context['soon_happen_world'] = event.soon_happen_world()
 
     if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name:
         context['with_song'] = False
@@ -754,6 +755,11 @@ def event(request, event):
         event.english_participations = event.participations.filter(account__language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])
         event.other_participations = event.other_participations.exclude(account__language='EN')
     event.other_participations = event.other_participations.extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account__language', 'ranking_is_null', 'ranking'])
+
+    if context['soon_happen_world'] and not event.english_beginning:
+        event.english_beginning = event.beginning + relativedelta(years=1, hours=4)
+    if context['soon_happen_world'] and not event.english_end:
+        event.english_end = event.end + relativedelta(years=1, hours=4)
 
     context['event'] = event
     context['is_world_current'] = event.is_world_current()

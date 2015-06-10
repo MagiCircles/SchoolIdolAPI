@@ -95,8 +95,7 @@ msgstr "Центр"
 
 #: api/models.py:230
 msgid "The character that talks to you on your home screen."
-msgstr "Персонаж, который разговаривает с вами в главном меню.\n"
-""
+msgstr "Персонаж, который разговаривает с вами в главном меню."
 
 #: api/models.py:231 web/templates/event.html:72
 #: web/templates/event.html.py:80 web/templates/event.html:118

@@ -116,8 +116,7 @@ msgstr "Истекает"
 #: api/models.py:244 web/templates/cards.html:115
 #: web/templates/cards.html.py:118 web/templates/ownedCardOnBottomCard.html:14
 msgid "Idolized"
-msgstr "Идолизировано\n"
-""
+msgstr "Идолизировано"
 
 #: web/templates/403.html:3 web/templates/403.html.py:4
 msgid "Forbidden"
@@ -1019,8 +1018,7 @@ msgstr "Собирайте карты"
 
 #: web/links.py:300
 msgid "Search for cards using smart filters and ordering."
-msgstr "Ищите карты по тегам и фильтрам\n"
-""
+msgstr "Ищите карты по тегам и фильтрам"
 
 #: web/links.py:307
 msgid "Track your Cards"

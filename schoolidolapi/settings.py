@@ -93,11 +93,12 @@ from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
-    ('zh', _('Chinese')),
     ('es', _('Spanish')),
     ('de', _('German')),
+    ('ru', _('Russian')),
     ('fr', _('French')),
     ('pt', _('Portuguese')),
+    ('zh', _('Chinese')),
 )
 
 TIME_ZONE = 'UTC'

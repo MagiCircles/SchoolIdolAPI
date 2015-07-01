@@ -77,6 +77,9 @@ def getUserAvatar(user, size):
     return getUserPreferencesAvatar(user, preferences, size)
 
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
+    if ownedcard is not None:
+        if ownedcard.card.rarity == 'R' or ownedcard.card.rarity == 'N':
+            return
     models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard, eventparticipation=eventparticipation)
 
 def index(request):

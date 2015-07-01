@@ -8,10 +8,16 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0055_auto_20150621_0412'),
+        ('api', '0054_auto_20150419_0708'),
     ]
 
     operations = [
+        migrations.AlterField(
+            model_name='account',
+            name='verified',
+            field=models.PositiveIntegerField(default=0, choices=[(0, b''), (1, 'Silver Verified'), (2, 'Gold Verified'), (3, b'')]),
+            preserve_default=True,
+        ),
         migrations.AlterField(
             model_name='userpreferences',
             name='facebook',

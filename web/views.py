@@ -15,7 +15,6 @@ from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
-from django.views.decorators.cache import cache_page
 from api import models
 from web import forms, links
 import urllib, hashlib
@@ -80,7 +79,6 @@ def getUserAvatar(user, size):
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
     models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard, eventparticipation=eventparticipation)
 
-@cache_page(60 * 60)
 def index(request):
     context = globalContext(request)
     context['hide_back_button'] = True
@@ -769,7 +767,6 @@ def event(request, event):
     context['soon_happen_japan'] = event.soon_happen_japan()
     return render(request, 'event.html', context)
 
-@cache_page(60 * 60)
 def idols(request):
     context = globalContext(request)
     context['current'] = 'idols'
@@ -779,7 +776,6 @@ def idols(request):
         idol.card = idol.cards.all().order_by('?')[0]
     return render(request, 'idols.html', context)
 
-@cache_page(60 * 60)
 def twitter(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
@@ -787,7 +783,6 @@ def twitter(request):
     context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).exclude(twitter__exact='').values_list('twitter', flat=True)
     return render(request, 'twitter.html', context)
 
-@cache_page(60 * 60)
 def mapview(request):
     context = globalContext(request)
     with open ("map.json", "r") as f:

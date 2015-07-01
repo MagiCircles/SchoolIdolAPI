@@ -6,7 +6,7 @@ from geopy.geocoders import Nominatim
 import time, sys
 from django.utils.html import escape
 
-def getLatLong(geolocator, user):
+def getLatLong(geolocator, user, retry):
     time.sleep(1)
     try:
         location = geolocator.geocode(user.location)
@@ -21,8 +21,11 @@ def getLatLong(geolocator, user):
             user.save()
             print user.user, user.location, 'Invalid location'
     except:
-        print user.user, user.location, 'Error, ', sys.exc_info()[0], 'retry...'
-        getLatLong(geolocator, user)
+        if retry:
+            print user.user, user.location, 'Error, ', sys.exc_info()[0], 'retry...'
+            getLatLong(geolocator, user)
+        else:
+            print user.user, user.location, 'Error, ', sys.exc_info()[0]
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -30,13 +33,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         reload = 'reload' in args
+        retry = 'retry' in args
 
         map = models.UserPreferences.objects.filter(location__isnull=False).exclude(location__exact='')
         if not reload:
             map = map.filter(location_changed__exact=True)
         geolocator = Nominatim()
         for user in map:
-            getLatLong(geolocator, user)
+            getLatLong(geolocator, user, retry)
 
         map = models.UserPreferences.objects.filter(latitude__isnull=False).select_related('user')
 

@@ -293,7 +293,7 @@ class UserPreferences(models.Model):
     reddit = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     line = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric]) # max length not checked
     tumblr = models.CharField(max_length=32, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
-    otonokizaka = models.CharField(verbose_name='Otonokizaka.org Forum', max_length=10, null=True, blank=True, help_text='Write your UID only, no URL.', validators=[alphanumeric])
+    otonokizaka = models.CharField(verbose_name='Otonokizaka.org Forum', max_length=20, null=True, blank=True, help_text='Write your UID only, no URL.', validators=[alphanumeric])
     twitch = models.CharField(max_length=25, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     mal = models.CharField(verbose_name='MyAnimeList', max_length=16, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     private = models.BooleanField(_('Private Profile'), default=False, help_text=_('If your profile is private, people will only see your center.'))

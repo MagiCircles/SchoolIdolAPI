@@ -218,7 +218,7 @@ def cards(request, card=None, ajax=False):
 
         if ('accounts' in context and not hasJP(context['accounts'])
             and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
-            cards = cards.filter(Q(release_date__isnull=True) | Q(id=584) | Q(release_date__lte=(datetime.date.today() - relativedelta(years=1) + relativedelta(days=2)))).filter(Q(is_promo__exact=False) | Q(is_promo__exact=True, id__in=[65, 204, 207, 216, 584])).exclude(is_special__exact=True, id__gte=379)
+            cards = cards.filter(Q(release_date__isnull=True) | Q(id=584) | Q(release_date__lte=(datetime.date.today() - relativedelta(years=1) + relativedelta(days=2)))).filter(Q(is_promo__exact=False) | Q(is_promo__exact=True, id__in=[65, 204, 207, 216, 584, 226, 227, 228, 229, 230, 231, 232, 233, 234])).exclude(is_special__exact=True, id__gte=379)
             request_get['is_world'] = True
 
         if 'ordering' in request.GET and request.GET['ordering']:

@@ -18,7 +18,7 @@ class Command(BaseCommand):
         accounts = models.Account.objects.all()
         for account in accounts:
             to_keep = models.Activity.objects.filter(account=account).order_by('-creation')[:50]
-            to_delete = models.Activity.objects.filter(account=account).exclude(pk__in=to_keep)
+            to_delete = models.Activity.objects.filter(account=account).exclude(pk__in=to_keep.values('pk'))
             count = to_delete.count()
             if count > 0:
                 to_delete.delete()

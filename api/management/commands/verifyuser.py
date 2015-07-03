@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
 from api.models import Account
-import fileinput
 import sys
 
 class Command(BaseCommand):

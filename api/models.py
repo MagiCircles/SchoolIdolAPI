@@ -248,7 +248,7 @@ class Card(models.Model):
         return japanese_attribute(self.attribute)
 
     def is_japan_only(self):
-        return (self.id != 584
+        return (self.id != 584 and self.id != 370
                 and (self.id < 226 or self.id > 234)
                 and ((self.release_date and self.release_date + relativedelta(years=1) - relativedelta(days=2) > datetime.date.today())
                      or (self.is_promo and not self.video_story)

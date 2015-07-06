@@ -17,6 +17,10 @@ function freeModal(title, body, buttons) {
 }
 
 function globalModal(hash) {
+    if (hash == 'donate') {
+	window.location.href = "/donate/";
+	return;
+    }
     $.get('/ajax/modal/' + hash +
 	  '/?interfaceColor=' + getInterfaceColor(), function(data) {
 	      $('#modal .modal-content').html(data);

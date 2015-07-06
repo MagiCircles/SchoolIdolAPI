@@ -147,7 +147,9 @@
     {% if forloop.counter0|mod:3 %}
   </div><div class="row">
     {% endif%}
-    <div class="col-sm-{% if donators_high|length == 1 %}12{% elif donators_high|length == 2 %}6{% else %}4{% endif %}">
+    {% if donators_high|length == 1 %}<div class="col-sm-4"></div>{% endif %}
+    {% if donators_high|length == 2 %}<div class="col-sm-2"></div>{% endif %}
+    <div class="col-sm-4">
       <div class="panel panel-{{ donator.preferences.color }} panel-donation">
 	<div class="panel-heading">
 	  <strong>{{ donator.username }}</strong> - 
@@ -173,6 +175,8 @@
 	</div>
       </div>
     </div>
+    {% if donators_high|length == 1 %}<div class="col-sm-4"></div>{% endif %}
+    {% if donators_high|length == 2 %}<div class="col-sm-2"></div>{% endif %}
     {% endfor %}
   </div>
   <br><br>
@@ -204,7 +208,7 @@
 	      </a>
 	      {% if donator.preferences.donation_link %}
 	      <br><br>
-	      <a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-lg">
+	      <a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %}">
 		{{ donator.preferences.donation_link_title }}
 	      </a>
 	      {% endif %}

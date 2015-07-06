@@ -20,7 +20,7 @@
 	    <span class="tier">{{ tier }}</span>
 	  </td>
 	  <td class="text-left"><a href="/user/{{ participation.account.owner.username }}/#{{ participation.account.pk }}">
-	      <img src="{{ participation.account.owner|gravatar:20 }}" alt="avatar" width="20">
+	      {% include 'include/avatar.html' with av_user=participation.account.owner av_fixed=True av_size=15 av_image_size=40 av_inline=True %}
 	      {{ participation.account.nickname }}</a></td>
 	  {% if with_song %}
 	  <td class="text-right">{% if participation.song_ranking %}<small class="text-grey">{% trans 'Song Ranking' %} # {{ participation.song_ranking }}{% endif %} </small></td>

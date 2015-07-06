@@ -1,14 +1,9 @@
 from django import template
-from web.views import getUserAvatar, getUserPreferencesAvatar
+from web.views import getUserAvatar
 
 register = template.Library()
 
-def gravatar(value, size=200):
-    return getUserAvatar(value, size)
+def _getUserAvatar(user, size=200):
+    return getUserAvatar(user, size)
 
-def gravatarpreferences(user, preferences):
-    return getUserPreferencesAvatar(user, preferences, 200)
-
-register.filter('gravatar', gravatar)
-register.filter('gravatarpreferences', gravatarpreferences)
-
+register.filter('gravatar', _getUserAvatar)

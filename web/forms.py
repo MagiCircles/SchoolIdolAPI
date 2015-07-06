@@ -91,3 +91,8 @@ class UserSearchForm(Form):
         ('-date_joined', _('New players')),
         ('username', _('Nickname')),
     ], initial='-accounts_set__rank')
+
+class UserProfileStaffForm(ModelForm):
+    class Meta:
+        model = models.UserPreferences
+        fields = ('status', 'donation_link', 'donation_link_title')

@@ -16,17 +16,29 @@
 <div id="fb-root"></div>
 <div class="container">
   <br><br>
+  {% if user.is_staff %}
+  <form method="POST" class="alert alert-danger">
+    <h1>Staff Danger Zone</h1>
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_preferences wrap=0 %}
+    <div class="text-right">
+      <input name="editPreferences" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+    </div>
+  </form>
+  <br><br>
+  {% endif %}
   <div class="jumbotron {{ preferences.color }}" id="profile">
     <div class="topprofile {{ preferences.color }}">
       <div class="row">
 	<div class="col-md-8">
 	  <div class="row">
 	    <div class="col-sm-4">
-	      <img src="{{ avatar }}" class="avatar">
+	      {% include 'include/avatar.html' with av_user=profile_user av_size=60 av_image_size=200 %}
 	    </div>
 	    <div class="col-sm-8">
 	      <div class="info">
 		<h1 id="username">{{ profile_user.username }}</h1>
+		{% if preferences.status and preferences.status != 'THANKS' %}<a href="/donate/"><h2 class="text-right" style="color: {{ preferences.status|userStatusToColor }}">{{ preferences.status|userStatusToString }}</h2></a>{% endif %}
 		{% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Your Settings' %}</a></div>{% endif %}
 		<br>
 		<div class="description">{{ preferences.description|markdown }}</div>

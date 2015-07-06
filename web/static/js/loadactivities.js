@@ -15,10 +15,12 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size) {
 	  function(data) {
 	      div.replaceWith(data);
 	      loadMoreActivities(parent, account, feed, avatar_size);
+	      avatarStatus();
 	  });
 }
 
 function loadMoreActivities(parent, account, feed, avatar_size) {
+    avatarStatus();
     var button = getButton(parent);
     button.click(function(e) {
 	e.preventDefault();

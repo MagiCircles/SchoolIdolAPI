@@ -1,6 +1,6 @@
+{% load gravatar %}
+<div class="followlist">
 {% for user in follow %}
-<a href="/user/{{ user.username }}/" class="btn btn-{% if user.prefs.color %}{{ user.prefs.color }}{% else %}default{% endif %} btn-lg">
-  <img src="{{ user.avatar }}" alt="{{ user.username }}" width="100" height="100" style="border-radius: 5px;"><br>
-  <h4>{{ user.username }}</h4>
-</a>
+{% include 'include/avatar.html' with av_user=user av_image_size=100 av_size=30 av_link=True av_external=True av_username=True av_class='btn-lg' av_button=True av_fixed=True %}
 {% endfor %}
+</div>

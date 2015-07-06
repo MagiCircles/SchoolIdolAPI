@@ -63,6 +63,16 @@ ACTIVITY_MESSAGE_CHOICES = (
 )
 ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
 
+STATUS_CHOICES = (
+    ('THANKS', 'Thanks'),
+    ('SUPPORTER', _('Idol Supporter')),
+    ('LOVER', _('Idol Lover')),
+    ('AMBASSADOR', _('Idol Ambassador')),
+    ('PRODUCER', _('Idol Producer')),
+    ('DEVOTEE', _('Ultimate Idol Devotee')),
+)
+STATUS_DICT = dict(STATUS_CHOICES)
+
 def verifiedToString(val):
     return VERIFIED_DICT[val]
 
@@ -77,6 +87,25 @@ def storedChoiceToString(stored):
         if stored == key:
             return string
     return None
+
+def statusToString(val):
+    return STATUS_DICT[val]
+
+def statusToColor(status):
+    if status == 'SUPPORTER': return '#4a86e8'
+    elif status == 'LOVER': return '#ff53a6'
+    elif status == 'AMBASSADOR': return '#a8a8a8'
+    elif status == 'PRODUCER': return '#c98910'
+    elif status == 'DEVOTEE': return '#c98910'
+    return ''
+
+def statusToColorString(status):
+    if status == 'SUPPORTER': return _('blue')
+    elif status == 'LOVER': return _('pink')
+    elif status == 'AMBASSADOR': return _('shiny Silver')
+    elif status == 'PRODUCER': return _('shiny Gold')
+    elif status == 'DEVOTEE': return _('shiny Gold')
+    return ''
 
 def japanese_attribute(attribute):
     if attribute == 'Smile':
@@ -281,7 +310,7 @@ admin.site.register(EventParticipation)
 
 class UserPreferences(models.Model):
     alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
-    user = models.ForeignKey(User, related_name='preferences')
+    user = models.OneToOneField(User, related_name='preferences')
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
     best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
@@ -298,7 +327,10 @@ class UserPreferences(models.Model):
     twitch = models.CharField(max_length=25, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     mal = models.CharField(verbose_name='MyAnimeList', max_length=16, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     private = models.BooleanField(_('Private Profile'), default=False, help_text=_('If your profile is private, people will only see your center.'))
-    following = models.ManyToManyField(User, symmetrical=False, related_name='followers')
+    following = models.ManyToManyField(User, related_name='followers')
+    status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
+    donation_link = models.CharField(max_length=200, null=True, blank=True)
+    donation_link_title = models.CharField(max_length=100, null=True, blank=True)
 
 admin.site.register(UserPreferences)
 

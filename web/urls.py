@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^activities[/]+$', views.activities, name='activities'),
     url(r'^twitter[/]+$', views.twitter, name='twitter'),
     url(r'^map[/]+$', views.mapview, name='map'),
+    url(r'^donate[/]+$', views.donateview, name='donate'),
 
     url(r'^ajax/modal/(?P<hash>\w+)[/]+$', views.ajaxmodal, name='ajaxmodal'),
     url(r'^ajax/addcard[/]+$', views.ajaxaddcard, name='ajaxaddcard'),

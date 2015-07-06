@@ -25,6 +25,20 @@ function globalModal(hash) {
 	  });
 }
 
+function avatarStatus() {
+    $('.avatar_wrapper').each(function() {
+	if (typeof $(this).attr('data-user-status') != 'undefined') {
+	    $(this).popover({
+		title: '<span style="color: ' + $(this).css('color') + '">' + $(this).attr('data-user-status') + '</span>',
+		content: '<small style="color: #333">School Idol Tomodachi Donator</small>',
+		html: true,
+		placement: 'bottom',
+		trigger: 'hover',
+	    });
+	}
+    });
+}
+
 function modalHandler() {
     $('[data-toggle=ajaxmodal]').click(function(e) {
 	e.preventDefault();
@@ -45,6 +59,8 @@ $(document).ready(function() {
 	$('#switchLanguage').find('select').val($(this).attr('data-lang'));
 	$('#switchLanguage').submit();
     });
+
+    avatarStatus();
 });
 
 var disqus_developer = 1;

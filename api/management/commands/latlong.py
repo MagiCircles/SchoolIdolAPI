@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from api import models
-from web.views import getUserAvatar, getUserPreferencesAvatar
+from web.views import getUserAvatar
 from web.templatetags.imageurl import chibiimage
 from geopy.geocoders import Nominatim
 import time, sys
@@ -56,7 +56,7 @@ class Command(BaseCommand):
   'location': '%s',\
   'icon': '%s',\
   'latlong': new google.maps.LatLng(%f, %f) },\
-" % (escape(u.user.username), escape(getUserPreferencesAvatar(u.user, u, 200)), escape(u.location), escape(chibiimage(u.best_girl)), u.latitude, u.longitude)
+" % (escape(u.user.username), escape(getUserAvatar(u.user, 200)), escape(u.location), escape(chibiimage(u.best_girl)), u.latitude, u.longitude)
         with open('map.json', 'w') as f:
             f.write(mapcache.encode('UTF-8'))
         f.close()

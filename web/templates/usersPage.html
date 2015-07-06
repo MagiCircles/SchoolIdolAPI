@@ -11,12 +11,12 @@
     {% endif%}
     <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">
       {% with user.accounts|length as length %}
-      <div class="panel panel-{% if user.prefs.color %}{{ user.prefs.color }}{% else %}default{% endif %}">
+      <div class="panel panel-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %}">
 	<div class="panel-heading">
-	  <a href="/user/{{ user.username }}/"><h3 class="padding-novertical margin-novertical">
-	      <img src="{{ user.avatar }}" alt="{{ user.username }} avatar" class="avatar">
-	      <div class="text">{{ user }}</div>
-	  </h3></a>
+	  <div class="pull-right">
+	    {% include 'include/avatar.html' with av_user=user av_size=30 av_image_size=50 %}
+	  </div>
+	  <h3 class="padding-novertical margin-novertical"><div class="text"> <a href="/user/{{ user.username }}/">{{ user }}</a></div></h3>
 	</div>
 	<div class="panel-body">
 	  {% if length == 0 %}

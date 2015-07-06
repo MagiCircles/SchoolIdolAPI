@@ -1,0 +1,437 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load choicesToString %}
+{% load mod %}
+
+{% block title %}{% trans 'Donate' %}{% endblock %}
+
+{% block content %}
+
+<div class="container text-center" id="map">
+  <br><br><br>
+  <div class="row">
+    <div class="col-md-5">
+      <img src="/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
+    </div>
+    <div class="col-md-7">
+      <p style="font-size: 50px;" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
+      <br><br><a href="#donate" class="btn btn-{{ btnColor }} btn-xl">{% trans 'Donate' %}</a><br>
+      <a href="#donators" class="btn btn-link btn-lg">{% trans 'Donators' %}</a> - <a href="#about" class="btn btn-link btn-lg">{% trans 'About' %}</a>
+    </div>
+  </div>
+  <br><br><br><br>
+  <div id="donate"></div>
+  <br><br><br>
+  {% for donation in donations %}
+  {% if donation.price == 1 %}
+  <div class="row">
+    <div class="col-lg-5">
+      {% elif donation.price == 5 %}
+    </div>
+    <div class="col-lg-2">
+    </div>
+    <div class="col-lg-5">
+      {% elif donation.price == 10 %}
+    </div>
+  </div>
+  {% endif %}
+  <br><br>
+  <div class="row">
+    <div class="col-sm-8 text-left">
+      <h3 style="font-size: 3.5em;" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" id="donation{{ donation.price }}"><strong>${{ donation.price }}</strong> {% trans 'Donation' %}</h3>
+    </div>
+    <div class="col-sm-4 text-right">
+      <br>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
+	<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+	<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+      </form>
+    </div>
+  </div>
+  <br><br>
+  <div class="row donation">
+    {% if donation.thanks %}
+    <div class="col-md-{{ donation.col_size }}">
+      {% if donation.homepage_link %}
+      <img src="/static/hearthome.png" class="img-responsive">
+      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!' %}
+      {% elif donation.link %}
+      <img src="/static/heartlink.png" class="img-responsive">
+      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page.' %}
+      {% else %}
+      <img src="/static/heart.png" class="img-responsive">
+      {% trans 'Your name and a link to your profile will be added to this page.' %}
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if donation.postcard %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/postcard.png" class="img-responsive">
+      {% trans 'We will send you a cute LoveLive! postcard signed by the 2 developers :)' %}
+    </div>
+    {% endif %}
+    {% if donation.homepage_character %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/homepagecharacter.png" class="img-responsive">
+      {% with donation.status|userStatusToString as status %}
+      <p>{% blocktrans %}You're the {{ status }}.{% endblocktrans %}</p>
+      {% endwith %}
+      <p>{% blocktrans %}You decide who will be the idol from μ's shown by default on top of the homepage.{% endblocktrans %}</p>
+    </div>
+    {% endif %}
+    {% if donation.status %}
+    <div class="col-md-{{ donation.col_size }}">
+      <span class="status" style="color: {{ donation.status|userStatusToColor }}"><i class="flaticon-heart"></i></span>
+      {% if not donation.homepage_character %}
+      {% with donation.status|userStatusToString as status %}
+      <p>{% blocktrans %}You're an {{ status }}.{% endblocktrans %}</p>
+      {% endwith %}
+      {% endif %}
+      {% with donation.status|userStatusToColorString as color %}
+      <p>{% blocktrans %}With this special status, a lovely {{ color }} heart will be displayed next to your profile picture on your profile and everywhere it appears on the website.{% endblocktrans %}</p>
+      {% endwith %}
+    </div>
+    {% endif %}
+    {% if donation.t_shirt %}
+    <div class="col-md-{% if donation.price == 100 %}4{% else %}{{ donation.col_size }}{% endif %}">
+      <img src="/static/tshirt.png" class="img-responsive">
+      {% blocktrans %}We will send you a t-shirt of your favorite μ's character!{% endblocktrans %}
+    </div>
+    {% endif %}
+    {% if donation.keyrings %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/keychain.png" class="img-responsive">
+      {% if donation.keyrings > 1 %}
+      <span class="multiply">x{{ donation.keyrings }}</span>
+      {% endif %}
+      {% blocktrans count counter=donation.keyrings %}We will send you a very cute keyring of your favorite card!{% plural %}We will send you {{ counter }} very cute keyrings of your favorite cards!{% endblocktrans %}
+    </div>
+    {% endif %}
+    {% if donation.box %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/box.png" class="img-responsive">
+      {% trans 'We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!' %}
+    </div>
+    {% endif %}
+    {% if donation.lovecas %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/lovecas.png" class="img-responsive">
+      {% if donation.lovecas > 1 %}
+      <span class="multiply">x{{ donation.lovecas }}</span>
+      {% endif %}
+      {% with donation.lovecas as lovecas %}
+      {% blocktrans %}We will add {{ lovecas }} lovecas to your LoveLive! School Idol Festival account. For English Version players on Android only!{% endblocktrans %}
+      {% endwith %}
+    </div>
+    {% endif %}
+    {% if donation.feature %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/feature.png" class="img-responsive">
+      {% trans 'We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!' %}
+      <small>{% trans 'Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^' %}</small>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <br><br>
+  <br><br>
+  <br><br>
+
+  <h1 id="donators" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Donators' %} <small>{{ total_donators }}</small></h1>
+
+  <br><br>
+  <div class="row">
+    {% for donator in donators_high %}
+    {% if forloop.counter0|mod:3 %}
+  </div><div class="row">
+    {% endif%}
+    <div class="col-sm-{% if donators_high|length == 1 %}12{% elif donators_high|length == 2 %}6{% else %}4{% endif %}">
+      <div class="panel panel-{{ donator.preferences.color }} panel-donation">
+	<div class="panel-heading">
+	  <strong>{{ donator.username }}</strong> - 
+	  {{ donator.preferences.status|userStatusToString }}
+	</div>
+	<div class="inside">
+	  <div class="row">
+	    <div class="col-xs-7">
+	      {% include 'include/avatar.html' with av_user=donator av_image_size=150 av_size=50 av_link=True av_external=True %}
+	    </div>
+	    <div class="col-xs-5">
+	      <a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-lg">
+		{% trans 'Profile' %}
+	      </a>
+	      {% if donator.preferences.donation_link %}
+	      <br><br>
+	      <a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-lg">
+		{{ donator.preferences.donation_link_title }}
+	      </a>
+	      {% endif %}
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <br><br>
+  <div class="row">
+    {% for donator in donators_low %}
+    {% if forloop.counter0|mod:4 and donator.preferences.status != 'THANKS' %}
+  </div><div class="row">
+    {% endif%}
+    {% ifchanged donator.preferences.status %}
+    {% if donator.preferences.status == 'THANKS' %}
+  </div><br><br><div>
+    {% endif %}
+    {% endifchanged %}
+    {% if donator.preferences.status != 'THANKS' %}
+    <div class="col-sm-{% if donator.preferences.status == 'THANKS' %}2{% else %}3{% endif %}">
+      <div class="panel panel-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} panel-donation panel-donation-small">
+	<div class="panel-footer">
+	  <strong>{{ donator.username }}</strong> - 
+	  {{ donator.preferences.status|userStatusToString }}
+	</div>
+	<div class="inside">
+	  <div class="row">
+	    <div class="col-xs-6">
+	      {% include 'include/avatar.html' with av_user=donator av_image_size=150 av_size=25 av_link=True av_external=True %}
+	    </div>
+	    <div class="col-xs-6">
+	      <a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %}">
+		{% trans 'Profile' %}
+	      </a>
+	      {% if donator.preferences.donation_link %}
+	      <br><br>
+	      <a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-lg">
+		{{ donator.preferences.donation_link_title }}
+	      </a>
+	      {% endif %}
+	    </div>
+	  </div>
+	</div>
+      </div>
+    </div>
+    {% else %}
+    {% if donator.preferences.donation_link_title %}
+    <div class="btn-group">
+      <a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %}">
+	{% include 'include/avatar.html' with av_user=donator av_image_size=30 av_size=10 av_fixed=True av_inline=True %}
+	{{ donator.username }}
+      </a>
+      {% if donator.preferences.donation_link %}
+      <a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-extrado">
+	{{ donator.preferences.donation_link_title }}
+      </a>
+      {% endif %}
+    </div>
+    {% else %}
+    <a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} ">
+      {{ donator.username }}
+    </a>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  </div>
+  <br><br>
+  <br><br>
+  <br><br>
+
+  <h1 id="about" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'About' %}</h1>
+
+  <br><br>
+
+  <div class="text-left" style="width: 50%; margin: auto;">
+
+      <h1>Keyrings</h1>
+      <p>&nbsp;Pick&nbsp;<b>your favorite card</b> and we'll hand-craft a cute keyring that looks like it :)</p>
+      <h1>T-shirts</h1>
+      <p>We got the permission from a very talented Japanese artist to use his drawings for our supporters' t-shirts!</p>
+      <div class="template asset" contenteditable="false" data-id="3767129">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/767/129/57931d43161e0fffaa728c05ddc6c9b5_original.png?v=1431315780&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=162fdbe5f5b16ecaf55a47bceb4848f2">
+	</figure>
+
+      </div>
+      <ul>
+	<li>Click on these links to preview the different colors: <a href="http://imgur.com/a/PnZWj" target="_blank">green</a>, <a href="http://imgur.com/a/mZH6H" target="_blank">red</a>, <a href="http://imgur.com/a/Dw6JA" target="_blank">black</a>, <a href="http://imgur.com/a/Tc7tq" target="_blank">orange</a>, <a href="http://imgur.com/a/XEkHE" target="_blank">yellow</a>, <a href="http://imgur.com/a/T2ob4" target="_blank">blue</a>, <a href="http://imgur.com/a/wmk9X" target="_blank">white</a>, <a href="http://imgur.com/a/DelmH" target="_blank">navy blue</a>.</li>
+	<li>Click on these links to preview the different idols from&nbsp;μ's: <a href="http://imgur.com/a/8MMFB" target="_blank">Maki</a>, <a href="http://imgur.com/a/cgpOR" target="_blank">Nico</a>, <a href="http://imgur.com/a/YGAD8" target="_blank">Eli</a>, <a href="http://imgur.com/a/9eIXW" target="_blank">Umi</a>, <a href="http://imgur.com/a/Xgwke" target="_blank">Nozomi</a>, <a href="http://imgur.com/a/76xdw" target="_blank">Honoka</a>, <a href="http://imgur.com/a/HdLr6" target="_blank">Kotori</a>, <a href="http://imgur.com/a/dqufE" target="_blank">Hanayo</a>, <a href="http://imgur.com/a/hPgEI" target="_blank">Rin</a>.</li>
+	<li>Check your size on the chart below : S, M, L, XL, XXL, 3XL (unisex, looks good on girls!)</li>
+      </ul>
+      <div class="template asset" contenteditable="false" data-id="3688265">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/688/265/9d1416e91b6390eb8eb7017847c519eb_original.png?v=1430172857&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=689b987311df1bd0287da33a0e393a4c">
+	</figure>
+
+      </div>
+
+
+
+
+
+      <p>Check out the blog of the artist ハル犬:&nbsp;<a href="http://0802haruken.blog46.fc2.com/" target="_blank">八月二日</a></p>
+      <h1>The box</h1>
+      <div class="template asset" contenteditable="false" data-id="3720766">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/720/766/757545fd675670a4177f21530ea7a63e_original.png?v=1430622364&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=bd699dd365402323de688598f0597289">
+	</figure>
+
+      </div>
+
+      <br>      <br>
+
+      <div class="template asset" contenteditable="false" data-id="3655481">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/655/481/42c6ae7591809fdf0ee507333be423f9_original.png?v=1429669794&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=24dfc4c40926024b6fbade83d636a3d7">
+	</figure>
+
+      </div>
+
+      <br>      <br>
+
+
+      <p>Besides the rewards fees, <b>we will entirely use it to pay for the server</b>. The server costs approximatively $75 / month.</p>
+      <p>It sounds expensive, but understand that <i><b>we have a lot of traffic</b></i>, which requires us to pay for a very good server and lots of bandwidth.</p>
+      <p>Transparency &amp; honesty are our priorities! That's why we published a full <b>detailed budget</b> <a href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/edit?usp=sharing" target="_blank">here</a>. Feel free to comment or ask questions about it :)</p>
+
+
+      <br><br><hr><br><br>
+      
+      <h4>Why can't you pay for it yourself?</h4>
+      <p>At first, we thought we could run it on a free server (aws free tier), but it didn't work (see Server & Tech Specs), so we had to think of a way to pay for it.</p>
+
+      <p>We're currently balancing our lives between working for a startup that we founded and doing freelance missions to sustain ourselves financially. We have absolutely no extra money to spend on this website nor buying lovecas in the game ;)
+
+      <p>If we can't pay for it and nobody thinks it's worth paying for it, we'll regretfully close it, but that's all we can do. If there's a community behind it that wants it alive and accepts to help us by paying for it, we will keep maintaining it. We think it's a fair trade!</p>
+
+      <h4>Are servers really that expensive?</h4>
+      <p>Yes, they are.</p>
+
+      <p>And no, we can't just get a less performant one. We tried. We even spent multiple days trying to optimize every single database query to make the page load faster. We cache pages and assets. Still, smaller AWS instances couldn't handle all the requests during rush hours.</p>
+
+      <p>We don't want to host the site on a dedicated server. Maintaining them is a pain, the bandwidth offered by cheap providers is not reliable, and you have to do everything yourself. Cloud hosting on the other hand, offers a large range of services that make server management a piece of cake, which suits our needs since this is just a side project for us, after all.</p>
+      
+      
+      <div class="template asset" contenteditable="false" data-id="3655570">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/655/570/d66ef663094bab23722866ce8a9e7cb4_original.png?v=1429671269&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=aa3e6e06a5e63e39326958ca8d162920">
+	</figure>
+
+      </div>
+
+
+
+
+      <p>During the first month of existence of the website, we had a pretty standard server that was inexpensive (AWS Free tier). Most of the time, people would get errors because the server couldn't handle all the requests, and we had to pay for a lot of extra bandwidth (first bill was $200). As a result, we had to migrate multiple times until we could find the best option.</p>
+      <p>Today we have a pretty robust architecture that corresponds to our needs!</p>
+      <ul>
+	<li>The server runs on Amazon Web Services EC2</li>
+	<li>We have a t2 medium instance with 2 CPUs&nbsp;and 4&nbsp;GiB RAM</li>
+	<li>We store the images (cards, events banners) on S3</li>
+      </ul>
+      <div>We're currently migrating:</div>
+      <ul>
+	<li>EC2 used to be in Tokyo, is now in North Virginia</li>
+	<li>S3 is in Tokyo, will migrate to North Virginia June 1st</li>
+      </ul>
+      <p>Our project is <b>open-source</b> and <b>open for contributions</b>. We are more than happy to accept pull-requests on <a href="https://github.com/SchoolIdolTomodachi" target="_blank">GitHub</a>!&nbsp;To learn more about the source code, see our <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" target="_blank">contributors guides</a>.</p>
+      <div class="template asset" contenteditable="false" data-id="3655628">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/655/628/01a9e2322e15836797acfbc946266f80_original.png?v=1429672156&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=f770d2411f1b27ed802793a9f9da2379">
+	</figure>
+
+      </div>
+
+
+
+
+      <p>We are two developers and relatively casual players of the game. It's the first project we made together.</p>
+      <p>We're both 23 years old and we live in San Francisco, California.
+	We come from the same computer science university and both work as software engineers in the same company: <a href="http://life.tl/" target="_blank">http://life.tl/</a></p>
+      <div class="template asset" contenteditable="false" data-id="3688123">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/688/123/85a5d1fd19859780f7ef9fc83e2b2274_original.png?v=1430171615&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=a80491d4b717cdedf60f1523dd267d8c">
+	</figure>
+
+      </div>
+
+
+      <p>We started coding School Idol Tomodachi in <b>January 2015</b>. The reason why we started it was because we used to update <a href="http://i.imgur.com/kTF3D0z.png" target="_blank">spreadsheets</a> to <b>track our progress</b>, but we thought that we could probably find a better way to do it. So we made it.</p>
+      <p>At first it was just an API. <i><b>We knew we were not the only ones who were tracking cards</b></i>, so to make it easier to use, we made a website on top of the API. And to make the website more fun, we also made a contest.</p>
+      <div class="template asset" contenteditable="false" data-id="3720848">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/720/848/52f243a589ebb99e185afe48d6e61149_original.png?v=1430624509&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=ad329fed95859ef2cfc8741d8085cb53">
+	</figure>
+
+      </div>
+
+
+      <p>At some point, we decided to talk to some IRC + Reddit folks, and a&nbsp;few tests and feedback gathering later, we&nbsp;<b>launched School Idol Tomodachi to the public on February 2nd</b>!</p>
+      <p>The LoveLive! community got interested in it and started asking for more features, which we happily added.</p>
+      <p>From a simple cards tracker, it became a full-featured website on its own that gathers the community around the game and keeps providing players nice resources to help them play the game.</p>
+      <p><b>This heartwarming support from the community keeps motivating us to do more!</b> We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, shiny, cute and pink ^_^</p>
+      <p>We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you.</p>
+      <div class="template asset" contenteditable="false" data-id="3655687">
+	<figure>
+	  <img alt="" class="fit" src="https://ksr-ugc.imgix.net/assets/003/655/687/699cf71feae32f670eb432223d6df950_original.png?v=1429672860&amp;w=680&amp;fit=max&amp;auto=format&amp;lossless=true&amp;s=8432b2f59a5a15a2cd2fc2a0b9fa4a06">
+	</figure>
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="template asset" contenteditable="false" data-id="3701869">
+	<figure>
+	  <embed allowscriptaccess="always" height="30" src="https://d3mlfyygrfdi2i.cloudfront.net/321f/kickplayer.swf?audioonly=true&amp;controlbar.idlehide=false&amp;controlbar=bottom&amp;file=https%3A%2F%2Fd15chbti7ht62o.cloudfront.net%2Fassets%2F003%2F701%2F869%2F6e2eeac62be93c7a00457690abf6b812_original.mp3%3F1430345863&amp;skin=https%3A%2F%2Fd3mlfyygrfdi2i.cloudfront.net%2Fcc3a%2Fkickskin.swf" type="application/x-shockwave-flash" width="560" wmode="transparent">
+	</figure>
+
+      </div>
+
+
+
+
+
+
+	</div>
+
+
+
+
+
+
+
+
+
+      </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <br><br><br><br>
+{% endblock %}

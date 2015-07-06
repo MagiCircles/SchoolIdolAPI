@@ -56,7 +56,29 @@ select {
     }
 }
 
-.custom-panel(@color, @background:#fff) {
+.avatar_wrapper {
+    font-size: 0px;
+    &:after {
+	position: absolute;
+	bottom: -20px;
+	right: 0;
+	content: "\e019";
+	display: block;
+	font-family: Flaticon;
+    }
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.followlist {
+    .btn {
+	margin: 2px 0;
+    }
+}
+
+.custom-panel(@color, @background:#fff, @linkcolor:#fff) {
     .panel-variant(lighten(@color, 20%), #fff, @color, lighten(@color, 20%));
     >.panel-heading {
 	a {
@@ -66,7 +88,7 @@ select {
 		text-decoration: none;
 	    }
 	}
-	.avatar {
+	.avatar_wrapper {
 	    border-color: @color!important;
 	}
     }
@@ -113,7 +135,7 @@ select {
 	}
     }
     a.btn {
-	color: #fff!important;
+	color: @linkcolor!important;
     }
 
     .table-link {
@@ -146,7 +168,7 @@ main {
 .panel-Cool-light { .custom-panel(lighten(@CoolColor, 20%)); .a-variant(lighten(@CoolColor, 10%)) }
 .panel-All-light { .custom-panel(lighten(@AllColor, 20%)); .a-variant(lighten(@AllColor, 10%)) }
 
-.panel-default { .custom-panel(@DefaultColor); .a-variant(lighten(@DefaultColor, 10%)) }
+.panel-default { .custom-panel(@DefaultColor, #fff, #888); .a-variant(darken(@DefaultColor, 10%)) }
 
 .panel-nolimit .panel-body {
     overflow: visible;
@@ -436,6 +458,41 @@ main {
     }
 }
 
+.rotate(@deg) {
+    transform:rotate(@deg);
+    -ms-transform:rotate(@deg);
+    -webkit-transform:rotate(@deg);
+}
+
+#filterbutton {
+    text-decoration: none;
+    background-color: @BarColor;
+    cursor: pointer;
+    height: 102px;
+    left: 0;
+    z-index: 1030;
+    margin-left: -7px;
+    overflow: hidden;
+    position: fixed;
+    top: 25%;
+    width: 42px;
+    border-radius: 10px;
+    .text {
+	text-decoration: none;
+	display: block;
+	.rotate(90deg);
+	color: white;
+	font-weight: 700;
+	letter-spacing: 2px;
+	margin-top: 16px;
+	margin-left: 10px;
+    }
+    &:hover {
+	background-color: darken(@BarColor, 10%);
+	text-decoration: none;
+    }
+}
+
 @media (max-width: 970px) {
     .link-stars-side {
 	display: none!important;
@@ -469,13 +526,24 @@ main {
 .navbar-All { .navbar-variant(@AllColor, #fff); }
 
 nav {
-    .avatar {
+    .avatar_wrapper {
 	display: inline-block;
 	margin: -4px 0;
 	width: 22px;
 	height: 22px;
 	border-radius: 5px;
 	background: #fff;
+	&:after {
+	    bottom: auto;
+	    right: auto;
+	    margin-left: 18px;
+	    margin-top: -12px;
+	}
+	.avatar {
+	    width: 22px;
+	    height: 22px;
+	    border-radius: 5px;
+	}
     }
     .account {
 	img {
@@ -662,15 +730,28 @@ a.panel {
     }
     .panel {
 	.panel-heading {
-	    .avatar {
+	    .avatar_wrapper {
 		background: white;
-		float: right;
-		width: 70px;
-		height: 70px;
 		margin: -20px 0;
 		border-radius: 20%;
 		border: 4px solid #ddd;
+		width: 78px;
+		height: 78px;
+		&:after {
+		    bottom: auto;
+		    margin-top: -25px;
+		    margin-right: 35px;
+		    .white-shadow();
+		}
+		.avatar {
+		    border-radius: 20%;
+		    width: 70px;
+		    height: 70px;
+		}
 	    }
+	}
+	.panel-body {
+	    clear: both;
 	}
     }
 }
@@ -679,6 +760,55 @@ a.panel {
 }
 .verified2 {
     color: @GoldColor;
+}
+
+.row.donation {
+    font-size: 1.1em;
+    img {
+	margin: auto;
+	margin-bottom: 10px;
+    }
+    .status {
+	font-size: 100px;
+    }
+    .multiply {
+	display: block;
+	font-size: 2.8em;
+	font-weight: bold;
+	margin-top: -40px;
+	text-align: right;
+    }
+}
+
+h1#donators {
+    font-size: 3em;
+}
+
+.btn-extrado {
+    padding-top: 10px;
+    height: 44px;
+    display: inline-block;
+}
+
+.panel-donation {
+    &.panel-donation-small {
+	font-size: 0.9em;
+    }
+    .panel-heading strong {
+	font-size: 1.2em;
+    }
+    .inside {
+	padding: 20px;
+	.avatar_wrapper {
+	    width: 100%;
+	    border-radius: 10px;
+	    .white-shadow();
+	    .avatar {
+		width: 100%;
+		border-radius: 10px;
+	    }
+	}
+    }
 }
 
 #addCardModal {
@@ -782,6 +912,20 @@ a.panel {
 	    color: @SilverColor;
 	}
 	.a-variant(darken(@SilverColor, 10%));
+    }
+    .avatar_wrapper {
+	&:after {
+	    bottom: auto;
+	    right: auto;
+	    margin-left: 30px;
+	    margin-top: -5px;
+	    .white-shadow();
+	}
+	.avatar {
+	    width: 40px;
+	    height: 40px;
+	    margin: -10px 0;
+	}
     }
 }
 

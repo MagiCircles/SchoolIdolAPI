@@ -16,7 +16,7 @@ from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models
-from web import forms, links
+from web import forms, links, donations
 import urllib, hashlib
 import datetime
 import random
@@ -28,17 +28,13 @@ def globalContext(request):
         'show_filter_button': False,
         'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
         'interfaceColor': 'default',
+        'btnColor': 'default',
         'debug': settings.DEBUG,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = request.user.accounts_set.all().select_related('center')
-        session_preferences = request.session.get('preferences')
-        if not session_preferences:
-            preferences, created = request.user.preferences.get_or_create()
-            request.session['preferences'] = model_to_dict(preferences)
-            request.session['preferences']['following'] = [f.username for f in preferences.following.all()]
-        context['session_preferences'] = request.session['preferences']
-        context['interfaceColor'] = context['session_preferences']['color']
+        context['interfaceColor'] = request.user.preferences.color
+        context['btnColor'] = request.user.preferences.color if request.user.preferences else 'default'
     return context
 
 def findAccount(id, accounts, forceGetAccount=False):
@@ -60,21 +56,15 @@ def hasJP(accounts):
             return True
     return False
 
-def getUserPreferencesAvatar(user, preferences, size):
-    if not isinstance(preferences, dict):
-        preferences = model_to_dict(preferences)
+def getUserAvatar(user, size):
     default = 'http://schoolido.lu/static/kotori.jpg'
-    if preferences['twitter']:
-        default = 'http://schoolido.lu/avatar/twitter/' + preferences['twitter']
-    elif preferences['facebook']:
-        default = 'http://schoolido.lu/avatar/facebook/' + preferences['facebook']
+    if user.preferences.twitter:
+        default = 'http://schoolido.lu/avatar/twitter/' + user.preferences.twitter
+    elif user.preferences.facebook:
+        default = 'http://schoolido.lu/avatar/facebook/' + user.preferences.facebook
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
-
-def getUserAvatar(user, size):
-    preferences, created = user.preferences.get_or_create()
-    return getUserPreferencesAvatar(user, preferences, size)
 
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
     if ownedcard is not None:
@@ -335,7 +325,14 @@ def profile(request, username):
     context = globalContext(request)
     user = get_object_or_404(User, username=username)
     context['profile_user'] = user
-    context['preferences'], created = user.preferences.get_or_create()
+    context['preferences'] = user.preferences
+    if request.user.is_staff:
+        context['form_preferences'] = forms.UserProfileStaffForm(instance=context['preferences'])
+        if request.method == 'POST':
+            form_preferences = forms.UserProfileStaffForm(request.POST, instance=context['preferences'])
+            if form_preferences.is_valid():
+                prefs = form_preferences.save()
+                return redirect('/user/' + context['profile_user'].username)
     if user == request.user:
         context['is_me'] = True
         context['user_accounts'] = context['accounts']
@@ -348,8 +345,7 @@ def profile(request, username):
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
     context['current'] = 'profile'
-    context['avatar'] = getUserPreferencesAvatar(user, context['preferences'], 200)
-    context['following'] = isFollowing(user, context)
+    context['following'] = isFollowing(user, request)
     context['total_following'] = context['preferences'].following.count()
     context['total_followers'] = user.followers.count()
     return render(request, 'profile.html', context)
@@ -358,7 +354,7 @@ def ajaxownedcards(request, account, stored):
     if stored not in models.STORED_DICT:
         raise Http404
     account = get_object_or_404(models.Account, pk=account)
-    if account.owner.username != request.user.username and (account.owner.preferences.get_or_create()[0].private or stored == 'Box'):
+    if account.owner.username != request.user.username and (account.owner.preferences.private or stored == 'Box'):
         raise PermissionDenied()
     ownedcards = account.ownedcards.filter()
     if stored == 'Album':
@@ -455,26 +451,22 @@ def ajaxcards(request):
 def ajaxusers(request):
     return users(request, ajax=True)
 
-def isFollowing(user, context): # must have globalContext
-    if 'session_preferences' in context:
-        for followed in context['session_preferences']['following']:
-            if followed == user.username:
+def isFollowing(user, request):
+    if request.user.is_authenticated():
+        for followed in request.user.preferences.following.all():
+            if followed.username == user.username:
                 return True
     return False
 
-def _ajaxfollowcontext(follow):
-    for user in follow:
-        user.prefs, created = user.preferences.get_or_create()
-        user.avatar = getUserPreferencesAvatar(user, user.prefs, 100)
-    return { 'follow': follow }
-
 def ajaxfollowers(request, username):
     user = get_object_or_404(User, username=username)
-    return render(request, 'followlist.html', _ajaxfollowcontext([p.user for p in user.followers.all()]))
+    return render(request, 'followlist.html', { 'follow': [u.user for u in user.followers.all()],
+                                            })
 
 def ajaxfollowing(request, username):
-    preferences = get_object_or_404(models.UserPreferences, user__username=username)
-    return render(request, 'followlist.html', _ajaxfollowcontext(preferences.following.all()))
+    user = get_object_or_404(User, username=username)
+    return render(request, 'followlist.html', { 'follow': user.preferences.following.all(),
+                                                })
 
 def _activities(request, account=None, follower=None, avatar_size=3):
     page = 0
@@ -488,13 +480,10 @@ def _activities(request, account=None, follower=None, avatar_size=3):
         activities = activities.filter(account=account)
     if follower is not None:
         follower = get_object_or_404(User, username=follower)
-        preferences, created = follower.preferences.get_or_create()
-        accounts = models.Account.objects.filter(owner__in=preferences.following.all())
+        accounts = models.Account.objects.filter(owner__in=follower.preferences.following.all())
         activities = activities.filter(account__in=accounts)
     total = activities.count()
     activities = activities[(page * page_size):((page * page_size) + page_size)]
-    for activity in activities:
-        activity.account.owner.avatar = getUserAvatar(activity.account.owner, 100)
     context = {
         'activities': activities,
         'page': page + 1,
@@ -532,17 +521,13 @@ def ajaxfollow(request, username):
         or request.method != 'POST' or request.user.username == username):
         raise PermissionDenied()
     user = get_object_or_404(User, username=username)
-    if 'follow' in request.POST and not isFollowing(user, context):
-        preferences, created = request.user.preferences.get_or_create()
-        preferences.following.add(user)
-        preferences.save()
-        del request.session['preferences']
+    if 'follow' in request.POST and not isFollowing(user, request):
+        request.user.preferences.following.add(user)
+        request.user.preferences.save()
         return HttpResponse('followed')
-    if 'unfollow' in request.POST and isFollowing(user, context):
-        preferences, created = request.user.preferences.get_or_create()
-        preferences.following.remove(user)
-        preferences.save()
-        del request.session['preferences']
+    if 'unfollow' in request.POST and isFollowing(user, request):
+        request.user.preferences.following.remove(user)
+        request.user.preferences.save()
         return HttpResponse('unfollowed')
     raise PermissionDenied()
 
@@ -570,7 +555,7 @@ def edit(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
-    context['preferences'], created = models.UserPreferences.objects.get_or_create(user=request.user)
+    context['preferences'] = request.user.preferences
     form = forms.UserForm(instance=request.user)
     form_preferences = forms.UserPreferencesForm(instance=context['preferences'])
     if request.method == "POST":
@@ -582,7 +567,6 @@ def edit(request):
                 if old_location != prefs.location:
                     prefs.location_changed = True
                 prefs.save()
-                request.session['preferences'] = model_to_dict(form_preferences.instance)
                 return redirect('/user/' + request.user.username)
         else:
             form = forms.UserForm(request.POST, instance=request.user)
@@ -600,37 +584,36 @@ def editaccount(request, account):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
-    account = int(account)
-    for owned_account in context['accounts']:
-        if account == owned_account.pk:
-            if owned_account.verified:
-                formClass = forms.FullAccountNoFriendIDForm
+    owned_account = findAccount(int(account), context['accounts'], forceGetAccount=request.user.is_staff)
+    if not owned_account:
+        raise PermissionDenied()
+    if owned_account.verified:
+        formClass = forms.FullAccountNoFriendIDForm
+    else:
+        formClass = forms.FullAccountForm
+    if request.method == 'GET':
+        form = formClass(instance=owned_account)
+    elif request.method == "POST":
+        if 'deleteAccount' in request.POST:
+            owned_account.delete()
+            return redirect('/user/' + request.user.username)
+        old_rank = owned_account.rank
+        form = formClass(request.POST, instance=owned_account)
+        if form.is_valid():
+            account = form.save(commit=False)
+            if account.rank >= 200 and account.verified <= 0:
+                errors = form._errors.setdefault("rank", ErrorList())
+                errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
             else:
-                formClass = forms.FullAccountForm
-            if request.method == 'GET':
-                form = formClass(instance=owned_account)
-            elif request.method == "POST":
-                if 'deleteAccount' in request.POST:
-                    owned_account.delete()
-                    return redirect('/user/' + request.user.username)
-                old_rank = owned_account.rank
-                form = formClass(request.POST, instance=owned_account)
-                if form.is_valid():
-                    account = form.save(commit=False)
-                    if account.rank >= 200 and account.verified <= 0:
-                        errors = form._errors.setdefault("rank", ErrorList())
-                        errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
-                    else:
-                        account.save()
-                        if old_rank < account.rank:
-                            pushActivity(account, "Rank Up", rank=account.rank)
-                        return redirect('/user/' + request.user.username)
-            form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id')
-            context['form'] = form
-            context['current'] = 'editaccount'
-            context['edit'] = owned_account
-            return render(request, 'addaccount.html', context)
-    raise PermissionDenied()
+                account.save()
+                if old_rank < account.rank:
+                    pushActivity(account, "Rank Up", rank=account.rank)
+                return redirect('/user/' + request.user.username)
+    form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id')
+    context['form'] = form
+    context['current'] = 'editaccount'
+    context['edit'] = owned_account
+    return render(request, 'addaccount.html', context)
 
 def users(request, ajax=False):
     if ajax:
@@ -678,9 +661,6 @@ def users(request, ajax=False):
     context['total_results'] = users.count()
     users = users[(page * page_size):((page * page_size) + page_size)]
     for user in users:
-        preferences, created = user.preferences.get_or_create()
-        user.prefs = preferences
-        user.avatar = getUserPreferencesAvatar(user, user.prefs, 100)
         user.accounts = user.accounts_set.all().order_by('-rank')
     context['total_users'] = len(users)
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
@@ -792,12 +772,19 @@ def mapview(request):
         context['map'] = f.read().replace('\n', '')
     with open ("mapcount.json", "r") as f:
         context['mapcount'] = f.read().replace('\n', '')
-    if request.user.is_authenticated() and not request.user.is_anonymous():
-        if 'session_preferences' in context and 'latitude' in context['session_preferences'] and context['session_preferences']['latitude']:
-            context['you'] = context['session_preferences']
+    if request.user.is_authenticated() and request.user.preferences.latitude:
+        context['you'] = request.user.preferences
     return render(request, 'map.html', context)
 
 def avatar_twitter(request, username):
     return redirect('http://avatars.io/twitter/' + username + '?size=large')
 def avatar_facebook(request, username):
     return redirect('http://avatars.io/facebook/' + username + '?size=large')
+
+def donateview(request):
+    context = globalContext(request)
+    context['donators_low'] = models.User.objects.filter(Q(preferences__status='THANKS') | Q(preferences__status='SUPPORTER') | Q(preferences__status='LOVER') | Q(preferences__status='AMBASSADOR')).order_by('preferences__status', '-preferences__donation_link', '-preferences__donation_link_title')
+    context['donators_high'] = models.User.objects.filter(Q(preferences__status='PRODUCER') | Q(preferences__status='DEVOTEE')).order_by('preferences__status')
+    context['total_donators'] = models.UserPreferences.objects.filter(status__isnull=False).count()
+    context['donations'] = donations.donations
+    return render(request, 'donate.html', context)

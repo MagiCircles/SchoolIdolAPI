@@ -15,9 +15,7 @@
 <div class="activity">
   <div class="row">
     <div class="col-xs-{{ avatar_size }}">
-      <a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}">
-	<img src="{{ activity.account.owner.avatar }}" alt="{{ activity.account.owner.username }}" class="avatar">
-      </a>
+      {% include 'include/avatar.html' with av_user=activity.account.owner av_preferences=activity.account.owner.preferences av_image_size=100 av_size=30 av_link=True av_account_id=activity.account.pk %}
     </div>
     <div class="col-xs-{{ content_size }}">
       <div class="pull-right text-right">

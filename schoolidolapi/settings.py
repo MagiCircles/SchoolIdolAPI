@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'markdown_deux',
+    'corsheaders',
     'bootstrap_form_horizontal',
     'rest_framework',
     'api',
@@ -67,6 +68,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 )
 
 ROOT_URLCONF = 'schoolidolapi.urls'
@@ -119,6 +122,9 @@ LOCALE_PATHS = (
 STATIC_URL = '/static/'
 
 IMAGES_HOSTING_PATH = '/'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
 
 # If empty, importcards will not use TinyPNG
 TINYPNG_API_KEY = ''

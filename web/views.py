@@ -97,6 +97,7 @@ def create(request):
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            preferences = models.UserPreferences.objects.create(user=user)
             login(request, user)
             return redirect('/addaccount')
     else:

@@ -349,6 +349,7 @@ def profile(request, username):
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
             if request.user.is_staff:
                 account.staff_form = forms.AccountStaffForm(instance=account)
+                account.staff_form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('card__id')
                 if request.method == 'POST' and ('editAccount' + str(account.id)) in request.POST:
                     account.staff_form = forms.AccountStaffForm(request.POST, instance=account)
                     if account.staff_form.is_valid():

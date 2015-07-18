@@ -101,4 +101,4 @@ class AccountStaffForm(ModelForm):
     owner_id = forms.IntegerField(required=False)
     class Meta:
         model = models.Account
-        fields = ('owner_id', 'friend_id', 'verified', 'rank')
+        fields = ('owner_id', 'friend_id', 'verified', 'rank', 'center')

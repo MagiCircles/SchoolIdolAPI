@@ -4,3 +4,9 @@
   <div class="circled_card_100 {{ card.card.attribute }} {{ card.card.rarity }} hover"
        style="background-image: url('{% if not card.idolized and card.card.card_image %}{{ card.card|imageurl:'card_image' }}{% else %}{{ card.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
 </a>
+  {% if user.is_staff and show_staff %}
+<form method="post" action="/ajax/deletecard/{{ card.pk }}/" role="form" class="delete" style="display: inline-block">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">X</button>
+</form>
+{% endif %}

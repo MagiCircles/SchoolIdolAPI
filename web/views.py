@@ -293,6 +293,8 @@ def cards(request, card=None, ajax=False):
     context['current'] = 'cards'
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['addcard_form'] = forms.getOwnedCardForm(forms.OwnedCardForm(), context['accounts'])
+        if request.user.is_staff and 'staff' in request.GET:
+            context['addcard_form'].fields['owner_account_id'] = forms.forms.CharField()
     context['page'] = page + 1
     context['ajax'] = ajax
     if ajax:
@@ -395,6 +397,8 @@ def ajaxaddcard(request):
             ownedcard.skill = 1
         if not findAccount(ownedcard.owner_account.id, context['accounts']):
             raise PermissionDenied()
+        if request.user.is_staff and 'owner_account_id' in request.POST:
+            ownedcard.owner_account = models.Account.objects.get(pk=request.POST['owner_account_id'])
         if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
             try: expires_in = int(request.POST['expires_in'])
             except (TypeError, ValueError): expires_in = 0
@@ -455,7 +459,10 @@ def ajaxdeletecard(request, ownedcard):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     try:
-        owned_card = models.OwnedCard.objects.get(pk=int(ownedcard), owner_account__in=context['accounts'])
+        if request.user.is_staff:
+            owned_card = models.OwnedCard.objects.get(pk=int(ownedcard))
+        else:
+            owned_card = models.OwnedCard.objects.get(pk=int(ownedcard), owner_account__in=context['accounts'])
     except ObjectDoesNotExist:
         raise PermissionDenied()
     owned_card.delete()

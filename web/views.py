@@ -329,11 +329,13 @@ def profile(request, username):
     context['preferences'] = user.preferences
     if request.user.is_staff:
         context['form_preferences'] = forms.UserProfileStaffForm(instance=context['preferences'])
-        if request.method == 'POST':
+        if 'staff' in request.GET:
+            context['show_staff'] = True
+        if request.method == 'POST' and 'editPreferences' in request.POST:
             form_preferences = forms.UserProfileStaffForm(request.POST, instance=context['preferences'])
             if form_preferences.is_valid():
                 prefs = form_preferences.save()
-                return redirect('/user/' + context['profile_user'].username)
+                return redirect('/user/' + context['profile_user'].username + '?staff')
     if user == request.user:
         context['is_me'] = True
         context['user_accounts'] = context['accounts']
@@ -345,6 +347,18 @@ def profile(request, username):
             account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
+            if request.user.is_staff:
+                account.staff_form = forms.AccountStaffForm(instance=account)
+                if request.method == 'POST' and ('editAccount' + str(account.id)) in request.POST:
+                    account.staff_form = forms.AccountStaffForm(request.POST, instance=account)
+                    if account.staff_form.is_valid():
+                        account = account.staff_form.save(commit=False)
+                        if 'owner_id' in account.staff_form.cleaned_data and account.staff_form.cleaned_data['owner_id']:
+                            print account.staff_form.cleaned_data['owner_id']
+                            account_new_user = models.User.objects.get(pk=account.staff_form.cleaned_data['owner_id'])
+                            account.owner = account_new_user
+                        account.save()
+                        return redirect('/user/' + context['profile_user'].username + '?staff#' + str(account.id))
     context['current'] = 'profile'
     context['following'] = isFollowing(user, request)
     context['total_following'] = context['preferences'].following.count()

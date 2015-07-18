@@ -95,4 +95,10 @@ class UserSearchForm(Form):
 class UserProfileStaffForm(ModelForm):
     class Meta:
         model = models.UserPreferences
-        fields = ('status', 'donation_link', 'donation_link_title')
+        fields = ('status', 'donation_link', 'donation_link_title', 'description', 'location', 'location_changed')
+
+class AccountStaffForm(ModelForm):
+    owner_id = forms.IntegerField(required=False)
+    class Meta:
+        model = models.Account
+        fields = ('owner_id', 'friend_id', 'verified', 'rank')

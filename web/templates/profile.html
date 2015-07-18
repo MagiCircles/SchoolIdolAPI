@@ -16,9 +16,10 @@
 <div id="fb-root"></div>
 <div class="container">
   <br><br>
-  {% if user.is_staff %}
+  {% if user.is_staff and show_staff %}
   <form method="POST" class="alert alert-danger">
     <h1>Staff Danger Zone</h1>
+    User ID: {{ profile_user.id }}
     {% csrf_token %}
     {% include "bootstrap_form_horizontal.html" with form=form_preferences wrap=0 %}
     <div class="text-right">
@@ -268,6 +269,20 @@
 	      {% endif %}
 	    </table>
 	  </div>
+
+	  {% if user.is_staff and show_staff %}
+	  <form method="POST" class="alert alert-danger">
+	    <h1>Staff Danger Zone</h1>
+	    Account ID: {{ account.id }}
+	    {% csrf_token %}
+	    {% include "bootstrap_form_horizontal.html" with form=account.staff_form wrap=0 %}
+	    <div class="text-right">
+	      <input name="editAccount{{ account.id }}" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+	    </div>
+	  </form>
+	  <br><br>
+	  {% endif %}
+
 	  {% if preferences.private %}
 	  <div class="padding10"><small>{% trans 'This profile is private, so it is not possible to see the cards, activities and events participations.' %}</small></div>
 	  {% endif %}

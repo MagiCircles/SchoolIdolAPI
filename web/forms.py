@@ -99,6 +99,7 @@ class UserProfileStaffForm(ModelForm):
 
 class AccountStaffForm(ModelForm):
     owner_id = forms.IntegerField(required=False)
+    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=True)
     class Meta:
         model = models.Account
         fields = ('owner_id', 'friend_id', 'verified', 'rank', 'center')

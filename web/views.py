@@ -167,15 +167,28 @@ def cards(request, card=None, ajax=False):
         if 'skill' in request.GET and request.GET['skill']:
             cards = cards.filter(skill__exact=request.GET['skill'])
             request_get['skill'] = request.GET['skill']
-        if 'is_promo' in request.GET and request.GET['is_promo']:
+
+        if 'is_promo' in request.GET and request.GET['is_promo'] == 'on':
             cards = cards.filter(is_promo__exact=True)
-            request_get['is_promo'] = request.GET['is_promo']
-        if 'is_special' in request.GET and request.GET['is_special']:
-            cards = cards.filter(is_special__exact=True)
-            request_get['is_special'] = request.GET['is_special']
-        if 'is_event' in request.GET and request.GET['is_event']:
+            request_get['is_promo'] = 'on'
+        elif 'is_promo' in request.GET and request.GET['is_promo'] == 'off':
+            cards = cards.filter(is_promo__exact=False)
+            request_get['is_promo'] = 'off'
+
+        if 'is_event' in request.GET and request.GET['is_event'] == 'on':
             cards = cards.filter(event__isnull=False)
-            request_get['is_event'] = request.GET['is_event']
+            request_get['is_event'] = 'on'
+        elif 'is_event' in request.GET and request.GET['is_event'] == 'off':
+            cards = cards.filter(event__isnull=True)
+            request_get['is_event'] = 'off'
+
+        if 'is_special' in request.GET and request.GET['is_special'] == 'on':
+            cards = cards.filter(is_special__exact=True)
+            request_get['is_special'] = 'on'
+        elif 'is_special' in request.GET and request.GET['is_special'] == 'off':
+            cards = cards.filter(is_special__exact=False)
+            request_get['is_special'] = 'off'
+
         if 'account' in request.GET and request.GET['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
             account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)
             if account:

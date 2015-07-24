@@ -74,18 +74,28 @@
 	<br>
 	<br>
 	<div>
-	  <div class="pull-right"><input id="id_is_promo" name="is_promo" type="checkbox"{% if request_get.is_promo %} checked{% endif %}></div>
-	  <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards only' %}</label>
+	  <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
+	  <select id="id_is_promo" name="is_promo">
+	    <option value=""></option>
+	    <option value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	    <option value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	  </select>
 	</div>
-	<br>
 	<div>
-	  <div class="pull-right"><input id="id_is_special" name="is_special" type="checkbox"{% if request_get.is_special %} checked{% endif %}></div>
-	  <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards only' %}</label>
+	  <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards' %}</label>
+	  <select id="id_is_special" name="is_special">
+	    <option value=""></option>
+	    <option value="on"{% if request_get.is_special == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	    <option value="off"{% if request_get.is_special == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	  </select>
 	</div>
-	<br>
 	<div>
-	  <div class="pull-right"><input id="id_is_event" name="is_event" type="checkbox"{% if request_get.is_event %} checked{% endif %}></div>
-	  <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards only' %}</label>
+	  <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
+	  <select id="id_is_event" name="is_event">
+	    <option value=""></option>
+	    <option value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	    <option value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	  </select>
 	</div>
 	<br>
 	<div>

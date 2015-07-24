@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     url(r'^ajax/followers/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollowers, name='ajaxfollowers'),
     url(r'^ajax/following/(?P<username>[\w.@+-]+)[/]+$', views.ajaxfollowing, name='ajaxfollowing'),
     url(r'^ajax/activities[/]+$', views.ajaxactivities, name='ajaxactivities'),
+    url(r'^ajax/likeactivity/(?P<activity>\d+)[/]+$', views.ajaxlikeactivity, name='ajaxlikeactivity'),
     url(r'^ajax/feed[/]+$', views.ajaxfeed, name='ajaxfeed'),
     url(r'^ajax/eventparticipations/(?P<account>\d+)[/]+$', views.ajaxeventparticipations, name='ajaxeventparticipations'),
 

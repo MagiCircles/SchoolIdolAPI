@@ -48,13 +48,13 @@ $(document).ready(function() {
 		$('#activities .activities').text('Loading...');
 		$.get('/ajax/activities/', function(data) {
 		    $('#activities .activities').html(data);
-		    loadMoreActivities($('#activities .activities'));
+		    loadMoreActivities($('#activities .activities'), undefined, true, 1);
 		});
 		if ($('#myactivities').length > 0) {
 		    $('#myactivities .activities').text('Loading...');
 		    $.get('/ajax/feed/', function(data) {
 			$('#myactivities .activities').html(data);
-			loadMoreActivities($('#myactivities .activities'), undefined, true);
+			loadMoreActivities($('#myactivities .activities'), undefined, true, 1);
 		    });
 		}
 	    }

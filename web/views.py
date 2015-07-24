@@ -511,6 +511,9 @@ def _activities(request, account=None, follower=None, avatar_size=3):
         activities = activities.filter(account__in=accounts)
     total = activities.count()
     activities = activities[(page * page_size):((page * page_size) + page_size)]
+    for activity in activities:
+        activity.likers = activity.likes.all()
+        activity.likers_count = activity.likers.count()
     context = {
         'activities': activities,
         'page': page + 1,
@@ -540,6 +543,30 @@ def activities(request):
     context = globalContext(request)
     context.update(_contextfeed(request))
     return render(request, 'feed.html', context)
+
+def isLiking(request, activity_obj):
+    if request.user.is_authenticated():
+        for u in activity_obj.likes.all():
+            if u.id == request.user.id:
+                return True
+    return False
+
+@csrf_exempt
+def ajaxlikeactivity(request, activity):
+    context = globalContext(request)
+    if not request.user.is_authenticated() or request.user.is_anonymous() or request.method != 'POST':
+        raise PermissionDenied()
+    activity_obj = get_object_or_404(models.Activity, id=activity)
+    if activity_obj.account.owner.id != request.user.id:
+        if 'like' in request.POST and not isLiking(request, activity_obj):
+            activity_obj.likes.add(request.user)
+            activity_obj.save()
+            return HttpResponse('liked')
+        if 'unlike' in request.POST and isLiking(request, activity_obj):
+            activity_obj.likes.remove(request.user)
+            activity_obj.save()
+            return HttpResponse('unliked')
+    return PermissionDenied()
 
 @csrf_exempt
 def ajaxfollow(request, username):

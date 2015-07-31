@@ -317,8 +317,8 @@ class Command(BaseCommand):
                 dates = data[0].replace('|', '').split(' - ')
                 beginning = eventDateFromString(dates[0])
                 end = eventDateFromString(str(beginning.year) + '/' + dates[1])
-                names = data[1].replace('[[', '').replace(']]', '').replace('μs', 'μ\'s').split('|')
-                japanese_name = clean(names[-2])
+                names = data[1].replace('[[', '').replace(']]', '').split('|')
+                japanese_name = cleanwithquotes(names[-2])
                 english_name = clean(names[-1])
                 t1_points = optInt(clean(data[3]))
                 i = 4

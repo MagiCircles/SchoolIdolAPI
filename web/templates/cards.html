@@ -15,6 +15,7 @@
 
 {% block content %}
 {% if not single %}
+{% if show_filter_button %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
   <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
     <form method="GET">
@@ -164,6 +165,11 @@
     </form>
   </nav>
   <div id="page-content-wrapper">
+    <a href="#" id="togglebutton" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+      <i class="flaticon-search"></i>
+      <i class="flaticon-toggler hidder"></i>
+    </a>
+{% endif %}
     {% endif %}
     {% include "cardsPage.html" %}
     {% if not single %}

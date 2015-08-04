@@ -13,7 +13,7 @@
 @import "mixins/list-group.less";
 @import "mixins/circled_card.less";
 
-@import "sidebar.less";
+@import "simple-sidebar.less";
 
 body {
     font-family: 'Maven Pro', sans-serif;
@@ -462,35 +462,6 @@ main {
     transform:rotate(@deg);
     -ms-transform:rotate(@deg);
     -webkit-transform:rotate(@deg);
-}
-
-#filterbutton {
-    text-decoration: none;
-    background-color: @BarColor;
-    cursor: pointer;
-    height: 102px;
-    left: 0;
-    z-index: 1030;
-    margin-left: -7px;
-    overflow: hidden;
-    position: fixed;
-    top: 25%;
-    width: 42px;
-    border-radius: 10px;
-    .text {
-	text-decoration: none;
-	display: block;
-	.rotate(90deg);
-	color: white;
-	font-weight: 700;
-	letter-spacing: 2px;
-	margin-top: 16px;
-	margin-left: 10px;
-    }
-    &:hover {
-	background-color: darken(@BarColor, 10%);
-	text-decoration: none;
-    }
 }
 
 @media (max-width: 970px) {

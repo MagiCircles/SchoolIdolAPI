@@ -1,6 +1,7 @@
 {% load imageurl %}
 {% load i18n %}
 {% load gravatar %}
+
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -93,9 +94,6 @@
 		{% include "baseMenu.html" %}
 	      </ul>
 	    </li>
-	    {% if show_filter_button %}
-	    <li><a href="#" class="sidebar-toggle"><i class="flaticon-search"></i><span class="visible-xs-inline"> {% trans 'Filters' %}</span></a></li>
-	    {% endif %}
 	  </ul>
       </div>
     </nav>

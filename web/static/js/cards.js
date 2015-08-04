@@ -3,11 +3,6 @@ $(function () {
     $('[data-toggle="popover"]').popover();
 })
 
-$(".sidebar-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("active");
-});
-
 function addCardButtonHandler() {
     // ADD CARD
     $('a[href="#addCard"]').unbind('click');

@@ -1,0 +1,243 @@
+#wrapper {
+    padding-right: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-right: 250px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    right: 250px;
+    width: 0;
+    height: 100%;
+    margin-right: -250px;
+    overflow-y: auto;
+    &.default {
+	background: @BarColor;
+	h4 { background: darken(@BarColor, 5%); }
+	.btn-default { .button-variant(#fff, darken(@BarColor, 5%), darken(darken(@BarColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@BarColor, 10%);
+	    color: darken(@BarColor, 10%);
+	}
+    }
+    &.Smile {
+        background: @SmileColor;
+	h4 { background: darken(@SmileColor, 5%); }
+	.btn-Smile { .button-variant(#fff, darken(@SmileColor, 5%), darken(darken(@SmileColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@SmileColor, 10%);
+	    color: darken(@SmileColor, 10%);
+	}
+    }
+    &.Pure {
+        background: @PureColor;
+	h4 { background: darken(@PureColor, 5%); }
+	.btn-Pure { .button-variant(#fff, darken(@PureColor, 5%), darken(darken(@PureColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@PureColor, 10%);
+	    color: darken(@PureColor, 10%);
+	}
+    }
+    &.Cool {
+        background: @CoolColor;
+	h4 { background: darken(@CoolColor, 5%); }
+	.btn-Cool { .button-variant(#fff, darken(@CoolColor, 5%), darken(darken(@CoolColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@CoolColor, 10%);
+	    color: darken(@CoolColor, 10%);
+	}
+    }
+    &.All {
+        background: @AllColor;
+	h4 { background: darken(@AllColor, 5%); }
+	.btn-All { .button-variant(#fff, darken(@AllColor, 5%), darken(darken(@AllColor, 5%), 5%)); }
+	input[type="text"],input[type="email"],input[type="number"],input[type="password"],select {
+	    border-color: darken(@AllColor, 10%);
+	    color: darken(@AllColor, 10%);
+	}
+    }
+    color: #fff;
+    h4 {
+	padding: 10px;
+	margin: 0;
+    }
+    .section {
+	padding: 20px;
+	label {
+	    font-weight: normal;
+	}
+	.helptext {
+    	    font-size: 0.7em;
+	}
+    }
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -250px;
+}
+
+#togglebutton {
+    display: block;
+    text-decoration: none;
+    background-color: @BarColor;
+    &.default { background: darken(@BarColor, 5%); &:hover { background-color: darken(@BarColor, 15%) } }
+    &.Smile { background: darken(@SmileColor, 5%); &:hover { background-color: darken(@SmileColor, 15%) } }
+    &.Pure { background: darken(@PureColor, 5%); &:hover { background-color: darken(@PureColor, 15%) } }
+    &.Cool { background: darken(@CoolColor, 5%); &:hover { background-color: darken(@CoolColor, 15%) } }
+    &.All { background: darken(@AllColor, 5%); &:hover { background-color: darken(@AllColor, 15%) } }
+    cursor: pointer;
+    right: 0;
+    padding: 5px 10px;
+    height: 40px;
+    width: 40px;
+    font-size: 20px;
+    z-index: 1030;
+    margin-left: -7px;
+    overflow: hidden;
+    position: fixed;
+    top: 51px;
+    overflow: hidden;
+    border-bottom-left-radius: 10px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    text-decoration: none;
+    display: block;
+    color: white;
+    font-weight: 700;
+    i {
+	display: block;
+    }
+    .flaticon-toggler {
+	display: none;
+    }
+    &:hover {
+	background-color: darken(@BarColor, 10%);
+	text-decoration: none;
+    }
+}
+
+#wrapper.toggled #togglebutton {
+    right: 250px;
+    .flaticon-search {
+	display: none;
+    }
+    .flaticon-toggler {
+	display: block;
+    }
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-right: 250px;
+    }
+    #togglebutton {
+	right: 250px;
+	.flaticon-search {
+	    display: none;
+	}
+	.flaticon-toggler {
+	    display : block;
+	}
+    }
+
+    #wrapper.toggled {
+        padding-right: 0;
+	#togglebutton {
+	    right: 0;
+	    .flaticon-search {
+		display: block;
+	    }
+	    .flaticon-toggler {
+		display : none;
+	    }
+	}
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}

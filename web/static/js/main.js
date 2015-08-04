@@ -3,6 +3,11 @@ function getInterfaceColor() {
     return $('body').attr('class').replace('interface-', '');
 }
 
+$("#togglebutton").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+
 function freeModal(title, body, buttons) {
     $('#freeModal .modal-header h4').html(title);
     $('#freeModal .modal-body').html(body);

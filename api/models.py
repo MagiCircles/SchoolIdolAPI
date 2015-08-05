@@ -364,5 +364,6 @@ class Activity(models.Model):
     rank = models.PositiveIntegerField(null=True, blank=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
+    likes = models.ManyToManyField(User, related_name="liked_activities")
 
 admin.site.register(Activity)

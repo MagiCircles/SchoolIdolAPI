@@ -37,7 +37,20 @@
       </div>
       <div>
 	<small class="date">{{ activity.creation }}</small><br>
+	{% if user.is_authenticated %}
+	  {% if activity.account.owner == user %}
+		<strong class="account">{{ activity.account }}</strong> <i class="flaticon-heart"></i><br>
+	  {% else %}
+		<form method="POST" class="form-inline likeactivity" action="/ajax/likeactivity/{{ activity.id }}/">
+	      {% csrf_token %}
+		  <input type="hidden" name="{% if user in activity.likers %}unlike{% else %}like{% endif %}">
+		  <strong class="account">{{ activity.account }}</strong>
+		  <button type="submit" data-reverse="{% if user in activity.likers %}<i class='flaticon-star'></i>{% else %}<i class='flaticon-heart'></i>{% endif %}">{% if user in activity.likers %}<i class='flaticon-heart'></i>{% else %}<i class='flaticon-star'></i>{% endif %}</button>
+	  	</form>
+	  {% endif %}
+	{% else %}
 	<strong class="account">{{ activity.account }}</strong><br>
+	{% endif %}
 	<span class="message">{{ activity.message|activityMessageToString }}
 	  {% if activity.message == 'Rank Up' %}
 	  {% elif activity.message == 'Ranked in event' %}

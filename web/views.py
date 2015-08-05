@@ -885,8 +885,6 @@ def idols(request):
     context['current'] = 'idols'
     context['main_idols'] = models.Idol.objects.filter(main=True).order_by('year', 'name')
     context['n_idols'] = models.Idol.objects.filter(main=False).order_by('name')
-    for idol in context['n_idols']:
-        idol.card = idol.cards.all().order_by('?')[0]
     return render(request, 'idols.html', context)
 
 def twitter(request):

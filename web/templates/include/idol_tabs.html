@@ -1,0 +1,9 @@
+{% load i18n %}
+<ul class="nav nav-tabs nav-tabs-lg color-{{ idol.attribute }}">
+  <li role="presentation" class="{% if tab == 'idol' %}active{% endif %}"><a href="/idol/{{ idol.name|urlencode }}/"><i class="flaticon-idolized"></i> {% trans 'Idol' %}</a></li>
+  <li role="presentation" class="{% if tab == 'cards' %}active{% endif %}"><a href="/cards/?search&name={{ idol.name|urlencode }}"><i class="flaticon-album"></i> {% trans 'Cards' %}</a></li>
+  {% if idol.main %}
+  <li role="presentation" class="{% if tab == 'pictures' %}active{% endif %}"><a href="/idol/{{ idol.name|urlencode }}/?tab=pictures"><i class="flaticon-pictures"></i> {% trans 'Pictures' %}</a></li>
+  {% endif %}
+  <li role="presentation"><a href="http://schoolido.lu/idol/{{ idol.name|urlencode }}/#disqus_thread" data-disqus-identifier="{{ idol.name }}">{% trans 'Comments' %}</a></li>
+</ul>

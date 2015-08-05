@@ -103,3 +103,24 @@ class AccountStaffForm(ModelForm):
     class Meta:
         model = models.Account
         fields = ('owner_id', 'friend_id', 'verified', 'rank', 'center')
+
+# class TeamForm(ModelForm):
+#     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card1 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card2 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card3 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card4 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card5 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card6 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card7 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     card8 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+#     class Meta:
+#         model = models.Team
+#         fields = ('name', 'card0', 'card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8')
+
+# def getTeamForm(form, ownedcards):
+#     for i in range(9):
+#         print 'test'
+#         setattr(form, 'card' + str(i), OwnedCardModelChoiceField(queryset=ownedcards, required=False))
+#     return form
+

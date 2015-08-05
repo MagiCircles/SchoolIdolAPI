@@ -17,6 +17,7 @@ from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models
 from web import forms, links, donations
+from utils import *
 import urllib, hashlib
 import datetime
 import random
@@ -120,6 +121,9 @@ def cards(request, card=None, ajax=False):
     page = 0
     context = globalContext(request)
     context['total_results'] = 0
+
+    if len(request.GET) == 1 and 'name' in request.GET:
+        return redirect('/idol/' + request.GET['name'] + '/')
 
     f = open('cardsinfo.json', 'r')
     cardsinfo = json.load(f)
@@ -314,6 +318,18 @@ def cards(request, card=None, ajax=False):
         return render(request, 'cardsPage.html', context)
     return render(request, 'cards.html', context)
 
+idol_tabs = ['idol', 'pictures']
+
+def idol(request, idol):
+    context = globalContext(request)
+    context['tab'] = 'idol'
+    if 'tab' in request.GET and request.GET['tab'] in idol_tabs:
+        context['tab'] = request.GET['tab']
+    context['idol'] = get_object_or_404(models.Idol, name=idol)
+    if context['tab'] == 'pictures':
+        context['idol'].tag = idol.lower().replace(' ', '_')
+    return render(request, 'idol.html', context)
+
 def addaccount(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
@@ -379,6 +395,80 @@ def profile(request, username):
                             account.owner = account_new_user
                         account.save()
                         return redirect('/user/' + context['profile_user'].username + '?staff#' + str(account.id))
+    # Set links
+    context['links'] = []
+    preferences = context['preferences']
+    if preferences.best_girl:
+        context['links'].append({
+            'link': '/idol/' + preferences.best_girl + '/',
+            'title': 'Best Girl',
+            'title_translate': True,
+            'div': '<div class="chibibestgirl" style="background-image: url(' + chibiimage(preferences.best_girl) + ')"></div>',
+            'text': preferences.best_girl,
+        })
+    if preferences.location:
+        context['links'].append({
+            'link': 'http://maps.google.com/?q=' + preferences.location,
+            'title': 'Location',
+            'title_translate': True,
+            'flaticon': 'world',
+            'text': preferences.location,
+        })
+    if preferences.twitter:
+        context['links'].append({
+            'link': 'http://twitter.com/' + preferences.twitter,
+            'title': 'Twitter',
+        })
+    if preferences.facebook:
+        context['links'].append({
+            'link': 'https://www.facebook.com/' + preferences.facebook,
+            'title': 'Facebook',
+            'text': preferences.facebook,
+        })
+    if preferences.reddit:
+        context['links'].append({
+            'link': 'http://www.reddit.com/user/' + preferences.reddit,
+            'title': 'Reddit',
+            'image': 'http://www.redditstatic.com/spreddit4.gif',
+            'text': '/u/' + preferences.reddit,
+        })
+    if preferences.line:
+        context['links'].append({
+            'link': 'http://line.me/',
+            'title': 'LINE Messenger',
+            'image': 'http://media.line.me/img/button/en/20x20.png',
+            'image_size': 20,
+            'text': preferences.line,
+        })
+    if preferences.twitch:
+        context['links'].append({
+            'link': 'http://twitch.tv/' + preferences.twitch,
+            'title': 'Twitch',
+            'image': '/static/twitch.png',
+            'text': preferences.twitch,
+        })
+    if preferences.mal:
+        context['links'].append({
+            'link': 'http://myanimelist.net/' + preferences.mal,
+            'title': 'MyAnimeList',
+            'image': '/static/mal.png',
+            'text': preferences.mal,
+        })
+    if preferences.otonokizaka:
+        context['links'].append({
+            'link': 'http://otonokizaka.org/member.php?action=profile&uid=' + preferences.otonokizaka,
+            'title': 'Otonokizaka Forum',
+            'text': preferences.otonokizaka,
+        })
+    if preferences.tumblr:
+        context['links'].append({
+            'link': 'http://' + preferences.tumblr + '.tumblr.com/',
+            'title': 'Tumblr',
+        })
+    context['per_line'] = len(context['links'])
+    if context['per_line'] > 6:
+        context['per_line'] = math.ceil(context['per_line'] / 2)
+
     context['current'] = 'profile'
     context['following'] = isFollowing(user, request)
     context['total_following'] = context['preferences'].following.count()

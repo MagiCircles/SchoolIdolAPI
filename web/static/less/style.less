@@ -78,6 +78,25 @@ select {
     }
 }
 
+.a-nodifference {
+    color: inherit;
+    &:hover,
+    &:focus {
+	color: inherit;
+	text-decoration: none;
+    }
+}
+
+.nav-tabs {
+    &.color-Smile { .a-variant-important(@SmileColor); }
+    &.color-Pure { .a-variant-important(@PureColor); }
+    &.color-Cool { .a-variant-important(@CoolColor); }
+    &.color-All { .a-variant-important(@AllColor); }
+    &.nav-tabs-lg {
+	font-size: 1.4em;
+    }
+}
+
 .custom-panel(@color, @background:#fff, @linkcolor:#fff) {
     .panel-variant(lighten(@color, 20%), #fff, @color, lighten(@color, 20%));
     >.panel-heading {
@@ -256,7 +275,7 @@ main {
     .button-variant(@inverse, lighten(@color, 25%), darken(lighten(@color, 25%), 5%));
 }
 
- .btn-Smile { .custom-btn(@SmileColor); }
+.btn-Smile { .custom-btn(@SmileColor); }
 .btn-Pure { .button-variant(#fff, lighten(@PureColor, 25%), darken(lighten(@PureColor, 25%), 5%)) }
 .btn-Cool { .button-variant(#fff, lighten(@CoolColor, 25%), darken(lighten(@CoolColor, 25%), 5%)) }
 .btn-All { .button-variant(#fff, lighten(@AllColor, 25%), darken(lighten(@AllColor, 25%), 5%)) }
@@ -465,6 +484,22 @@ main {
 }
 
 @media (max-width: 970px) {
+    .table-buttons {
+	td {
+	    display: block;
+	    width: 100%;
+	    &>a {
+		padding: 4% 1%!important;
+	    }
+	}
+	td:first-child {
+	    border-bottom-left-radius: 0!important;
+	}
+	td:last-child {
+	    border-bottom-left-radius: 6px;
+	    border-bottom-right-radius: 6px;
+	}
+    }
     .link-stars-side {
 	display: none!important;
     }
@@ -489,6 +524,12 @@ main {
     }
 }
 
+#idol_pictures {
+    img {
+	margin: 20px;
+	border-radius: 5px;
+    }
+}
 
 .navbar-default { .navbar-variant(@BarColor, #fff); }
 .navbar-Smile { .navbar-variant(@SmileColor, #fff); }
@@ -600,14 +641,17 @@ a.panel {
     }
 }
 
-#profile.jumbotron {
+#profile.jumbotron, #idol .jumbotron {
+    margin-bottom: 0;
+    padding-bottom: 30px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
     &.Smile { background-color: lighten(@SmileColor, 45%); color: darken(@SmileColor, 10%); .a-variant(@SmileColor); }
     &.Pure { background-color: lighten(@PureColor, 45%); color: darken(@PureColor, 10%); .a-variant(@PureColor); }
     &.Cool { background-color: lighten(@CoolColor, 45%); color: darken(@CoolColor, 10%); .a-variant(@CoolColor); }
     &.All { background-color: lighten(@AllColor, 35%); color: darken(@AllColor, 10%); .a-variant(@AllColor); }
 }
 .topprofile {
-    margin-bottom: 30px;
     .avatar {
 	border-radius: 20%;
 	border: 5px solid #999;
@@ -849,6 +893,45 @@ h1#donators {
     }
 }
 
+.table-buttons {
+    width: 100%;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    &.Smile { td { .custom-btn(@SmileColor); a { .a-nodifference(); }  } }
+    &.Pure { td { .custom-btn(@PureColor); a { .a-nodifference(); }  } }
+    &.Cool { td { .custom-btn(@CoolColor); a { .a-nodifference(); } } }
+    &.All { td { .custom-btn(@AllColor); a { .a-nodifference(); } } }
+    &.default { td { .custom-btn(#888); a { .a-nodifference(); } } }
+    tr {
+	border: 0;
+    }
+    td {
+	padding: 0;
+	&>a {
+	    display: block;
+	    padding: 20px;
+	}
+    }
+    &:last-child {
+	td:first-child {
+	    border-bottom-left-radius: 6px;
+	}
+	td:last-child {
+	    border-bottom-right-radius: 6px;
+	}
+    }
+}
+
+.chibibestgirl {
+    background-position: center top;
+    background-repeat: none;
+    margin: -10px 0;
+    background-size: 40px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
 .ranking-line {
     .flaticon-star {
 	display: inline-block;
@@ -900,15 +983,15 @@ h1#donators {
     }
 }
 
-.idol {
+#idol {
     .side-idol {
-	width: 400%;
+	width: 200%;
 	display: block;
 	&.left {
-	    margin-left: -150%;
+	    margin-left: -50%;
 	}
 	&.right {
-	    margin-left: -150%;
+	    margin-left: -50%;
 	}
     }
     #disqus_thread {
@@ -940,6 +1023,31 @@ h1#donators {
 		&.hover {
 		    display: block;
 		}
+	    }
+	}
+    }
+}
+
+#idol {
+    margin: 0 20px;
+    .jumbotron {
+	border-radius: 6px;
+	.chibi {
+	    height: 200px;
+	    margin: -78px 0 -58px 0;
+	}
+	.attribute {
+	    height: 100px;
+	    margin: -78px 0 -58px 0;
+	    padding-right: 50px;
+	}
+    }
+    &.notmain {
+	.jumbotron {
+	    padding-top: 13px;
+	    pdding-bottom: 13px;
+	    .chibi {
+		height: 130px;
 	    }
 	}
     }

@@ -77,6 +77,7 @@ def verifiedToString(val):
     return VERIFIED_DICT[val]
 
 def activityMessageToString(val):
+    print val
     return ACTIVITY_MESSAGE_DICT[val]
 
 def playWithToString(val):
@@ -133,7 +134,7 @@ class Event(models.Model):
     japanese_t2_points = models.PositiveIntegerField(null=True, blank=True)
     japanese_t2_rank = models.PositiveIntegerField(null=True, blank=True)
     note = models.CharField(max_length=200, null=True, blank=True)
-    image = models.ImageField(upload_to='web/static/events/', null=True, blank=True)
+    image = models.ImageField(upload_to='events/', null=True, blank=True)
 
     def is_japan_current(self):
         return (self.beginning is not None
@@ -236,11 +237,11 @@ class Card(models.Model):
     japanese_center_skill = models.TextField(null=True, blank=True)
     japanese_center_skill_details = models.TextField(null=True, blank=True)
     card_url = models.CharField(max_length=200, blank=True)
-    card_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
+    card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     card_idolized_url = models.CharField(max_length=200, blank=True)
-    card_idolized_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
+    card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     round_card_url = models.CharField(max_length=200, blank=True, null=True)
-    round_card_image = models.ImageField(upload_to='web/static/cards/', null=True, blank=True)
+    round_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
 
@@ -295,6 +296,25 @@ class OwnedCard(models.Model):
         return str(self.owner_account) + ' owns ' + str(self.card)
 
 admin.site.register(OwnedCard)
+
+# class Team(models.Model):
+#     owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
+#     name = models.CharField(max_length=100, verbose_name=_('Name'))
+
+#     def __unicode__(self):
+#         return self.name
+
+# admin.site.register(Team)
+
+# class Member(models.Model):
+#     team = models.ForeignKey(Team, related_name='cards')
+#     card = models.ForeignKey(OwnedCard)
+#     position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
+
+#     class Meta:
+#         unique_together = (('team', 'position'), ('team', 'card'))
+
+# admin.site.register(Member)
 
 class EventParticipation(models.Model):
     event = models.ForeignKey(Event, related_name='participations')

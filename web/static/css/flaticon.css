@@ -17,171 +17,180 @@ margin-left: 20px;
 }.flaticon-en:before {
 	content: "\e000";
 }
-.flaticon-activities:before {
+.flaticon-achievement:before {
 	content: "\e001";
 }
-.flaticon-add:before {
+.flaticon-activities:before {
 	content: "\e002";
 }
-.flaticon-album:before {
+.flaticon-add:before {
 	content: "\e003";
 }
-.flaticon-iOs:before {
+.flaticon-album:before {
 	content: "\e004";
 }
-.flaticon-back:before {
+.flaticon-iOs:before {
 	content: "\e005";
 }
-.flaticon-contact:before {
+.flaticon-back:before {
 	content: "\e006";
 }
-.flaticon-cards:before {
+.flaticon-contact:before {
 	content: "\e007";
 }
-.flaticon-checked:before {
+.flaticon-cards:before {
 	content: "\e008";
 }
-.flaticon-CN:before {
+.flaticon-checked:before {
 	content: "\e009";
 }
-.flaticon-combo:before {
+.flaticon-CN:before {
 	content: "\e00a";
 }
-.flaticon-contest:before {
+.flaticon-combo:before {
 	content: "\e00b";
 }
-.flaticon-date:before {
+.flaticon-comments:before {
 	content: "\e00c";
 }
-.flaticon-deck:before {
+.flaticon-contest:before {
 	content: "\e00d";
 }
-.flaticon-delete:before {
+.flaticon-date:before {
 	content: "\e00e";
 }
-.flaticon-developer:before {
+.flaticon-deck:before {
 	content: "\e00f";
 }
-.flaticon-toggler:before {
+.flaticon-delete:before {
 	content: "\e010";
 }
-.flaticon-world:before {
+.flaticon-developer:before {
 	content: "\e011";
 }
-.flaticon-edit:before {
+.flaticon-toggler:before {
 	content: "\e012";
 }
-.flaticon-event:before {
+.flaticon-world:before {
 	content: "\e013";
 }
-.flaticon-link:before {
+.flaticon-edit:before {
 	content: "\e014";
 }
-.flaticon-filter:before {
+.flaticon-event:before {
 	content: "\e015";
 }
-.flaticon-center:before {
+.flaticon-link:before {
 	content: "\e016";
 }
-.flaticon-heart-empty:before {
+.flaticon-filter:before {
 	content: "\e017";
 }
-.flaticon-heart:before {
+.flaticon-center:before {
 	content: "\e018";
 }
-.flaticon-help:before {
+.flaticon-heart-empty:before {
 	content: "\e019";
 }
-.flaticon-hp:before {
+.flaticon-heart:before {
 	content: "\e01a";
 }
-.flaticon-id:before {
+.flaticon-help:before {
 	content: "\e01b";
 }
-.flaticon-about:before {
+.flaticon-hp:before {
 	content: "\e01c";
 }
-.flaticon-JP:before {
+.flaticon-id:before {
 	content: "\e01d";
 }
-.flaticon-logout:before {
+.flaticon-about:before {
 	content: "\e01e";
 }
-.flaticon-max-bond:before {
+.flaticon-JP:before {
 	content: "\e01f";
 }
-.flaticon-max-level:before {
+.flaticon-logout:before {
 	content: "\e020";
 }
-.flaticon-achievement:before {
+.flaticon-shop:before {
 	content: "\e021";
 }
-.flaticon-healer:before {
+.flaticon-max-bond:before {
 	content: "\e022";
 }
-.flaticon-more:before {
+.flaticon-max-level:before {
 	content: "\e023";
 }
-.flaticon-users:before {
+.flaticon-healer:before {
 	content: "\e024";
 }
-.flaticon-fingers:before {
+.flaticon-more:before {
 	content: "\e025";
 }
-.flaticon-perfectlock:before {
+.flaticon-users:before {
 	content: "\e026";
 }
-.flaticon-present:before {
+.flaticon-fingers:before {
 	content: "\e027";
 }
-.flaticon-profile:before {
+.flaticon-perfectlock:before {
 	content: "\e028";
 }
-.flaticon-promo:before {
+.flaticon-pictures:before {
 	content: "\e029";
 }
-.flaticon-scoreup:before {
+.flaticon-present:before {
 	content: "\e02a";
 }
-.flaticon-search:before {
+.flaticon-profile:before {
 	content: "\e02b";
 }
-.flaticon-settings:before {
+.flaticon-promo:before {
 	content: "\e02c";
 }
-.flaticon-skill:before {
+.flaticon-scoreup:before {
 	content: "\e02d";
 }
-.flaticon-song:before {
+.flaticon-search:before {
 	content: "\e02e";
 }
-.flaticon-KR:before {
+.flaticon-settings:before {
 	content: "\e02f";
 }
-.flaticon-star-empty:before {
+.flaticon-skill:before {
 	content: "\e030";
 }
-.flaticon-star:before {
+.flaticon-song:before {
 	content: "\e031";
 }
-.flaticon-idolized:before {
+.flaticon-KR:before {
 	content: "\e032";
 }
-.flaticon-Android:before {
+.flaticon-star-empty:before {
 	content: "\e033";
 }
-.flaticon-TW:before {
+.flaticon-star:before {
 	content: "\e034";
 }
-.flaticon-thumbs:before {
+.flaticon-idolized:before {
 	content: "\e035";
 }
-.flaticon-times:before {
+.flaticon-Android:before {
 	content: "\e036";
 }
-.flaticon-trade:before {
+.flaticon-TW:before {
 	content: "\e037";
 }
-.flaticon-trophy:before {
+.flaticon-thumbs:before {
 	content: "\e038";
+}
+.flaticon-times:before {
+	content: "\e039";
+}
+.flaticon-trade:before {
+	content: "\e03a";
+}
+.flaticon-trophy:before {
+	content: "\e03b";
 }

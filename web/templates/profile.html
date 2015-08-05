@@ -31,131 +31,83 @@
   <div class="jumbotron {{ preferences.color }}" id="profile">
     <div class="topprofile {{ preferences.color }}">
       <div class="row">
-	<div class="col-md-8">
-	  <div class="row">
-	    <div class="col-sm-4">
-	      {% include 'include/avatar.html' with av_user=profile_user av_size=60 av_image_size=200 %}
-	    </div>
-	    <div class="col-sm-8">
-	      <div class="info">
-		<h1 id="username">{{ profile_user.username }}</h1>
-		{% if preferences.status and preferences.status != 'THANKS' %}<a href="/donate/"><h2 class="text-right" style="color: {{ preferences.status|userStatusToColor }}">{{ preferences.status|userStatusToString }}</h2></a>{% endif %}
-		{% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Your Settings' %}</a></div>{% endif %}
-		<br>
-		<div class="description">{{ preferences.description|markdown }}</div>
-	      </div>
-	    </div>
-	  </div>
+	<div class="col-sm-2">
+	  {% include 'include/avatar.html' with av_user=profile_user av_size=60 av_image_size=200 %}
 	</div>
-	<div class="col-md-4 text-right">
-	  {% if user.is_authenticated and not preferences.private and not is_me %}
-	  <br><br>
-	  <form method="POST" class="noform" id="follow" action="/ajax/follow/{{ profile_user.username }}/">
-	    {% csrf_token %}
-	    <input type="hidden" name="{% if following %}unfollow{% else %}follow{% endif %}">
-	    <input type="submit" class="btn btn-lg btn-{{ preferences.color }}" value="{% if following %}{% trans 'Unfollow' %}{% else %}{% trans 'Follow' %}{% endif %}" data-reverse="{% if following %}{% trans 'Follow' %}{% else %}{% trans 'Unfollow' %}{% endif %}">
-	  </form>
-	  {% elif not user.is_authenticated %}
-	  <br><br>
-	  <a href="/create/" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">Follow</a>
-	  {% endif %}
-	  <br><br>
-	  <table class="white-table table-responsive">
-	    {% if total_followers %}
-	    <tr>
-	      <th>{% trans 'Followers' %}</th>
-	      <td><a href="#followers">{{ total_followers }}</a></td>
-	    </tr>
-	    {% endif %}
-	    {% if total_following %}
-	    <tr>
-	      <th>{% trans 'Following' %}</th>
-	      <td><a href="#following">{{ total_following }}</a></td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.best_girl %}
-	    <tr>
-	      <th>{% trans 'Best Girl' %}</th>
-	      <td><a href="/cards/?name={{ preferences.best_girl }}" target="_blank">{{ preferences.best_girl }}</a></td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.location %}
-	    <tr>
-	      <th>{% trans 'Location' %}</th>
-	      <td><a href="http://maps.google.com/?q={{ preferences.location }}" target="_blank">{{ preferences.location }}</a></td>
-	    </tr>
-	    {% endif %}
-	  </table>
-	  <table class="white-table table-responsive">
-	    {% if preferences.twitter %}
-	    <tr>
-	      <th>Twitter</th>
-	      <td>
-		{% include 'include/twitter.html' with twitter=preferences.twitter %}
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.facebook %}
-	    <tr>
-	      <th>Facebook</th>
-	      <td>
-		<div class="fb-follow" data-href="https://www.facebook.com/{{ preferences.facebook }}" data-width="174" data-height="28" data-colorscheme="light" data-layout="standard" data-show-faces="false"></div>
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.reddit %}
-	    <tr>
-	      <th>Reddit</th>
-	      <td>
-		<a href="http://www.reddit.com/user/{{ preferences.reddit }}" target="_blank">/u/{{ preferences.reddit }} <img src="http://www.redditstatic.com/spreddit4.gif" alt="Reddit"></a>
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.line %}
-	    <tr>
-	      <th>LINE Messenger</th>
-	      <td>
-		<a href="http://line.me/" target="_blank">{{ preferences.line }} <img width="20" height="20" src="http://media.line.me/img/button/en/20x20.png" alt="Line"></a>
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.twitch %}
-	    <tr>
-	      <th>Twitch</th>
-	      <td>
-		<a href="http://twitch.tv/{{ preferences.twitch }}" target="_blank">{{ preferences.twitch }} <img src="/static/twitch.png" alt="Twitch"></a>
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.mal %}
-	    <tr>
-	      <th>Mal</th>
-	      <td>
-		<a href="http://myanimelist.net/profile/{{ preferences.mal }}" target="_blank">{{ preferences.mal }} <img src="/static/mal.png" alt="MyAnimeList"></a>
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.otonokizaka %}
-	    <tr>
-	      <th>Otonokizaka.org forum</th>
-	      <td>
-		<a href="http://otonokizaka.org/member.php?action=profile&uid={{ preferences.otonokizaka }}" target="_blank">{{ preferences.otonokizaka }}</a>
-	      </td>
-	    </tr>
-	    {% endif %}
-	    {% if preferences.tumblr %}
-	    <tr>
-	      <th>Tumblr</th>
-	      <td>
-		<iframe class="btn" frameborder="0" border="0" scrolling="no" allowtransparency="true" style="padding: 0; margin: 0; border: 0;" height="25" width="160" src="http://platform.tumblr.com/v1/follow_button.html?button_type=1&tumblelog={{ preferences.tumblr }}&color_scheme=light"></iframe>
-	      </td>
-	    </tr>
-	    {% endif %}
-	  </table>
+	<div class="col-sm-10">
+	  <div class="info">
+	    <div class="pull-right text-right">
+	      {% if user.is_authenticated and not preferences.private and not is_me %}
+	      <form method="POST" class="noform" id="follow" action="/ajax/follow/{{ profile_user.username }}/">
+		{% csrf_token %}
+		<input type="hidden" name="{% if following %}unfollow{% else %}follow{% endif %}">
+		<input type="submit" class="btn btn-lg btn-{{ preferences.color }}" value="{% if following %}{% trans 'Unfollow' %}{% else %}{% trans 'Follow' %}{% endif %}" data-reverse="{% if following %}{% trans 'Follow' %}{% else %}{% trans 'Unfollow' %}{% endif %}">
+	      </form>
+	      {% elif not user.is_authenticated %}
+	      <a href="/create/" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">Follow</a><br>
+	      {% endif %}
+	      {% if total_followers %}
+	      <br><a href="#followers"><strong>{{ total_followers }}</strong> {% trans 'Followers' %}</a></td>
+	      {% endif %}
+	      {% if total_following %}
+	      <br><a href="#following"><strong>{{ total_following }}</strong> {% trans 'Following' %}</a></td>
+	      {% endif %}
+	    </div>
+	    <h1 id="username">{{ profile_user.username }}</h1>
+	    {% if preferences.status and preferences.status != 'THANKS' %}<a href="/donate/"><h2 style="color: {{ preferences.status|userStatusToColor }}">{{ preferences.status|userStatusToString }}</h2></a>{% endif %}
+	    {% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Your Settings' %}</a></div>{% endif %}
+	    <br>
+	    <div class="description">{{ preferences.description|markdown }}</div>
+	  </div>
 	</div>
       </div>
     </div>
   </div>
+<div>
+  <table>
+    <tr>
+      {% for link in links %}
+      {% if forloop.counter0|mod:per_line %}
+  </tr></table>
+  <table class="white-table table-responsive text-center table-buttons {% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">
+    <tr>
+      {% endif%}
+      <td>
+	<a href="{{ link.link }}" target="_blank">
+	  <div class="row"><div class="col-xs-8"><strong>
+		{% if link.title_translate %}
+		{% trans link.title %}
+		{% else %}
+		{{ link.title }}
+		{% endif %}
+	    </strong></div>
+	    <div class="col-xs-4">
+	      {% if link.flaticon %}
+	      <i class="flaticon-{{ link.flaticon }}"></i>
+	      {% elif link.image %}
+	      <img src="{{ link.image }}" alt="{{ link.title }}"
+		   {% if link.image_size %}
+		   width="{{ link.image_size }}" height="{{ link.image_size }}"
+		   {% endif %}
+		   >
+	      {% elif link.div %}
+	      {{ link.div|safe }}
+	      {% endif %}
+	    </div>
+	  </div>
+	  {% if link.title == 'Twitter' %}
+	  {% include 'include/twitter.html' with nolink=True twitter=preferences.twitter %}
+	  {% elif link.title == 'Tumblr' %}
+	  <iframe class="btn" frameborder="0" border="0" scrolling="no" allowtransparency="true" style="padding: 0; margin: 0; border: 0;" height="25" width="160" src="http://platform.tumblr.com/v1/follow_button.html?button_type=1&tumblelog={{ preferences.tumblr }}&color_scheme=light"></iframe>
+	  {% else %}
+	  {{ link.text }}
+	  {% endif %}
+	</a>
+      </td>
+      {% endfor %}
+    </tr>
+  </table>
+</div>
     {% with user_accounts|length as length %}
     {% if length == 0 %}
     <h2>{% trans 'No account.' %}</h2>

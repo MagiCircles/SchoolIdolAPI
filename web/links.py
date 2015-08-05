@@ -85,6 +85,13 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': _('Video tutorials'),
+                    'url': 'https://www.youtube.com/playlist?list=PLi0ZunSQk5WVoWv_V-jipUD-uSSVqCIMO',
+                    'description': _('Easy tutorials for beginners and advanced players by Eryn'),
+                    'type': 'tutorial',
+                    'language': 'world',
+                },
+                {
                     'name': _('Menu\'s Translation'),
                     'description': _('Useful if you play on the Japanese version.'),
                     'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Menus',
@@ -121,7 +128,7 @@ def get_links(current_en, current_jp):
                 {
                     'name': _('Save your Transfer Code'),
                     'description': _('First thing to do! In case you lose your device, it will allow you to retrieve your precious account.'),
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/wiki/passcode',
+                    'url': 'https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F http://www.reddit.com/r/SchoolIdolFestival/wiki/passcode',
                     'type': 'tutorial',
                     'language': 'world',
                 },
@@ -271,6 +278,11 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': 'MyAnimeList Club',
+                    'url': 'http://myanimelist.net/clubs.php?cid=66375',
+                    'language': 'world',
+                },
+                {
                     'name': 'Crunchyroll Forum',
                     'url': 'http://www.crunchyroll.com/forumtopic-855485/love-live-school-idol-festival-app-game?pg=0',
                     'type': '',
@@ -384,10 +396,9 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
-                    'name': _('Android Traning App Sukutore'),
+                    'name': _('Android Training App'),
                     'description': _('Train your fingers without wasting your LPs!'),
-                    'url': 'http://apps.evozi.com/apk-downloader/?id=siy.sukutore',
-                    'size': 'big',
+                    'url': 'https://play.google.com/store/apps/details?id=com.fteams.siftrain.android',
                     'type': 'tool',
                     'language': 'world',
                 },
@@ -463,21 +474,7 @@ def get_links(current_en, current_jp):
                     'language': 'japanese',
                 },
                 {
-                    'name': _('English Event Tracker'),
-                    'description': _('Track statistics about the current English event.'),
-                    'url': 'https://sites.google.com/site/llsifeneventtracker/',
-                    'type': 'info',
-                    'language': 'english',
-                },
-                {
-                    'name': _('Japanese Event Tracker'),
-                    'description': _('Track statistics about the current Japanese event.'),
-                    'url': 'http://atsites.jp/llborder/',
-                    'type': 'info',
-                    'language': 'japanese',
-                },
-                {
-                    'name': _('Events Rank Calculator'),
+                    'name': _('Events Points Calculator'),
                     'url': 'https://yefta.com/llsif/',
                     'description': _('A tool to calculate the required loveca and time you will need to get a certain position in the global ranking.'),
                     'size': 'big',
@@ -489,6 +486,12 @@ def get_links(current_en, current_jp):
                     'url': 'http://www.usagi.org/doi-bin/llcutoff.pl',
                     'type': 'info',
                     'language': 'japanese',
+                },
+                {
+                    'name': _('English Events Tiers Cutoff Predictor'),
+                    'url': 'https://docs.google.com/spreadsheets/d/1gT26kLl2jAQGX9xn9VRAYwnk5gzKWpe-NkOJa7osI8Y/pubhtml',
+                    'type': 'info',
+                    'language': 'english',
                 },
                 {
                     'name': _('List of all events'),

@@ -290,7 +290,9 @@ class Command(BaseCommand):
                 if not local and (redownload or not event.image):
                     print "  Import event image...",
                     try:
-                        f_event = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(name))
+                        url = 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(name.encode('utf-8'))
+                        f_event = urllib2.urlopen(url)
+                        
                         event_soup = BeautifulSoup(f_event.read())
                         content = event_soup.find('div', { 'id': 'mw-content-text'})
                         if content is not None:
@@ -300,7 +302,7 @@ class Command(BaseCommand):
                                 event.image.save(name + '.jpg', downloadShrunkedImage(image))
                                 print 'Done'
                         f_event.close()
-                    except:
+                    except TypeError:
                         print "No page found"
         f.close()
 
@@ -349,6 +351,7 @@ class Command(BaseCommand):
 
                 print 'Done'
         f.close()
+        return
 
         print '### Import video stories'
         if local:

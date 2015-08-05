@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% block title %}{% trans 'Idol' %}: {{ idol.name }}{% endblock %}
+{% block js %}
+{% if tab == 'idol' %}
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+{% endif %}
+{% if tab == 'pictures' %}
+<script src="/static/bower/jquery-visible/jquery.visible.min.js"></script>
+<script>var idol_tag = '{{ idol.tag }}'; var idol_attribute = '{{ idol.attribute }}';</script>
+<script src="/static/js/idol_pictures.js"></script>
+{% endif %}
+{% endblock %}
+
+{% block shareimage %}{% endblock %}
+{% block shareimagetwitter %}{% endblock %}
+
+{% block content %}
+{% load imageurl %}
+{% load getattribute %}
+<br>
+<div id="idol">
+  {% include 'include/idol_header.html' %}
+  <br>
+  <div class="row">
+    {% if idol.main and tab == 'idol' %}
+    <div class="col-xs-2">
+      <img class="flip side-idol left" src="{{ idol|standimage:2 }}">
+    </div>
+    {% endif %}
+    <div class="col-xs-{% if idol.main and tab == 'idol' %}8{% else %}12{% endif %}">
+      {% include 'include/idol_tabs.html' %}
+      {% if tab == 'idol' %}
+      <br>
+      <table class="table">
+	<tr>
+	  <th style="border-top: 0">{% trans 'Idol' %}</th>
+	  <td style="border-top: 0">{{ idol.name }}
+	    {% if idol.japanese_name %}
+	    <br>{{ idol.japanese_name }}{% endif %}</td>
+	</tr>
+	<tr>
+	  <th>{% trans 'Attribute' %}</th>
+	  <td>{{ idol.attribute }}<br>{{ idol.attribute|japanese_attribute }}</td>
+	</tr>
+	{% if idol.age %}
+	<tr>
+	  <th>{% trans 'Age' %}</th>
+	  <td>{{ idol.age }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.birthday %}
+	<tr>
+	  <th>{% trans 'Birthday' %}</th>
+	  <td>{{ idol.birthday|date:"M d" }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.astrological_sign %}
+	<tr>
+	  <th>{% trans 'Astrological Sign' %}</th>
+	  <td>{{ idol.astrological_sign }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.blood %}
+	<tr>
+	  <th>{% trans 'Blood Type' %}</th>
+	  <td>{{ idol.blood }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.height %}
+	<tr>
+	  <th>{% trans 'Height' %}</th>
+	  <td>{{ idol.height }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.measurements %}
+	<tr>
+	  <th>{% trans 'Measurements' %}</th>
+	  <td>{{ idol.measurements }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.favorite_food %}
+	<tr>
+	  <th>{% trans 'Favorite Food' %}</th>
+	  <td>{{ idol.favorite_food }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.least_favorite_food %}
+	<tr>
+	  <th>{% trans 'Least Favorite Food' %}</th>
+	  <td>{{ idol.least_favorite_food }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.hobbies %}
+	<tr>
+	  <th>{% trans 'Hobbies' %}</th>
+	  <td>{{ idol.hobbies }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.year %}
+	<tr>
+	  <th>{% trans 'Year' %}</th>
+	  <td>{{ idol.year }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.cv %}
+	<tr>
+	  <th>{% trans 'CV' %}</th>
+	  <td>
+	    <div class="pull-right text-right">
+	      <a class="btn btn-{{ idol.attribute }} btn-sm" href="{{ idol.cv_url }}" target="_blank">{% trans 'Profile' %}</a>
+	      {% if idol.cv_instagram %}
+	      {% include 'include/instagram.html' with instagram=idol.cv_instagram %}
+	      {% endif %}
+	      {% if idol.cv_twitter %}
+	      <br>{% include 'include/twitter.html' with twitter=idol.cv_twitter %}
+	      {% endif %}
+	    </div>
+	    {{ idol.cv }} ({{ idol.cv_nickname }})
+	  </td>
+	</tr>
+	{% endif %}
+	{% if idol.summary %}
+	<tr>
+	  <th>{% trans 'Summary' %}</th>
+	  <td>{{ idol.summary }}</td>
+	</tr>
+	{% endif %}
+	<tr>
+	  <th>{% trans 'Sources' %}</th>
+	  <td>
+	    <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ idol.name|urlencode }}" target="_blank" class="btn btn-{{ idol.attribute }}">{% trans 'Wiki' %}</a>
+	    {% if idol.official_url %}
+	    <a href="{{ idol.official_url }}" target="_blank" class="btn btn-{{ idol.attribute }}">ラブライブ！Official</a>
+	    {% endif %}
+	  </td>
+	</tr>
+      </table>
+      <br><br><br>
+      {% include 'disqus.html' with disqus_identifier=request_get.name nomargin=True %}
+      {% elif tab == 'pictures' %}
+      <br>
+      {# include 'include/idol_pictures.html' with page=1 #}
+      <div id="idol_pictures" class="text-center"></div>
+      <br><br>
+      {% endif %}
+    </div>
+    {% if idol.main and tab == 'idol' %}
+    <div class="col-xs-2">
+      <img class="side-idol right" src="{{ idol|standimage:5 }}">
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+from web.utils import chibiimage
 import os.path
 import re
 
@@ -9,8 +10,8 @@ def imageurl(card, image):
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
-            if settings.DEBUG:
-                card_image = unicode(card_image).replace('web/', '')
+            #if settings.DEBUG:
+             #   card_image = unicode(card_image).replace('web/', '')
             return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card_image))
         elif hasattr(card, image.replace('image', 'url')):
             url = getattr(card, image.replace('image', 'url'))
@@ -33,13 +34,6 @@ def standimage(idol, number):
     return ''
 
 from api.raw import raw_information
-
-def chibiimage(idol):
-    if idol is not None:
-        filename = '/static/idols/chibi/small_' + idol.replace(' ', '_') + '.png'
-        if os.path.isfile('web/' + filename):
-            return filename
-    return '/static/idols/chibi/small_Alpaca.png'
 
 register.filter('imageurl', imageurl)
 register.filter('standimage', standimage)

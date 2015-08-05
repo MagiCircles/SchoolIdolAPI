@@ -152,7 +152,7 @@ class CardSerializer(serializers.ModelSerializer):
         return 'http://schoolido.lu/cards/' + str(obj.id) + '/'
 
     def get_owned_cards(self, obj):
-        if (not self.context['request'] or not self.context['request']
+        if (not self.context['request']
             or not self.context['request'].query_params
             or 'account' not in self.context['request'].query_params):
             return None

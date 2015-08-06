@@ -351,7 +351,6 @@ class Command(BaseCommand):
 
                 print 'Done'
         f.close()
-        return
 
         print '### Import video stories'
         if local:

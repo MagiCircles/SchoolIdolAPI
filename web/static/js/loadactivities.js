@@ -26,6 +26,9 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size) {
 function loadMoreActivities(parent, account, feed, avatar_size) {
     avatarStatus();
     updateActivities();
+    // Reload disqus comments count
+    window.DISQUSWIDGETS = undefined;
+    $.getScript("http://schoolidol.disqus.com/count.js");
     var button = getButton(parent);
     button.click(function(e) {
 	e.preventDefault();

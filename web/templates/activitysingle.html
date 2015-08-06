@@ -1,0 +1,66 @@
+{% load i18n %}
+{% load imageurl %}
+{% load activitychange %}
+{% load storedChoiceToString %}
+{% load choicesToString %}
+<div class="activity">
+  <div class="row">
+    <div class="col-xs-{{ avatar_size }}">
+      {% include 'include/avatar.html' with av_user=activity.account.owner av_preferences=activity.account.owner.preferences av_image_size=100 av_size=30 av_link=True av_account_id=activity.account.pk %}
+    </div>
+    <div class="col-xs-{{ content_size }}">
+      <div class="pull-right text-right">
+	{% if activity.message == 'Rank Up' %}
+	<a href="/user/{{ activity.account.owner.username }}/#{{ activity.account.pk }}" target="_blank">
+	  <div class="rank">{{ activity.rank }}</div>
+	</a>
+	{% elif activity.message == 'Ranked in event' %}
+	<a href="/event/{{ activity.eventparticipation.event.japanese_name|urlencode }}/#ranking{{ activity.account.language }}" target="_blank">
+	  <img src="{{ activity.eventparticipation.event|eventimageurl }}" alt="{{ activity.eventparticipation.event }}" width="100"><br>
+	  <strong># {{ activity.eventparticipation.ranking }}</strong>
+	</a>
+	{% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
+	<a href="/cards/{{ activity.ownedcard.card.id }}/" class="owned_card">
+	  <div class="circled_card_{% if card_size %}{{ card_size }}{% else %}70{% endif %} {{ activity.ownedcard.card.attribute }} {{ activity.ownedcard.card.rarity }} hover"
+	       style="background-image: url('{% if not activity.ownedcard.idolized and activity.ownedcard.card.card_image %}{{ activity.ownedcard.card|imageurl:'card_image' }}{% else %}{{ activity.ownedcard.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+	</a>
+	{% endif %}
+      </div>
+      <div>
+	<small class="date">{{ activity.creation }}</small><br>
+	<strong class="account">{{ activity.account }}</strong><br>
+	<span class="message">{{ activity.message|activityMessageToString }}
+	  {% if activity.message == 'Rank Up' %}
+	  {% elif activity.message == 'Ranked in event' %}
+	  <br><small>{{ activity.eventparticipation.event }}</small>
+	  {% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
+	  {% trans 'in' %} <i>{% with activity.ownedcard.stored|storedChoiceToString as stored %}{% trans stored %}{% endwith %}</i>
+	  {% endif %}
+	</span><br>
+	{% include 'activitytext.html' %}
+	<div class="socialbar">
+	  <form method="POST" class="form-inline likeactivity" action="/ajax/likeactivity/{{ activity.id }}/">
+	    {% csrf_token %}
+	    <input type="hidden" name="{% if user in activity.likers %}unlike{% else %}like{% endif %}">
+	    <div class="btn-group">
+	      {% if user.is_authenticated %}
+	      {% if activity.account.owner == user %}
+	      <button class="btn btn-link btn-sm" disabled><i class="flaticon-heart"></i> Liked</button>
+	      {% else %}
+	      <button type="submit" class="btn btn-link btn-sm" data-reverse="{% if user in activity.likers %}<i class='flaticon-heart-empty'></i> Like{% else %}<i class='flaticon-heart'></i> Liked{% endif %}">{% if user in activity.likers %}<i class='flaticon-heart'></i> Liked{% else %}<i class='flaticon-heart-empty'></i> Like{% endif %}</button>
+	      {% endif %}
+	      {% else %}
+	      <a href="/create/" class="btn btn-link btn-sm"><i class="flaticon-heart"></i> Like</a>
+	      {% endif %}
+	      <a href="#likecount" class="btn btn-link btn-sm">{{ activity.likers|length|add:1 }}</a>
+	    </div>
+	    <div class="btn-group writecomments">
+	      <a href="/activities/{{ activity.id }}/" target="_blank" class="btn btn-link btn-sm"><i class="flaticon-comments"></i> {% trans 'Write Comment' %}</a>
+	      <a href="http://schoolido.lu/activities/{{ activity.id }}/#disqus_thread" target="_blank" class="btn btn-link btn-sm disqus-comment-count" data-disqus-identifier="activity{{ activity.id }}">{% trans 'Comments' %}</a>
+	    </div>
+	  </form>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>

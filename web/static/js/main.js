@@ -34,6 +34,30 @@ function globalModal(hash) {
 	  });
 }
 
+function updateActivities() {
+	$('.likeactivity').off('submit');
+	$('.likeactivity').submit(function(e) {
+		e.preventDefault();
+		$(this).ajaxSubmit({
+			context: this,
+			success: function(data) {
+				if (data == 'liked') {
+					$(this).find('input[type=hidden]').prop('name', 'unlike');
+				} else {
+					$(this).find('input[type=hidden]').prop('name', 'like');
+				}
+				var value = $(this).find('button[type=submit]').html();
+				$(this).find('button[type=submit]').html($(this).find('button[type=submit]').attr('data-reverse'));
+				$(this).find('button[type=submit]').attr('data-reverse', value);
+			},
+			error: function() {
+				alert('Opps! Something bad happened. Try again.');
+			}
+		});
+	});
+    });
+}
+
 function avatarStatus() {
     $('.avatar_wrapper').each(function() {
 	if (typeof $(this).attr('data-user-status') != 'undefined') {
@@ -69,6 +93,7 @@ $(document).ready(function() {
 	$('#switchLanguage').submit();
     });
 
+    updateActivities();
     avatarStatus();
 });
 

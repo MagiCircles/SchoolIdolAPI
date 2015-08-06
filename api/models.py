@@ -366,4 +366,7 @@ class Activity(models.Model):
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_activities")
 
+    def __unicode__(self):
+        return u'%s %s' % (self.account, self.message)
+
 admin.site.register(Activity)

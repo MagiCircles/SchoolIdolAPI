@@ -634,6 +634,16 @@ def ajaxactivities(request):
     avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
     return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size))
 
+def activity(request, activity):
+    context = globalContext(request)
+    context['activity'] = get_object_or_404(models.Activity, pk=activity)
+    context['activity'].likers = context['activity'].likes.all()
+    context['activity'].likers_count = context['activity'].likers.count()
+    context['avatar_size'] = 2
+    context['content_size'] = 10
+    context['card_size'] = 150
+    return render(request, 'activity.html', context)
+
 def _contextfeed(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
@@ -669,7 +679,7 @@ def ajaxlikeactivity(request, activity):
             activity_obj.likes.remove(request.user)
             activity_obj.save()
             return HttpResponse('unliked')
-    return PermissionDenied()
+    raise PermissionDenied()
 
 @csrf_exempt
 def ajaxfollow(request, username):

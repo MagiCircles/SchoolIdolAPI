@@ -10,9 +10,7 @@
 		 style="background-image: url('{% if not activity.ownedcard.idolized and activity.ownedcard.card.card_image %}{{ activity.ownedcard.card|imageurl:'card_image' }}{% else %}{{ activity.ownedcard.card|imageurl:'card_idolized_image' }}{% endif %}')">
 	    </div>
 	    {% endif %}
-	    <small>
-	      {{ activity.ownedcard.card }}
-	    </small>
+	    {{ activity.ownedcard.card }}
 	  </a>
 	</div>
 	{% endif %}

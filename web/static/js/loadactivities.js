@@ -29,26 +29,3 @@ function loadMoreActivities(parent, account, feed, avatar_size) {
 	loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size);
     });
 }
-
-function updateActivities() {
-	$('.likeactivity').off('submit');
-	$('.likeactivity').submit(function(e) {
-		e.preventDefault();
-		$(this).ajaxSubmit({
-			context: this,
-			success: function(data) {
-				if (data == 'liked') {
-					$(this).find('input[type=hidden]').prop('name', 'unlike');
-				} else {
-					$(this).find('input[type=hidden]').prop('name', 'like');
-				}
-				var value = $(this).find('button[type=submit]').html();
-				$(this).find('button[type=submit]').html($(this).find('button[type=submit]').attr('data-reverse'));
-				$(this).find('button[type=submit]').attr('data-reverse', value);
-			},
-			error: function() {
-				alert('Opps! Something bad happened. Try again.');
-			}
-		});
-    });
-}

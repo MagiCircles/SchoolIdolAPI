@@ -153,6 +153,9 @@ select {
 	    }
 	}
     }
+    .socialbar a.btn {
+	color: #333!important;
+    }
     a.btn {
 	color: @linkcolor!important;
     }
@@ -619,6 +622,7 @@ nav {
 .nomargin { margin: 0; }
 
 .tiny { font-size: 0.7em; }
+.bigger { font-size: 1.5em; }
 
 a.panel {
     color: inherit;
@@ -1082,6 +1086,31 @@ h1#donators {
 .color-gradient-Rainbow-2 { .color-gradient(#F7941D); }
 .color-gradient-Rainbow-3 { .color-gradient(darken(#FFF200, 10%)); }
 .color-gradient-Rainbow-5 { .color-gradient(#00AEEF); }
+
+.socialbar {
+    padding: 10px 0;
+    .a-variant-important(#999);
+    .btn {
+	height: 30px;
+    }
+    .btn-group {
+	margin-right: 20px;
+    }
+    button {
+	color: #999;
+	&:hover,
+	&:focus {
+	    color: #000;
+	}
+    }
+}
+.bigger .activity .socialbar .btn {
+    font-size: inherit;
+    height: auto;
+    &.writecomment {
+	display: none;
+    }
+}
 
 @media (max-width: 768px) {
     .jumbotron form {

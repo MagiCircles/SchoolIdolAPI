@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ activity }}{% endblock %}
+
+{% block js %}
+<script src="/static/js/loadactivities.js"></script>
+<script src="/static/js/feed.js"></script>
+{% endblock %}
+
+{% block content %}
+{% load imageurl %}
+{% load mod %}
+<div class="container" id="events">
+  <h1 class="text-center margin50">{{ activity }}</h1>
+  <div class="bigger">
+    {% include 'activitysingle.html' %}
+  </div>
+  {% with disqus_identifier='activity'|addstr:activity.id %}
+  {% include 'disqus.html' %}
+  {% endwith %}
+  <br><br>
+</div>
+{% endblock %}

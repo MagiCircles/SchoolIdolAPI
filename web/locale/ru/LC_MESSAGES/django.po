@@ -811,8 +811,7 @@ msgstr "Больше"
 
 #: web/templates/index.html:116
 msgid "English"
-msgstr "Английская версия\n"
-""
+msgstr "Английская версия"
 
 #: web/templates/event.html:77 web/templates/index.html:124
 msgid "Japanese"

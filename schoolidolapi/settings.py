@@ -97,6 +97,7 @@ LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
     ('es', _('Spanish')),
+    ('it', _('Italian')),
     ('de', _('German')),
     ('ru', _('Russian')),
     ('fr', _('French')),

@@ -42,7 +42,7 @@ msgstr "Ультраредкая"
 
 #: web/templates/ownedCardOnBottomCard.html:5
 msgid "In deck"
-msgstr "На руках"
+msgstr "В инвентаре"
 
 #: web/templates/ownedCardOnBottomCard.html:7
 msgid "In album"
@@ -230,7 +230,7 @@ msgstr "Спасибо"
 
 #: web/templates/modalabout.html:33
 msgid "Icon Credits"
-msgstr "Титры"
+msgstr "Авторы"
 
 #: web/templates/base.html:123 web/templates/cards.html:176
 msgid "Go"
@@ -303,7 +303,7 @@ msgstr "Атрибут"
 #: web/templates/cardsPage.html.py:267 web/templates/event.html:35
 #: web/templates/ownedCardOnBottomCard.html:23
 msgid "Skill"
-msgstr "Скилл"
+msgstr "Скил"
 
 #: web/templates/cards.html:25 web/templates/cards.html.py:86
 #: web/templates/cardsPage.html:170
@@ -316,15 +316,15 @@ msgstr "Только промо-карты"
 
 #: web/templates/cards.html:83
 msgid "Special Cards only"
-msgstr "Только специальные карты"
+msgstr "Только спецкарты"
 
 #: web/templates/cards.html:88
 msgid "Event Cards only"
-msgstr "Только ивент-карты"
+msgstr "Карты с ивентов"
 
 #: web/templates/cards.html:72
 msgid "Worldwide Cards only"
-msgstr "Только карты по всему миру"
+msgstr "Только карты английской версии"
 
 #: web/templates/cards.html:162
 msgid "Order"
@@ -394,7 +394,7 @@ msgstr "Промо-карта"
 
 #: web/templates/cardsPage.html:261
 msgid "This card comes with "
-msgstr "Карта идёт с "
+msgstr "Карта идёт с"
 
 #: web/templates/cardsPage.html:264
 msgid "Event Card"
@@ -467,7 +467,7 @@ msgstr "и"
 
 #: api/models.py:33 web/templates/profile.html:257
 msgid "Deck"
-msgstr "Инвентаре"
+msgstr "Инвентарь"
 
 #: api/models.py:34 web/templates/profile.html:262
 msgid "Album"
@@ -775,7 +775,7 @@ msgstr "Поддержавшие"
 #: web/templates/idol.html:131 web/templates/modalabout.html:21
 #: web/templates/modalabout.html.py:23
 msgid "Sources"
-msgstr "Ресуры"
+msgstr "Ресурсы"
 
 #: web/templates/map.html:10 web/templates/users.html:28
 msgid "Map"
@@ -799,7 +799,7 @@ msgstr "Создай свой профиль, чтобы хранить карт
 
 #: web/templates/index.html:59 web/templates/index.html.py:106
 msgid "Vote for the best idol"
-msgstr "Голосуй за лучшую героиню!"
+msgstr "Голосуй за лучшую богиню!"
 
 #: web/templates/index.html:60
 msgid "Infinite Facemash: Pick the cutest between two random cards and help your favorite idol reach the top of the ranking!"
@@ -831,11 +831,11 @@ msgstr "Этот профиль скрыт. Нельзя увидеть карт
 
 #: api/models.py:42
 msgid "Silver Verified"
-msgstr "Серебро"
+msgstr "Серебряная аутентификация"
 
 #: api/models.py:43
 msgid "Gold Verified"
-msgstr "Золото"
+msgstr "Золотая аутентификация"
 
 #: api/models.py:49
 msgid "Thumbs"
@@ -887,7 +887,7 @@ msgstr "Модель вашего устройства. Например, Nexus 
 
 #: api/models.py:274 web/templates/profile.html:186
 msgid "Play with"
-msgstr "Играть"
+msgstr "Играет"
 
 #: api/models.py:287 api/models.py:322 web/templates/cards.html:124
 msgid "Account"
@@ -896,7 +896,7 @@ msgstr "Аккаунт"
 #: web/forms.py:90 web/templates/profile.html:204
 #: web/templates/profile.html.py:213
 msgid "Verified"
-msgstr "Подтверждено"
+msgstr "Аутентифицирован"
 
 #: web/links.py:32
 msgid "How to install Japanese apps?"
@@ -1004,7 +1004,7 @@ msgstr "Обновления японской версии"
 
 #: web/links.py:234
 msgid "Translated in English."
-msgstr "Переведено на русский."
+msgstr "На английском."
 
 #: web/links.py:240
 msgid "Official News about LoveLive! Franchise"
@@ -1040,7 +1040,7 @@ msgstr "Помоги себе заполнить свой альбом - пох�
 
 #: web/links.py:341
 msgid "Recruitment Simulator"
-msgstr "Симулятор набора"
+msgstr "Симулятор ролла"
 
 #: web/links.py:347
 msgid "Cards you can get from songs"
@@ -1264,211 +1264,211 @@ msgstr "Скачать"
 
 #: api/models.py:68
 msgid "Idol Supporter"
-msgstr ""
+msgstr "Начинающий идол"
 
 #: api/models.py:69
 msgid "Idol Lover"
-msgstr ""
+msgstr "Любитель идолов"
 
 #: api/models.py:70
 msgid "Idol Ambassador"
-msgstr ""
+msgstr "Представитель идолов"
 
 #: api/models.py:71
 msgid "Idol Producer"
-msgstr ""
+msgstr "Продюсер идолов"
 
 #: api/models.py:72
 msgid "Ultimate Idol Devotee"
-msgstr ""
+msgstr "Мегафанат идолов"
 
 #: api/models.py:104
 msgid "blue"
-msgstr ""
+msgstr "Голубой"
 
 #: api/models.py:105
 msgid "pink"
-msgstr ""
+msgstr "Розовый"
 
 #: api/models.py:106
 msgid "shiny Silver"
-msgstr ""
+msgstr "Серебряный"
 
 #: api/models.py:107 api/models.py:108
 msgid "shiny Gold"
-msgstr ""
+msgstr "Золотой"
 
 #: web/links.py:51
 msgid "APKs to play on rooted Android"
-msgstr ""
+msgstr "APK для игры на Android с рутом"
 
 #: web/links.py:60
 msgid "If the APKs above didn't work, here is a backup solution"
-msgstr ""
+msgstr "Если APK не работают, здесь есть решение!"
 
 #: web/links.py:88
 msgid "Video tutorials"
-msgstr ""
+msgstr "Видео-туториалы"
 
 #: web/links.py:90
 msgid "Easy tutorials for beginners and advanced players by Eryn"
-msgstr ""
+msgstr "Обучающие видео для новичков и профессионалов от Эрин"
 
 #: web/links.py:399
 msgid "Android Training App"
-msgstr ""
+msgstr "Практика на Android"
 
 #: web/links.py:461
 msgid "Latest Event English Version"
-msgstr ""
+msgstr "Текущий ивент английской версии"
 
 #: web/links.py:469
 msgid "Latest Event Japanese Version"
-msgstr ""
+msgstr "Текущий ивент японской версии"
 
 #: web/links.py:477
 msgid "Events Points Calculator"
-msgstr ""
+msgstr "Калькулятор очков ивента"
 
 #: web/links.py:491
 msgid "English Events Tiers Cutoff Predictor"
-msgstr ""
+msgstr "Автоматический калькулятор тиров"
 
 #: web/links.py:548
 msgid "LoveLive! Wikia"
-msgstr ""
+msgstr "Вики LoveLive!"
 
 #: web/templates/activitysingle.html:58
 msgid "Write Comment"
-msgstr ""
+msgstr "Напиши комментарий"
 
 #: web/templates/addteam.html:4 web/templates/addteam.html.py:11
 msgid "Update Team"
-msgstr ""
+msgstr "Обновить команду"
 
 #: web/templates/addteam.html:4 web/templates/addteam.html.py:11
 #: web/templates/addteam.html:19
 msgid "Add Team"
-msgstr ""
+msgstr "Добавить команду"
 
 #: web/templates/addteam.html:27 web/templates/addteam.html.py:32
 msgid "Delete Team"
-msgstr ""
+msgstr "Удалить команду"
 
 #: web/templates/box.html:5
 msgid "Box"
-msgstr ""
+msgstr "Коробка"
 
 #: web/templates/box.html:31
 msgid "Back to boxes"
-msgstr ""
+msgstr "Назад"
 
 #: web/templates/boxes.html:4 web/templates/boxes.html.py:7
 msgid "Boxes"
-msgstr ""
+msgstr "Коробки"
 
 #: web/templates/cards.html:78
 msgid "Sub Unit"
-msgstr ""
+msgstr "Саб-юнит"
 
 #: web/templates/cards.html:95
 msgid "Promo Cards"
-msgstr ""
+msgstr "Промо-карты"
 
 #: web/templates/cards.html:98 web/templates/cards.html.py:106
 #: web/templates/cards.html:114
 msgid "Only"
-msgstr ""
+msgstr "Только"
 
 #: web/templates/cards.html:99 web/templates/cards.html.py:107
 #: web/templates/cards.html:115
 msgid "None"
-msgstr ""
+msgstr "Нет"
 
 #: web/templates/cards.html:103
 msgid "Special Cards"
-msgstr ""
+msgstr "Специальные карты"
 
 #: web/templates/donate.html:41
 msgid "Donation"
-msgstr ""
+msgstr "Поддержать"
 
 #: web/templates/donate.html:59
 msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!"
-msgstr ""
+msgstr "Ваше имя, аватар, ссылка на профиль и ссылка на всё что угодно (ваш Твиттер, Тамблр, Твитч и всё прочее!) будет добавлено на ГЛАВНУЮ страницу School Idol Tomodachi!"
 
 #: web/templates/donate.html:62
 msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page."
-msgstr ""
+msgstr "Ваше имя, аватар, ссылка на профиль и ссылка на всё что угодно (ваш Твиттер, Тамблр, Твитч и всё прочее!) будет на этой странице."
 
 #: web/templates/donate.html:65
 msgid "Your name and a link to your profile will be added to this page."
-msgstr ""
+msgstr "Ваше имя и ссылка на профиль будет на этой странице."
 
 #: web/templates/donate.html:72
 msgid "We will send you a cute LoveLive! postcard signed by the 2 developers :)"
-msgstr ""
+msgstr "Мы вышлем вам две классные открытки, подписанные двумя разработчиками!"
 
 #: web/templates/donate.html:79
 msgid "You're the %(status)s."
-msgstr ""
+msgstr "Ваш статус %(status)."
 
 #: web/templates/donate.html:81
 msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
-msgstr ""
+msgstr "Вы решаете, какой идол появится на главной странице."
 
 #: web/templates/donate.html:89
 msgid "You're an %(status)s."
-msgstr ""
+msgstr "Ваш статус %(status)."
 
 #: web/templates/donate.html:93
 msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
-msgstr ""
+msgstr "Вместе со статусом %(color) данное сердечко появится на картинке вашего профиля и будет появляться на сайте."
 
 #: web/templates/donate.html:100
 msgid "We will send you a t-shirt of your favorite μ's character!"
-msgstr ""
+msgstr "Мы вышлем вам футболку с вашей богиней!"
 
 #: web/templates/donate.html:109
 msgid "We will send you a very cute keyring of your favorite card!"
 msgid_plural "We will send you %(counter)s very cute keyrings of your favorite cards!"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Мы вышлем вам милые брелочки с вашими любимыми картами!"
+msgstr[1] "Мы вышлем вам милые брелочки с вашими любимыми картами!"
+msgstr[2] "Мы вышлем вам милые брелочки с вашими любимыми картами!"
 
 #: web/templates/donate.html:115
 msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
-msgstr ""
+msgstr "Мы вышлем вам коробку с 10+1 конвертами, в которой вам могут попасться любые карты из игры!"
 
 #: web/templates/donate.html:125
 msgid "We will add %(lovecas)s lovecas to your LoveLive! School Idol Festival account. For English Version players on Android only!"
-msgstr ""
+msgstr "Мы добавим %(lovecas) сердечек на ваш аккаунт в игре. Только для английской версии и для игроков на Android!"
 
 #: web/templates/donate.html:132
 msgid "We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!"
-msgstr ""
+msgstr "Мы обсудим с вами, чтобы вы хотели видеть на нашем сайте в будущем. Вы осуществляете свою мечту!"
 
 #: web/templates/donate.html:133
 msgid "Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^"
-msgstr ""
+msgstr "Запомните, что ваша мечта должна быть в соответствии с нашими способностями на сайте ^_^ "
 
 #: web/templates/include/idol_tabs.html:6
 msgid "Pictures"
-msgstr ""
+msgstr "Картинки"
 
 #: web/templates/login.html:20
 msgid "Forgot password?"
-msgstr ""
+msgstr "Забыли пароль?"
 
 #: web/templates/profile.html:216
 msgid "You are Bronze Verified. Only you can see it."
-msgstr ""
+msgstr "Вы прошли бронзовую аутентификацию. Только вы сможете это видеть."
 
 #: web/templates/profile.html:218
 msgid "Silver"
-msgstr ""
+msgstr "Серебряный"
 
 #: web/templates/profile.html:218
 msgid "Gold"
-msgstr ""
+msgstr "Золотой"
 

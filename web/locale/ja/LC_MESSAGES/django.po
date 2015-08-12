@@ -67,12 +67,13 @@ msgstr "名前"
 
 #: api/models.py:270 web/templates/profile.html:153
 msgid "Friend ID"
-msgstr "友達のID"
+msgstr "フレンドID"
 
 #. This is an instruction dialog for users to find their "friend ID" so they can fill it in a form
+#. In version 3.0, Friends section cannot be opened from the home screen, it is moved to "Others" section.
 #: api/models.py:270
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
-msgstr " "
+msgstr "あなたのIDは「その他」の「友達」から「ID検索」を開くことによって確認できます。他のプレイヤーはこの番号を使ってフレンド申請やメールを送ることができます。"
 
 #. This is a form field for players to specify a transfer code, used to recover their account alter.
 #: api/models.py:272
@@ -92,7 +93,7 @@ msgstr "言語"
 #. There are different versions of the game in different languages. So the "language" field corresponds to the version of the game.
 #: api/models.py:275
 msgid "This is the version of the game you play."
-msgstr "プレイするゲーム版を選んで下さい"
+msgstr "プレイしているゲームの言語を選んで下さい"
 
 #. This is a form field for the user to specify the operating system of their cell phone
 #: api/models.py:276 web/templates/profile.html:171
@@ -395,7 +396,7 @@ msgstr "レベル"
 
 #: web/templates/cardsPage.html:130 web/views.py:294
 msgid "Release date"
-msgstr "公表日時"
+msgstr "公開日時"
 
 #: web/templates/cards.html:25 web/templates/cardsPage.html:141
 msgid "Event"
@@ -434,7 +435,7 @@ msgstr "プロモカード"
 #. The promotion item (CD, magazine, etc) you have to buy to get the card
 #: web/templates/cardsPage.html:261
 msgid "This card comes with "
-msgstr "このカードは〜と来ました"
+msgstr "このカードは次のグッズの特典です:"
 
 #: web/templates/cardsPage.html:264
 msgid "Event Card"
@@ -443,30 +444,30 @@ msgstr "イベントカード"
 #. needs interpolation
 #: web/templates/cardsPage.html:264
 msgid "This card first appeared during the event"
-msgstr "このカードは～のイベントで初めて公開されました"
+msgstr "このカードは次のイベントの報酬として公開されました: "
 
 #: web/templates/cardsPage.html:267
 msgid "Special Card"
-msgstr "スペシャルカード"
+msgstr "サポート部員カード"
 
 #: web/templates/cardsPage.html:267
 msgid "This card cannot be added in a team."
-msgstr "このカードはチームに追加できません"
+msgstr "このカードはユニットに追加できません"
 
 #: web/templates/cardsPage.html:270
 msgid "This card is only available in the Japanese version of the game."
-msgstr "このカードは日本版のみでGETできます"
+msgstr "このカードは日本版のみで入手できます"
 
 #: web/templates/cardsPage.html:272
 msgid "This card is available on all the versions of the game in the world."
-msgstr "このカードは全世界でどの言語版でもGETできます"
+msgstr "このカードは全世界でどの言語版でも入手できます"
 
 #. eng: "log in"
 #. 
 #. This is a warning dialog shown to the user when they are about to change their password.
 #: web/templates/edit.html:14
 msgid "You will be disconnected and will have to login with your new password."
-msgstr "パスワードを変更すればまた新しいパスワードを使ってログインして下さい"
+msgstr "パスワードを変更するとログアウトされます。新しいパスワードを使ってログインして下さい"
 
 #. This is an action button to confirm the action of modifying one's settings.
 #: web/templates/edit.html:35
@@ -499,11 +500,11 @@ msgstr "アカウントがありません"
 #. center = センター
 #: web/templates/profile.html:141
 msgid "No Center Specified"
-msgstr "センターを特定できません"
+msgstr "センターが設定されていません"
 
 #: web/templates/profile.html:163
 msgid "Game Version"
-msgstr "ゲームバージョン"
+msgstr "ゲームの言語"
 
 #. You can also say "important cards"
 #: web/templates/profile.html:195
@@ -544,11 +545,11 @@ msgstr "クール統計"
 
 #: api/models.py:336
 msgid "Description"
-msgstr "説明"
+msgstr "自己紹介"
 
 #: api/models.py:336
 msgid "Write whatever you want. You can add formatting and links using Markdown."
-msgstr ""
+msgstr "Markdown記法を使って整形したりリンクを張ったりすることができます。"
 
 #: api/models.py:338
 msgid "Location"
@@ -560,15 +561,15 @@ msgstr ""
 
 #: api/models.py:271 web/templates/profile.html:158
 msgid "Accept friend requests"
-msgstr ""
+msgstr "フレンド申請を許可する"
 
 #: api/models.py:350
 msgid "Private Profile"
-msgstr ""
+msgstr "プロフィールを非公開にする"
 
 #: api/models.py:350
 msgid "If your profile is private, people will only see your center."
-msgstr ""
+msgstr "プロフィールを非公開にすると、他の人からはセンターだけが見えるようになります。"
 
 #: web/templates/cardsPage.html:22
 msgid "%(counter)s card matches your search:"
@@ -673,7 +674,7 @@ msgstr "フォロー"
 
 #: web/templates/profile.html:281
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
-msgstr ""
+msgstr "部員の追加・変更・検索はカードページで行うことができます。"
 
 #: api/models.py:323 web/forms.py:89 web/templates/event_ranking.html:13
 #: web/templates/event_ranking.html:38
@@ -732,7 +733,7 @@ msgstr "新着情報"
 #: api/models.py:342 api/models.py:343 api/models.py:344 api/models.py:345
 #: api/models.py:346 api/models.py:348 api/models.py:349
 msgid "Write your username only, no URL."
-msgstr ""
+msgstr "URLではなくユーザ名のみを入力してください。"
 
 #: web/templates/baseMenu.html:3 web/templates/donate.html:6
 #: web/templates/donate.html.py:18 web/templates/modalabout.html:18
@@ -755,47 +756,47 @@ msgstr "新しいプレーヤー"
 #: web/templates/base.html:49 web/templates/idols.html:5
 #: web/templates/index.html:70
 msgid "Idols"
-msgstr ""
+msgstr "アイドル"
 
 #: web/templates/idol.html:49
 msgid "Age"
-msgstr ""
+msgstr "年齢"
 
 #: web/templates/idol.html:55
 msgid "Birthday"
-msgstr ""
+msgstr "誕生日"
 
 #: web/templates/idol.html:61
 msgid "Astrological Sign"
-msgstr ""
+msgstr "星座"
 
 #: web/templates/idol.html:67
 msgid "Blood Type"
-msgstr ""
+msgstr "血液型"
 
 #: web/templates/idol.html:73
 msgid "Height"
-msgstr ""
+msgstr "身長"
 
 #: web/templates/idol.html:79
 msgid "Measurements"
-msgstr ""
+msgstr "スリーサイズ"
 
 #: web/templates/idol.html:85
 msgid "Favorite Food"
-msgstr ""
+msgstr "好きな食べ物"
 
 #: web/templates/idol.html:91
 msgid "Least Favorite Food"
-msgstr ""
+msgstr "嫌いな食べ物"
 
 #: web/templates/idol.html:97
 msgid "Hobbies"
-msgstr ""
+msgstr "趣味"
 
 #: web/templates/idol.html:103
 msgid "Year"
-msgstr ""
+msgstr "学年"
 
 #: web/templates/idol.html:109
 msgid "CV"
@@ -803,7 +804,7 @@ msgstr ""
 
 #: web/templates/idol.html:126
 msgid "Summary"
-msgstr ""
+msgstr "紹介"
 
 #: web/templates/map.html:17
 msgid "Edit your location"
@@ -829,7 +830,7 @@ msgstr ""
 
 #: web/templates/feed.html:27 web/templates/index.html:250
 msgid "Start following players to see their activities!"
-msgstr ""
+msgstr "他の人をフォローして最近の動きをチェックしましょう"
 
 #: web/templates/index.html:46
 msgid "Check out all the cards available in the game and get statistics, skills, and more!"
@@ -861,7 +862,7 @@ msgstr ""
 
 #: web/templates/event.html:77 web/templates/index.html:124
 msgid "Japanese"
-msgstr ""
+msgstr "日本語"
 
 #: web/templates/index.html:148
 msgid "Chat"
@@ -869,11 +870,11 @@ msgstr ""
 
 #: web/templates/modalcontact.html:11
 msgid "You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user."
-msgstr ""
+msgstr "パスワードを忘れた、アカウントを他のユーザーに譲渡したい等、アカウントに関しては上記のアドレスまでお問い合わせください。"
 
 #: web/templates/profile.html:239
 msgid "This profile is private, so it is not possible to see the cards, activities and events participations."
-msgstr ""
+msgstr "プロフィールは非公開です。部員一覧や活動、イベント参加状況を確認することはできません。"
 
 #: api/models.py:42
 msgid "Silver Verified"
@@ -885,39 +886,39 @@ msgstr ""
 
 #: api/models.py:49
 msgid "Thumbs"
-msgstr ""
+msgstr "親指"
 
 #: api/models.py:50
 msgid "All fingers"
-msgstr ""
+msgstr "全部の指"
 
 #: api/models.py:51
 msgid "One hand"
-msgstr ""
+msgstr "片手"
 
 #: api/models.py:52
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 #: api/models.py:57
 msgid "Added a card"
-msgstr ""
+msgstr "部員を追加しました"
 
 #: api/models.py:58
 msgid "Idolized a card"
-msgstr ""
+msgstr "部員を覚醒させました"
 
 #: api/models.py:59
 msgid "Max Leveled a card"
-msgstr ""
+msgstr "部員がレベルMAXになりました"
 
 #: api/models.py:60
 msgid "Max Bonded a card"
-msgstr ""
+msgstr "部員が絆MAXになりました"
 
 #: api/models.py:61
 msgid "Rank Up"
-msgstr ""
+msgstr "ランクアップ!"
 
 #: api/models.py:62
 msgid "Ranked in event"
@@ -925,15 +926,15 @@ msgstr ""
 
 #: api/models.py:273 web/templates/profile.html:180
 msgid "Device"
-msgstr ""
+msgstr "端末"
 
 #: api/models.py:273
 msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
-msgstr ""
+msgstr "使っている端末の種類を入力してください。例: Nexus 5, iPhone 4, iPad 2 など。"
 
 #: api/models.py:274 web/templates/profile.html:186
 msgid "Play with"
-msgstr ""
+msgstr "プレイスタイル"
 
 #: api/models.py:287 api/models.py:322 web/templates/cards.html:124
 msgid "Account"

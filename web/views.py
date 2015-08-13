@@ -449,7 +449,7 @@ def profile(request, username):
         })
     if preferences.mal:
         context['links'].append({
-            'link': 'http://myanimelist.net/' + preferences.mal,
+            'link': 'http://myanimelist.net/profile/' + preferences.mal,
             'title': 'MyAnimeList',
             'image': '/static/mal.png',
             'text': preferences.mal,

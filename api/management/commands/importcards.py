@@ -416,13 +416,14 @@ class Command(BaseCommand):
                     print 'Done'
         f.close()
         
-        print '### Import japanese information for R/SR/UR'
+        print '### Import japanese information for R/SR/UR/promo'
         if local:
             fs = [open('jpcards.html', 'r')]
         else:
             fs = [urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/210.html'),
                  urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/378.html'),
                  urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/379.html'),
+                 urllib2.urlopen('http://www59.atwiki.jp/lovelive-sif/pages/321.html'),
             ]
         for f in fs:
             soup = BeautifulSoup("".join(line.strip() for line in f.read().split("\n")))

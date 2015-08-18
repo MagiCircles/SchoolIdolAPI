@@ -5,6 +5,7 @@ from rest_framework import serializers
 from api import models
 from dateutil.relativedelta import relativedelta
 from django.core.urlresolvers import reverse as django_reverse
+from web.utils import chibiimage
 import urllib
 import datetime
 import pytz
@@ -80,6 +81,8 @@ class IdolSerializer(serializers.ModelSerializer):
     website_url = serializers.SerializerMethodField()
     wiki_url = serializers.SerializerMethodField()
     cv = serializers.SerializerMethodField()
+    chibi = serializers.SerializerMethodField()
+    chibi_small = serializers.SerializerMethodField()
 
     def get_birthday(self, obj):
         if obj.birthday:
@@ -103,9 +106,15 @@ class IdolSerializer(serializers.ModelSerializer):
             'instagram': obj.cv_instagram,
         }
 
+    def get_chibi(self, obj):
+        return 'http://schoolido.lu' + chibiimage(obj.name, small=False)
+
+    def get_chibi_small(self, obj):
+        return 'http://schoolido.lu' + chibiimage(obj.name, small=True)
+
     class Meta:
         model = models.Idol
-        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'cv', 'summary', 'website_url', 'wiki_url', 'official_url')
+        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'cv', 'summary', 'website_url', 'wiki_url', 'official_url', 'chibi', 'chibi_small')
 
 class CardSerializer(serializers.ModelSerializer):
     japan_only = serializers.SerializerMethodField()

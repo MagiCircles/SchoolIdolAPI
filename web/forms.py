@@ -102,7 +102,7 @@ class AccountStaffForm(ModelForm):
     center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=True)
     class Meta:
         model = models.Account
-        fields = ('owner_id', 'friend_id', 'verified', 'rank', 'center')
+        fields = ('owner_id', 'friend_id', 'verified', 'rank', 'os', 'device', 'center')
 
 # class TeamForm(ModelForm):
 #     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)

@@ -163,13 +163,14 @@ class CardSerializer(serializers.ModelSerializer):
         return 'http://schoolido.lu/cards/' + str(obj.id) + '/'
 
     def get_non_idolized_max_level(self, obj):
+        if obj.is_promo or obj.is_special: return 0
         if obj.rarity == 'N': return 30
         elif obj.rarity == 'R': return 40
         elif obj.rarity == 'SR': return 60
         elif obj.rarity == 'UR': return 80
 
     def get_idolized_max_level(self, obj):
-        if obj.is_promo or obj.is_special: return 0
+        if obj.is_special: return 0
         if obj.rarity == 'N': return 40
         elif obj.rarity == 'R': return 60
         elif obj.rarity == 'SR': return 80

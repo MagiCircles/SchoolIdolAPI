@@ -364,6 +364,13 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': _('Accounts Giveaways'),
+                    'url': 'http://cleanyourlovelive.tumblr.com/giveaway',
+                    'type': '',
+                    'size': 'small',
+                    'language': 'world',
+                },
+                {
                     'name': _('Starter Accounts Giveaways with UR on Facebook'),
                     'url': 'https://www.facebook.com/groups/732282656879803/',
                     'type': '',

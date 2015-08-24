@@ -14,7 +14,7 @@ msgstr "Смайл"
 
 #: api/models.py:15
 msgid "Pure"
-msgstr "Пюр"
+msgstr "Пьюр"
 
 #: api/models.py:16
 msgid "Cool"
@@ -115,7 +115,7 @@ msgstr "Истекает"
 #: api/models.py:291 web/templates/cards.html:140
 #: web/templates/cards.html.py:143 web/templates/ownedCardOnBottomCard.html:14
 msgid "Idolized"
-msgstr "Идолизировано"
+msgstr "Айдолизировано"
 
 #: web/templates/403.html:3 web/templates/403.html.py:4
 msgid "Forbidden"
@@ -303,7 +303,7 @@ msgstr "Атрибут"
 #: web/templates/cardsPage.html.py:267 web/templates/event.html:35
 #: web/templates/ownedCardOnBottomCard.html:23
 msgid "Skill"
-msgstr "Скил"
+msgstr "Навык"
 
 #: web/templates/cards.html:25 web/templates/cards.html.py:86
 #: web/templates/cardsPage.html:170
@@ -320,7 +320,7 @@ msgstr "Только спецкарты"
 
 #: web/templates/cards.html:88
 msgid "Event Cards only"
-msgstr "Карты с ивентов"
+msgstr "Только карты с ивентов"
 
 #: web/templates/cards.html:72
 msgid "Worldwide Cards only"
@@ -349,7 +349,7 @@ msgstr "Не максимальный бонд"
 
 #: web/templates/cards.html:144
 msgid "Not Idolized"
-msgstr "Не идолизировано"
+msgstr "Не айдолизировано"
 
 #: api/models.py:294 web/templates/cardsPage.html:55
 #: web/templates/cardsPage.html.py:60 web/templates/cardsPage.html:69
@@ -367,7 +367,7 @@ msgstr "Ивент"
 
 #: web/templates/cardsPage.html:158 web/views.py:299
 msgid "HP"
-msgstr "Опыт"
+msgstr "Жизни"
 
 #: web/templates/cardsPage.html:200
 msgid "Center Skill"
@@ -443,7 +443,7 @@ msgstr "Смотри карты"
 
 #: web/templates/ownedcards.html:27
 msgid "No cards registered yet."
-msgstr "Карт ещё не зарегистрировано"
+msgstr "Ни одной карты еще не было зарегестрировано"
 
 #: web/templates/profile.html:113 web/templates/usersPage.html:23
 msgid "No account."
@@ -487,7 +487,7 @@ msgstr "Статистика \"смайл\""
 
 #: web/views.py:297
 msgid "Pure's statistics"
-msgstr "Статистика \"пур\""
+msgstr "Статистика \"пьюр\""
 
 #: web/views.py:298
 msgid "Cool's statistics"
@@ -511,7 +511,7 @@ msgstr "Город, в котором вы живёте."
 
 #: api/models.py:271 web/templates/profile.html:158
 msgid "Accept friend requests"
-msgstr "Принять приглашения"
+msgstr "Принимает приглашения"
 
 #: api/models.py:350
 msgid "Private Profile"
@@ -535,7 +535,7 @@ msgstr "Нет результатов."
 
 #: web/templates/cardsPage.html:304
 msgid "No idols match your search."
-msgstr "Не нашлось идолов."
+msgstr "Не нашлось айдолов."
 
 #: web/templates/cardsPage.html:306
 msgid "Change filters"
@@ -709,7 +709,7 @@ msgstr "Новые игроки"
 #: web/templates/base.html:49 web/templates/idols.html:5
 #: web/templates/index.html:70
 msgid "Idols"
-msgstr "Идолы"
+msgstr "Айдолы"
 
 #: web/templates/idol.html:49
 msgid "Age"
@@ -729,11 +729,11 @@ msgstr "Группа крови"
 
 #: web/templates/idol.html:73
 msgid "Height"
-msgstr "Вес"
+msgstr "Рост"
 
 #: web/templates/idol.html:79
 msgid "Measurements"
-msgstr "Рост"
+msgstr "Размеры"
 
 #: web/templates/idol.html:85
 msgid "Favorite Food"
@@ -741,7 +741,7 @@ msgstr "Любимая еда"
 
 #: web/templates/idol.html:91
 msgid "Least Favorite Food"
-msgstr "Нелюбимая еда"
+msgstr "Наименее любимая еда"
 
 #: web/templates/idol.html:97
 msgid "Hobbies"
@@ -753,7 +753,7 @@ msgstr "Год"
 
 #: web/templates/idol.html:109
 msgid "CV"
-msgstr "CV"
+msgstr "Сейю"
 
 #: web/templates/idol.html:126
 msgid "Summary"
@@ -787,7 +787,7 @@ msgstr "Начните с подписок на других игроков!"
 
 #: web/templates/index.html:46
 msgid "Check out all the cards available in the game and get statistics, skills, and more!"
-msgstr "Проверяй все карты в игре и узнавай статистику, скил и многое другое!"
+msgstr "Проверяй все карты в игре и узнавай статистику, навык и многое другое!"
 
 #: web/templates/index.html:52
 msgid "Show your cards"
@@ -823,7 +823,7 @@ msgstr "Чат"
 
 #: web/templates/modalcontact.html:11
 msgid "You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user."
-msgstr "Вы можете связаться с нами, если что-то случится, к примеру, потеряете пароль или трансфер-код."
+msgstr "Вы можете связаться с нами, если что-то случится, к примеру, потеряете пароль или захотите передать свой аккаунт другому пользователю"
 
 #: web/templates/profile.html:239
 msgid "This profile is private, so it is not possible to see the cards, activities and events participations."
@@ -831,11 +831,11 @@ msgstr "Этот профиль скрыт. Нельзя увидеть карт
 
 #: api/models.py:42
 msgid "Silver Verified"
-msgstr "Серебряная аутентификация"
+msgstr "Серебряное потверждение"
 
 #: api/models.py:43
 msgid "Gold Verified"
-msgstr "Золотая аутентификация"
+msgstr "Золотое потверждение"
 
 #: api/models.py:49
 msgid "Thumbs"
@@ -896,11 +896,11 @@ msgstr "Аккаунт"
 #: web/forms.py:90 web/templates/profile.html:204
 #: web/templates/profile.html.py:213
 msgid "Verified"
-msgstr "Аутентифицирован"
+msgstr "Потверждение"
 
 #: web/links.py:32
 msgid "How to install Japanese apps?"
-msgstr "Как установить японские приложения?"
+msgstr "Как установливать японские приложения?"
 
 #: web/links.py:38
 msgid "APKs and Links"
@@ -976,7 +976,7 @@ msgstr "Отредактируйте \"обо мне\" в игре"
 
 #: web/links.py:174
 msgid "News & Updates"
-msgstr "Новости"
+msgstr "Новости и обновления"
 
 #: web/links.py:179
 msgid "Game Facebook Page"
@@ -1060,11 +1060,11 @@ msgstr "Связать аккаунт с Реддитом"
 
 #: web/links.py:367
 msgid "Starter Accounts Giveaways with UR on Facebook"
-msgstr "Раздача стартовых аккаунтов с СР-ками на Фейсбуке"
+msgstr "Раздача стартовых аккаунтов с УР-ками на Фейсбуке"
 
 #: web/links.py:374
 msgid "Experience required to level up a card"
-msgstr "Опыта необходимо до повышения уровня"
+msgstr "Необходимо опыта для повышения уровня"
 
 #: web/links.py:382
 msgid "Play Songs & Watch Stories"
@@ -1096,7 +1096,7 @@ msgstr "Песни замедленны, показаны с руками и б�
 
 #: web/links.py:413
 msgid "Advanced Scoring Guide"
-msgstr "Гайд для новичков"
+msgstr "Подробный гайд по очкам"
 
 #: web/links.py:420
 msgid "Watch all the English Side Stories"
@@ -1172,7 +1172,7 @@ msgstr "Карты ивента"
 
 #: web/links.py:513
 msgid "Fall in love with idols"
-msgstr "Влюбляйся в идолов"
+msgstr "Влюбляйся в айдолов"
 
 #: web/links.py:518
 msgid "All the characters in the game"
@@ -1192,7 +1192,7 @@ msgstr "Голосуй за любимые карты на конкурсе Face
 
 #: web/links.py:534
 msgid "Personal Idols Ranking Generator"
-msgstr "Персональный генератор уровня идолов"
+msgstr "Персональный генератор уровня айдолов"
 
 #: web/links.py:536
 msgid "Check \"Love Live!\" and press \"Music Start!\"."
@@ -1264,27 +1264,27 @@ msgstr "Скачать"
 
 #: api/models.py:68
 msgid "Idol Supporter"
-msgstr "Начинающий идол"
+msgstr "Начинающий айдол"
 
 #: api/models.py:69
 msgid "Idol Lover"
-msgstr "Любитель идолов"
+msgstr "Любитель айдолов"
 
 #: api/models.py:70
 msgid "Idol Ambassador"
-msgstr "Представитель идолов"
+msgstr "Представитель айдолов"
 
 #: api/models.py:71
 msgid "Idol Producer"
-msgstr "Продюсер идолов"
+msgstr "Продюсер айдолов"
 
 #: api/models.py:72
 msgid "Ultimate Idol Devotee"
-msgstr "Мегафанат идолов"
+msgstr "Мегафанат айдолов"
 
 #: api/models.py:104
 msgid "blue"
-msgstr "Голубой"
+msgstr "Синий"
 
 #: api/models.py:105
 msgid "pink"
@@ -1292,11 +1292,11 @@ msgstr "Розовый"
 
 #: api/models.py:106
 msgid "shiny Silver"
-msgstr "Серебряный"
+msgstr "Сияющий серебряный"
 
 #: api/models.py:107 api/models.py:108
 msgid "shiny Gold"
-msgstr "Золотой"
+msgstr "Сияющий золотой"
 
 #: web/links.py:51
 msgid "APKs to play on rooted Android"
@@ -1369,7 +1369,7 @@ msgstr "Коробки"
 
 #: web/templates/cards.html:78
 msgid "Sub Unit"
-msgstr "Саб-юнит"
+msgstr "Под-юнит"
 
 #: web/templates/cards.html:95
 msgid "Promo Cards"
@@ -1432,7 +1432,7 @@ msgstr "Мы вышлем вам футболку с вашей богиней!"
 #: web/templates/donate.html:109
 msgid "We will send you a very cute keyring of your favorite card!"
 msgid_plural "We will send you %(counter)s very cute keyrings of your favorite cards!"
-msgstr[0] "Мы вышлем вам милые брелочки с вашими любимыми картами!"
+msgstr[0] "Мы вышлем вам милый брелочек с вашими любимыми картами!"
 msgstr[1] "Мы вышлем вам милые брелочки с вашими любимыми картами!"
 msgstr[2] "Мы вышлем вам милые брелочки с вашими любимыми картами!"
 
@@ -1462,7 +1462,7 @@ msgstr "Забыли пароль?"
 
 #: web/templates/profile.html:216
 msgid "You are Bronze Verified. Only you can see it."
-msgstr "Вы прошли бронзовую аутентификацию. Только вы сможете это видеть."
+msgstr "Вы прошли бронзовое потверждение. Только вы сможете это видеть."
 
 #: web/templates/profile.html:218
 msgid "Silver"

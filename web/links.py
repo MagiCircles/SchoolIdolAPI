@@ -70,6 +70,11 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                     'size': 'small',
                 },
+                {
+                    'name': _('Taiwanese version APK'),
+                    'url': 'https://www.facebook.com/notes/lovelive/lovelivesif-android%E5%90%84%E7%89%88%E6%9C%ACapk%E7%A8%8B%E5%BC%8F%E6%AA%94%E4%B8%8B%E8%BC%89%E9%BB%9E/2314977995308120',
+                    'size': 'small',
+                },
             ],
         },
         {

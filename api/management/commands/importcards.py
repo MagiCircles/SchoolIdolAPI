@@ -459,6 +459,9 @@ class Command(BaseCommand):
 	                        skill_details = clean(tds[-1].string)
 	                        center_skill_name = None
 	                        center_skill_details = None
+	                    elif len(tds) == 14: # promo cards
+	                        skill_name, skill_details = extract_skill(tds[-2])
+	                        center_skill_name, center_skill_details = extract_skill(tds[-1])
 	                    elif len(tds) == 18: # all info specified
 	                        skill_name, skill_details = extract_skill(tds[-2])
 	                        center_skill_name, center_skill_details = extract_skill(tds[-1])

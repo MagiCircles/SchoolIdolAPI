@@ -166,7 +166,7 @@ function changeAccount() {
 	$('#sidebar-wrapper #id_max_bond').prop('disabled', 'disabled');
     } else {
 	$('#sidebar-wrapper #id_stored').prop('disabled', false);
-	$('#sidebar-wrapper #id_stored').val('Album').change();
+	$('#sidebar-wrapper #id_stored').val('Deck').change();
 	$('#sidebar-wrapper #id_idolized').prop('disabled', false);
 	$('#sidebar-wrapper #id_max_level').prop('disabled', false);
 	$('#sidebar-wrapper #id_max_bond').prop('disabled', false);
@@ -197,4 +197,16 @@ $(document).ready(function() {
     $('.idol #disqus_thread').bind('DOMNodeInserted', function() {
 	$(this).height($('.idol table').height());
     });
+
+    if ($('#id_sub_unit').val() != ''
+	|| $('#id_idol_year').val() != ''
+	|| $('#id_collection').val() != ''
+	|| $('#id_is_promo').val() != ''
+	|| $('#id_is_special').val() != ''
+	|| $('#id_is_event').val() != ''
+	|| $('#id_skill').val() != ''
+       ) {
+	$('#morefilters.collapse').collapse('show');
+    }
+
 });

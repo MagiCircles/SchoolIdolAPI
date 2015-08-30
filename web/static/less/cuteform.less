@@ -1,14 +1,16 @@
 
 @import "../bower/CuteForm/cuteform.css";
 
-.cuteform-elt {
+img.cuteform-elt {
     width: 50px;
+}
+.cuteform-elt {
     border-radius: 50%;
     cursor: pointer;
 }
 
 #cuteform-modal {
-    .cuteform-elt {
+    img.cuteform-elt {
 	width: 80px;
 	border-radius: 0;
 	&.cuteform-selected {
@@ -20,4 +22,42 @@
 .cuteform-modal-button {
     background: none;
     border: none;
+}
+
+#sidebar-wrapper {
+    .wrapper(@color) {
+	.cuteform-modal-button {
+	    color: darken(@color, 10%);
+	    border: 3px solid darken(@color, 10%);
+	}
+    }
+    &.default { .wrapper(@SmileColor); }
+    &.Smile { .wrapper(@SmileColor); }
+    &.Pure { .wrapper(@PureColor); }
+    &.Cool { .wrapper(@CoolColor); }
+    &.All { .wrapper(@AllColor); }
+    .cuteform-modal-button {
+	display: block;
+	width: 100%;
+	border-radius: 7px;
+	background: white;
+	text-align: left;
+    }
+    .cuteform {
+	br { display: none; }
+	img.cuteform-elt {
+	    width: 32px;
+	}
+    }
+    #sub_unit_wrapper {
+	img.cuteform-elt {
+	    width: 48px;
+	    &[src="/static/empty.png"] {
+		width: 32px;
+	    }
+	}
+    }
+    div.cuteform-elt {
+	padding: 2px 5px;
+    }
 }

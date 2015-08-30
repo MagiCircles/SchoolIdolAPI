@@ -6,6 +6,43 @@
 {% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endblock %}
 {% block js %}
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_attribute'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for i, attribute in filters.attribute_choices %}
+      '{{ i }}': '/static/{{ i }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_rarity'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for rarity, _ in filters.rarity_choices %}
+      '{{ rarity }}': '/static/{{ rarity }}{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_sub_unit'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for sub_unit in filters.sub_units %}
+      '{{ sub_unit }}': '/static/{{ sub_unit }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_name'), {
+    'modal': 'true',
+    'modal-text': 'true',
+    'images': {
+      '': '/static/empty.png',
+      {% for idol in filters.idols %}
+      '{% if LANGUAGE_CODE == 'ja' %}{{ idol.japanese_name }}{% else %}{{ idol.name|escapejs }}{% endif %}': '{{ idol.name|chibiimage:True }}',
+      {% endfor %}
+    }
+  });
+</script>
 <script src="/static/js/cards.js"></script>
 <script src="/static/js/addcard.js"></script>
 {% endblock %}
@@ -57,51 +94,72 @@
 	  {% endfor %}
 	</select>
 	<br>
-	<label for="id_skill">{% trans 'Skill' %}</label>
-	<select id="id_skill" name="skill">
-	  <option value=""></option>
-	  {% for idol in filters.skills %}
-	  <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
-	  {% endfor %}
-	</select>
-	<br>
-	<label for="id_collection">{% trans 'Collection' %}</label>
-	<select id="id_collection" name="collection">
-	  <option value=""></option>
-	  {% for collection in filters.collections %}
-	  <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
-	  {% endfor %}
-	</select>
-	<br>
-	<br>
-	<div>
-	  <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
-	  <select id="id_is_promo" name="is_promo">
-	    <option value=""></option>
-	    <option value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-	    <option value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-	  </select>
-	</div>
-	<div>
-	  <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards' %}</label>
-	  <select id="id_is_special" name="is_special">
-	    <option value=""></option>
-	    <option value="on"{% if request_get.is_special == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-	    <option value="off"{% if request_get.is_special == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-	  </select>
-	</div>
-	<div>
-	  <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
-	  <select id="id_is_event" name="is_event">
-	    <option value=""></option>
-	    <option value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-	    <option value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-	  </select>
-	</div>
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
 	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide Cards only' %}</label>
+	</div>
+	<div class="text-right">
+	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i></a>
+	</div>
+	<div id="morefilters" class="collapse">
+	  <label for="id_skill">{% trans 'Skill' %}</label>
+	  <select id="id_skill" name="skill">
+	    <option value=""></option>
+	    {% for idol in filters.skills %}
+	    <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	  <label for="id_collection">{% trans 'Collection' %}</label>
+	  <select id="id_collection" name="collection">
+	    <option value=""></option>
+	    {% for collection in filters.collections %}
+	    <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
+	    {% endfor %}
+	  </select>
+	  <div id="sub_unit_wrapper">
+	    <label for="id_sub_unit">{% trans 'Sub Unit' %}</label>
+	    <select id="id_sub_unit" name="sub_unit">
+	      <option value=""></option>
+	      {% for sub_unit in filters.sub_units %}
+	      <option value="{{ sub_unit }}"{% if request_get.sub_unit == sub_unit %} selected{% endif %}>{{ sub_unit }}</option>
+	      {% endfor %}
+	    </select>
+	  </div>
+	  <label for="id_idol_year">{% trans 'Year' %}</label>
+	  <select id="id_idol_year" name="idol_year" data-cuteform="true">
+	    <option value="" data-cuteform-html="{% trans 'All' %}"></option>
+	    {% for idol_year in filters.idol_year_choices %}
+	    <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}"{% if request_get.idol_year == idol_year %} selected{% endif %}>{{ idol_year }}</option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	  <div>
+	    <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
+	    <select id="id_is_promo" name="is_promo" data-cuteform="true">
+	      <option data-cuteform-html="{% trans 'All' %}" value=""></option>
+	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	    </select>
+	  </div>
+	  <div>
+	    <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards' %}</label>
+	    <select id="id_is_special" name="is_special" data-cuteform="true">
+	      <option value="" data-cuteform-html="{% trans 'All' %}"></option>
+	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_special == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_special == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	    </select>
+	  </div>
+	  <div>
+	    <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
+	    <select id="id_is_event" name="is_event" data-cuteform="true">
+	      <option data-cuteform-html="{% trans 'All' %}" value=""></option>
+	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	    </select>
+	  </div>
+	  <br>
 	</div>
       </div>
       {% if user.is_authenticated %}

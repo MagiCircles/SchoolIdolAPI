@@ -212,6 +212,7 @@ admin.site.register(Event)
 class Idol(models.Model):
     name = models.CharField(max_length=100, unique=True)
     japanese_name = models.CharField(max_length=100, blank=True, null=True)
+    sub_unit = models.CharField(max_length=20, blank=True, null=True)
     main = models.BooleanField(default=False)
     age = models.PositiveIntegerField(blank=True, null=True)
     birthday = models.DateField(null=True, blank=True, default=None)

@@ -162,6 +162,12 @@ def cards(request, card=None, ajax=False):
         if 'collection' in request.GET and request.GET['collection']:
             cards = cards.filter(japanese_collection__exact=request.GET['collection'])
             request_get['collection'] = request.GET['collection']
+        if 'sub_unit' in request.GET and request.GET['sub_unit']:
+            cards = cards.filter(idol__sub_unit__exact=request.GET['sub_unit'])
+            request_get['sub_unit'] = request.GET['sub_unit']
+        if 'idol_year' in request.GET and request.GET['idol_year']:
+            cards = cards.filter(idol__year__exact=request.GET['idol_year'])
+            request_get['idol_year'] = request.GET['idol_year']
         if 'rarity' in request.GET and request.GET['rarity']:
             cards = cards.filter(rarity__exact=request.GET['rarity'])
             request_get['rarity'] = request.GET['rarity']
@@ -281,9 +287,11 @@ def cards(request, card=None, ajax=False):
         context['filters'] = {
             'idols': cardsinfo['idols'],
             'collections': cardsinfo['collections'],
+            'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
             'skills': cardsinfo['skills'],
             'rarity_choices': models.RARITY_CHOICES,
             'attribute_choices': models.ATTRIBUTE_CHOICES,
+            'idol_year_choices': cardsinfo['years'] if 'years' in cardsinfo else [],
             'stored_choices': models.STORED_CHOICES,
             'ordering_choices': (
                 ('id', _('Card #ID')),

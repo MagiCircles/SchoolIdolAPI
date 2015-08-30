@@ -94,7 +94,7 @@ def create(request):
     if request.user.is_authenticated() and not request.user.is_anonymous():
         raise PermissionDenied()
     if request.method == "POST":
-        form = forms.UserForm(request.POST)
+        form = forms.CreateUserForm(request.POST)
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
@@ -102,7 +102,7 @@ def create(request):
             login(request, user)
             return redirect('/addaccount')
     else:
-        form = forms.UserForm()
+        form = forms.CreateUserForm()
     context = globalContext(request)
     context['form'] = form
     context['current'] = 'create'

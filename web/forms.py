@@ -5,6 +5,11 @@ from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _
 from api import models
 
+class CreateUserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
 class UserForm(ModelForm):
     class Meta:
         model = User

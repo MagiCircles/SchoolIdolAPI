@@ -25,34 +25,34 @@
 
     <hr>
 
-    <!-- <h1>{% trans 'Links' %}</h1> -->
-    <!-- <br> -->
+    <h1>{% trans 'Links' %}</h1>
+    <br>
 
-    <!-- <form> -->
-    <!--   <table class="table table-round-items"> -->
-    <!-- 	{% for link in links %} -->
-    <!-- 	<tr id="link{{link.id}}" class="{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"> -->
-    <!-- 	  <td> -->
-    <!-- 	    {% include 'include/link.html' %} -->
-    <!-- 	  </td> -->
-    <!-- 	  <td class="text-right" width="200"><a href="#deleteLink" data-link-id="{{ link.id }}" class="btn btn-lg btn-danger">{% trans 'Delete Link' %}</a></td> -->
-    <!-- 	</tr> -->
-    <!-- 	{% endfor %} -->
-    <!--   </table> -->
-    <!-- </form> -->
-    <!-- <br> -->
-    <!-- <h1>{% trans 'Add Link' %}</h1> -->
-    <!-- <br> -->
-    <!-- <form method="post" action=""> -->
-    <!-- 	{% csrf_token %} -->
-    <!--   {% include "bootstrap_form_horizontal.html" with form=form_addlink wrap=0 %} -->
-    <!--   <br><br> -->
-    <!--   <div class="text-right"> -->
-    <!-- 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a> -->
-    <!-- 	<button name="addLink" type="submit" class="btn btn-lg btn-Cool"><i class="flaticon-add"></i> {% trans 'Add Link' %}</button> -->
-    <!--   </div> -->
-    <!--   <input type="hidden" name="next" value="/login" /> -->
-    <!-- </form> -->
+    <form>
+      <table class="table table-round-items">
+    	{% for link in links %}
+    	<tr id="link{{link.id}}" class="{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+    	  <td>
+    	    {% include 'include/link.html' %}
+    	  </td>
+    	  <td class="text-right" width="200"><a href="#deleteLink" data-link-id="{{ link.id }}" class="btn btn-lg btn-danger">{% trans 'Delete Link' %}</a></td>
+    	</tr>
+    	{% endfor %}
+      </table>
+    </form>
+    <br>
+    <h1>{% trans 'Add Link' %}</h1>
+    <br>
+    <form method="post" action="">
+    	{% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form_addlink wrap=0 %}
+      <br><br>
+      <div class="text-right">
+    	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+    	<button name="addLink" type="submit" class="btn btn-lg btn-Cool"><i class="flaticon-add"></i> {% trans 'Add Link' %}</button>
+      </div>
+      <input type="hidden" name="next" value="/login" />
+    </form>
 
     <hr>    
     <h1>{% trans 'Avatar' %}</h1>

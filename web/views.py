@@ -396,78 +396,25 @@ def profile(request, username):
                         account.save()
                         return redirect('/user/' + context['profile_user'].username + '?staff#' + str(account.id))
     # Set links
-    context['links'] = []
+    context['links'] = list(context['profile_user'].links.all().values())
     preferences = context['preferences']
     if preferences.best_girl:
-        context['links'].append({
-            'link': '/idol/' + preferences.best_girl + '/',
-            'title': 'Best Girl',
-            'title_translate': True,
+        context['links'].insert(0, {
+            'type': 'Best Girl',
+            'value': preferences.best_girl,
+            'translate_type': True,
             'div': '<div class="chibibestgirl" style="background-image: url(' + chibiimage(preferences.best_girl) + ')"></div>',
-            'text': preferences.best_girl,
         })
-    if preferences.location:
-        context['links'].append({
-            'link': 'http://maps.google.com/?q=' + preferences.location,
-            'title': 'Location',
-            'title_translate': True,
+        if preferences.location:
+            context['links'].insert(1, {
+            'type': 'Location',
+            'value': preferences.location,
+            'translate_type': True,
             'flaticon': 'world',
-            'text': preferences.location,
         })
-    if preferences.twitter:
-        context['links'].append({
-            'link': 'http://twitter.com/' + preferences.twitter,
-            'title': 'Twitter',
-        })
-    if preferences.facebook:
-        context['links'].append({
-            'link': 'https://www.facebook.com/' + preferences.facebook,
-            'title': 'Facebook',
-            'text': preferences.facebook,
-        })
-    if preferences.reddit:
-        context['links'].append({
-            'link': 'http://www.reddit.com/user/' + preferences.reddit,
-            'title': 'Reddit',
-            'image': 'http://www.redditstatic.com/spreddit4.gif',
-            'text': '/u/' + preferences.reddit,
-        })
-    if preferences.line:
-        context['links'].append({
-            'link': 'http://line.me/',
-            'title': 'LINE Messenger',
-            'image': 'http://media.line.me/img/button/en/20x20.png',
-            'image_size': 20,
-            'text': preferences.line,
-        })
-    if preferences.twitch:
-        context['links'].append({
-            'link': 'http://twitch.tv/' + preferences.twitch,
-            'title': 'Twitch',
-            'image': '/static/twitch.png',
-            'text': preferences.twitch,
-        })
-    if preferences.mal:
-        context['links'].append({
-            'link': 'http://myanimelist.net/profile/' + preferences.mal,
-            'title': 'MyAnimeList',
-            'image': '/static/mal.png',
-            'text': preferences.mal,
-        })
-    if preferences.otonokizaka:
-        context['links'].append({
-            'link': 'http://otonokizaka.org/member.php?action=profile&uid=' + preferences.otonokizaka,
-            'title': 'Otonokizaka Forum',
-            'text': preferences.otonokizaka,
-        })
-    if preferences.tumblr:
-        context['links'].append({
-            'link': 'http://' + preferences.tumblr + '.tumblr.com/',
-            'title': 'Tumblr',
-        })
-    context['per_line'] = len(context['links'])
-    if context['per_line'] > 6:
-        context['per_line'] = math.ceil(context['per_line'] / 2)
+    context['per_line'] = 6
+    if (len(context['links']) % context['per_line']) < 4:
+        context['per_line'] = 4
 
     context['current'] = 'profile'
     context['following'] = isFollowing(user, request)
@@ -574,6 +521,16 @@ def ajaxdeletecard(request, ownedcard):
         raise PermissionDenied()
     owned_card.delete()
     return HttpResponse('')
+
+def ajaxdeletelink(request, link):
+    if not request.user.is_authenticated() or request.user.is_anonymous():
+        raise PermissionDenied()
+    try:
+        link = models.UserLink.objects.get(owner=request.user, pk=int(link))
+    except ObjectDoesNotExist:
+        raise PermissionDenied()
+    link.delete()
+    return HttpResponse('deleted')
 
 def ajaxcards(request):
     return cards(request, ajax=True)
@@ -725,6 +682,8 @@ def edit(request):
     context['preferences'] = request.user.preferences
     form = forms.UserForm(instance=request.user)
     form_preferences = forms.UserPreferencesForm(instance=context['preferences'])
+    form_addlink = forms.AddLinkForm()
+    form_changepassword = forms.ChangePasswordForm()
     if request.method == "POST":
         if 'editPreferences' in request.POST:
             form_preferences = forms.UserPreferencesForm(request.POST, instance=context['preferences'])
@@ -735,15 +694,39 @@ def edit(request):
                     prefs.location_changed = True
                 prefs.save()
                 return redirect('/user/' + request.user.username)
+        elif 'changePassword' in request.POST:
+            form_changepassword = forms.ChangePasswordForm(request.POST)
+            if form_changepassword.is_valid():
+                new_password = form_changepassword.cleaned_data['new_password']
+                username = request.user.username
+                old_password = form_changepassword.cleaned_data['old_password']
+                user = authenticate(username=username, password=old_password)
+                if user is not None:
+                    user.set_password(new_password)
+                    user.save()
+                    authenticate(username=username, password=new_password)
+                    login(request, user)
+                    return redirect('/user/' + request.user.username)
+                errors = form_changepassword._errors.setdefault("old_password", ErrorList())
+                errors.append(_('Wrong password.'))
+        elif 'addLink' in request.POST:
+            form_addlink = forms.AddLinkForm(request.POST)
+            if form_addlink.is_valid():
+                link = form_addlink.save(commit=False)
+                link.owner = request.user
+                link.save()
+                return redirect('/edit/#link' + str(link.id))
         else:
             form = forms.UserForm(request.POST, instance=request.user)
             if form.is_valid():
-                edited_user = form.save(commit=False)
-                edited_user.set_password(form.cleaned_data['password'])
-                edited_user.save()
-                return redirect('/login/')
+                form.save()
+                return redirect('/user/' + request.user.username)
     context['form'] = form
+    context['attribute_choices'] = models.ATTRIBUTE_CHOICES
+    context['form_addlink'] = form_addlink
+    context['form_changepassword'] = form_changepassword
     context['form_preferences'] = form_preferences
+    context['links'] = list(request.user.links.all().values())
     context['current'] = 'edit'
     return render(request, 'edit.html', context)
 

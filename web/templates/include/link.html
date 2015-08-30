@@ -1,0 +1,26 @@
+{% load imageurl %}
+{% load i18n %}
+{% load choicesToString %}
+	<a href="{{ link|linkurl }}" target="_blank">
+	  <div class="row"><div class="col-xs-8"><strong>
+		{% if link.translate_type %}{% trans link.type %}{% else %}{{ link.type|linkTypeToString }}{% endif %}
+	    </strong></div>
+	    <div class="col-xs-4 text-right">
+	      {% if link.flaticon %}
+	      <i class="flaticon-{{ link.flaticon }}"></i>
+	      {% elif link.div %}
+	      {{ link.div|safe }}
+	      {% elif link|linkimage %}
+	      <img src="{{ link|linkimage }}" alt="{{ link.type }}" width="24" height="24">
+	      {% endif %}
+	    </div>
+	  </div>
+	  {% if link.type == 'Twitter' %}
+	  {% include 'include/twitter.html' with nolink=True twitter=link.value %}
+	  {% elif link.type == 'Tumblr' %}
+	  <iframe class="btn" frameborder="0" border="0" scrolling="no" allowtransparency="true" style="padding: 0; margin: 0; border: 0;" height="25" width="160" src="http://platform.tumblr.com/v1/follow_button.html?button_type=1&tumblelog={{ link.value }}&color_scheme=light"></iframe>
+	  {% else %}
+	  {{ link.value }}
+	  {% endif %}
+	</a>
+

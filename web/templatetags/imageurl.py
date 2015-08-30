@@ -33,9 +33,48 @@ def standimage(idol, number):
         return 'http://www.lovelive-anime.jp/img/member/member' + member_number + '_0'+ str(number) + '.png'
     return ''
 
-from api.raw import raw_information
+linkimages = {
+    'reddit': '/static/reddit.png',
+    'twitter': '/static/twitter.png',
+    'facebook': '/static/facebook.png',
+    'instagram': '/static/instagram.png',
+    'line': '/static/line.png',
+    'twitch': '/static/twitch.png',
+    'mal': '/static/mal.png',
+    'steam': '/static/steam.png',
+    'tumblr': '/static/tumblr.png',
+}
+
+def linkimage(link):
+    return linkimages.get(link['type'], None)
+
+linkurls = {
+    'Best Girl': '/idol/{}/',
+    'Location': 'http://maps.google.com/?q={}',
+    'twitter': 'http://twitter.com/{}',
+    'facebook': 'https://www.facebook.com/{}',
+    'reddit': 'http://www.reddit.com/user/{}',
+    'line': 'http://line.me/#{}',
+    'tumblr': 'http://{}.tumblr.com/',
+    'otonokizaka': 'http://otonokizaka.org/member.php?action=profile&uid={}',
+    'twitch': 'http://twitch.tv/{}',
+    'steam': 'http://steamcommunity.com/id/{}',
+    'osu': 'http://osu.ppy.sh/u/{}',
+    'mal': 'http://myanimelist.net/profile/{}',
+    'instagram': 'https://instagram.com/{}/',
+    'myfigurecollection': 'http://myfigurecollection.net/profile/{}',
+    'hummingbird': 'https://hummingbird.me/users/{}',
+    'youtube': 'https://www.youtube.com/user/{}',
+    'deviantart': 'http://{}.deviantart.com/gallery/',
+    'pixiv': 'http://www.pixiv.net/member.php?id={}',
+}
+
+def linkurl(link):
+    return linkurls[link['type']].format(link['value'])
 
 register.filter('imageurl', imageurl)
 register.filter('standimage', standimage)
 register.filter('chibiimage', chibiimage)
 register.filter('eventimageurl', eventimageurl)
+register.filter('linkimage', linkimage)
+register.filter('linkurl', linkurl)

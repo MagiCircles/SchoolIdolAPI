@@ -73,36 +73,7 @@
     <tr>
       {% endif%}
       <td>
-	<a href="{{ link.link }}" target="_blank">
-	  <div class="row"><div class="col-xs-8"><strong>
-		{% if link.title_translate %}
-		{% trans link.title %}
-		{% else %}
-		{{ link.title }}
-		{% endif %}
-	    </strong></div>
-	    <div class="col-xs-4">
-	      {% if link.flaticon %}
-	      <i class="flaticon-{{ link.flaticon }}"></i>
-	      {% elif link.image %}
-	      <img src="{{ link.image }}" alt="{{ link.title }}"
-		   {% if link.image_size %}
-		   width="{{ link.image_size }}" height="{{ link.image_size }}"
-		   {% endif %}
-		   >
-	      {% elif link.div %}
-	      {{ link.div|safe }}
-	      {% endif %}
-	    </div>
-	  </div>
-	  {% if link.title == 'Twitter' %}
-	  {% include 'include/twitter.html' with nolink=True twitter=preferences.twitter %}
-	  {% elif link.title == 'Tumblr' %}
-	  <iframe class="btn" frameborder="0" border="0" scrolling="no" allowtransparency="true" style="padding: 0; margin: 0; border: 0;" height="25" width="160" src="http://platform.tumblr.com/v1/follow_button.html?button_type=1&tumblelog={{ preferences.tumblr }}&color_scheme=light"></iframe>
-	  {% else %}
-	  {{ link.text }}
-	  {% endif %}
-	</a>
+	{% include 'include/link.html' %}
       </td>
       {% endfor %}
     </tr>

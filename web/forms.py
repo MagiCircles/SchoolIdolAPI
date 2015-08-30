@@ -6,10 +6,25 @@ from django.utils.translation import ugettext_lazy as _
 from api import models
 
 class UserForm(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email')
+
+class AddLinkForm(ModelForm):
+    class Meta:
+        model = models.UserLink
+        fields = ('type', 'value', 'relevance')
+
+class ChangePasswordForm(Form):
+    old_password = forms.CharField(widget=forms.PasswordInput(), label=_('Old Password'))
+    new_password = forms.CharField(widget=forms.PasswordInput(), label=_('New Password'))
+    new_password2 = forms.CharField(widget=forms.PasswordInput(), label=_('New Password Again'))
+
+    def clean(self):
+        if ('new_password' in self.cleaned_data and 'new_password2' in self.cleaned_data
+            and self.cleaned_data['new_password'] == self.cleaned_data['new_password2']):
+            return self.cleaned_data
+        raise forms.ValidationError(_("The two password fields did not match."))
 
 def getGirls():
     girls = models.Card.objects.values('idol__name').annotate(total=Count('idol__name')).order_by('-total', 'idol__name')
@@ -19,7 +34,7 @@ class UserPreferencesForm(ModelForm):
     best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private', 'twitter', 'facebook', 'reddit', 'line', 'tumblr', 'twitch', 'mal', 'otonokizaka')
+        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private')
 
 class AccountForm(ModelForm):
     class Meta:

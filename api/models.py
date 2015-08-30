@@ -73,11 +73,38 @@ STATUS_CHOICES = (
 )
 STATUS_DICT = dict(STATUS_CHOICES)
 
+LINK_CHOICES = (
+    ('twitter', 'Twitter'),
+    ('facebook', 'Facebook'),
+    ('reddit', 'Reddit'),
+    ('line', 'LINE Messenger'),
+    ('tumblr', 'Tumblr'),
+    ('otonokizaka', 'Otonokizaka.org Forum'),
+    ('twitch', 'Twitch'),
+    ('steam', 'Steam'),
+    ('osu', 'Osu!'),
+    ('mal', 'MyAnimeList'),
+    ('instagram', 'Instagram'),
+    ('myfigurecollection', 'MyFigureCollection'),
+    ('hummingbird', 'Hummingbird'),
+    ('youtube', 'YouTube'),
+    ('deviantart', 'DeviantArt'),
+    ('pixiv', 'Pixiv'),
+)
+LINK_DICT = dict(LINK_CHOICES)
+
+LINK_RELEVANCE_CHOICES = (
+    (0, _('Never')),
+    (1, _('Sometimes')),
+    (2, _('Often')),
+    (3, _('Every single day')),
+)
+LINK_RELEVANCE_DICT = dict(LINK_RELEVANCE_CHOICES)
+
 def verifiedToString(val):
     return VERIFIED_DICT[val]
 
 def activityMessageToString(val):
-    print val
     return ACTIVITY_MESSAGE_DICT[val]
 
 def playWithToString(val):
@@ -88,6 +115,9 @@ def storedChoiceToString(stored):
         if stored == key:
             return string
     return None
+
+def linkTypeToString(val):
+    return LINK_DICT[val]
 
 def statusToString(val):
     return STATUS_DICT[val]
@@ -328,17 +358,26 @@ class EventParticipation(models.Model):
 
 admin.site.register(EventParticipation)
 
+class UserLink(models.Model):
+    alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
+    owner = models.ForeignKey(User, related_name='links')
+    type = models.CharField(_('Platform'), max_length=20, choices=LINK_CHOICES)
+    value = models.CharField(_('Username/ID'), max_length=64, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
+    relevance = models.PositiveIntegerField(_('How often do you tweet/steam/post about Love Live?'), choices=LINK_RELEVANCE_CHOICES, null=True)
+
+admin.site.register(UserLink)
+
 class UserPreferences(models.Model):
     alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
     user = models.OneToOneField(User, related_name='preferences')
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
     best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
-    location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in.'))
+    location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in. It might take up to 24 hours to update your location on the map.'))
     location_changed = models.BooleanField(default=False)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    twitter = models.CharField(max_length=15, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
+    twitter = models.CharField(max_length=15, null=True, blank=True)
     facebook = models.CharField(max_length=50, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     reddit = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     line = models.CharField(max_length=20, null=True, blank=True, help_text=_('Write your username only, no URL.'), validators=[alphanumeric]) # max length not checked

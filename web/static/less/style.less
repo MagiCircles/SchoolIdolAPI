@@ -13,6 +13,7 @@
 @import "mixins/list-group.less";
 @import "mixins/circled_card.less";
 
+@import "cuteform.less";
 @import "simple-sidebar.less";
 
 body {
@@ -282,6 +283,11 @@ main {
 .btn-Pure { .button-variant(#fff, lighten(@PureColor, 25%), darken(lighten(@PureColor, 25%), 5%)) }
 .btn-Cool { .button-variant(#fff, lighten(@CoolColor, 25%), darken(lighten(@CoolColor, 25%), 5%)) }
 .btn-All { .button-variant(#fff, lighten(@AllColor, 25%), darken(lighten(@AllColor, 25%), 5%)) }
+
+tr.Smile { td { background-color: lighten(@SmileColor, 30%); .a-variant(#fff) }}
+tr.Pure { td { background-color: lighten(@PureColor, 30%); .a-variant(#fff) }}
+tr.Cool { td { background-color: lighten(@CoolColor, 30%); .a-variant(#fff) }}
+tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 
 .btn-Rainbow-1 { .custom-btn(#ED1C24); }
 .btn-Rainbow-2 { .custom-btn(#F7941D); }
@@ -599,6 +605,7 @@ nav {
     }
 }
 
+.padding5 { padding: 5px; }
 .padding10 { padding: 10px; }
 .padding20 { padding: 20px; }
 .padding-novertical {

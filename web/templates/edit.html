@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load imageurl %}
 
 {% block title %}{% trans 'Your Settings' %}{% endblock %}
 
@@ -8,10 +9,67 @@
 <div class="container">
   <br><br>
   <div class="jumbotron">
+
+    <h1>{% trans 'Customize' %}</h1>
+    <br>
+    <form method="post" action="">
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form_preferences wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<input name="editPreferences" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+      </div>
+      <input type="hidden" name="next" value="/login" />
+    </form>
+
+    <hr>
+
+    <!-- <h1>{% trans 'Links' %}</h1> -->
+    <!-- <br> -->
+
+    <!-- <form> -->
+    <!--   <table class="table table-round-items"> -->
+    <!-- 	{% for link in links %} -->
+    <!-- 	<tr id="link{{link.id}}" class="{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"> -->
+    <!-- 	  <td> -->
+    <!-- 	    {% include 'include/link.html' %} -->
+    <!-- 	  </td> -->
+    <!-- 	  <td class="text-right" width="200"><a href="#deleteLink" data-link-id="{{ link.id }}" class="btn btn-lg btn-danger">{% trans 'Delete Link' %}</a></td> -->
+    <!-- 	</tr> -->
+    <!-- 	{% endfor %} -->
+    <!--   </table> -->
+    <!-- </form> -->
+    <!-- <br> -->
+    <!-- <h1>{% trans 'Add Link' %}</h1> -->
+    <!-- <br> -->
+    <!-- <form method="post" action=""> -->
+    <!-- 	{% csrf_token %} -->
+    <!--   {% include "bootstrap_form_horizontal.html" with form=form_addlink wrap=0 %} -->
+    <!--   <br><br> -->
+    <!--   <div class="text-right"> -->
+    <!-- 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a> -->
+    <!-- 	<button name="addLink" type="submit" class="btn btn-lg btn-Cool"><i class="flaticon-add"></i> {% trans 'Add Link' %}</button> -->
+    <!--   </div> -->
+    <!--   <input type="hidden" name="next" value="/login" /> -->
+    <!-- </form> -->
+
+    <hr>    
+    <h1>{% trans 'Avatar' %}</h1>
+    <br>
+    <form>
+      <div class="alert alert-info">{% trans 'To change your avatar, use Gravatar with the same email address.' %}</div>
+      <div class="text-right">
+	<a class="btn btn-lg btn-Cool" href="https://{{ LANGUAGE_CODE }}.gravatar.com/" target="_blank">{% trans 'Change Avatar' %}</a>
+      </div>
+    </form>
+
+    <hr>
+
     <h1>{% trans 'Your Settings' %}</h1>
     <br>
     <form method="post" action="">
-      <div class="alert alert-warning">{% blocktrans %}You will be disconnected and will have to login with your new password.{% endblocktrans %}</div>
+      <div class="alert alert-danger">{% blocktrans %}If you change your username, all the external links to your profile will not work anymore. All your comments will be deleted. If you wish to transfer your comments, contact us.{% endblocktrans %}</div>
       {% csrf_token %}
       {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
       <br><br>
@@ -24,28 +82,17 @@
 
     <hr>
 
-    <h1>{% trans 'Customize' %}</h1>
+    <h1>{% trans 'Change your password' %}</h1>
     <br>
     <form method="post" action="">
       {% csrf_token %}
-      {% include "bootstrap_form_horizontal.html" with form=form_preferences wrap=0 %}
+      {% include "bootstrap_form_horizontal.html" with form=form_changepassword wrap=0 %}
       <br><br>
       <div class="text-right">
 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
-	<input name="editPreferences" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Save your settings' %}" />
+	<input name="changePassword" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
       </div>
       <input type="hidden" name="next" value="/login" />
-    </form>
-
-    <hr>
-    
-    <h1>{% trans 'Avatar' %}</h1>
-    <br>
-    <form>
-      <div class="alert alert-info">{% trans 'To change your avatar, use Gravatar with the same email address.' %}</div>
-      <div class="text-right">
-	<a class="btn btn-lg btn-Cool" href="https://{{ LANGUAGE_CODE }}.gravatar.com/" target="_blank">{% trans 'Change Avatar' %}</a>
-      </div>
     </form>
 
     <hr>
@@ -53,13 +100,48 @@
     <h1>{% trans 'Edit your accounts' %}</h1>
     <br>
     <form>
-      <div class="alert alert-info">{% trans 'On your profile, go to the account you would like to edit then click on the edit button in the top right corner.' %}</div>
+      <table class="table">
+	{% for account in accounts %}
+	<tr>
+	  <td>
+	    <div class="circled_card_50 {{ account.center.card.attribute }} {{ account.center.card.rarity }} hover"
+		 style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+	  </td>
+	  <td><h4>{{ account }}</h4></td>
+	  <td class="text-right"><a href="/editaccount/{{ account.id }}/" class="btn btn-lg btn-Cool">{% trans 'Edit Account' %}</a></td>
+	</tr>
+	{% endfor %}
+      </table>
       <div class="text-right">
-	<a class="btn btn-lg btn-Cool" href="/user/{{ user.username }}/" target="_blank">{% trans 'Profile' %}</a>
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<a href="/addaccount/" class="btn btn-lg btn-Cool"><i class="flaticon-add"></i> {% trans 'Add Account' %}</a>
       </div>
     </form>
 
   </div>
 </div>
 
+{% endblock %}
+{% block js %}
+<script src="/static/js/edit.js"></script>
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_color'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for i, attribute in attribute_choices %}
+      '{{ i }}': '/static/{{ i }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_best_girl'), {
+    'modal': 'true',
+    'modal-text': 'true',
+    'images': {
+      {% for value, idol in form_preferences.best_girl.field.choices %}
+      {% if value == '' %}'': '/static/empty.png',{% else %}'{{ value|escapejs }}': '{{ idol|chibiimage:True }}',{% endif %}
+      {% endfor %}
+    }
+  });
+</script>
 {% endblock %}

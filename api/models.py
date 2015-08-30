@@ -289,7 +289,7 @@ class Card(models.Model):
         return OwnedCard.objects.filter(owner_account=account, card=self)
 
     def __unicode__(self):
-        return '#' + str(self.id) + ' ' + self.name + ' ' + self.rarity
+        return u'#' + unicode(self.id) + u' ' + unicode(self.name) + u' ' + unicode(self.rarity)
 
 admin.site.register(Card)
 
@@ -308,7 +308,7 @@ class Account(models.Model):
     verified = models.PositiveIntegerField(default=0, choices=VERIFIED_CHOICES)
 
     def __unicode__(self):
-        return (self.owner.username if self.nickname == '' else self.nickname) + ' ' + self.language
+        return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)
 
 admin.site.register(Account)
 
@@ -323,7 +323,7 @@ class OwnedCard(models.Model):
     skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
 
     def __unicode__(self):
-        return str(self.owner_account) + ' owns ' + str(self.card)
+        return unicode(self.owner_account) + u' owns ' + unicode(self.card)
 
 admin.site.register(OwnedCard)
 

@@ -1,0 +1,23 @@
+
+@import "../bower/CuteForm/cuteform.css";
+
+.cuteform-elt {
+    width: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#cuteform-modal {
+    .cuteform-elt {
+	width: 80px;
+	border-radius: 0;
+	&.cuteform-selected {
+	    border-radius: 50%;
+	}
+    }
+}
+
+.cuteform-modal-button {
+    background: none;
+    border: none;
+}

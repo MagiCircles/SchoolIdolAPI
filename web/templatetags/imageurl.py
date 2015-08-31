@@ -67,6 +67,7 @@ linkurls = {
     'youtube': 'https://www.youtube.com/user/{}',
     'deviantart': 'http://{}.deviantart.com/gallery/',
     'pixiv': 'http://www.pixiv.net/member.php?id={}',
+    'github': 'https://github.com/{}',
 }
 
 def linkurl(link):

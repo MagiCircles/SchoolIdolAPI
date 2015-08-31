@@ -90,6 +90,7 @@ LINK_CHOICES = (
     ('youtube', 'YouTube'),
     ('deviantart', 'DeviantArt'),
     ('pixiv', 'Pixiv'),
+    ('github', 'GitHub'),
 )
 LINK_DICT = dict(LINK_CHOICES)
 

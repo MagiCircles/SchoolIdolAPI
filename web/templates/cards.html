@@ -20,7 +20,7 @@
     'images': {
       '': '/static/empty.png',
       {% for rarity, _ in filters.rarity_choices %}
-      '{{ rarity }}': '/static/{{ rarity }}{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}.png',
+      '{{ rarity }}': '/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
       {% endfor %}
     }
   });

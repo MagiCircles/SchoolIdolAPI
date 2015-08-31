@@ -454,9 +454,13 @@ class Command(BaseCommand):
 	                        name = clean(name.split('（')[0])
 	                    else:
 	                        version = ''
-	                    if len(tds) == 5: # special card
+	                    if len(tds) == 5: # special cards ( no skill column )
 	                        skill_name = None
 	                        skill_details = clean(tds[-1].string)
+	                        center_skill_name = None
+	                        center_skill_details = None
+	                    elif len(tds) == 7: # special cards ( with skill columns )
+	                        skill_name, skill_details = extract_skill(tds[-2])
 	                        center_skill_name = None
 	                        center_skill_details = None
 	                    elif len(tds) == 14: # promo cards

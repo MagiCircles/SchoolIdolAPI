@@ -10,7 +10,7 @@
   <br><br>
   <div class="jumbotron">
 
-    <h1>{% trans 'Customize' %}</h1>
+    <h1 id="customize">{% trans 'Customize' %}</h1>
     <br>
     <form method="post" action="">
       {% csrf_token %}
@@ -25,7 +25,8 @@
 
     <hr>
 
-    <h1>{% trans 'Links' %}</h1>
+    {% if links|length %}
+    <h1 id="links">{% trans 'Links' %}</h1>
     <br>
 
     <form>
@@ -41,7 +42,8 @@
       </table>
     </form>
     <br>
-    <h1>{% trans 'Add Link' %}</h1>
+    {% endif %}
+    <h1 id="addlink">{% trans 'Add Link' %}</h1>
     <br>
     <form method="post" action="">
     	{% csrf_token %}
@@ -55,7 +57,7 @@
     </form>
 
     <hr>    
-    <h1>{% trans 'Avatar' %}</h1>
+    <h1 id="avatar">{% trans 'Avatar' %}</h1>
     <br>
     <form>
       <div class="alert alert-info">{% trans 'To change your avatar, use Gravatar with the same email address.' %}</div>
@@ -66,7 +68,7 @@
 
     <hr>
 
-    <h1>{% trans 'Your Settings' %}</h1>
+    <h1 id="settings">{% trans 'Your Settings' %}</h1>
     <br>
     <form method="post" action="">
       <div class="alert alert-danger">{% blocktrans %}If you change your username, all the external links to your profile will not work anymore. All your comments will be deleted. If you wish to transfer your comments, contact us.{% endblocktrans %}</div>
@@ -82,7 +84,7 @@
 
     <hr>
 
-    <h1>{% trans 'Change your password' %}</h1>
+    <h1 id="changepassword">{% trans 'Change your password' %}</h1>
     <br>
     <form method="post" action="">
       {% csrf_token %}
@@ -97,7 +99,7 @@
 
     <hr>
 
-    <h1>{% trans 'Edit your accounts' %}</h1>
+    <h1 id="editaccounts">{% trans 'Edit your accounts' %}</h1>
     <br>
     <form>
       <table class="table">

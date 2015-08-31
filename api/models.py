@@ -364,7 +364,7 @@ class UserLink(models.Model):
     owner = models.ForeignKey(User, related_name='links')
     type = models.CharField(_('Platform'), max_length=20, choices=LINK_CHOICES)
     value = models.CharField(_('Username/ID'), max_length=64, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
-    relevance = models.PositiveIntegerField(_('How often do you tweet/steam/post about Love Live?'), choices=LINK_RELEVANCE_CHOICES, null=True)
+    relevance = models.PositiveIntegerField(_('How often do you tweet/stream/post about Love Live?'), choices=LINK_RELEVANCE_CHOICES, null=True)
 
 admin.site.register(UserLink)
 

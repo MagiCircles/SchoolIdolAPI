@@ -361,7 +361,7 @@ class EventParticipation(models.Model):
 admin.site.register(EventParticipation)
 
 class UserLink(models.Model):
-    alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
+    alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\. ]*$', 'Only alphanumeric and - _ characters are allowed.')
     owner = models.ForeignKey(User, related_name='links')
     type = models.CharField(_('Platform'), max_length=20, choices=LINK_CHOICES)
     value = models.CharField(_('Username/ID'), max_length=64, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])

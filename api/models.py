@@ -375,7 +375,7 @@ class UserPreferences(models.Model):
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
     description = models.TextField(_('Description'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
     best_girl = models.CharField(_('Best Girl'), max_length=200, null=True, blank=True)
-    location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=_('The city you live in. It might take up to 24 hours to update your location on the map.'))
+    location = models.CharField(_('Location'), max_length=200, null=True, blank=True, help_text=string_concat(_('The city you live in.'), ' ', _('It might take up to 24 hours to update your location on the map.')))
     location_changed = models.BooleanField(default=False)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)

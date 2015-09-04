@@ -11,13 +11,13 @@
   <div class="jumbotron">
     <h1>{% trans 'Login' %}</h1>
     <br>
-    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
       {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
       <br><br>
       <div class="text-right">
 	<a href="/create/" class="btn btn-lg btn-link">{% trans 'Sign Up' %}</a>
-	<a href="#contactModal" data-toggle="ajaxmodal" class="btn btn-lg btn-link">{% trans 'Forgot password?' %}</a>
+	<a href="/password_reset/" class="btn btn-lg btn-link">{% trans 'Forgot password?' %}</a>
 	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Login' %}" />
       </div>
       <input type="hidden" name="next" value="/setaccountonlogin" />

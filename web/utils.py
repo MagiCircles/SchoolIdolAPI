@@ -2,6 +2,9 @@ import urllib2, urllib
 import json
 import os
 
+class HttpRedirectException(Exception):
+    pass
+
 def is_positive_integer(string):
     try:
         integer = int(string)

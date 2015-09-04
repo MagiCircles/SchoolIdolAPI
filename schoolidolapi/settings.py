@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'v9d($6-ui(noij(0#&x4c0p9+%2k53#=sg6z-2g$14&u8i!1rj'
+TRANSFER_CODE_SECRET_KEY = 'q+sem2i+4+2mfjsy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,8 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -43,6 +42,8 @@ INSTALLED_APPS = (
     'api',
     'storages',
     'web',
+    'django.contrib.admin',
+    'django.contrib.auth',
 )
 
 REST_FRAMEWORK = {
@@ -70,6 +71,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'schoolidolapi.middleware.httpredirect.HttpRedirectMiddleware',
 )
 
 ROOT_URLCONF = 'schoolidolapi.urls'
@@ -136,8 +138,13 @@ except ImportError, e:
     pass
 
 # In production, use these in the local_settings file
+
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 # AWS_ACCESS_KEY_ID = ''
 # AWS_SECRET_ACCESS_KEY = ''
 # AWS_STORAGE_BUCKET_NAME = 'schoolido.lu-assets'
 # IMAGES_HOSTING_PATH = 'http://datjr36easq2c.cloudfront.net/'
+# EMAIL_BACKEND = 'django_ses.SESBackend'
+# AWS_SES_REGION_NAME = 'us-east-1'
+# AWS_SES_REGION_ENDPOINT = 'email.us-east-1.amazonaws_com'
+# AWS_SES_RETURN_PATH = 'password@schoolido.lu'

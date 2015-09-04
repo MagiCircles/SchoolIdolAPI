@@ -56,12 +56,21 @@ class FullAccountForm(ModelForm):
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'friend_id', 'transfer_code', 'language', 'os', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'friend_id', 'language', 'os', 'device', 'play_with', 'accept_friend_requests')
 
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'transfer_code', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'device', 'play_with', 'accept_friend_requests')
+
+class SimplePasswordForm(Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))
+
+class TransferCodeForm(ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(), label=_('Password'))
+    class Meta:
+        model = models.Account
+        fields = ('transfer_code',)
 
 class OwnedCardForm(ModelForm):
     class Meta:

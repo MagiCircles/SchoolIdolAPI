@@ -20,7 +20,62 @@
       </div>
       <input type="hidden" name="next" value="/cards" />
     </form>
+
     {% if edit %}
+    <hr>
+
+    {% if deleted_transfer_code %}
+    <form class="alert alert-danger" id="deletedTransferCode">
+      {% trans 'Your transfer code has been deleted.' %}
+    </form>
+    {% endif %}
+    {% if account.transfer_code %}
+    <form class="form-horizontal" method="post" action="/editaccount/{{ account.id }}/#getTransferCode" role="form" autocomplete="off">
+      <h2 id="getTransferCode">{% trans 'Get your saved transfer code' %}</h2>
+
+      {% if transfer_code %}
+      </form>
+      <div class="alert alert-info text-center">
+	<h1>{{ transfer_code }}</h1>
+      </div>
+      <form action="/editaccount/{{ account.id }}/#deletedTransferCode" method="post">
+	{% csrf_token %}
+	<div class="text-right">
+	  <input name="deleteTransferCode" type="submit" class="btn btn-danger" value="{% trans 'Delete your transfer code' %}" />
+	</div>
+      </form>
+      {% else %}
+      {% csrf_token %}
+      <input type="password" style="display:none" />
+      {% include "bootstrap_form_horizontal.html" with form=form_get_transfer_code wrap=0 %}
+      <div class="text-right">
+	<input name="getTransferCode" type="submit" class="btn btn-Cool" value="{% trans 'Get your saved transfer code' %}" />
+      </div>
+    </form>
+      {% endif %}
+
+    <hr>
+
+    {% endif %}
+
+
+    <form method="post" action="/editaccount/{{ account.id }}/#saveTransferCode">
+      <h2 id="saveTransferCode">{% trans 'Save your transfer code' %}</h2>
+
+      {% if saved_transfer_code %}
+      <div class="alert alert-info">
+	{% trans 'Your transfer code has been securely saved.' %}
+      </div>
+      {% endif %}
+
+      {% csrf_token %}
+      <input type="password" style="display:none" />
+      {% include "bootstrap_form_horizontal.html" with form=form_save_transfer_code wrap=0 %}
+      <div class="text-right">
+	<input name="saveTransferCode" type="submit" class="btn btn-Cool" value="{% trans 'Save your transfer code' %}" />
+      </div>
+    </form>
+
     <hr>
     <form method="post" action="">
       {% csrf_token %}

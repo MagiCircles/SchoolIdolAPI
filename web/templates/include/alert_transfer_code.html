@@ -1,0 +1,4 @@
+{% load i18n %}
+    <div class="alert alert-danger">
+      <h2>{% blocktrans count counter=accounts_with_transfer_code %}You have a transfer code saved in School Idol Tomodachi. If you reset your password, you will not be able to retrieve it anymore.{% plural %}You have {{ counter }} transfer codes saved. If you reset your password, you will not be able to retrieve them anymore.{% endblocktrans %}</h2>
+    </div>

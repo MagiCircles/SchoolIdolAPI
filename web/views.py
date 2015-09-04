@@ -4,11 +4,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django import template
 from django.http import HttpResponse, Http404
 from django.template import RequestContext, loader
+from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.contrib.auth.models import User, Group
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import login as login_view
+from django.contrib.auth.views import password_reset_confirm as password_reset_confirm_view
 from django.db.models import Count, Q
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -16,7 +20,7 @@ from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models
-from web import forms, links, donations
+from web import forms, links, donations, transfer_code
 from utils import *
 import urllib, hashlib
 import datetime
@@ -33,7 +37,11 @@ def globalContext(request):
         'debug': settings.DEBUG,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
-        context['accounts'] = request.user.accounts_set.all().select_related('center')
+        context['accounts'] = request.user.accounts_set.all().select_related('center', 'center__card')
+        for account in context['accounts']:
+            if account.transfer_code and not transfer_code.is_encrypted(account.transfer_code):
+                logout(request)
+                raise HttpRedirectException('/login/')
         context['interfaceColor'] = request.user.preferences.color
         context['btnColor'] = request.user.preferences.color if request.user.preferences else 'default'
     return context
@@ -90,6 +98,21 @@ def index(request):
         link['card'].idolized = bool(random.getrandbits(1)) if link['card'].card_url else 1
     return render(request, 'index.html', context)
 
+def password_reset_confirm(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    accounts_with_transfer_code = 0
+    if user is not None:
+        accounts_with_transfer_code = user.accounts_set.exclude(transfer_code__isnull=True).exclude(transfer_code__exact='').count()
+
+    response = password_reset_confirm_view(request, uidb64=uidb64, token=token, extra_context={'accounts_with_transfer_code': accounts_with_transfer_code})
+    if isinstance(response, HttpResponseRedirect) and user is not None:
+        accounts_with_transfer_code = user.accounts_set.all().update(transfer_code='')
+    return response
+
 def create(request):
     if request.user.is_authenticated() and not request.user.is_anonymous():
         raise PermissionDenied()
@@ -107,6 +130,17 @@ def create(request):
     context['form'] = form
     context['current'] = 'create'
     return render(request, 'create.html', context)
+
+def login_custom_view(request):
+    response = login_view(request, template_name='login.html', extra_context={'interfaceColor': 'default'})
+    if (isinstance(response, HttpResponseRedirect) and 'password' in request.POST
+        and request.user.is_authenticated() and not request.user.is_anonymous()):
+        accounts = request.user.accounts_set.all()
+        for account in accounts:
+            if account.transfer_code and not transfer_code.is_encrypted(account.transfer_code):
+                account.transfer_code = transfer_code.encrypt(account.transfer_code, request.POST['password'])
+                account.save()
+    return response
 
 def setaccountonlogin(request):
     context = globalContext(request)
@@ -398,7 +432,6 @@ def profile(request, username):
                     if account.staff_form.is_valid():
                         account = account.staff_form.save(commit=False)
                         if 'owner_id' in account.staff_form.cleaned_data and account.staff_form.cleaned_data['owner_id']:
-                            print account.staff_form.cleaned_data['owner_id']
                             account_new_user = models.User.objects.get(pk=account.staff_form.cleaned_data['owner_id'])
                             account.owner = account_new_user
                         account.save()
@@ -710,6 +743,12 @@ def edit(request):
                 old_password = form_changepassword.cleaned_data['old_password']
                 user = authenticate(username=username, password=old_password)
                 if user is not None:
+                    for account in context['accounts']:
+                        if account.transfer_code and transfer_code.is_encrypted(account.transfer_code):
+                            clear_transfer_code = transfer_code.decrypt(account.transfer_code, old_password)
+                            encrypted_transfer_code = transfer_code.encrypt(clear_transfer_code, new_password)
+                            account.transfer_code = encrypted_transfer_code
+                            account.save()
                     user.set_password(new_password)
                     user.save()
                     authenticate(username=username, password=new_password)
@@ -749,26 +788,55 @@ def editaccount(request, account):
         formClass = forms.FullAccountNoFriendIDForm
     else:
         formClass = forms.FullAccountForm
-    if request.method == 'GET':
-        form = formClass(instance=owned_account)
-    elif request.method == "POST":
+    form = formClass(instance=owned_account)
+    form_get_transfer_code = forms.SimplePasswordForm()
+    form_save_transfer_code = forms.TransferCodeForm()
+    if request.method == "POST":
         if 'deleteAccount' in request.POST:
             owned_account.delete()
             return redirect('/user/' + request.user.username)
-        old_rank = owned_account.rank
-        form = formClass(request.POST, instance=owned_account)
-        if form.is_valid():
-            account = form.save(commit=False)
-            if account.rank >= 200 and account.verified <= 0:
-                errors = form._errors.setdefault("rank", ErrorList())
-                errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
-            else:
-                account.save()
-                if old_rank < account.rank:
-                    pushActivity(account, "Rank Up", rank=account.rank)
-                return redirect('/user/' + request.user.username)
+        elif 'getTransferCode' in request.POST:
+            form_get_transfer_code = forms.SimplePasswordForm(request.POST)
+            if form_get_transfer_code.is_valid():
+                if authenticate(username=request.user.username, password=form_get_transfer_code.cleaned_data['password']) is not None:
+                    context['transfer_code'] = transfer_code.decrypt(owned_account.transfer_code, form_get_transfer_code.cleaned_data['password'])
+                else:
+                    errors = form_get_transfer_code._errors.setdefault("password", ErrorList())
+                    errors.append(_('Wrong password.'))
+        elif 'saveTransferCode' in request.POST:
+            form_save_transfer_code = forms.TransferCodeForm(request.POST)
+            if form_save_transfer_code.is_valid():
+                if authenticate(username=request.user.username, password=form_save_transfer_code.cleaned_data['password']) is not None:
+                    encrypted_transfer_code = transfer_code.encrypt(form_save_transfer_code.cleaned_data['transfer_code'], form_save_transfer_code.cleaned_data['password'])
+                    owned_account.transfer_code = encrypted_transfer_code
+                    owned_account.save()
+                    form_save_transfer_code = forms.TransferCodeForm()
+                    context['saved_transfer_code'] = True
+                else:
+                    errors = form_save_transfer_code._errors.setdefault("password", ErrorList())
+                    errors.append(_('Wrong password.'))
+        elif 'deleteTransferCode' in request.POST:
+            owned_account.transfer_code = ''
+            owned_account.save()
+            context['deleted_transfer_code'] = True
+        else:
+            old_rank = owned_account.rank
+            form = formClass(request.POST, instance=owned_account)
+            if form.is_valid():
+                account = form.save(commit=False)
+                if account.rank >= 200 and account.verified <= 0:
+                    errors = form._errors.setdefault("rank", ErrorList())
+                    errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
+                else:
+                    account.save()
+                    if old_rank < account.rank:
+                        pushActivity(account, "Rank Up", rank=account.rank)
+                    return redirect('/user/' + request.user.username)
     form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id')
     context['form'] = form
+    context['form_get_transfer_code'] = form_get_transfer_code
+    context['form_save_transfer_code'] = form_save_transfer_code
+    context['account'] = owned_account
     context['current'] = 'editaccount'
     context['edit'] = owned_account
     return render(request, 'addaccount.html', context)

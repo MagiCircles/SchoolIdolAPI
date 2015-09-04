@@ -1,4 +1,5 @@
 from django.conf.urls import include, patterns, url
+from django.conf import settings
 from web import views
 
 urlpatterns = patterns('',
@@ -9,7 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^create[/]+$', views.create, name='create'),
     url(r'^edit[/]+$', views.edit, name='edit'),
-    url(r'^login[/]+$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
+    url(r'^login[/]+$', views.login_custom_view, name='login'),
     url(r'^setaccountonlogin[/]+$', views.setaccountonlogin, name='setaccountonlogin'),
     url(r'^logout[/]+$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^addaccount[/]+$', views.addaccount, name='addaccount'),
@@ -26,6 +27,15 @@ urlpatterns = patterns('',
     url(r'^twitter[/]+$', views.twitter, name='twitter'),
     url(r'^map[/]+$', views.mapview, name='map'),
     url(r'^donate[/]+$', views.donateview, name='donate'),
+
+
+    url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset',
+        {'html_email_template_name': 'registration/password_reset_email_html.html',
+         'from_email': settings.AWS_SES_RETURN_PATH,
+     }, name='password_reset'),
+    url(r'^password_reset/done[/]+$', 'django.contrib.auth.views.password_reset_done', name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.password_reset_confirm, name='password_reset_confirm'),
+    url(r'^reset/done[/]+$', 'django.contrib.auth.views.password_reset_complete', name='password_reset_complete'),
 
     url(r'^ajax/modal/(?P<hash>\w+)[/]+$', views.ajaxmodal, name='ajaxmodal'),
     url(r'^ajax/addcard[/]+$', views.ajaxaddcard, name='ajaxaddcard'),

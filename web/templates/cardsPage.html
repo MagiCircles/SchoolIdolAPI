@@ -34,7 +34,7 @@
 	      {% if total_cards == 1 %}<div class="row"><div class="col-md-6">{% endif %}
 		  <div class="text-center card_images">
 		    {% if total_cards > 1 %}
-		    <a href="#collapseMore{{ card.id }}" data-toggle="collapse" aria-expanded="false" aria-controls="collapseMore{{ card.id }}">{% endif %}
+		    <a href="/cards/{{ card.id }}/" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}
 		      {% if not card.is_special and not card.is_promo %}
 		      {% if total_cards == 1 %}<a href="{{ card|imageurl:'card_image' }}" target="_blank">{% endif %}
 			<img src="{{ card|imageurl:'card_image' }}" class="non_idolized" width="49%" alt="{{ card }}">
@@ -81,10 +81,13 @@
 		    {% with level|add:"_statistics_"|add:attribute|lower as valuenow %}
 		    {% if card|getattribute:valuenow %}
 		    <div class="row">
-		      <div class="col-xs-2 text-{{ attribute }} text-right">
+		      <div class="col-xs-1 text-right">
+			<img src="/static/{{ attribute }}.png" class="attribute" width="20px">
+		      </div>
+		      <div class="col-xs-2 text-{{ attribute }}">
 			{{ card|getattribute:valuenow }}
 		      </div>
-		      <div class="col-xs-10">
+		      <div class="col-xs-9">
 			<div class="progress">
 			  <div class="progress-bar progress-bar-{{ attribute }}"
 			       role="progressbar"
@@ -102,6 +105,21 @@
 		    {% endfor %}
 		  </div>
 		  {% endfor %}
+		  {% if card.hp %}
+		  <div class="row">
+		    <div class="col-xs-1 text-right">
+		      <i class="flaticon-hp"></i>
+		    </div>
+		    <div class="col-xs-2">
+		      {% trans 'HP' %}
+		    </div>
+		    <div class="col-xs-9">
+		      <span class="hp_non_idolized">{{ card.hp }}</span>
+		      <span class="hp_idolized">{{ card.hp|add:1 }}</span>
+		    </div>
+		  </div>
+		  <br>
+		  {% endif %}
 		</div> <!-- statistics -->
 		{% endif %}
 		<table class="table">
@@ -120,9 +138,13 @@
 			  #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			</a><br>
 			<small>{% if card.idol.japanese_name %} {{ card.idol.japanese_name }}{% endif %} {{ card.idol.name }}
-			  <span class="tiny"><a target="_blank" href="/cards/?name={{ card.idol.name }}">
+			  <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
 			      <i class="flaticon-link"></i></a></span><br>
-			  {{ card.rarity }} {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}</small>
+			  {{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
+			      <i class="flaticon-link"></i></a></span> {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
+			  <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.attribute }}">
+			      <i class="flaticon-link"></i></a></span>
+			</small>
 		      </td>
 		    </tr>
 		    {% if card.release_date %}
@@ -132,6 +154,18 @@
 			{{ card.release_date }}
 			<div class="pull-right">
 			  <i class="flaticon-date"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% endif %}
+		    {% if card.is_promo %}
+		    <tr>
+		      <th>{% trans 'Promo Card' %}</th>
+		      <td>
+			{% trans 'This card comes with ' %}:<br>
+			{{ card.promo_item }}
+			<div class="pull-right">
+			  <i class="flaticon-promo"></i>
 			</div>
 		      </td>
 		    </tr>
@@ -153,18 +187,6 @@
 		      </td>
 		    </tr>
 		    {% endif %}
-		    {% if card.hp %}
-		    <tr>
-		      <th>{% trans 'HP' %}</th>
-		      <td>
-			<span class="hp_non_idolized">{{ card.hp }}</span>
-			<span class="hp_idolized">{{ card.hp|add:1 }}</span>
-			<div class="pull-right">
-			  <i class="flaticon-hp"></i>
-			</div>
-		      </td>
-		    </tr>
-		    {% endif %}
 		    {% if card.japanese_collection %}
 		    <tr>
 		      <th>{% trans 'Collection' %}</th>
@@ -176,13 +198,14 @@
 		      </td>
 		    </tr>
 		    {% endif %}
+		    {% if card.skill or card.japanese_skill %}
 		    <tr>
 		      <th>{% trans 'Skill' %}</th>
 		      <td>
 			<div class="pull-right">
 			  <i class="flaticon-skill"></i>
 			</div>
-			{% if card.japanese_skill_details or card.japanese_skill %}
+			{% if card.japanese_skill_details or card.japanese_skill or card.skill_details or card.japanese_skill_details %}
 			<p>
 			  {% if card.japanese_skill %}<strong>{{ card.japanese_skill }}</strong><br />
 			  <small>{% endif %}{% if card.japanese_skill_details and card.japanese_skill_details != 'None' %}{{ card.japanese_skill_details }}{% endif %}{% if card.japanese_skill %}</small>{% endif %}
@@ -192,10 +215,12 @@
 			  {% if card.skill %}<strong>{{ card.skill }}</strong>
 			  <span class="tiny"><a target="_blank" href="/cards/?skill={{ card.skill }}">
 			      <i class="flaticon-link"></i></a></span><br>
-			  <small>{% endif %}{{ card.skill_details }}{% if card.skill %}</small>{% endif %}
+			  <small>{% endif %}{% if card.skill_details %}{{ card.skill_details }}{% endif %}{% if card.skill %}</small>{% endif %}
 			  </p>
 		      </td>
 		    </tr>
+		    {% endif %}
+		    {% if card.center_skill or card.japanese_center_skill %}
 		    <tr>
 		      <th>{% trans 'Center Skill' %}</th>
 		      <td>
@@ -209,10 +234,11 @@
 			</p>
 			{% endif %}
 			<p>
-			  {{ card.center_skill }}
+			  {% if card.center_skill %}{{ card.center_skill }}{% endif %}
 			</p>
 		      </td>
 		    </tr>
+		    {% endif %}
 		    {% if not single %}
 		    <tr>
 		      <th>{% trans 'Comments' %}</th>
@@ -254,7 +280,7 @@
 		  {% for owned in card.owned_cards %}
 		  {% include "ownedCardOnBottomCard.html" with owned=owned %}
 		  {% endfor %}
-		  <a href="{% if user.is_authenticated %}#addCard{% else %}/create/{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if user.is_authenticated %}{% trans 'Add this card' %}{% else %}{% trans 'Create an account to add this card to your collection' %}{% endif %}" data-trigger="hover"></i></a>
+		  <a href="{% if user.is_authenticated %}#addCard{% else %}/create/{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 		</div>
 		<div class="col-xs-3 text-right">
 		  {% if card.is_promo %}

@@ -101,6 +101,7 @@ function load_more_function() {
 	statistics_buttons();
 	youtubeRatio();
 	shareButtons();
+	collapseCards();
 	// center_images();
 
 	// Reload disqus comments count
@@ -154,6 +155,15 @@ function statistics_buttons() {
     })
 }
 
+function collapseCards() {
+    $('.card a[data-target^=#collapseMore]').unbind('click');
+    $('.card a[data-target^=#collapseMore]').click(function(event) {
+	event.preventDefault();
+	$($(this).attr('data-target')).collapse('toggle');
+	return false;
+    });
+}
+
 function changeAccount() {
     if ($('#id_select_account').val() == '') {
 	$('#sidebar-wrapper #id_stored').val('').change();
@@ -189,6 +199,7 @@ $(document).ready(function() {
     pagination();
     youtubeRatio();
     shareButtons();
+    collapseCards();
 
     changeAccount();
     $('#id_select_account').change(function(event) {

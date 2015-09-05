@@ -312,10 +312,21 @@ class Command(BaseCommand):
         else:
             f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info&action=edit')
 
+        cards_section = False
         for line in f.readlines():
             line = h.unescape(line)
+            if line.startswith('=== '):
+                if line.startswith('=== All Cards ==='):
+                    cards_section = True
+                else:
+                    cards_section = False
             data = str(line).split('||')
-            if len(data) >= 5 and len(data) <= 8:
+            if cards_section and len(data) > 1:
+                card_id = int(data[0].split('|')[-1].strip())
+                print 'Set card #', card_id, ' as worldwide available...',
+                models.Card.objects.filter(pk=card_id).update(japan_only=False)
+                print 'Done'
+            elif len(data) >= 5 and len(data) <= 8:
                 dates = data[0].replace('|', '').split(' - ')
                 beginning = eventDateFromString(dates[0])
                 end = eventDateFromString(str(beginning.year) + '/' + dates[1])

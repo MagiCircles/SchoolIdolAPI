@@ -251,6 +251,7 @@ class Card(models.Model):
     release_date = models.DateField(default=datetime.date(2013, 4, 16), null=True, blank=True)
     event = models.ForeignKey(Event, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
+    japan_only = models.BooleanField(default=True)
     hp = models.PositiveIntegerField(null=True, default=0, blank=True)
     minimum_statistics_smile = models.PositiveIntegerField(null=True)
     minimum_statistics_pure = models.PositiveIntegerField(null=True)
@@ -279,13 +280,6 @@ class Card(models.Model):
 
     def japanese_attribute(self):
         return japanese_attribute(self.attribute)
-
-    def is_japan_only(self):
-        return (self.id != 584 and self.id != 370
-                and (self.id < 226 or self.id > 234)
-                and ((self.release_date and self.release_date + relativedelta(years=1) - relativedelta(days=2) > datetime.date.today())
-                     or (self.is_promo and not self.video_story)
-                 ))
 
     def get_owned_cards_for_account(self, account):
         return OwnedCard.objects.filter(owner_account=account, card=self)

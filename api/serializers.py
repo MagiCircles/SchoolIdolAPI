@@ -117,7 +117,6 @@ class IdolSerializer(serializers.ModelSerializer):
         fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'sub_unit', 'cv', 'summary', 'website_url', 'wiki_url', 'official_url', 'chibi', 'chibi_small')
 
 class CardSerializer(serializers.ModelSerializer):
-    japan_only = serializers.SerializerMethodField()
     event = EventSerializer()
     idol = IdolSerializer()
     name = serializers.SerializerMethodField() # left for backward compatibility
@@ -148,9 +147,6 @@ class CardSerializer(serializers.ModelSerializer):
 
     def get_japanese_attribute(self, obj):
         return obj.japanese_attribute()
-
-    def get_japan_only(self, obj):
-        return obj.is_japan_only()
 
     def get_card_image(self, obj):
         return self._image_file_to_url(str(obj.card_image), obj)

@@ -233,7 +233,7 @@
 	</div>
 	{% else %}
 	<div class="col-md-6">
-	  {% if session_preferences.following %}
+	  {% if user.preferences.following.count > 0 %}
 	  <div id="myactivities">
 	    <h4>
 	      <a href="/user/{{ user.username }}/" target="_blank">{% trans 'Following' %}</a>

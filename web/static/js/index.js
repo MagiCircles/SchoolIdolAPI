@@ -48,7 +48,7 @@ $(document).ready(function() {
 		$('#activities .activities').text('Loading...');
 		$.get('/ajax/activities/', function(data) {
 		    $('#activities .activities').html(data);
-		    loadMoreActivities($('#activities .activities'), undefined, true, 1);
+		    loadMoreActivities($('#activities .activities'), undefined, undefined , undefined);
 		});
 		if ($('#myactivities').length > 0) {
 		    $('#myactivities .activities').text('Loading...');

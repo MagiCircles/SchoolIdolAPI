@@ -35,6 +35,7 @@ def globalContext(request):
         'interfaceColor': 'default',
         'btnColor': 'default',
         'debug': settings.DEBUG,
+        'hidenavbar': 'hidenavbar' in request.GET,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = request.user.accounts_set.all().select_related('center', 'center__card')

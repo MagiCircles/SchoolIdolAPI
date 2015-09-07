@@ -31,6 +31,7 @@
   </head>
   <body class="interface-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
 
+    {% if not hidenavbar %}
     <nav class="navbar navbar-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}default{% endif %} navbar-fixed-top">
       <div class="container">
 	<div class="navbar-header">
@@ -97,6 +98,7 @@
 	  </ul>
       </div>
     </nav>
+    {% endif %}
 
     <main>
       {% block content %}{% endblock %}

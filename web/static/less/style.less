@@ -158,7 +158,9 @@ select {
 	color: #333!important;
     }
     a.btn {
-	color: @linkcolor!important;
+	&.btn-Smile, &.btn-Cool, &.btn-Cool, &.btn-default, &.btn-All {
+	    color: @linkcolor!important;
+	}
     }
 
     .table-link {
@@ -1125,4 +1127,35 @@ h1#donators {
     .jumbotron form {
 	width: 80%;
     }
+}
+
+@-webkit-keyframes animate-pulse {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+
+@keyframes animate-pulse {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+
+.animate-pulse {
+  -webkit-animation: animate-pulse 1s infinite steps(8);
+          animation: animate-pulse 1s infinite steps(8);
+}
+
+.flaticon-loading {
+    .animate-pulse;
 }

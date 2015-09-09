@@ -52,71 +52,77 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
     });
 }
 
+function onClickEditCard(cardButton, ownedcardelt) {
+    var saveAddForm = $('#addCardModal .modal-body').html();
+    var saveAddTitle = $('#addCardModal .modal-title').text();
+    var card = cardButton.closest('.card');
+    $.get('/ajax/editcard/' + ownedcardelt.attr('data-id') + '/', function(data) {
+	$('#addCardModal .modal-body').html(data);
+	$('#addCardModal .modal-title').text((is_japanese ? 'カードの変更' : 'Edit card'));
+	$('#addCardModal').modal('show');
+	hidePopovers();
+
+	addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
+			   $('#addCardModal img.idolized').prop('src'));
+
+	var onDone = function() {
+	    $('#addCardModal').modal('hide');
+	    $('#addCardModal .modal-body').html(saveAddForm);
+	    $('#addCardModal .modal-title').text(saveAddTitle);
+	};
+
+	$('#addCardModal form.edit').unbind('submit');
+	var onSubmit = function(e) {
+	    e.preventDefault();
+	    $(this).ajaxSubmit({
+		success: function(data) {
+		    if ($(data).hasClass('ownedcardonbottom')) {
+			ownedcardelt.replaceWith(data);
+			onDone();
+			editCardFormHandler();
+			$('[data-toggle="popover"]').popover();
+		    } else {
+			$('#addCardModal .modal-body').html(data);
+			$('#addCardModal form.edit').submit(onSubmit);
+			addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
+					   $('#addCardModal img.idolized').prop('src'));
+		    }
+		},
+		error: function() {
+		    onDone();
+		    alert('Opps! Something bad happened. Try again.');
+		}
+	    });
+	};
+	$('#addCardModal form.edit').submit(onSubmit);
+	$('#addCardModal form.delete').unbind('submit');
+	$('#addCardModal form.delete').submit(function(e) {
+	    e.preventDefault();
+	    $(this).ajaxSubmit({
+		success: function(data) {
+		    ownedcardelt.replaceWith(data);
+		    onDone();
+		    editCardFormHandler();
+		},
+		error: function() {
+		    onDone();
+		    alert('Opps! Something bad happened. Try again.');
+		}
+	    });
+	});
+	$('#addCardModal').on('hidden.bs.modal', function (e) {
+	    onDone();
+	})
+    });
+}
+
 function editCardFormHandler() {
     // EDIT CARD
     $('a[href="#editCard"]').unbind('click');
     $('a[href="#editCard"]').click(function(e) {
 	var cardButton = $(this);
-	var saveAddForm = $('#addCardModal .modal-body').html();
-	var saveAddTitle = $('#addCardModal .modal-title').text();
-	var card = $(this).closest('.card');
-	$.get('/ajax/editcard/' + $(this).attr('data-id') + '/', function(data) {
-	    $('#addCardModal .modal-body').html(data);
-	    $('#addCardModal .modal-title').text((is_japanese ? 'カードの変更' : 'Edit card'));
-	    $('#addCardModal').modal('show');
-
-	    addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
-			       $('#addCardModal img.idolized').prop('src'));
-
-	    var onDone = function() {
-		$('#addCardModal').modal('hide');
-		$('#addCardModal .modal-body').html(saveAddForm);
-		$('#addCardModal .modal-title').text(saveAddTitle);
-	    };
-
-	    $('#addCardModal form.edit').unbind('submit');
-	    var onSubmit = function(e) {
-		e.preventDefault();
-		$(this).ajaxSubmit({
-		    success: function(data) {
-			if ($(data).hasClass('ownedcardonbottom')) {
-			    cardButton.replaceWith(data);
-			    onDone();
-			    editCardFormHandler();
-			    $('[data-toggle="popover"]').popover();
-			} else {
-			    $('#addCardModal .modal-body').html(data);
-			    $('#addCardModal form.edit').submit(onSubmit);
-			    addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
-					       $('#addCardModal img.idolized').prop('src'));
-			}
-		    },
-		    error: function() {
-			onDone();
-			alert('Opps! Something bad happened. Try again.');
-		    }
-		});
-	    };
-	    $('#addCardModal form.edit').submit(onSubmit);
-	    $('#addCardModal form.delete').unbind('submit');
-	    $('#addCardModal form.delete').submit(function(e) {
-		e.preventDefault();
-		$(this).ajaxSubmit({
-		    success: function(data) {
-			cardButton.replaceWith(data);
-			onDone();
-			editCardFormHandler();
-		    },
-		    error: function() {
-			onDone();
-			alert('Opps! Something bad happened. Try again.');
-		    }
-		});
-	    });
-	    $('#addCardModal').on('hidden.bs.modal', function (e) {
-		onDone();
-	    })
-	});
+	onClickEditCard(cardButton, cardButton);
+	return false;
     });
 }
 

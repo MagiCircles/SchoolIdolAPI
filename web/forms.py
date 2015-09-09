@@ -73,6 +73,12 @@ class TransferCodeForm(ModelForm):
         model = models.Account
         fields = ('transfer_code',)
 
+class QuickOwnedCardForm(ModelForm):
+    card = forms.IntegerField()
+    class Meta:
+        model = models.OwnedCard
+        fields = ('card', 'owner_account', 'idolized')
+
 class OwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard

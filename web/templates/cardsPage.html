@@ -28,7 +28,7 @@
     </div><div class="row">
       {% endif%}
       <div class="col-sm-{% if ajax %}4{% elif total_cards == 1 %}12{% elif total_cards == 2 %}6{% else %}4{% endif %}">
-	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}">
+	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}" data-attribute="{{ card.attribute }}" data-rarity="{{ card.rarity }}">
 	  <div class="panel panel-{{ card.attribute }}">
 	    <div class="panel-body">
 	      {% if total_cards == 1 %}<div class="row"><div class="col-md-6">{% endif %}
@@ -280,7 +280,7 @@
 		  {% for owned in card.owned_cards %}
 		  {% include "ownedCardOnBottomCard.html" with owned=owned %}
 		  {% endfor %}
-		  <a href="{% if user.is_authenticated %}#addCard{% else %}/create/{% endif %}" {% if user.is_authenticated %}data-toggle="modal" data-target="#addCardModal"{% endif %}><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
+		  <a href="{% if user.is_authenticated %}#quickAddCard{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 		</div>
 		<div class="col-xs-3 text-right">
 		  {% if card.is_promo %}

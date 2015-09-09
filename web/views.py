@@ -352,6 +352,7 @@ def cards(request, card=None, ajax=False):
     context['current'] = 'cards'
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['addcard_form'] = forms.getOwnedCardForm(forms.OwnedCardForm(), context['accounts'])
+        context['quickaddcard_form'] = forms.getOwnedCardForm(forms.QuickOwnedCardForm(), context['accounts'])
         if request.user.is_staff and 'staff' in request.GET:
             context['addcard_form'].fields['owner_account_id'] = forms.forms.CharField()
     context['page'] = page + 1
@@ -486,10 +487,14 @@ def ajaxaddcard(request):
     if request.method != 'POST' or not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST), context['accounts'])
+    form.fields['skill'].required = False
+    form.fields['stored'].required = False
     if form.is_valid():
         ownedcard = form.save(commit=False)
-        if not ownedcard.card.skill:
+        if not ownedcard.card.skill or not ownedcard.skill:
             ownedcard.skill = 1
+        if not ownedcard.stored:
+            ownedcard.stored = 'Deck'
         if not findAccount(ownedcard.owner_account.id, context['accounts']):
             raise PermissionDenied()
         if request.user.is_staff and 'owner_account_id' in request.POST:
@@ -522,8 +527,15 @@ def ajaxeditcard(request, ownedcard):
     elif request.method == 'POST':
         (was_idolized, was_max_leveled, was_max_bonded) = (owned_card.idolized, owned_card.max_level, owned_card.max_bond)
         form = forms.getOwnedCardForm(forms.OwnedCardForm(request.POST, instance=owned_card), context['accounts'], owned_card=owned_card)
+        form.fields['stored'].required = False
+        if 'skill' in form.fields:
+            form.fields['skill'].required = False
         if form.is_valid():
             ownedcard = form.save(commit=False)
+            if not ownedcard.stored:
+                ownedcard.stored = 'Deck'
+            if not ownedcard.skill:
+                ownedcard.skill = 1
             if form.cleaned_data['stored'] == 'Box' and 'expires_in' in request.POST:
                 try: expires_in = int(request.POST['expires_in'])
                 except (TypeError, ValueError): expires_in = 0

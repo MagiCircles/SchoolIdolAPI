@@ -1,53 +1,95 @@
 
+function hidePopovers() {
+    $('.ownedcardonbottom').popover('hide');
+    $('.ownedcardonbottom').popover('disable');
+    $('[data-toggle=popover]').popover('hide');
+}
+
 $(function () {
     $('[data-toggle="popover"]').popover();
+
+    // Dismiss popovers on click outside
+    $('body').on('click', function (e) {
+	if ($(e.target).data('toggle') !== 'popover'
+	    && $(e.target).parents('.popover.in').length === 0) {
+	    hidePopovers();
+	}
+    });
 })
 
 function addCardButtonHandler() {
     // ADD CARD
-    $('a[href="#addCard"]').unbind('click');
-    $('a[href="#addCard"]').click(function(e) {
-	var addCardButton = $(this);
-	var card = addCardButton.closest('.card');
-	$('#id_card').val(card.prop('id')).change();
-	addCardFormHandler(card.find('img.non_idolized').prop('src'),
-			   card.find('img.idolized').prop('src'));
-
-	var savedForm = undefined;
-	$('#addCardModal').on('hidden.bs.modal', function () {
-	    if (typeof savedForm != 'undefined') {
-		$('#addCardModal .modal-body').html(savedForm);
-		$('#addCardModal').unbind('hidden.bs.modal');
-	    }
-	})
-	var onSubmit = function(e) {
-	    e.preventDefault();
-	    $(this).ajaxSubmit({
+    $('a[href="#auickAddCard"]').unbind('click');
+    console.log('bind quickadd event click');
+    $('a[href="#quickAddCard"]').click(function(e) {
+	e.preventDefault();
+	console.log('called twice');
+	var button = $(this);
+	var card = button.closest('.card');
+	if (card.find('.flaticon-loading').length == 0) {
+	    button.hide();
+	    button.before('<i class="flaticon-loading"></i>');
+	    var form = $('#quickaddform');
+	    form.find('[name=card]').attr('value', card.prop('id'));
+	    form.find('[name=card]').closest('.form-group').hide();
+	    form.find('input.btn').removeClass('btn-Smile btn-Pure btn-Cool btn-All btn-default');
+	    form.find('input.btn').addClass('btn-' + card.attr('data-attribute'));
+	    form.find('form').attr('action', '/ajax/addcard/');
+	    var onError = function() {
+		$('i.flaticon-loading').remove();
+		$('a[href="#quickAddCard"]').show();
+		alert('Oops! Something bad happened. Try again.');
+	    };
+	    form.find('form').ajaxSubmit({
 		success: function(data) {
-		    if ($(data).hasClass('ownedcardonbottom')) {
-			addCardButton.before(data);
-			$('#addCardModal').modal('hide');
+		    var ownedcardbutton = $(data);
+		    $('i.flaticon-loading').remove();
+		    $('a[href="#quickAddCard"]').show();
+		    if (ownedcardbutton.hasClass('ownedcardonbottom')) {
+			button.before(ownedcardbutton);
+			button.before(' ');
 			editCardFormHandler();
 			$('[data-toggle="popover"]').popover();
-			if (typeof savedForm != 'undefined') {
-			    $('#addCardModal .modal-body').html(savedForm);
-			}
-		    } else {
-			savedForm = $('#addCardModal .modal-body').html();
-			$('#addCardModal .modal-body').html(data);
-			$('#addCardModal form.add').submit(onSubmit);
-			addCardFormHandler(card.find('img.non_idolized').prop('src'),
-					   card.find('img.idolized').prop('src'));
+			form.find('form').attr('action', '/ajax/editcard/' + ownedcardbutton.attr('data-id') + '/');
+			$('a[href="#quickAddCard"]').popover('hide');
+			ownedcardbutton.popover({
+			    'html': true,
+			    'placement': 'top',
+			    'content': form.html(),
+			}).parent().delegate('form', 'submit', function(e) {
+			    e.preventDefault();
+			    button.hide();
+			    button.before('<i class="flaticon-loading"></i>');
+			    hidePopovers();
+			    $(this).ajaxSubmit({
+				success: function(data) {
+				    var newownedcardbutton = $(data);
+				    $('i.flaticon-loading').remove();
+				    $('a[href="#quickAddCard"]').show();
+				    ownedcardbutton.replaceWith(newownedcardbutton);
+				    editCardFormHandler();
+				    $('[data-toggle="popover"]').popover();
+				},
+				error: onError,
+			    });
+			    return false;
+			}).delegate('#id_owner_account', 'change', function() {
+			    form.find('#id_owner_account option').removeAttr('selected');
+			    form.find('#id_owner_account option').prop('selected', false);
+			    form.find('#id_owner_account option[value=' + $(this).val() + ']').attr('selected', true);
+			}).delegate('a[href=#editCard]', 'click', function() {
+			    onClickEditCard($(this), ownedcardbutton);
+			});
+			ownedcardbutton.popover('show');
+			ownedcardbutton.on('shown.bs.popover', function () {
+			    $('[data-toggle=popover]').popover('hide');
+			});
 		    }
 		},
-		error: function() {
-		    $('#addCardModal').modal('hide');
-		    alert('Opps! Something bad happened. Try again.');
-		}
+		error: onError,
 	    });
-	};
-	$('#addCardModal form.add').unbind('submit');
-	$('#addCardModal form.add').submit(onSubmit);
+	}
+	return false;
     });
 }
 
@@ -191,7 +233,6 @@ if (typeof stLight != 'undefined') { // Adblocks prevents loading
     });
 }
 
-addCardButtonHandler();
 $(document).ready(function() {
     addCardButtonHandler();
     statistics_buttons();

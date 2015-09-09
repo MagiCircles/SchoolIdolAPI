@@ -9,12 +9,13 @@
 	font-style: normal;
 }
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {
 	font-family: Flaticon;
         font-size: 20px;
-font-style: normal;
-margin-left: 20px;
-}.flaticon-en:before {
+	font-style: normal;
+	margin-left: 20px;
+}
+.flaticon-EN:before {
 	content: "\e000";
 }
 .flaticon-achievement:before {
@@ -35,16 +36,16 @@ margin-left: 20px;
 .flaticon-back:before {
 	content: "\e006";
 }
-.flaticon-contact:before {
+.flaticon-cards:before {
 	content: "\e007";
 }
-.flaticon-cards:before {
+.flaticon-checked:before {
 	content: "\e008";
 }
-.flaticon-checked:before {
+.flaticon-CN:before {
 	content: "\e009";
 }
-.flaticon-CN:before {
+.flaticon-index:before {
 	content: "\e00a";
 }
 .flaticon-combo:before {
@@ -53,144 +54,153 @@ margin-left: 20px;
 .flaticon-comments:before {
 	content: "\e00c";
 }
-.flaticon-contest:before {
+.flaticon-contact:before {
 	content: "\e00d";
 }
-.flaticon-date:before {
+.flaticon-contest:before {
 	content: "\e00e";
 }
-.flaticon-deck:before {
+.flaticon-date:before {
 	content: "\e00f";
 }
-.flaticon-delete:before {
+.flaticon-deck:before {
 	content: "\e010";
 }
-.flaticon-developer:before {
+.flaticon-delete:before {
 	content: "\e011";
 }
-.flaticon-toggler:before {
+.flaticon-developer:before {
 	content: "\e012";
 }
-.flaticon-world:before {
+.flaticon-toggler:before {
 	content: "\e013";
 }
-.flaticon-edit:before {
+.flaticon-world:before {
 	content: "\e014";
 }
-.flaticon-event:before {
+.flaticon-edit:before {
 	content: "\e015";
 }
-.flaticon-link:before {
+.flaticon-event:before {
 	content: "\e016";
 }
-.flaticon-filter:before {
+.flaticon-link:before {
 	content: "\e017";
 }
-.flaticon-center:before {
+.flaticon-filter:before {
 	content: "\e018";
 }
-.flaticon-heart-empty:before {
+.flaticon-center:before {
 	content: "\e019";
 }
-.flaticon-heart:before {
+.flaticon-heart-empty:before {
 	content: "\e01a";
 }
-.flaticon-help:before {
+.flaticon-heart:before {
 	content: "\e01b";
 }
-.flaticon-hp:before {
+.flaticon-help:before {
 	content: "\e01c";
 }
-.flaticon-id:before {
+.flaticon-hp:before {
 	content: "\e01d";
 }
-.flaticon-about:before {
+.flaticon-id:before {
 	content: "\e01e";
 }
-.flaticon-JP:before {
+.flaticon-about:before {
 	content: "\e01f";
 }
-.flaticon-logout:before {
+.flaticon-JP:before {
 	content: "\e020";
 }
-.flaticon-shop:before {
+.flaticon-loading:before {
 	content: "\e021";
 }
-.flaticon-max-bond:before {
+.flaticon-logout:before {
 	content: "\e022";
 }
-.flaticon-max-level:before {
+.flaticon-shop:before {
 	content: "\e023";
 }
-.flaticon-healer:before {
+.flaticon-max-bond:before {
 	content: "\e024";
 }
-.flaticon-more:before {
+.flaticon-max-level:before {
 	content: "\e025";
 }
-.flaticon-users:before {
+.flaticon-healer:before {
 	content: "\e026";
 }
-.flaticon-fingers:before {
+.flaticon-more:before {
 	content: "\e027";
 }
-.flaticon-perfectlock:before {
+.flaticon-fingers:before {
 	content: "\e028";
 }
-.flaticon-pictures:before {
+.flaticon-perfectlock:before {
 	content: "\e029";
 }
-.flaticon-present:before {
+.flaticon-pictures:before {
 	content: "\e02a";
 }
-.flaticon-profile:before {
+.flaticon-present:before {
 	content: "\e02b";
 }
-.flaticon-promo:before {
+.flaticon-profile:before {
 	content: "\e02c";
 }
-.flaticon-scoreup:before {
+.flaticon-promo:before {
 	content: "\e02d";
 }
-.flaticon-search:before {
+.flaticon-sausage:before {
 	content: "\e02e";
 }
-.flaticon-settings:before {
+.flaticon-scoreup:before {
 	content: "\e02f";
 }
-.flaticon-skill:before {
+.flaticon-search:before {
 	content: "\e030";
 }
-.flaticon-song:before {
+.flaticon-settings:before {
 	content: "\e031";
 }
-.flaticon-KR:before {
+.flaticon-skill:before {
 	content: "\e032";
 }
-.flaticon-star-empty:before {
+.flaticon-song:before {
 	content: "\e033";
 }
-.flaticon-star:before {
+.flaticon-KR:before {
 	content: "\e034";
 }
-.flaticon-idolized:before {
+.flaticon-star-empty:before {
 	content: "\e035";
 }
-.flaticon-Android:before {
+.flaticon-star:before {
 	content: "\e036";
 }
-.flaticon-TW:before {
+.flaticon-idolized:before {
 	content: "\e037";
 }
-.flaticon-thumbs:before {
+.flaticon-Android:before {
 	content: "\e038";
 }
-.flaticon-times:before {
+.flaticon-TW:before {
 	content: "\e039";
 }
-.flaticon-trade:before {
+.flaticon-thumbs:before {
 	content: "\e03a";
 }
-.flaticon-trophy:before {
+.flaticon-times:before {
 	content: "\e03b";
+}
+.flaticon-trade:before {
+	content: "\e03c";
+}
+.flaticon-trophy:before {
+	content: "\e03d";
+}
+.flaticon-users:before {
+	content: "\e03e";
 }

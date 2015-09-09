@@ -43,14 +43,24 @@
     }
   });
 </script>
-<script src="/static/js/cards.js"></script>
-<script src="/static/js/addcard.js"></script>
+<script src="/static/js/cards.js?1"></script>
+<script src="/static/js/addcard.js?1"></script>
 {% endblock %}
 
 {% block shareimage %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
 {% block shareimagetwitter %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
 
 {% block content %}
+<div class="hidden" id="quickaddform">
+  <form class="form-horizontal" method="post" role="form" action="/ajax/addcard/">
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=quickaddcard_form wrap=0 %}
+    <div class="text-right">
+      <a class="btn btn-sm btn-link" href="#editCard">{% trans 'Advanced' %}</a>
+      <input type="submit" class="btn btn-sm" value="{% trans 'Apply Changes' %}" />
+    </div>
+  </form>
+</div>
 {% if not single %}
 {% if show_filter_button %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">

@@ -30,7 +30,7 @@ def standimage(idol, number):
     if idol is not None:
         m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
         member_number = m.group('number')
-        return 'http://www.lovelive-anime.jp/img/member/member' + member_number + '_0'+ str(number) + '.png'
+        return 'http://www.lovelive-anime.jp/otonokizaka/img/member/member' + member_number + '_0'+ str(number) + '.png'
     return ''
 
 linkimages = {

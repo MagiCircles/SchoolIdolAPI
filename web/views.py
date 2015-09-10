@@ -405,11 +405,17 @@ def profile(request, username):
         context['form_preferences'] = forms.UserProfileStaffForm(instance=context['preferences'])
         if 'staff' in request.GET:
             context['show_staff'] = True
-        if request.method == 'POST' and 'editPreferences' in request.POST:
-            form_preferences = forms.UserProfileStaffForm(request.POST, instance=context['preferences'])
-            if form_preferences.is_valid():
-                prefs = form_preferences.save()
-                return redirect('/user/' + context['profile_user'].username + '?staff')
+        if request.method == 'POST':
+            if 'editPreferences' in request.POST:
+                form_preferences = forms.UserProfileStaffForm(request.POST, instance=context['preferences'])
+                if form_preferences.is_valid():
+                    prefs = form_preferences.save()
+                    return redirect('/user/' + context['profile_user'].username + '?staff')
+            if 'addcard' in request.POST:
+                form_addcard = forms.StaffAddCardForm(request.POST)
+                if form_addcard.is_valid():
+                    form_addcard.save()
+                    return redirect('/user/' + context['profile_user'].username + '?staff#' + str(form_addcard.cleaned_data['owner_account']))
     if user == request.user:
         context['is_me'] = True
         context['user_accounts'] = context['accounts']
@@ -426,6 +432,7 @@ def profile(request, username):
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
             if request.user.is_staff:
+                account.staff_form_addcard = forms.StaffAddCardForm(initial={'owner_account': account.id})
                 account.staff_form = forms.AccountStaffForm(instance=account)
                 account.staff_form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('card__id')
                 if request.method == 'POST' and ('editAccount' + str(account.id)) in request.POST:

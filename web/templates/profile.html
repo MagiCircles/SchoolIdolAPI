@@ -194,15 +194,27 @@
 	  </div>
 
 	  {% if user.is_staff and show_staff %}
-	  <form method="POST" class="alert alert-danger">
-	    <h1>Staff Danger Zone</h1>
-	    Account ID: {{ account.id }}
-	    {% csrf_token %}
-	    {% include "bootstrap_form_horizontal.html" with form=account.staff_form wrap=0 %}
-	    <div class="text-right">
-	      <input name="editAccount{{ account.id }}" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+	  <div class="alert alert-danger">
+	    <form method="POST">
+	      <h1>Staff Danger Zone</h1>
+	      Account ID: {{ account.id }}
+	      {% csrf_token %}
+	      {% include "bootstrap_form_horizontal.html" with form=account.staff_form wrap=0 %}
+	      <div class="text-right">
+		<input name="editAccount{{ account.id }}" type="submit" class="btn btn-lg btn-danger" value="{% trans 'Apply Changes' %}" />
+	      </div>
+	    </form>
+	    <br><br>
+	    <h4>Add card</h4>
+	    <form method="POST">
+	      {{ form.non_field_errors }}
+	      {% csrf_token %}
+	      {% include "bootstrap_form_horizontal.html" with form=account.staff_form_addcard wrap=0 %}
+	      <div class="text-right">
+		<input name="addcard" type="submit" class="btn btn-lg btn-danger" value="{% trans 'Add this card' %}" />
+	      </div>
+	    </form>
 	    </div>
-	  </form>
 	  <br><br>
 	  {% endif %}
 

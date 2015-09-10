@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
@@ -78,6 +79,20 @@ class QuickOwnedCardForm(ModelForm):
     class Meta:
         model = models.OwnedCard
         fields = ('card', 'owner_account', 'idolized')
+
+class StaffAddCardForm(ModelForm):
+    card = forms.IntegerField()
+    owner_account = forms.IntegerField()
+
+    def save(self, commit=True):
+        self.instance.card = get_object_or_404(models.Card, pk=self.cleaned_data['card'])
+        self.instance.owner_account = get_object_or_404(models.Account, pk=self.cleaned_data['owner_account'])
+        return super(StaffAddCardForm, self).save(commit)
+
+    class Meta:
+        model = models.OwnedCard
+        fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill')
+        exclude = ('card', 'owner_account')
 
 class OwnedCardForm(ModelForm):
     class Meta:

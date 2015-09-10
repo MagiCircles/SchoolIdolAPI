@@ -62,7 +62,7 @@ class FullAccountForm(ModelForm):
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests')
 
 class SimplePasswordForm(Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))

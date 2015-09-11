@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from api.models_languages import LANGUAGE_CHOICES
 from django.core import validators
 from django.utils import timezone
+import hashlib, urllib
 
 import datetime
 
@@ -93,6 +94,28 @@ LINK_CHOICES = (
     ('github', 'GitHub'),
 )
 LINK_DICT = dict(LINK_CHOICES)
+
+LINK_URLS = {
+    'Best Girl': '/idol/{}/',
+    'Location': 'http://maps.google.com/?q={}',
+    'twitter': 'http://twitter.com/{}',
+    'facebook': 'https://www.facebook.com/{}',
+    'reddit': 'http://www.reddit.com/user/{}',
+    'line': 'http://line.me/#{}',
+    'tumblr': 'http://{}.tumblr.com/',
+    'otonokizaka': 'http://otonokizaka.org/member.php?action=profile&uid={}',
+    'twitch': 'http://twitch.tv/{}',
+    'steam': 'http://steamcommunity.com/id/{}',
+    'osu': 'http://osu.ppy.sh/u/{}',
+    'mal': 'http://myanimelist.net/profile/{}',
+    'instagram': 'https://instagram.com/{}/',
+    'myfigurecollection': 'http://myfigurecollection.net/profile/{}',
+    'hummingbird': 'https://hummingbird.me/users/{}',
+    'youtube': 'https://www.youtube.com/user/{}',
+    'deviantart': 'http://{}.deviantart.com/gallery/',
+    'pixiv': 'http://www.pixiv.net/member.php?id={}',
+    'github': 'https://github.com/{}',
+}
 
 LINK_RELEVANCE_CHOICES = (
     (0, _('Never')),
@@ -361,6 +384,9 @@ class UserLink(models.Model):
     value = models.CharField(_('Username/ID'), max_length=64, help_text=_('Write your username only, no URL.'), validators=[alphanumeric])
     relevance = models.PositiveIntegerField(_('How often do you tweet/stream/post about Love Live?'), choices=LINK_RELEVANCE_CHOICES, null=True)
 
+    def url(self):
+        return LINK_URLS[self.type].format(self.value)
+
 admin.site.register(UserLink)
 
 class UserPreferences(models.Model):
@@ -386,6 +412,16 @@ class UserPreferences(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
     donation_link = models.CharField(max_length=200, null=True, blank=True)
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
+
+    def avatar(self, size):
+        default = 'http://schoolido.lu/static/kotori.jpg'
+        if self.twitter:
+            default = 'http://schoolido.lu/avatar/twitter/' + self.twitter
+        elif self.facebook:
+            default = 'http://schoolido.lu/avatar/facebook/' + self.facebook
+        return ("http://www.gravatar.com/avatar/"
+                + hashlib.md5(self.user.email.lower()).hexdigest()
+                + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 
 admin.site.register(UserPreferences)
 

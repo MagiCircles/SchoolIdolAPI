@@ -15,23 +15,32 @@ class DateTimeJapanField(serializers.DateTimeField):
         value = value.astimezone(pytz.timezone('Asia/Tokyo'))
         return super(DateTimeJapanField, self).to_representation(value)
 
-class UserSerializer(serializers.ModelSerializer):
-    email = serializers.SerializerMethodField()
-    accounts = serializers.SerializerMethodField()
+class UserPreferencesSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
 
-    def get_email(self, obj):
-        if self.context['request'].method == 'POST' or self.context['request'].user == obj:
-            return obj.email
-        return None
+    def get_avatar(self, obj):
+        return obj.avatar(200)
+
+    class Meta:
+        model = models.UserPreferences
+        fields = ('color', 'description', 'best_girl', 'location', 'latitude', 'longitude', 'private', 'status', 'avatar')
+
+class UserSerializer(serializers.ModelSerializer):
+    accounts = serializers.SerializerMethodField()
+    links = serializers.SerializerMethodField()
+    preferences = UserPreferencesSerializer()
 
     def get_accounts(self, obj):
         accounts = models.Account.objects.filter(owner=obj)
         serializer = AccountSerializer(accounts, many=True, context=self.context)
         return serializer.data
 
+    def get_links(self, obj):
+        return [{'type': link.type, 'url': link.url(), 'relevance': link.relevance} for link in obj.links.all()]
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'accounts')
+        fields = ('username', 'date_joined', 'accounts', 'preferences', 'links')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, data):
@@ -184,18 +193,18 @@ class CardSerializer(serializers.ModelSerializer):
         model = models.Card
         fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards')
 
+class CenterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.OwnedCard
+        fields = ('id', 'card', 'idolized', 'max_level', 'max_bond', 'skill')
+
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()
-    transfer_code = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
+    center = CenterSerializer()
 
     def get_owner(self, obj):
         return obj.owner.username
-
-    def get_transfer_code(self, obj):
-        if self.context['request'].user == obj.owner:
-            return obj.transfer_code
-        return None
 
     def get_nickname(self, obj):
         if not obj.nickname:
@@ -208,16 +217,17 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Account
-        fields = ('pk', 'owner', 'nickname', 'friend_id', 'transfer_code', 'language', 'os', 'center', 'rank')
+        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'os', 'center', 'rank')
 
 class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OwnedCard
-        fields = ('idolized', 'stored', 'expiration', 'max_level', 'max_bond', 'skill')
+        fields = ('id', 'idolized', 'stored', 'expiration', 'max_level', 'max_bond', 'skill')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
+    owner_account = AccountSerializer()
     card = CardSerializer()
 
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'card', 'idolized', 'max_level', 'max_bond', 'stored', 'expiration', 'skill')
+        fields = ('id', 'owner_account', 'card', 'stored', 'idolized', 'max_level', 'max_bond', 'expiration', 'skill')

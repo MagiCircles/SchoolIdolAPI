@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from web.utils import chibiimage
+from api.models import LINK_URLS
 import os.path
 import re
 
@@ -48,30 +49,8 @@ linkimages = {
 def linkimage(link):
     return linkimages.get(link['type'], None)
 
-linkurls = {
-    'Best Girl': '/idol/{}/',
-    'Location': 'http://maps.google.com/?q={}',
-    'twitter': 'http://twitter.com/{}',
-    'facebook': 'https://www.facebook.com/{}',
-    'reddit': 'http://www.reddit.com/user/{}',
-    'line': 'http://line.me/#{}',
-    'tumblr': 'http://{}.tumblr.com/',
-    'otonokizaka': 'http://otonokizaka.org/member.php?action=profile&uid={}',
-    'twitch': 'http://twitch.tv/{}',
-    'steam': 'http://steamcommunity.com/id/{}',
-    'osu': 'http://osu.ppy.sh/u/{}',
-    'mal': 'http://myanimelist.net/profile/{}',
-    'instagram': 'https://instagram.com/{}/',
-    'myfigurecollection': 'http://myfigurecollection.net/profile/{}',
-    'hummingbird': 'https://hummingbird.me/users/{}',
-    'youtube': 'https://www.youtube.com/user/{}',
-    'deviantart': 'http://{}.deviantart.com/gallery/',
-    'pixiv': 'http://www.pixiv.net/member.php?id={}',
-    'github': 'https://github.com/{}',
-}
-
 def linkurl(link):
-    return linkurls[link['type']].format(link['value'])
+    return LINK_URLS[link['type']].format(link['value'])
 
 register.filter('imageurl', imageurl)
 register.filter('standimage', standimage)

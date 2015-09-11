@@ -67,14 +67,7 @@ def hasJP(accounts):
     return False
 
 def getUserAvatar(user, size):
-    default = 'http://schoolido.lu/static/kotori.jpg'
-    if user.preferences.twitter:
-        default = 'http://schoolido.lu/avatar/twitter/' + user.preferences.twitter
-    elif user.preferences.facebook:
-        default = 'http://schoolido.lu/avatar/facebook/' + user.preferences.facebook
-    return ("http://www.gravatar.com/avatar/"
-            + hashlib.md5(user.email.lower()).hexdigest()
-            + "?" + urllib.urlencode({'d': default, 's': str(size)}))
+    user.preferences.avatar(size)
 
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
     if ownedcard is not None:

@@ -49,6 +49,7 @@ VERIFIED_DICT = dict(VERIFIED_CHOICES)
 PLAYWITH_CHOICES = (
     ('Thumbs', _('Thumbs')),
     ('Fingers', _('All fingers')),
+    ('Index', _('Index fingers')),
     ('Hand', _('One hand')),
     ('Other', _('Other')),
 )

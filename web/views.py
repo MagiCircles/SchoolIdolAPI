@@ -67,7 +67,7 @@ def hasJP(accounts):
     return False
 
 def getUserAvatar(user, size):
-    user.preferences.avatar(size)
+    return user.preferences.avatar(size)
 
 def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
     if ownedcard is not None:

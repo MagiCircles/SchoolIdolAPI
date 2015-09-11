@@ -89,6 +89,7 @@ class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
     wiki_url = serializers.SerializerMethodField()
+    wikia_url = serializers.SerializerMethodField()
     cv = serializers.SerializerMethodField()
     chibi = serializers.SerializerMethodField()
     chibi_small = serializers.SerializerMethodField()
@@ -99,7 +100,12 @@ class IdolSerializer(serializers.ModelSerializer):
         return None
 
     def get_website_url(self, obj):
-        return 'http://schoolido.lu/cards/?name=' + urllib.quote(obj.name)
+        return 'http://schoolido.lu/idol/' + urllib.quote(obj.name) + '/'
+
+    def get_wikia_url(self, obj):
+        if obj.main:
+            return 'http://love-live.wikia.com/wiki/' + urllib.quote(obj.name.replace(' ', '_'))
+        return None
 
     def get_wiki_url(self, obj):
         return 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(obj.name)
@@ -123,7 +129,7 @@ class IdolSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Idol
-        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'sub_unit', 'cv', 'summary', 'website_url', 'wiki_url', 'official_url', 'chibi', 'chibi_small')
+        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'sub_unit', 'cv', 'summary', 'website_url', 'wiki_url', 'wikia_url', 'official_url', 'chibi', 'chibi_small')
 
 class CardSerializer(serializers.ModelSerializer):
     event = EventSerializer()
@@ -217,7 +223,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Account
-        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'os', 'center', 'rank')
+        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified')
 
 class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -225,8 +231,20 @@ class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
         fields = ('id', 'idolized', 'stored', 'expiration', 'max_level', 'max_bond', 'skill')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
-    owner_account = AccountSerializer()
-    card = CardSerializer()
+    owner_account = serializers.SerializerMethodField()
+    card = serializers.SerializerMethodField()
+
+    def get_card(self, obj):
+        if 'expand_card' in self.context['request'].query_params:
+            serializer = CardSerializer(obj.card, context=self.context)
+            return serializer.data
+        return obj.card.id
+
+    def get_owner_account(self, obj):
+        if 'expand_owner' in self.context['request'].query_params:
+            serializer = AccountSerializer(obj.owner_account, context=self.context)
+            return serializer.data
+        return obj.owner_account.id
 
     class Meta:
         model = models.OwnedCard

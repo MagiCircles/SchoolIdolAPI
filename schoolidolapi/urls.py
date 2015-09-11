@@ -13,7 +13,7 @@ router.register(r'cardids', api_views.CardIdViewSet)
 router.register(r'events', api_views.EventViewSet)
 
 router.register(r'users', api_views.UserViewSet)
-router.register(r'ownedcards', api_views.OwnedCardViewSet)
+router.register(r'ownedcards', api_views.OwnedCardViewSet, base_name='ownedcard')
 router.register(r'accounts', api_views.AccountViewSet)
 
 # Wire up our API using automatic URL routing.

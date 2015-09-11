@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, filters, permissions
 from api import permissions as api_permissions
 from api import serializers, models
+from django.db.models import Count, Q
 
 class UserFilterBackend(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
@@ -84,6 +85,11 @@ class AccountFilterBackend(filters.BaseFilterBackend):
             queryset = queryset.filter(rank__gte=request.query_params['minimum_rank'])
         if 'maximum_rank' in request.query_params:
             queryset = queryset.filter(rank__lte=request.query_params['maximum_rank'])
+        if 'is_verified' in request.query_params:
+            if request.query_params['is_verified'].title() == 'True':
+                queryset = queryset.filter(Q(verified=1) | Q(verified=2))
+            elif request.query_params['is_verified'].title() == 'False':
+                queryset = queryset.exclude(Q(verified=1) | Q(verified=2))
         return queryset
 
 class AccountViewSet(viewsets.ReadOnlyModelViewSet):
@@ -93,8 +99,8 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Account.objects.all().select_related('owner', 'center')
     serializer_class = serializers.AccountSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, AccountFilterBackend)
-    search_fields = ('owner__username', 'nickname',)
-    filter_fields = ('owner__username', 'nickname', 'language', 'center', 'rank', 'friend_id', 'language', 'os', 'center', 'rank')
+    search_fields = ('owner__username', 'nickname', 'device')
+    filter_fields = ('owner__username', 'nickname', 'language', 'center', 'friend_id', 'language', 'os', 'center', 'rank', 'device', 'play_with', 'accept_friend_requests', 'verified')
     ordering_fields = '__all__'
 
 class OwnedCardFilterBackend(filters.BaseFilterBackend):
@@ -111,10 +117,19 @@ class OwnedCardViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows owned cards to be viewed or edited.
     """
-    queryset = models.OwnedCard.objects.filter(owner_account__owner__preferences__private=False).select_related('owner_account', 'card')
+    def get_queryset(self):
+        queryset = models.OwnedCard.objects.filter(Q(owner_account__owner__preferences__private=False) | Q(owner_account__owner__preferences__private=True, owner_account__pk__in=(self.request.user.accounts_set.all() if self.request.user.is_authenticated() else []))).select_related('center')
+        if 'expand_card' in self.request.query_params:
+            queryset = queryset.select_related('card', 'card__event', 'card__idol')
+        if 'expand_owner' in self.request.query_params:
+            queryset = queryset.select_related('owner_account')
+        queryset = queryset.distinct()
+        return queryset
+
     serializer_class = serializers.OwnedCardSerializer
-    filter_backends = (filters.DjangoFilterBackend, OwnedCardFilterBackend)
+    filter_backends = (filters.DjangoFilterBackend, OwnedCardFilterBackend, filters.OrderingFilter)
     filter_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
+    ordering_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
 
 class CardIdViewSet(CardViewSet):
     """

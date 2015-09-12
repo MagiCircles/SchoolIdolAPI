@@ -93,6 +93,7 @@ LINK_CHOICES = (
     ('deviantart', 'DeviantArt'),
     ('pixiv', 'Pixiv'),
     ('github', 'GitHub'),
+    ('animeplanet', 'Anime-Planet'),
 )
 LINK_DICT = dict(LINK_CHOICES)
 
@@ -116,6 +117,7 @@ LINK_URLS = {
     'deviantart': 'http://{}.deviantart.com/gallery/',
     'pixiv': 'http://www.pixiv.net/member.php?id={}',
     'github': 'https://github.com/{}',
+    'animeplanet': 'http://www.anime-planet.com/users/{}',
 }
 
 LINK_RELEVANCE_CHOICES = (

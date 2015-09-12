@@ -29,6 +29,10 @@ class UserSerializer(serializers.ModelSerializer):
     accounts = serializers.SerializerMethodField()
     links = serializers.SerializerMethodField()
     preferences = UserPreferencesSerializer()
+    website_url = serializers.SerializerMethodField()
+
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/user/' + urllib.quote(obj.username) + '/'
 
     def get_accounts(self, obj):
         accounts = models.Account.objects.filter(owner=obj)
@@ -40,7 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'date_joined', 'accounts', 'preferences', 'links')
+        fields = ('username', 'date_joined', 'accounts', 'preferences', 'links', 'website_url')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, data):
@@ -208,6 +212,10 @@ class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
     center = CenterSerializer()
+    website_url = serializers.SerializerMethodField()
+
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/user/' + urllib.quote(obj.owner.username) + '/#' + str(obj.id)
 
     def get_owner(self, obj):
         return obj.owner.username
@@ -223,7 +231,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Account
-        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified')
+        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
 
 class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
     class Meta:

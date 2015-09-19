@@ -1461,8 +1461,7 @@ msgstr "Как часто вы твитите/стримите/пишете о L
 
 #: web/forms.py:24
 msgid "Old Password"
-msgstr "Старый пароль\n"
-""
+msgstr "Старый пароль"
 
 #: web/forms.py:25
 msgid "New Password"

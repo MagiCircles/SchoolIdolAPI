@@ -79,7 +79,7 @@
 		    {{ account }}</a></li>
 		{% endfor %}
 		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount/"><i class="flaticon-add"></i> {% trans 'Add Account' %}</a></li>
-		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-edit"></i> {% trans 'Edit your accounts' %}</a></li>
+		<li><a href="/edit/#editaccounts"><i class="flaticon-edit"></i> {% trans 'Edit your accounts' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		<li><a href="/logout/"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
 	      </ul>

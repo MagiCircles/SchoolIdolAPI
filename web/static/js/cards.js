@@ -132,7 +132,6 @@ function youtubeRatio() {
 
 function load_more_function() {
     var button = $("#load_more");
-    var oldButtonContent = button.html();
     button.html('<div class="loader">Loading...</div>');
     var next_page = button.attr('data-next-page');
     $.get('/ajax/cards/' + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {

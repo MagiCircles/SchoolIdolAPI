@@ -78,6 +78,17 @@ function modalHandler() {
     });
 }
 
+function formloaders() {
+    $('button[data-form-loader=true]').click(function(e) {
+	$(this).html('<i class="flaticon-loading"></i>');
+	$(this).unbind('click');
+	$(this).click(function(e) {
+	    e.preventDefault();
+	    return false;
+	});
+    });
+}
+
 $(document).ready(function() {
     var hash = window.location.hash.substring(1);
     if (hash.indexOf("Modal") >= 0) {
@@ -94,6 +105,8 @@ $(document).ready(function() {
 
     updateActivities();
     avatarStatus();
+
+    formloaders();
 });
 
 var disqus_developer = 1;

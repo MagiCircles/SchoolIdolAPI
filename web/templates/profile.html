@@ -103,7 +103,7 @@
 	<div class="padding20 padding-novertical">
 	  <div class="pull-right" style="padding: 20px;">
 	    {% if account.center %}
-	    <a href="{% if is_me %}/editaccount/{{ account.pk }}{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
+	    <a href="{% if is_me %}/editaccount/{{ account.pk }}/{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
 	      <div class="circled_card_200 {{ account.center.card.attribute }} {{ account.center.card.rarity }} hover"
 		   style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
 	    </a>
@@ -176,7 +176,7 @@
 		<th>{% trans 'Verified' %}</th>
 		<td><h3><span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span> <small>{{ account.verified|verifiedToString }}</small></h3>
 		  {% if not is_me and user.is_authenticated %}
-		  <small><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts" target="_blank">{% trans 'Get verified' %}</a></small>
+		  <small><a href="/editaccount/{{ account.pk }}/#verify" target="_blank">{% trans 'Get verified' %}</a></small>
 		  {% endif %}
 		</td>
 	      </tr>
@@ -187,7 +187,7 @@
 		  {% if account.verified == 3 %}
 		  {% trans 'You are Bronze Verified. Only you can see it.' %}<br>
 		  {% endif %}
-		  <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts" target="_blank">{% trans 'Get verified' %}{% if account.verified == 3 %} ({% trans 'Silver' %} / {% trans 'Gold' %}){% endif %}</a>
+		  <a href="/editaccount/{{ account.pk }}/#verify" target="_blank">{% trans 'Get verified' %}{% if account.verified == 3 %} ({% trans 'Silver' %} / {% trans 'Gold' %}){% endif %}</a>
 		</td>
 	      </tr>
 	      {% endif %}

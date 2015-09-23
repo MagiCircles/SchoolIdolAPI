@@ -42,7 +42,7 @@ VERIFIED_CHOICES = (
     (0, ''),
     (1, _('Silver Verified')),
     (2, _('Gold Verified')),
-    (3, ''),
+    (3, _('Bronze Verified')),
 )
 VERIFIED_DICT = dict(VERIFIED_CHOICES)
 
@@ -74,6 +74,14 @@ STATUS_CHOICES = (
     ('DEVOTEE', _('Ultimate Idol Devotee')),
 )
 STATUS_DICT = dict(STATUS_CHOICES)
+
+VERIFICATION_STATUS_CHOICES = (
+    (0, 'Rejected'),
+    (1, 'Pending'),
+    (2, 'In Progress'),
+    (3, 'Verified'),
+)
+VERIFICATION_STATUS_DICT = dict(VERIFICATION_STATUS_CHOICES)
 
 LINK_CHOICES = (
     ('twitter', 'Twitter'),
@@ -130,6 +138,9 @@ LINK_RELEVANCE_DICT = dict(LINK_RELEVANCE_CHOICES)
 
 def verifiedToString(val):
     return VERIFIED_DICT[val]
+
+def verificationStatusToString(val):
+    return VERIFICATION_STATUS_DICT[val]
 
 def activityMessageToString(val):
     return ACTIVITY_MESSAGE_DICT[val]
@@ -415,6 +426,7 @@ class UserPreferences(models.Model):
     status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
     donation_link = models.CharField(max_length=200, null=True, blank=True)
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
+    allowed_verifications = models.CharField(max_length=100, null=True, blank=True)
 
     def avatar(self, size):
         default = 'http://schoolido.lu/static/kotori.jpg'
@@ -444,3 +456,21 @@ class Activity(models.Model):
         return u'%s %s' % (self.account, self.message)
 
 admin.site.register(Activity)
+
+class UserImage(models.Model):
+    image = models.ImageField(upload_to='user_images/', null=True, blank=True)
+
+admin.site.register(UserImage)
+
+class VerificationRequest(models.Model):
+    creation = models.DateTimeField(auto_now_add=True)
+    verification_date = models.DateTimeField(null=True)
+    account = models.ForeignKey(Account, related_name='verificationrequest', unique=True)
+    verification = models.PositiveIntegerField(_('Verification'), default=1, choices=VERIFIED_CHOICES)
+    status = models.PositiveIntegerField(default=0, choices=VERIFICATION_STATUS_CHOICES)
+    comment = models.TextField(_('Comment'), null=True, help_text=_('If you have anything to say to the person who is going to verify your account, feel free to write it here!'), blank=True)
+    verified_by = models.ForeignKey(User, related_name='verificationsdone', null=True)
+    images = models.ManyToManyField(UserImage, related_name="request")
+    verification_comment = models.TextField(_('Comment'), null=True, blank=True)
+
+admin.site.register(VerificationRequest)

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Staff{% endblock %}
+
+{% block content %}
+{% load choicesToString %}
+{% load pagination %}
+<div class="container">
+  <br><br>
+  <h1 class="text-center">Staff Verifications <small>{{ total }}</small></h1>
+  <br>
+  <form method="get">
+    {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+    <div class="text-right">
+      <input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Search' %}" />
+    </div>
+  </form>
+  <br><br>
+  <table class="table table-bordered table-xl">
+    {% for verification in verifications %}
+    <tr class="{% if verification.status == 0 %}danger{% elif verification.status == 3 %}success{% elif verification.status == 2 %}warning{% else %}info{% endif %}">
+      <td class="verified{{ verification.verification }}">
+	<i class="flaticon-star"></i>
+	{{ verification.verification|verifiedToString }}
+      </td>
+      <td>{{ verification.account }}</td>
+      <td>{{ verification.account.rank }}</td>
+      <td class="text-{% if verification.status == 0 %}danger{% elif verification.status == 3 %}success{% elif verification.status == 2 %}warning{% else %}info{% endif %}">{{ verification.status|verificationStatusToString }}</td>
+      <td class="text-right">
+	{% if verification.status == 1 %}
+	<a href="/staff/verification/{{ verification.id }}/" class="btn btn-default btn-lg">
+	  Verify
+	</a>
+	{% else %}
+	by <a href="/users/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a><br>
+	<small><a href="/staff/verification/{{ verification.id }}/">View verification</a></small>
+	{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <ul class="pager">
+    {% if page > 1 %}
+    <li><a href="{{ current_url|previouspage:page }}">Previous</a></li>
+    {% endif %}
+    <li><a href="{{ current_url|nextpage:page }}">Next</a></li>
+  </ul>
+</div>
+
+{% endblock %}

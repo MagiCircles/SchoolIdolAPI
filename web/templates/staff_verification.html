@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Verification{% endblock %}
+
+{% block js %}
+<script src="/static/js/staff_verification.js"></script>
+{% endblock %}
+{% block content %}
+{% load choicesToString %}
+{% load imageurl %}
+{% if verification.status != 2 or verification.verified_by == user %}
+<div class="row">
+  <div class="col-md-7 text-center">
+    <iframe style="width: 100%; height: 800px" src="/user/{{ verification.account.owner.username }}/?hidenavbar&staff#{{ verification.account.id }}"></iframe>
+  </div>
+  <div class="col-md-5">
+    <div style="height: 800px; overflow: auto;">
+      <div class="jumbotron margin50 text-center">
+	<p class="padding50 verified{{ verification.verification }}">
+	  <i class="flaticon-star"></i>
+	  {{ verification.verification|verifiedToString }}
+	</p>
+	<p class="alert-{% if verification.status == 0 %}danger{% elif verification.status == 3 %}success{% else %}info{% endif %} padding50">{{ verification.status|verificationStatusToString }}</p>
+	<p class="padding50">
+	  {{ verification.comment }}
+      </p></div>
+      <h1>Step 1. Set the verification as "In Progress"</h1>
+      <form action="/ajax/staff/verification/{{ verification.id }}/inprogress/" class="text-right padding20 padding-novertical" id="staffverification">
+	<input type="submit" class="btn btn-xl btn-Cool" value="START" />
+      </form>
+      <form action="/ajax/staff/verification/{{ verification.id }}/cancel/" class="text-right padding20 padding-novertical" id="staffcancelverification" style="display: none;">
+	<input type="submit" class="btn btn-danger" value="Cancel" />
+      </form>
+      <div id="steps" class="collapse">
+	<h1>Step 2. Verify the account</h1>
+	{% if verification_images %}
+	<ul>
+	  {% if verification.verification == 2 %}
+	  <li>After you enter the transfer code in your testing device, <strong>delete the image here</strong> to avoid confusions.</li>
+	  <li>To send the new transfer code to the verified user, either upload the screenshot of the new transfer code here or write it down in the comment section below.<br><br></li>
+	  {% endif %}
+	  <li>Don't reject a verification <strong>if you can fix the problems yourself</strong>. We don't like to go back and forth with our kind users.
+	    <ul>
+	      <li>If the <strong>friend ID</strong> is missing or incorrect, fix it.</li>
+	      <li>If the <strong>rank</strong> is missing or incorrect, fix it.</li>
+	      {% if verification.verification != 3 %}
+	      <li>If the center is not set, it's not required, but it's always nice to set it for the user.</li>
+	      <li>If a <strong>card is missing</strong>, <a href="/cards/">search for the card ID</a> and add it.</li>
+	      {% if verification.verification == 1 %}
+	      <li>If there are cards in the account that are not in the screenshots, first go to the activities tab and see if the card has been added after the verification request. In that case, leave the card in the account. Otherwise, delete the card.</li>
+	      {% elif card.verification == 2 %}
+	      <li>If there are cards in the account that are not in the actual game account, delete them.</li>
+	      {% endif %}
+	      <li>If the idolization status of the card is incorrect, delete the card and re-add it with the correct settings.</li>
+	      {% endif %}
+	    </ul>
+	    <br>
+	  </li>
+	  <li>If you can't finish the verification while you're doing it, click the <strong>Cancel</strong> button above so other staff can do it.</li>
+	    <br><br>
+	{% for image in verification_images %}
+	<div class="verification-image">
+	  <img src="{{ image.image|userimage }}" alt="verification-image" class="img-responsive">
+	  <div class="text-right padding20">
+	    <a href="/ajax/staff/verification/{{ verification.id }}/deleteimage/{{ image.id }}/" class="btn btn-danger btn-lg delete-verification-image" style="color: white">Delete</a>
+	  </div>
+	</div>
+	<br><br>
+	{% endfor %}
+	{% else %}
+	<div class="alert alert-warning">No verification images uploaded!</div>
+	{% endif %}
+	<h1>Step 3. Save the verification</h1>
+	<div id="templates-buttons">
+	  <h6>Templates:</h6>
+	</div>
+	<br>
+	<form method="post" enctype="multipart/form-data">
+	  {% csrf_token %}
+	  {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+	  <div class="text-right">
+	    <input name="verificationRequest" type="submit" class="btn btn-Cool" value="{% trans 'Go' %}" />
+	  </div>
+	</form>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="template" class="hidden">
+  {% if verification.verification == 2 %}
+  <div data-name="Gold: Missing transfer code" data-btn="Gold">
+    To gold verify your account, please send us your transfer code. You can either upload the screenshot or write it down in the comment section of your verification request.
+  </div>
+  <div data-name="Gold: Invalid transfer code" data-btn="Gold">
+    I tried to enter your transfer code and it didn't work. Can you send me another one?
+  </div>
+  {% endif %}
+  {% if verification.verification == 1 %}
+  <div data-name="Silver: Too many missing cards" data-btn="Silver">
+    You have a lot more cards in your School Idol Tomodachi account than in the screenshots you sent, which might be because we took too much time to verify you (sorry about that!). Can you send us some new fresh screenshots so we can verify you?
+  </div>
+  <div data-name="Silver: Missing profile screenshot" data-btn="Silver">
+    Can you also send me a screenshot of your profile in the game? To do so, go to "Other" (その他) then "Profile" (プロフィール) and take a screenshot.
+  </div>
+  {% endif %}
+  <div data-name="No cards in the account" data-btn="default">
+    Your account is empty, so I can't verify you! Can you fill all your information and add the cards you own? To add your cards, follow this guide: https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-add-cards%3F
+  </div>
+</div>
+{% else %}
+<div class="container text-center">
+  <br><br>
+  <h1>{{ verification.verified_by.username }} is currently verifying this account.</h1>
+  <a href="/staff/verifications/">Back to verifications</a>
+</div>
+{% endif %}
+{% endblock %}

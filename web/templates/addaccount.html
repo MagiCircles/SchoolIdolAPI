@@ -3,12 +3,21 @@
 
 {% block title %}{% if edit %}{% trans 'Edit Account' %} {{ edit }}{% else %}{% trans 'Add Account' %}{% endif %}{% endblock %}
 
+{% block js %}
+{% if edit %}
+<script src="/static/js/editaccount.js"></script>
+{% endif %}
+{% endblock %}
 {% block content %}
+{% load choicesToString %}
+{% load imageurl %}
+{% load mod %}
 
 <div class="container">
   <br><br>
   <div class="jumbotron">
-    <h1>{% if edit %}{% trans 'Edit Account' %}</h1><h2 class="text-center">{{ edit }}</h2>{% else %}{% trans 'Add Account' %}</h1>{% endif %}
+    <h1>{% if edit %}{% trans 'Edit Account' %}</h1>
+    <h2 id="editaccount" class="text-center">{{ edit }}</h2>{% else %}{% trans 'Add Account' %}</h1>{% endif %}
     <br>
     <form class="form-horizontal" method="post" action="" role="form">
       {% csrf_token %}
@@ -75,6 +84,146 @@
 	<input name="saveTransferCode" type="submit" class="btn btn-Cool" value="{% trans 'Save your transfer code' %}" />
       </div>
     </form>
+
+    <hr>
+      <div class="divform">
+	<h2 id="verify">{% trans 'Get verified' %}</h2>
+	{% if account.rank > 50 and account.friend_id and not user.preferences.private %}
+	<div id="verification-2" style="display: none">
+	  <img src="http://i.imgur.com/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
+	  <ul>
+	    <li>{% trans 'Generate a transfer code on the game.' %} <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F" target="_blank">{% trans 'How to generate a transfer code?' %}</a></li>
+	    <li>{% trans 'Upload the screenshot or write it down below.' %}<br><br></li>
+	    <li>
+	      <strong>{% trans 'No matter when you send your email, your account will be verified anytime when there is no event going on.' %}</strong><br>
+	      <ul>
+		<li>{% blocktrans %}If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Say so in your message.{% endblocktrans %}</li>
+		<li>{% trans 'If you still play between events, we can notify you before we start the process. Ask for it in your message.' %}</li>
+	      </ul><br></li>
+	    <li>{% blocktrans %}We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else{% endblocktrans %} :)</li>
+	    <li>{% trans 'You will then receive an email with your new transfer code.' %}<br><br></li>
+	    <li>{% blocktrans %}Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!{% endblocktrans %}</li>
+	  </ul>
+	</div>
+	<div id="verification-1" style="display: none">
+	  <img src="http://i.imgur.com/mA3mh0G.png" alt="Silver" class="img-responsive img-rounded" /><br>
+	  <ul>
+	    <li>{% trans 'Open the game you want to get verified' %}</li>
+	    <li><strong>{% trans 'Take screenshots and upload them below.' %}</strong> <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-take-screenshots%3F" target="_blank">{% trans 'How to take screenshots?' %}</a>
+	      <ul>
+		<li>{% trans 'Go to "Other" (その他) then "Profile" (プロフィール) and take a screenshot' %}</li>
+		<li>{% trans 'Go to "Members" (部員) then "Member List" (部員リスト), order by "Rarity" (レアリティ) and take screenshots of all the pages that have URs or idolized SRs' %}
+		  <ul>
+		    <li>{% trans 'If you have SR/UR cards in your album (you used to have them but you sold them or used them in training), also take a screenshot of said cards in your album.' %}</li>
+		    <li>{% trans 'If you have SR/UR cards in your present box, also take a screenshot of the cards in your present box.' %}</li>
+		  </ul>
+		</li>
+	      </ul>
+	    </li>
+	    <li>{% blocktrans %}No need to refresh your profile, you will receive an email when you're verified!{% endblocktrans %}</li>
+	  </ul>
+	</div>
+	<div id="verification-3" style="display: none">
+	  <i>{% blocktrans %}This verification only lets you change your rank above 200. It does not give you a visible sign of verification on the website, since we did not verify your cards. The only reason you would want this verification is if your rank is above 200 and you do not wish to go through Gold/Silver verification.{% endblocktrans %}</i><br>
+	  <ul>
+	    <li>{% trans 'We will enter your friend ID in the game and check your rank.' %}</li>
+	    <li>{% blocktrans %}You will receive an email when your account has been set as verified and you'll be able to set your rank above 200.{% endblocktrans %}</li>
+	  </ul>
+	</div>
+	<div id="verification-0" style="display: none"></div>
+	{% if verification %}
+	<div class="alert alert-{% if verification.status == 0 %}danger{% elif verification.status == 3 %}success{% else %}info{% endif %}">
+	  {% if verification.status < 3 %}
+	  <div class="pull-right">
+	    <form class="noform" method="POST">
+	      {% csrf_token %}
+	      <button class="btn btn-lg btn-danger" type="submit" name="cancelVerificationRequest" data-form-loader="true">{% trans 'Cancel' %}</button>
+	    </form>
+	  </div>
+	  {% endif %}
+	  {{ verification.verification|verifiedToString }}:
+	  <h2>{{ verification.status|verificationStatusToString }}</h2>
+	  {% if verification.verification_comment %}
+	  {{ verification.verification_comment }}
+	  {% endif %}
+	  {% if verification.images %}
+	  <div class="row">
+	    {% for image in verification_images %}
+	    {% if forloop.counter0|mod:3 %}
+	  </div><div class="row">
+	    {% endif %}
+	    <div class="col-sm-4">
+	      <a target="_blank" href="{{ image.image|userimage }}">
+		<div class="thumbnail">
+		  <img src="{{ image.image|userimage }}" alt="verification image" style="height:100px">
+		  <div class="caption text-right">
+		    <form class="noform" method="post">
+		      {% csrf_token %}
+		      <input type="hidden" name="id" value="{{ image.id }}">
+		      <button name="deleteimage" type="submit" class="btn btn-danger btn-sm" data-form-loader="true">Delete</button>
+		    </form>
+		  </div>
+		</div>
+	      </a>
+	    </div>
+	    {% endfor %}
+	  </div>
+	  {% endif %}
+	</div>
+	{% endif %}
+	<div class="row">
+	  <div class="col-sm-1">
+	    <div class="fontx2 text-right">
+	      <i class="flaticon-checked"></i>
+	    </div>
+	  </div>
+	  <div class="col-sm-11">
+	    {% blocktrans %}
+	    Before sending your request, we highly recommend you to check that you entered all your cards.
+	    {% endblocktrans %}
+	    <div class="text-right">
+	      <a class="btn btn-Cool" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-check-that-you-entered-all-your-cards%3F" target="_blank">{% trans 'Check your cards' %}</a>
+	    </div>
+	    <br>
+	  </div>
+	</div>
+	<form class="noform" method="post" action="/editaccount/{{ account.id }}/#verify" enctype="multipart/form-data">
+	  {% csrf_token %}
+	  {% include "bootstrap_form_horizontal.html" with form=form_verification wrap=0 %}
+	  <div class="text-right">
+	    <button name="verificationRequest" type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Get verified' %}</button>
+	  </div>
+	</form><br>
+	<div class="row">
+	  <div class="col-sm-1">
+	    <div class="fontx2 text-right">
+	      <i class="flaticon-about"></i>
+	    </div>
+	  </div>
+	  <div class="col-sm-11" style="line-height: 2.5em">
+	    {% blocktrans %}
+	    If you have any question regarding verifications,
+	    {% endblocktrans %}
+	    <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts#frequently-asked-questions" target="_blank">{% trans 'read our FAQ' %}</a>.
+	    <br>
+	  </div>
+	</div>
+	{% else %}
+	<div class="alert alert-warning">
+	  <ul>
+	    {% if account.rank < 50 %}
+	    <li>{% trans 'Your rank must be over 50.' %}</li>
+	    {% endif %}
+	    {% if not account.friend_id %}
+	    <li>{% trans 'You must specify your friend ID in your account.' %} <a href="#editaccount">{% trans 'Edit Account ' %}</a></li>
+	    {% endif %}
+	    {% if user.preferences.private %}
+	    <li>{% trans 'Your profile must not be private.' %} <a href="/edit/" target="_blank">{% trans 'Settings' %}</a></li>
+	    {% endif %}
+	  </ul>
+	</div>
+      {% endif %}
+      </div>
 
     <hr>
     <form method="post" action="">

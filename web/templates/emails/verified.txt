@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load imageurl %}
+{% load choicesToString %}
+{% trans 'Hi' %} {{ verification.account.owner.username }},
+
+{% if verification.status == 0 %}
+{% blocktrans %}Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime.{% endblocktrans %}
+{% elif verification.status == 3 %}
+  {% trans 'Congratulations! You are now' %} {{ verification.verification|verifiedToString }}.
+  {% if verification.verification == 3 %}
+  {% trans 'You can now set your rank above 200. Nobody else can see your verification status.' %}
+  {% else %}
+  {% trans 'Feel free to brag about it now that you look so shiny~' %}
+  {% endif %}
+{% endif %}
+
+{% if verification.verification_comment %}
+{{ verification.verification_comment }}
+{% endif %}
+
+{% if verification.verification == 2 and verification.status == 3 %}
+{% trans 'Follow this guide:' %} {% trans 'How to enter a transfer code?' %} https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-enter-a-transfer-code%3F
+
+{% blocktrans %}Generate a new transfer code right away and store it somewhere safe. If you want, School Idol Tomodachi lets you store your transfer code safely. Only you will be able to see it.{% endblocktrans %}
+
+{% trans 'Follow this guide:' %} {% trans 'How to generate a transfer code?' %} https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F
+
+{% blocktrans %}Also note that when you will enter your new transfer code, your settings will be reset. Don't forget to change them back, we don't want you to break your combo ;){% endblocktrans %}
+{% endif %}
+
+{% for image in verification_images %}
+{{ image.image|userimage}}
+{% endfor %}
+
+{% if verification.status == 0 %}{% trans 'Resend verification request' %}{% else %}{% trans 'Your account' %}{% endif %}: {% if verification.status == 0 %}http://schoolido.lu/editaccount/{{ verification.account.pk }}/{% else %}http://schoolido.lu/user/{{ verification.account.owner.username }}/#{{ verification.account.pk }}{% endif %}
+
+{% trans 'Verified by' %}: {{ verification.verified_by.username }} (http://schoolido.lu/user/{{ verification.verified_by.username }}/)

@@ -4,6 +4,7 @@ from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _
+from multiupload.fields import MultiFileField
 from api import models
 
 class CreateUserForm(ModelForm):
@@ -154,6 +155,50 @@ class AccountStaffForm(ModelForm):
     class Meta:
         model = models.Account
         fields = ('owner_id', 'friend_id', 'verified', 'rank', 'os', 'device', 'center')
+
+class MultiImageField(MultiFileField, forms.ImageField):
+    pass
+
+class VerificationRequestForm(ModelForm):
+    images = MultiImageField(min_num=0, max_num=10, required=False)
+
+    def __init__(self, *args, **kwargs):
+        account = None
+        if 'account' in kwargs:
+            account = kwargs.pop('account')
+        super(VerificationRequestForm, self).__init__(*args, **kwargs)
+        if account is not None:
+            if account.language != 'JP' and account.language != 'EN':
+                self.fields['verification'].choices = ((0, ''), (1, _('Silver Verified')))
+            elif account.rank < 195:
+                self.fields['verification'].choices = ((0, ''), (1, _('Silver Verified')), (2, _('Gold Verified')))
+
+    class Meta:
+        model = models.VerificationRequest
+        fields = ('verification', 'comment', 'images')
+
+class StaffVerificationRequestForm(ModelForm):
+    images = MultiImageField(min_num=0, max_num=10, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(StaffVerificationRequestForm, self).__init__(*args, **kwargs)
+        self.fields['status'].choices = ((3, 'Verified'), (0, 'Rejected'))
+
+    class Meta:
+        model = models.VerificationRequest
+        fields = ('status', 'verification_comment', 'images')
+
+class StaffFilterVerificationRequestForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(StaffFilterVerificationRequestForm, self).__init__(*args, **kwargs)
+        self.fields['verified_by'].queryset = User.objects.filter(is_staff=True)
+        self.fields['verified_by'].required = False
+        self.fields['status'].required = False
+        self.fields['verification'].required = False
+
+    class Meta:
+        model = models.VerificationRequest
+        fields = ('status', 'verified_by', 'verification')
 
 # class TeamForm(ModelForm):
 #     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)

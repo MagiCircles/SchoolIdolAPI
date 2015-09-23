@@ -27,6 +27,9 @@ def eventimageurl(event):
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
     return ''
 
+def userimage(image):
+    return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(image))
+
 def standimage(idol, number):
     if idol is not None:
         m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
@@ -53,6 +56,7 @@ def linkurl(link):
     return LINK_URLS[link['type']].format(link['value'])
 
 register.filter('imageurl', imageurl)
+register.filter('userimage', userimage)
 register.filter('standimage', standimage)
 register.filter('chibiimage', chibiimage)
 register.filter('eventimageurl', eventimageurl)

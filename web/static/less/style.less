@@ -268,6 +268,10 @@ nav + main {
     line-height: 1.5;
     border-radius: 12px;
 }
+.table-xl>tbody>tr>td, .table-xl>tbody>tr>th, .table-xl>tfoot>tr>td, .table-xl>tfoot>tr>th, .table-xl>thead>tr>td, .table-xl>thead>tr>th {
+    padding: 20px;
+    font-size: 1.5em;
+}
 
 .progress-bar-Smile { background-color: @SmileColor }
 .progress-bar-Pure { background-color: @PureColor }
@@ -287,6 +291,10 @@ nav + main {
 .btn-Pure { .button-variant(#fff, lighten(@PureColor, 25%), darken(lighten(@PureColor, 25%), 5%)) }
 .btn-Cool { .button-variant(#fff, lighten(@CoolColor, 25%), darken(lighten(@CoolColor, 25%), 5%)) }
 .btn-All { .button-variant(#fff, lighten(@AllColor, 25%), darken(lighten(@AllColor, 25%), 5%)) }
+
+.btn-Gold { .custom-btn(@GoldColor); }
+.btn-Silver { .button-variant(#999, lighten(@SilverColor, 25%), darken(lighten(@SilverColor, 25%), 5%)) }
+.btn-Bronze { .custom-btn(@BronzeColor); }
 
 tr.Smile { td { background-color: lighten(@SmileColor, 30%); .a-variant(#fff) }}
 tr.Pure { td { background-color: lighten(@PureColor, 30%); .a-variant(#fff) }}
@@ -593,7 +601,7 @@ nav {
     h1 {
 	text-align: center;
     }
-    form {
+    form, .divform {
 	margin: auto;
 	width: 50%;
 	&.noform {

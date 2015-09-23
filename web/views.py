@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import division
 import math
 from django.shortcuts import render, redirect, get_object_or_404
@@ -14,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
@@ -793,7 +794,7 @@ def editaccount(request, account):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = globalContext(request)
-    owned_account = findAccount(int(account), context['accounts'], forceGetAccount=request.user.is_staff)
+    owned_account = findAccount(int(account), context['accounts'])
     if not owned_account:
         raise PermissionDenied()
     if owned_account.verified:
@@ -803,6 +804,13 @@ def editaccount(request, account):
     form = formClass(instance=owned_account)
     form_get_transfer_code = forms.SimplePasswordForm()
     form_save_transfer_code = forms.TransferCodeForm()
+    try:
+        context['verification'] = owned_account.verificationrequest.get()
+    except: pass
+    if 'verification' in context:
+        form_verification = forms.VerificationRequestForm(instance=context['verification'], account=owned_account)
+    else:
+        form_verification = forms.VerificationRequestForm(account=owned_account)
     if request.method == "POST":
         if 'deleteAccount' in request.POST:
             owned_account.delete()
@@ -831,6 +839,33 @@ def editaccount(request, account):
             owned_account.transfer_code = ''
             owned_account.save()
             context['deleted_transfer_code'] = True
+        elif 'deleteimage' in request.POST and 'verification' in context:
+            imageObject = context['verification'].images.get(pk=request.POST['id'])
+            imageObject.image.delete()
+            imageObject.delete()
+        elif 'cancelVerificationRequest' in request.POST and 'verification' in context:
+            imagesObjects = context['verification'].images.all()
+            for imageObject in imagesObjects:
+                imageObject.image.delete()
+            imagesObjects.delete()
+            context['verification'].delete()
+            del context['verification']
+            form_verification = forms.VerificationRequestForm(account=owned_account)
+        elif 'verificationRequest' in request.POST:
+            if 'verification' in context:
+                form_verification = forms.VerificationRequestForm(request.POST, request.FILES, instance=context['verification'], account=owned_account)
+            else:
+                form_verification = forms.VerificationRequestForm(request.POST, request.FILES, account=owned_account)
+            if form_verification.is_valid():
+                verification = form_verification.save(commit=False)
+                verification.account = owned_account
+                verification.status = 1
+                verification.save()
+                for image in form_verification.cleaned_data['images']:
+                    imageObject = models.UserImage.objects.create()
+                    imageObject.image.save(randomString(64), image)
+                    verification.images.add(imageObject)
+                context['verification'] = verification
         else:
             old_rank = owned_account.rank
             form = formClass(request.POST, instance=owned_account)
@@ -848,9 +883,13 @@ def editaccount(request, account):
     context['form'] = form
     context['form_get_transfer_code'] = form_get_transfer_code
     context['form_save_transfer_code'] = form_save_transfer_code
+    context['form_verification'] = form_verification
     context['account'] = owned_account
     context['current'] = 'editaccount'
     context['edit'] = owned_account
+    try:
+        context['verification_images'] = context['verification'].images.all()
+    except: pass
     return render(request, 'addaccount.html', context)
 
 def users(request, ajax=False):
@@ -1024,3 +1063,91 @@ def donateview(request):
     context['total_donators'] = models.UserPreferences.objects.filter(status__isnull=False).count()
     context['donations'] = donations.donations
     return render(request, 'donate.html', context)
+
+def staff_verifications(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.allowed_verifications:
+        raise PermissionDenied()
+    context = globalContext(request)
+    context['verifications'] = models.VerificationRequest.objects
+    if 'status' not in request.GET or not request.GET['status']:
+        context['verifications'] = context['verifications'].filter(Q(status=1) | Q(status=2))
+    else:
+        context['verifications'] = context['verifications'].filter(status=request.GET['status'])
+    if 'verified_by' in request.GET and request.GET['verified_by']:
+        context['verifications'] = context['verifications'].filter(verified_by=request.GET['verified_by'])
+    if 'verification' in request.GET and int(request.GET['verification']) > 0:
+        context['verifications'] = context['verifications'].filter(verification=request.GET['verification'])
+    context['verifications'] = context['verifications'].filter(verification__in=request.user.preferences.allowed_verifications.split(','))
+    context['verifications'] = context['verifications'].order_by('-status', '-verification', '-account__rank', 'creation').select_related('account', 'account__owner')
+    page = 0
+    page_size = 10
+    if 'page' in request.GET and request.GET['page']:
+        page = int(request.GET['page']) - 1
+        if page < 0:
+            page = 0
+    context['total'] = context['verifications'].count()
+    context['page'] = page + 1
+    context['verifications'] = context['verifications'][(page * page_size):((page * page_size) + page_size)]
+    context['form'] = forms.StaffFilterVerificationRequestForm(request.GET)
+    return render(request, 'staff_verifications.html', context)
+
+def staff_verification(request, verification):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
+        raise PermissionDenied()
+    context = globalContext(request)
+    context['verification'] = get_object_or_404(models.VerificationRequest, pk=verification)
+
+    if str(context['verification'].verification) not in request.user.preferences.allowed_verifications.split(','):
+        raise PermissionDenied()
+    context['form'] = forms.StaffVerificationRequestForm(instance=context['verification'])
+    if 'verificationRequest' in request.POST:
+        form = forms.StaffVerificationRequestForm(request.POST, request.FILES, instance=context['verification'])
+        if form.is_valid():
+            sendverificationemail = lambda: send_email(subject=(string_concat(_(u'School Idol Tomodachi'), u'✨ ', _(models.verifiedToString(context['verification'].verification)), u': ', _(models.verificationStatusToString(context['verification'].status)))),
+               template_name='verified',
+               to=[context['verification'].account.owner.email],
+               context=context,
+           )
+            verification = form.save(commit=False)
+            context['verification_images'] = verification.images.all()
+            for image in form.cleaned_data['images']:
+                imageObject = models.UserImage.objects.create()
+                imageObject.image.save(randomString(64), image)
+                verification.images.add(imageObject)
+            if verification.status == 3:
+                verification.verification_date = timezone.now()
+                verification.verified_by = request.user
+                verification.account.verified = verification.verification
+                verification.account.save()
+                sendverificationemail()
+            elif verification.status == 0:
+                verification.verified_by = request.user
+                sendverificationemail()
+            verification.save()
+            context['verification'] = verification
+            return redirect('/staff/verifications/')
+        context['form'] = forms.StaffVerificationRequestForm(instance=context['verification'])
+
+    context['verification_images'] = context['verification'].images.all()
+    return render(request, 'staff_verification.html', context)
+
+def ajaxstaffverificationdeleteimage(request, verification, image):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
+        raise PermissionDenied()
+    verification = get_object_or_404(models.VerificationRequest, pk=verification)
+    imageObject = verification.images.get(pk=image)
+    imageObject.image.delete()
+    imageObject.delete()
+    return HttpResponse('deleted')
+
+def ajaxverification(request, verification, status):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
+        raise PermissionDenied()
+    verification = get_object_or_404(models.VerificationRequest, pk=verification)
+    verification.status = status
+    if status == 1:
+        verification.verified_by = None
+    else:
+        verification.verified_by = request.user
+    verification.save()
+    return HttpResponse('status changed')

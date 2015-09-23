@@ -240,6 +240,28 @@
 		      </td>
 		    </tr>
 		    {% endif %}
+		    {% if card.transparent_image or card.transparent_idolized_image or card.transparent_ur_pair or card.transparent_idolized_ur_pair %}
+		    <tr>
+		      <th>{% trans 'Download' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-cards"></i>
+			</div>
+			{% if card.transparent_image %}
+			<a href="{{ card.transparent_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Not Idolized' %}</a><br>
+			{% endif %}
+			{% if card.transparent_idolized_image %}
+			<a href="{{ card.transparent_idolized_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Idolized' %}</a><br>
+			{% endif %}
+			{% if card.transparent_ur_pair %}
+			<a href="{{ card.transparent_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Not Idolized' %}</a><br>
+			{% endif %}
+			{% if card.transparent_idolized_ur_pair %}
+			<a href="{{ card.transparent_idolized_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Not Idolized' %}</a><br>
+			{% endif %}
+		      </td>
+		    </tr>
+		    {% endif %}
 		    {% if not single %}
 		    <tr>
 		      <th>{% trans 'Comments' %}</th>

@@ -281,6 +281,7 @@ class Card(models.Model):
     name = models.CharField(max_length=100, blank=True) # duplicate with idol, used only in __unicode__ because otherwise it makes another query everytime
     idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
+    english_collection = models.CharField(max_length=100, blank=True, null=True)
     rarity = models.CharField(choices=RARITY_CHOICES, max_length=10)
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
@@ -307,6 +308,10 @@ class Card(models.Model):
     japanese_center_skill = models.TextField(null=True, blank=True)
     japanese_center_skill_details = models.TextField(null=True, blank=True)
     card_url = models.CharField(max_length=200, blank=True)
+    transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
+    transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
+    transparent_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
+    transparent_idolized_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     card_idolized_url = models.CharField(max_length=200, blank=True)
     card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)

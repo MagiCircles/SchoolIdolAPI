@@ -227,7 +227,7 @@
 	</div>
       </div>
       <div class="section submit">
-	<input type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" value="{% trans 'Go' %}">
+	<button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
 	<br><br><br><br><br>
       </div>
     </form>

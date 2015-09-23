@@ -18,7 +18,7 @@
       <br><br>
       <div class="text-right">
 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
-	<input name="editPreferences" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+	<button name="editPreferences" type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Apply Changes' %}</button>
       </div>
       <input type="hidden" name="next" value="/login" />
     </form>
@@ -31,14 +31,14 @@
 
     <form>
       <table class="table table-round-items">
-    	{% for link in links %}
-    	<tr id="link{{link.id}}" class="{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-    	  <td>
-    	    {% include 'include/link.html' %}
-    	  </td>
-    	  <td class="text-right" width="200"><a href="#deleteLink" data-link-id="{{ link.id }}" class="btn btn-lg btn-danger">{% trans 'Delete Link' %}</a></td>
-    	</tr>
-    	{% endfor %}
+	{% for link in links %}
+	<tr id="link{{link.id}}" class="{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+	  <td>
+	    {% include 'include/link.html' %}
+	  </td>
+	  <td class="text-right" width="200"><a href="#deleteLink" data-link-id="{{ link.id }}" class="btn btn-lg btn-danger">{% trans 'Delete Link' %}</a></td>
+	</tr>
+	{% endfor %}
       </table>
     </form>
     <br>
@@ -46,17 +46,17 @@
     <h1 id="addlink">{% trans 'Add Link' %}</h1>
     <br>
     <form method="post" action="">
-    	{% csrf_token %}
+	{% csrf_token %}
       {% include "bootstrap_form_horizontal.html" with form=form_addlink wrap=0 %}
       <br><br>
       <div class="text-right">
-    	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
-    	<button name="addLink" type="submit" class="btn btn-lg btn-Cool"><i class="flaticon-add"></i> {% trans 'Add Link' %}</button>
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<button name="addLink" type="submit" class="btn btn-lg btn-Cool" data-form-loader="true"><i class="flaticon-add"></i> {% trans 'Add Link' %}</button>
       </div>
       <input type="hidden" name="next" value="/login" />
     </form>
 
-    <hr>    
+    <hr>
     <h1 id="avatar">{% trans 'Avatar' %}</h1>
     <br>
     <form>
@@ -77,7 +77,7 @@
       <br><br>
       <div class="text-right">
 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
-	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+	<button type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Apply Changes' %}</button>
       </div>
       <input type="hidden" name="next" value="/login" />
     </form>
@@ -92,9 +92,8 @@
       <br><br>
       <div class="text-right">
 	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
-	<input name="changePassword" type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Apply Changes' %}" />
+	<button name="changePassword" type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Apply Changes' %}</button>
       </div>
-      <input type="hidden" name="next" value="/login" />
     </form>
 
     <hr>

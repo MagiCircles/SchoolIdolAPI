@@ -18,10 +18,10 @@
 	<form method="get" class="noform">
 	  {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
 	  <div class="text-right submitarea">
-	    <input type="submit" class="btn btn-Cool btn-sm" value="{% trans 'Search' %}">
+	    <button type="submit" class="btn btn-Cool btn-sm" data-form-loader="true">{% trans 'Search' %}</button>
 	  </div>
 	</form>
-      </div>
+      </div><br>
     </div>
     <div class="col-md-3">
       <div class="margin50 margin-nohorizontal text-right">

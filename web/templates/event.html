@@ -186,8 +186,8 @@
 	  {% include "bootstrap_form_horizontal.html" with form=add_form wrap=0 %}
 	  <br><br>
 	  <div class="text-right">
-	    <input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
-		   value="{% trans 'Share your ranking' %}" />
+	    <button type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" data-form-loader="true">
+	      {% trans 'Share your ranking' %}</button>
 	  </div>
 	</form>
       </div>

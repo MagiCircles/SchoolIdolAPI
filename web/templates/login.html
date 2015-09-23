@@ -18,7 +18,7 @@
       <div class="text-right">
 	<a href="/create/" class="btn btn-lg btn-link">{% trans 'Sign Up' %}</a>
 	<a href="/password_reset/" class="btn btn-lg btn-link">{% trans 'Forgot password?' %}</a>
-	<input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Login' %}" />
+	<button type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Login' %}</button>
       </div>
       <input type="hidden" name="next" value="/setaccountonlogin" />
     </form>

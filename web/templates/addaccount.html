@@ -140,6 +140,11 @@
 	  {% endif %}
 	  {{ verification.verification|verifiedToString }}:
 	  <h2>{{ verification.status|verificationStatusToString }}</h2>
+	  {% if verification_queue_position %}
+	  {% trans 'Your position in the verification queue' %}:
+	  <strong>#{{ verification_queue_position }}</strong>
+	  <small>({{ verification_days }} {% if verification_days == 1 %}{% trans 'day' %}{% else %}{% trans 'days' %}{% endif %})</small><br><br>
+	  {% endif %}
 	  {% if verification.verification_comment %}
 	  {{ verification.verification_comment }}
 	  {% endif %}

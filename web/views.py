@@ -889,6 +889,13 @@ def editaccount(request, account):
     context['edit'] = owned_account
     try:
         context['verification_images'] = context['verification'].images.all()
+        context['verification_queue_position'] = models.VerificationRequest.objects.filter(status=1, account__rank__gte=context['account'].rank).count()
+        if context['verification_queue_position'] == 0:
+            context['verification_queue_position'] = 1
+        context['verification_days'] = 1
+        context['verification_days'] = int(math.ceil(context['verification_queue_position'] / 10))
+        if context['verification_days'] == 0:
+            context['verification_days'] = 1
     except: pass
     return render(request, 'addaccount.html', context)
 
@@ -1078,7 +1085,7 @@ def staff_verifications(request):
     if 'verification' in request.GET and int(request.GET['verification']) > 0:
         context['verifications'] = context['verifications'].filter(verification=request.GET['verification'])
     context['verifications'] = context['verifications'].filter(verification__in=request.user.preferences.allowed_verifications.split(','))
-    context['verifications'] = context['verifications'].order_by('-status', '-verification', '-account__rank', 'creation').select_related('account', 'account__owner')
+    context['verifications'] = context['verifications'].order_by('-status', '-account__rank', 'creation').select_related('account', 'account__owner')
     page = 0
     page_size = 10
     if 'page' in request.GET and request.GET['page']:

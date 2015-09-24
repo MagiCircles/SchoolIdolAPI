@@ -413,7 +413,7 @@ class Command(BaseCommand):
                 if ur_pair_normal:
                     card.transparent_ur_pair.save(str(card.id) + 'TransparentURpair.png', downloadShrunkedImage(ur_pair_normal))
                 if ur_pair_idolized:
-                    card.transparent_idolized_ur_pair.save(str(card.id) + 'idolizedTransparentURpair.png', downloadShrunkedImage(normal))
+                    card.transparent_idolized_ur_pair.save(str(card.id) + 'idolizedTransparentURpair.png', downloadShrunkedImage(ur_pair_idolized))
                 print 'Done'
         f.close()
 

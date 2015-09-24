@@ -176,7 +176,7 @@
 		<th>{% trans 'Verified' %}</th>
 		<td><h3><span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span> <small>{{ account.verified|verifiedToString }}</small></h3>
 		  {% if not is_me and user.is_authenticated %}
-		  <small><a href="/editaccount/{{ account.pk }}/#verify" target="_blank">{% trans 'Get verified' %}</a></small>
+		  <small><a href="/edit/#editaccounts" target="_blank">{% trans 'Get verified' %}</a></small>
 		  {% endif %}
 		</td>
 	      </tr>

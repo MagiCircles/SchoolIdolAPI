@@ -479,7 +479,7 @@ def ajaxownedcards(request, account, stored):
         if stored == 'Box':
             ownedcards = ownedcards.order_by('card__id')
         elif stored == 'Favorite':
-            ownedcards == ownedcards.order_by('-card__rarity', '-idolized', 'card__id')
+            ownedcards = ownedcards.order_by('-card__rarity', '-idolized', 'card__id')
     context = { 'cards': ownedcards, 'nolink': True, 'stored': stored }
     return render(request, 'ownedcards.html', context)
 

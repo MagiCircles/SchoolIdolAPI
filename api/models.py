@@ -230,13 +230,13 @@ class Event(models.Model):
         return (self.english_beginning is not None
                 and self.english_end is not None
                 and timezone.now() > (self.english_beginning - relativedelta(days=3))
-                and timezone.now() < self.english_end)
+                and timezone.now() < self.english_beginning)
 
     def soon_happen_japan(self):
         return (self.beginning is not None
                 and self.end is not None
                 and timezone.now() > (self.beginning - relativedelta(days=3))
-                and timezone.now() < self.end)
+                and timezone.now() < self.beginning)
 
     def __unicode__(self):
         return self.japanese_name

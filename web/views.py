@@ -1012,7 +1012,7 @@ def event(request, event):
             add_form_accounts_queryset = add_form_accounts_queryset.exclude(id=participation.account.id)
         if not context['did_happen_world']:
             add_form_accounts_queryset = add_form_accounts_queryset.filter(language='JP')
-        if context['did_happen_japan']:
+        if not context['did_happen_japan']:
             add_form_accounts_queryset = add_form_accounts_queryset.exclude(language='JP')
         if add_form_accounts_queryset.count() > 0:
             if context['with_song']:
@@ -1029,11 +1029,6 @@ def event(request, event):
         event.english_participations = event.participations.filter(account__language='EN').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])
         event.other_participations = event.other_participations.exclude(account__language='EN')
     event.other_participations = event.other_participations.select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account__language', 'ranking_is_null', 'ranking'])
-
-    if context['soon_happen_world'] and not event.english_beginning:
-        event.english_beginning = event.beginning + relativedelta(years=1, hours=4)
-    if context['soon_happen_world'] and not event.english_end:
-        event.english_end = event.end + relativedelta(years=1, hours=4)
 
     context['event'] = event
     return render(request, 'event.html', context)

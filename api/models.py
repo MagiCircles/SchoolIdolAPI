@@ -211,30 +211,26 @@ class Event(models.Model):
                 and timezone.now() < self.end)
 
     def is_world_current(self):
-        if (self.english_beginning is not None
-            and self.english_end is not None):
-            return (timezone.now() > self.english_beginning
-                    and timezone.now() < self.english_end)
-        return (self.beginning is not None
-                and self.end is not None
-                and timezone.now() > (self.beginning + relativedelta(years=1))
-                and timezone.now() < (self.end + relativedelta(years=1)))
+        return (self.english_beginning is not None
+                and self.english_end is not None
+                and timezone.now() > self.english_beginning
+                and timezone.now() < self.english_end)
 
     def did_happen_world(self):
-        if (self.english_beginning is not None
-            and self.english_end is not None):
-            return (timezone.now() > self.english_end)
-        return (self.beginning is not None
-                and self.end is not None
-                and timezone.now() > (self.end + relativedelta(years=1)))
+        return (self.english_beginning is not None
+                and self.english_end is not None
+                and timezone.now() > self.english_end)
+
+    def did_happen_japan(self):
+         return (self.beginning is not None
+                 and self.end is not None
+                 and timezone.now() > self.end)
 
     def soon_happen_world(self):
-        if (self.english_beginning is not None
-            and self.english_end is not None):
-            return (timezone.now() > (self.english_beginning - relativedelta(days=3)))
-        return (self.beginning is not None
-                and self.end is not None
-                and timezone.now() > (self.beginning + relativedelta(years=1) - relativedelta(days=3)))
+        return (self.english_beginning is not None
+                and self.english_end is not None
+                and timezone.now() > (self.english_beginning - relativedelta(days=3))
+                and timezone.now() < self.english_end)
 
     def soon_happen_japan(self):
         return (self.beginning is not None

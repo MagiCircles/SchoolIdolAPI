@@ -965,7 +965,11 @@ def event(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
     context['did_happen_world'] = event.did_happen_world()
+    context['did_happen_japan'] = event.did_happen_japan()
     context['soon_happen_world'] = event.soon_happen_world()
+    context['soon_happen_japan'] = event.soon_happen_japan()
+    context['is_world_current'] = event.is_world_current()
+    context['is_japan_current'] = event.is_japan_current()
 
     if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name:
         context['with_song'] = False
@@ -1008,6 +1012,8 @@ def event(request, event):
             add_form_accounts_queryset = add_form_accounts_queryset.exclude(id=participation.account.id)
         if not context['did_happen_world']:
             add_form_accounts_queryset = add_form_accounts_queryset.filter(language='JP')
+        if context['did_happen_japan']:
+            add_form_accounts_queryset = add_form_accounts_queryset.exclude(language='JP')
         if add_form_accounts_queryset.count() > 0:
             if context['with_song']:
                 formClass = forms.EventParticipationForm
@@ -1030,9 +1036,6 @@ def event(request, event):
         event.english_end = event.end + relativedelta(years=1, hours=4)
 
     context['event'] = event
-    context['is_world_current'] = event.is_world_current()
-    context['is_japan_current'] = event.is_japan_current()
-    context['soon_happen_japan'] = event.soon_happen_japan()
     return render(request, 'event.html', context)
 
 def idols(request):

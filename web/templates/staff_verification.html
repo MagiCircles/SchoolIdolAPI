@@ -24,7 +24,9 @@
 	<p class="alert-{% if verification.status == 0 %}danger{% elif verification.status == 3 %}success{% else %}info{% endif %} padding50">{{ verification.status|verificationStatusToString }}</p>
 	<p class="padding50">
 	  {{ verification.comment }}
-      </p></div>
+	</p>
+	<p><small><i>{{ verification.account.owner.email }}</i></small></p>
+      </div>
       {% if verification.status == 1 %}
       <h1>Step 1. Set the verification as "In Progress"</h1>
       <form action="/ajax/staff/verification/{{ verification.id }}/inprogress/" class="text-right padding20 padding-novertical" id="staffverification">

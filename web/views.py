@@ -734,6 +734,7 @@ def edit(request):
         raise PermissionDenied()
     context = globalContext(request)
     context['preferences'] = request.user.preferences
+    context['show_verified_info'] = 'verification' in request.GET
     form = forms.UserForm(instance=request.user)
     form_preferences = forms.UserPreferencesForm(instance=context['preferences'])
     form_addlink = forms.AddLinkForm()

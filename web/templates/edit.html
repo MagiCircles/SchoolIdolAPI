@@ -98,7 +98,7 @@
 
     <hr>
 
-    <h1 id="editaccounts">{% trans 'Edit your accounts' %}</h1>
+    <h1 id="editaccounts">{% if show_verified_info %}{% trans 'Get verified' %}{% else %}{% trans 'Edit your accounts' %}{% endif %}</h1>
     <br>
     <form>
       <table class="table">
@@ -111,7 +111,7 @@
 	    {% endif %}
 	  </td>
 	  <td><h4>{{ account }}</h4></td>
-	  <td class="text-right"><a href="/editaccount/{{ account.id }}/" class="btn btn-lg btn-Cool">{% trans 'Edit Account' %}</a></td>
+	  <td class="text-right"><a href="/editaccount/{{ account.id }}/{% if show_verified_info %}#verify{% endif %}" class="btn btn-lg btn-Cool">{% if show_verified_info %}{% trans 'Get verified' %}{% else %}{% trans 'Edit Account' %}{% endif %}</a></td>
 	</tr>
 	{% endfor %}
       </table>

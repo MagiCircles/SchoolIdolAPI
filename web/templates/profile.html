@@ -158,7 +158,7 @@
 		<th>{% trans 'Play with' %}</th>
 		<td>
 		  <div class="pull-right">
-		    {% if account.play_with == 'Thumbs' %}<i class="flaticon-thumbs fontx2"></i>{% elif account.play_with == 'Fingers' or account.play_with == 'Hand' %}<i class="flaticon-fingers fontx2"></i>{% elif account.play_with == 'Index' %}<i class="flaticon-index fontx2"></i>{% endif %}
+		    {% if account.play_with == 'Thumbs' %}<i class="flaticon-thumbs fontx2"></i>{% elif account.play_with == 'Fingers' or account.play_with == 'Hand' %}<i class="flaticon-fingers fontx2"></i>{% elif account.play_with == 'Index' %}<i class="flaticon-index fontx2"></i>{% elif account.play_with == 'Other' %}<i class="flaticon-sausage fontx2"></i>{% endif %}
 		  </div>
 		  {{ account.play_with|playWithToString }}</td>
 	      </tr>

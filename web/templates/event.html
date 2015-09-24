@@ -3,9 +3,10 @@
 {% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="/static/js/event.js"></script>
+<script src="/static/js/event.js?1"></script>
 {% endblock %}
 {% block content %}
+{% load getattribute %}
 {% load languageToString %}
 {% load imageurl %}
 {% load gravatar %}
@@ -47,7 +48,7 @@
     <script>
       var countdowndate = "{% if is_japan_current %}{{ event.end|torfc2822 }}{% else %}{{ event.english_end|torfc2822 }}{% endif %}";
       function countdownRender(data) {
-        $(this.el).text(data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds left');
+      $(this.el).text(data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds left');
       }
     </script>
   </h1>
@@ -56,16 +57,16 @@
     <script>
       var countdowndate = "{% if soon_happen_japan %}{{ event.beginning|torfc2822 }}{% else %}{{ event.english_beginning|torfc2822 }}{% endif %}";
       function countdownRender(data) {
-        $(this.el).text('Starts in ' + data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
+      $(this.el).text('Starts in ' + data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
       }
     </script>
   </h1>
   {% endif %}
   <br>
   <div class="row">
-    {% if not soon_happen_world %}<div class="col-lg-3"></div>{% endif %}
+    {% if not soon_happen_world and not did_happen_world and not is_world_current %}<div class="col-lg-3"></div>{% endif %}
     <div class="col-lg-6">
-      <h1>{{ event.japanese_name }}<br><small>&nbsp;{% if event.romaji_name and event.romaji_name != event.japanese_name %}{{ event.romaji_name }}{% endif %}</small></h1>
+      <h1 id="event-title" data-id="{{ event.id }}">{{ event.japanese_name }}<br><small>&nbsp;{% if event.romaji_name and event.romaji_name != event.japanese_name %}{{ event.romaji_name }}{% endif %}</small></h1>
       <br>
       <table class="table">
 	{% with 'JP'|languageToString as lang %}
@@ -74,24 +75,32 @@
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
 	  <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }} - {{ event.end|timezone:"Asia/Tokyo" }}<br>
-	  {% trans 'Japanese' %} {% trans 'time' %}</td>
+	    {% trans 'Japanese' %} {% trans 'time' %}</td>
 	</tr>
+	{% if event.japanese_t1_points %}
 	<tr>
 	  <th>T1 {% trans 'Points' %}</th>
-      <td class="text-right">{{ event.japanese_t1_points }}</td>
+	  <td class="text-right">{{ event.japanese_t1_points }}</td>
 	</tr>
+	{% endif %}
+	{% if event.japanese_t1_rank %}
 	<tr>
 	  <th>T1 {% trans 'Rank' %}</th>
 	  <td class="text-right">{{ event.japanese_t1_rank }}</td>
 	</tr>
+	{% endif %}
+	{% if event.japanese_t2_points %}
 	<tr>
 	  <th>T2 {% trans 'Points' %}</th>
 	  <td class="text-right">{{ event.japanese_t2_points }}</td>
 	</tr>
+	{% endif %}
+	{% if event.japanese_t2_rank %}
 	<tr>
 	  <th>T2 {% trans 'Rank' %}</th>
 	  <td class="text-right">{{ event.japanese_t2_rank }}</td>
 	</tr>
+	{% endif %}
 	{% if event.note %}
 	<tr>
 	  <th>{% trans 'Note' %}</th>
@@ -109,7 +118,7 @@
 	</tr>
       </table>
     </div>
-    {% if soon_happen_world %}
+    {% if soon_happen_world or did_happen_world or is_world_current %}
     <div class="col-lg-6">
       <h1>{% if event.english_name %}{{ event.english_name }}{% else %}{{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
       <br>
@@ -117,36 +126,37 @@
 	{% with 'EN'|languageToString as lang %}
 	<caption class="text-center">{% trans lang %}</caption>
 	{% endwith %}
+	{% if event.english_beginning and event.english_end %}
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
 	  <td class="text-right">{{ event.english_beginning }} - {{ event.english_end }}<br>
-	  UTC {% trans 'time' %}</td>
+	    UTC {% trans 'time' %}</td>
 	</tr>
+	{% endif %}
+	{% if event.english_t1_points %}
 	<tr>
 	  <th>T1 {% trans 'Points' %}</th>
-      <td class="text-right">{{ event.english_t1_points }}</td>
+	  <td class="text-right">{{ event.english_t1_points }}</td>
 	</tr>
+	{% endif %}
+	{% if event.english_t1_rank %}
 	<tr>
 	  <th>T1 {% trans 'Rank' %}</th>
 	  <td class="text-right">{{ event.english_t1_rank }}</td>
 	</tr>
+	{% endif %}
+	{% if event.english_t2_points %}
 	<tr>
 	  <th>T2 {% trans 'Points' %}</th>
-      <td class="text-right">{{ event.english_t2_points }}</td>
+	  <td class="text-right">{{ event.english_t2_points }}</td>
 	</tr>
+	{% endif %}
+	{% if event.english_t2_rank %}
 	<tr>
 	  <th>T2 {% trans 'Rank' %}</th>
 	  <td class="text-right">{{ event.english_t2_rank }}</td>
 	</tr>
-	<tr>
-	  <th>{% trans 'Find your ranking' %}</th>
-	  <td class="text-right">
-	    <a href="https://ll.idolactiviti.es/en/tracker/#/ranking" target="_blank"
-	       class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-sm">
-	      SIF Tracker
-	    </a>
-	  </td>
-	</tr>
+	{% endif %}
       </table>
     </div>
     {% else %}
@@ -155,13 +165,13 @@
   </div>
 
   <div class="row">
-    {% if not soon_happen_world %}<div class="col-lg-3"></div>{% endif %}
+    {% if not soon_happen_world and not did_happen_world and not is_world_current %}<div class="col-lg-3"></div>{% endif %}
     <div class="col-lg-6">
-      {% include 'event_ranking.html' with participations=event.japanese_participations %}
+      {% include 'event_ranking.html' with participations=event.japanese_participations loader=True page=1 %}
     </div>
-    {% if soon_happen_world %}
+    {% if soon_happen_world or did_happen_world or is_world_current %}
     <div class="col-lg-6">
-      {% include 'event_ranking.html' with participations=event.english_participations %}
+      {% include 'event_ranking.html' with participations=event.english_participations loader=True page=1 %}
     </div>
     {% else %}<div class="col-lg-3"></div>{% endif %}
   </div>
@@ -170,47 +180,50 @@
     <div class="col-lg-3"></div>
     <div class="col-lg-6">
       {% include 'event_ranking.html' with participations=event.other_participations %}
-
-      {% if not user.is_authenticated %}
-      <a href="/create/"
-	 class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-	{% trans 'Share your ranking' %}!
-      </a>
-      {% endif %}
-
-      {% if add_form %}
-      <br><br>
-      <div class="jumbotron">
-	<form method="post" class="noform">
-	  {% csrf_token %}
-	  {% include "bootstrap_form_horizontal.html" with form=add_form wrap=0 %}
-	  <br><br>
-	  <div class="text-right">
-	    <button type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" data-form-loader="true">
-	      {% trans 'Share your ranking' %}</button>
-	  </div>
-	</form>
-      </div>
     </div>
     <div class="col-lg-3"></div>
-  </div>
+  </div> <!-- row -->
 
-
-      <div>
-
-      </div>
-      {% endif %}
-    </div>
-    <div class="col-lg-3"></div>
-  </div>
+  {% if not user.is_authenticated %}
+  <a href="/create/"
+     class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+    {% trans 'Share your ranking' %}!
+  </a>
+  {% endif %}
+  {% if add_form %}
   <br><br>
-
-  <div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10">
-      {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
-    </div>
-    <div class="col-lg-1"></div>
+  <div class="jumbotron">
+    <form method="post">
+      <h3>{% trans 'Share your ranking' %}</h3><br>
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=add_form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<button type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" data-form-loader="true">
+	  {% trans 'Share your ranking' %}</button>
+      </div>
+    </form>
+  </div> <!-- jumbotron -->
+  {% endif %}
+  {% if edit_forms %}
+  {% for participation_id, participation_account, edit_form in edit_forms %}
+  <div id="edit{{ participation_id }}" class="jumbotron">
+    <h3>{{ participation_account }}</h3>
+    <form method="post" class="padding20">
+      {% csrf_token %}
+      <input type="hidden" name="id" value="{{ participation_id }}">
+      {% include "bootstrap_form_horizontal.html" with form=edit_form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<input type="submit" class="btn btn-danger" name="deleteParticipation" value="{% trans 'Delete' %}">
+	<input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
+	       value="{% trans 'Apply Changes' %}" />
+      </div>
+    </form>
   </div>
+  {% endfor %}
+  {% endif %}
+
+  {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
 </div>
 {% endblock %}

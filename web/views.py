@@ -709,6 +709,24 @@ def ajaxfollow(request, username):
         return HttpResponse('unfollowed')
     raise PermissionDenied()
 
+def ajaxeventranking(request, event, language):
+    page = 0
+    page_size = 10
+    if 'page' in request.GET and request.GET['page']:
+        page = int(request.GET['page']) - 1
+        if page < 0:
+            page = 0
+    event = get_object_or_404(models.Event, pk=event)
+    participations = event.participations.filter(account__language=language).select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[(page * page_size):((page * page_size) + page_size)]
+    context = {
+        'participations': participations,
+        'event': event,
+        'ajax': True,
+        'loader': True,
+        'page': page + 1,
+    }
+    return render(request, 'event_ranking.html', context)
+
 def ajaxeventparticipations(request, account):
     eventparticipations = models.EventParticipation.objects.filter(account=account).order_by('-event__end')
     return render(request, 'ajaxevents.html', { 'eventparticipations': eventparticipations })
@@ -1002,19 +1020,19 @@ def event(request, event):
         # get forms to add or edit
         context['your_participations'] = event.participations.filter(account__owner=request.user)
         add_form_accounts_queryset = request.user.accounts_set.all()
-        context['edit_forms'] = {}
+        context['edit_forms'] = []
         if context['with_song']:
             formClass = forms.EventParticipationNoAccountForm
         else:
             formClass = forms.EventParticipationNoSongNoAccountForm
         for participation in context['your_participations']:
-            context['edit_forms'][participation.id] = formClass(instance=participation)
+            context['edit_forms'].append((participation.id, participation.account, formClass(instance=participation)))
             add_form_accounts_queryset = add_form_accounts_queryset.exclude(id=participation.account.id)
         if not context['did_happen_world']:
             add_form_accounts_queryset = add_form_accounts_queryset.filter(language='JP')
         if not context['did_happen_japan']:
             add_form_accounts_queryset = add_form_accounts_queryset.exclude(language='JP')
-        if add_form_accounts_queryset.count() > 0:
+        if context['did_happen_japan'] and add_form_accounts_queryset.count() > 0:
             if context['with_song']:
                 formClass = forms.EventParticipationForm
             else:
@@ -1023,12 +1041,13 @@ def event(request, event):
 
     # get rankings
     event.all_cards = event.cards.all()
-    event.japanese_participations = event.participations.filter(account__language='JP').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])
-    event.other_participations = event.participations.exclude(account__language='JP')
-    if context['did_happen_world']:
-        event.english_participations = event.participations.filter(account__language='EN').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])
-        event.other_participations = event.other_participations.exclude(account__language='EN')
-    event.other_participations = event.other_participations.select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account__language', 'ranking_is_null', 'ranking'])
+    if context['did_happen_japan']:
+        event.japanese_participations = event.participations.filter(account__language='JP').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
+        event.other_participations = event.participations.exclude(account__language='JP')
+        if context['did_happen_world']:
+            event.english_participations = event.participations.filter(account__language='EN').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
+            event.other_participations = event.other_participations.exclude(account__language='EN')
+        event.other_participations = event.other_participations.select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account__language', 'ranking_is_null', 'ranking'])
 
     context['event'] = event
     return render(request, 'event.html', context)

@@ -406,13 +406,13 @@ class Command(BaseCommand):
                 if not card:
                     card = models.Card.objects.get(pk=id)
                 print 'Add transparent images #', id, '... ',
-                if normal:
+                if normal and not card.transparent_image:
                     card.transparent_image.save(str(card.id) + 'Transparent.png', downloadShrunkedImage(normal))
-                if idolized:
+                if idolized and not card.transparent_idolized_image:
                     card.transparent_idolized_image.save(str(card.id) + 'idolizedTransparent.png', downloadShrunkedImage(idolized))
-                if ur_pair_normal:
+                if ur_pair_normal and not card.transparent_ur_pair:
                     card.transparent_ur_pair.save(str(card.id) + 'TransparentURpair.png', downloadShrunkedImage(ur_pair_normal))
-                if ur_pair_idolized:
+                if ur_pair_idolized and not card.transparent_idolized_ur_pair:
                     card.transparent_idolized_ur_pair.save(str(card.id) + 'idolizedTransparentURpair.png', downloadShrunkedImage(ur_pair_idolized))
                 print 'Done'
         f.close()

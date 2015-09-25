@@ -31,6 +31,7 @@ $(document).ready(function() {
 		$('#staffverification').show();
 		$('#staffcancelverification').hide();
 		$('#steps').collapse('hide');
+		window.location.replace('/staff/verifications');
 	    },
 	    error: function() {
 		alert('Oops! Something bad happened. Try again.');
@@ -52,4 +53,10 @@ $(document).ready(function() {
 	});
 	return false;
     });
+    if ($('#countdown').length > 0) {
+	$('#countdown').countdown({
+	    date: countdowndate,
+	    render: countdownRender
+	});
+    }
 });

@@ -4,11 +4,13 @@
 {% block title %}Verification{% endblock %}
 
 {% block js %}
-<script src="/static/js/staff_verification.js"></script>
+<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="/static/js/staff_verification.js?1"></script>
 {% endblock %}
 {% block content %}
 {% load choicesToString %}
 {% load imageurl %}
+{% load mod %}
 {% if verification.status != 2 or verification.verified_by == user %}
 <div class="row">
   <div class="col-md-7 text-center">
@@ -27,19 +29,41 @@
 	</p>
 	<p><small><i>{{ verification.account.owner.email }}</i></small></p>
       </div>
-      {% if verification.status == 1 %}
+      {% if verification.status == 1 or verification.status == 2 %}
       <h1>Step 1. Set the verification as "In Progress"</h1>
-      <form action="/ajax/staff/verification/{{ verification.id }}/inprogress/" class="text-right padding20 padding-novertical" id="staffverification">
+      {% if verification.verification == 2 %}
+      {% if verification.status != 2 or not verification.verification_date %}
+      <form method="post" class="form-inline text-right padding20 padding-novertical">
+	{% csrf_token %}
+	<div class="form-group">
+	  If the player asked to be notified, send a <input type="number" name="notification_minutes" class="form-control" value="15" style="width: 50px;" /> minutes<br>notification before entering the transfer code: <button type="submit" name="notification" class="btn btn-Smile">Send</button>
+	  <br><br>
+      </form>
+      {% endif %}
+      {% endif %}
+      <form action="/ajax/staff/verification/{{ verification.id }}/inprogress/" class="text-right padding20 padding-novertical" id="staffverification" style="{% if verification.status == 2 %}display: none;{% endif %}">
 	<input type="submit" class="btn btn-xl btn-Cool" value="START" />
       </form>
-      <form action="/ajax/staff/verification/{{ verification.id }}/cancel/" class="text-right padding20 padding-novertical" id="staffcancelverification" style="display: none;">
+      <form action="/ajax/staff/verification/{{ verification.id }}/cancel/" class="text-right padding20 padding-novertical" id="staffcancelverification" style="{% if verification.status == 1 %}display: none;{% endif %}">
 	<input type="submit" class="btn btn-danger" value="Cancel" />
       </form>
+      {% if verification.status == 1 %}
       <div id="steps" class="collapse">
+	{% endif %}
 	<h1>Step 2. Verify the account</h1>
 	{% endif %}
+	{% if verification.status == 2 and verification.verification == 2 and verification.verification_date %}
+	<h3 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+	  <script>
+	    var countdowndate = "{{ verification.verification_date|torfc2822 }}";
+	    function countdownRender(data) {
+	      $(this.el).text('Enter the transfer code to verify the account in ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
+	    }
+	  </script>
+	</h3>
+	{% endif %}
 	{% if verification_images %}
-	{% if verification.status == 1 %}
+	{% if verification.status == 1 or verification.status == 2 %}
 	<ul>
 	  {% if verification.verification == 2 %}
 	  <li>After you enter the transfer code in your testing device, <strong>delete the image here</strong> to avoid confusions.</li>

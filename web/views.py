@@ -877,6 +877,9 @@ def editaccount(request, account):
                 form_verification = forms.VerificationRequestForm(request.POST, request.FILES, account=owned_account)
             if form_verification.is_valid():
                 verification = form_verification.save(commit=False)
+                verification.verification_date = None
+                verification.verified_by = None
+                verification.verification_comment = None
                 verification.account = owned_account
                 verification.status = 1
                 verification.save()
@@ -1150,6 +1153,17 @@ def staff_verification(request, verification):
             context['verification'] = verification
             return redirect('/staff/verifications/')
         context['form'] = forms.StaffVerificationRequestForm(instance=context['verification'])
+    elif 'notification' in request.POST:
+        context['notification_minutes'] = request.POST['notification_minutes']
+        context['verification'].verification_date = timezone.now() + relativedelta(minutes=int(request.POST['notification_minutes']))
+        context['verification'].status = 2
+        context['verification'].verified_by = request.user
+        send_email(subject=(string_concat(_(u'School Idol Tomodachi'), u'✨ ', _(models.verifiedToString(context['verification'].verification)), u': ', unicode(request.POST['notification_minutes']), ' minutes notification before we verify your account')),
+                   template_name='verification_notification',
+                   to=[context['verification'].account.owner.email],
+                   context=context,
+                   )
+        context['verification'].save()
 
     context['verification_images'] = context['verification'].images.all()
     return render(request, 'staff_verification.html', context)
@@ -1170,6 +1184,7 @@ def ajaxverification(request, verification, status):
     verification.status = status
     if status == 1:
         verification.verified_by = None
+        verification.verification_date = None
     else:
         verification.verified_by = request.user
     verification.save()

@@ -1,0 +1,22 @@
+{% extends 'emails/base.html' %}
+{% load i18n %}
+{% load imageurl %}
+{% load choicesToString %}
+
+{% block subject %}{{ notification_minutes }} minutes notification before we verify your account{% endblock %}
+{% block headersubject %}{{ notification_minutes }} minutes notification before we verify your account{% endblock %}
+{% block content %}
+{% trans 'Hi' %} {{ verification.account.owner.username }},
+<br><br>
+
+<p>
+  I'm <a href="http://schoolido.lu/user/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a> from School Idol Tomodachi.
+</p>
+<p>
+  I would like to notify you that I will take care of your Gold verification in:
+</p>
+<h1 style="text-align: center">{{ notification_minutes }} minutes</h1>
+<p>
+  Make sure you're not playing any song - I don't want to break your combo ;)
+</p>
+{% endblock %}

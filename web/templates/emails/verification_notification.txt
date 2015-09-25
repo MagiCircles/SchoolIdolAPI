@@ -1,0 +1,6 @@
+Hi {{ verification.account.owner.username }},
+
+I'm {{ verification.verified_by.username }} from School Idol Tomodachi.
+
+I would like to notify you that I will take care of your Gold verification in {{ notification_minutes }} minutes.
+Make sure you're not playing any song - I don't want to break your combo ;)

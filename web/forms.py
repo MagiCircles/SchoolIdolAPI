@@ -4,6 +4,7 @@ from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.fields import BLANK_CHOICE_DASH
 from multiupload.fields import MultiFileField
 from api import models
 
@@ -189,11 +190,14 @@ class StaffVerificationRequestForm(ModelForm):
         fields = ('status', 'verification_comment', 'images')
 
 class StaffFilterVerificationRequestForm(ModelForm):
+    OS = forms.ChoiceField(choices=BLANK_CHOICE_DASH + list(models.OS_CHOICES), required=False)
+
     def __init__(self, *args, **kwargs):
         super(StaffFilterVerificationRequestForm, self).__init__(*args, **kwargs)
         self.fields['verified_by'].queryset = User.objects.filter(is_staff=True)
         self.fields['verified_by'].required = False
         self.fields['status'].required = False
+        self.fields['status'].choices = BLANK_CHOICE_DASH + self.fields['status'].choices
         self.fields['verification'].required = False
 
     class Meta:

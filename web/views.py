@@ -1096,6 +1096,8 @@ def staff_verifications(request):
         context['verifications'] = context['verifications'].filter(status=request.GET['status'])
     if 'verified_by' in request.GET and request.GET['verified_by']:
         context['verifications'] = context['verifications'].filter(verified_by=request.GET['verified_by'])
+    if 'OS' in request.GET and request.GET['OS']:
+        context['verifications'] = context['verifications'].filter(account__os=request.GET['OS'])
     if 'verification' in request.GET and int(request.GET['verification']) > 0:
         context['verifications'] = context['verifications'].filter(verification=request.GET['verification'])
     context['verifications'] = context['verifications'].filter(verification__in=request.user.preferences.allowed_verifications.split(','))

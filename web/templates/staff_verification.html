@@ -78,7 +78,7 @@
 	{% else %}
 	<div class="alert alert-warning">No verification images uploaded!</div>
 	{% endif %}
-	{% if verification.status == 1 %}
+	{% if verification.status == 1 or verification.status == 2 %}
 	<h1>Step 3. Save the verification</h1>
 	<div id="templates-buttons">
 	  <h6>Templates:</h6>

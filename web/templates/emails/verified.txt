@@ -4,7 +4,7 @@
 {% trans 'Hi' %} {{ verification.account.owner.username }},
 
 {% if verification.status == 0 %}
-{% blocktrans %}Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime.{% endblocktrans %}
+{% blocktrans %}Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime. To do so, click the button below to re-submit your request. Do not reply to this email.{% endblocktrans %}
 {% elif verification.status == 3 %}
   {% trans 'Congratulations! You are now' %} {{ verification.verification|verifiedToString }}.
   {% if verification.verification == 3 %}

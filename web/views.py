@@ -1151,6 +1151,7 @@ def staff_verification(request, verification):
                 sendverificationemail()
             elif verification.status == 0:
                 verification.verified_by = request.user
+                verification.verification_date = timezone.now()
                 sendverificationemail()
             verification.save()
             context['verification'] = verification

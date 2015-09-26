@@ -1134,7 +1134,7 @@ def staff_verification(request, verification):
         if form.is_valid():
             sendverificationemail = lambda: send_email(subject=(string_concat(_(u'School Idol Tomodachi'), u'✨ ', _(models.verifiedToString(context['verification'].verification)), u': ', _(models.verificationStatusToString(context['verification'].status)))),
                template_name='verified',
-               to=[context['verification'].account.owner.email],
+               to=[context['verification'].account.owner.email, 'contact@schoolido.lu'],
                context=context,
            )
             verification = form.save(commit=False)
@@ -1164,7 +1164,7 @@ def staff_verification(request, verification):
         context['verification'].verified_by = request.user
         send_email(subject=(string_concat(_(u'School Idol Tomodachi'), u'✨ ', _(models.verifiedToString(context['verification'].verification)), u': ', unicode(request.POST['notification_minutes']), ' minutes notification before we verify your account')),
                    template_name='verification_notification',
-                   to=[context['verification'].account.owner.email],
+                   to=[context['verification'].account.owner.email, 'contact@schoolido.lu'],
                    context=context,
                    )
         context['verification'].save()

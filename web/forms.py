@@ -180,10 +180,7 @@ class VerificationRequestForm(ModelForm):
 
 class StaffVerificationRequestForm(ModelForm):
     images = MultiImageField(min_num=0, max_num=10, required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(StaffVerificationRequestForm, self).__init__(*args, **kwargs)
-        self.fields['status'].choices = ((3, 'Verified'), (0, 'Rejected'))
+    status = forms.ChoiceField(choices=((3, 'Verified'), (0, 'Rejected')), widget=forms.RadioSelect)
 
     class Meta:
         model = models.VerificationRequest

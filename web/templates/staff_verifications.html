@@ -46,7 +46,11 @@
 	</a>
 	{% else %}
 	by <a href="/users/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a><br>
-	<small><a href="/staff/verification/{{ verification.id }}/">View verification</a></small>
+	<small><a href="/staff/verification/{{ verification.id }}/">View verification</a><br>
+	  {% if verification.verification_date %}
+	  {{ verification.verification_date }}
+	  {% endif %}
+	</small>
 	{% endif %}
       </td>
     </tr>

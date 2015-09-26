@@ -161,7 +161,7 @@ class MultiImageField(MultiFileField, forms.ImageField):
     pass
 
 class VerificationRequestForm(ModelForm):
-    images = MultiImageField(min_num=0, max_num=10, required=False)
+    images = MultiImageField(min_num=0, max_num=10, required=False, help_text=_('If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn\'t work, please resize your images.'))
 
     def __init__(self, *args, **kwargs):
         account = None

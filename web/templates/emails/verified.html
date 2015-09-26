@@ -77,6 +77,9 @@ http://schoolido.lu/user/{{ verification.account.owner.username }}/#{{ verificat
 {% endblock %}
 
 {% block footersentence %}
+{% if verification_images|length == 1 and verification.verification == 2 and verification.status == 3 %}
+{% blocktrans %}Make sure you display the images in this e-mail to get your transfer code, or click here: {{ verification_images.image|userimage }}{% endblocktrans %}
+{% endif %}
 <div style="text-align: right">
   {% trans 'Verified by' %} <a href="http://schoolido.lu/user/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a>
 </div>

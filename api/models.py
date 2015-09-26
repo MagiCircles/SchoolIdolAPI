@@ -467,7 +467,7 @@ class VerificationRequest(models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     verification_date = models.DateTimeField(null=True)
     account = models.ForeignKey(Account, related_name='verificationrequest', unique=True)
-    verification = models.PositiveIntegerField(_('Verification'), default=1, choices=VERIFIED_CHOICES)
+    verification = models.PositiveIntegerField(_('Verification'), default=1, choices=VERIFIED_CHOICES, help_text=_('What kind of verification would you like?'))
     status = models.PositiveIntegerField(default=0, choices=VERIFICATION_STATUS_CHOICES)
     comment = models.TextField(_('Comment'), null=True, help_text=_('If you have anything to say to the person who is going to verify your account, feel free to write it here!'), blank=True)
     verified_by = models.ForeignKey(User, related_name='verificationsdone', null=True)

@@ -85,7 +85,7 @@
     <hr>
       <div class="divform">
 	<h2 id="verify">{% trans 'Get verified' %}</h2>
-	{% if account.rank > 50 and account.friend_id and not user.preferences.private %}
+	{% if account.rank > 50 and account.friend_id and not user.preferences.private and user.email %}
 	<div id="verification-2" style="display: none">
 	  <img src="http://i.imgur.com/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
 	  <ul>
@@ -108,7 +108,7 @@
 	    <li>{% trans 'Open the game you want to get verified' %}</li>
 	    <li><strong>{% trans 'Take screenshots and upload them below.' %}</strong> <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-take-screenshots%3F" target="_blank">{% trans 'How to take screenshots?' %}</a>
 	      <ol>
-		<li>{% trans 'Go to "Members" (部員) then "Member List" (部員リスト), order by "Rarity" (レアリティ) and take screenshots of all the pages that have URs or idolized SRs' %}
+		<li>{% trans 'Go to "Members" (部員) then "Member List" (部員リスト), order by "Rarity" (レアリティ) and take screenshots of all the pages that have URs or SRs' %}
 		  <ul>
 		    <li><i>{% trans 'If you have SR/UR cards in your album (you used to have them but you sold them or used them in training), also take a screenshot of said cards in your album.' %}</i></li>
 		    <li><i>{% trans 'If you have SR/UR cards in your present box, also take a screenshot of the cards in your present box.' %}</i></li>
@@ -218,6 +218,9 @@
 	    {% endif %}
 	    {% if not account.friend_id %}
 	    <li>{% trans 'You must specify your friend ID in your account.' %} <a href="#editaccount">{% trans 'Edit Account ' %}</a></li>
+	    {% endif %}
+	    {% if not user.email %}
+	    <li>{% trans 'You must provide a valid email address in your settings.' %} <a href="/edit/" target="_blank">{% trans 'Settings' %}</a></li>
 	    {% endif %}
 	    {% if user.preferences.private %}
 	    <li>{% trans 'Your profile must not be private.' %} <a href="/edit/" target="_blank">{% trans 'Settings' %}</a></li>

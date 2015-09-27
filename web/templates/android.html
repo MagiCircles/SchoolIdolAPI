@@ -73,6 +73,16 @@
       <br><br>
     </dd>
 
+    <dt>{% blocktrans %}I can't find the app on Google Play.{% endblocktrans %}</dt>
+    <dd>{% blocktrans %}The app is not available on Google Play, you have to download it on your phone from this page using the download button above then open it to install it.{% endblocktrans %}</dd>
+
+    <dt>{% trans 'I sometimes get this message: "Unfortunately, Sukutomo has stopped".' %}</dt>
+    <dd>{% trans 'It might happen for different reasons, but it always means there is a bug in the app.' %} <a class="btn btn-Smile" href="mailto:arukantara@schoolido.lu">{% trans 'Contact us' %}</a> {% blocktrans %}Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it.{% endblocktrans %}</dd>
+
+    <dt>{% blocktrans %}I'm a developer and I would like to help you.{% endblocktrans %}</dt>
+    <dd>{% blocktrans %}Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready.{% endblocktrans %} <a class="btn btn-Smile" href="https://github.com/SchoolIdolTomodachi/Sukutomo-Android">{% trans 'Contribute' %}</a><br>
+      {% blocktrans %}If you have no idea what we're talking about, don't panic. We can help you get started.{% endblocktrans %} <a class="btn btn-Smile" href="mailto:arukantara@schoolido.lu">{% trans 'Contact us' %}</a></dd>
+
   </dl>
   <br><br><br>
   {% include 'disqus.html' with disqus_identifier='android-app' %}

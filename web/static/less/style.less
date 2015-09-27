@@ -51,6 +51,10 @@ select {
 .fontx1-5 { font-size: 1.5em; }
 .fontx2 { font-size: 2em; }
 
+dt, dd {
+    padding: 10px 0;
+}
+
 .transparent-hover {
     &:hover {
 	opacity: 0.7;
@@ -325,6 +329,14 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 	margin-top: 100px;
 	width: 100%;
 	max-width: 800px;
+    }
+    .special-message {
+	color: #e85494;
+	max-width: 400px;
+	margin-top: 200px;
+	font-size: 1.9em;
+	font-weight: bold;
+	.white-shadow;
     }
     h2.slogan {
 	color: #e85494;

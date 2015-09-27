@@ -1065,6 +1065,10 @@ def twitter(request):
     context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).exclude(twitter__exact='').values_list('twitter', flat=True)
     return render(request, 'twitter.html', context)
 
+def android(request):
+    context = globalContext(request)
+    return render(request, 'android.html', context)
+
 def mapview(request):
     context = globalContext(request)
     with open ("map.json", "r") as f:

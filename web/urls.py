@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^twitter[/]+$', views.twitter, name='twitter'),
     url(r'^map[/]+$', views.mapview, name='map'),
     url(r'^donate[/]+$', views.donateview, name='donate'),
+    url(r'^android[/]+$', views.android, name='android'),
     url(r'^staff/verifications[/]$', views.staff_verifications, name='staff_verifications'),
     url(r'^staff/verification/(?P<verification>\d+)[/]$', views.staff_verification, name='staff_verification'),
 

@@ -32,7 +32,9 @@
     <img src="/static/roburaibu_shadow.png" class="logo" alt="Logo">
     <br><br>
     {% else %}
+    <div class="row"><div class="col-md-7 text-right">
     <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+    </div><div class="col-md-5"><div class=" text-left special-message">{% trans 'School Idol Tomodachi makes its Android debut!' %}<div class="text-right"><a class="btn btn-{{ btnColor }} btn-lg" href="/android">{% trans 'Download the app' %}</a></div></div></div></div>
     {% endif %}
     <div class="container">
       <h2 class="slogan margin-novertical">{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}</h2>

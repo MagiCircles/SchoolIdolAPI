@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load mod %}
+{% load i18n %}
+{% load l10n %}
+{% load gravatar %}
+{% load imageurl %}
+{% block title %}{% trans 'Download the School Idol Tomodachi app on Google Play' %}'{% endblock %}
+{% block content %}
+<div class="container text-center">
+
+  <br>
+  <div class="row">
+    <div class="col-md-4">
+      <img src="/static/android/icon.png" class="img-responsive" style="margin: auto" alt="Sukutomo app Icon">
+    </div>
+    <div class="col-md-8">
+      <h1 class="margin50 text-left" style="margin-bottom: 20px"><span class="fontx2" style="display: block; margin-bottom: -60px;">{% trans 'Sukutomo' %}</span><br><small style="display: inline-block; padding-left: 140px">{% trans 'by' %} <a href="/user/Arukantara/">Arukantara</a></small></h1>
+      <div class="row">
+	<div class="col-lg-7">
+	  <p style="font-size: 1.5em;">
+	    {% trans 'School Idol Tomodachi makes its Android debut!' %}
+	    {% blocktrans %}
+	    Download the app to browse all the cards from the game School Idol Festival directly from your pocket.
+	    {% endblocktrans %}
+	  </p>
+	  <p class="text-muted">{% blocktrans %}If you're searching for the game itself, you can{% endblocktrans %} <a href="/#download">{% trans 'download it here' %}</a>.</p>
+	</div>
+	<div class="col-lg-5">
+	  <a href="http://i.schoolido.lu/android/sukutomo1_0.apk" class="btn btn-Smile btn-xl pull-right">
+	    {% trans 'Download' %}
+	  </a>
+	</div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+
+  <div class="row">
+    <div class="col-md-3"><img src="/static/android/1.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+    <div class="col-md-3"><img src="/static/android/2.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+    <div class="col-md-3"><img src="/static/android/3.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+    <div class="col-md-3"><img src="/static/android/4.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-3"><img src="/static/android/5.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+    <div class="col-md-3"><img src="/static/android/6.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+    <div class="col-md-3"><img src="/static/android/7.png" class="img-responsive img-rounded" alt="App Screenshot"></div>
+    <div class="col-md-2"></div>
+  </div>
+  <br><br>
+  <hr>
+  <h2 id="faq" class="padding20"><span class="fontx1-5">{% trans 'F.A.Q.' %}</span></h2>
+
+  <dl class="text-left fontx1-5">
+    <dt>{% blocktrans %}I get this message when I try to install the apk: "Install blocked. For security, your phone is set to block installation of apps obtained from unknown sources."{% endblocktrans %}</dt>
+    <dd>
+      <ol>
+	{% blocktrans %}
+	<li>Go to Settings</li>
+	<li>Go to Security</li>
+	<li>Scroll down and check “Unknown sources” box</li>
+	<li>Tap ‘OK” when it show the warning</li>
+	{% endblocktrans %}
+      </ol>
+    </dd>
+
+    <dt>{% blocktrans %}What should I do if I find a bug or want to make a suggestion?{% endblocktrans %}</dt>
+    <dd>
+      <a class="btn btn-Smile" href="mailto:arukantara@schoolido.lu">{% trans 'Contact us' %}</a>
+      {% blocktrans %}We're more than happy to help you and discuss with you.{% endblocktrans %}
+      <br><br>
+    </dd>
+
+  </dl>
+  <br><br><br>
+  {% include 'disqus.html' with disqus_identifier='android-app' %}
+</div>
+{% endblock %}

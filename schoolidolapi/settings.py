@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'api',
     'storages',
     'web',
+    'contest'
 )
 
 REST_FRAMEWORK = {

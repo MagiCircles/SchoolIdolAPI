@@ -1,0 +1,76 @@
+{% extends "base_contest.html" %}
+{% load formattime %}
+{% load imageurl %}
+
+{% block title %}Vote!{% endblock %}
+
+{% block js %}
+    <script src="/static/contest/js/vote.js"></script>
+    <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+    <script src="/static/js/countdown.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ contest.name }}
+  {% if contest.begin %}<br><small>
+    {{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
+    {% if delta %}
+    <br><a href="{{ url_prefix }}contest">
+      <span id="countdown" style="display: block; font-size: 0.6em">
+	<script>
+	  var countdowndate = "{{ contest.end|formattime:"%B %d, %Y %H:%M:%S +0000" }}";
+	</script>
+      </span>
+    </a>
+    {% endif %}
+  </small>
+  {% endif %}
+</h1>
+<form action="{{ url_prefix }}__vote" method="post">
+  <div class="row">
+    <div class="col-md-6">
+      <button type="submit" class="panel panel-schoolidol card" name="left" value="" id="left">
+	<div class="panel-body">
+	  <img src="
+		    {% if cards.left.card.card_image and not cards.idolized_left %}
+		    {{ cards.left.card|imageurl:'card_image' }}">
+	            {% else %}
+	            {{ cards.left.card|imageurl:'card_idolized_image' }}">
+	  {% endif %}
+  </div>
+	<div class="panel-heading">
+	  <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} is BEST</strong>
+	</div>
+      </button> <!-- panel -->
+      <div class="link left"><a class="text-center" href="{{ cards.left.card.website_url }}" target="_blank">About this card</a></div>
+      <br><br>
+    </div> <!-- col -->
+    <div class="col-md-6">
+      <button type="submit" class="panel panel-schoolidol card" name="right" id="right">
+	<div class="panel-body">
+	  <img src="
+		    {% if cards.right.card.card_image and not cards.right.idolized %}
+		    {{ cards.right.cardi|imageurl:'card_image' }}">
+	            {% else %}
+	            {{ cards.right.card|imageurl:'card_idolized_image' }}">
+	  {% endif %}
+
+	</div>
+	<div class="panel-heading">
+	  <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} is BEST</strong>
+	</div>
+      </button> <!-- panel -->
+      <div class="link right"><a class="text-center" href="{{ cards.right.card.website_url }}" target="_blank">About this card</a></div>
+      <br><br>
+    </div> <!-- col -->
+  </div> <!-- row -->
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
+</form>
+
+<br><br>
+<div class="text-center">
+  <a href="{{ url_prefix }}{% if contest %}result/{{ contest.id }}{% else %}best{% endif %}" class="btn btn-main btn-xl">Ranking</a>
+</div>
+
+{% endblock %}

@@ -20,6 +20,7 @@ router.register(r'accounts', api_views.AccountViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^', include('web.urls')),
+    url(r'^contest/', include('contest.urls')),
     url(r'^api[/]+$', RedirectView.as_view(url='https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/LoveLive!-School-Idol-API', permanent=False), name='api'),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

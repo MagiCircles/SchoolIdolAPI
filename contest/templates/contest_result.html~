@@ -1,0 +1,116 @@
+{% extends "base.jinja2" %}
+
+{% block title %}{% if title %}{{ title }}{% else %}BEST GIRL{% endif %}{% endblock %}
+
+{% block js %}
+    <script src="{{ url_prefix }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
+    <script src="{{ url_prefix }}static/js/countdown.js"></script>
+{% endblock %}
+
+{% block content %}
+
+{% if title %}
+<h1>{{ title }}
+  {% if begin %}<br><small>
+    {{ begin.strftime('%B %d') }} - {{ end.strftime('%B %d') }}
+    {% if delta %}
+    <br><a href="{{ url_prefix }}contest">
+      <span id="countdown" style="display: block; font-size: 0.6em">
+	<script>
+	  var countdowndate = "{{ end.strftime("%B %d, %Y %H:%M:%S +0000") }}";
+	</script>
+      </span>
+    </a>
+    {% endif %}
+  </small>
+  {% endif %}
+</h1>
+{% else %}
+<h1>Ranking</h1>
+{% endif %}
+
+<div class="row">
+  {% if list_girl %}
+  <div class="col-md-{% if list_card %}6{% else %}12{% endif %}">
+    <div class="panel panel-schoolidol ranking">
+      <div class="panel-heading">
+	<strong>BEST Girls</strong>
+      </div>
+      <div class="panel-body">
+	{% for (idx, (idolized, card, count)) in list_girl %}
+	<a class="row" href="http://schoolido.lu/cards/?name={{ card.name }}" target="_blank">
+	  <div class="col-sm-2">
+	    <div class="rank">
+	      <span class="fa-stack fa-lg">
+		<i class="fa fa-star fa-stack-2x"></i>
+		<span class="fa number">{{ idx + 1 }}</span>
+	      </span>
+	    </div>
+	  </div>
+	  <div class="col-sm-10">
+	    <div class="pull-right">
+	      <img src="http://schoolido.lu/static/idols/chibi/{{ card.name.replace(' ', '_').replace('\'', '-') }}.png" style="height: 130px; width: 130px; margin: 10px 5px;">
+	    </div>
+	    <div class="name name-card">
+	      <strong>{{ card.name }}</strong>
+	      <small>{{ count }} votes</small>
+	    </div>
+	  </div>
+	</a>
+  {% endfor %}
+
+      </div> <!-- panel-body -->
+    </div> <!-- panel -->
+  </div> <!-- col -->
+  {% endif %}
+  {% if list_card %}
+  <div class="col-md-{% if list_girl %}6{% else %}12{% endif %}">
+    <div class="panel panel-schoolidol ranking">
+      <div class="panel-heading">
+	<strong>BEST Cards</strong>
+      </div>
+      <div class="panel-body">
+	{% for (idx, (idolized, card, count)) in list_card %}
+	<a class="row" href="http://schoolido.lu/cards/{{ card.id }}/" target="_blank">
+	  <div class="col-sm-2">
+	    <div class="rank">
+	      <span class="fa-stack fa-lg">
+		<i class="fa fa-star fa-stack-2x"></i>
+		<span class="fa number">{{ idx + 1 }}</span>
+	      </span>
+	    </div>
+	  </div>
+	  <div class="col-sm-10">
+	    <div class="pull-right">
+	      <div class="card border-{{ card.attribute }}" style="background-image: url('{{ card.card_idolized_image if (idolized or not card.card_image) else card.card_image }}')"></div>
+	    </div>
+	    <div class="name">
+	      <strong>{{ card.name }}</strong><br />
+	      #{{ card.id }} {{ "idolized" if idolized }}
+	      <small>{{ count }} votes</small>
+	    </div>
+	  </div>
+	</a>
+	{% endfor %}
+      </div> <!-- panel-body -->
+    </div> <!-- panel -->
+  </div> <!-- col -->
+  {% endif %}
+</div> <!-- row -->
+
+{% if contest and not is_current %}{% else %}
+<div class="text-center">
+  <a href="{{ url_prefix }}{% if contest %}contest{% else %}{% endif %}" class="btn btn-block btn-main btn-xl">Vote!</a>
+</div>
+{% endif %}
+
+{% if contest %}
+{% set disqus_identifier = 'contest' + contest.id|string %}
+{% include 'disqus.jinja2' %}
+{% else %}
+{% set disqus_identifier = 'contestglobal' %}
+{% include 'disqus.jinja2' %}
+{% endif %}
+
+
+{% endblock %}

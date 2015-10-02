@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django_prometheus',
+    'contest'
 )
 
 REST_FRAMEWORK = {

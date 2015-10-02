@@ -1,0 +1,185 @@
+
+@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700);
+@import "mixins.less";
+@import "variables.less";
+
+body {
+    background: url('../background.jpg') no-repeat top center #fff;
+    font-family: 'Maven Pro', sans-serif;
+}
+
+a {
+    color: @MainColor;
+    &:hover, &:focus {
+	color: lighten(@MainColor, 20%);
+    }
+}
+
+.btn-main {
+    color: #fff;
+    background-color: @MainColor;
+    border-color: lighten(@MainColor, 20%);
+    transition: background-color 0.5s;
+    &:hover, &:focus {
+	color: #fff;
+	background-color: lighten(@MainColor, 20%);
+    }
+}
+
+.btn-xl {
+    padding: 20px;
+    font-size: 3em;
+    border-radius: 10px;
+}
+
+.text-main {
+    color: @MainColor;
+}
+
+main.container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 0;
+    border-bottom: 0;
+    padding: 5%;
+    padding-top : 61px;
+}
+
+h1 {
+    text-align: center;
+    color: @MainColor;
+    font-size: 4em;
+    margin-bottom: 40px;
+    weight: bold;
+}
+
+h2 {
+    text-align: center;
+    color: @MainColor;
+    font-size: 2em;
+    margin-bottom: 40px;
+    weight: bold;
+}
+
+.navbar-schoolidol {
+    .navbar-variant(@MainColor, #fff);
+}
+
+.panel-schoolidol {
+    .panel-variant(@MainColor, #fff, @MainColor, @MainColor);
+    padding: 0!important;
+    display: block!important;
+    width: 100%;
+    img {
+	width: 100%;
+    }
+    .panel-heading {
+	text-align: center;
+	strong {
+	    font-size: 1.8em;
+	}
+    }
+}
+
+button.panel-schoolidol {
+    img {
+	min-height: 400px;
+    }
+}
+
+.link {
+    text-align: left;
+    &.right {
+	text-align: right;
+    }
+}
+
+.ranking.panel-schoolidol {
+    .panel-body {
+	padding-top: 0;
+	padding-bottom: 0;
+    }
+    .name {
+	padding-top: 50px;
+	font-size: 1.5em;
+	&.name-card {
+	    padding-top: 60px;
+	    font-size: 1.8em;
+            small {
+                margin-top: 20px;
+            }
+	}
+        small {
+            text-align: right;
+            display: block;
+            font-size: 12px;
+            color: lighten(@MainColor, 30%);
+        }
+    }
+    .rank {
+	padding-top: 40px;
+	text-align: center;
+	font-size: 1.9em;
+	color: lighten(@SecondaryColor, 40%);
+	.number {
+	    color: white;
+	}
+    }
+    .row:first-child {
+	.rank {
+	    color: #C98910;
+	}
+    }
+    .row:nth-child(2) {
+	.rank {
+	    color: #A8A8A8;
+	}
+    }
+    .row:nth-child(3) {
+	.rank {
+	    color: #965A38;
+	}
+    }
+}
+.ranking.panel-schoolidol, .pastcontests.panel-schoolidol {
+    .card {
+	background-size: 150px;
+	background-repeat: no-repeat;
+	background-position: center -10px;
+	height: 130px;
+	width: 130px;
+	border-radius: 50%;
+	margin: 10px;
+	margin-right: 0;
+	border: 2px solid;
+    }
+    a.row {
+	display: block;
+	border-bottom: 1px solid @MainColor;
+	padding: 2px;
+	&:last-child {
+	    border-bottom: 0;
+	}
+    }
+}
+.pastcontests.panel-schoolidol {
+    a.row {
+	padding: 20px;
+	&:hover,
+	&:focus {
+	    text-decoration: none;
+	}
+	.col-sm-2 {
+	    float: right;
+	}
+    }
+}
+
+.border-Smile { border-color: @SmileColor!important }
+.border-Pure { border-color: @PureColor!important }
+.border-Cool { border-color: @CoolColor!important }
+.border-All { border-color: @AllColor!important }
+
+.text-Smile { color: @SmileColor }
+.text-Pure { color: @PureColor }
+.text-Cool { color: @CoolColor }
+.text-All { color: @AllColor }

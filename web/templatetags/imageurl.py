@@ -46,6 +46,11 @@ def standimage(context, idol, number):
         return 'http://www.lovelive-anime.jp/otonokizaka/img/member/member' + member_number + '_0'+ str(number) + '.png'
     return ''
 
+@register.simple_tag(takes_context=True)
+def idolimage(name):
+    filename = name.replace(' ', '_').replace('\'', '-')
+    return filename
+
 linkimages = {
     'reddit': '/static/reddit.png',
     'twitter': '/static/twitter.png',

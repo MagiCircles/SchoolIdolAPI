@@ -64,3 +64,18 @@ raw_information = {
         'cv_instagram': None,
     },
 }
+
+app_data = {
+    'android': {
+        'version': '1.0',
+        'download_link': 'http://i.schoolido.lu/android/sukutomo1_0.apk',
+        'sources': 'https://github.com/SchoolIdolTomodachi/Sukutomo-Android',
+        'website_url': 'http://schoolido.lu/android/',
+        'icon': 'http://i.schoolido.lu/android/icon.png',
+        'author': {
+            'username': 'Arukantara',
+            'website_url': 'http://schoolido.lu/user/Arukantara/',
+            'contact': 'arukantara@schoolido.lu',
+        },
+    },
+}

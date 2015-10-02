@@ -11,10 +11,10 @@
   <br>
   <div class="row">
     <div class="col-md-4">
-      <img src="/static/android/icon.png" class="img-responsive" style="margin: auto" alt="Sukutomo app Icon">
+      <img src="{{ android.icon }}" class="img-responsive" style="margin: auto" alt="Sukutomo app Icon">
     </div>
     <div class="col-md-8">
-      <h1 class="margin50 text-left" style="margin-bottom: 20px"><span class="fontx2" style="display: block; margin-bottom: -60px;">{% trans 'Sukutomo' %}</span><br><small style="display: inline-block; padding-left: 140px">{% trans 'by' %} <a href="/user/Arukantara/">Arukantara</a></small></h1>
+      <h1 class="margin50 text-left" style="margin-bottom: 20px"><span class="fontx2" style="display: block; margin-bottom: -60px;">{% trans 'Sukutomo' %}</span><br><small style="display: inline-block; padding-left: 140px">{% trans 'by' %} <a href="{{ android.author.website_url }}">{{ android.author.username }}</a></small></h1>
       <div class="row">
 	<div class="col-lg-7">
 	  <p style="font-size: 1.5em;">
@@ -26,7 +26,7 @@
 	  <p class="text-muted">{% blocktrans %}If you're searching for the game itself, you can{% endblocktrans %} <a href="/#download">{% trans 'download it here' %}</a>.</p>
 	</div>
 	<div class="col-lg-5">
-	  <a href="http://i.schoolido.lu/android/sukutomo1_0.apk" class="btn btn-Smile btn-xl pull-right">
+	  <a href="{{ android.download_link }}" class="btn btn-Smile btn-xl pull-right">
 	    {% trans 'Download' %}
 	  </a>
 	</div>
@@ -68,7 +68,7 @@
 
     <dt>{% blocktrans %}What should I do if I find a bug or want to make a suggestion?{% endblocktrans %}</dt>
     <dd>
-      <a class="btn btn-Smile" href="mailto:arukantara@schoolido.lu">{% trans 'Contact us' %}</a>
+      <a class="btn btn-Smile" href="mailto:{{ android.author.contact }}">{% trans 'Contact us' %}</a>
       {% blocktrans %}We're more than happy to help you and discuss with you.{% endblocktrans %}
       <br><br>
     </dd>
@@ -77,11 +77,11 @@
     <dd>{% blocktrans %}The app is not available on Google Play, you have to download it on your phone from this page using the download button above then open it to install it.{% endblocktrans %}</dd>
 
     <dt>{% trans 'I sometimes get this message: "Unfortunately, Sukutomo has stopped".' %}</dt>
-    <dd>{% trans 'It might happen for different reasons, but it always means there is a bug in the app.' %} <a class="btn btn-Smile" href="mailto:arukantara@schoolido.lu">{% trans 'Contact us' %}</a> {% blocktrans %}Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it.{% endblocktrans %}</dd>
+    <dd>{% trans 'It might happen for different reasons, but it always means there is a bug in the app.' %} <a class="btn btn-Smile" href="mailto:{{ android.author.contact }}">{% trans 'Contact us' %}</a> {% blocktrans %}Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it.{% endblocktrans %}</dd>
 
     <dt>{% blocktrans %}I'm a developer and I would like to help you.{% endblocktrans %}</dt>
-    <dd>{% blocktrans %}Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready.{% endblocktrans %} <a class="btn btn-Smile" href="https://github.com/SchoolIdolTomodachi/Sukutomo-Android">{% trans 'Contribute' %}</a><br>
-      {% blocktrans %}If you have no idea what we're talking about, don't panic. We can help you get started.{% endblocktrans %} <a class="btn btn-Smile" href="mailto:arukantara@schoolido.lu">{% trans 'Contact us' %}</a></dd>
+    <dd>{% blocktrans %}Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready.{% endblocktrans %} <a class="btn btn-Smile" href="{{ android.sources }}">{% trans 'Contribute' %}</a><br>
+      {% blocktrans %}If you have no idea what we're talking about, don't panic. We can help you get started.{% endblocktrans %} <a class="btn btn-Smile" href="mailto:{{ android.author.contact }}">{% trans 'Contact us' %}</a></dd>
 
   </dl>
   <br><br><br>

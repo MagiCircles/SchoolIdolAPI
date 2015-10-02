@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^api[/]+$', RedirectView.as_view(url='https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/LoveLive!-School-Idol-API', permanent=False), name='api'),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/app/(?P<app>[\w.-]+)[/]+$', api_views.app),
     url(r'^admin/', include(admin.site.urls)),
 ]

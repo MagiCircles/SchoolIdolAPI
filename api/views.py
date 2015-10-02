@@ -1,9 +1,12 @@
 import django_filters
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets, filters, permissions
+from django.http import HttpResponse, Http404
+from rest_framework.response import Response
+from rest_framework import viewsets, filters, permissions, status
+from rest_framework.decorators import api_view
 from api import permissions as api_permissions
-from api import serializers, models
+from api import serializers, models, raw
 from django.db.models import Count, Q
 
 class UserFilterBackend(filters.BaseFilterBackend):
@@ -141,3 +144,10 @@ class CardIdViewSet(CardViewSet):
         r = super(CardIdViewSet, self).list(request)
         r.data = [card['id'] for card in r.data]
         return r
+
+@api_view(['GET'])
+def app(request, app):
+    app = raw.app_data.get(app, None)
+    if app is None:
+        raise Http404
+    return Response(app, status=status.HTTP_200_OK)

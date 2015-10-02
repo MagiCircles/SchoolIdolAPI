@@ -20,7 +20,7 @@ from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
-from api import models
+from api import models, raw
 from web import forms, links, donations, transfer_code
 from utils import *
 import urllib, hashlib
@@ -1067,6 +1067,7 @@ def twitter(request):
 
 def android(request):
     context = globalContext(request)
+    context['android'] = raw.app_data['android']
     return render(request, 'android.html', context)
 
 def mapview(request):

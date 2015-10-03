@@ -1,21 +1,41 @@
 from django.db import models
 import api.models as api_models
+from urlparse import parse_qs
+from django.db.models import Q
 
 class Contest(models.Model):
-	begin = models.DateTimeField(null=True)
-	end = models.DateTimeField(null=True)
-	name = models.CharField(max_length=300)
-	best_girl = models.BooleanField(default=False)
-	best_card = models.BooleanField(default=False)
-	query = models.CharField(max_length=4092, null=True)
+    begin = models.DateTimeField(null=True)
+    end = models.DateTimeField(null=True)
+    name = models.CharField(max_length=300)
+    best_girl = models.BooleanField(default=False)
+    best_card = models.BooleanField(default=False)
+    query = models.CharField(max_length=4092, null=True)
 
-	def set_query(self, queryset):
-		from django.db import connection
-		sql, formatters = queryset._as_sql(connection)
-		self.query = sql % formatters
+    def alter_key(self, key):
+        if key == 'is_event':
+            return 'event__isnull'
+        return key
 
-	def get_query(self):
-		return api_models.Card.objects.raw(self.query)
+    def alter_value(self, key, value):
+        if key == 'is_event':
+            return bool(value)
+        return value
+
+    def queryset(self):
+        params = self.query
+        if self.pk == 0:
+            return api_models.Card.objects.all()
+        if params.startswith('?'):
+            params_parsed = parse_qs(params[1:])
+            params = {self.alter_key(key): self.alter_value(key, value[0]) for key, value in params_parsed.iteritems()}
+            queryset = api_models.Card.objects.filter(**params).all()
+            return queryset
+        else:
+            cards = [int(num) for num in params.split(',')]
+            condition = Q()
+            for card in cards:
+                condition = condition | Q(id=card)
+            return api_models.Card.objects.filter(condition)
 
 class Vote(models.Model):
 	contest = models.ForeignKey(Contest, related_name='votes')

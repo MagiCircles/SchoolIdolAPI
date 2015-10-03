@@ -19,19 +19,13 @@ class Command(BaseCommand):
         contest.name = 'Who\'s the best girl?'
         contest.begin = None
         contest.end = None
-        contest.set_query(am.Card.objects.all())
+        contest.query = ''
         contest.best_girl = True
         contest.best_card = True
         contest.save()
         for contest in contests:
             new_contest = ac.Contest(pk=contest['id'], name=contest['name'])
-            if contest['params'].startswith('?'):
-                params_parsed = parse_qs(contest['params'][1:])
-                params = {key: value[0] for key, value in params_parsed.iteritems()}
-                qs = am.Card.objects.filter(**params).all()
-                print params
-                new_contest.set_query(qs)
-                print new_contest.get_query()
+            new_contest.query = contest['params']
             new_contest.begin = dateparse.parse_date(contest['begin'])
             new_contest.end = dateparse.parse_date(contest['end'])
             results = contest['result'].split(',')

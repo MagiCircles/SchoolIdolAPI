@@ -11,10 +11,13 @@ def contest_view(request, contestid):
     contestid = int(contestid)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     if request.method == 'POST':
-        votesession = contest_models.Session.objects.get(token=request.session['token'])
-        if votesession:
-            choice = 'left' if request.POST.has_key('left') else 'right'
-            validate_vote(choice, votesession, contest)
+        try:
+            votesession = contest_models.Session.objects.get(token=request.session['token'])
+            if votesession:
+                choice = 'left' if request.POST.has_key('left') else 'right'
+                validate_vote(choice, votesession, contest)
+        except:
+            pass
     cards = get_votesession(request, contest)
     is_current = None
     delta = datetime.datetime.combine(contest.end, datetime.datetime.min.time()) - datetime.datetime.now() if is_current else None

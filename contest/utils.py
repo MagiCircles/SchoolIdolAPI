@@ -18,7 +18,7 @@ def get_current_contest():
     return contest_models.Contest.objects.filter(end__gte=now, begin__lte=now).first()
 
 def get_cards(contest):
-    queryset = contest.get_query()
+    queryset = contest.queryset()
     cards = [card for card in queryset]
     left = random.choice(cards)
     right = random.choice(cards)

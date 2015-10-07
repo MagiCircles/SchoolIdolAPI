@@ -207,6 +207,9 @@ def cards(request, card=None, ajax=False):
             cards = cards.filter(skill__exact=request.GET['skill'])
             request_get['skill'] = request.GET['skill']
 
+        if 'ids' in request.GET and request.GET['ids']:
+            cards= cards.filter(pk__in=request.GET['ids'].split(','))
+
         if 'is_promo' in request.GET and request.GET['is_promo'] == 'on':
             cards = cards.filter(is_promo__exact=True)
             request_get['is_promo'] = 'on'

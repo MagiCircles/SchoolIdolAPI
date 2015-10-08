@@ -433,8 +433,6 @@ class UserPreferences(models.Model):
         default = 'http://schoolido.lu/static/kotori.jpg'
         if self.twitter:
             default = 'http://schoolido.lu/avatar/twitter/' + self.twitter
-        elif self.facebook:
-            default = 'http://schoolido.lu/avatar/facebook/' + self.facebook
         return ("http://www.gravatar.com/avatar/"
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))

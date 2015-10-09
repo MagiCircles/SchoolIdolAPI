@@ -176,7 +176,7 @@ class VerificationRequestForm(ModelForm):
 
     class Meta:
         model = models.VerificationRequest
-        fields = ('verification', 'comment', 'images')
+        fields = ('verification', 'comment', 'images', 'allow_during_events')
 
 class StaffVerificationRequestForm(ModelForm):
     images = MultiImageField(min_num=0, max_num=10, required=False)
@@ -188,6 +188,7 @@ class StaffVerificationRequestForm(ModelForm):
 
 class StaffFilterVerificationRequestForm(ModelForm):
     OS = forms.ChoiceField(choices=BLANK_CHOICE_DASH + list(models.OS_CHOICES), required=False)
+    language = forms.ChoiceField(choices=BLANK_CHOICE_DASH + list(models.LANGUAGE_CHOICES), required=False)
 
     def __init__(self, *args, **kwargs):
         super(StaffFilterVerificationRequestForm, self).__init__(*args, **kwargs)
@@ -196,10 +197,13 @@ class StaffFilterVerificationRequestForm(ModelForm):
         self.fields['status'].required = False
         self.fields['status'].choices = BLANK_CHOICE_DASH + self.fields['status'].choices
         self.fields['verification'].required = False
+        self.fields['verification'].help_text = None
+        self.fields['allow_during_events'].help_text = None
+        self.fields['allow_during_events'].label = 'Allowed us to verify them during events'
 
     class Meta:
         model = models.VerificationRequest
-        fields = ('status', 'verified_by', 'verification')
+        fields = ('status', 'verified_by', 'verification', 'OS', 'language', 'allow_during_events')
 
 # class TeamForm(ModelForm):
 #     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)

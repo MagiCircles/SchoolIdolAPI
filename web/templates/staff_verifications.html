@@ -10,7 +10,9 @@
   <br><br>
   <h1 class="text-center">Staff Verifications <small>{{ total }}</small></h1>
   <br>
-  <form method="get">
+  <a href="#search" class="btn btn-Cool btn-lg btn-block" data-toggle="collapse">Search/Filter verifications...</a>
+  <form method="get" id="search" class="collapse">
+    <br>
     {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
     <div class="text-right">
       <input type="submit" class="btn btn-lg btn-Cool" value="{% trans 'Search' %}" />

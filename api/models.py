@@ -471,5 +471,6 @@ class VerificationRequest(models.Model):
     verified_by = models.ForeignKey(User, related_name='verificationsdone', null=True)
     images = models.ManyToManyField(UserImage, related_name="request")
     verification_comment = models.TextField(_('Comment'), null=True, blank=True)
+    allow_during_events = models.BooleanField(_('Allow us to verify your account during events'), default=False, help_text=_('Check this only if you don\'t care about the current event. You\'ll get verified faster.'))
 
 admin.site.register(VerificationRequest)

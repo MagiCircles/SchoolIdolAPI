@@ -5,7 +5,7 @@
 
 {% block js %}
 {% if edit %}
-<script src="/static/js/editaccount.js?1"></script>
+<script src="/static/js/editaccount.js?2"></script>
 {% endif %}
 {% endblock %}
 {% block content %}
@@ -94,7 +94,7 @@
 	    <li>
 	      <strong>{% trans 'No matter when you send your email, your account will be verified anytime when there is no event going on.' %}</strong><br>
 	      <ul>
-		<li>{% blocktrans %}If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Say so in your message.{% endblocktrans %}</li>
+		<li>{% blocktrans %}If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Check the box below.{% endblocktrans %}</li>
 		<li>{% trans 'If you still play between events, we can notify you before we start the process. Ask for it in your message.' %}</li>
 	      </ul><br></li>
 	    <li>{% blocktrans %}We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else{% endblocktrans %} :)</li>

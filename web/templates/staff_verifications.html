@@ -74,7 +74,7 @@
     <li><a href="{{ current_url|nextpage:page }}">Next</a></li>
   </ul>
 
-  {% include 'disqus.html' %}
+  {% include 'disqus.html' with disqus_identifier='staff-verifications' %}
 </div>
 
 {% endblock %}

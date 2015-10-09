@@ -884,6 +884,7 @@ def editaccount(request, account):
                 verification.verified_by = None
                 verification.verification_comment = None
                 verification.account = owned_account
+                verification.creation = timezone.now()
                 verification.status = 1
                 verification.save()
                 for image in form_verification.cleaned_data['images']:

@@ -109,8 +109,6 @@ $(document).ready(function() {
     formloaders();
 });
 
-var disqus_developer = 1;
-var disqus_shortname = 'schoolidol';
 (function () {
     var s = document.createElement('script'); s.async = true;
     s.type = 'text/javascript';

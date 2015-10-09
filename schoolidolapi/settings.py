@@ -132,6 +132,9 @@ CORS_URLS_REGEX = r'^/api/.*$'
 # If empty, importcards will not use TinyPNG
 TINYPNG_API_KEY = ''
 
+AWS_PASSWORD_EMAIL = 'password@schoolido.lu'
+DISQUS_STAFF = 'sukutomostaff'
+
 try:
     from local_settings import *
 except ImportError, e:

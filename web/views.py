@@ -1130,6 +1130,7 @@ def staff_verifications(request):
     context['page'] = page + 1
     context['verifications'] = context['verifications'][(page * page_size):((page * page_size) + page_size)]
     context['form'] = forms.StaffFilterVerificationRequestForm(request.GET)
+    context['disqus_shortname'] = settings.DISQUS_STAFF
     return render(request, 'staff_verifications.html', context)
 
 def staff_verification(request, verification):

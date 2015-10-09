@@ -22,6 +22,10 @@
 	<p class="padding50 verified{{ verification.verification }}">
 	  <i class="flaticon-star"></i>
 	  {{ verification.verification|verifiedToString }}
+	  {% if verification.allow_during_events %}
+	  <br>
+	  <small><small><small>Allowed to be verified during events</small></small></small>
+	  {% endif %}
 	</p>
 	<p class="alert-{% if verification.status == 0 %}danger{% elif verification.status == 3 %}success{% else %}info{% endif %} padding50">{{ verification.status|verificationStatusToString }}</p>
 	<p class="padding50">

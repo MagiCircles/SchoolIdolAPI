@@ -1,6 +1,6 @@
     <div class="{% if not nomargin %}margin20{% endif %}" style="min-height: 300px" id="disqus_thread"></div>
     <script type="text/javascript">
-      var disqus_shortname = 'schoolidol';
+      var disqus_shortname = '{% if disqus_shortname %}{{ disqus_shortname }}{% else %}schoolidol{% endif %}';
       {% if disqus_identifier %}
       var disqus_identifier = '{{ disqus_identifier }}';
       {% endif %}

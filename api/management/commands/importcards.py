@@ -14,6 +14,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        global local, redownload, noimages
         local = 'local' in args
         redownload = 'redownload' in args
         noimages = 'noimages' in args

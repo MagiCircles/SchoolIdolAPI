@@ -80,6 +80,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
+        global local, redownload
         local = 'local' in args
         redownload = 'redownload' in args
 

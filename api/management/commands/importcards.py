@@ -8,6 +8,7 @@ from api.management.commands.importcards_japanese import importcards_japanese
 from api.management.commands.import_transparent_images import import_transparent_images
 from api.management.commands.import_video_stories import import_video_stories
 from api.management.commands.import_idols import import_idols
+from api.management.commands.import_songs import import_songs
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -34,5 +35,6 @@ class Command(BaseCommand):
             import_transparent_images()
         import_video_stories()
         import_idols()
+        import_songs()
 
         import_raw_db()

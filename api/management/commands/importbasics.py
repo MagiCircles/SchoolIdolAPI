@@ -29,6 +29,8 @@ japantz = pytz.timezone('Asia/Tokyo')
 
 types = {'Normals': 'N', 'Rares': 'R', 'Super Rares': 'SR', 'Ultra Rares': 'UR'}
 specials = {'None': 0, 'Promo Cards': 1, 'Special Cards': 2}
+attribute_colors = {'blue': 'Cool', 'red': 'Smile', 'green': 'Pure', 'purple': 'All'}
+attribute_jphexcolors = {'#7EF': 'Cool', '#FCE': 'Smile', '#7FA': 'Pure', '#d8bff8': 'All'}
 
 local = False
 redownload = False
@@ -48,7 +50,7 @@ def clean(string, removecharacters=None):
         return None
     if removecharacters is None:
         removecharacters = '\'\"|[]'
-    return removeHTML(str(string)).strip().translate(None, removecharacters).replace(u'\xc2', '').replace(u'\xa0', '')
+    return removeHTML(str(string.replace('”', '"').replace('！', '!').replace('？', '?').replace('～', '~'))).strip().translate(None, removecharacters).replace(u'\xc2', '').replace(u'\xa0', '')
 
 def optInt(i):
     try:

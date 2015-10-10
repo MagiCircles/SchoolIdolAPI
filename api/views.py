@@ -59,6 +59,29 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = '__all__'
     ordering = ('id',)
 
+class SongFilter(django_filters.FilterSet):
+    is_event = django_filters.MethodFilter(action='filter_is_event')
+
+    def filter_is_event(self, queryset, value):
+        return queryset.filter(event__isnull=(False if value.title() == 'True' else True))
+
+    class Meta:
+        model = models.Song
+        filter_fields = ('attribute', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'available')
+
+class SongViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows songs to be viewed.
+    """
+    queryset = models.Song.objects.all()
+    serializer_class = serializers.SongSerializer
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    search_fields = ('name', 'romaji_name', 'translated_name', 'event__name')
+    filter_class = SongFilter
+    ordering_fields = '__all__'
+    ordering = ('-available', 'daily_rotation', 'daily_rotation_position', 'rank', 'name')
+    lookup_field = 'name'
+
 class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows idols to be viewed.
@@ -81,6 +104,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ('japanese_name', 'english_name')
     ordering_fields = '__all__'
     ordering = ('beginning',)
+    lookup_field = 'japanese_name'
 
 class AccountFilterBackend(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):

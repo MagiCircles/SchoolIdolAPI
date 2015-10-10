@@ -66,6 +66,7 @@ class EventSerializer(serializers.ModelSerializer):
     japan_current = serializers.SerializerMethodField()
     world_current = serializers.SerializerMethodField()
     cards = serializers.SerializerMethodField()
+    song = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
 
     def get_image(self, obj):
@@ -85,9 +86,14 @@ class EventSerializer(serializers.ModelSerializer):
         cards = [card.pk for card in cards]
         return cards
 
+    def get_song(self, obj):
+        try: return obj.songs.all()[0].name
+        except: return None
+
     class Meta:
         model = models.Event
-        fields=('japanese_name', 'romaji_name', 'english_name', 'image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'cards', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note')
+        lookup_field = 'japanese_name'
+        fields = ('japanese_name', 'romaji_name', 'english_name', 'image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'cards', 'song', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note')
 
 class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()
@@ -202,6 +208,14 @@ class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Card
         fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards')
+
+class SongSerializer(serializers.ModelSerializer):
+    event = EventSerializer()
+
+    class Meta:
+        model = models.Song
+        fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available')
+        lookup_field = 'name'
 
 class CenterSerializer(serializers.ModelSerializer):
     class Meta:

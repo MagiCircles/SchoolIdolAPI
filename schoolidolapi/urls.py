@@ -11,6 +11,7 @@ router.register(r'cards', api_views.CardViewSet)
 router.register(r'idols', api_views.IdolViewSet)
 router.register(r'cardids', api_views.CardIdViewSet)
 router.register(r'events', api_views.EventViewSet)
+router.register(r'songs', api_views.SongViewSet)
 
 router.register(r'users', api_views.UserViewSet)
 router.register(r'ownedcards', api_views.OwnedCardViewSet, base_name='ownedcard')

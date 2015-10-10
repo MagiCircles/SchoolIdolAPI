@@ -474,3 +474,31 @@ class VerificationRequest(models.Model):
     allow_during_events = models.BooleanField(_('Allow us to verify your account during events'), default=False, help_text=_('Check this only if you don\'t care about the current event. You\'ll get verified faster.'))
 
 admin.site.register(VerificationRequest)
+
+class Song(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    romaji_name = models.CharField(max_length=100, blank=True, null=True)
+    translated_name = models.CharField(max_length=100, blank=True, null=True)
+    attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
+    BPM = models.PositiveIntegerField(null=True, blank=True)
+    time = models.PositiveIntegerField(null=True, blank=True)
+    event = models.ForeignKey(Event, related_name='songs', null=True, blank=True, on_delete=models.SET_NULL)
+    rank = models.PositiveIntegerField(null=True, blank=True)
+    daily_rotation = models.CharField(max_length=2, null=True, blank=True)
+    daily_rotation_position = models.PositiveIntegerField(blank=True, null=True)
+    image = models.ImageField(upload_to='songs/', null=True, blank=True)
+    easy_difficulty = models.PositiveIntegerField(null=True, blank=True)
+    easy_notes = models.PositiveIntegerField(null=True, blank=True)
+    normal_difficulty = models.PositiveIntegerField(null=True, blank=True)
+    normal_notes = models.PositiveIntegerField(null=True, blank=True)
+    hard_difficulty = models.PositiveIntegerField(null=True, blank=True)
+    hard_notes = models.PositiveIntegerField(null=True, blank=True)
+    expert_difficulty = models.PositiveIntegerField(null=True, blank=True)
+    expert_random_difficulty = models.PositiveIntegerField(null=True, blank=True)
+    expert_notes = models.PositiveIntegerField(null=True, blank=True)
+    available = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name
+
+admin.site.register(Song)

@@ -497,6 +497,7 @@ class Song(models.Model):
     expert_random_difficulty = models.PositiveIntegerField(null=True, blank=True)
     expert_notes = models.PositiveIntegerField(null=True, blank=True)
     available = models.BooleanField(default=True)
+    itunes_id = models.PositiveIntegerField(null=True, blank=True)
 
     def __unicode__(self):
         return self.name

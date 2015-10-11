@@ -80,6 +80,18 @@ def import_songs():
                         print 'Done'
                         song.save()
                     f_song.close()
+                if redownload or song.itunes_id is None:
+                    print '  Import itunes song id...',
+                    url = u'https://itunes.apple.com/search?term=' + song.name
+                    response = urllib.urlopen(url.encode("UTF-8"))
+                    data = json.loads(response.read())
+                    if 'results' in data and len(data['results']) and 'trackId' in data['results'][0]:
+                        song.itunes_id = data['results'][0]['trackId']
+                        print 'Done.'
+                    else:
+                        song.itunes_id = 0
+                        print 'None found.'
+                    song.save()
                 songs.append(song)
     f.close()
 

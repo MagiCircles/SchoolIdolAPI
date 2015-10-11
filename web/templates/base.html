@@ -57,7 +57,7 @@
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		{% include 'include/avatar.html' with av_user=user av_size=10 av_image_size=22 %}
 		&nbsp;
-		{{ user.username }}
+		<span class="hidden-sm">{{ user.username }}</span>
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
 		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>

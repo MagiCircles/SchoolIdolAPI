@@ -1,5 +1,6 @@
 from django import template
 from api import models
+from django.utils.translation import ugettext_lazy as _, string_concat
 
 register = template.Library()
 
@@ -30,7 +31,19 @@ def skillToFlaticon(skill):
         return skillsIcons[skill]
     return 'skill'
 
+difficultyStrings = {
+    'easy': _('Easy'),
+    'normal': _('Normal'),
+    'hard': _('Hard'),
+    'expert': _('Expert'),
+    'expert_random': _('Random'),
+}
+
+def difficultyToString(difficulty):
+    return difficultyStrings[difficulty]
+
 register.filter('verifiedToString', verifiedToString)
+register.filter('difficultyToString', difficultyToString)
 register.filter('verificationStatusToString', models.verificationStatusToString)
 register.filter('playWithToString', playWithToString)
 register.filter('activityMessageToString', models.activityMessageToString)

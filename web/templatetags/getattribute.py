@@ -16,8 +16,10 @@ def getattribute(value, arg):
         return value[arg]
     elif numeric_test.match(str(arg)) and len(value) > int(arg):
         return value[int(arg)]
-    else:
-        return settings.TEMPLATE_STRING_IF_INVALID
+    elif str(arg) in value:
+        return value.get(arg)
+    try: return value[arg]
+    except: return settings.TEMPLATE_STRING_IF_INVALID
 
 register.filter('getattribute', getattribute)
 

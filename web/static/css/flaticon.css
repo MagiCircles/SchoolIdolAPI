@@ -9,13 +9,12 @@
 	font-style: normal;
 }
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
         font-size: 20px;
-	font-style: normal;
-	margin-left: 20px;
-}
-.flaticon-EN:before {
+font-style: normal;
+margin-left: 20px;
+}.flaticon-en:before {
 	content: "\e000";
 }
 .flaticon-achievement:before {
@@ -138,69 +137,75 @@
 .flaticon-fingers:before {
 	content: "\e028";
 }
-.flaticon-perfectlock:before {
+.flaticon-pause:before {
 	content: "\e029";
 }
-.flaticon-pictures:before {
+.flaticon-perfectlock:before {
 	content: "\e02a";
 }
-.flaticon-present:before {
+.flaticon-pictures:before {
 	content: "\e02b";
 }
-.flaticon-profile:before {
+.flaticon-play:before {
 	content: "\e02c";
 }
-.flaticon-promo:before {
+.flaticon-present:before {
 	content: "\e02d";
 }
-.flaticon-sausage:before {
+.flaticon-profile:before {
 	content: "\e02e";
 }
-.flaticon-scoreup:before {
+.flaticon-promo:before {
 	content: "\e02f";
 }
-.flaticon-search:before {
+.flaticon-sausage:before {
 	content: "\e030";
 }
-.flaticon-settings:before {
+.flaticon-scoreup:before {
 	content: "\e031";
 }
-.flaticon-skill:before {
+.flaticon-search:before {
 	content: "\e032";
 }
-.flaticon-song:before {
+.flaticon-settings:before {
 	content: "\e033";
 }
-.flaticon-KR:before {
+.flaticon-skill:before {
 	content: "\e034";
 }
-.flaticon-star-empty:before {
+.flaticon-song:before {
 	content: "\e035";
 }
-.flaticon-star:before {
+.flaticon-KR:before {
 	content: "\e036";
 }
-.flaticon-idolized:before {
+.flaticon-star-empty:before {
 	content: "\e037";
 }
-.flaticon-Android:before {
+.flaticon-star:before {
 	content: "\e038";
 }
-.flaticon-TW:before {
+.flaticon-idolized:before {
 	content: "\e039";
 }
-.flaticon-thumbs:before {
+.flaticon-Android:before {
 	content: "\e03a";
 }
-.flaticon-times:before {
+.flaticon-TW:before {
 	content: "\e03b";
 }
-.flaticon-trade:before {
+.flaticon-thumbs:before {
 	content: "\e03c";
 }
-.flaticon-trophy:before {
+.flaticon-times:before {
 	content: "\e03d";
 }
-.flaticon-users:before {
+.flaticon-trade:before {
 	content: "\e03e";
+}
+.flaticon-trophy:before {
+	content: "\e03f";
+}
+.flaticon-users:before {
+	content: "\e040";
 }

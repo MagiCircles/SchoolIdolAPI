@@ -499,6 +499,14 @@ class Song(models.Model):
     available = models.BooleanField(default=True)
     itunes_id = models.PositiveIntegerField(null=True, blank=True)
 
+    @property
+    def expert_random_notes(self):
+        return self.expert_notes
+
+    @property
+    def japanese_attribute(self):
+        return japanese_attribute(self.attribute)
+
     def __unicode__(self):
         return self.name
 

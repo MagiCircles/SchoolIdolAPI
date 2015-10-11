@@ -205,6 +205,31 @@ class StaffFilterVerificationRequestForm(ModelForm):
         model = models.VerificationRequest
         fields = ('status', 'verified_by', 'verification', 'OS', 'language', 'allow_during_events')
 
+class FilterSongForm(ModelForm):
+    search = forms.CharField(required=False, label=_('Search'))
+    ordering = forms.ChoiceField(choices=[
+        ('latest', _('Latest unlocked songs')),
+        ('name', _('Song name')),
+        ('BPM', _('Beats per minute')),
+        ('time', _('Song length')),
+        ('rank', _('Rank to unlock song')),
+        ('hard_notes', _('Notes in Hard song')),
+        ('expert_notes', _('Notes in Expert song')),
+    ], initial='latest', required=False, label=_('Ordering'))
+    reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
+    is_daily_rotation = forms.NullBooleanField(required=False, label=_('Daily rotation'))
+    is_event = forms.NullBooleanField(required=False, label=_('Event'))
+    available = forms.NullBooleanField(required=False, label=_('Available'))
+
+    def __init__(self, *args, **kwargs):
+        super(FilterSongForm, self).__init__(*args, **kwargs)
+        for field in self.fields.keys():
+            self.fields[field].widget.attrs['placeholder'] = self.fields[field].label
+
+    class Meta:
+        model = models.Song
+        fields = ('search', 'attribute', 'is_daily_rotation', 'is_event', 'available', 'ordering', 'reverse_order')
+
 # class TeamForm(ModelForm):
 #     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
 #     card1 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)

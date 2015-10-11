@@ -212,6 +212,24 @@ nav + main {
     -ms-filter: "FlipH";
 }
 
+.song {
+    table {
+	margin: 0 3%;
+	width: 94%;
+    }
+    .difficulty-buttons {
+	padding-bottom: 5%;
+    }
+    .level-stars {
+	.flaticon-star {
+	    &:nth-child(-n+3) { color: #d8fd53; }
+	    &:nth-child(n+4):nth-child(-n+6) { color: #f7fb34; }
+	    &:nth-child(n+7):nth-child(-n+9) { color: #fbaac3; }
+	    &:nth-child(n+10) { color: #f33256; }
+	}
+    }
+}
+
 .card {
     .level-buttons {
 	padding-bottom: 5%;
@@ -653,6 +671,13 @@ nav {
     margin-right: 0;
 }
 .nomargin { margin: 0; }
+
+.text-bold {
+    font-weight: bold;
+}
+.text-nobold {
+    font-weight: normal;
+}
 
 .tiny { font-size: 0.7em; }
 .bigger { font-size: 1.5em; }

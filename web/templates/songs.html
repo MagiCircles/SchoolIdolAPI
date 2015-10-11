@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% load imageurl %}
+{% load getattribute %}
+
+{% block title %}{% trans 'Songs' %}{% if single %}: {{ single }}{% endif %}{% endblock %}
+{% block js %}
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_attribute'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for i, attribute in filter_form.fields.attribute.choices %}
+      {% if i != '' %}
+      '{{ i }}': '/static/{{ i }}.png',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_is_daily_rotation'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Only' %}',
+      '3': '{% trans 'None' %}',
+    }
+  });
+  cuteform($('#id_is_event'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Only' %}',
+      '3': '{% trans 'None' %}',
+    }
+  });
+  cuteform($('#id_available'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Yes' %}',
+      '3': '{% trans 'No' %}',
+    }
+  });
+
+function songs_stats_buttons() {
+    {% if songs %}
+    {% for difficulty in songs.0.percent_stats.keys %}
+    $('.btn.{{ difficulty }}').unbind('click');
+    $('.btn.{{ difficulty }}').click(function() {
+	song = $(this).closest('.song')
+	{% for sub_difficulty in songs.0.percent_stats.keys %}
+	song.find('.statistics_{{ sub_difficulty }}').{% if sub_difficulty == difficulty %}show{% else %}hide{% endif %}();
+	{% endfor %}
+    })
+    {% endfor %}
+    {% endif %}
+}
+
+</script>
+<script src="/static/js/songs.js"></script>
+{% endblock %}
+
+{% block shareimage %}{% if single %}http://schoolido.lu{{ single|imageurl:'song_idolized_image' }}{% else %}http://schoolido.lu/static/songs_screenshot.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}http://schoolido.lu{{ single|imageurl:'song_idolized_image' }}{% else %}http://schoolido.lu/static/songs_screenshot.png{% endif %}{% endblock %}
+
+{% block content %}
+{% if not single %}
+{% if show_filter_button %}
+<div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
+  <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+    <form method="GET">
+      <h4>{% trans 'Search' %}</h4>
+      <div class="section search">
+	{{ filter_form.search }}
+      </div>
+      <h4>{% trans 'Order' %}</h4>
+      <div class="section order">
+	{{ filter_form.ordering }}
+	<br>
+	<div>
+	  <div class="pull-right">
+	    {{ filter_form.reverse_order }}
+	  </div>
+	  <label for="{{ filter_form.reverse_order.id_for_label }}">{{ filter_form.reverse_order.label }}</label>
+	</div>
+      </div>
+      <h4>{% trans 'Filter' %}</h4>
+      <div class="section filter">
+	{% for field in filter_form.fields %}
+	{% if field != 'search' and field != 'ordering' and field != 'reverse_order' %}
+	{% with f=filter_form|getattribute:field %}
+	<label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
+	{{ f }}<br><br>
+	{% endwith %}
+	{% endif %}
+	{% endfor %}
+      </div>
+      <div class="section submit">
+	<button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
+	<br><br><br><br><br>
+      </div>
+    </form>
+  </nav>
+  <div id="page-content-wrapper">
+    <a href="#" id="togglebutton" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+      <i class="flaticon-search"></i>
+      <i class="flaticon-toggler hidder"></i>
+    </a>
+{% endif %}
+    {% endif %}
+    {% include "songsPage.html" %}
+    {% if not single %}
+  </div> <!-- page-content-wrapper -->
+</div> <!-- wrapper -->
+{% endif %}
+{% endblock %}

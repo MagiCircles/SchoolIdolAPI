@@ -27,6 +27,13 @@ def eventimageurl(event):
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
     return ''
 
+def songimageurl(song):
+    if song.image:
+        if settings.DEBUG:
+            song.image = unicode(song.image).replace('web/', '')
+        return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(song.image))
+    return '/static/defaultsong.png'
+
 def userimage(image):
     return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(image))
 
@@ -60,5 +67,6 @@ register.filter('userimage', userimage)
 register.filter('standimage', standimage)
 register.filter('chibiimage', chibiimage)
 register.filter('eventimageurl', eventimageurl)
+register.filter('songimageurl', songimageurl)
 register.filter('linkimage', linkimage)
 register.filter('linkurl', linkurl)

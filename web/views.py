@@ -24,9 +24,10 @@ from api import models, raw
 from web import forms, links, donations, transfer_code
 from utils import *
 import urllib, hashlib
-import datetime
+import datetime, time
 import random
 import json
+import collections
 
 def globalContext(request):
     context ={
@@ -1207,3 +1208,95 @@ def ajaxverification(request, verification, status):
         verification.verified_by = request.user
     verification.save()
     return HttpResponse('status changed')
+            
+def songs(request, song=None, ajax=False):
+    page = 0
+    context = globalContext(request)
+
+    if song is None:
+        songs = models.Song.objects.filter()
+        if 'search' in request.GET:
+            if request.GET['search']:
+                terms = request.GET['search'].split(' ')
+                for term in terms:
+                    songs = songs.filter(Q(name__icontains=term)
+                                         | Q(romaji_name__icontains=term)
+                                         | Q(translated_name__icontains=term)
+                                         | Q(event__japanese_name__icontains=term)
+                                         | Q(event__romaji_name__icontains=term)
+                                         | Q(event__english_name__icontains=term)
+                                     )
+        if 'attribute' in request.GET and request.GET['attribute']:
+            songs = songs.filter(attribute__exact=request.GET['attribute'])
+        if 'is_daily_rotation' in request.GET and request.GET['is_daily_rotation']:
+            if request.GET['is_daily_rotation'] == '2':
+                songs = songs.filter(daily_rotation__isnull=False)
+            elif request.GET['is_daily_rotation'] == '3':
+                songs = songs.filter(daily_rotation__isnull=True)
+        if 'is_event' in request.GET and request.GET['is_event']:
+            if request.GET['is_event'] == '2':
+                songs = songs.filter(event__isnull=False)
+            elif request.GET['is_event'] == '3':
+                songs = songs.filter(event__isnull=True)
+        if 'available' in request.GET and request.GET['available']:
+            if request.GET['available'] == '2':
+                songs = songs.filter(available=True)
+            elif request.GET['available'] == '3':
+                songs = songs.filter(available=False)
+
+        reverse = ('reverse_order' in request.GET and request.GET['reverse_order']) or not request.GET or len(request.GET) == 1
+        ordering = request.GET['ordering'] if 'ordering' in request.GET and request.GET['ordering'] else 'latest'
+        prefix = '-' if reverse else ''
+        if ordering == 'latest':
+            songs = songs.order_by('-available', 'daily_rotation', 'daily_rotation_position', prefix + 'rank', 'name')
+        else:
+            songs = songs.order_by(prefix + ordering)
+
+        context['total_results'] = songs.count()
+
+        page_size = 12
+        if 'page' in request.GET and request.GET['page']:
+            page = int(request.GET['page']) - 1
+            if page < 0:
+                page = 0
+        songs = songs.distinct()
+        songs = songs.select_related('performer', 'parent')[(page * page_size):((page * page_size) + page_size)]
+        context['total_songs'] = len(songs)
+        context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
+        context['page'] = page + 1
+        context['page_size'] = page_size
+    else:
+        context['total_results'] = 1
+        songs = [get_object_or_404(models.Song, name=song)]
+        context['single'] = songs[0]
+
+    context['show_filter_button'] = False if 'single' in context and context['single'] else True
+    context['songs'] = songs
+    if len(request.GET) > 1 or (len(request.GET) == 1 and 'page' not in request.GET):
+        context['filter_form'] = forms.FilterSongForm(request.GET)
+    else:
+        context['filter_form'] = forms.FilterSongForm()
+    context['current'] = 'songs'
+    context['show_no_result'] = not ajax
+    context['show_search_results'] = bool(request.GET)
+
+    f = open('cardsinfo.json', 'r')
+    cardsinfo = json.load(f)
+    f.close()
+    max_stats = cardsinfo['songs_max_stats']
+    for song in songs:
+        song.length = time.strftime('%M:%S', time.gmtime(song.time))
+        song.percent_stats = collections.OrderedDict()
+        song.percent_stats['easy'] = ((song.easy_notes if song.easy_notes else 0) / max_stats) * 100
+        song.percent_stats['normal'] = ((song.normal_notes if song.normal_notes else 0) / max_stats) * 100
+        song.percent_stats['hard'] = ((song.hard_notes if song.hard_notes else 0) / max_stats) * 100
+        song.percent_stats['expert'] = ((song.expert_notes if song.expert_notes else 0) / max_stats) * 100
+        song.percent_stats['expert_random'] = ((song.expert_notes if song.expert_notes else 0) / max_stats) * 100
+    context['max_stats'] = max_stats
+
+    if ajax:
+        return render(request, 'songsPage.html', context)
+    return render(request, 'songs.html', context)
+
+def ajaxsongs(request):
+    return songs(request, ajax=True)

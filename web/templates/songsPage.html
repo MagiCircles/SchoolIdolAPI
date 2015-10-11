@@ -1,0 +1,281 @@
+{% load i18n %}
+{% load l10n %}
+{% load mod %}
+{% load times %}
+{% load imageurl %}
+{% load getattribute %}
+{% load choicesToString %}
+{% get_current_language as LANGUAGE_CODE %}
+
+    {% if songs and total_songs != 0 %}
+      {% if show_total_results and total_songs > 0 and not ajax %}
+      <h4 class="padding20 nomargin">
+	{% blocktrans count counter=total_results %}{{ counter }} song matches your search:{% plural %}{{ counter }} songs match your search:{% endblocktrans %}
+      </h4>
+      {% endif %}
+      <div class="row">
+      {% for song in songs %}
+      {% if forloop.counter0|mod:4 %}
+    </div><div class="row">
+      {% endif%}
+      <div class="col-sm-{% if single %}12{% else %}3{% endif %}">
+	<div class="song song-{{ song.attribute }} song-{{ song.rarity }}" id="{{ song.id }}" data-attribute="{{ song.attribute }}" data-rarity="{{ song.rarity }}">
+	  <div class="panel panel-{{ song.attribute }}">
+	    <div class="panel-body">
+	      {% if single %}
+	      <div class="row">
+		<div class="col-md-4">
+	      {% endif %}
+	      {% if total_songs > 1 %}
+	      <a href="/songs/{{ song.name }}/" data-target="#collapseMore{{ song.id }}">
+		{% endif %}
+		<img src="{{ song|songimageurl }}" alt="{{ song.name }}" width="100%" />
+		{% if total_songs > 1 %}</a>{% endif %}
+	      {% if single %}
+		</div>
+		<div class="col-md-8">
+	      {% endif %}
+	      <div class="more {% if ajax or total_songs > 3 %}collapse{% else %}already_collapsed{% endif %}" id="collapseMore{{ song.id }}">
+		<table class="table">
+		  <tbody>
+		    <tr>
+		      <th colspan="2" class="text-center text-nobold">
+			<h4 class="text-bold">{{ song.name }}
+			  <a href="/songs/{{ song.name|urlencode }}" target="_blank"><small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
+			</h4>
+			{% if LANGUAGE_CODE != 'ja' %}
+			{% if song.romaji_name %}{{ song.romaji_name }}<br>{% endif %}
+			{% if song.translated_name %}<small><i>{{ song.translated_name }}</i></small>{% endif %}
+			{% endif %}
+		      </th>
+		    </tr>
+		    <tr>
+		      <td colspan="2">
+			<div class="text-center difficulty-buttons">
+			  <div class="btn-group btn-group-justified" data-toggle="buttons">
+			    {% for difficulty, stat in song.percent_stats.items %}
+			    {% if difficulty != 'expert_random' or song.expert_random_difficulty %}
+			    {% if difficulty != 'expert' or song.expert_difficulty %}
+			    <label class="btn btn-{{ song.attribute }} {{ difficulty }}{% if difficulty == 'hard' %} active{% endif %}">
+			      <input type="radio" name="options" autocomplete="off"{% if difficulty == 'hard' %} selected{% endif %}> {% trans difficulty|difficultyToString %}
+			    </label>
+			    {% endif %}
+			    {% endif %}
+			    {% endfor %}
+			  </div>
+			</div>
+			{% for difficulty, stat in song.percent_stats.items %}
+			{% if stat %}
+			<div class="statistics_{{ difficulty }}"{% if difficulty != 'hard' %} style="display: none;"{% endif %}>
+			  <div class="row">
+			    {% with difficulty|add:"_notes" as valuenow %}
+			    <div class="col-xs-3 text-left">
+			      <i class="flaticon-combo"></i>&nbsp;{% trans 'Notes' %}
+			    </div>
+			    <div class="col-xs-7">
+			      <div class="progress">
+				<div class="progress-bar progress-bar-{{ song.attribute }}"
+				     role="progressbar"
+				     aria-valuenow="{{ song|getattribute:valuenow }}"
+				     aria-valuemin="0"
+				     aria-valuemax="{{ max_stats }}"
+				     style="width: {% localize off %}{{ stat }}{% endlocalize %}%">
+				  <span class="sr-only">{{ stat }}%</span>
+				</div>
+			      </div> <!-- progress -->
+			    </div>
+			    <div class="col-xs-2 text-{{ song.attribute }}">{{ song|getattribute:valuenow }}</div>
+			    {% endwith %}
+			  </div>
+			  <div class="row">
+			    {% with difficulty|add:"_difficulty" as valuenow %}
+			    {% with song|getattribute:valuenow as difficulty_level %}
+			    <div class="col-xs-3 text-left">
+			      <i class="flaticon-star"></i>&nbsp;{% trans 'Level' %}
+			    </div>
+			    <div class="col-xs-9 level-stars">
+			      {% for i in difficulty_level|times %}<i class="flaticon-star"></i>&nbsp;{% endfor %}
+			    </div>
+			    {% endwith %}
+			    {% endwith %}
+			  </div>
+			</div>
+			{% endif %}
+			{% endfor %}
+		      </td>
+		    </tr>
+		    <tr>
+		      <th>{% trans 'Attribute' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <img src="/static/{{ song.attribute }}.png" class="attribute" width="20px">
+			</div>
+			{{ song.japanese_attribute }}
+			{{ song.attribute }}
+			<span class="tiny"><a target="_blank" href="/songs/?search=&attribute={{ song.attribute }}">
+			    <i class="flaticon-link"></i></a></span>
+		      </td>
+		    </tr>
+		    {% if song.rank %}
+		    <tr>
+		      <th>{% trans 'Unlock' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-max-level"></i>
+			</div>
+			{% trans 'Rank' %} {{ song.rank }}
+		      </td>
+		    </tr>
+		    {% endif %}
+		    <tr>
+		      <th>{% trans 'Beats per minute' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-hp"></i>
+			</div>
+			{{ song.BPM }}
+		      </td>
+		    </tr>
+		    <tr>
+		      <th>{% trans 'Length' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-times"></i>
+			</div>
+			{{ song.length }}
+		      </td>
+		    </tr>
+		    {% if song.event %}
+		    <tr>
+		      <th>{% trans 'Event' %}</th>
+		      <td>
+			<a href="/events/{{ song.event.japanese_name|urlencode }}/" target="_blank">
+			  <div class="pull-right">
+			    {% if song.event.image %}
+			    <img src="{{ song.event|eventimageurl }}" alt="{{ song.event.japanese_name }}" width="100">
+			    {% else %}
+			    <i class="flaticon-event"></i>
+			    {% endif %}
+			  </div>
+			  {{ song.event.japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if song.event.english_name and song.event.english_name != song.event.japanese_name %}<br>{{ song.event.english_name }}{% endif %}
+			</a>
+		      </td>
+		    </tr>
+		    {% endif %}
+		    {% if song.daily_rotation %}
+		    <tr>
+		      <th>{% trans 'Daily rotation' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-date"></i>
+			</div>
+			{{ song.daily_rotation }} - {{ song.daily_rotation_position }}
+		      </td>
+		    </tr>
+		    {% endif %}
+		    <tr>
+		      <th>{% trans 'Currently available' %}</th>
+		      <td>
+			<div class="pull-right">
+			  <i class="flaticon-{% if song.available %}checked{% else %}delete{% endif %}"></i>
+			</div>
+			{% if song.available %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}
+		      </td>
+		    </tr>
+		    <tr>
+		      <th><small>{% trans 'Sources' %}</small></th>
+		      <td>
+			<small>
+			  <a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">情報まとめwiki</a>
+			</small>
+		      </td>
+		    </tr>
+		    {% if not single %}
+		    <tr>
+		      <th>{% trans 'Comments' %}</th>
+		      <td>
+			<a href="http://schoolido.lu/songs/{{ song.name|urlencode }}/#disqus_thread" data-disqus-identifier="song-{{ song.id }}" target="_blank">Comments</a>
+			<div class="pull-right">
+			  <i class="flaticon-edit"></i>
+			</div>
+		      </td>
+		    </tr>
+		    {% endif %}
+		    {% if song.itunes_id %}
+		    <tr style="display: none" class="itunes">
+		      <td colspan="2">
+			<div class="pull-right">
+			  <img src="" alt="{{ song.name }}" class="album img-rounded">
+			</div>
+			<a href="" target="_blank">
+			  <img src="/static/get_itunes.svg" alt="Get it on iTunes">
+			</a>
+		      </td>
+		    </tr>
+		    {% endif %}
+		  </tbody>
+		</table>
+		<div class="share text-center padding20">
+		  <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{{ song|songimageurl }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{{ song|songimageurl }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{{ song|songimageurl }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{{ song|songimageurl }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{{ song|songimageurl }}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		</div>
+	      </div> <!-- more -->
+	      {% if single %}
+		</div>
+	      </div>
+	      {% endif %}
+	    </div> <!-- panel-body -->
+	    <div class="panel-footer">
+	      <div class="row">
+		<div class="col-xs-8">
+		</div>
+		<div class="col-xs-4 text-right">
+		  {% if song.itunes_id %}
+		  <audio controls="" id="player" class="hidden">
+		    <source src="" type="audio/mp4">
+		      Your browser does not support the audio element.
+		  </audio>
+		  <a href="#play" data-itunes-id="{{ song.itunes_id }}" class="fontx1-5"><i class="flaticon-play"></i></a>
+		  {% else %}
+		  <br>
+		  {% endif %}
+		</div>
+	      </div>
+	    </div>
+	  </div> <!-- panel -->
+	</div> <!-- song -->
+      </div> <!-- col -->
+      {% endfor %}
+    </div> <!-- row -->
+    {% if single %}
+    {% include "disqus.html" with disqus_identifier='song-'|addstr:single.id %}
+    {% elif total_songs < 9 %}
+    {% else %}
+    <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
+      <nav>
+	<ul class="pagination pagination-sm">
+	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+	  {% for i in total_pages|times %}
+	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+	  {% endfor %}
+	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+	</ul>
+      </nav>
+    </div>
+    {% endif %}
+    {% elif not ajax %}
+    <div class="container">
+      <br><br>
+      <div class="jumbotron">
+	<h1>{% trans 'No results.' %}</h1>
+	<p>{% trans 'No idols match your search.' %}</p>
+	<p><a class="btn btn-Smile btn-lg sidebar-toggle" href="#" role="button">
+	    {% trans 'Change filters' %}
+	    <i class="flaticon-filter"></i>
+	</a></p>
+      </div>
+    </div>
+    {% endif %}

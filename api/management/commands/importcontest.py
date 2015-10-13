@@ -28,7 +28,7 @@ class Command(BaseCommand):
             new_contest.query = contest['params']
             new_contest.begin = dateparse.parse_date(contest['begin'])
             new_contest.end = dateparse.parse_date(contest['end'])
-            results = contest['result'].split(',')
+            results = contest['result'].split(' ')
             for result in results:
                 if result == 'best_girl':
                     new_contest.best_girl = True

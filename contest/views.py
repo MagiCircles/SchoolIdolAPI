@@ -3,13 +3,14 @@ import contest.models as contest_models
 from django.db.models import Sum
 from contest.utils import (get_votesession, validate_vote,
                            best_girls_query, best_cards_query,
-                           best_single_cards, passed_contests_queryset)
+                           best_single_cards, passed_contests_queryset,
+                           get_current_contest)
 import datetime
 
 def contest_view(request, contestid):
-    print contestid
     contestid = int(contestid)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
+    current_contest = get_current_contest()
     if request.method == 'POST':
         try:
             votesession = contest_models.Session.objects.get(token=request.session['token'])
@@ -24,6 +25,7 @@ def contest_view(request, contestid):
     request.session['token'] = cards.token
     return render(request, 'contest.html', {'cards': cards,
                                             'contest': contest,
+                                            'current_contest': current_contest,
                                             'delta': delta,
                                             'is_current': True,
                                             'token': cards.token,

@@ -52,7 +52,7 @@
   	<div class="panel-body">
   	  <img src="
   		    {% if cards.right.card.card_image and not cards.right.idolized %}
-  		    {{ cards.right.cardi|imageurl:'card_image' }}
+  		    {{ cards.right.card|imageurl:'card_image' }}
   	            {% else %}
   	            {{ cards.right.card|imageurl:'card_idolized_image' }}
   	  {% endif %}">

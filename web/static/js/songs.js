@@ -35,7 +35,7 @@ function loadiTunesData(song, successCallback, errorCallback) {
 	"success": function (data, textStatus, jqXHR) {
 	    data = data['results'][0];
 	    song.find('.itunes').find('.album').prop('src', data['artworkUrl60']);
-	    song.find('.itunes').find('a').prop('href', data['trackViewUrl']);
+	    song.find('.itunes').find('a').prop('href', data['trackViewUrl'] + '&at=1001l8e6');
 	    song.find('.itunes').show('slow');
 	    song.find('audio source').prop('src', data['previewUrl'])
 	    song.find('audio')[0].load();

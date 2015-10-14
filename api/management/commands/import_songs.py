@@ -38,7 +38,7 @@ def import_songs():
                         except ValueError:
                             if daily_rotation:
                                 song['daily_rotation'], song['daily_rotation_position'] = clean(tds[0].text).split('-')
-                song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡')
+                song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡').replace('！', '!')
                 print 'Import {}...'.format(song['name']),
                 song['attribute'] = attribute_jphexcolors[tds[1]['style'].replace(';', '').split(':')[-1]]
                 song['BPM'] = int(clean(tds[2].text).split('-')[-1])

@@ -50,7 +50,7 @@ def clean(string, removecharacters=None):
         return None
     if removecharacters is None:
         removecharacters = '\'\"|[]'
-    return removeHTML(str(string.replace('”', '"').replace('！', '!').replace('？', '?').replace('～', '~'))).strip().translate(None, removecharacters).replace(u'\xc2', '').replace(u'\xa0', '')
+    return removeHTML(str(string.replace('”', '"').replace('？', '?').replace('～', '~'))).strip().translate(None, removecharacters).replace(u'\xc2', '').replace(u'\xa0', '')
 
 def optInt(i):
     try:

@@ -577,6 +577,12 @@ def get_links(current_en, current_jp):
                     'language': 'world',
                 },
                 {
+                    'name': _('Susume Love Live! Fansite'),
+                    'url': 'https://susume-lovelive.wix.com/love-live',
+                    'type': 'info',
+                    'language': 'world',
+                },
+                {
                     'name': _('LoveLive! Discography'),
                     'url': 'http://love-live.wikia.com/wiki/Category:Discography',
                     'type': 'info',

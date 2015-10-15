@@ -85,7 +85,7 @@
     <hr>
       <div class="divform">
 	<h2 id="verify">{% trans 'Get verified' %}</h2>
-	{% if account.rank > 50 and account.friend_id and not user.preferences.private and user.email %}
+	{% if account.rank >= 50 and account.friend_id and not user.preferences.private and user.email %}
 	<div id="verification-2" style="display: none">
 	  <img src="http://i.imgur.com/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
 	  <ul>

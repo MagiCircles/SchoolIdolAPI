@@ -76,7 +76,16 @@ class TransferCodeForm(ModelForm):
         model = models.Account
         fields = ('transfer_code',)
 
-class QuickOwnedCardForm(ModelForm):
+class _OwnedCardForm(ModelForm):
+    def save(self, commit=True):
+        instance = super(_OwnedCardForm, self).save(commit=False)
+        if instance.card.is_promo or instance.card.is_special:
+            instance.idolized = True
+        if commit:
+            instance.save()
+        return instance
+
+class QuickOwnedCardForm(_OwnedCardForm):
     card = forms.IntegerField()
     class Meta:
         model = models.OwnedCard
@@ -96,7 +105,7 @@ class StaffAddCardForm(ModelForm):
         fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill')
         exclude = ('card', 'owner_account')
 
-class OwnedCardForm(ModelForm):
+class OwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
         fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill')

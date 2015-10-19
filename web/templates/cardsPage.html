@@ -130,11 +130,22 @@
 		      <td>
 			<a href="/cards/{{ card.id }}/" target="_blank">
 			  <div class="pull-right">
-			    {% if card.round_card_image %}
-			    <img src="{{ card|imageurl:'round_card_image' }}" alt="{{ card }}">
-			    {% else %}
-			    <i class="flaticon-id"></i>
+			    {% if not card.is_promo and not card.is_special %}
+			    <div class="round-normal">
+			      {% if card.round_card_image %}
+			      <img src="{{ card|imageurl:'round_card_image' }}" alt="{{ card }}" height="70">
+			      {% else %}
+			      <i class="flaticon-id"></i>
+			      {% endif %}
+			    </div>
 			    {% endif %}
+			    <div class="round-idolized{% if card.is_special or card.is_promo %}-only"{% else %}" style="display: none"{% endif %}>
+			      {% if card.round_card_idolized_image %}
+			      <img src="{{ card|imageurl:'round_card_idolized_image' }}" alt="{{ card }}" height="70">
+			      {% else %}
+			      <i class="flaticon-id"></i>
+			      {% endif %}
+			    </div>
 			  </div>
 			  #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			</a><br>

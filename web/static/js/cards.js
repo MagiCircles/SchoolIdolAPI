@@ -175,6 +175,8 @@ function statistics_buttons() {
 	card.find('.statistics_idolized_maximum').hide()
 	card.find('.hp_non_idolized').show()
 	card.find('.hp_idolized').hide()
+	card.find('.round-normal').show()
+	card.find('.round-idolized').hide()
     })
     $('.btn.non_idolized_statistics').unbind('click');
     $('.btn.non_idolized_statistics').click(function() {
@@ -184,6 +186,8 @@ function statistics_buttons() {
 	card.find('.statistics_idolized_maximum').hide()
 	card.find('.hp_non_idolized').show()
 	card.find('.hp_idolized').hide()
+	card.find('.round-normal').show()
+	card.find('.round-idolized').hide()
     })
     $('.btn.idolized_statistics').unbind('click');
     $('.btn.idolized_statistics').click(function() {
@@ -193,6 +197,8 @@ function statistics_buttons() {
 	card.find('.statistics_idolized_maximum').show()
 	card.find('.hp_non_idolized').hide()
 	card.find('.hp_idolized').show()
+	card.find('.round-normal').hide()
+	card.find('.round-idolized').show()
     })
 }
 

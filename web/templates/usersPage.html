@@ -29,8 +29,7 @@
 		{% if account.verified > 0 and account.verified < 3%} data-content="{{ account.verified|verifiedToString }}" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover"{% endif %}>
 	      <td>
 		{% if account.center %}
-		<div class="circled_card_70 {{ account.center.card.attribute }} {{ account.center.card.rarity }} pull-left margin10"
-		     style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+		{% include 'ownedcard.html' with card=account.center nolink=True size=70 classes='pull-left margin10' %}
 		{% endif %}
 		<h4 class="padding20 padding-novertical">{{ account }}</h4>
 	      </td>

@@ -71,8 +71,7 @@
 		<li><a href="/user/{{ user.username }}/#{{ account.pk }}" class="account">
 		    {% if account.center %}
 		    <div class="pull-left">
-		      <div class="center circled {{ account.center.card.attribute }} {{ account.center.card.rarity }}"
-			   style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+		      {% include 'ownedcard.html' with card=account.center nolink=True size=30 classes='center circled' %}
 		    </div>
 		    {% else %}
 		    <div class="padding pull-left"></div>

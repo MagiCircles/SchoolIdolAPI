@@ -1,6 +1,6 @@
 {% load imageurl %}
 {% load i18n %}
-
+{% with show_delete=True size=100 %}
 <br>
 {% if cards %}
 {% for card in cards %}
@@ -27,3 +27,4 @@
   {% trans 'No cards registered yet.' %}
 </div>
 {% endif %}
+{% endwith %}

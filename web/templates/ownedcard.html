@@ -1,10 +1,20 @@
 {% load imageurl %}
+{% if not nolink %}
 <a href="/cards/{{ card.card.id }}/" class="owned_card">
+  {% endif %}
   <div class="owned_card_details" style="display: none"><div class="fontx2 color-{{ card.card.attribute }}">{% include "ownedCardOnBottomCard.html" with owned=card nolink=True %}</div></div>
-  <div class="circled_card_100 {{ card.card.attribute }} {{ card.card.rarity }} hover"
-       style="background-image: url('{% if not card.idolized and card.card.card_image %}{{ card.card|imageurl:'card_image' }}{% else %}{{ card.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+  {% if not card.idolized and card.card.round_card_image %}
+  <img class="{{ classes }}" src="{{ card.card|imageurl:'round_card_image' }}" alt="{{ card }}" height="{{ size }}" style="display: inline-block">
+  {% elif card.idolized and card.card.round_card_idolized_image %}
+  <img class="{{ classes }}" src="{{ card.card|imageurl:'round_card_idolized_image' }}" alt="{{ card }}" height="{{ size }}" style="display: inline-block">
+  {% else %}
+  <div class="{{ classes }} circled_card_{{ size }} {{ card.card.attribute }} {{ card.card.rarity }} hover"
+       style="background-image: url('{% if not card.idolized and card.card.card_image %}{{ card.card|imageurl:'card_image' }}{% else %}{{ card.card|imageurl:'card_idolized_image' }}{% endif %}');"></div>
+  {% endif %}
+{% if not nolink %}
 </a>
-  {% if user.is_staff and show_staff %}
+{% endif %}
+  {% if show_delete and user.is_staff and show_staff %}
 <form method="post" action="/ajax/deletecard/{{ card.pk }}/" role="form" class="delete" style="display: inline-block">
   {% csrf_token %}
   <button type="submit" class="btn btn-danger">X</button>

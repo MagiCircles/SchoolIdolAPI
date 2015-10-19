@@ -106,8 +106,7 @@
 	<tr>
 	  <td>
 	    {% if account.center %}
-	    <div class="circled_card_50 {{ account.center.card.attribute }} {{ account.center.card.rarity }} hover"
-		 style="background-image: url('{% if not account.center.idolized and account.center.card.card_image %}{{ account.center.card|imageurl:'card_image' }}{% else %}{{ account.center.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+	    {% include 'ownedcard.html' with card=account.center nolink=True size=50 %}
 	    {% endif %}
 	  </td>
 	  <td><h4>{{ account }}</h4></td>

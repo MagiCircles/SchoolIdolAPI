@@ -21,8 +21,7 @@
 	</a>
 	{% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
 	<a href="/cards/{{ activity.ownedcard.card.id }}/" class="owned_card">
-	  <div class="circled_card_{% if card_size %}{{ card_size }}{% else %}70{% endif %} {{ activity.ownedcard.card.attribute }} {{ activity.ownedcard.card.rarity }} hover"
-	       style="background-image: url('{% if not activity.ownedcard.idolized and activity.ownedcard.card.card_image %}{{ activity.ownedcard.card|imageurl:'card_image' }}{% else %}{{ activity.ownedcard.card|imageurl:'card_idolized_image' }}{% endif %}')"></div>
+	  {% include 'ownedcard.html' with card=activity.ownedcard nolink=True size=card_size|default:70 %}
 	</a>
 	{% endif %}
       </div>

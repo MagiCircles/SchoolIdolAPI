@@ -23,12 +23,18 @@
 	{% for card in event.all_cards %}
 	<div class="col-md-6">
 	  <a href="/cards/{{ card.id }}/" class="owned_card">
-	    {% if card.card_image %}
+	    {% if card.round_card_image %}
+	    <img src="{{ card|imageurl:'round_card_image' }}" height="150" />
+	    {% elif card.card_image %}
 	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
 		 style="display: inline-block; background-image: url('{{ card|imageurl:'card_image' }}')"></div>
 	    {% endif %}
+	    {% if card.round_card_idolized_image %}
+	    <img src="{{ card|imageurl:'round_card_idolized_image' }}" height="150" />
+	    {% elif card.card_image %}
 	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
 		 style="display: inline-block; background-image: url('{{ card|imageurl:'card_idolized_image' }}')"></div>
+	    {% endif %}
 	  </a>
 	  <br>
 	  <h4>{{ card }}</h4>

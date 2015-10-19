@@ -6,8 +6,7 @@
 	<div>
 	  <a href="/cards/{{ activity.ownedcard.card.id }}/" class="owned_card">
 	    {% if small %}
-	    <div class="pull-right circled_card_20 {{ activity.ownedcard.card.attribute }} {{ activity.ownedcard.card.rarity }} hover"
-		 style="background-image: url('{% if not activity.ownedcard.idolized and activity.ownedcard.card.card_image %}{{ activity.ownedcard.card|imageurl:'card_image' }}{% else %}{{ activity.ownedcard.card|imageurl:'card_idolized_image' }}{% endif %}')">
+	    {% include 'ownedcard.html' with card=activity.ownedcard nolink=True size=20 classes='pull-right' %}
 	    </div>
 	    {% endif %}
 	    {{ activity.ownedcard.card }}

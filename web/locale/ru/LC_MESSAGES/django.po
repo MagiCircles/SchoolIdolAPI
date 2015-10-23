@@ -183,8 +183,7 @@ msgstr "School Idol Tomodachi"
 msgid "Browse & track your cards. Vote for the best girl."
 msgstr "Смотри и отслеживай свои карты. Голосуй за лучшую героиню!"
 
-#: web/templates/base.html:48 web/templates/include/idol_tabs.html:4
-#: web/templates/profile.html:215
+#: 
 msgid "Cards"
 msgstr "Карты"
 
@@ -201,9 +200,7 @@ msgstr "Выйти"
 msgid "Edit your accounts"
 msgstr "Редактировать"
 
-#: web/templates/base.html:87 web/templates/create.html:18
-#: web/templates/login.html:4 web/templates/login.html.py:12
-#: web/templates/login.html:21
+#: 
 msgid "Login"
 msgstr "Вход"
 
@@ -264,8 +261,7 @@ msgstr "Ошибка 404. Это определённо не то, что вы �
 msgid "Back to homepage"
 msgstr "На главную"
 
-#: web/templates/base.html:52 web/templates/index.html:87
-#: web/templates/users.html:4 web/templates/users.html.py:16
+#: 
 msgid "Players"
 msgstr "Игроки"
 
@@ -581,7 +577,7 @@ msgstr "Редактировать аккаунт"
 msgid "Delete Account"
 msgstr "Удалить аккаунт"
 
-#: web/templates/base.html:51 web/templates/index.html:110
+#: 
 msgid "Contest"
 msgstr "Конкурс"
 
@@ -637,9 +633,7 @@ msgstr "Очки"
 msgid "in"
 msgstr "в"
 
-#: web/templates/base.html:50 web/templates/events.html:3
-#: web/templates/events.html.py:9 web/templates/index.html:77
-#: web/templates/profile.html:217
+#: 
 msgid "Events"
 msgstr "Ивенты"
 
@@ -693,8 +687,7 @@ msgstr "Спасибо!"
 msgid "New players"
 msgstr "Новые игроки"
 
-#: web/templates/base.html:49 web/templates/idols.html:5
-#: web/templates/index.html:71
+#: 
 msgid "Idols"
 msgstr "Айдолы"
 
@@ -1541,4 +1534,129 @@ msgstr "Неверный пароль."
 #: api/models.py:378
 msgid "It might take up to 24 hours to update your location on the map."
 msgstr "Это может занять 24 часа для обновления вашего местоположения на карте."
+
+#. Android App
+#: 
+msgid "app_name"
+msgstr "имя_приложения"
+
+#. Android App
+#: 
+msgid "welcome"
+msgstr "Добро пожаловать"
+
+#. Android App
+#: 
+msgid "action_settings"
+msgstr "настройки_действий"
+
+#. Android App
+#: 
+msgid "title_activity_card"
+msgstr "название_дейсвия_карты"
+
+#. Android App
+#: 
+msgid "title_activity_card_info1"
+msgstr "информация1_про_название_действия_карты"
+
+#. Android App
+#: 
+msgid "Card"
+msgstr "Карта"
+
+#. Android App
+#: 
+msgid "skill"
+msgstr "навык"
+
+#. Android App
+#: 
+msgid "center_skill"
+msgstr "навык_центра"
+
+#. Android App
+#: 
+msgid "release_date"
+msgstr "дата_выпуска"
+
+#. Android App
+#: 
+msgid "stats"
+msgstr "показатели"
+
+#. Android App
+#: 
+msgid "level_1"
+msgstr "1_уровень"
+
+#. Android App
+#: 
+msgid "level_30"
+msgstr "30_уровень"
+
+#. Android App
+#: 
+msgid "level_40"
+msgstr "40_уровень"
+
+#. Android App
+#: 
+msgid "level_60"
+msgstr "60_уровень"
+
+#. Android App
+#: 
+msgid "level_80"
+msgstr "80_уровень"
+
+#. Android App
+#: 
+msgid "level_100"
+msgstr "100_уровень"
+
+#. Android App
+#: 
+msgid "unknown"
+msgstr "неизвестный"
+
+#. Android App
+#: 
+msgid "none"
+msgstr "ничего"
+
+#. Android App
+#: 
+msgid "title_activity_menu"
+msgstr "меню_названий_действий"
+
+#. Android App
+#: 
+msgid "title_activity_idols"
+msgstr "названия_действий_айдолов"
+
+#. Android App
+#: 
+msgid "search_idols"
+msgstr "искать_айдолов"
+
+#. Android App
+#: 
+msgid "search_idols_hint"
+msgstr "подсказка_в_ поиске_айдолов"
+
+#. Android App
+#: 
+msgid "title_activity_web"
+msgstr "название_действия_сети"
+
+#. Android App
+#: 
+msgid "only_japan"
+msgstr "только_Япония"
+
+#. Android App
+#: 
+msgid "worldwide"
+msgstr "Мировой"
 

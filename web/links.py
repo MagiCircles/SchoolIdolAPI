@@ -578,7 +578,7 @@ def get_links(current_en, current_jp):
                 },
                 {
                     'name': _('Susume Love Live! Fansite'),
-                    'url': 'https://susume-lovelive.wix.com/love-live',
+                    'url': 'http://susume-lovelive.wix.com/love-live',
                     'type': 'info',
                     'language': 'world',
                 },

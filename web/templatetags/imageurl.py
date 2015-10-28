@@ -8,6 +8,7 @@ import re
 register = template.Library()
 
 def imageurl(card, image):
+    return '/static/tmpimg.png'
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
@@ -21,6 +22,7 @@ def imageurl(card, image):
     return '/static/default-' + card.attribute + '.png'
 
 def eventimageurl(event):
+    return '/static/tmpimg.png'
     if event.image:
         if settings.DEBUG:
             event.image = unicode(event.image).replace('web/', '')
@@ -28,6 +30,7 @@ def eventimageurl(event):
     return ''
 
 def songimageurl(song):
+    return '/static/tmpimg.png'
     if song.image:
         if settings.DEBUG:
             song.image = unicode(song.image).replace('web/', '')
@@ -38,6 +41,7 @@ def userimage(image):
     return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(image))
 
 def standimage(idol, number):
+    return '/static/tmpimg.png'
     if idol is not None:
         m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
         member_number = m.group('number')

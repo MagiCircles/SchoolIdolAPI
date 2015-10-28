@@ -12,10 +12,13 @@
     {% if forloop.counter0|mod:2 %}
   </div><div class="row">
     {% endif%}
-    <div class="col-lg-6">
+    <div class="col-lg-6 text-center">
       <a href="/events/{{ event.japanese_name|urlencode }}/" class="event" style="background-image: url('{{ event|eventimageurl }}');">
 	<span class="hidden">{{ event }}</span>
       </a>
+      {{ event.japanese_name }}<br>
+      {% if event.english_name and event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}
+      <br><br>
     </div>
     {% endfor %}
   </div>

@@ -29,6 +29,7 @@ def is_positive_integer(string):
     return True
 
 def chibiimage(idol, small=True):
+    return '/static/tmpimg.png'
     prefix = 'small_' if small else ''
     if idol is not None:
         filename = '/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'

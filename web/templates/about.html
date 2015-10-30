@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block title %}{% trans 'About' %}{% endblock %}
+{% block js %}
+{% endblock %}
+
+{% block content %}
+{% load choicesToString %}
+{% load mod %}
+
+<div class="container">
+  <div class="margin50">
+    <br>
+    <h1 class="margin50">{% trans 'About us' %}</h1>
+    <div class="row">
+      <div class="col-md-8">
+	<p class="margin50">
+	  {% blocktrans %}We are two developers and relatively casual players of the game. It's the first project we made together.
+	  <br><br>
+	  We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded: <a href="http://rainbowcooki.es/">Rainbow Cookies</a>. Though we love our job, we don't pay ourselves and don't have any income, so <a href="/donate/">any donation</a> helps a lot and is greatly appreciated.
+	  <br><br>
+	  The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^
+	  <br><br>
+	  We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you.
+	  {% endblocktrans %}
+	</p>
+	<p class="text-right">
+	  <a class="btn btn-Cool btn-lg" href="mailto:contact@schoolido.lu">{% trans 'Contact us' %}</a>
+	</p>
+      </div>
+      <div class="col-md-4">
+	<img src="http://fr.gl/static/img/engildeby.gif" class="img-circle img-responsive img-thumbnail">
+      </div>
+    </div>
+
+    <h1 class="margin50">{% trans 'LoveLive! Franchise' %}</h1>
+    <p class="alert alert-warning fontx2">
+      {% trans 'School Idol Tomodachi' %} {% blocktrans %}is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab.{% endblocktrans %}
+    </p>
+
+    <h1 class="margin50">{% trans 'Sources' %}</h1>
+    <p>
+      {% blocktrans %}
+      School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them.
+      {% endblocktrans %}
+    </p>
+    <ul>
+      <li><a href="https://sif.kirara.ca/" target="_blank">SIF Kirara</a></li>
+      <li><a href="http://love-live.wikia.com/wiki/Main_Page" target="_blank">LoveLive! Wikia</a></li>
+      <li><a href="http://decaf.kouhi.me/lovelive/" target="_blank">LoveLive! School Idol Wiki decaf.kouhi.me</a></li>
+      <li><a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">ラブライブ！スクフェス 情報まとめwiki</a></li>
+      <li><a href="http://www.reddit.com/r/SchoolIdolFestival/" target="_blank">Reddit Community</a></li>
+      <li><a href="http://www.pixiv.net/member_illust.php?mode=medium&illust_id=48424812" target="_blank">Chibi N characters drawings</a></li>
+      <li><a href="http://asahaka-scfes.blogspot.com/" target="_blank">Clean UR pairs</a></li>
+    </ul>
+
+    <h1 class="margin50">{% trans 'Icon Credits' %}</h1>
+    <div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, <a href="http://www.flaticon.com/authors/yannick" title="Yannick">Yannick</a>, <a href="http://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a>, <a href="http://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a>, <a href="http://www.flaticon.com/authors/icons8" title="Icons8">Icons8</a>, <a href="http://www.flaticon.com/authors/catalin-fertu" title="Catalin Fertu">Catalin Fertu</a>, <a href="http://www.flaticon.com/authors/google" title="Google">Google</a>, <a href="http://www.flaticon.com/authors/sergiu-bagrin" title="Sergiu Bagrin">Sergiu Bagrin</a>, <a href="http://www.flaticon.com/authors/bogdan-rosu" title="Bogdan Rosu">Bogdan Rosu</a>, <a href="http://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
+
+    <h1 class="margin50">{% trans 'Staff members' %}</h1>
+
+    <div class="row">
+      {% for user in staff %}
+      {% if forloop.counter0|mod:3 %}
+    </div><div class="row">
+      {% endif%}
+      <div class="col-md-4">
+	<div class="panel panel-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %} panel-donation">
+	  <div class="panel-heading">
+	    <strong>{{ user.username }}</strong> -
+	    {% if user.is_superuser %}
+	    {% trans 'Owner' %}
+	    {% else %}
+	    {% trans 'Staff' %}
+	    {% endif %}
+	  </div>
+	  <div class="inside">
+	    <div class="row">
+	      <div class="col-xs-5">
+		{% include 'include/avatar.html' with av_user=user av_image_size=150 av_size=50 av_link=True av_external=True %}
+	      </div>
+	      <div class="col-xs-7">
+		<a href="/user/{{ user.username}}/" target="_blank" class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %} btn-lg">
+		  {% trans 'Profile' %}
+		</a>
+		{% if user.preferences.allowed_verifications %}<br><br>
+		{% trans 'Takes care of verifications:' %}<br>
+		{% for verification in user.preferences.allowed_verifications %}
+		{% if verification != '3' %}
+		<span class="verified{{ verification }}"><i class="flaticon-star"></i>
+		  {{ verification|verifiedToString }}</span><br>
+		{% endif %}
+		{% endfor %}
+		{% endif %}
+	      </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+    <div id="contribute"></div>
+    <br><br><br><br>
+    <h1 class="text-main">{% trans 'Contribute' %} <small><i class="flaticon-developer"></i> {% trans 'Dev' %}</small></h1>
+    <p class="margin50">
+      {% blocktrans %}
+      Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!
+      <br><br>
+      The website has been made using <a href="https://docs.djangoproject.com/">Django</a>, so in Python 2. We also use <a href="http://lesscss.org/">LESS CSS</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jquery.com/">JQuery</a> and <a href="http://bower.io/">Bower</a> for the front-end of the website.
+      {% endblocktrans %}
+      <br><br>
+      {% blocktrans %}
+      We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level.
+      {% endblocktrans %}
+      <div class="text-right">
+	<a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" class="btn btn-Cool btn-lg">
+	  {% trans 'Get started' %}
+	</a>
+      </div>
+    </p>
+  </div>
+
+    {% include 'disqus.html' with disqus_identifier='aboutsukutomo' %}
+
+</div>
+
+{% endblock %}

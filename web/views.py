@@ -1098,6 +1098,13 @@ def donateview(request):
     context['donations'] = donations.donations
     return render(request, 'donate.html', context)
 
+def aboutview(request):
+    context = globalContext(request)
+    context['staff'] = models.User.objects.filter(is_staff=True).order_by('-is_superuser', 'date_joined')
+    for staff in context['staff']:
+        staff.preferences.allowed_verifications = staff.preferences.allowed_verifications.split(',') if staff.preferences.allowed_verifications else []
+    return render(request, 'about.html', context)
+
 def staff_verifications(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.allowed_verifications:
         raise PermissionDenied()

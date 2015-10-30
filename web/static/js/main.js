@@ -26,6 +26,10 @@ function globalModal(hash) {
 	window.location.href = "/donate/";
 	return;
     }
+    if (hash == 'about') {
+	window.location.href = "/about/";
+	return;
+    }
     $.get('/ajax/modal/' + hash +
 	  '/?interfaceColor=' + getInterfaceColor(), function(data) {
 	      $('#modal .modal-content').html(data);

@@ -137,6 +137,7 @@ LINK_RELEVANCE_CHOICES = (
 LINK_RELEVANCE_DICT = dict(LINK_RELEVANCE_CHOICES)
 
 def verifiedToString(val):
+    val = int(val)
     return VERIFIED_DICT[val]
 
 def verificationStatusToString(val):

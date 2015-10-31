@@ -1,14 +1,16 @@
 from django import template
 from django.conf import settings
-from web.utils import chibiimage
+from web.utils import chibiimage as _chibiimage
 from api.models import LINK_URLS
 import os.path
 import re
 
 register = template.Library()
 
-def imageurl(card, image):
-    return '/static/tmpimg.png'
+@register.simple_tag(takes_context=True)
+def imageurl(context, card, image):
+    if 'show_images' not in context or not context['show_images']:
+        return '/static/tmpimg.png'
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
@@ -21,16 +23,20 @@ def imageurl(card, image):
                 return url
     return '/static/default-' + card.attribute + '.png'
 
-def eventimageurl(event):
-    return '/static/tmpimg.png'
+@register.simple_tag(takes_context=True)
+def eventimageurl(context, event):
+    if 'show_images' not in context or not context['show_images']:
+        return '/static/tmpimg.png'
     if event.image:
         if settings.DEBUG:
             event.image = unicode(event.image).replace('web/', '')
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
     return ''
 
-def songimageurl(song):
-    return '/static/tmpimg.png'
+@register.simple_tag(takes_context=True)
+def songimageurl(context, song):
+    if 'show_images' not in context or not context['show_images']:
+        return '/static/tmpimg.png'
     if song.image:
         if settings.DEBUG:
             song.image = unicode(song.image).replace('web/', '')
@@ -40,8 +46,10 @@ def songimageurl(song):
 def userimage(image):
     return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(image))
 
-def standimage(idol, number):
-    return '/static/tmpimg.png'
+@register.simple_tag(takes_context=True)
+def standimage(context, idol, number):
+    if 'show_images' not in context or not context['show_images']:
+        return '/static/tmpimg.png'
     if idol is not None:
         m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
         member_number = m.group('number')
@@ -66,11 +74,12 @@ def linkimage(link):
 def linkurl(link):
     return LINK_URLS[link['type']].format(link['value'])
 
-register.filter('imageurl', imageurl)
+@register.simple_tag(takes_context=True)
+def chibiimage(context, idol, small=True):
+    if 'show_images' not in context or not context['show_images']:
+        return '/static/tmpimg.png'
+    return _chibiimage(idol, small)
+
 register.filter('userimage', userimage)
-register.filter('standimage', standimage)
-register.filter('chibiimage', chibiimage)
-register.filter('eventimageurl', eventimageurl)
-register.filter('songimageurl', songimageurl)
 register.filter('linkimage', linkimage)
 register.filter('linkurl', linkurl)

@@ -38,7 +38,7 @@
     'images': {
       '': '/static/empty.png',
       {% for idol in filters.idols %}
-      '{% if LANGUAGE_CODE == 'ja' %}{{ idol.japanese_name }}{% else %}{{ idol.name|escapejs }}{% endif %}': '{{ idol.name|chibiimage:True }}',
+      '{% if LANGUAGE_CODE == 'ja' %}{{ idol.japanese_name }}{% else %}{{ idol.name|escapejs }}{% endif %}': '{% chibiimage idol=idol.name small=True %}',
       {% endfor %}
     }
   });
@@ -47,8 +47,8 @@
 <script src="/static/js/addcard.js?1"></script>
 {% endblock %}
 
-{% block shareimage %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
-{% block shareimagetwitter %}{% if single %}http://schoolido.lu{{ single|imageurl:'card_idolized_image' }}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
+{% block shareimage %}{% if single %}http://schoolido.lu{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}http://schoolido.lu{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
 
 {% block content %}
 <div class="hidden" id="quickaddform">

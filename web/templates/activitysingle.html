@@ -16,7 +16,7 @@
 	</a>
 	{% elif activity.message == 'Ranked in event' %}
 	<a href="/event/{{ activity.eventparticipation.event.japanese_name|urlencode }}/#ranking{{ activity.account.language }}" target="_blank">
-	  <img src="{{ activity.eventparticipation.event|eventimageurl }}" alt="{{ activity.eventparticipation.event }}" width="100"><br>
+	  <img src="{% eventimageurl event=activity.eventparticipation.event %}" alt="{{ activity.eventparticipation.event }}" width="100"><br>
 	  <strong># {{ activity.eventparticipation.ranking }}</strong>
 	</a>
 	{% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}

@@ -6,6 +6,6 @@
   <h1>
     <img src="/static/{{ idol.attribute }}.png" class="attribute">
     {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
-    <img src="{{ idol.name|chibiimage:False }}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}">
+    <img src="{% chibiimage idol=idol.name small=False %}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}">
   </h1>
 </div>

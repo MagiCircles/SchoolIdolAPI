@@ -24,16 +24,31 @@
 </div>
 {% endif %}
 
-<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:6 }}.jpg')">
+<div id="home" class="text-center" {% if show_images %}style="background-image: url('/static/background{{ 0|random_int:6 }}.jpg')"{% else %} style="background-image: url('http://1x1px.me/FFFFFF-0.8.png')"{% endif %}>
   <div class="mainhome">
     <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
     {% if LANGUAGE_CODE == 'ja' %}
     <br><br>
+    {% if show_images %}
     <img src="/static/roburaibu_shadow.png" class="logo" alt="Logo">
+    {% else %}
+    <br><br>
+    <br><br>
+    <br><br>
+    <h2 class="slogan margin-novertical">{% trans 'School Idol Tomodachi' %}</h2>
+    {% endif %}
     <br><br>
     {% else %}
     <div class="row"><div class="col-md-7 text-right">
-    <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+	<br><br>
+	{% if show_images %}
+	<img src="/static/logo_shadow.png" class="logo" alt="Logo">
+	{% else %}
+	<br><br>
+	<br><br>
+	<br><br>
+	<h2 class="slogan margin-novertical">{% trans 'School Idol Tomodachi' %}</h2>
+	{% endif %}
     </div><div class="col-md-5"><div class=" text-left special-message"><span>{% trans 'School Idol Tomodachi makes its Android debut!' %}</span><div class="text-right"><a class="btn btn-{{ btnColor }} btn-lg" href="/android">{% trans 'Download the app' %}</a></div></div></div></div>
     {% endif %}
     <div class="container">
@@ -104,15 +119,17 @@
 	  <div class="col-md-4"></div>
 	  {% endif %}
 	  <div class="col-md-{% if current_en.is_current and current_jp.is_current %}4{% else %}{% if not current_en.is_current and not current_jp.is_current %}4{% else %}6{% endif %}{% endif %}">
+	    {% if show_images %}
 	    <a href="/contest/" class="event" style="background-image: url('/static/currentcontest_no.png'); background-size: 120%;">
 	      <span class="hidden">{% trans 'Vote for the best idol' %}</span>
 	      <small class="hidden text-muted">Global Contest</small>
 	    </a>
 	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Contest' %}</h3>
+	    {% endif %}
 	  </div>
 	  {% if current_en.is_current %}
 	  <div class="col-md-{% if current_jp.is_current %}4{% else %}6{% endif %}">
-	    <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="event" style="background-image: url('{{ current_en|eventimageurl }}');">
+	    <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=current_en %}');">
 	      <span class="hidden">{{ current_en }}</span>
 	    </a>
 	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'English' %}</h3>
@@ -120,7 +137,7 @@
 	  {% endif %}
 	  {% if current_jp.is_current %}
 	  <div class="col-md-{% if current_en.is_current %}4{% else %}6{% endif %}">
-	    <a href="/events/{{ current_jp.japanese_name|urlencode }}/" class="event" style="background-image: url('{{ current_jp|eventimageurl }}');">
+	    <a href="/events/{{ current_jp.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=current_jp %}');">
 	      <span class="hidden">{{ current_jp }}</span>
 	    </a>
 	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Japanese' %}</h3>
@@ -166,7 +183,7 @@
       <div class="row">
 	<div class="col-md-5">
 	  <a href="/cards/{{ link.card.id }}" target="_blank">
-	    <img src="{% if link.card.idolized %}{{ link.card|imageurl:'card_idolized_image' }}{% else %}{{ link.card|imageurl:'card_image' }}{% endif %}" alt="{{link.card}}">
+	    <img src="{% if link.card.idolized %}{% imageurl card=link.card image='card_idolized_image' %}{% else %}{% imageurl card=link.card image='card_image' %}{% endif %}" alt="{{link.card}}">
 	  </a>
 	</div>
 	<div class="col-md-7">

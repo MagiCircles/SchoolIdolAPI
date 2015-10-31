@@ -14,8 +14,8 @@
       {% endif %}
       <div class="col-xs-4 {{ idol.attribute }}">
 	<a class="idol" href="/idol/{{ idol.name|urlencode }}/">
-	  <img class="idol-img" src="{{ idol|standimage:1 }}" alt="{{ idol.name }}">
-	  <img class="idol-img hover" src="{{ idol|standimage:4 }}" alt="{{ idol.name }}">
+	  <img class="idol-img" src="{% standimage idol=idol number=1 %}" alt="{{ idol.name }}">
+	  <img class="idol-img hover" src="{% standimage idol=idol number=4 %}" alt="{{ idol.name }}">
 	  <br><div class="name">
 	    <img src="/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
 	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
@@ -42,7 +42,7 @@
       {% endif %}
       <div class="col-xs-4 {{ idol.attribute }}">
 	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
-	  <img src="{{ idol.name|chibiimage:False }}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}" height="127" width="127"><br><br>
+	  <img src="{% chibiimage idol=idol.name small=False %}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}" height="127" width="127"><br><br>
 	  <img src="/static/{{ idol.attribute }}.png" class="attribute" width="15" height="15">
 	  {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
 	</a>

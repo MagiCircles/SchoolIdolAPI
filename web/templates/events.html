@@ -13,7 +13,7 @@
   </div><div class="row">
     {% endif%}
     <div class="col-lg-6 text-center">
-      <a href="/events/{{ event.japanese_name|urlencode }}/" class="event" style="background-image: url('{{ event|eventimageurl }}');">
+      <a href="/events/{{ event.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=event %}');">
 	<span class="hidden">{{ event }}</span>
       </a>
       {{ event.japanese_name }}<br>

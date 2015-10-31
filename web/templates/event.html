@@ -14,7 +14,7 @@
 {% load tz %}
 <div class="container text-center">
   <br><br>
-  <img src="{{ event|eventimageurl }}" alt="{{ event.japanese_name }}" style="max-width: 100%">
+  <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
   <br><br>
   <div class="row">
     <div class="col-md-2"></div>
@@ -24,16 +24,16 @@
 	<div class="col-md-6">
 	  <a href="/cards/{{ card.id }}/" class="owned_card">
 	    {% if card.round_card_image %}
-	    <img src="{{ card|imageurl:'round_card_image' }}" height="150" />
+	    <img src="{% imageurl card=card image='round_card_image' %}" height="150" />
 	    {% elif card.card_image %}
 	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
-		 style="display: inline-block; background-image: url('{{ card|imageurl:'card_image' }}')"></div>
+		 style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
 	    {% endif %}
 	    {% if card.round_card_idolized_image %}
-	    <img src="{{ card|imageurl:'round_card_idolized_image' }}" height="150" />
+	    <img src="{% imageurl card=card image='round_card_idolized_image' %}" height="150" />
 	    {% elif card.card_image %}
 	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
-		 style="display: inline-block; background-image: url('{{ card|imageurl:'card_idolized_image' }}')"></div>
+		 style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
 	    {% endif %}
 	  </a>
 	  <br>

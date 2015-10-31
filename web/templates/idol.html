@@ -26,7 +26,7 @@
   <div class="row">
     {% if idol.main and tab == 'idol' %}
     <div class="col-xs-2">
-      <img class="flip side-idol left" src="{{ idol|standimage:2 }}">
+      <img class="flip side-idol left" src="{% standimage idol=idol number=2 %}">
     </div>
     {% endif %}
     <div class="col-xs-{% if idol.main and tab == 'idol' %}8{% else %}12{% endif %}">
@@ -148,7 +148,7 @@
     </div>
     {% if idol.main and tab == 'idol' %}
     <div class="col-xs-2">
-      <img class="side-idol right" src="{{ idol|standimage:5 }}">
+      <img class="side-idol right" src="{% standimage idol=idol number=5 %}">
     </div>
     {% endif %}
   </div>

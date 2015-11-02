@@ -77,14 +77,14 @@ def remove_all_comments(soup):
 def extract_skill(td):
     td = remove_all_comments(td)
     if td.span is not None:
-        name = td.span.extract()
+        name = td.span.extract().text
         details = td.string
         if details is None:
             if td.br is not None:
                 td.br.extract()
             details = td.string
     elif td.strong is not None:
-        name = td.strong.extract()
+        name = td.strong.extract().text
         details = td.string
     else:
         name = td.string

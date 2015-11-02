@@ -54,7 +54,7 @@
 	      {% endif %}
 	    </div>
 	    <h1 id="username">{{ profile_user.username }}</h1>
-	    {% if preferences.status and preferences.status != 'THANKS' %}<a href="/donate/"><h2 style="color: {{ preferences.status|userStatusToColor }}">{{ preferences.status|userStatusToString }}</h2></a>{% endif %}
+	    {% if preferences.status and preferences.status != 'THANKS' %}<a href="/about#donate"><h2 style="color: {{ preferences.status|userStatusToColor }}">{{ preferences.status|userStatusToString }}</h2></a>{% endif %}
 	    {% if is_me %}<div><a href="/edit/"><i class="flaticon-edit"></i> {% trans 'Your Settings' %}</a></div>{% endif %}
 	    {% if user.is_staff and not show_staff %}<div><a href="?staff"><i class="flaticon-edit"></i> Staff Interface</a></div>{% endif %}
 	    <br>

@@ -747,8 +747,6 @@ def ajaxmodal(request, hash):
         return render(request, 'modaldevelopers.html', context)
     elif hash == 'contact':
         return render(request, 'modalcontact.html', context)
-    elif hash == 'donate':
-        return render(request, 'modaldonate.html', context)
     elif hash == 'thanks':
         return render(request, 'modalthanks.html', context)
     raise Http404
@@ -1091,14 +1089,6 @@ def avatar_twitter(request, username):
     return redirect('http://avatars.io/twitter/' + username + '?size=large')
 def avatar_facebook(request, username):
     return redirect('http://avatars.io/facebook/' + username + '?size=large')
-
-def donateview(request):
-    context = globalContext(request)
-    context['donators_low'] = models.User.objects.filter(Q(preferences__status='THANKS') | Q(preferences__status='SUPPORTER') | Q(preferences__status='LOVER') | Q(preferences__status='AMBASSADOR')).order_by('preferences__status', '-preferences__donation_link', '-preferences__donation_link_title')
-    context['donators_high'] = models.User.objects.filter(Q(preferences__status='PRODUCER') | Q(preferences__status='DEVOTEE')).order_by('preferences__status')
-    context['total_donators'] = models.UserPreferences.objects.filter(status__isnull=False).count()
-    context['donations'] = donations.donations
-    return render(request, 'donate.html', context)
 
 def aboutview(request):
     context = globalContext(request)

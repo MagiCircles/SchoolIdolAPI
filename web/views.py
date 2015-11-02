@@ -24,7 +24,7 @@ from api import models, raw
 from web import forms, links, donations, transfer_code
 from utils import *
 import urllib, hashlib
-import datetime, time
+import datetime, time, pytz
 import random
 import json
 import collections
@@ -41,7 +41,7 @@ def globalContext(request):
         'show_images': False,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
-        context['show_images'] = True
+        context['show_images'] = request.user.date_joined < datetime.datetime(2015, 10, 20, 0, 0, 0, 0, pytz.UTC)
         context['accounts'] = request.user.accounts_set.all().select_related('center', 'center__card')
         for account in context['accounts']:
             if account.transfer_code and not transfer_code.is_encrypted(account.transfer_code):

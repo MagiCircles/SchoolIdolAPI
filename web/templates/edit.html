@@ -141,7 +141,7 @@
     'modal-text': 'true',
     'images': {
       {% for value, idol in form_preferences.best_girl.field.choices %}
-      {% if value == '' %}'': '/static/empty.png',{% else %}'{{ value|escapejs }}': '{{ idol|chibiimage:True }}',{% endif %}
+      {% if value == '' %}'': '/static/empty.png',{% else %}'{{ value|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
     }
   });

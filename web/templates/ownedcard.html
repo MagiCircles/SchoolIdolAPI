@@ -9,7 +9,7 @@
   <img class="{{ classes }}" src="{% imageurl card=card.card image='round_card_idolized_image' %}" alt="{{ card }}" height="{{ size }}" style="display: inline-block">
   {% else %}
   <div class="{{ classes }} circled_card_{{ size }} {{ card.card.attribute }} {{ card.card.rarity }} hover"
-       style="background-image: url('{% if not card.idolized and card.card.card_image %}{% imageurl card=card.card image='card_image' %}{% else %}{{ imageurl card=card.card image='card_idolized_image' %}{% endif %}');"></div>
+       style="background-image: url('{% if not card.idolized and card.card.card_image %}{% imageurl card=card.card image='card_image' %}{% else %}{% imageurl card=card.card image='card_idolized_image' %}{% endif %}');"></div>
   {% endif %}
 {% if not nolink %}
 </a>

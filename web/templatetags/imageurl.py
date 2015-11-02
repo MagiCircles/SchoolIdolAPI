@@ -9,8 +9,6 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def imageurl(context, card, image):
-    if 'show_images' not in context or not context['show_images']:
-        return '/static/tmpimg.png'
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
@@ -25,8 +23,6 @@ def imageurl(context, card, image):
 
 @register.simple_tag(takes_context=True)
 def eventimageurl(context, event):
-    if 'show_images' not in context or not context['show_images']:
-        return '/static/tmpimg.png'
     if event.image:
         if settings.DEBUG:
             event.image = unicode(event.image).replace('web/', '')
@@ -35,8 +31,6 @@ def eventimageurl(context, event):
 
 @register.simple_tag(takes_context=True)
 def songimageurl(context, song):
-    if 'show_images' not in context or not context['show_images']:
-        return '/static/tmpimg.png'
     if song.image:
         if settings.DEBUG:
             song.image = unicode(song.image).replace('web/', '')
@@ -48,8 +42,6 @@ def userimage(image):
 
 @register.simple_tag(takes_context=True)
 def standimage(context, idol, number):
-    if 'show_images' not in context or not context['show_images']:
-        return '/static/tmpimg.png'
     if idol is not None:
         m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
         member_number = m.group('number')
@@ -76,8 +68,6 @@ def linkurl(link):
 
 @register.simple_tag(takes_context=True)
 def chibiimage(context, idol, small=True):
-    if 'show_images' not in context or not context['show_images']:
-        return '/static/tmpimg.png'
     return _chibiimage(idol, small)
 
 register.filter('userimage', userimage)

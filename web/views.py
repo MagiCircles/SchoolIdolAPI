@@ -38,10 +38,8 @@ def globalContext(request):
         'btnColor': 'default',
         'debug': settings.DEBUG,
         'hidenavbar': 'hidenavbar' in request.GET,
-        'show_images': False,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
-        context['show_images'] = request.user.date_joined < datetime.datetime(2015, 10, 20, 0, 0, 0, 0, pytz.UTC)
         context['accounts'] = request.user.accounts_set.all().select_related('center', 'center__card')
         for account in context['accounts']:
             if account.transfer_code and not transfer_code.is_encrypted(account.transfer_code):

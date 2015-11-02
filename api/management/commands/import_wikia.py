@@ -27,7 +27,7 @@ def import_wikia():
             if idolizedtd is not None:
                 idolized = wikiaImageURL(idolizedtd.get('href'))
             if tds[3].b is not None:
-                skill_title = clean(tds[3].b.extract())
+                skill_title = clean(tds[3].b.extract().text)
             if tds[3].br is not None:
                 tds[3].br.extract()
             if tds[3].text is not None:

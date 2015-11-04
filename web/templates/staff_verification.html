@@ -36,7 +36,7 @@
 	  <small><i>Verification sent: {{ verification.creation }}</i></small><br>
 	  {% if verification.verification_date %}
 	  {% if verification.status == 0 or verification.status == 3 %}
-	  <small><i>{{ verification.status|verificationStatusToString }} date: {{ verification.creation }} by {{ verification.verified_by }}</i></small>
+	  <small><i>{{ verification.status|verificationStatusToString }} date: {{ verification.verification_date }} by {{ verification.verified_by }}</i></small>
 	  {% endif %}
 	  {% endif %}
 	</p>

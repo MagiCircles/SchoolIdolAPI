@@ -71,7 +71,7 @@
 		<li><a href="/user/{{ user.username }}/#{{ account.pk }}" class="account">
 		    {% if account.center %}
 		    <div class="pull-left">
-		      {% include 'ownedcard.html' with card=account.center nolink=True size=30 classes='center circled' %}
+		      {% include 'ownedcard.html' with card=account.center nolink=True size=30 classes='center circled' no_details=True %}
 		    </div>
 		    {% else %}
 		    <div class="padding pull-left"></div>

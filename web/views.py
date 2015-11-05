@@ -963,10 +963,10 @@ def users(request, ajax=False):
         form = forms.UserSearchForm()
     if not flag:
         users = users.order_by('-accounts_set__rank')
-    users = users[(page * page_size):((page * page_size) + page_size)]
 
     context['form'] = form
     context['total_results'] = users.count()
+    users = users[(page * page_size):((page * page_size) + page_size)]
     context['total_users'] = len(users)
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     context['page'] = page + 1

@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from api.models_languages import LANGUAGE_CHOICES
 from django.core import validators
 from django.utils import timezone
+from django_prometheus.models import ExportModelOperationsMixin
 import hashlib, urllib
 
 import datetime
@@ -186,7 +187,7 @@ def japanese_attribute(attribute):
         return u'クール'
     return u'❤'
 
-class Event(models.Model):
+class Event(ExportModelOperationsMixin('Event'), models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
     romaji_name = models.CharField(max_length=100, blank=True, null=True)
     english_name = models.CharField(max_length=100, blank=True, null=True)
@@ -244,7 +245,7 @@ class Event(models.Model):
 
 admin.site.register(Event)
 
-class Idol(models.Model):
+class Idol(ExportModelOperationsMixin('Idol'), models.Model):
     name = models.CharField(max_length=100, unique=True)
     japanese_name = models.CharField(max_length=100, blank=True, null=True)
     sub_unit = models.CharField(max_length=20, blank=True, null=True)
@@ -273,7 +274,7 @@ class Idol(models.Model):
 
 admin.site.register(Idol)
 
-class Card(models.Model):
+class Card(ExportModelOperationsMixin('Card'), models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
     name = models.CharField(max_length=100, blank=True) # duplicate with idol, used only in __unicode__ because otherwise it makes another query everytime
     idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
@@ -329,7 +330,7 @@ class Card(models.Model):
 
 admin.site.register(Card)
 
-class Account(models.Model):
+class Account(ExportModelOperationsMixin('Account'), models.Model):
     owner = models.ForeignKey(User, related_name='accounts_set')
     nickname = models.CharField(_("Nickname"), blank=True, max_length=20)
     friend_id = models.PositiveIntegerField(_("Friend ID"), blank=True, null=True, help_text=_('You can find your friend id by going to the "Friends" section from the home, then "ID Search". Players will be able to send you friend requests or messages using this number.'))
@@ -348,7 +349,7 @@ class Account(models.Model):
 
 admin.site.register(Account)
 
-class OwnedCard(models.Model):
+class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
     owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='ownedcards')
     card = models.ForeignKey(Card, related_name='ownedcards')
     stored = models.CharField(_("Stored"),  choices=STORED_CHOICES, default='Deck', max_length=30)
@@ -363,7 +364,7 @@ class OwnedCard(models.Model):
 
 admin.site.register(OwnedCard)
 
-# class Team(models.Model):
+# class Team(ExportModelOperationsMixin('Team'), models.Model):
 #     owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
 #     name = models.CharField(max_length=100, verbose_name=_('Name'))
 
@@ -372,7 +373,7 @@ admin.site.register(OwnedCard)
 
 # admin.site.register(Team)
 
-# class Member(models.Model):
+# class Member(ExportModelOperationsMixin('Member'), models.Model):
 #     team = models.ForeignKey(Team, related_name='cards')
 #     card = models.ForeignKey(OwnedCard)
 #     position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
@@ -382,7 +383,7 @@ admin.site.register(OwnedCard)
 
 # admin.site.register(Member)
 
-class EventParticipation(models.Model):
+class EventParticipation(ExportModelOperationsMixin('EventParticipation'), models.Model):
     event = models.ForeignKey(Event, related_name='participations')
     account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='events')
     ranking = models.PositiveIntegerField(_('Ranking'), null=True, blank=True)
@@ -394,7 +395,7 @@ class EventParticipation(models.Model):
 
 admin.site.register(EventParticipation)
 
-class UserLink(models.Model):
+class UserLink(ExportModelOperationsMixin('UserLink'), models.Model):
     alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\. ]*$', 'Only alphanumeric and - _ characters are allowed.')
     owner = models.ForeignKey(User, related_name='links')
     type = models.CharField(_('Platform'), max_length=20, choices=LINK_CHOICES)
@@ -406,7 +407,7 @@ class UserLink(models.Model):
 
 admin.site.register(UserLink)
 
-class UserPreferences(models.Model):
+class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Model):
     alphanumeric = validators.RegexValidator(r'^[0-9a-zA-Z-_\.]*$', 'Only alphanumeric and - _ characters are allowed.')
     user = models.OneToOneField(User, related_name='preferences')
     color = models.CharField(_('Attribute'), choices=ATTRIBUTE_CHOICES, max_length=6, null=True, blank=True)
@@ -444,7 +445,7 @@ admin.site.register(UserPreferences)
 # Add card to deck/album/wish list
 # Level up
 # Idolized / Max leveled / Max bonded
-class Activity(models.Model):
+class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
     message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
@@ -458,12 +459,12 @@ class Activity(models.Model):
 
 admin.site.register(Activity)
 
-class UserImage(models.Model):
+class UserImage(ExportModelOperationsMixin('UserImage'), models.Model):
     image = models.ImageField(upload_to='user_images/', null=True, blank=True)
 
 admin.site.register(UserImage)
 
-class VerificationRequest(models.Model):
+class VerificationRequest(ExportModelOperationsMixin('VerificationRequest'), models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     verification_date = models.DateTimeField(null=True)
     account = models.ForeignKey(Account, related_name='verificationrequest', unique=True)
@@ -477,7 +478,7 @@ class VerificationRequest(models.Model):
 
 admin.site.register(VerificationRequest)
 
-class Song(models.Model):
+class Song(ExportModelOperationsMixin('Song'), models.Model):
     name = models.CharField(max_length=100, unique=True)
     romaji_name = models.CharField(max_length=100, blank=True, null=True)
     translated_name = models.CharField(max_length=100, blank=True, null=True)

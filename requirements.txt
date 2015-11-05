@@ -10,12 +10,15 @@ django-cors-headers==1.1.0
 django-filter==0.9.1
 django-markdown-deux==1.0.5
 django-multiupload==0.5
+django-prometheus==1.0.3
 django-ses==0.7.0
 django-storages==1.1.8
 djangorestframework==3.0.3
 docopt==0.6.2
 geopy==1.9.1
 markdown2==2.3.0
+pip-prometheus==1.0.1
+prometheus-client==0.0.13
 pycrypto==2.6.1
 python-dateutil==2.4.0
 pytz==2015.2

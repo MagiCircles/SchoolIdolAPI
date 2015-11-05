@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'web',
     'django.contrib.admin',
     'django.contrib.auth',
+    'django_prometheus',
 )
 
 REST_FRAMEWORK = {
@@ -61,6 +62,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE_CLASSES = (
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -72,6 +74,7 @@ MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'schoolidolapi.middleware.httpredirect.HttpRedirectMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 )
 
 ROOT_URLCONF = 'schoolidolapi.urls'
@@ -84,7 +87,7 @@ WSGI_APPLICATION = 'schoolidolapi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django_prometheus.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }

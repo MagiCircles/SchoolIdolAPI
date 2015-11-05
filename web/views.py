@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import login as login_view
 from django.contrib.auth.views import password_reset_confirm as password_reset_confirm_view
 from django.db.models import Count, Q
+from django.db.models import Prefetch
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -962,16 +963,15 @@ def users(request, ajax=False):
         form = forms.UserSearchForm()
     if not flag:
         users = users.order_by('-accounts_set__rank')
+    users = users[(page * page_size):((page * page_size) + page_size)]
+
     context['form'] = form
     context['total_results'] = users.count()
-    users = users[(page * page_size):((page * page_size) + page_size)]
-    for user in users:
-        user.accounts = user.accounts_set.all().order_by('-rank')
     context['total_users'] = len(users)
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
-    context['users'] = users
     context['page'] = page + 1
     context['current'] = 'users'
+    context['users'] = users.select_related('preferences').prefetch_related(Prefetch('accounts_set', queryset=models.Account.objects.select_related('center', 'center__card'), to_attr='accounts'))
     return render(request, 'usersPage.html' if ajax else 'users.html', context)
 
 def events(request):
@@ -1248,6 +1248,7 @@ def songs(request, song=None, ajax=False):
             songs = songs.order_by('-available', 'daily_rotation', 'daily_rotation_position', prefix + 'rank', 'name')
         else:
             songs = songs.order_by(prefix + ordering)
+        songs = songs.select_related('event')
 
         context['total_results'] = songs.count()
 

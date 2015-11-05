@@ -1,59 +1,57 @@
-{% if users|length %}
+{% if total_users %}
 {% load i18n %}
 {% load mod %}
 {% load times %}
 {% load imageurl %}
 {% load choicesToString %}
-  <div class="row">
-    {% for user in users %}
-    {% if forloop.counter0|mod:3 %}
-  </div><div class="row">
-    {% endif%}
-    <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">
-      {% with user.accounts|length as length %}
-      <div class="panel panel-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %}">
-	<div class="panel-heading">
-	  <div class="pull-right">
-	    {% include 'include/avatar.html' with av_user=user av_size=30 av_image_size=50 %}
-	  </div>
-	  <h3 class="padding-novertical margin-novertical"><div class="text"> <a href="/user/{{ user.username }}/">{{ user }}</a></div></h3>
-	</div>
-	<div class="panel-body">
-	  {% if length == 0 %}
-	  <h5 class="margin20">{% trans 'No account.' %}</h5>
-	  {% else %}
-	  <h5 class="padding20 padding-novertical">{% blocktrans count counter=length %}{{ length }} account:{% plural %}{{ length }} accounts:{% endblocktrans %}</h5>
-	  <table class="table margin-novertical">
-	    {% for account in user.accounts %}
-	    <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';"
-		{% if account.verified > 0 and account.verified < 3%} data-content="{{ account.verified|verifiedToString }}" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover"{% endif %}>
-	      <td>
-		{% if account.center %}
-		{% include 'ownedcard.html' with card=account.center nolink=True size=70 classes='pull-left margin10' %}
-		{% endif %}
+<div class="row">
+  {% for user in users %}
+  {% if forloop.counter0|mod:3 %}
+</div><div class="row">
+  {% endif %}
+  <div class="col-sm-{% if total_users == 1 %}12{% elif total_users == 2 %}6{% else %}4{% endif %}">
+    <div class="panel panel-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %}">
+      <div class="panel-heading">
+ 	<div class="pull-right">
+ 	  {% include 'include/avatar.html' with av_user=user av_size=30 av_image_size=50 %}
+ 	</div>
+ 	<h3 class="padding-novertical margin-novertical"><div class="text"> <a href="/user/{{ user.username }}/">{{ user }}</a></div></h3>
+      </div>
+      <div class="panel-body">
+	{% if not user.accounts %}
+	<h5 class="margin20">{% trans 'No account.' %}</h5>
+	{% else %}
+	<br>
+ 	<table class="table margin-novertical">
+	  {% for account in user.accounts %}
+ 	  <tr class="table-link" onclick="document.location = '/user/{{ user.username }}/#{{ account.pk }}';"
+ 	      {% if account.verified > 0 and account.verified < 3%} data-content="{{ account.verified|verifiedToString }}" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover"{% endif %}>
+	      <td {% if forloop.counter0 == 0 %}style="border: 0"{% endif %}>
+ 		{% if account.center %}
+		{% include 'ownedcard.html' with card=account.center nolink=True size=70 classes='pull-left margin10' no_details=True %}
+ 		{% endif %}
 		<h4 class="padding20 padding-novertical">{{ account }}</h4>
 	      </td>
-	      <td class="text-right fontx2">
+	      <td class="text-right fontx2" {% if forloop.counter0 == 0 %}style="border: 0"{% endif %}>
 		{% if account.rank %}
 		{{ account.rank }}
 		{% endif %}
 	      </td>
-	      <td class="fontx2">
+	      <td class="fontx2" {% if forloop.counter0 == 0 %}style="border: 0"{% endif %}>
 		{% if account.verified > 0 and account.verified < 3 %}
 		<span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span>
 		{% endif %}
 	      </td>
-	    </tr>
-	    {% endfor %}
-	  </table>
-	  {% endif %}
-	  <small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/user/{{ user.username }}/#disqus_thread">{% trans 'Comments' %}</a></small>
-	</div>
-      </div>
-      {% endwith %}
-    </div>
-    {% endfor %}
-  </div>
+	  </tr>
+	  {% endfor %}
+	</table>
+	{% endif %}
+ 	<small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/user/{{ user.username }}/#disqus_thread">{% trans 'Comments' %}</a></small>
+      </div> <!-- panel-body -->
+    </div><!-- panel -->
+  </div> <!-- col -->
+{% endfor %}
+</div> <!-- row -->
 
   <nav id="load_more" data-next-page="{{ page|add:1 }}">
     <ul class="pagination pagination-sm">

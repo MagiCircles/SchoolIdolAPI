@@ -287,7 +287,7 @@ def cards(request, card=None, ajax=False):
         context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     else:
         context['total_results'] = 1
-        cards = [get_object_or_404(models.Card, id=int(card))]
+        cards = models.Card.objects.filter(pk=int(card))
         context['single'] = cards[0]
 
     cards = cards.select_related('event', 'idol')

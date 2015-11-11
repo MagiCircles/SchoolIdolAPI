@@ -530,6 +530,8 @@ def ajaxeditcard(request, ownedcard):
             form = forms.EditQuickOwnedCardForm(request.POST, instance=owned_card)
         else:
             form = forms.EditOwnedCardForm(request.POST, instance=owned_card)
+            if not owned_card.card.skill:
+                form.fields.pop('skill')
         if form.is_valid():
             owned_card = form.save(commit=False)
             # Update account

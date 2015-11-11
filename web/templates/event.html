@@ -3,7 +3,7 @@
 {% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="/static/js/event.js?1"></script>
+<script src="/static/js/event.js?2"></script>
 {% endblock %}
 {% block content %}
 {% load getattribute %}
@@ -190,44 +190,11 @@
     <div class="col-lg-3"></div>
   </div> <!-- row -->
 
-  {% if not user.is_authenticated %}
-  <a href="/create/"
+  {% if did_happen_world or did_happen_japan %}
+  <a href="{% if not user.is_authenticated %}/create/{% else %}/events/{{ event.japanese_name|urlencode }}/participations/{% endif %}"
      class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
     {% trans 'Share your ranking' %}!
   </a>
-  {% endif %}
-  {% if add_form %}
-  <br><br>
-  <div class="jumbotron">
-    <form method="post">
-      <h3>{% trans 'Share your ranking' %}</h3><br>
-      {% csrf_token %}
-      {% include "bootstrap_form_horizontal.html" with form=add_form wrap=0 %}
-      <br><br>
-      <div class="text-right">
-	<button type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" data-form-loader="true">
-	  {% trans 'Share your ranking' %}</button>
-      </div>
-    </form>
-  </div> <!-- jumbotron -->
-  {% endif %}
-  {% if edit_forms %}
-  {% for participation_id, participation_account, edit_form in edit_forms %}
-  <div id="edit{{ participation_id }}" class="jumbotron">
-    <h3>{{ participation_account }}</h3>
-    <form method="post" class="padding20">
-      {% csrf_token %}
-      <input type="hidden" name="id" value="{{ participation_id }}">
-      {% include "bootstrap_form_horizontal.html" with form=edit_form wrap=0 %}
-      <br><br>
-      <div class="text-right">
-	<input type="submit" class="btn btn-danger" name="deleteParticipation" value="{% trans 'Delete' %}">
-	<input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
-	       value="{% trans 'Apply Changes' %}" />
-      </div>
-    </form>
-  </div>
-  {% endfor %}
   {% endif %}
 
   {% include 'disqus.html' with disqus_identifier=event.japanese_name %}

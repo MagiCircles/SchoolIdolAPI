@@ -91,6 +91,12 @@ class QuickOwnedCardForm(_OwnedCardForm):
         model = models.OwnedCard
         fields = ('card', 'owner_account', 'idolized')
 
+class EditQuickOwnedCardForm(_OwnedCardForm):
+    card = forms.IntegerField()
+    class Meta:
+        model = models.OwnedCard
+        fields = ('idolized',)
+
 class StaffAddCardForm(ModelForm):
     card = forms.IntegerField()
     owner_account = forms.IntegerField()
@@ -108,7 +114,12 @@ class StaffAddCardForm(ModelForm):
 class OwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('card', 'owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill')
+        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill')
+
+class EditOwnedCardForm(_OwnedCardForm):
+    class Meta:
+        model = models.OwnedCard
+        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill')
 
 def getOwnedCardForm(form, accounts, owned_card=None):
     form.fields['owner_account'].queryset = accounts

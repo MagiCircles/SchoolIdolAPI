@@ -1,13 +1,4 @@
 
-function eventedit() {
-    $('.event-edit').unbind('click');
-    $('.event-edit').click(function(event) {
-	event.preventDefault();
-	freeModal($($(this).attr('href') + 'title').html(),
-		  $($(this).attr('href')).html(), 0);
-    });
-}
-
 function loadmoreranking() {
     $('.load_more').unbind('click');
     $('.load_more').click(function(e) {
@@ -24,7 +15,6 @@ function loadmoreranking() {
 	    newTable.find('caption').remove();
 	    button.remove();
 	    table.append(newTable.html());
-	    eventedit();
 	    loadmoreranking();
 	});
 	return false;
@@ -38,6 +28,5 @@ $(function() {
 	    render: countdownRender
 	});
     }
-    eventedit();
     loadmoreranking();
 });

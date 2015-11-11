@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
+
+{% block content %}
+{% load imageurl %}
+
+<div class="container text-center">
+  <br><br>
+  <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
+  <br><br>
+  <br><br>
+  <h3>{% trans 'Share your ranking' %}</h3><br>
+  <a href="/events/{{ event.japanese_name|urlencode }}/">
+    <i class="flaticon-back"></i>
+    {% trans 'Back to event' %}
+  </a><br><br>
+
+  {% if add_form and add_form.fields.account.choices %}
+  <div class="jumbotron">
+    <form method="post">
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=add_form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<button type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" data-form-loader="true">
+	  {% trans 'Share your ranking' %}</button>
+      </div>
+    </form>
+  </div> <!-- jumbotron -->
+  {% endif %}
+  {% if edit_forms %}
+  {% for participation_id, participation_account, edit_form in edit_forms %}
+  <div id="edit{{ participation_id }}" class="jumbotron">
+    <h3>{{ participation_account }}</h3>
+    <form method="post" class="padding20">
+      {% csrf_token %}
+      <input type="hidden" name="id" value="{{ participation_id }}">
+      {% include "bootstrap_form_horizontal.html" with form=edit_form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<input type="submit" class="btn btn-danger" name="deleteParticipation" value="{% trans 'Delete' %}">
+	<input type="submit" class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"
+	       value="{% trans 'Apply Changes' %}" />
+      </div>
+    </form>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% if not add_form and not edit_forms %}
+  <div class="alert alert-warning padding30">
+    {% trans 'None of your accounts are allowed to add an event participation. It might be because the event is not finished yet.' %}
+  </div>
+  {% endif %}
+
+  <a href="/events/{{ event.japanese_name|urlencode }}/">
+    <i class="flaticon-back"></i>
+    {% trans 'Back to event' %}
+  </a><br><br><br><br><br><br>
+
+</div>
+{% endblock %}

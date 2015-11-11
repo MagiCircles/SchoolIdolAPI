@@ -28,7 +28,7 @@
 	  <td class="text-right">{% if participation.ranking %}<strong># {{ participation.ranking }}</strong>{% endif %}</td>
 	  {% if participation.account.owner == user %}
 	  <td width="17">
-	    <a href="#edit{{ participation.id }}" class="event-edit">
+	    <a href="/events/{{ event.japanese_name|urlencode }}/participations/#edit{{ participation.id }}" class="event-edit">
 	      <i class="flaticon-edit"></i>
 	    </a>
 

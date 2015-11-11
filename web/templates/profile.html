@@ -104,7 +104,7 @@
 	  <div class="pull-right" style="padding: 20px;">
 	    {% if account.center %}
 	    <a href="{% if is_me %}/editaccount/{{ account.pk }}/{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
-	      {% include 'ownedcard.html' with card=account.center nolink=True size=200 %}
+	      {% include 'ownedcard.html' with card=account.center owner_account=account nolink=True size=200 %}
 	    </a>
 	    {% else %}
 	    {% if is_me %}<a href="/editaccount/{{ account.pk }}/">{% endif %}

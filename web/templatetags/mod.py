@@ -16,7 +16,11 @@ def torfc2822(date):
 def addstr(a, b):
     return unicode(a) + unicode(b)
 
+def findModelId(array, id):
+    return next(obj for obj in array if obj.id == id)
+
 register.filter('mod', mod)
 register.filter('isnone', isnone)
 register.filter('torfc2822', torfc2822)
 register.filter('addstr', addstr)
+register.filter('findModelId', findModelId)

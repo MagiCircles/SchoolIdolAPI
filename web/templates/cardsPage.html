@@ -325,7 +325,7 @@
 		  {% for owned in card.owned_cards %}
 		  {% include "ownedCardOnBottomCard.html" with owned=owned owner_account=accounts|findModelId:owned.owner_account_id %}
 		  {% endfor %}
-		  <a href="{% if user.is_authenticated %}#quickAddCard{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
+		  <a href="{% if user.is_authenticated %}{% if accounts %}#quickAddCard{% else %}/addaccount/{% endif %}{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 		</div>
 		<div class="col-xs-4 text-right">
 		  {% if card.skill %}

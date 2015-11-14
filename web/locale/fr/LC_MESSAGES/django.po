@@ -94,7 +94,7 @@ msgstr "La version du jeu sur laquelle tu joues."
 msgid "Operating System"
 msgstr "Système d'exploitation"
 
-#: api/models.py:343
+#: api/models.py:343 web/forms.py:58
 msgid "Center"
 msgstr "Centre"
 
@@ -138,6 +138,7 @@ msgid "Unexpected Error"
 msgstr "Erreur inattendue"
 
 #: web/templates/addCardForm.html:13 web/templates/addaccount.html:146
+#: web/templates/event.html:57 web/templates/event.html.py:66
 msgid "days"
 msgstr "jours"
 
@@ -902,8 +903,8 @@ msgstr "Joue avec"
 msgid "Account"
 msgstr "Compte"
 
-#: tmp/forms.py:141 tmp/profile.html:175 tmp/profile.html.py:184
-#: web/forms.py:163 web/templates/profile.html:175
+#: api/models.py:83 tmp/forms.py:141 tmp/profile.html:175
+#: tmp/profile.html.py:184 web/forms.py:163 web/templates/profile.html:175
 #: web/templates/profile.html.py:184
 msgid "Verified"
 msgstr "Vérification"
@@ -2292,4 +2293,76 @@ msgstr "On a tous les deux 23 ans et on habite à San Francisco, en Californie (
 #: web/templates/about.html:24
 msgid "Though we love our job, we don't pay ourselves and don't have any income, so"
 msgstr "Même si on adore notre boulot, on n'a pas les moyens de se verser un salaire et on a aucune source de revenue à l'heure actuelle, donc"
+
+#: web/links.py:11 web/links.py:16
+msgid "English Version"
+msgstr "Version en anglais"
+
+#: web/links.py:21 web/links.py:26
+msgid "Japanese Version"
+msgstr "Version japonaise"
+
+#: web/links.py:141
+msgid "Japanese Bushimo Love Live! Festival Wiki"
+msgstr "Wiki japonais Bushimo Love Live! Festival"
+
+#: web/links.py:148
+msgid "Japanese Love Live! Festival Gamerch Wiki"
+msgstr "Wiki japonais Love Live! Festival Gamerch"
+
+#: web/links.py:155
+msgid "Chinese MoeGirl Wiki"
+msgstr "Wiki chinois MoeGirl"
+
+#: web/links.py:190
+msgid "Love Live Facebook Page"
+msgstr "Page Facebook Love Live"
+
+#: web/links.py:203 web/links.py:209
+msgid "Official"
+msgstr "Officiel :"
+
+#: web/links.py:264
+msgid "Facebook Group"
+msgstr "Groupe Facebook"
+
+#: web/links.py:302
+msgid "Player.me Community"
+msgstr "Communauté Player.me"
+
+#: web/links.py:588
+msgid "Youtube Channel μ's（ラブライブ！） by Lantis"
+msgstr "Chaîne YouTube μ's（ラブライブ！） par Lantis "
+
+#: web/templates/event.html:57 web/templates/event.html.py:66
+msgid "hours"
+msgstr "heures"
+
+#: web/templates/event.html:57 web/templates/event.html.py:66
+msgid "minutes"
+msgstr "minutes"
+
+#: web/templates/event.html:57
+msgid "seconds left"
+msgstr "secondes restantes"
+
+#: web/templates/event.html:66
+msgid "Starts in"
+msgstr "Commence dans"
+
+#: web/templates/event.html:66
+msgid "seconds"
+msgstr "secondes"
+
+#: api/models.py:80
+msgid "Rejected"
+msgstr "Rejetée"
+
+#: api/models.py:81
+msgid "Pending"
+msgstr "En attente"
+
+#: api/models.py:82
+msgid "In Progress"
+msgstr "En cours"
 

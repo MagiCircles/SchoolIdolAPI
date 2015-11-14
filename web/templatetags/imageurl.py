@@ -12,8 +12,6 @@ def imageurl(context, card, image):
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
-            #if settings.DEBUG:
-             #   card_image = unicode(card_image).replace('web/', '')
             return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card_image))
         elif hasattr(card, image.replace('image', 'url')):
             url = getattr(card, image.replace('image', 'url'))
@@ -24,8 +22,6 @@ def imageurl(context, card, image):
 @register.simple_tag(takes_context=True)
 def eventimageurl(context, event):
     if event.image:
-        if settings.DEBUG:
-            event.image = unicode(event.image).replace('web/', '')
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
     return ''
 

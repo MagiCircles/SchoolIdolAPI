@@ -3,6 +3,14 @@ function getInterfaceColor() {
     return $('body').attr('class').replace('interface-', '');
 }
 
+$('a.page-scroll').bind('click', function(event) {
+    var $anchor = $(this);
+    $('html, body').stop().animate({
+	scrollTop: $($anchor.attr('href')).offset().top
+    }, 1500, 'easeInOutExpo');
+    event.preventDefault();
+});
+
 $("#togglebutton").click(function(e) {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
@@ -21,7 +29,7 @@ function freeModal(title, body, buttons) {
     $('#freeModal').modal('show');
 }
 
-function globalModal(hash) {
+function globalModal(hash, modal_size) {
     if (hash == 'donate') {
 	window.location.href = "/donate/";
 	return;
@@ -33,6 +41,11 @@ function globalModal(hash) {
     $.get('/ajax/modal/' + hash +
 	  '/?interfaceColor=' + getInterfaceColor(), function(data) {
 	      $('#modal .modal-content').html(data);
+	      $('#modal .modal-dialog').removeClass('modal-lg');
+	      $('#modal .modal-dialog').removeClass('modal-sm');
+	      if (typeof modal_size != 'undefined') {
+		  $('#modal .modal-dialog').addClass('modal-' + modal_size);
+	      }
 	      $('#modal').modal('show');
 	      modalHandler();
 	  });
@@ -76,9 +89,10 @@ function avatarStatus() {
 }
 
 function modalHandler() {
+    $('[data-toggle=ajaxmodal]').unbind('click');
     $('[data-toggle=ajaxmodal]').click(function(e) {
 	e.preventDefault();
-	globalModal($(this).attr('href').replace('#', '').replace('Modal', ''));
+	globalModal($(this).attr('href').replace('#', '').replace('Modal', ''), $(this).data('modal-size'));
     });
 }
 

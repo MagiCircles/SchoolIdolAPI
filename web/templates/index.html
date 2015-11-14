@@ -5,263 +5,151 @@
 {% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}
 {% block back_button %}0{% endblock %}
 {% block js %}
-<script src="/static/js/loadactivities.js"></script>
-<script src="/static/js/index.js"></script>
+<script src="/static/js/loadactivities.js?1"></script>
+<script src="/static/js/index.js?1"></script>
 {% endblock %}
 
 {% block content %}
 {% load imageurl %}
 {% load random_int %}
 {% load colorStringToHex %}
+{% load mod %}
 
-{% if LANGUAGE_CODE == 'en' %}
-<div class="link-stars-side" style="display: none;">
-  {% for link in links %}
-  <div class="color-Rainbow-{{ forloop.counter }}">
-    <a href="#{{ link.link }}"><span class="name">{{ link.name }}</span><span class="btn btn-Rainbow-{{ forloop.counter }}"><i class="flaticon-star fontx2"></i></span></a>
+<div class="talking-character hidden-sm hidden-xs" style="background-image: url('/static/honokoto{{ 0|random_int:6 }}.png')"></div>
+<div class="dialog hidden-sm hidden-xs">
+  <div class="dialog-background">
+    <div class="row">
+      <div class="col-md-8"><br>
+	<div class="twitter-text" style="font-size: 2em">
+	  <a href="https://twitter.com/schoolidolu" target="_blank">{% trans 'Follow School Idol Tomodachi on Twitter' %}</a>
+	</div>
+	<!-- <div class="text-right"> -->
+	<!--   <a href="https://twitter.com/schoolidolu" target="_blank"> -->
+	<!--     {% trans 'Follow School Idol Tomodachi on Twitter' %} -->
+	<!--   </a> -->
+	<!-- </div> -->
+      </div>
+      <div class="col-md-4">
+	<div class="twitter-image" style="background-image: url('http://i.schoolido.lu/android/icon.png')"></div>
+      </div>
+    </div>
   </div>
-  {% endfor %}
 </div>
-{% endif %}
 
-<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:6 }}.jpg')">
-  <div class="mainhome">
-    <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
-    {% if LANGUAGE_CODE == 'ja' %}
-    <br><br>
-    <img src="/static/roburaibu_shadow.png" class="logo" alt="Logo">
-    <br><br>
-    {% else %}
-    <div class="row"><div class="col-md-7 text-right">
-	<br><br>
-	<img src="/static/logo_shadow.png" class="logo" alt="Logo">
-    </div><div class="col-md-5"><div class=" text-left special-message"><span>{% trans 'School Idol Tomodachi makes its Android debut!' %}</span><div class="text-right"><a class="btn btn-{{ btnColor }} btn-lg" href="/android">{% trans 'Download the app' %}</a></div></div></div></div>
-    {% endif %}
-    <div class="container">
-      <h2 class="slogan margin-novertical">{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}</h2>
+<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:11 }}.jpg')">
+  <div style="position: fixed; top: 100px; right: 0; margin-top: 0;" class="special-message hidden-sm hidden-xs">
+    <span>Kotori & Honoka are the winners of the Love Live Community Extra Life 2015</span>
+  </div>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+      <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
+      {% if user.is_authenticated %}
       <br>
-      <div class="what">
-	<div class="row">
-	  <div class="col-md-4 color-Smile">
-	    <a href="/cards/">
-	      <i class="flaticon flaticon-big flaticon-album"></i>
-	      <h2>{% trans 'Browse Cards' %}</h2>
-	      <p>{% trans 'Check out all the cards available in the game and get statistics, skills, and more!' %}</p>
-	    </a>
-	  </div>
-	  <div class="col-md-4 color-Pure">
-	    <a href="{% if user.is_authenticated %}/cards/{% else %}/create/{% endif %}">
-	      <i class="flaticon flaticon-big flaticon-cards"></i>
-	      <h2>{% trans 'Show your cards' %}</h2>
-	      <p>{% trans 'Create your profile to keep track of the cards you own. Share your profile with your friends!' %}</p>
-	    </a>
-	  </div>
-	  <div class="col-md-4 color-Cool">
-	    <a href="/contest/">
-	      <i class="flaticon flaticon-big flaticon-heart"></i>
-	      <h2>{% trans 'Vote for the best idol' %}</h2>
-	      <p>{% trans 'Infinite Facemash: Pick the cutest between two random cards and help your favorite idol reach the top of the ranking!' %}</p>
-	    </a>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="col-md-6">
-	    <div class="row">
-	      <div class="col-sm-6 transparent-hover">
-		<a href="/idols/">
-		  <i class="flaticon flaticon-idolized color-gradient-Rainbow-5"></i>
-		  <h2 class="color-gradient-Rainbow-5">{% trans 'Idols' %}</h2>
-		</a>
-	      </div>
-	      <div class="col-sm-6 transparent-hover">
-		<a href="/events/">
-		  <i class="flaticon flaticon-event color-gradient-Rainbow-3"></i>
-		  <h2 class="color-gradient-Rainbow-3">{% trans 'Events' %}</h2>
-		</a>
+      {% else %}
+      {% if LANGUAGE_CODE == 'ja' %}
+      <img src="/static/roburaibu_shadow.png" class="logo" alt="Logo">
+      {% else %}
+      <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+      {% endif %}
+      {% endif %}
+
+      <div class="row buttons">
+	{% if user.is_authenticated %}
+	<div class="col-sm-8">
+	  <div class="panel panel-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %}">
+	    <div class="panel-heading">
+	      <h1 class="margin-novertical">{% trans 'School Idol Tomodachi' %}</h1>
+	    </div>
+	    <div class="inside padding10">
+	      <div class="row">
+		<div class="col-xs-9">
+		  <span class="fontx1-2">{% trans 'is crowdfunded by our Idol Producer' %}
+		    <a href="/user/nicoahegao/" target="_blank"><strong>nicoahegao</strong></a>
+		  </span>
+		  <div class="pull-right"><a href="/about/#donate">{% trans 'Learn more' %}</a></div>
+		  <div>
+		    {% trans 'and' %} {{ total_donators }} {% randomPositiveAdjective %} {% trans 'donators' %}
+		  </div>
+		</div>
+		<div class="col-xs-3">
+		  <a href="https://twitter.com/nicoahegao" target="_blank"><img src="http://www.gravatar.com/avatar/33914528ce4d90f654fd2ea4348cacb2?s=60&d=http%3A%2F%2Fschoolido.lu%2Favatar%2Ftwitter%2Fnicoahegao" width="60" /></a>
+		</div>
 	      </div>
 	    </div>
 	  </div>
-	  <div class="col-md-6">
-	    <div class="row">
-	      <div class="col-sm-6 transparent-hover">
-		<a href="/users/">
-		  <i class="flaticon flaticon-users color-gradient-Rainbow-2"></i>
-		  <h2 class="color-gradient-Rainbow-2">{% trans 'Players' %}</h2>
-		</a>
-	      </div>
-	      <div class="col-sm-6 transparent-hover">
-		<a href="#social">
-		  <i class="flaticon flaticon-more color-gradient-Rainbow-1"></i>
-		  <h2 class="color-gradient-Rainbow-1">{% trans 'More' %}</h2>
-		</a>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-      </div>
-      <div class="events">
-	<div class="row">
-	  {% if not current_en.is_current and not current_jp.is_current %}
-	  <div class="col-md-4"></div>
-	  {% endif %}
-	  <div class="col-md-{% if current_en.is_current and current_jp.is_current %}4{% else %}{% if not current_en.is_current and not current_jp.is_current %}4{% else %}6{% endif %}{% endif %}">
-	    <a href="/contest/" class="event" style="background-image: url('/static/currentcontest_no.png'); background-size: 120%;">
-	      <span class="hidden">{% trans 'Vote for the best idol' %}</span>
-	      <small class="hidden text-muted">Global Contest</small>
-	    </a>
-	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Contest' %}</h3>
-	  </div>
-	  {% if current_en.is_current %}
-	  <div class="col-md-{% if current_jp.is_current %}4{% else %}6{% endif %}">
-	    <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=current_en %}');">
-	      <span class="hidden">{{ current_en }}</span>
-	    </a>
-	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'English' %}</h3>
-	  </div>
-	  {% endif %}
-	  {% if current_jp.is_current %}
-	  <div class="col-md-{% if current_en.is_current %}4{% else %}6{% endif %}">
-	    <a href="/events/{{ current_jp.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=current_jp %}');">
-	      <span class="hidden">{{ current_jp }}</span>
-	    </a>
-	    <h3 class="text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Japanese' %}</h3>
-	  </div>
-	  {% endif %}
-	</div>
-      </div>
-      <br><br><br>
-    </div>
-  </div>
-  <div class="social-section">
-    <div class="container">
-      <div class="margin20 text-center text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-	<div class="row">
-	  <div class="col-md-6">
-	    <a class="twitter-timeline"
-	       href="https://twitter.com/schoolidolu"
-	       data-widget-id="568489514809561088"
-	       data-link-color="{{ interfaceColor|colorStringToHex }}"
-	       >Tweets by @schoolidolu</a>
-	    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	  </div>
-	  <div class="col-md-6">
-	    <div id="irc">
-	      <h4>
-		<a href="irc://irc.rizon.net/schoolidolu" target="_blank">irc.rizon.net #schoolidolu</a>
-		{% trans 'Chat' %}
-	      </h4>
-	      <iframe src="https://kiwiirc.com/client/irc.rizon.net/?nick={% if user.is_authenticated %}{{ user.username }}{% else %}tomodachi{% endif %}&theme=mini#schoolidolu" style="border:0; width: 508px; max-width:100%; height:746px;"></iframe>
-	    </div>
-	  </div>
-	</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% if LANGUAGE_CODE != 'ja' %}
-<div id="links">
-  {% for link in links %}
-  <div id="{{ link.link }}" class="bg-Rainbow-{{ forloop.counter }} home-section">
-    <div class="container">
-      <div class="row">
-	<div class="col-md-5">
-	  <a href="/cards/{{ link.card.id }}" target="_blank">
-	    <img src="{% if link.card.idolized %}{% imageurl card=link.card image='card_idolized_image' %}{% else %}{% imageurl card=link.card image='card_image' %}{% endif %}" alt="{{link.card}}">
-	  </a>
-	</div>
-	<div class="col-md-7">
-	  <h1>{{ link.name }}</h1>
-
-	  <ul class="list-group">
-	    {% for url in link.links %}
-	    <a href="{{ url.url }}" target="_blank" class="list-group-item"{% if url.type == 'tutorial' %}
-	       data-toggle="popover" data-placement="right" data-content="Tutorial" data-trigger="hover"
-	       {% elif url.type == 'info' %}
-	       data-toggle="popover" data-placement="right" data-content="Information" data-trigger="hover"
-	       {% elif url.type == 'tool' %}
-	       data-toggle="popover" data-placement="right" data-content="Tool" data-trigger="hover"
-	       {% endif %}>
-	      {% if url.size == 'small' %}<small>{% endif %}
-		{% if url.type == 'tutorial' %}
-		<div class="pull-right{% if url.size == 'big' %} fontx2{% endif %}"><i class="flaticon-help"></i></div>
-		{% elif url.type == 'info' %}
-		<div class="pull-right{% if url.size == 'big' %} fontx2{% endif %}"><i class="flaticon-about"></i></div>
-		{% elif url.type == 'tool' %}
-		<div class="pull-right{% if url.size == 'big' %} fontx2{% endif %}"><i class="flaticon-settings"></i></div>
-		{% endif %}
-		{% if url.language == 'japanese' %}
-		<div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-JP"></i></div>
-		{% elif url.language == 'english' %}
-		<div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-EN"></i></div>
-		{% elif url.language == 'world' %}
-		<!-- <div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-world"></i></div> -->
-		{% endif %}
-		{% if url.image %}
-		<div class="pull-right"><img src="{{ url.image }}" class="image" height="{% if url.size == 'big' %}35{% elif url.size == 'small'%}20{% else %}25{% endif %}"></div>
-		{% endif %}
-		<h{% if url.size == 'small' %}5{% else %}4{% endif %} class="list-group-item-heading{% if url.size == 'big' %} fontx2{% endif %}">{{ url.name }}</h{% if url.size == 'small' %}5{% else %}4{% endif %}>
-		{% if url.description %}
-		<p class="list-group-item-text">{{ url.description }}</p>
-		{% endif %}
-		{% if url.size == 'small' %}</small>{% endif %}
-	    </a>
-	    {% endfor %}
-	  </ul>
-	</div>
-      </div>
-  </div></div>
-  {% endfor %}
-</div>
-{% endif %}
-
-<div class="social-section" id="social">
-  <div class="container">
-    <div class="margin20 text-center text-{% if interfaceColor %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-      <div class="row">
-	{% if not user.is_authenticated %}
-	<div class="col-md-3">
-	</div>
-	{% endif %}
-	<div class="col-md-6">
-	  <div id="activities">
-	    <h4>
-	      <a href="/" target="_blank">{% trans 'School Idol Tomodachi' %}</a>
-	      {% trans 'Activities' %}</h4>
-	    <div class="activities"></div>
-	  </div>
-	</div>
-	{% if not user.is_authenticated %}
-	<div class="col-md-3">
 	</div>
 	{% else %}
-	<div class="col-md-6">
-	  {% if user.preferences.following.count > 0 %}
-	  <div id="myactivities">
-	    <h4>
-	      <a href="/user/{{ user.username }}/" target="_blank">{% trans 'Following' %}</a>
-	      {% trans 'Activities' %}
-	    </h4>
-	    <div class="activities"></div>
-	  </div>
-	  {% else %}
-	  <div class="noactivities">
-	    <h4>
-	      <a href="/user/{{ user.username }}/" target="_blank">{% trans 'Following' %}</a>
-	      {% trans 'Activities' %}
-	    </h4>
-	    <strong><a href="/users/">{% trans 'Start following players to see their activities!' %}</a></strong>
-	  </div>
-	  {% endif %}
+	<div class="col-sm-4 text-left">
+	  <a href="#aboutllsifModal" data-toggle="ajaxmodal" data-modal-size="lg">
+	    <img src="/static/about.png" class="">
+	  </a>
+	</div>
+	<div class="col-sm-4 text-center">
+	  <a href="#aboutsukutomoModal" data-toggle="ajaxmodal" data-modal-size="lg">
+	    <img src="/static/aboutschoolidoltomodachi.png" class="">
+	  </a>
 	</div>
 	{% endif %}
+	<div class="col-sm-4 text-{% if user.is_authenticated %}center{% else %}right{% endif %}">
+	  <a href="/links/">
+	    <img src="/static/links.png" class="">
+	  </a>
+	</div>
       </div>
+
+      <br>
+
+      <div id="carousel-index" class="carousel slide" data-ride="carousel" data-interval="3000">
+	<!-- Indicators -->
+	<ol class="carousel-indicators">
+	  <li data-target="#carousel-index" data-slide-to="0" class="active"></li>
+	  {% if current_en %}
+	  <li data-target="#carousel-index" data-slide-to="1"></li>
+	  {% endif %}
+	  {% if current_jp %}
+	  <li data-target="#carousel-index" data-slide-to="2"></li>
+	  {% endif %}
+	</ol>
+
+	<!-- Wrapper for slides -->
+	<div class="carousel-inner" role="listbox">
+
+	  <a href="{{ current_contest_url }}" class="item active"
+	     style="background-image: url('{{ current_contest_image }}')">
+	  </a>
+
+	  {% if current_en %}
+	  <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="item"
+	     style="background-image: url('{% eventimageurl current_en %}');">
+	    </a> <!-- item -->
+	  {% endif %}
+
+	  {% if current_jp %}
+	  <a href="/events/{{ current_jp.japanese_name|urlencode }}" class="item"
+	     style="background-image: url('{% eventimageurl current_jp %}');">
+	  </a>
+	  {% endif %}
+
+	</div> <!-- carousel-inner -->
+
+	<!-- Controls -->
+	<a class="left carousel-control" href="#carousel-index" role="button" data-slide="prev">
+	  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+	  <span class="sr-only">Previous</span>
+	</a>
+	<a class="right carousel-control" href="#carousel-index" role="button" data-slide="next">
+	  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	  <span class="sr-only">Next</span>
+	</a>
+      </div> <!-- carousel -->
+
+      <div id="{% if user.is_authenticated %}my{% endif %}activities">
+	<div class="activities"></div>
+      </div>
+
+
     </div>
-    <br><br>
   </div>
-</div>
-<div class="container">
-  {% include 'disqus.html' with disqus_identifier="global" %}
-</div>
 
 {% endblock %}

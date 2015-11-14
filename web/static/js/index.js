@@ -1,83 +1,34 @@
 
-$("a[href^='#']").on('click', function(e) {
-    e.preventDefault();
-    var hash = this.hash;
-    if (hash != '' && hash.indexOf('Modal') < 0) {
-	$('html, body').animate({
-	    scrollTop: $(hash).offset().top
-	}, 300, function(){
-	    window.location.hash = hash;
-	});
+var avatar_size = 2;
+var card_size = 133;
+
+function loadActivities() {
+    var container, feed;
+    if ($('#myactivities').length > 0) {
+	container = $('#myactivities');
+	feed = true;
+    } else {
+	container = $('#activities');
+	feed = undefined;
     }
-});
+    container.find('.activities').html('<div class="loader">Loading...</div>');
+    $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
+	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size, function(data) {
+	      container.find('.activities').html(data);
+	      $(window).scroll(
+		  function () {
+		      var button = $('a[href="#loadMoreActivities"]');
+		      if (button.length > 0
+			  && button.find('.loader').length == 0
+			  && ($(window).scrollTop() + $(window).height())
+			  >= ($(document).height() - button.height())) {
+			  loadMoreActivitiesOnClick(button, container, undefined, feed, avatar_size, card_size);
+		      }
+		  });
+	  });
+}
 
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
-
-    $(".link-details a[href^='#']").hide();
-    $(".link-stars a[href^='#']").hover(function(e) {
-	$(".link-details a[href^='#']").hide();
-	$(".link-details a[href=" + $(this).attr('href') + "]").show();
-    });
-
-    $('.link-stars-side a .name').hide();
-    $('.link-stars-side a .btn').hover(function() {
-	$('.link-stars-side a .name').hide();
-	$(this).parent().find('.name').show();
-    }, function() {
-	$(this).parent().find('.name').hide();
-    });
-
-    $('.mainhome').css('min-height', $(window).height() - $('.navbar-Smile').height());
-    $('.home-section').css('min-height', $(window).height());
-
-    $('.link-stars-side').hide();
-    $(window).scroll(
-	function () {
-	    if (($(window).scrollTop() + $(window).height())
-		>= $("#home").height() + $('.bg-Rainbow-1').height() + $('.navbar-Smile').height()
-		&& ($(window).scrollTop() + $(window).height())
-		<= $("#home").height() + $('.navbar-Smile').height() + $('#links').height() + 100) {
-		$('.link-stars-side').show();
-	    } else {
-		$('.link-stars-side').hide();
-	    }
-	    if ($('#activities .activities').html() == ''
-		&& ($(window).scrollTop() + $(window).height())
-		>= $("#home").height() + $('.navbar-Smile').height() + $('#links').height()) {
-		$('#activities .activities').text('Loading...');
-		$.get('/ajax/activities/', function(data) {
-		    $('#activities .activities').html(data);
-		    loadMoreActivities($('#activities .activities'), undefined, undefined , undefined);
-		});
-		if ($('#myactivities').length > 0) {
-		    $('#myactivities .activities').text('Loading...');
-		    $.get('/ajax/feed/', function(data) {
-			$('#myactivities .activities').html(data);
-			loadMoreActivities($('#myactivities .activities'), undefined, true, 1);
-		    });
-		}
-	    }
-	    if (($(window).scrollTop() + $(window).height())
-		>= $(".mainhome").height() - $('.mainhome .events').height() + $('.navbar-Smile').height() && !$('.mainhome .events').hasClass('loaded')) {
-		$('.mainhome .events').addClass('loaded');
-		$.getJSON('http://schoolido.lu/contest/json/current', function(data) {
-		    if (data['current'] == true) {
-			var event = $('.mainhome .events .event').first();
-			event.css('background-image', 'url(\'/static/currentcontest.png\')');
-			event.find('span').text(data['name']);
-			event.find('small').text(data['begin'] + ' ' + data['end']);
-			event.attr('href', '/contest/contest');
-		    }
-		});
-	    }
-	});
-    $('.navbar-fixed-top').on('activate.bs.scrollspy', function () {
-	var currentItem = $(".nav li.active > a").attr('href');
-	if (currentItem == '#page-top') {
-	    $('.navbar-fixed-top').fadeOut();
-	} else {
-	    $('.navbar-fixed-top').fadeIn();
-	}
-    })
+    loadActivities();
 });

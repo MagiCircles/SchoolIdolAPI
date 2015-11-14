@@ -3,7 +3,7 @@ function getButton(parent) {
     return parent.find('a[href="#loadMoreActivities"]');
 }
 
-function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size) {
+function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, card_size) {
     var div = button.parent();
     var page = div.attr('data-page');
     div.html('<span class="loader">Loading...</span>');
@@ -11,6 +11,7 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size) {
 	  + '/?page=' + page
 	  + (typeof account == 'undefined' ? '' : ('&account=' + account))
 	  + (typeof avatar_size == 'undefined' ? '' : ('&avatar_size=' + avatar_size))
+	  + (typeof card_size == 'undefined' ? '' : ('&card_size=' + card_size))
 	  ,
 	  function(data) {
 	      div.replaceWith(data);
@@ -23,7 +24,7 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size) {
 	  });
 }
 
-function loadMoreActivities(parent, account, feed, avatar_size) {
+function loadMoreActivities(parent, account, feed, avatar_size, card_size) {
     avatarStatus();
     updateActivities();
     // Reload disqus comments count
@@ -32,6 +33,6 @@ function loadMoreActivities(parent, account, feed, avatar_size) {
     var button = getButton(parent);
     button.click(function(e) {
 	e.preventDefault();
-	loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size);
+	loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, card_size);
     });
 }

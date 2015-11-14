@@ -1,8 +1,7 @@
  # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _
 
-def get_links(current_en, current_jp):
-    return [
+links = [
         {
             'name': _('Download'),
             'link': 'download',
@@ -468,22 +467,6 @@ def get_links(current_en, current_jp):
                     'url': 'http://decaf.kouhi.me/lovelive/index.php?title=Gameplay#Events',
                     'type': 'info',
                     'language': 'world',
-                },
-                {
-                    'name': _('Latest Event English Version'),
-                    'description': current_en.english_name,
-                    'url': '/event/' + current_en.japanese_name + '/',
-                    'size': 'big',
-                    'type': 'info',
-                    'language': 'english',
-                },
-                {
-                    'name': _('Latest Event Japanese Version'),
-                    'description': current_jp.japanese_name,
-                    'url': '/event/' + current_jp.japanese_name + '/',
-                    'size': 'big',
-                    'type': 'info',
-                    'language': 'japanese',
                 },
                 {
                     'name': _('Events Points Calculator'),

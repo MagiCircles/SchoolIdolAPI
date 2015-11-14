@@ -84,20 +84,33 @@ def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation
 
 def index(request):
     context = globalContext(request)
-    context['hide_back_button'] = True
 
     # Get current events
-    context['current_jp'] = models.Event.objects.order_by('-beginning')[0]
-    context['current_jp'].is_current = context['current_jp'].is_japan_current()
-    context['current_en'] = models.Event.objects.filter(Q(beginning__lte=(timezone.now() - relativedelta(years=1))) | Q(english_beginning__lte=(timezone.now()))).order_by('-beginning')[0]
-    context['current_en'].is_current = context['current_en'].is_world_current()
+    try:
+        context['current_jp'] = models.Event.objects.order_by('-beginning')[0]
+        context['current_jp'].is_current = context['current_jp'].is_japan_current()
+    except: pass
+    try:
+        context['current_en'] = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
+        context['current_en'].is_current = context['current_en'].is_world_current()
+    except: pass
+    context['total_donators'] = settings.TOTAL_DONATORS
+    context['current_contest_url'] = settings.CURRENT_CONTEST_URL
+    context['current_contest_image'] = settings.CURRENT_CONTEST_IMAGE
 
-    context['links'] = links.get_links(context['current_en'], context['current_jp'])
-    context['links']
-    for link in context['links']:
-        link['card'] = models.Card.objects.filter(name=link['idol']).filter(Q(rarity='SR') | Q(rarity='UR')).order_by('?')[0]
-        link['card'].idolized = bool(random.getrandbits(1)) if link['card'].card_url else 1
     return render(request, 'index.html', context)
+
+def links(request):
+    context = globalContext(request)
+    context['links'] = links_list
+
+    query = 'SELECT f.id, f.transparent_idolized_image, f.name FROM (SELECT card.id, card.transparent_idolized_image, idol.name FROM api_card AS card JOIN api_idol AS idol WHERE card.idol_id = idol.id AND idol.main = 1 AND card.transparent_idolized_image IS NOT NULL AND card.transparent_idolized_image != \'\' ORDER BY ' + ('RAND' if connection.vendor == 'sql' else 'RANDOM') + '()) AS f GROUP BY f.name'
+    cards_objects = models.Card.objects.raw(query)
+    cards = {}
+    for card in cards_objects:
+        cards[card.name] = card
+    context['cards'] = cards
+    return render(request, 'links.html', context)
 
 def password_reset_confirm(request, uidb64, token):
     try:
@@ -623,7 +636,7 @@ def ajaxfollowing(request, username):
 
 def _activities(request, account=None, follower=None, avatar_size=3):
     page = 0
-    page_size = 25
+    page_size = 15
     if 'page' in request.GET and request.GET['page']:
         page = int(request.GET['page']) - 1
         if page < 0:
@@ -632,22 +645,23 @@ def _activities(request, account=None, follower=None, avatar_size=3):
     if account is not None:
         activities = activities.filter(account=account)
     if follower is not None:
-        follower = get_object_or_404(User, username=follower)
-        accounts = models.Account.objects.filter(owner__in=follower.preferences.following.all())
-        activities = activities.filter(account__in=accounts)
-    total = activities.count()
+        if follower == request.user.username:
+            follower = request.user
+        else:
+            follower = get_object_or_404(User.objects.select_related('preferences'), username=follower)
+        accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all())
+        activities = activities.filter(account__in=accounts_followed)
+    activities = activities.select_related('account', 'account__owner', 'account__owner__preferences', 'ownedcard', 'ownedcard__card', 'eventparticipation', 'eventparticipation__event')
     activities = activities[(page * page_size):((page * page_size) + page_size)]
-    for activity in activities:
-        activity.likers = activity.likes.all()
-        activity.likers_count = activity.likers.count()
+    activities = activities.annotate(likers_count=Count('likes'))
     context = {
         'activities': activities,
         'page': page + 1,
         'page_size': page_size,
         'avatar_size': avatar_size,
         'content_size': 12 - avatar_size,
-        'total_results': total,
         'current': 'activities',
+        'card_size': request.GET['card_size'] if 'card_size' in request.GET and request.GET['card_size'] else None
     }
     return context
 
@@ -670,7 +684,8 @@ def activity(request, activity):
 def _contextfeed(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
-    return _activities(request, follower=request.user, avatar_size=2)
+    avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 2
+    return _activities(request, follower=request.user.username, avatar_size=avatar_size)
 
 def ajaxfeed(request):
     return render(request, 'activities.html', _contextfeed(request))
@@ -747,8 +762,10 @@ def ajaxmodal(request, hash):
     context = {}
     if 'interfaceColor' in request.GET:
         context['interfaceColor'] = request.GET['interfaceColor']
-    if hash == 'about':
+    if hash == 'aboutllsif':
         return render(request, 'modalabout.html', context)
+    elif hash == 'aboutsukutomo':
+        return render(request, 'modalsukutomo.html', context)
     elif hash == 'developers':
         return render(request, 'modaldevelopers.html', context)
     elif hash == 'contact':

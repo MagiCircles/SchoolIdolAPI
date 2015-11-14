@@ -65,3 +65,4 @@ web/static/events
 /cardsinfo.json
 web/static/css/style.css
 schoolidolapi/local_settings.py
+schoolidolapi/generated_settings.py

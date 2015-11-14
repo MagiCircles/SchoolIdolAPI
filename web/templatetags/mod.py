@@ -1,4 +1,7 @@
 from django import template
+from django.utils.translation import ugettext_lazy as _, string_concat
+import random
+
 register = template.Library()
 
 def mod(value, arg):
@@ -18,6 +21,23 @@ def addstr(a, b):
 
 def findModelId(array, id):
     return next(obj for obj in array if obj.id == id)
+
+positiveAdjectives = [
+    _('lovely'),
+    _('awesome'),
+    _('incredible'),
+    _('adorable'),
+    _('generous'),
+    _('idols-addicted'),
+    _('friendly'),
+    _('kind'),
+    _('warmhearted'),
+    _('nice'),
+]
+
+@register.simple_tag()
+def randomPositiveAdjective():
+    return random.choice(positiveAdjectives)
 
 register.filter('mod', mod)
 register.filter('isnone', isnone)

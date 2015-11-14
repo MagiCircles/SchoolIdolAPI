@@ -4,6 +4,7 @@ from web import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
+    url(r'^links[/]+$', views.links, name='links'),
 
     url(r'^cards[/]+$', views.cards, name='cards'),
     url(r'^card[s]?/(?P<card>\d+)[/]$', views.cards, name='cards'),

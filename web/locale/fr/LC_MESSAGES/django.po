@@ -603,7 +603,7 @@ msgstr "Supprimer le compte"
 
 #: index.html:105 web/templates/base.html:53
 msgid "Contest"
-msgstr "Facemash"
+msgstr "Concours"
 
 #: tmp/profile.html:4 web/templates/about.html:127
 #: web/templates/about.html.py:299 web/templates/about.html:341
@@ -1384,17 +1384,9 @@ msgstr "Ton nom et un lien vers ton profil sera ajouté à la page d'accueil de 
 msgid "We will send you a cute LoveLive! postcard signed by the 2 developers :)"
 msgstr "Tu recevras une carte postale trop mignonne signée par les 2 développeurs :)"
 
-#: web/templates/about.html:264
-msgid "You're the %(status)s."
-msgstr "Tu es l'%(status)."
-
 #: web/templates/about.html:266
 msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
 msgstr "Tu décides qui parmi les idoles de μ's est affiché par défaut tout en haut de la page d'accueil du site."
-
-#: web/templates/about.html:234
-msgid "You're an %(status)s."
-msgstr "Tu es un %(status)."
 
 #: web/templates/about.html:237
 msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
@@ -1802,7 +1794,7 @@ msgstr "Tu recevras une carte postale trop mignonne signée par les 2 développe
 
 #: web/templates/addaccount.html:92
 msgid "Generate a transfer code on the game."
-msgstr "Générer un code de transfert"
+msgstr "Génére un code de transfert"
 
 #: web/templates/addaccount.html:92
 msgid "How to generate a transfer code?"
@@ -2210,7 +2202,7 @@ msgstr "chouettes"
 
 #: web/templates/about.html:22
 msgid "We are two developers and relatively casual players of the game. It's the first project we made together."
-msgstr "Nous"
+msgstr "On est deux développeurs qui jouons occasionnellement au jeu. C'est le premier projet sur lequel on travaille ensemble !"
 
 #: web/templates/about.html:24
 msgid "any donation"
@@ -2365,4 +2357,32 @@ msgstr "En attente"
 #: api/models.py:82
 msgid "In Progress"
 msgstr "En cours"
+
+#: web/templates/about.html:53
+msgid "For suggestions or bug reports, we recommend you to:"
+msgstr ""
+
+#: web/templates/about.html:56
+msgid "Browse the upcoming features on"
+msgstr ""
+
+#: web/templates/about.html:56
+msgid "our Tasks manager"
+msgstr ""
+
+#: web/templates/about.html:57
+msgid "Create a new issue"
+msgstr ""
+
+#: web/templates/about.html:57
+msgid "with the details about what you would like us to implement"
+msgstr ""
+
+#: web/templates/about.html:174
+msgid "Budget"
+msgstr ""
+
+#: web/templates/about.html:234 web/templates/about.html.py:264
+msgid "You're an"
+msgstr ""
 

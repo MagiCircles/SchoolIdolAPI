@@ -7,8 +7,8 @@
 {% load choicesToString %}
 {% get_current_language as LANGUAGE_CODE %}
 
-    {% if songs and total_songs != 0 %}
-      {% if show_total_results and total_songs > 0 and not ajax %}
+    {% if songs and total_results != 0 %}
+      {% if show_total_results and total_results > 0 and not ajax %}
       <h4 class="padding20 nomargin">
 	{% blocktrans count counter=total_results %}{{ counter }} song matches your search:{% plural %}{{ counter }} songs match your search:{% endblocktrans %}
       </h4>
@@ -26,16 +26,16 @@
 	      <div class="row">
 		<div class="col-md-4">
 	      {% endif %}
-	      {% if total_songs > 1 %}
+	      {% if total_results > 1 %}
 	      <a href="/songs/{{ song.name }}/" data-target="#collapseMore{{ song.id }}">
 		{% endif %}
 		<img src="{% songimageurl song=song %}" alt="{{ song.name }}" width="100%" />
-		{% if total_songs > 1 %}</a>{% endif %}
+		{% if total_results > 1 %}</a>{% endif %}
 	      {% if single %}
 		</div>
 		<div class="col-md-8">
 	      {% endif %}
-	      <div class="more {% if ajax or total_songs > 3 %}collapse{% else %}already_collapsed{% endif %}" id="collapseMore{{ song.id }}">
+	      <div class="more {% if ajax or total_results > 3 %}collapse{% else %}already_collapsed{% endif %}" id="collapseMore{{ song.id }}">
 		<table class="table">
 		  <tbody>
 		    <tr>
@@ -252,7 +252,7 @@
     </div> <!-- row -->
     {% if single %}
     {% include "disqus.html" with disqus_identifier='song-'|addstr:single.id %}
-    {% elif total_songs < 9 %}
+    {% elif total_results < 9 %}
     {% else %}
     <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
       <nav>

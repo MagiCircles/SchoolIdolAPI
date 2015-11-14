@@ -21,7 +21,7 @@
 	<p class="margin50">
 	  {% blocktrans %}We are two developers and relatively casual players of the game. It's the first project we made together.{% endblocktrans %}
 	  <br><br>
-	  {% blocktrans %}We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded:{% endblocktrans %}<a href="http://rainbowcooki.es/">Rainbow Cookies</a>. {% blocktrans %}Though we love our job, we don't pay ourselves and don't have any income, so{% endblocktrans %}<a href="#donate" class="page-scroll">{% trans 'any donation' %}</a> {% trans 'helps a lot and is greatly appreciated.' %}
+	  {% blocktrans %}We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded:{% endblocktrans %}<a href="http://rainbowcooki.es/">Rainbow Cookies</a>. {% blocktrans %}Though we love our job, we don't pay ourselves and don't have any income, so{% endblocktrans %} <a href="#donate" class="page-scroll">{% trans 'any donation' %}</a> {% trans 'helps a lot and is greatly appreciated.' %}
 	  <br><br>
 	  {% blocktrans %}The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^{% endblocktrans %}
 	  <br><br>
@@ -50,11 +50,11 @@
       {% trans 'You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.' %}
     </p>
     <p>
-      For suggestions or bug reports, we recommend you to:
+      {% trans 'For suggestions or bug reports, we recommend you to:' %}
     </p>
     <ol>
-      <li>Browse the upcoming features on <a href="https://waffle.io/schoolidoltomodachi/schoolidolapi">our Tasks manager</a></li>
-      <li><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/issues/new">Create a new issue</a> with the details about what you would like us to implement</li>
+      <li>{% trans 'Browse the upcoming features on' %} <a href="https://waffle.io/schoolidoltomodachi/schoolidolapi">{% trans 'our Tasks manager' %}</a></li>
+      <li><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/issues/new">{% trans 'Create a new issue' %}</a> {% trans 'with the details about what you would like us to implement' %}</li>
     </ol>
     <div class="text-right">
       <a class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" href="mailto:contact@schoolido.lu">{% trans 'Send Email' %}</a>
@@ -171,7 +171,7 @@
       <div class="col-md-9">
 	<p style="font-size: 30px;" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
 	<br><br><a href="#donations" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-xl page-scroll">{% trans 'Donate' %}</a><br>
-	<a href="#donators" class="btn btn-link btn-lg page-scroll">{% trans 'Donators' %}</a> - <a href="#about" class="page-scroll btn btn-link btn-lg">{% trans 'About us' %}</a> - <a class="btn btn-link btn-lg" target="_blank" href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/pubhtml?gid=753111293&single=true">Budget</a>
+	<a href="#donators" class="btn btn-link btn-lg page-scroll">{% trans 'Donators' %}</a> - <a href="#about" class="page-scroll btn btn-link btn-lg">{% trans 'About us' %}</a> - <a class="btn btn-link btn-lg" target="_blank" href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/pubhtml?gid=753111293&single=true">{% trans 'Budget' %}</a>
       </div>
       <div class="col-md-3">
 	<img src="/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
@@ -231,7 +231,7 @@
     <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
       <span class="status" style="color: {{ donation.status|userStatusToColor }}"><i class="flaticon-heart"></i></span>
       {% with donation.status|userStatusToString as status %}
-      <p>{% blocktrans %}You're an {{ status }}.{% endblocktrans %}</p>
+      <p>{% blocktrans %}You're an{% endblocktrans %} {{ status }}.</p>
       {% endwith %}
       {% with donation.status|userStatusToColorString as color %}
       <p>{% blocktrans %}With this special status, a lovely {{ color }} heart will be displayed next to your profile picture on your profile and everywhere it appears on the website.{% endblocktrans %}</p>
@@ -261,7 +261,7 @@
     <div class="col-md-{{ donation.col_size }}">
       <img src="/static/homepagecharacter.png" class="img-responsive">
       {% with donation.status|userStatusToString as status %}
-      <p>{% blocktrans %}You're the {{ status }}.{% endblocktrans %}</p>
+      <p>{% blocktrans %}You're an{% endblocktrans %} {{ status }}.</p>
       {% endwith %}
       <p>{% blocktrans %}You decide who will be the idol from μ's shown by default on top of the homepage.{% endblocktrans %}</p>
     </div>

@@ -14,7 +14,11 @@
 {% load tz %}
 <div class="container text-center">
   <br><br>
+  {% if did_happen_world or soon_happen_world or is_world_current %}
+  <img src="{% eventimageurl event=event english=True %}" alt="{{ event.english_name }}" style="max-width: 100%">
+  {% else %}
   <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
+  {% endif %}
   <br><br>
   <div class="row">
     <div class="col-md-2"></div>
@@ -78,6 +82,15 @@
 	{% with 'JP'|languageToString as lang %}
 	<caption class="text-center">{% trans lang %}</caption>
 	{% endwith %}
+	{% if event.english_image and event.image %}
+	<tr>
+	  <td colspan="2">
+	    <a href="{% eventimageurl event=event %}" target="_blank">
+	      <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%; height: 80px;">
+	    </a>
+	  </td>
+	</tr>
+	{% endif %}
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
 	  <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }} - {{ event.end|timezone:"Asia/Tokyo" }}<br>
@@ -132,6 +145,15 @@
 	{% with 'EN'|languageToString as lang %}
 	<caption class="text-center">{% trans lang %}</caption>
 	{% endwith %}
+	{% if event.english_image and event.image %}
+	<tr>
+	  <td colspan="2">
+	    <a href="{% eventimageurl event=event english=True %}" target="_blank">
+	      <img src="{% eventimageurl event=event english=True %}" alt="{{ event.english_name }}" style="max-width: 100%; height: 80px;">
+	    </a>
+	  </td>
+	</tr>
+	{% endif %}
 	{% if event.english_beginning and event.english_end %}
 	<tr>
 	  <th>{% trans 'Dates' %}</th>

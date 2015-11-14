@@ -205,6 +205,7 @@ class Event(ExportModelOperationsMixin('Event'), models.Model):
     japanese_t2_rank = models.PositiveIntegerField(null=True, blank=True)
     note = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to='events/', null=True, blank=True)
+    english_image = models.ImageField(upload_to='events/EN/', null=True, blank=True)
 
     def is_japan_current(self):
         return (self.beginning is not None

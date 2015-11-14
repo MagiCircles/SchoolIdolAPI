@@ -120,13 +120,13 @@
 	  </a>
 
 	  {% if current_en %}
-	  <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="item"
-	     style="background-image: url('{% eventimageurl current_en %}');">
+	  <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="item event"
+	     style="background-image: url('{% eventimageurl event=current_en english=True %}');">
 	    </a> <!-- item -->
 	  {% endif %}
 
 	  {% if current_jp %}
-	  <a href="/events/{{ current_jp.japanese_name|urlencode }}" class="item"
+	  <a href="/events/{{ current_jp.japanese_name|urlencode }}" class="item event"
 	     style="background-image: url('{% eventimageurl current_jp %}');">
 	  </a>
 	  {% endif %}

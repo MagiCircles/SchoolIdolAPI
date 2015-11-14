@@ -20,10 +20,12 @@ def imageurl(context, card, image):
     return '/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)
-def eventimageurl(context, event):
+def eventimageurl(context, event, english=False):
+    if english and event.english_image:
+        return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.english_image))
     if event.image:
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
-    return ''
+    return '/static/default_event.png'
 
 @register.simple_tag(takes_context=True)
 def songimageurl(context, song):

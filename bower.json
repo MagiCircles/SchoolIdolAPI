@@ -12,6 +12,7 @@
 	"Autolinker.js": "0.15.2",
 	"css-hexagon": "0.0.0",
 	"countdown": "2.1.0",
+	"jquery-easing": "*",
 	"jquery-visible": "1.2.0",
 	"CuteForm": "~0.0.3"
     }

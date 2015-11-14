@@ -10,8 +10,10 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import login as login_view
 from django.contrib.auth.views import password_reset_confirm as password_reset_confirm_view
-from django.db.models import Count, Q
+from django.db import connection
+from django.db.models import Count, Q, F
 from django.db.models import Prefetch
+from django.db.models.query import QuerySet
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -22,7 +24,8 @@ from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models, raw
-from web import forms, links, donations, transfer_code
+from web import forms, donations, transfer_code
+from web.links import links as links_list
 from utils import *
 import urllib, hashlib
 import datetime, time, pytz
@@ -1105,9 +1108,21 @@ def avatar_facebook(request, username):
 
 def aboutview(request):
     context = globalContext(request)
-    context['staff'] = models.User.objects.filter(is_staff=True).order_by('-is_superuser', 'date_joined')
-    for staff in context['staff']:
-        staff.preferences.allowed_verifications = staff.preferences.allowed_verifications.split(',') if staff.preferences.allowed_verifications else []
+    users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
+
+    context['staff'] = []
+    context['donators_low'] = []
+    context['donators_high'] = []
+    for user in users:
+        if user.is_staff:
+            user.preferences.allowed_verifications = user.preferences.allowed_verifications.split(',') if user.preferences.allowed_verifications else []
+            context['staff'].append(user)
+        if user.preferences.status == 'THANKS' or user.preferences.status == 'SUPPORTER' or user.preferences.status == 'LOVER' or user.preferences.status == 'AMBASSADOR':
+            context['donators_low'].append(user)
+        elif user.preferences.status == 'PRODUCER' or user.preferences.status == 'DEVOTEE':
+            context['donators_high'].append(user)
+    context['total_donators'] = settings.TOTAL_DONATORS
+    context['donations'] = donations.donations
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

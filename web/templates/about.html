@@ -4,6 +4,7 @@
 
 {% block title %}{% trans 'About' %}{% endblock %}
 {% block js %}
+<script src="/static/bower/jquery-easing/jquery.easing.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -12,6 +13,7 @@
 
 <div class="container">
   <div class="margin50">
+    <div id="about"></div>
     <br>
     <h1 class="margin50">{% trans 'About us' %}</h1>
     <div class="row">
@@ -19,7 +21,7 @@
 	<p class="margin50">
 	  {% blocktrans %}We are two developers and relatively casual players of the game. It's the first project we made together.
 	  <br><br>
-	  We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded: <a href="http://rainbowcooki.es/">Rainbow Cookies</a>. Though we love our job, we don't pay ourselves and don't have any income, so <a href="#donate">any donation</a> helps a lot and is greatly appreciated.
+	  We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded: <a href="http://rainbowcooki.es/">Rainbow Cookies</a>. Though we love our job, we don't pay ourselves and don't have any income, so <a href="#donate" class="page-scroll">any donation</a> helps a lot and is greatly appreciated.
 	  <br><br>
 	  The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^
 	  <br><br>
@@ -27,7 +29,8 @@
 	  {% endblocktrans %}
 	</p>
 	<p class="text-right">
-	  <a class="btn btn-Cool btn-lg" href="mailto:contact@schoolido.lu">{% trans 'Contact us' %}</a>
+	  <a class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-lg page-scroll" href="#contact">{% trans 'Contact us' %}</a>
+	  <a class="btn btn-link btn-lg page-scroll" href="#donate">{% trans 'Donate' %}</a>
 	</p>
       </div>
       <div class="col-md-4">
@@ -35,10 +38,39 @@
       </div>
     </div>
 
-    <h1 class="margin50">{% trans 'LoveLive! Franchise' %}</h1>
-    <p class="alert alert-warning fontx2">
-      {% trans 'School Idol Tomodachi' %} {% blocktrans %}is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab.{% endblocktrans %}
+    <hr class="margin50">
+
+    <div id="contact"></div>
+    <br>
+    <h1 class="margin50">{% trans 'Contact us' %}</h1>
+
+    <p>
+      {% trans 'Send Email' %}: <a href="mailto:contact@schoolido.lu">contact@schoolido.lu</a>.
     </p>
+    <p>
+      {% trans 'You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.' %}
+    </p>
+    <p>
+      For suggestions or bug reports, we recommend you to:
+    </p>
+    <ol>
+      <li>Browse the upcoming features on <a href="https://waffle.io/schoolidoltomodachi/schoolidolapi">our Tasks manager</a></li>
+      <li><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/issues/new">Create a new issue</a> with the details about what you would like us to implement</li>
+    </ol>
+    <div class="text-right">
+      <a class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" href="mailto:contact@schoolido.lu">{% trans 'Send Email' %}</a>
+    </div>
+
+    <hr class="margin50">
+
+    <h1 class="margin50">{% trans 'LoveLive! Franchise' %}</h1>
+    <div class="alert alert-warning text-center">
+      <p style="max-width: 600px; margin: auto;">
+	{% trans 'School Idol Tomodachi' %} {% blocktrans %}is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab.{% endblocktrans %}
+      </p>
+    </div>
+
+    <hr class="margin50">
 
     <h1 class="margin50">{% trans 'Sources' %}</h1>
     <p>
@@ -46,18 +78,30 @@
       School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them.
       {% endblocktrans %}
     </p>
-    <ul>
-      <li><a href="https://sif.kirara.ca/" target="_blank">SIF Kirara</a></li>
-      <li><a href="http://love-live.wikia.com/wiki/Main_Page" target="_blank">LoveLive! Wikia</a></li>
-      <li><a href="http://decaf.kouhi.me/lovelive/" target="_blank">LoveLive! School Idol Wiki decaf.kouhi.me</a></li>
-      <li><a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">ラブライブ！スクフェス 情報まとめwiki</a></li>
-      <li><a href="http://www.reddit.com/r/SchoolIdolFestival/" target="_blank">Reddit Community</a></li>
-      <li><a href="http://www.pixiv.net/member_illust.php?mode=medium&illust_id=48424812" target="_blank">Chibi N characters drawings</a></li>
-      <li><a href="http://asahaka-scfes.blogspot.com/" target="_blank">Clean UR pairs</a></li>
-    </ul>
+    <div class="row">
+      <div class="col-md-6">
+	<ul>
+	  <li><a href="https://sif.kirara.ca/" target="_blank">SIF Kirara</a></li>
+	  <li><a href="http://love-live.wikia.com/wiki/Main_Page" target="_blank">LoveLive! Wikia</a></li>
+	  <li><a href="http://decaf.kouhi.me/lovelive/" target="_blank">LoveLive! School Idol Wiki decaf.kouhi.me</a></li>
+	  <li><a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">ラブライブ！スクフェス 情報まとめwiki</a></li>
+	</ul>
+      </div>
+      <div class="col-md-6">
+	<ul>
+	  <li><a href="http://www.reddit.com/r/SchoolIdolFestival/" target="_blank">Reddit Community</a></li>
+	  <li><a href="http://www.pixiv.net/member_illust.php?mode=medium&illust_id=48424812" target="_blank">Chibi N characters drawings</a></li>
+	  <li><a href="http://asahaka-scfes.blogspot.com/" target="_blank">Clean UR pairs</a></li>
+	</ul>
+      </div>
+    </div>
+
+    <hr class="margin50">
 
     <h1 class="margin50">{% trans 'Icon Credits' %}</h1>
     <div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, <a href="http://www.flaticon.com/authors/yannick" title="Yannick">Yannick</a>, <a href="http://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a>, <a href="http://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a>, <a href="http://www.flaticon.com/authors/icons8" title="Icons8">Icons8</a>, <a href="http://www.flaticon.com/authors/catalin-fertu" title="Catalin Fertu">Catalin Fertu</a>, <a href="http://www.flaticon.com/authors/google" title="Google">Google</a>, <a href="http://www.flaticon.com/authors/sergiu-bagrin" title="Sergiu Bagrin">Sergiu Bagrin</a>, <a href="http://www.flaticon.com/authors/bogdan-rosu" title="Bogdan Rosu">Bogdan Rosu</a>, <a href="http://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
+
+    <hr class="margin50">
 
     <h1 class="margin50">{% trans 'Staff members' %}</h1>
 
@@ -103,8 +147,10 @@
     </div>
 
 
+    <hr class="margin50">
+
     <div id="contribute"></div>
-    <br><br><br><br>
+    <br><br>
     <h1 class="text-main">{% trans 'Contribute' %} <small><i class="flaticon-developer"></i> {% trans 'Dev' %}</small></h1>
     <p class="margin50">
       {% blocktrans %}
@@ -117,13 +163,246 @@
       We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level.
       {% endblocktrans %}
       <div class="text-right">
-	<a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" class="btn btn-Cool btn-lg">
+	<a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-lg">
 	  {% trans 'Get started' %}
 	</a>
       </div>
     </p>
-  </div>
 
+    <hr class="margin50">
+
+    <div id="donate"></div>
+    <br><br>
+    <h1 class="text-main">{% trans 'Donate' %} <small><i class="flaticon-heart"></i></h1>
+    <div class="row text-center">
+      <div class="col-md-9">
+	<p style="font-size: 30px;" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
+	<br><br><a href="#donations" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-xl page-scroll">{% trans 'Donate' %}</a><br>
+	<a href="#donators" class="btn btn-link btn-lg page-scroll">{% trans 'Donators' %}</a> - <a href="#about" class="page-scroll btn btn-link btn-lg">{% trans 'About us' %}</a> - <a class="btn btn-link btn-lg" target="_blank" href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/pubhtml?gid=753111293&single=true">Budget</a>
+      </div>
+      <div class="col-md-3">
+	<img src="/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
+      </div>
+    </div>
+
+    <hr class="margin50">
+
+    <div id="donations"></div>
+    <br><br>
+
+    {% for donation in donations %}
+    {% if donation.price == 1 %}
+    <div class="row text-center">
+      <div class="col-lg-5">
+	{% elif donation.price == 5 %}
+      </div>
+      <div class="col-lg-2">
+      </div>
+      <div class="col-lg-5">
+	{% elif donation.price == 10 %}
+      </div>
+    </div>
+    {% endif %}
+    <br><br>
+    <div class="row">
+      <div class="col-sm-8 text-left">
+	<h2 id="donation{{ donation.price }}"><strong>${{ donation.price }}</strong> {% trans 'Donation' %}</h2>
+      </div>
+      <div class="col-sm-4 text-right">
+	<br>
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+	  <input type="hidden" name="cmd" value="_s-xclick">
+	  <input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
+	  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+	<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+      </form>
+    </div>
+  </div>
+  <br><br>
+  <div class="row donation text-center">
+    {% if donation.thanks %}
+    <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
+      {% if donation.homepage_link %}
+      <img src="/static/hearthome.png" class="img-responsive">
+      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!' %}
+      {% elif donation.link %}
+      <img src="/static/heartlink.png" class="img-responsive">
+      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page.' %}
+      {% else %}
+      <img src="/static/heart.png" class="img-responsive">
+      {% trans 'Your name and a link to your profile will be added to this page.' %}
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if donation.status %}
+    <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
+      <span class="status" style="color: {{ donation.status|userStatusToColor }}"><i class="flaticon-heart"></i></span>
+      {% with donation.status|userStatusToString as status %}
+      <p>{% blocktrans %}You're an {{ status }}.{% endblocktrans %}</p>
+      {% endwith %}
+      {% with donation.status|userStatusToColorString as color %}
+      <p>{% blocktrans %}With this special status, a lovely {{ color }} heart will be displayed next to your profile picture on your profile and everywhere it appears on the website.{% endblocktrans %}</p>
+      {% endwith %}
+    </div>
+    {% endif %}
+    {% if donation.postcard %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/postcard.png" class="img-responsive">
+      {% trans 'We will send you a cute postcard signed by the 2 developers :)' %}
+    </div>
+    {% endif %}
+    {% if donation.box %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/box.png" class="img-responsive">
+      {% trans 'We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!' %}
+    </div>
+    {% endif %}
+    {% if donation.feature %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/feature.png" class="img-responsive">
+      {% trans 'We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!' %}
+      <small>{% trans 'Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^' %}</small>
+    </div>
+    {% endif %}
+    {% if donation.homepage_character %}
+    <div class="col-md-{{ donation.col_size }}">
+      <img src="/static/homepagecharacter.png" class="img-responsive">
+      {% with donation.status|userStatusToString as status %}
+      <p>{% blocktrans %}You're the {{ status }}.{% endblocktrans %}</p>
+      {% endwith %}
+      <p>{% blocktrans %}You decide who will be the idol from μ's shown by default on top of the homepage.{% endblocktrans %}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+    <hr class="margin50">
+
+    <div id="donators"></div>
+    <br><br>
+    <h1 class="text-main">{% trans 'Donators' %} <small> {{ total_donators }} <i class="flaticon-heart"></i></small></h1>
+
+    <br><br>
+    <div class="row">
+      {% for donator in donators_high %}
+      {% if forloop.counter0|mod:3 %}
+    </div><div class="row">
+      {% endif%}
+      {% if donators_high|length == 1 %}<div class="col-sm-4"></div>{% endif %}
+      {% if donators_high|length == 2 %}<div class="col-sm-2"></div>{% endif %}
+      <div class="col-sm-4">
+	<div class="panel panel-{{ donator.preferences.color }} panel-donation">
+	  <div class="panel-heading">
+	    <strong>{{ donator.username }}</strong> -
+	    {{ donator.preferences.status|userStatusToString }}
+	  </div>
+	  <div class="inside">
+	    <div class="row">
+	      <div class="col-xs-7">
+		{% include 'include/avatar.html' with av_user=donator av_image_size=150 av_size=50 av_link=True av_external=True %}
+	      </div>
+	      <div class="col-xs-5">
+		<a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-lg">
+		  {% trans 'Profile' %}
+		</a>
+		{% if donator.preferences.donation_link %}
+		<br><br>
+		<a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-lg">
+		  {{ donator.preferences.donation_link_title }}
+		</a>
+		{% endif %}
+	      </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+      {% if donators_high|length == 1 %}<div class="col-sm-4"></div>{% endif %}
+      {% if donators_high|length == 2 %}<div class="col-sm-2"></div>{% endif %}
+      {% endfor %}
+    </div>
+    <br><br>
+    <div class="row">
+      {% for donator in donators_low %}
+      {% if forloop.counter0|mod:4 and donator.preferences.status != 'THANKS' %}
+    </div><div class="row">
+      {% endif%}
+      {% ifchanged donator.preferences.status %}
+      {% if donator.preferences.status == 'THANKS' %}
+    </div><br><br><div>
+      {% endif %}
+      {% endifchanged %}
+      {% if donator.preferences.status != 'THANKS' %}
+      <div class="col-sm-{% if donator.preferences.status == 'THANKS' %}2{% else %}3{% endif %}">
+	<div class="panel panel-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} panel-donation panel-donation-small">
+	  <div class="panel-footer">
+	    <strong>{{ donator.username }}</strong> -
+	    {{ donator.preferences.status|userStatusToString }}
+	  </div>
+	  <div class="inside">
+	    <div class="row">
+	      <div class="col-xs-6">
+		{% include 'include/avatar.html' with av_user=donator av_image_size=150 av_size=25 av_link=True av_external=True %}
+	      </div>
+	      <div class="col-xs-6">
+		<a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %}">
+		  {% trans 'Profile' %}
+		</a>
+		{% if donator.preferences.donation_link %}
+		<br><br>
+		<a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %}">
+		  {{ donator.preferences.donation_link_title }}
+		</a>
+		{% endif %}
+	      </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+      {% else %}
+      {% if donator.preferences.donation_link_title %}
+      <div class="btn-group">
+	<a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %}">
+	  {% include 'include/avatar.html' with av_user=donator av_image_size=30 av_size=10 av_fixed=True av_inline=True %}
+	  {{ donator.username }}
+	</a>
+	{% if donator.preferences.donation_link %}
+	<a href="{{ donator.preferences.donation_link }}" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} btn-extrado">
+	  {{ donator.preferences.donation_link_title }}
+	</a>
+	{% endif %}
+      </div>
+      {% else %}
+      <a href="/user/{{ donator.username}}/" target="_blank" class="btn btn-{% if donator.preferences.color %}{{ donator.preferences.color }}{% else %}default{% endif %} ">
+	{{ donator.username }}
+      </a>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <br><br><br><br>
+    <div class="row">
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+	<a href="http://i.imgur.com/4NHR4Bu.jpg" target="_blank"><img src="http://i.imgur.com/4NHR4Bus.jpg" alt="imgur preview" style="width: 100%"></a>
+      </div>
+      <div class="col-md-2">
+	<a href="http://i.imgur.com/TMVsQgs.jpg?1" target="_blank"><img src="http://i.imgur.com/TMVsQgss.jpg?1" alt="imgur preview" style="width: 100%"></a>
+      </div>
+      <div class="col-md-2">
+	<a href="http://i.imgur.com/jciG0GC.jpg?2" target="_blank"><img src="http://i.imgur.com/jciG0GCs.jpg?2" alt="imgur preview" style="width: 100%"></a>
+      </div>
+      <div class="col-md-2">
+	<a href="http://i.imgur.com/HIVSyO0.png?1" target="_blank"><img src="http://i.imgur.com/HIVSyO0s.png?1" alt="imgur preview" style="width: 100%"></a>
+      </div>
+      <div class="col-md-2">
+	<a href="http://i.imgur.com/4Rwo3Bx.jpg?1" target="_blank"><img src="http://i.imgur.com/4Rwo3Bxs.jpg?1" alt="imgur preview" style="width: 100%"></a>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+
+
+  </div>
     {% include 'disqus.html' with disqus_identifier='aboutsukutomo' %}
 
 </div>

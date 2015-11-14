@@ -2360,29 +2360,29 @@ msgstr "En cours"
 
 #: web/templates/about.html:53
 msgid "For suggestions or bug reports, we recommend you to:"
-msgstr ""
+msgstr "Pour toute suggestion ou rapport de problème, tu peux :"
 
 #: web/templates/about.html:56
 msgid "Browse the upcoming features on"
-msgstr ""
+msgstr "Parcourir les fonctionnalités prévues sur"
 
 #: web/templates/about.html:56
 msgid "our Tasks manager"
-msgstr ""
+msgstr "notre gestionnaire de tâches"
 
 #: web/templates/about.html:57
 msgid "Create a new issue"
-msgstr ""
+msgstr "Créer une nouvelle \"issue\" sur GitHub"
 
 #: web/templates/about.html:57
 msgid "with the details about what you would like us to implement"
-msgstr ""
+msgstr "avec tous les détails de ce que tu voudrais que l'on fasse"
 
 #: web/templates/about.html:174
 msgid "Budget"
-msgstr ""
+msgstr "Budget"
 
 #: web/templates/about.html:234 web/templates/about.html.py:264
 msgid "You're an"
-msgstr ""
+msgstr "Tu es un"
 

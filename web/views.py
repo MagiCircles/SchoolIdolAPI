@@ -647,8 +647,11 @@ def _activities(request, account=None, follower=None, avatar_size=3):
             follower = request.user
         else:
             follower = get_object_or_404(User.objects.select_related('preferences'), username=follower)
-        accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all())
-        activities = activities.filter(account__in=accounts_followed)
+        accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all()).order_by('-id')[:5]
+        ids = [account.id for account in accounts_followed]
+        activities = activities.filter(account_id__in=ids)
+    if not account and not follower:
+        activities = activities.filter(account_id__in=[1,59,166])
     activities = activities.select_related('account', 'account__owner', 'account__owner__preferences', 'ownedcard', 'ownedcard__card', 'eventparticipation', 'eventparticipation__event')
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     activities = activities.annotate(likers_count=Count('likes'))

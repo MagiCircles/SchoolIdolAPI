@@ -10,10 +10,8 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import login as login_view
 from django.contrib.auth.views import password_reset_confirm as password_reset_confirm_view
-from django.db import connection
 from django.db.models import Count, Q, F
 from django.db.models import Prefetch
-from django.db.models.query import QuerySet
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -104,7 +102,7 @@ def links(request):
     context = globalContext(request)
     context['links'] = links_list
 
-    query = 'SELECT f.id, f.transparent_idolized_image, f.name FROM (SELECT card.id, card.transparent_idolized_image, idol.name FROM api_card AS card JOIN api_idol AS idol WHERE card.idol_id = idol.id AND idol.main = 1 AND card.transparent_idolized_image IS NOT NULL AND card.transparent_idolized_image != \'\' ORDER BY ' + ('RAND' if connection.vendor == 'sql' else 'RANDOM') + '()) AS f GROUP BY f.name'
+    query = 'SELECT f.id, f.transparent_idolized_image, f.name FROM (SELECT card.id, card.transparent_idolized_image, idol.name FROM api_card AS card JOIN api_idol AS idol WHERE card.idol_id = idol.id AND idol.main = 1 AND card.transparent_idolized_image IS NOT NULL AND card.transparent_idolized_image != \'\' ORDER BY ' + (settings.RANDOM_ORDERING_DATABASE) + '()) AS f GROUP BY f.name'
     cards_objects = models.Card.objects.raw(query)
     cards = {}
     for card in cards_objects:

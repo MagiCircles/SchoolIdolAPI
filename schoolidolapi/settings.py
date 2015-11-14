@@ -138,6 +138,8 @@ TINYPNG_API_KEY = ''
 AWS_PASSWORD_EMAIL = 'password@schoolido.lu'
 DISQUS_STAFF = 'sukutomostaff'
 
+RANDOM_ORDERING_DATABASE = 'RANDOM'
+
 try:
     from local_settings import *
     from generated_settings import *

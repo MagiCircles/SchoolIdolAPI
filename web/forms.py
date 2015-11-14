@@ -55,7 +55,7 @@ class OwnedCardModelChoiceField(ModelChoiceField):
         return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
 
 class FullAccountForm(ModelForm):
-    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
+    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False, label=_('Center'))
     # Always override this queryset to set the current account only
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
     class Meta:

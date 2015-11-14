@@ -92,7 +92,7 @@
 	    <li>{% trans 'Generate a transfer code on the game.' %} <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F" target="_blank">{% trans 'How to generate a transfer code?' %}</a></li>
 	    <li>{% trans 'Upload the screenshot or write it down below.' %}<br><br></li>
 	    <li>
-	      <strong>{% trans 'No matter when you send your email, your account will be verified anytime when there is no event going on.' %}</strong><br>
+	      <strong>{% trans 'No matter when you send your request, your account will be verified anytime when there is no event going on.' %}</strong><br>
 	      <ul>
 		<li>{% blocktrans %}If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Check the box below.{% endblocktrans %}</li>
 		<li>{% trans 'If you still play between events, we can notify you before we start the process. Ask for it in your message.' %}</li>
@@ -180,9 +180,7 @@
 	    </div>
 	  </div>
 	  <div class="col-sm-11">
-	    {% blocktrans %}
-	    Before sending your request, we highly recommend you to check that you entered all your cards.
-	    {% endblocktrans %}
+	    {% blocktrans %}Before sending your request, we highly recommend you to check that you entered all your cards.{% endblocktrans %}
 	    <div class="text-right">
 	      <a class="btn btn-Cool" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-check-that-you-entered-all-your-cards%3F" target="_blank">{% trans 'Check your cards' %}</a>
 	    </div>
@@ -203,9 +201,7 @@
 	    </div>
 	  </div>
 	  <div class="col-sm-11" style="line-height: 2.5em">
-	    {% blocktrans %}
-	    If you have any question regarding verifications,
-	    {% endblocktrans %}
+	    {% blocktrans %}If you have any question regarding verifications,{% endblocktrans %}
 	    <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Verified-Accounts#frequently-asked-questions" target="_blank">{% trans 'read our FAQ' %}</a>.
 	    <br>
 	  </div>
@@ -217,13 +213,13 @@
 	    <li>{% trans 'Your rank must be over 80.' %}</li>
 	    {% endif %}
 	    {% if not account.friend_id %}
-	    <li>{% trans 'You must specify your friend ID in your account.' %} <a href="#editaccount">{% trans 'Edit Account ' %}</a></li>
+	    <li>{% trans 'You must specify your friend ID in your account.' %} <a href="#editaccount">{% trans 'Edit Account' %}</a></li>
 	    {% endif %}
 	    {% if not user.email %}
-	    <li>{% trans 'You must provide a valid email address in your settings.' %} <a href="/edit/" target="_blank">{% trans 'Settings' %}</a></li>
+	    <li>{% trans 'You must provide a valid email address in your settings.' %} <a href="/edit/" target="_blank">{% trans 'Your Settings' %}</a></li>
 	    {% endif %}
 	    {% if user.preferences.private %}
-	    <li>{% trans 'Your profile must not be private.' %} <a href="/edit/" target="_blank">{% trans 'Settings' %}</a></li>
+	    <li>{% trans 'Your profile must not be private.' %} <a href="/edit/" target="_blank">{% trans 'Your Settings' %}</a></li>
 	    {% endif %}
 	  </ul>
 	</div>

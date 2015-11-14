@@ -1,5 +1,5 @@
  # -*- coding: utf-8 -*-
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 
 links = [
         {
@@ -8,22 +8,22 @@ links = [
             'idol': 'Kousaka Honoka',
             'links': [
                 {
-                    'name': 'iOs: English Version',
+                    'name': string_concat('iOs', ': ', _('English Version')),
                     'url': 'https://itunes.apple.com/us/app/school-idol-festival/id834030294?mt=8',
                     'language': 'english',
                 },
                 {
-                    'name': 'Android: English Version',
+                    'name': string_concat('Android', ': ', _('English Version')),
                     'url': 'https://play.google.com/store/apps/details?id=klb.android.lovelive_en',
                     'language': 'english',
                 },
                 {
-                    'name': 'iOs: Japanese Version',
+                    'name': string_concat('iOs', ': ', _('Japanese Version')),
                     'url': 'https://itunes.apple.com/jp/app/raburaibu!sukuruaidorufesutibaru/id626776655?mt=8',
                     'language': 'japanese',
                 },
                 {
-                    'name': 'Android: Japanese Version',
+                    'name': string_concat('Android', ': ', _('Japanese Version')),
                     'url': 'https://play.google.com/store/apps/details?id=klb.android.lovelive&hl=en',
                     'language': 'japanese',
                 },
@@ -138,21 +138,21 @@ links = [
                 },
                 {},
                 {
-                    'name': 'Japanese Bushimo Love Live! Festival Wiki',
+                    'name': _('Japanese Bushimo Love Live! Festival Wiki'),
                     'url': 'http://www59.atwiki.jp/lovelive-sif/',
                     'type': 'info',
                     'language': 'japanese',
                     'size': 'small',
                 },
                 {
-                    'name': 'Japanese Love Live! Festival Gamerch Wiki',
+                    'name': _('Japanese Love Live! Festival Gamerch Wiki'),
                     'url': 'http://xn--eck5eb7eb.gamerch.com/',
                     'type': 'info',
                     'language': 'japanese',
                     'size': 'small',
                 },
                 {
-                    'name': 'Chinese MoeGirl Wiki',
+                    'name': _('Chinese MoeGirl Wiki'),
                     'url': 'http://zh.moegirl.org/LoveLive!',
                     'type': 'info',
                     'language': 'japanese',
@@ -187,7 +187,7 @@ links = [
                     'language': 'english',
                 },
                 {
-                    'name': 'Love Live Facebook Page',
+                    'name': _('Love Live Facebook Page'),
                     'url': 'https://www.facebook.com/LoveLive.Muse',
                     'description': '',
                     'type': '',
@@ -200,13 +200,13 @@ links = [
                     'language': 'english',
                 },
                 {
-                    'name': 'Official Twitter @lovelive_staff',
+                    'name': string_concat(_('Official'),' Twitter @lovelive_staff'),
                     'url': 'https://twitter.com/lovelive_staff',
                     'type': '',
                     'language': 'japanese',
                 },
                 {
-                    'name': 'Official Twitter @lovelive_SIF',
+                    'name': string_concat(_('Official'), ' Twitter @lovelive_SIF'),
                     'url': 'https://twitter.com/lovelive_SIF',
                     'type': '',
                     'language': 'japanese',
@@ -261,7 +261,7 @@ links = [
                     'language': 'world',
                 },
                 {
-                    'name': 'Facebook Group',
+                    'name': _('Facebook Group'),
                     'url': 'https://www.facebook.com/groups/293090280852174/',
                     'description': _('Mainly casual gamers but very active community.'),
                     'size': 'big',
@@ -299,7 +299,7 @@ links = [
                     'language': 'world',
                 },
                 {
-                    'name': 'Player.me Community',
+                    'name': _('Player.me Community'),
                     'url': 'https://player.me/lovelive',
                     'type': '',
                     'language': 'world',
@@ -585,7 +585,7 @@ links = [
                     'language': 'world',
                 },
                 {
-                    'name': 'Youtube Channel μ\'s（ラブライブ！） by Lantis',
+                    'name': _('Youtube Channel μ\'s（ラブライブ！） by Lantis'),
                     'url': 'https://www.youtube.com/playlist?list=PLmgGL3shzkGM9akfMoobnVhE3XCP42lHb',
                     'type': 'info',
                     'language': 'japanese',

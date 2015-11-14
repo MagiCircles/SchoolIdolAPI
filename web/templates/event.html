@@ -54,7 +54,7 @@
     <script>
       var countdowndate = "{% if is_japan_current %}{{ event.end|torfc2822 }}{% else %}{{ event.english_end|torfc2822 }}{% endif %}";
       function countdownRender(data) {
-      $(this.el).text(data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds left');
+      $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
       }
     </script>
   </h1>
@@ -63,7 +63,7 @@
     <script>
       var countdowndate = "{% if soon_happen_japan %}{{ event.beginning|torfc2822 }}{% else %}{{ event.english_beginning|torfc2822 }}{% endif %}";
       function countdownRender(data) {
-      $(this.el).text('Starts in ' + data.days + ' days, ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
+      $(this.el).text('{% trans 'Starts in' %} ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
       }
     </script>
   </h1>

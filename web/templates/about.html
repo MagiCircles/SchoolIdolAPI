@@ -19,14 +19,13 @@
     <div class="row">
       <div class="col-md-8">
 	<p class="margin50">
-	  {% blocktrans %}We are two developers and relatively casual players of the game. It's the first project we made together.
+	  {% blocktrans %}We are two developers and relatively casual players of the game. It's the first project we made together.{% endblocktrans %}
 	  <br><br>
-	  We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded: <a href="http://rainbowcooki.es/">Rainbow Cookies</a>. Though we love our job, we don't pay ourselves and don't have any income, so <a href="#donate" class="page-scroll">any donation</a> helps a lot and is greatly appreciated.
+	  {% blocktrans %}We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded:{% endblocktrans %}<a href="http://rainbowcooki.es/">Rainbow Cookies</a>. {% blocktrans %}Though we love our job, we don't pay ourselves and don't have any income, so{% endblocktrans %}<a href="#donate" class="page-scroll">{% trans 'any donation' %}</a> {% trans 'helps a lot and is greatly appreciated.' %}
 	  <br><br>
-	  The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^
+	  {% blocktrans %}The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^{% endblocktrans %}
 	  <br><br>
-	  We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you.
-	  {% endblocktrans %}
+	  {% blocktrans %}We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you.{% endblocktrans %}
 	</p>
 	<p class="text-right">
 	  <a class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-lg page-scroll" href="#contact">{% trans 'Contact us' %}</a>
@@ -74,9 +73,7 @@
 
     <h1 class="margin50">{% trans 'Sources' %}</h1>
     <p>
-      {% blocktrans %}
-      School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them.
-      {% endblocktrans %}
+      {% blocktrans %}School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them.{% endblocktrans %}
     </p>
     <div class="row">
       <div class="col-md-6">
@@ -153,18 +150,14 @@
     <br><br>
     <h1 class="text-main">{% trans 'Contribute' %} <small><i class="flaticon-developer"></i> {% trans 'Dev' %}</small></h1>
     <p class="margin50">
-      {% blocktrans %}
-      Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!
+      {% blocktrans %}Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!{% endblocktrans %}
       <br><br>
-      The website has been made using <a href="https://docs.djangoproject.com/">Django</a>, so in Python 2. We also use <a href="http://lesscss.org/">LESS CSS</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jquery.com/">JQuery</a> and <a href="http://bower.io/">Bower</a> for the front-end of the website.
-      {% endblocktrans %}
+      {% blocktrans %}The website has been made using{% endblocktrans %} <a href="https://docs.djangoproject.com/">Django</a>, {% trans 'so in Python 2. We also use' %} <a href="http://lesscss.org/">LESS CSS</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jquery.com/">JQuery</a> {% trans 'and' %} <a href="http://bower.io/">Bower</a> {% trans 'for the front-end of the website.' %}
       <br><br>
-      {% blocktrans %}
-      We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level.
-      {% endblocktrans %}
+      {% blocktrans %}We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level.{% endblocktrans %}
       <div class="text-right">
 	<a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-lg">
-	  {% trans 'Get started' %}
+	  {% trans 'Get Started' %}
 	</a>
       </div>
     </p>

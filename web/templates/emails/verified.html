@@ -1,24 +1,23 @@
 {% extends 'emails/base.html' %}
-{% load i18n %}
 {% load imageurl %}
 {% load choicesToString %}
 
 {% block subject %}{{ verification.verification|verifiedToString }}: {{ verification.status|verificationStatusToString }}{% endblock %}
 {% block headersubject %}{{ verification.verification|verifiedToString }}: {{ verification.status|verificationStatusToString }}{% endblock %}
 {% block content %}
-{% trans 'Hi' %} {{ verification.account.owner.username }},
+Hi {{ verification.account.owner.username }},
 <br><br>
 
 <p>
   {% if verification.status == 0 %}
-  {% blocktrans %}Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime. To do so, click the button below to re-submit your request. Do not reply to this email.{% endblocktrans %}
+  Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime. To do so, click the button below to re-submit your request. Do not reply to this email.
   {% elif verification.status == 3 %}
-  {% trans 'Congratulations! You are now' %} {{ verification.verification|verifiedToString }}.
+  Congratulations! You are now {{ verification.verification|verifiedToString }}.
   {% if verification.verification == 3 %}
-  {% trans 'You can now set your rank above 200. Nobody else can see your verification status.' %}
+  You can now set your rank above 200. Nobody else can see your verification status.
   {% else %}
-  {% trans 'Feel free to brag about it now that you look so shiny~' %}
-  <a href="http://twitter.com/share?text={% blocktrans %}I'm {% endblocktrans %}{{ verification.verification|verifiedToString }} {% trans 'on School Idol Tomodachi!' %}&url=http://schoolido.lu/user/{{ verification.account.owner.username }}/&hashtags=LLSIF,LoveLive,スクフェス">{% trans 'Tweet it' %}</a> {% trans 'or' %} <a href="http://www.facebook.com/sharer/sharer.php?u=http://schoolido.lu/user/{{ verification.account.owner.username }}/">{% trans 'share it on Facebook' %}</a>.
+  Feel free to brag about it now that you look so shiny~
+  <a href="http://twitter.com/share?text=I'm {{ verification.verification|verifiedToString }} on School Idol Tomodachi!&url=http://schoolido.lu/user/{{ verification.account.owner.username }}/&hashtags=LLSIF,LoveLive,スクフェス">Tweet it</a> or <a href="http://www.facebook.com/sharer/sharer.php?u=http://schoolido.lu/user/{{ verification.account.owner.username }}/">share it on Facebook</a>.
   {% endif %}
   {% endif %}
 </p>
@@ -31,14 +30,14 @@
 
 {% if verification.verification == 2 and verification.status == 3 %}
 <ol>
-  <li>{% trans 'Follow this guide:' %} <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-enter-a-transfer-code%3F">{% trans 'How to enter a transfer code?' %}</a><br>
+  <li>Follow this guide: <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-enter-a-transfer-code%3F">How to enter a transfer code?</a><br>
   </li>
   <li>
-    {% blocktrans %}Generate a new transfer code right away and store it somewhere safe. If you want, School Idol Tomodachi lets you store your transfer code safely. Only you will be able to see it.{% endblocktrans %}<br>
-    {% trans 'Follow this guide:' %} <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F">{% trans 'How to generate a transfer code?' %}</a><br>
+    Generate a new transfer code right away and store it somewhere safe. If you want, School Idol Tomodachi lets you store your transfer code safely. Only you will be able to see it.<br>
+    Follow this guide: <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F">How to generate a transfer code?</a><br>
   </li>
   <li>
-    {% blocktrans %}Also note that when you will enter your new transfer code, your settings will be reset. Don't forget to change them back, we don't want you to break your combo ;){% endblocktrans %}
+    Also note that when you will enter your new transfer code, your settings will be reset. Don't forget to change them back, we don't want you to break your combo ;)
   </li>
 </ol>
 {% endif %}
@@ -55,16 +54,16 @@
 
 {% block actionbuttontitle %}
 {% if verification.status == 0 %}
-{% trans 'Resend verification request' %}
+Resend verification request
 {% else %}
-{% trans 'Your account' %}
+Your account
 {% endif %}
 {% endblock %}
 {% block actionbuttonalt %}
 {% if verification.status == 0 %}
-{% trans 'Resend verification request' %}
+Resend verification request
 {% else %}
-{% trans 'Your account' %}
+Your account
 {% endif %}
 {% endblock %}
 
@@ -78,9 +77,9 @@ http://schoolido.lu/user/{{ verification.account.owner.username }}/#{{ verificat
 
 {% block footersentence %}
 {% if verification_images|length == 1 and verification.verification == 2 and verification.status == 3 %}
-{% blocktrans %}Make sure you display the images in this e-mail to get your transfer code, or click here: {{ verification_images.image|userimage }}{% endblocktrans %}
+Make sure you display the images in this e-mail to get your transfer code, or click here: {{ verification_images.image|userimage }}
 {% endif %}
 <div style="text-align: right">
-  {% trans 'Verified by' %} <a href="http://schoolido.lu/user/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a>
+  Verified by <a href="http://schoolido.lu/user/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a>
 </div>
 {% endblock %}

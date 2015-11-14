@@ -77,10 +77,10 @@ STATUS_CHOICES = (
 STATUS_DICT = dict(STATUS_CHOICES)
 
 VERIFICATION_STATUS_CHOICES = (
-    (0, 'Rejected'),
-    (1, 'Pending'),
-    (2, 'In Progress'),
-    (3, 'Verified'),
+    (0, _('Rejected')),
+    (1, _('Pending')),
+    (2, _('In Progress')),
+    (3, _('Verified')),
 )
 VERIFICATION_STATUS_DICT = dict(VERIFICATION_STATUS_CHOICES)
 

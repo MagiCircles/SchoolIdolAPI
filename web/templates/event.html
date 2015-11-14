@@ -15,7 +15,7 @@
 <div class="container text-center">
   <br><br>
   {% if did_happen_world or soon_happen_world or is_world_current %}
-  <img src="{% eventimageurl event=event english=True %}" alt="{{ event.english_name }}" style="max-width: 100%">
+  <img src="{% eventimageurl event=event english=show_english_banners %}" alt="{{ event.english_name }}" style="max-width: 100%">
   {% else %}
   <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
   {% endif %}

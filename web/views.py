@@ -71,6 +71,17 @@ def hasJP(accounts):
             return True
     return False
 
+def onlyJP(context):
+    if 'accounts' not in context:
+        return False
+    accounts = context['accounts']
+    if not accounts:
+        return False
+    for account in accounts:
+        if account.language != 'JP':
+            return False
+    return True
+
 def getUserAvatar(user, size):
     return user.preferences.avatar(size)
 
@@ -1004,11 +1015,13 @@ def events(request):
     context['current'] = 'events'
     events = models.Event.objects.all().order_by('-end')
     context['events'] = events
+    context['show_english_banners'] = not onlyJP(context)
     return render(request, 'events.html', context)
 
 def event(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
+    context['show_english_banners'] = not onlyJP(context)
     context['did_happen_world'] = event.did_happen_world()
     context['did_happen_japan'] = event.did_happen_japan()
     context['soon_happen_world'] = event.soon_happen_world()

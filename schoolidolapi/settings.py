@@ -140,6 +140,7 @@ DISQUS_STAFF = 'sukutomostaff'
 
 try:
     from local_settings import *
+    from generated_settings import *
 except ImportError, e:
     pass
 

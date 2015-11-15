@@ -163,6 +163,8 @@ class CardIdViewSet(CardViewSet):
     """
     API endpoint to get cards ids only.
     """
+    queryset = models.Card.objects.all().values('id')
+    serializer_class = serializers.CardIdSerializer
     paginate_by = None
 
     def list(self, request):

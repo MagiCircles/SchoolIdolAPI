@@ -148,6 +148,12 @@ def _get_image(image):
         return u'%s%s' % (base_url, image)
     return None
 
+class CardIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Card
+        fields = ('id',)
+
+
 class CardSerializer(serializers.ModelSerializer):
     event = EventSerializer()
     idol = IdolSerializer()

@@ -535,11 +535,11 @@ def ajaxaddcard(request):
     return render(request, 'ownedCardOnBottomCard.html', context)
 
 def ajaxeditcard(request, ownedcard):
+    if not request.user.is_authenticated() or request.user.is_anonymous():
+        raise PermissionDenied()
     context = {
         'accounts': contextAccounts(request),
     }
-    if not request.user.is_authenticated() or request.user.is_anonymous():
-        raise PermissionDenied()
     # Get existing owned card
     try:
         owned_card = models.OwnedCard.objects.select_related('card', 'owner_account').get(pk=int(ownedcard), owner_account__owner=request.user)

@@ -678,6 +678,7 @@ def _activities(request, account=None, follower=None, avatar_size=3):
     return context
 
 def ajaxactivities(request):
+    return render(request, 'cacheactivities.html', {})
     account = int(request.GET['account']) if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit() else None
     follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
     avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
@@ -700,6 +701,7 @@ def _contextfeed(request):
     return _activities(request, follower=request.user.username, avatar_size=avatar_size)
 
 def ajaxfeed(request):
+    return render(request, 'cacheactivities.html', {})
     return render(request, 'activities.html', _contextfeed(request))
 
 def activities(request):

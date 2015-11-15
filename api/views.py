@@ -102,6 +102,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.EventSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
     search_fields = ('japanese_name', 'english_name')
+    filter_fields = ('cards__idol__name',)
     ordering_fields = '__all__'
     ordering = ('beginning',)
     lookup_field = 'japanese_name'

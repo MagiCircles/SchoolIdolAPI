@@ -8,22 +8,22 @@
 {% get_current_language as LANGUAGE_CODE %}
 
     {% if cards and total_cards != 0 or tab != 'cards' %}
+    {% if not ajax and request_get.name %}
     <div class="page" data-page="{{ page }}">
-      {% if not ajax and request_get.name %}
       <br>
       <div id="idol">
 	{% include "include/idol_header.html" %}
 	<br>
 	{% include 'include/idol_tabs.html' with tab='cards' %}
-      </div>
-      {% endif %}
-    </div>
-      {% if show_total_results and total_cards > 0 and not ajax %}
-      <h4 class="padding20 nomargin">
-	{% blocktrans count counter=total_results %}{{ counter }} card matches your search:{% plural %}{{ counter }} cards match your search:{% endblocktrans %}
-      </h4>
-      {% endif %}
-      <div class="row">
+      </div> <!-- idol -->
+    </div> <!-- page -->
+    {% endif %}
+    {% if show_total_results and total_cards > 0 and not ajax %}
+    <h4 class="padding20 nomargin">
+      {% blocktrans count counter=total_results %}{{ counter }} card matches your search:{% plural %}{{ counter }} cards match your search:{% endblocktrans %}
+    </h4>
+    {% endif %}
+    <div class="row">
       {% for i, card in cards %}
       {% if i|mod:3 %}
     </div><div class="row">
@@ -32,292 +32,301 @@
 	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}" data-attribute="{{ card.attribute }}" data-rarity="{{ card.rarity }}">
 	  <div class="panel panel-{{ card.attribute }}">
 	    <div class="panel-body">
-	      {% if total_cards == 1 %}<div class="row"><div class="col-md-6">{% endif %}
+	      {% if total_results == 1 %}
+	      <div class="row">
+		<div class="col-md-6">
+		  {% endif %}
 		  <div class="text-center card_images">
-		    {% if total_cards > 1 %}
+		    {% if total_results > 1 %}
 		    <a href="/cards/{{ card.id }}/" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}
 		      {% if not card.is_special and not card.is_promo %}
-		      {% if total_cards == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}
+		      {% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}
 			<img src="{% imageurl card=card image='card_image' %}" class="non_idolized" width="49%" alt="{{ card }}">
-			{% if total_cards == 1 %}</a>{% endif %}
+			{% if total_results == 1 %}</a>{% endif %}
 		      {% endif %}
-		      {% if total_cards == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}
+		      {% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}
 			<img src="{% imageurl card=card image='card_idolized_image' %}" class="idolized" width="49%" alt="{{ card }} idolized">
-			{% if total_cards == 1 %}</a>{% endif %}
-		      {% if total_cards > 1 %}</a>{% endif %}
+			{% if total_results == 1 %}</a>{% endif %}
+		      {% if total_results > 1 %}</a>{% endif %}
 		  </div>
-		  {% if total_cards == 1 %}</div><div class="col-md-6">{% endif %}
-		  <div class="more {% if card.non_idolized_maximum_statistics_smile %}levels3{% else %}levels2 {% endif %} {% if ajax or total_cards > 3 %}collapse{% else %}already_collapsed{% endif %}" id="collapseMore{{ card.id }}">
-		{% if card.minimum_statistics_smile %}
-		<div class="statistics">
-		  <div class="text-center level-buttons">
-		    <div class="btn-group btn-group-justified" data-toggle="buttons">
-		      <label class="btn btn-{{ card.attribute }} minimum_statistics">
-			<input type="radio" name="options" autocomplete="off"> {% trans 'Level' %} 1
-		      </label>
-		      {% if card.non_idolized_maximum_statistics_smile %}
-		      <label class="btn btn-{{ card.attribute }} active non_idolized_statistics">
-			<input type="radio" name="options" autocomplete="off" checked>
-			{% trans 'Level' %}
-			{% if card.rarity == 'R' %}40
-			{% elif card.rarity == 'SR' %}60
-			{% elif card.rarity == 'UR' %}80
-			{% endif %}
-		      </label>
-		      {% endif %}
-		      <label class="btn btn-{{ card.attribute }} idolized_statistics {% if card.non_idolized_maximum_statistics_smile == 0 %}active{% endif %}">
-			<input type="radio" name="options" autocomplete="off" {% if card.non_idolized_maximum_statistics_smile == 0 %}checked{% endif %}>
-			{% trans 'Level' %}
-			{% if card.rarity == 'N' %}40
-			{% elif card.rarity == 'R' %}60
-			{% elif card.rarity == 'SR' %}80
-			{% elif card.rarity == 'UR' %}100
-			{% endif %}
-		      </label>
-		    </div>
-		  </div>
-		  {% for level, stats in card.percent_stats.items %}
-		  <div class="statistics_bars statistics_{{ level }}">
-		    {% for attribute, stat in stats.items %}
-		    {% with level|add:"_statistics_"|add:attribute|lower as valuenow %}
-		    {% if card|getattribute:valuenow %}
-		    <div class="row">
-		      <div class="col-xs-1 text-right">
-			<img src="/static/{{ attribute }}.png" class="attribute" width="20px">
-		      </div>
-		      <div class="col-xs-2 text-{{ attribute }}">
-			{{ card|getattribute:valuenow }}
-		      </div>
-		      <div class="col-xs-9">
-			<div class="progress">
-			  <div class="progress-bar progress-bar-{{ attribute }}"
-			       role="progressbar"
-			       aria-valuenow="{{ card|getattribute:valuenow }}"
-			       aria-valuemin="0"
-			       aria-valuemax="{{ max_stats|getattribute:attribute }}"
-			       style="width: {% localize off %}{{ stat }}{% endlocalize %}%">
-			    <span class="sr-only">{{ stat }}%</span>
-			  </div>
-			</div> <!-- progress -->
-		      </div>
-		    </div>
-		    {% endif %}
-		    {% endwith %}
-		    {% endfor %}
-		  </div>
-		  {% endfor %}
-		  {% if card.hp %}
-		  <div class="row">
-		    <div class="col-xs-1 text-right">
-		      <i class="flaticon-hp"></i>
-		    </div>
-		    <div class="col-xs-2">
-		      {% trans 'HP' %}
-		    </div>
-		    <div class="col-xs-9">
-		      <span class="hp_non_idolized">{{ card.hp }}</span>
-		      <span class="hp_idolized">{{ card.hp|add:1 }}</span>
-		    </div>
-		  </div>
-		  <br>
+		  {% if total_results == 1 %}
+		</div>
+		<div class="col-md-6">
 		  {% endif %}
-		</div> <!-- statistics -->
-		{% endif %}
-		<table class="table">
-		  <tbody>
-		    <tr>
-		      <th>{% trans 'Card #ID' %}</th>
-		      <td>
-			<a href="/cards/{{ card.id }}/" target="_blank">
-			  <div class="pull-right">
-			    {% if not card.is_promo and not card.is_special %}
-			    <div class="round-normal">
-			      {% if card.round_card_image %}
-			      <img src="{% imageurl card=card image='round_card_image' %}" alt="{{ card }}" height="70">
-			      {% else %}
-			      <i class="flaticon-id"></i>
-			      {% endif %}
-			    </div>
+		  <div class="more {% if card.non_idolized_maximum_statistics_smile %}levels3{% else %}levels2 {% endif %} {% if ajax or total_cards > 3 %}collapse{% else %}already_collapsed{% endif %}" id="collapseMore{{ card.id }}">
+		    {% if card.minimum_statistics_smile %}
+		    <div class="statistics">
+		      <div class="text-center level-buttons">
+			<div class="btn-group btn-group-justified" data-toggle="buttons">
+			  <label class="btn btn-{{ card.attribute }} minimum_statistics">
+			    <input type="radio" name="options" autocomplete="off"> {% trans 'Level' %} 1
+			  </label>
+			  {% if card.non_idolized_maximum_statistics_smile %}
+			  <label class="btn btn-{{ card.attribute }} active non_idolized_statistics">
+			    <input type="radio" name="options" autocomplete="off" checked>
+			    {% trans 'Level' %}
+			    {% if card.rarity == 'R' %}40
+			    {% elif card.rarity == 'SR' %}60
+			    {% elif card.rarity == 'UR' %}80
 			    {% endif %}
-			    <div class="round-idolized{% if card.is_special or card.is_promo %}-only"{% else %}" style="display: none"{% endif %}>
-			      {% if card.round_card_idolized_image %}
-			      <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="70">
-			      {% else %}
-			      <i class="flaticon-id"></i>
-			      {% endif %}
-			    </div>
-			  </div>
-			  #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
-			</a><br>
-			<small>{% if card.idol.japanese_name %} {{ card.idol.japanese_name }}{% endif %} {{ card.idol.name }}
-			  <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
-			      <i class="flaticon-link"></i></a></span><br>
-			  {{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
-			      <i class="flaticon-link"></i></a></span> {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
-			  <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.attribute }}">
-			      <i class="flaticon-link"></i></a></span>
-			</small>
-		      </td>
-		    </tr>
-		    {% if card.release_date %}
-		    <tr>
-		      <th>{% trans 'Release date' %}</th>
-		      <td>
-			{{ card.release_date }}
-			<div class="pull-right">
-			  <i class="flaticon-date"></i>
-			</div>
-		      </td>
-		    </tr>
-		    {% endif %}
-		    {% if card.is_promo %}
-		    <tr>
-		      <th>{% trans 'Promo Card' %}</th>
-		      <td>
-			{% trans 'This card comes with ' %}:<br>
-			{{ card.promo_item }}
-			<div class="pull-right">
-			  <i class="flaticon-promo"></i>
-			</div>
-		      </td>
-		    </tr>
-		    {% endif %}
-		    {% if card.event %}
-		    <tr>
-		      <th>{% trans 'Event' %}</th>
-		      <td>
-			<a href="/events/{{ card.event.japanese_name|urlencode }}/" target="_blank">
-			  <div class="pull-right">
-			    {% if card.event.image %}
-			    <img src="{% eventimageurl event=card.event %}" alt="{{ card.event.japanese_name }}" width="100">
-			    {% else %}
-			    <i class="flaticon-event"></i>
+			  </label>
+			  {% endif %}
+			  <label class="btn btn-{{ card.attribute }} idolized_statistics {% if card.non_idolized_maximum_statistics_smile == 0 %}active{% endif %}">
+			    <input type="radio" name="options" autocomplete="off" {% if card.non_idolized_maximum_statistics_smile == 0 %}checked{% endif %}>
+			    {% trans 'Level' %}
+			    {% if card.rarity == 'N' %}40
+			    {% elif card.rarity == 'R' %}60
+			    {% elif card.rarity == 'SR' %}80
+			    {% elif card.rarity == 'UR' %}100
 			    {% endif %}
+			  </label>
+			</div>
+		      </div>
+		      {% for level, stats in card.percent_stats.items %}
+		      <div class="statistics_bars statistics_{{ level }}">
+			{% for attribute, stat in stats.items %}
+			{% with level|add:"_statistics_"|add:attribute|lower as valuenow %}
+			{% if card|getattribute:valuenow %}
+			<div class="row">
+			  <div class="col-xs-1 text-right">
+			    <img src="/static/{{ attribute }}.png" class="attribute" width="20px">
 			  </div>
-			  {{ card.event.japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event.english_name != card.event.japanese_name %}<br>{{ card.event.english_name }}{% endif %} 
-			</a>
-		      </td>
-		    </tr>
-		    {% endif %}
-		    {% if card.japanese_collection %}
-		    <tr>
-		      <th>{% trans 'Collection' %}</th>
-		      <td>
-			<a href="/cards/?search=&collection={{ card.japanese_collection }}" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
-			<div class="pull-right">
-			  <i class="flaticon-album"></i>
+			  <div class="col-xs-2 text-{{ attribute }}">
+			    {{ card|getattribute:valuenow }}
+			  </div>
+			  <div class="col-xs-9">
+			    <div class="progress">
+			      <div class="progress-bar progress-bar-{{ attribute }}"
+				   role="progressbar"
+				   aria-valuenow="{{ card|getattribute:valuenow }}"
+				   aria-valuemin="0"
+				   aria-valuemax="{{ max_stats|getattribute:attribute }}"
+				   style="width: {% localize off %}{{ stat }}{% endlocalize %}%">
+				<span class="sr-only">{{ stat }}%</span>
+			      </div>
+			    </div> <!-- progress -->
+			  </div>
 			</div>
-		      </td>
-		    </tr>
-		    {% endif %}
-		    {% if card.skill or card.japanese_skill %}
-		    <tr>
-		      <th>{% trans 'Skill' %}</th>
-		      <td>
-			<div class="pull-right">
-			  <i class="flaticon-skill"></i>
+			{% endif %}
+			{% endwith %}
+			{% endfor %}
+		      </div>
+		      {% endfor %}
+		      {% if card.hp %}
+		      <div class="row">
+			<div class="col-xs-1 text-right">
+			  <i class="flaticon-hp"></i>
 			</div>
-			{% if card.japanese_skill_details or card.japanese_skill or card.skill_details or card.japanese_skill_details %}
-			<p>
-			  {% if card.japanese_skill %}<strong>{{ card.japanese_skill }}</strong><br />
-			  <small>{% endif %}{% if card.japanese_skill_details and card.japanese_skill_details != 'None' %}{{ card.japanese_skill_details }}{% endif %}{% if card.japanese_skill %}</small>{% endif %}
-			</p>
-			{% endif %}
-			<p>
-			  {% if card.skill %}<strong>{{ card.skill }}</strong>
-			  <span class="tiny"><a target="_blank" href="/cards/?skill={{ card.skill }}">
-			      <i class="flaticon-link"></i></a></span><br>
-			  <small>{% endif %}{% if card.skill_details %}{{ card.skill_details }}{% endif %}{% if card.skill %}</small>{% endif %}
-			  </p>
-		      </td>
-		    </tr>
-		    {% endif %}
-		    {% if card.center_skill or card.japanese_center_skill %}
-		    <tr>
-		      <th>{% trans 'Center Skill' %}</th>
-		      <td>
-			<div class="pull-right">
-			  <i class="flaticon-center"></i>
+			<div class="col-xs-2">
+			  {% trans 'HP' %}
 			</div>
-			{% if card.japanese_center_skill_details or card.japanese_center_skill %}
-			<p>
-			  {% if card.japanese_center_skill %}<strong>{{ card.japanese_center_skill }}</strong><br />
-			  <small>{% endif %}{% if card.japanese_center_skill_details and card.japanese_center_skill_details != 'None' %}{{ card.japanese_center_skill_details }}{% endif %}{% if card.japanese_center_skill %}</small>{% endif %}
-			</p>
-			{% endif %}
-			<p>
-			  {% if card.center_skill %}{{ card.center_skill }}{% endif %}
-			</p>
-		      </td>
-		    </tr>
-		    {% endif %}
-		    {% if card.transparent_image or card.transparent_idolized_image or card.transparent_ur_pair or card.transparent_idolized_ur_pair %}
-		    <tr>
-		      <th>{% trans 'Download' %}</th>
-		      <td>
-			<div class="pull-right">
-			  <i class="flaticon-cards"></i>
+			<div class="col-xs-9">
+			  <span class="hp_non_idolized">{{ card.hp }}</span>
+			  <span class="hp_idolized">{{ card.hp|add:1 }}</span>
 			</div>
-			{% if card.transparent_image %}
-			<a href="{{ card.transparent_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Not Idolized' %}</a><br>
-			{% endif %}
-			{% if card.transparent_idolized_image %}
-			<a href="{{ card.transparent_idolized_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Idolized' %}</a><br>
-			{% endif %}
-			{% if card.transparent_ur_pair %}
-			<a href="{{ card.transparent_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Idolized' %}</a><br>
-			{% endif %}
-			{% if card.transparent_idolized_ur_pair %}
-			<a href="{{ card.transparent_idolized_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Not Idolized' %}</a><br>
-			{% endif %}
-		      </td>
-		    </tr>
+		      </div>
+		      <br>
+		      {% endif %}
+		    </div> <!-- statistics -->
 		    {% endif %}
-		    <tr>
-		      <th><small>{% trans 'Sources' %}</small></th>
-		      <td>
-			<small>
-			  <a href="http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List" target="_blank">Wikia</a>,
-			  <a href="https://sif.kirara.ca/" target="_blank">SIF Kirara</a>,
-			  <a href="http://decaf.kouhi.me/lovelive/" target="_blank">{% trans 'Wiki' %}</a>,
-			  <a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">情報まとめwiki</a>
-			</small>
-		      </td>
-		    </tr>
-		    {% if not single %}
-		    <tr>
-		      <th>{% trans 'Comments' %}</th>
-		      <td>
-			<a href="http://schoolido.lu/cards/{{ card.id }}/#disqus_thread" target="_blank">Comments</a>
-			<div class="pull-right">
-			  <i class="flaticon-edit"></i>
-			</div>
-		      </td>
-		    </tr>
+		    <table class="table">
+		      <tbody>
+			<tr>
+			  <th>{% trans 'Card #ID' %}</th>
+			  <td>
+			    <a href="/cards/{{ card.id }}/" target="_blank">
+			      <div class="pull-right">
+				{% if not card.is_promo and not card.is_special %}
+				<div class="round-normal">
+				  {% if card.round_card_image %}
+				  <img src="{% imageurl card=card image='round_card_image' %}" alt="{{ card }}" height="70">
+				  {% else %}
+				  <i class="flaticon-id"></i>
+				  {% endif %}
+				</div>
+				{% endif %}
+				<div {% if card.is_special or card.is_promo %}class="round-idolized-only"{% else %}class="round-idolized" style="display: none"{% endif %}>
+				  {% if card.round_card_idolized_image %}
+				  <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="70">
+				  {% else %}
+				  <i class="flaticon-id"></i>
+				  {% endif %}
+				</div>
+			      </div>
+			      #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a><br>
+			    <small>{% if card.idol.japanese_name %} {{ card.idol.japanese_name }}{% endif %} {{ card.idol.name }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
+				  <i class="flaticon-link"></i></a></span><br>
+			      {{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
+				  <i class="flaticon-link"></i></a></span> {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.attribute }}">
+				  <i class="flaticon-link"></i></a></span>
+			    </small>
+			  </td>
+			</tr>
+			{% if card.release_date %}
+			<tr>
+			  <th>{% trans 'Release date' %}</th>
+			  <td>
+			    {{ card.release_date }}
+			    <div class="pull-right">
+			      <i class="flaticon-date"></i>
+			    </div>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.is_promo %}
+			<tr>
+			  <th>{% trans 'Promo Card' %}</th>
+			  <td>
+			    {% trans 'This card comes with ' %}:<br>
+			    {{ card.promo_item }}
+			    <div class="pull-right">
+			      <i class="flaticon-promo"></i>
+			    </div>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.event %}
+			<tr>
+			  <th>{% trans 'Event' %}</th>
+			  <td>
+			    <a href="/events/{{ card.event.japanese_name|urlencode }}/" target="_blank">
+			      <div class="pull-right">
+				{% if card.event.image %}
+				<img src="{% eventimageurl event=card.event %}" alt="{{ card.event.japanese_name }}" width="100">
+				{% else %}
+				<i class="flaticon-event"></i>
+				{% endif %}
+			      </div>
+			      {{ card.event.japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event.english_name != card.event.japanese_name %}<br>{{ card.event.english_name }}{% endif %} 
+			    </a>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.japanese_collection %}
+			<tr>
+			  <th>{% trans 'Collection' %}</th>
+			  <td>
+			    <a href="/cards/?search=&collection={{ card.japanese_collection }}" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
+			    <div class="pull-right">
+			      <i class="flaticon-album"></i>
+			    </div>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.skill or card.japanese_skill %}
+			<tr>
+			  <th>{% trans 'Skill' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-skill"></i>
+			    </div>
+			    {% if card.japanese_skill_details or card.japanese_skill or card.skill_details or card.japanese_skill_details %}
+			    <p>
+			      {% if card.japanese_skill %}<strong>{{ card.japanese_skill }}</strong><br />
+			      <small>{% endif %}{% if card.japanese_skill_details and card.japanese_skill_details != 'None' %}{{ card.japanese_skill_details }}{% endif %}{% if card.japanese_skill %}</small>{% endif %}
+			    </p>
+			    {% endif %}
+			    <p>
+			      {% if card.skill %}<strong>{{ card.skill }}</strong>
+			      <span class="tiny"><a target="_blank" href="/cards/?skill={{ card.skill }}">
+				  <i class="flaticon-link"></i></a></span><br>
+			      <small>{% endif %}{% if card.skill_details %}{{ card.skill_details }}{% endif %}{% if card.skill %}</small>{% endif %}
+			    </p>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.center_skill or card.japanese_center_skill %}
+			<tr>
+			  <th>{% trans 'Center Skill' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-center"></i>
+			    </div>
+			    {% if card.japanese_center_skill_details or card.japanese_center_skill %}
+			    <p>
+			      {% if card.japanese_center_skill %}<strong>{{ card.japanese_center_skill }}</strong><br />
+			      <small>{% endif %}{% if card.japanese_center_skill_details and card.japanese_center_skill_details != 'None' %}{{ card.japanese_center_skill_details }}{% endif %}{% if card.japanese_center_skill %}</small>{% endif %}
+			    </p>
+			    {% endif %}
+			    <p>
+			      {% if card.center_skill %}{{ card.center_skill }}{% endif %}
+			    </p>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.transparent_image or card.transparent_idolized_image or card.transparent_ur_pair or card.transparent_idolized_ur_pair %}
+			<tr>
+			  <th>{% trans 'Download' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-cards"></i>
+			    </div>
+			    {% if card.transparent_image %}
+			    <a href="{{ card.transparent_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Not Idolized' %}</a><br>
+			    {% endif %}
+			    {% if card.transparent_idolized_image %}
+			    <a href="{{ card.transparent_idolized_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    {% if card.transparent_ur_pair %}
+			    <a href="{{ card.transparent_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    {% if card.transparent_idolized_ur_pair %}
+			    <a href="{{ card.transparent_idolized_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Not Idolized' %}</a><br>
+			    {% endif %}
+			  </td>
+			</tr>
+			{% endif %}
+			<tr>
+			  <th><small>{% trans 'Sources' %}</small></th>
+			  <td>
+			    <small>
+			      <a href="http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List" target="_blank">Wikia</a>,
+			      <a href="https://sif.kirara.ca/" target="_blank">SIF Kirara</a>,
+			      <a href="http://decaf.kouhi.me/lovelive/" target="_blank">{% trans 'Wiki' %}</a>,
+			      <a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">情報まとめwiki</a>
+			    </small>
+			  </td>
+			</tr>
+			{% if not single %}
+			<tr>
+			  <th>{% trans 'Comments' %}</th>
+			  <td>
+			    <a href="http://schoolido.lu/cards/{{ card.id }}/#disqus_thread" target="_blank">Comments</a>
+			    <div class="pull-right">
+			      <i class="flaticon-edit"></i>
+			    </div>
+			  </td>
+			</tr>
+			{% endif %}
+		      </tbody>
+		    </table>
+		    {% if card.embed_video %}
+		    {% if LANGUAGE_CODE != 'ja' or not card.embed_japanese_video %}
+		    <div class="embed_video" data-url="{{ card.embed_video }}">
+		    </div>
 		    {% endif %}
-		  </tbody>
-		</table>
-		{% if card.embed_video %}
-		{% if LANGUAGE_CODE != 'ja' or not card.embed_japanese_video %}
-		<div class="embed_video" data-url="{{ card.embed_video }}">
+		    {% endif %}
+		    {% if card.embed_japanese_video %}
+		    {% if LANGUAGE_CODE == 'ja' or not card.embed_video %}
+		    <div class="embed_japanese_video" data-url="{{ card.embed_japanese_video }}">
+		    </div>
+		    {% endif %}
+		    {% endif %}
+		    <div class="share text-center padding20">
+		      <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		    </div>
+		  </div> <!-- more -->
+		  {% if total_results == 1 %}
 		</div>
-		{% endif %}
-		{% endif %}
-		{% if card.embed_japanese_video %}
-		{% if LANGUAGE_CODE == 'ja' or not card.embed_video %}
-		<div class="embed_japanese_video" data-url="{{ card.embed_japanese_video }}">
-		</div>
-		{% endif %}
-		{% endif %}
-		<div class="share text-center padding20">
-		  <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		  <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		  <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		  <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		  <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu/cards/{{ card.id }}/" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		</div>
-	      </div> <!-- more -->
-	      {% if total_cards == 1 %}</div></div>{% endif %}
+	      </div>
+	      {% endif %}
 	    </div> <!-- panel-body -->
 	    <div class="panel-footer">
 	      <div class="row">

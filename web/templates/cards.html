@@ -47,8 +47,8 @@
 <script src="/static/js/addcard.js?1"></script>
 {% endblock %}
 
-{% block shareimage %}{% if single %}http://schoolido.lu{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
-{% block shareimagetwitter %}{% if single %}http://schoolido.lu{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/cards_screenshot.png{% endif %}{% endblock %}
+{% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
 
 {% block content %}
 <div class="hidden" id="quickaddform">

@@ -2,6 +2,11 @@
 {% load i18n %}
 {% load markdown_deux_tags %}
 {% block title %}{{ profile_user.username }}: {% trans 'Profile'%}{% endblock %}
+{% load gravatar %}
+
+{% block shareimage %}{{ profile_user|gravatar:200 }}{% endblock %}
+{% block shareimagetwitter %}{{ profile_user|gravatar:200 }}{% endblock %}
+
 {% block js %}
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <script src="/static/js/loadactivities.js"></script>

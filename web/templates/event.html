@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load imageurl %}
+
 {% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
+
+{% block shareimage %}{% eventimageurl event=event %}{% endblock %}
+{% block shareimagetwitter %}{% eventimageurl event=event %}{% endblock %}
+
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script src="/static/js/event.js?2"></script>
@@ -8,7 +14,6 @@
 {% block content %}
 {% load getattribute %}
 {% load languageToString %}
-{% load imageurl %}
 {% load gravatar %}
 {% load mod %}
 {% load tz %}

@@ -216,11 +216,11 @@
 		  </tbody>
 		</table>
 		<div class="share text-center padding20">
-		  <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
-		  <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
-		  <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
-		  <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
-		  <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu/songs/{{ song.id }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu/songs/{{ song.name|urlencode }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu/songs/{{ song.name|urlencode }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu/songs/{{ song.name|urlencode }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu/songs/{{ song.name|urlencode }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
+		  <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu/songs/{{ song.name|urlencode }}/" st_image="{% songimageurl song=song %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ song }}"></span>
 		</div>
 	      </div> <!-- more -->
 	      {% if single %}

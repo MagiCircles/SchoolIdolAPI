@@ -5,6 +5,10 @@
 {% load gravatar %}
 {% load imageurl %}
 {% block title %}{% trans 'Download the School Idol Tomodachi app on Google Play' %}'{% endblock %}
+
+{% block shareimage %}{{ android.icon }}{% endblock %}
+{% block shareimagetwitter %}{{ android.icon }}{% endblock %}
+
 {% block content %}
 <div class="container text-center">
 

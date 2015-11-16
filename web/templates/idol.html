@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load imageurl %}
 {% get_current_language as LANGUAGE_CODE %}
 {% block title %}{% trans 'Idol' %}: {{ idol.name }}{% endblock %}
+
+{% block shareimage %}http://schoolido.lu{% chibiimage idol=idol.name small=False %}{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/{% chibiimage idol=idol.name small=False %}{% endblock %}
+
 {% block js %}
 {% if tab == 'idol' %}
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
@@ -13,11 +18,7 @@
 {% endif %}
 {% endblock %}
 
-{% block shareimage %}{% endblock %}
-{% block shareimagetwitter %}{% endblock %}
-
 {% block content %}
-{% load imageurl %}
 {% load getattribute %}
 <br>
 <div id="idol">

@@ -5,6 +5,10 @@
 {% load gravatar %}
 {% load imageurl %}
 {% block title %}Map{% endblock %}
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/map.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/map.png{% endblock %}
+
 {% block content %}
 <div class="container text-center" id="map">
   <h1 class="margin50">{% trans 'Map' %} <small>{{ mapcount }}</small></h1>

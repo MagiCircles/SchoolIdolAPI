@@ -61,7 +61,6 @@
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
 		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>
-		<li class="{% if current == 'activities' %}active{% endif %}"><a href="/activities/"><i class="flaticon-activities"></i> {% trans 'Activities' %}</a></li>
 		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit/"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		{% if accounts %}

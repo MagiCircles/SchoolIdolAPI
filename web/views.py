@@ -704,11 +704,6 @@ def ajaxfeed(request):
     return render(request, 'cacheactivities.html', {})
     return render(request, 'activities.html', _contextfeed(request))
 
-def activities(request):
-    context = globalContext(request)
-    context.update(_contextfeed(request))
-    return render(request, 'feed.html', context)
-
 def isLiking(request, activity_obj):
     if request.user.is_authenticated():
         for u in activity_obj.likes.all():
@@ -1111,13 +1106,6 @@ def idols(request):
     context['main_idols'] = sorted(filter(lambda x: x.main == True, idols), key=operator.attrgetter('year'))
     context['n_idols'] = filter(lambda x: x.main == False, idols)
     return render(request, 'idols.html', context)
-
-def twitter(request):
-    if not request.user.is_authenticated() or request.user.is_anonymous():
-        raise PermissionDenied()
-    context = globalContext(request)
-    context['twitter'] = models.UserPreferences.objects.filter(twitter__isnull=False).exclude(twitter__exact='').values_list('twitter', flat=True)
-    return render(request, 'twitter.html', context)
 
 def android(request):
     context = globalContext(request)

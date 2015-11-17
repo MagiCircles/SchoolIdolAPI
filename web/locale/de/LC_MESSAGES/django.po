@@ -2271,8 +2271,7 @@ msgid "<li>Go to Settings</li>\n"
 "\t<li>Go to Security</li>\n"
 "\t<li>Scroll down and check “Unknown sources” box</li>\n"
 "\t<li>Tap ‘OK” when it show the warning</li>"
-msgstr "<li>Gehe zu den Einstellungen</li> <li>Gehe auf Sicherheit</li> <li>Scrolle herunter und klice die k “Unknown sources” Box an</li> <li>Klkicke ‘OK” wenn die Warnung angezeigt wird</li>\n"
-""
+msgstr "<li>Gehe zu den Einstellungen</li> <li>Gehe auf Sicherheit</li> <li>Scrolle herunter und klice die k “Unknown sources” Box an</li> <li>Klkicke ‘OK” wenn die Warnung angezeigt wird</li>"
 
 #: web/templates/modalsukutomo.html:113
 msgid "So don't forget to check out the guides, tutorials, tools, discussion boards, and much more from our fellow LoveLivers friends:"

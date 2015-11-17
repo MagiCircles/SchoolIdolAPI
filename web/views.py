@@ -1039,7 +1039,7 @@ def event(request, event):
 
 def _findparticipation(id, participations):
     for participation in participations:
-        if participation.id == id:
+        if str(participation.id) == id:
             return participation
     return None
 
@@ -1061,6 +1061,7 @@ def eventparticipations(request, event):
             if participation:
                 if 'deleteParticipation' in request.POST:
                     participation.delete()
+                    context['your_participations'] = event.participations.filter(account__owner=request.user).select_related('account')
                 else:
                     form = forms.EventParticipationNoAccountForm(request.POST, instance=participation)
                     if form.is_valid():

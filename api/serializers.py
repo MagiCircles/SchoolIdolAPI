@@ -242,6 +242,10 @@ class CardSerializer(serializers.ModelSerializer):
 
 class SongSerializer(serializers.ModelSerializer):
     event = EventSerializer()
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        return _get_image(obj.image)
 
     class Meta:
         model = models.Song

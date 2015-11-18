@@ -61,9 +61,17 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
 
 class SongFilter(django_filters.FilterSet):
     is_event = django_filters.MethodFilter(action='filter_is_event')
+    is_daily_rotation = django_filters.MethodFilter(action='filter_is_daily_rotation')
+    event = django_filters.MethodFilter(action='filter_event')
 
     def filter_is_event(self, queryset, value):
         return queryset.filter(event__isnull=(False if value.title() == 'True' else True))
+
+    def filter_is_daily_rotation(self, queryset, value):
+        return queryset.filter(daily_rotation__isnull=(False if value.title() == 'True' else True))
+
+    def filter_event(self, queryset, value):
+        return queryset.filter(event__japanese_name=value)
 
     class Meta:
         model = models.Song
@@ -76,7 +84,7 @@ class SongViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Song.objects.all()
     serializer_class = serializers.SongSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
-    search_fields = ('name', 'romaji_name', 'translated_name', 'event__name')
+    search_fields = ('name', 'romaji_name', 'translated_name')
     filter_class = SongFilter
     ordering_fields = '__all__'
     ordering = ('-available', 'daily_rotation', 'daily_rotation_position', 'rank', 'name')
@@ -93,6 +101,7 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year')
     ordering_fields = '__all__'
     ordering = ('-main', 'name')
+    lookup_field = 'name'
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """

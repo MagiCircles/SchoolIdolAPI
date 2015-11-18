@@ -1662,7 +1662,7 @@ msgstr "Мировой"
 #: NEW_INDEX.html:34 web/templates/index.html:24
 #: web/templates/index.html.py:28
 msgid "Follow School Idol Tomodachi on Twitter"
-msgstr ""
+msgstr "Подпишитесь на School Idol Tomodachi в Твиттере"
 
 #: api/models.py:46
 msgid "Bronze Verified"
@@ -1686,7 +1686,7 @@ msgstr "Комментировать"
 
 #: api/models.py:473
 msgid "If you have anything to say to the person who is going to verify your account, feel free to write it here!"
-msgstr ""
+msgstr "Если бы вы хотели что-то сказать человеку, который будет подтверждать ваш аккаунт, пишите что хотите здесь!"
 
 #: api/models.py:477
 msgid "Allow us to verify your account during events"
@@ -1694,7 +1694,7 @@ msgstr "Разрешить нам подтвердить ваш аккаут в�
 
 #: api/models.py:477
 msgid "Check this only if you don't care about the current event. You'll get verified faster."
-msgstr ""
+msgstr "Отметьте это, если вам все равно на текущий ивент. Вы получите подтверждение раньше."
 
 #: index.html:31 web/templates/android.html:21
 msgid "School Idol Tomodachi makes its Android debut!"
@@ -1706,7 +1706,7 @@ msgstr "Загрузить приложение"
 
 #: web/forms.py:184
 msgid "If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn't work, please resize your images."
-msgstr ""
+msgstr "Если ваши файлы слишком больше, посылайте один за другим. Сначала, загрузите первое изображение, заем отредактируйте просьбу со вторым, и так далее. Если ни одно из изображений не подходит, пожалуйста, переделайте размер ваших изображений."
 
 #: web/forms.py:231
 msgid "Latest unlocked songs"
@@ -1738,11 +1738,11 @@ msgstr "Нот на сложности Expert"
 
 #: web/forms.py:238
 msgid "Ordering"
-msgstr ""
+msgstr "Порядок"
 
 #: web/forms.py:240 web/templates/songsPage.html:167
 msgid "Daily rotation"
-msgstr ""
+msgstr "Дневная ротация"
 
 #: web/forms.py:242
 msgid "Available"
@@ -1750,7 +1750,7 @@ msgstr "Доступны"
 
 #: web/links.py:563
 msgid "Susume Love Live! Fansite"
-msgstr ""
+msgstr "Фансайт Susume Love Live!"
 
 #: web/templates/about.html:18 web/templates/about.html.py:174
 #: web/templates/baseMenu.html:6
@@ -1765,7 +1765,7 @@ msgstr "Контакты"
 
 #: web/templates/about.html:103
 msgid "Staff members"
-msgstr ""
+msgstr "Штатные сотрудники"
 
 #: web/templates/about.html:115
 msgid "Owner"
@@ -1781,7 +1781,7 @@ msgstr "Ответсвеннен за подтвержения"
 
 #: web/templates/about.html:151 web/templates/android.html:79
 msgid "Contribute"
-msgstr ""
+msgstr "Сделан вклад"
 
 #: web/templates/about.html:151
 msgid "Dev"
@@ -1793,7 +1793,7 @@ msgstr "Мы пришлем вам милую открытку, подписан
 
 #: web/templates/addaccount.html:92
 msgid "Generate a transfer code on the game."
-msgstr ""
+msgstr "Сгенерируйте трансфер код в игре"
 
 #: web/templates/addaccount.html:92
 msgid "How to generate a transfer code?"
@@ -1809,11 +1809,11 @@ msgstr "Если вы не играете во время ивентов или 
 
 #: web/templates/addaccount.html:98
 msgid "If you still play between events, we can notify you before we start the process. Ask for it in your message."
-msgstr ""
+msgstr "Если вы все же играете между между ивентами, мы може уведомить вас перед началом процесса. Попросите это в вашем письме."
 
 #: web/templates/addaccount.html:100
 msgid "We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else"
-msgstr ""
+msgstr "Мы введем трансфер код на одном из устройств и проверить информацию. Мы не собираемся ничего делать с LP, ловеками, картами или чем-либо подобным."
 
 #: web/templates/addaccount.html:101
 msgid "You will then receive an email with your new transfer code."
@@ -1821,7 +1821,7 @@ msgstr "Вы получите письмо с вашим новым трансф
 
 #: web/templates/addaccount.html:102
 msgid "Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!"
-msgstr ""
+msgstr "Примечани "
 
 #: web/templates/addaccount.html:108
 msgid "Open the game you want to get verified"
@@ -1837,11 +1837,11 @@ msgstr "Как сделать скриншоты?"
 
 #: web/templates/addaccount.html:111
 msgid "Go to \"Members\" (部員) then \"Member List\" (部員リスト), order by \"Rarity\" (レアリティ) and take screenshots of all the pages that have URs or SRs"
-msgstr ""
+msgstr "Нажмите\"Members\" (部員), затем \"Member List\" (部員リスト), расположите по \"Rarity\" (レアリティ) и сделайте скриншоты страниц, на которых есть UR или SR карты."
 
 #: web/templates/addaccount.html:113
 msgid "If you have SR/UR cards in your album (you used to have them but you sold them or used them in training), also take a screenshot of said cards in your album."
-msgstr ""
+msgstr "Если вы имели SR/UR карты в вашем альбоме (но вы продали их или использовали в тренировке), так же сделайте скриншот вышеуказанных карт в вашем альбоме."
 
 #: web/templates/addaccount.html:114
 msgid "If you have SR/UR cards in your present box, also take a screenshot of the cards in your present box."
@@ -1849,7 +1849,7 @@ msgstr "Если у вас есть SR/UR карты в подарочной к�
 
 #: web/templates/addaccount.html:117
 msgid "Go to \"Other\" (その他) then \"Profile\" (プロフィール) and take a screenshot"
-msgstr ""
+msgstr "Нажмите \"Other\" (その他), затем Profile\" (プロフィール) и сделайте скриншот"
 
 #: web/templates/addaccount.html:120
 msgid "No need to refresh your profile, you will receive an email when you're verified!"
@@ -1869,356 +1869,356 @@ msgstr "Вы получите письмо, когда в"
 
 #: web/templates/addaccount.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "Отменить"
 
 #: web/templates/addaccount.html:144
 msgid "Your position in the verification queue"
-msgstr ""
+msgstr "Ваша позиция в очереди на подтверждение"
 
 #: web/templates/addaccount.html:146
 msgid "day"
-msgstr ""
+msgstr "день"
 
 #: web/templates/addaccount.html:185
 msgid "Check your cards"
-msgstr ""
+msgstr "Проверить свои карты"
 
 #: web/templates/addaccount.html:205
 msgid "read our FAQ"
-msgstr ""
+msgstr "прочтите наши ЧаВО"
 
 #: web/templates/addaccount.html:213
 msgid "Your rank must be over 80."
-msgstr ""
+msgstr "Ваш ранк должен превышать 80."
 
 #: web/templates/addaccount.html:216
 msgid "You must specify your friend ID in your account."
-msgstr ""
+msgstr "Вы должны указать свой ID друга вашего аккаунта"
 
 #: web/templates/addaccount.html:219
 msgid "You must provide a valid email address in your settings."
-msgstr ""
+msgstr "Вы должны указать работающий e-mail в ваших настройках"
 
 #: web/templates/addaccount.html:222
 msgid "Your profile must not be private."
-msgstr ""
+msgstr "Ваш профиль не должен быть приватным."
 
 #: web/templates/android.html:7
 msgid "Download the School Idol Tomodachi app on Google Play"
-msgstr ""
+msgstr "Загрузить приложение School Idol Tomodachi на Google Play"
 
 #: web/templates/android.html:17
 msgid "Sukutomo"
-msgstr ""
+msgstr "Sukutomo"
 
 #: web/templates/android.html:17
 msgid "by"
-msgstr ""
+msgstr "от"
 
 #: web/templates/android.html:24
 msgid "If you're searching for the game itself, you can"
-msgstr ""
+msgstr "Если вы ищите саму игру, вы можете"
 
 #: web/templates/android.html:24
 msgid "download it here"
-msgstr ""
+msgstr "загрузить её здесь"
 
 #: web/templates/android.html:52
 msgid "F.A.Q."
-msgstr ""
+msgstr "ЧаВО"
 
 #: web/templates/android.html:55
 msgid "I get this message when I try to install the apk: \"Install blocked. For security, your phone is set to block installation of apps obtained from unknown sources.\""
-msgstr ""
+msgstr "Я получил сообщение при попытке установить apk: \"Установка заблокирована. Для безопасности, ваш телефон настроен блокировать установку приложений, полученных с неизвестных источников\"."
 
 #: web/templates/android.html:65
 msgid "What should I do if I find a bug or want to make a suggestion?"
-msgstr ""
+msgstr "Что делать если я нашел баг или хочу сделать предложение?"
 
 #: web/templates/android.html:68
 msgid "We're more than happy to help you and discuss with you."
-msgstr ""
+msgstr "Мы больше чем счастливы обсудить это с вами."
 
 #: web/templates/android.html:72
 msgid "I can't find the app on Google Play."
-msgstr ""
+msgstr "Я не могу найти приложение на Google Play."
 
 #: web/templates/android.html:73
 msgid "The app is not available on Google Play, you have to download it on your phone from this page using the download button above then open it to install it."
-msgstr ""
+msgstr "Приложение недоступно на Google Play, так что вы можете загрузить его на свой телефон с этой страница использую кнопку загрузки, расположенную выше и нажать, чтобы установить."
 
 #: web/templates/android.html:75
 msgid "I sometimes get this message: \"Unfortunately, Sukutomo has stopped\"."
-msgstr ""
+msgstr "Я иногда полуаю сообщение: \"К сожалению, приложение Sukutomo приостановилось\"."
 
 #: web/templates/android.html:76
 msgid "It might happen for different reasons, but it always means there is a bug in the app."
-msgstr ""
+msgstr "Это может случиться по различным причинам, но это всегда означает, что в приложении есть баг."
 
 #: web/templates/android.html:76
 msgid "Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it."
-msgstr ""
+msgstr "Напишите столько информации, сколько вы может ( Что именно вы делали, когда это произошло? Какой у вас телефон?) и мы сделаем все, что можем, чтобы исправить это."
 
 #: web/templates/android.html:78
 msgid "I'm a developer and I would like to help you."
-msgstr ""
+msgstr "Я разработчик и хотел бы помочь вам."
 
 #: web/templates/android.html:79
 msgid "Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready."
-msgstr ""
+msgstr "Замечательно! Мы с радостью примем ваше предложение. Это приложение с откртым исходным кодом, так что вперед работайте, веселитесь с кодом и присылайте нам запросы, когда у вас будет что-либо готово."
 
 #: web/templates/android.html:80
 msgid "If you have no idea what we're talking about, don't panic. We can help you get started."
-msgstr ""
+msgstr "Если вы не имеете понятия, о чем мы говорим, не паникуйте. Мы можем вам помочь начать."
 
 #: web/templates/base.html:51 web/templates/songs.html:7
 msgid "Songs"
-msgstr ""
+msgstr "Песни"
 
 #: web/templates/box.html:9
 msgid "Promo Up"
-msgstr ""
+msgstr "Поднятия навыка промо карты"
 
 #: web/templates/box.html:10
 msgid "Level up the skill of your promo cards using R cards that have the same skill"
-msgstr ""
+msgstr "Поднимайте навык промо карт R картами, которые имеют такой же навык."
 
 #: web/templates/cards.html:59
 msgid "Advanced"
-msgstr ""
+msgstr "Расширенно"
 
 #: web/templates/cards.html:254
 msgid "Edit card"
-msgstr ""
+msgstr "Редактировать карту"
 
 #: web/templates/cardsPage.html:262 web/templates/cardsPage.html.py:265
 #: web/templates/cardsPage.html:268 web/templates/cardsPage.html.py:271
 msgid "Transparent"
-msgstr ""
+msgstr "Прозрачный"
 
 #: web/templates/cardsPage.html:268 web/templates/cardsPage.html.py:271
 msgid "UR Pair"
-msgstr ""
+msgstr "Пара к UR"
 
 #: web/templates/emails/base.html:527
 msgid "Thanks for using our site!"
-msgstr ""
+msgstr "Спасибо за использование нашего сайта!"
 
 #: web/templates/emails/transfercoderemovedb.html:8
 msgid "Hi"
-msgstr ""
+msgstr "Привет"
 
 #: web/templates/event_participations.html:16
 #: web/templates/event_participations.html:58
 msgid "Back to event"
-msgstr ""
+msgstr "Назад к ивену"
 
 #: web/templates/event_participations.html:52
 msgid "None of your accounts are allowed to add an event participation. It might be because the event is not finished yet."
-msgstr ""
+msgstr "Ни один из ваших аккаунтов не допущен к добавлению в участии в ивенте. Это может быть из-за того, что ивент еще незакончен."
 
 #: web/templates/event_ranking.html:50
 msgid "Load more..."
-msgstr ""
+msgstr "Загрузить больше..."
 
 #: web/templates/index.html:67
 msgid "is crowdfunded by our Idol Producer"
-msgstr ""
+msgstr "профинансировано нашим Айдол Продюсером"
 
 #: web/templates/index.html:70
 msgid "Learn more"
-msgstr ""
+msgstr "Узнать больше"
 
 #: web/templates/index.html:72
 msgid "donators"
-msgstr ""
+msgstr "поддержали"
 
 #: web/templates/modalabout.html:4
 msgid "About the game LoveLive! School Idol Festival"
-msgstr ""
+msgstr "О игре LoveLive! School Idol Festival"
 
 #: web/templates/modalsukutomo.html:9
 msgid "LoveLive! School Idol Festival Game Database"
-msgstr ""
+msgstr "База данных игры LoveLive! School Idol Festival"
 
 #: web/templates/modalsukutomo.html:16
 msgid "All the Cards"
-msgstr ""
+msgstr "Все карты"
 
 #: web/templates/modalsukutomo.html:24
 msgid "All the Events"
-msgstr ""
+msgstr "Все ивенты"
 
 #: web/templates/modalsukutomo.html:25
 msgid "Get ready for your favorite idol: check the list of events in advance to see what's next!"
-msgstr ""
+msgstr "Приготовьтесь к своему любимому айдолу: проверьте лист ивентов и посмотрите, что будет дальше!"
 
 #: web/templates/modalsukutomo.html:32
 msgid "All the Songs"
-msgstr ""
+msgstr "Все песни"
 
 #: web/templates/modalsukutomo.html:33
 msgid "Search for your favorite songs, find the shortest, longest, hardest, and more!"
-msgstr ""
+msgstr "Ищите свои любимые песни, находите самые короткие, долгие, сложные и т.д.!"
 
 #: web/templates/modalsukutomo.html:40
 msgid "All the Idols"
-msgstr ""
+msgstr "Все айдолы"
 
 #: web/templates/modalsukutomo.html:41
 msgid "Did you know that Rin hates fish but loves ramen? All you need to know about the idols!"
-msgstr ""
+msgstr "Вы знали что Рин ненавидит рыбу, но любит рамен? Это все, что вы должны знать о айдолах. "
 
 #: web/templates/modalsukutomo.html:46
 msgid "Track your progress"
-msgstr ""
+msgstr "Отслеживайте свой прогресс"
 
 #: web/templates/modalsukutomo.html:53
 msgid "Customize your own profile"
-msgstr ""
+msgstr "Редактируйте свой собственный профиль"
 
 #: web/templates/modalsukutomo.html:54
 msgid "Create your account and join the community!"
-msgstr ""
+msgstr "Создайте свой аккаунт и присоединитесь к сообществу!"
 
 #: web/templates/modalsukutomo.html:61
 msgid "Showcase your collection of cards"
-msgstr ""
+msgstr "Покажите свою коллекцию карт."
 
 #: web/templates/modalsukutomo.html:62
 msgid "Keep track of the cards you idolized, max leveled or max bonded!"
-msgstr ""
+msgstr "Продолжайте отслеживать карты, которые вы айдолизировали, повысили до максимального уровня или максимально связали!"
 
 #: web/templates/modalsukutomo.html:69
 msgid "Save your scores in events"
-msgstr ""
+msgstr "Сохраняйте свои результаты в ивентах!"
 
 #: web/templates/modalsukutomo.html:70
 msgid "Tier 1, tier 2, final score & ranking position!"
-msgstr ""
+msgstr "Тиер 1, тиер 2, финальный результат и позиция в общем зачете!"
 
 #: web/templates/modalsukutomo.html:75
 msgid "Meet new friends, and more!"
-msgstr ""
+msgstr "Находите новых друзей и т.д!"
 
 #: web/templates/modalsukutomo.html:82
 msgid "Leaderboard"
-msgstr ""
+msgstr "Таблица лидеров"
 
 #: web/templates/modalsukutomo.html:83
 msgid "Do you think you can beat all the top players and become the highest ranked player in the world?"
-msgstr ""
+msgstr "Думаешь ли ты, что можешь обойти топовых игроков и стать самым высоким по ранку игроком в мире?"
 
 #: web/templates/modalsukutomo.html:90
 msgid "Find players near you"
-msgstr ""
+msgstr "Найдите игроков недалеко от вас"
 
 #: web/templates/modalsukutomo.html:104
 msgid "the LoveLive! community"
-msgstr ""
+msgstr "Сообщество LoveLive!"
 
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Песня, совпадающая с вашим запросом:"
+msgstr[1] "Песен, совпадающих с вашим запросом:"
+msgstr[2] "Песен, совпадающих с вашим запросом:"
 
 #: web/templates/songsPage.html:73
 msgid "Notes"
-msgstr ""
+msgstr "Ноты"
 
 #: web/templates/songsPage.html:121
 msgid "Unlock"
-msgstr ""
+msgstr "Отркыто"
 
 #: web/templates/songsPage.html:140
 msgid "Length"
-msgstr ""
+msgstr "Длина"
 
 #: web/templates/songsPage.html:177
 msgid "Currently available"
-msgstr ""
+msgstr "Сейчас достусно"
 
 #: web/templates/staff_verifications.html:29
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: web/templatetags/choicesToString.py:35
 msgid "Easy"
-msgstr ""
+msgstr "Легко"
 
 #: web/templatetags/choicesToString.py:37
 msgid "Hard"
-msgstr ""
+msgstr "Сложно"
 
 #: web/templatetags/choicesToString.py:38
 msgid "Expert"
-msgstr ""
+msgstr "Эксперт"
 
 #: web/templatetags/choicesToString.py:39
 msgid "Random"
-msgstr ""
+msgstr "Рандом"
 
 #: web/templatetags/mod.py:26
 msgid "lovely"
-msgstr ""
+msgstr "прекрасный"
 
 #: web/templatetags/mod.py:27
 msgid "awesome"
-msgstr ""
+msgstr "круто"
 
 #: web/templatetags/mod.py:28
 msgid "incredible"
-msgstr ""
+msgstr "невероятно"
 
 #: web/templatetags/mod.py:29
 msgid "adorable"
-msgstr ""
+msgstr "прелестный"
 
 #: web/templatetags/mod.py:30
 msgid "generous"
-msgstr ""
+msgstr "щедро"
 
 #: web/templatetags/mod.py:31
 msgid "idols-addicted"
-msgstr ""
+msgstr "айдоло-зависимый"
 
 #: web/templatetags/mod.py:32
 msgid "friendly"
-msgstr ""
+msgstr "дружелюбный"
 
 #: web/templatetags/mod.py:33
 msgid "kind"
-msgstr ""
+msgstr "добрый"
 
 #: web/templatetags/mod.py:34
 msgid "warmhearted"
-msgstr ""
+msgstr "добродушный"
 
 #: web/templatetags/mod.py:35
 msgid "nice"
-msgstr ""
+msgstr "милый"
 
 #: web/templates/about.html:22
 msgid "We are two developers and relatively casual players of the game. It's the first project we made together."
-msgstr ""
+msgstr "Мы 2 разработчика и такие же обычные игроки. Это наш первыц совместный проект."
 
 #: web/templates/about.html:24
 msgid "any donation"
-msgstr ""
+msgstr "любое пожертвование"
 
 #: web/templates/about.html:24
 msgid "helps a lot and is greatly appreciated."
-msgstr ""
+msgstr "поможет сильно и будет отлично оценено"
 
 #: web/templates/about.html:26
 msgid "The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^"
-msgstr ""
+msgstr "Душесогревающая поддержка от сообщества продолжает мотивировать нас больше и больше! Мы любим помогать сообществу, обеспечивая как можно большем количеством информации о игре, которую мы знаем, продолжая содержать сайт легким в использовании, розовым и милым ^_^"
 
 #: web/templates/about.html:28
 msgid "We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you."
-msgstr ""
+msgstr "Мы не знаем как далеко мы зайдем, но в одном мы точно уверены, что это приносит нам веселье от разделения с вами этого сумасшедшего айдол приключения."
 
 #: web/templates/about.html:76
 msgid "School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them."
@@ -2226,19 +2226,19 @@ msgstr ""
 
 #: web/templates/about.html:153
 msgid "Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!"
-msgstr ""
+msgstr "Наш проект откртый для всех и открыт для вкладов. Мы больше чем счастливы прнять просьбы на GitHub!"
 
 #: web/templates/about.html:155
 msgid "The website has been made using"
-msgstr ""
+msgstr "Сайт был создан с использованием"
 
 #: web/templates/about.html:155
 msgid "so in Python 2. We also use"
-msgstr ""
+msgstr "с помощью Python 2. Мы также используем"
 
 #: web/templates/about.html:155
 msgid "for the front-end of the website."
-msgstr ""
+msgstr "для переднего конца веб-сайта"
 
 #: web/templates/about.html:157
 msgid "We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level."
@@ -2246,15 +2246,15 @@ msgstr ""
 
 #: web/templates/addaccount.html:183
 msgid "Before sending your request, we highly recommend you to check that you entered all your cards."
-msgstr ""
+msgstr "Перед тем как отправить запрос, строго рекомендуем вам проверить, ввели ли вы все ваши карты."
 
 #: web/templates/addaccount.html:204
 msgid "If you have any question regarding verifications,"
-msgstr ""
+msgstr "Если у вас есть вопросы учитывая подтверждение,"
 
 #: web/templates/android.html:22
 msgid "Download the app to browse all the cards from the game School Idol Festival directly from your pocket."
-msgstr ""
+msgstr "Загрузите приложение для загрузки всех ваших карт с School Idol Festival из вашего кармана."
 
 #: web/templates/android.html:58
 msgid "<li>Go to Settings</li>\n"
@@ -2265,121 +2265,121 @@ msgstr ""
 
 #: web/templates/modalsukutomo.html:113
 msgid "So don't forget to check out the guides, tutorials, tools, discussion boards, and much more from our fellow LoveLivers friends:"
-msgstr ""
+msgstr "Так что не забудьте оценить наши гайды, туториалы, интсрументы, дискусии, таблицы и  многое другое от наших друзей по LoveLive:"
 
 #: web/templates/addaccount.html:95
 msgid "No matter when you send your request, your account will be verified anytime when there is no event going on."
-msgstr ""
+msgstr "Не важно когда вы отправили заявку, ваш аккаунт будет подтвержден в любое время, когда не идет ивент"
 
 #: web/templates/modalsukutomo.html:91
 msgid "Share your location with the community and travel around the world map to meet new friends!"
-msgstr ""
+msgstr "Поделитесь вашем месттоположением и путешествуйте вокруг мировой карты, находя новых друзей!"
 
 #: web/templates/about.html:24
 msgid "We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded:"
-msgstr ""
+msgstr "Нам обоим по 23 года и мы живем в Сан-Франциско, штат Калифорния. Мы оба закончили один и тот же университет компьютерных технологий и оба работаем разработчиками ПО в той же компании, что мы основали."
 
 #: web/templates/about.html:24
 msgid "Though we love our job, we don't pay ourselves and don't have any income, so"
-msgstr ""
+msgstr "Так как мы любим свою работу, мы не платим себе и не имеем дохода, так что"
 
 #: web/links.py:11 web/links.py:16
 msgid "English Version"
-msgstr ""
+msgstr "Английская версия"
 
 #: web/links.py:21 web/links.py:26
 msgid "Japanese Version"
-msgstr ""
+msgstr "Японская версия"
 
 #: web/links.py:141
 msgid "Japanese Bushimo Love Live! Festival Wiki"
-msgstr ""
+msgstr "Японская Bushimo Love Live! Festival Wiki"
 
 #: web/links.py:148
 msgid "Japanese Love Live! Festival Gamerch Wiki"
-msgstr ""
+msgstr "Япоснкая Love Live! Festival Gamerch Wiki "
 
 #: web/links.py:155
 msgid "Chinese MoeGirl Wiki"
-msgstr ""
+msgstr "Китайская MoeGirl Wiki"
 
 #: web/links.py:190
 msgid "Love Live Facebook Page"
-msgstr ""
+msgstr "Страница Love Live на Facebook"
 
 #: web/links.py:203 web/links.py:209
 msgid "Official"
-msgstr ""
+msgstr "Официальный"
 
 #: web/links.py:264
 msgid "Facebook Group"
-msgstr ""
+msgstr "Facebook группа"
 
 #: web/links.py:302
 msgid "Player.me Community"
-msgstr ""
+msgstr "Сообщество Player.me"
 
 #: web/links.py:588
 msgid "Youtube Channel μ's（ラブライブ！） by Lantis"
-msgstr ""
+msgstr "YouTube канал μ's（ラブライブ！）от Lantis"
 
 #: web/templates/event.html:57 web/templates/event.html.py:66
 msgid "hours"
-msgstr ""
+msgstr "часы"
 
 #: web/templates/event.html:57 web/templates/event.html.py:66
 msgid "minutes"
-msgstr ""
+msgstr "минуты"
 
 #: web/templates/event.html:57
 msgid "seconds left"
-msgstr ""
+msgstr "секунд осталось"
 
 #: web/templates/event.html:66
 msgid "Starts in"
-msgstr ""
+msgstr "Начнется через"
 
 #: web/templates/event.html:66
 msgid "seconds"
-msgstr ""
+msgstr "секунды"
 
 #: api/models.py:80
 msgid "Rejected"
-msgstr ""
+msgstr "Отклонено"
 
 #: api/models.py:81
 msgid "Pending"
-msgstr ""
+msgstr "до"
 
 #: api/models.py:82
 msgid "In Progress"
-msgstr ""
+msgstr "В прогрессе"
 
 #: web/templates/about.html:53
 msgid "For suggestions or bug reports, we recommend you to:"
-msgstr ""
+msgstr "Для предположений или докладах о багах, рекомендуем вам:"
 
 #: web/templates/about.html:56
 msgid "Browse the upcoming features on"
-msgstr ""
+msgstr "Загрузить предстоящие особенности"
 
 #: web/templates/about.html:56
 msgid "our Tasks manager"
-msgstr ""
+msgstr "наш менеджер заданий"
 
 #: web/templates/about.html:57
 msgid "Create a new issue"
-msgstr ""
+msgstr "Создать новый вопрос"
 
 #: web/templates/about.html:57
 msgid "with the details about what you would like us to implement"
-msgstr ""
+msgstr "с деталями, которые вы бы хотели обсудить с нами, чтобы воплотить в реальность"
 
 #: web/templates/about.html:174
 msgid "Budget"
-msgstr ""
+msgstr "Бюджет"
 
 #: web/templates/about.html:234 web/templates/about.html.py:264
 msgid "You're an"
-msgstr ""
+msgstr "Вы"
 

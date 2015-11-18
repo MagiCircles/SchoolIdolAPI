@@ -51,6 +51,11 @@ def idolimage(name):
     filename = name.replace(' ', '_').replace('\'', '-')
     return filename
 
+@register.simple_tag(takes_context=True)
+def idolimage(name):
+    filename = name.replace(' ', '_').replace('\'', '-')
+    return filename
+
 linkimages = {
     'reddit': '/static/reddit.png',
     'twitter': '/static/twitter.png',

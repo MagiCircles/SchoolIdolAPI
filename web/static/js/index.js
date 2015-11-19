@@ -2,6 +2,13 @@
 var avatar_size = 2;
 var card_size = 133;
 
+if ($('#countdown').length > 0) {
+    $('#countdown').countdown({
+	date: countdowndate,
+	render: countdownRender
+    });
+}
+
 function loadActivities() {
     var container, feed;
     if ($('#myactivities').length > 0) {

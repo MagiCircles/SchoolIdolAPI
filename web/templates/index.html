@@ -6,7 +6,8 @@
 {% block back_button %}0{% endblock %}
 {% block js %}
 <script src="/static/js/loadactivities.js?1"></script>
-<script src="/static/js/index.js?1"></script>
+<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="/static/js/index.js?2"></script>
 {% endblock %}
 
 {% block content %}
@@ -20,8 +21,16 @@
   <div class="dialog-background">
     <div class="row">
       <div class="col-md-8"><br>
-	<div class="twitter-text" style="font-size: 2em">
-	  <a href="https://twitter.com/schoolidolu" target="_blank">{% trans 'Follow School Idol Tomodachi on Twitter' %}</a>
+	<div class="twitter-text" style="font-size: 1.5em">
+	  <span id="countdown">
+	    <script>
+	      var countdowndate = "November 19, 2015 12:00:00 +0000";
+	      function countdownRender(data) {
+	      $(this.el).html('{% trans 'End of the EN maintenance:<br>' %}' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
+	      }
+	    </script>
+	  </span>
+	  {# <a href="https://twitter.com/schoolidolu" target="_blank">{% trans 'Follow School Idol Tomodachi on Twitter' %}</a> #}
 	</div>
 	<!-- <div class="text-right"> -->
 	<!--   <a href="https://twitter.com/schoolidolu" target="_blank"> -->

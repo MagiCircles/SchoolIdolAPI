@@ -857,8 +857,13 @@ def editaccount(request, account):
     else:
         formClass = forms.FullAccountForm
     form = formClass(instance=owned_account)
+    form_delete = forms.ConfirmDelete(initial={
+        'thing_to_delete': owned_account.id,
+    })
     form_get_transfer_code = forms.SimplePasswordForm()
     form_save_transfer_code = forms.TransferCodeForm()
+    if not owned_account.transfer_code:
+        del(form_save_transfer_code.fields['confirm'])
     try:
         context['verification'] = owned_account.verificationrequest.get()
     except: pass
@@ -868,8 +873,10 @@ def editaccount(request, account):
         form_verification = forms.VerificationRequestForm(account=owned_account)
     if request.method == "POST":
         if 'deleteAccount' in request.POST:
-            owned_account.delete()
-            return redirect('/user/' + request.user.username)
+            form_delete = forms.ConfirmDelete(request.POST)
+            if form_delete.is_valid():
+                owned_account.delete()
+                return redirect('/user/' + request.user.username)
         elif 'getTransferCode' in request.POST:
             form_get_transfer_code = forms.SimplePasswordForm(request.POST)
             if form_get_transfer_code.is_valid():
@@ -880,6 +887,8 @@ def editaccount(request, account):
                     errors.append(_('Wrong password.'))
         elif 'saveTransferCode' in request.POST:
             form_save_transfer_code = forms.TransferCodeForm(request.POST)
+            if not owned_account.transfer_code:
+                del(form_save_transfer_code.fields['confirm'])
             if form_save_transfer_code.is_valid():
                 if authenticate(username=request.user.username, password=form_save_transfer_code.cleaned_data['password']) is not None:
                     encrypted_transfer_code = transfer_code.encrypt(form_save_transfer_code.cleaned_data['transfer_code'], form_save_transfer_code.cleaned_data['password'])
@@ -941,6 +950,7 @@ def editaccount(request, account):
                     return redirect('/user/' + request.user.username)
     form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id').select_related('card')
     context['form'] = form
+    context['form_delete'] = form_delete
     context['form_get_transfer_code'] = form_get_transfer_code
     context['form_save_transfer_code'] = form_save_transfer_code
     context['form_verification'] = form_verification

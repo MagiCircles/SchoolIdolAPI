@@ -234,6 +234,7 @@
 	{% blocktrans %}Note that we can transfer your account to another user.{% endblocktrans %}
 	<a href="#" data-toggle="modal" data-target="#contactModal">{% trans 'Contact Us' %}.</a>
       </div>
+      {% include "bootstrap_form_horizontal.html" with form=form_delete wrap=0 %}
       <div class="text-right">
 	<button type="submit" class="btn btn-danger" name="deleteAccount" data-form-loader="true">{% trans 'Delete Account' %}</button>
       </div>

@@ -70,8 +70,13 @@ class FullAccountNoFriendIDForm(FullAccountForm):
 class SimplePasswordForm(Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))
 
+class ConfirmDelete(forms.Form):
+    confirm = forms.BooleanField(required=True, initial=False, label=_('Confirm that you want to delete it.'))
+    thing_to_delete = forms.IntegerField(widget=forms.HiddenInput, required=True)
+
 class TransferCodeForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label=_('Password'))
+    confirm = forms.BooleanField(required=True, initial=False, label=_('Delete previously saved transfer code'))
     class Meta:
         model = models.Account
         fields = ('transfer_code',)

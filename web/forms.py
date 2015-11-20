@@ -55,7 +55,7 @@ class OwnedCardModelChoiceField(ModelChoiceField):
         return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
 
 class FullAccountForm(ModelForm):
-    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False, label=_('Center'))
+    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.filter(pk=0), required=False, label=_('Center'))
     # Always override this queryset to set the current account only
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
     class Meta:
@@ -181,7 +181,7 @@ class MultiImageField(MultiFileField, forms.ImageField):
     pass
 
 class VerificationRequestForm(ModelForm):
-    images = MultiImageField(min_num=0, max_num=10, required=False, help_text=_('If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn\'t work, please resize your images.'))
+    upload_images = MultiImageField(min_num=0, max_num=10, required=False, help_text=_('If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn\'t work, please resize your images.'))
 
     def __init__(self, *args, **kwargs):
         account = None
@@ -196,7 +196,7 @@ class VerificationRequestForm(ModelForm):
 
     class Meta:
         model = models.VerificationRequest
-        fields = ('verification', 'comment', 'images', 'allow_during_events')
+        fields = ('verification', 'comment', 'upload_images', 'allow_during_events')
 
 class StaffVerificationRequestForm(ModelForm):
     images = MultiImageField(min_num=0, max_num=10, required=False)

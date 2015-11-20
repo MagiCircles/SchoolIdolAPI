@@ -920,7 +920,7 @@ def editaccount(request, account):
                 verification.creation = timezone.now()
                 verification.status = 1
                 verification.save()
-                for image in form_verification.cleaned_data['images']:
+                for image in form_verification.cleaned_data['upload_images']:
                     imageObject = models.UserImage.objects.create()
                     imageObject.image.save(randomString(64), image)
                     verification.images.add(imageObject)
@@ -928,6 +928,7 @@ def editaccount(request, account):
         else:
             old_rank = owned_account.rank
             form = formClass(request.POST, instance=owned_account)
+            form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id').select_related('card')
             if form.is_valid():
                 account = form.save(commit=False)
                 if account.rank >= 200 and account.verified <= 0:
@@ -938,7 +939,7 @@ def editaccount(request, account):
                     if old_rank < account.rank:
                         pushActivity(account, "Rank Up", rank=account.rank)
                     return redirect('/user/' + request.user.username)
-    form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id')
+    form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id').select_related('card')
     context['form'] = form
     context['form_get_transfer_code'] = form_get_transfer_code
     context['form_save_transfer_code'] = form_save_transfer_code
@@ -948,13 +949,14 @@ def editaccount(request, account):
     context['edit'] = owned_account
     try:
         context['verification_images'] = context['verification'].images.all()
-        context['verification_queue_position'] = models.VerificationRequest.objects.filter(status=1, account__rank__gte=context['account'].rank).count()
-        if context['verification_queue_position'] == 0:
-            context['verification_queue_position'] = 1
-        context['verification_days'] = 1
-        context['verification_days'] = int(math.ceil(context['verification_queue_position'] / 10))
-        if context['verification_days'] == 0:
+        if context['verification'].status == 1:
+            context['verification_queue_position'] = models.VerificationRequest.objects.filter(status=1, account__rank__gte=context['account'].rank).count()
+            if context['verification_queue_position'] == 0:
+                context['verification_queue_position'] = 1
             context['verification_days'] = 1
+            context['verification_days'] = int(math.ceil(context['verification_queue_position'] / 10))
+            if context['verification_days'] == 0:
+                context['verification_days'] = 1
     except: pass
     return render(request, 'addaccount.html', context)
 

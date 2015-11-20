@@ -30,7 +30,7 @@
     <![endif]-->
     <!-- Helloify HTML Snippet -->
     <script type="text/javascript">
-      var HelloifySettings = {account: '87f4cf9d-00a6-49ab-a057-94c763c887fc'};
+      var HelloifySettings = {account: '87f4cf9d-00a6-49ab-a057-94c763c887fc'{% if user.is_authenticated %}, name: '{{ user.username }}', email: '{{ user.email }}'{% endif %}};
       (function(d, s, url, i, m){
       i = d.createElement(s), m = d.getElementsByTagName(s)[0];
       i.type = 'text/javascript'; i.async = true; i.src = url;

@@ -7,6 +7,9 @@ import re
 
 register = template.Library()
 
+def _imageurl(path):
+    return '%s%s' % (settings.IMAGES_HOSTING_PATH, path)
+
 @register.simple_tag(takes_context=True)
 def imageurl(context, card, image):
     if hasattr(card, image):
@@ -17,6 +20,24 @@ def imageurl(context, card, image):
             url = getattr(card, image.replace('image', 'url'))
             if url:
                 return url
+    return '/static/default-' + card.attribute + '.png'
+
+@register.simple_tag(takes_context=True)
+def ownedcardimageurl(context, ownedcard, card=None):
+    if not ownedcard:
+        return '/static/default-All.png'
+    if not card:
+        card = ownedcard.card
+    if ownedcard.idolized:
+        if card.round_card_idolized_image:
+            return _imageurl(card.round_card_idolized_image)
+        if card.card_idolized_image:
+            return _imageurl(card.card_idolized_image)
+        return '/static/default-' + card.attribute + '.png'
+    if card.round_card_image:
+        return _imageurl(card.round_card_image)
+    if card.card_image:
+        return _imageurl(card.card_image)
     return '/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)

@@ -1,6 +1,11 @@
 {% load i18n %}
+{% load imageurl %}
 	      {% if not nolink %}<a href="#editCard" data-id="{{ owned.pk }}" class="ownedcardonbottom">{% endif %}
-		<span class="language"><i class="flaticon-{% if owner_account %}{{ owner_account.language }}{% else %}{{ owned.owner_account.language }}{% endif %}" data-content="{% if owner_account %}{{ owner_account }}{% else %}{{ owned.owner_account }}{% endif %}" {% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}></i></span>
+              <span class="language" data-content="{% if owner_account %}{{ owner_account }}{% else %}{{ owned.owner_account }}{% endif %}" {% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %} style="{% if withcenter %}background-image: url('{% ownedcardimageurl ownedcard=owner_account.center %}'); background-size: 100%;{% endif %}">
+		{% if not withcenter %}
+		<i class="flaticon-{% if owner_account %}{{ owner_account.language }}{% else %}{{ owned.owner_account.language }}{% endif %}"></i>
+		{% endif %}
+	      </span>
 		{% if owned.stored == 'Deck' %}
 		<i class="flaticon-deck" data-content="{% trans 'In deck' %}"{% if not nolink %} data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}></i>
 		{% elif owned.stored == 'Album' %}

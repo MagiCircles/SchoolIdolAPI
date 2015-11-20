@@ -528,7 +528,11 @@ def ajaxaddcard(request):
                                  skill=1,
                                  idolized=card.is_promo)
     ownedcard.save()
-    context = { 'owned': ownedcard }
+    context = {
+        'owned': ownedcard,
+        'owner_account': account,
+        'withcenter': True,
+    }
     pushActivity(account=ownedcard.owner_account,
                  message="Added a card",
                  ownedcard=ownedcard)
@@ -584,6 +588,8 @@ def ajaxeditcard(request, ownedcard):
             elif not was_max_bonded and owned_card.max_bond:
                 pushActivity(owned_card.owner_account, "Max Bonded a card", ownedcard=owned_card)
             context['owned'] = owned_card
+            context['withcenter'] = True
+            context['owner_account'] = owned_card.owner_account
             return render(request, 'ownedCardOnBottomCard.html', context)
     if 'stored' in form.fields:
         form.fields['stored'].required = False

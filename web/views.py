@@ -1149,6 +1149,7 @@ def avatar_facebook(request, username):
 def aboutview(request):
     context = globalContext(request)
     users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
+    users = users.annotate(verifications_done=Count('verificationsdone'))
 
     context['staff'] = []
     context['donators_low'] = []

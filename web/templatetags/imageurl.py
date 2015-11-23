@@ -47,12 +47,7 @@ def standimage(context, idol, number):
     return ''
 
 @register.simple_tag(takes_context=True)
-def idolimage(name):
-    filename = name.replace(' ', '_').replace('\'', '-')
-    return filename
-
-@register.simple_tag(takes_context=True)
-def idolimage(name):
+def idolimage(context, name):
     filename = name.replace(' ', '_').replace('\'', '-')
     return filename
 

@@ -51,7 +51,7 @@
 	  </div>
 	  <div class="col-sm-10">
 	    <div class="pull-right">
-	      <img src="http://schoolido.lu/static/idols/chibi/{{ item.1.0|idolimage }}.png" style="height: 130px; width: 130px; margin: 10px 5px;">'
+	      <img src="http://schoolido.lu/static/idols/chibi/{% idolimage item.1.0 %}.png" style="height: 130px; width: 130px; margin: 10px 5px;">'
 	    </div>
 	    <div class="name name-card">
 	      <strong>{{ item.1.0 }}</strong>
@@ -86,9 +86,9 @@
 	    <div class="pull-right">
 	      <div class="card border-{{ card.attribute }}" style="background-image: url('
   								   {% if item.1.1.card_image and not item.1.0 %}
-  								   {{ item.1.1|imageurl:'card_image' }}
+  								   {% imageurl card=item.1.1 image='card_image' %}
   								   {% else %}
-  								   {{ item.1.1|imageurl:'card_idolized_image' }}
+  								   {% imageurl card=item.1.1 image='card_idolized_image' %}
 								   {% endif %}
 								   ')"></div>
 	    </div>

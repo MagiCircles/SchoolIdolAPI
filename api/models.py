@@ -9,7 +9,7 @@ from django.core import validators
 from django.utils import timezone
 from django_prometheus.models import ExportModelOperationsMixin
 import hashlib, urllib
-
+import csv
 import datetime
 
 ATTRIBUTE_CHOICES = (
@@ -57,12 +57,12 @@ PLAYWITH_CHOICES = (
 PLAYWITH_DICT = dict(PLAYWITH_CHOICES)
 
 ACTIVITY_MESSAGE_CHOICES = (
-    ('Added a card', _('Added a card')),
-    ('Idolized a card', _('Idolized a card')),
-    ('Max Leveled a card', _('Max Leveled a card')),
-    ('Max Bonded a card', _('Max Bonded a card')),
-    ('Rank Up', _('Rank Up')),
-    ('Ranked in event', _('Ranked in event')),
+    ('Added a card', _('Added {} in {}')),
+    ('Idolized a card', _('Idolized {} in {}')),
+    ('Max Leveled a card', _('Max Leveled {} in {}')),
+    ('Max Bonded a card', _('Max Bonded {} in {}')),
+    ('Rank Up', _('Rank Up {}')),
+    ('Ranked in event', _('Ranked {} in event {}')),
 )
 ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
 
@@ -443,17 +443,49 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
 
 admin.site.register(UserPreferences)
 
-# Add card to deck/album/wish list
-# Level up
-# Idolized / Max leveled / Max bonded
 class Activity(ExportModelOperationsMixin('Activity'), models.Model):
-    creation = models.DateTimeField(auto_now_add=True)
+    """
+    Added card/Idolized (1 per ownedcard):
+      right_picture: card icon
+      right_picture_link: card
+    Rank up (1 per account):
+      number
+    Ranked in event (1 per eventparticipation):
+      right_picture: event banner
+    """
+    # Foreign keys
     account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
-    message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
-    rank = models.PositiveIntegerField(null=True, blank=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
+    # Data
+    creation = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
+    number = models.PositiveIntegerField(null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_activities")
+    # Cached data (can be generated from foreign keys)
+    message_data = models.CharField(max_length=500, blank=True, null=True)
+    account_link = models.CharField(max_length=200)
+    account_picture = models.CharField(max_length=100)
+    account_name = models.CharField(max_length=100)
+    right_picture_link = models.CharField(max_length=200, blank=True, null=True)
+    right_picture = models.CharField(max_length=100, blank=True, null=True)
+
+    def utf_8_encoder(self, unicode_csv_data):
+        for line in unicode_csv_data:
+            yield line.encode('utf-8')
+
+    def unicode_csv_reader(self, unicode_csv_data, **kwargs):
+        csv_reader = csv.reader(self.utf_8_encoder(unicode_csv_data), **kwargs)
+        for row in csv_reader:
+            yield [unicode(cell, 'utf-8') for cell in row]
+
+    def split_message_data(self):
+        if not self.message_data:
+            return []
+        reader = self.unicode_csv_reader([self.message_data])
+        for reader in reader:
+            return [r for r in reader]
+        return []
 
     def __unicode__(self):
         return u'%s %s' % (self.account, self.message)

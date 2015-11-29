@@ -28,6 +28,9 @@ def is_positive_integer(string):
         return False
     return True
 
+def concat_args(*args):
+    return u'\"' + u'","'.join([unicode(value).replace('"','\"') for value in args]) + u'\"'
+
 def chibiimage(idol, small=True):
     prefix = 'small_' if small else ''
     if idol is not None:

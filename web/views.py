@@ -24,6 +24,7 @@ from django.forms.models import model_to_dict
 from api import models, raw
 from web import forms, donations, transfer_code
 from web.links import links as links_list
+from web.templatetags.imageurl import ownedcardimageurl, eventimageurl
 from utils import *
 import urllib, hashlib
 import datetime, time, pytz
@@ -32,9 +33,11 @@ import json
 import collections
 import operator
 
-
-def contextAccounts(request):
-    return request.user.accounts_set.all().select_related('center', 'center__card')
+def contextAccounts(request, with_center=True):
+    accounts = request.user.accounts_set.all()
+    if with_center:
+        accounts = accounts.select_related('center', 'center__card')
+    return accounts
 
 def globalContext(request):
     context ={
@@ -85,11 +88,81 @@ def onlyJP(context):
 def getUserAvatar(user, size):
     return user.preferences.avatar(size)
 
-def pushActivity(account, message, rank=None, ownedcard=None, eventparticipation=None):
+def _pushActivity_cacheaccount(account, account_owner=None):
+    if not account_owner:
+        account_owner = account.owner
+    return {
+        'account_link': '/user/' + account_owner.username + '/#' + str(account.id),
+        'account_picture': account_owner.preferences.avatar(size=100),
+        'account_name': unicode(account),
+    }
+
+def pushActivity(message, number=None, ownedcard=None, eventparticipation=None,
+                 # Prefetch:
+                 account=None, account_owner=None, card=None, event=None):
+    """
+    Will handle cache and duplicate depending on activity type (message).
+
+    To avoid useless SQL queries, make sure your prefetch or specify the following:
+    All:
+    - account owner & preferences (or specify account owner with preferences)
+    For ownedcard activities (added/idolized):
+    - card (or specify card)
+    - account (or specify account)
+    Eventparticipation (for ranked in event):
+    - account (or specify account)
+    - event (or specify event)
+    Rank up must specify account & number
+    """
     if ownedcard is not None:
         if ownedcard.card.rarity == 'R' or ownedcard.card.rarity == 'N':
             return
-    models.Activity.objects.create(account=account, message=message, rank=rank, ownedcard=ownedcard, eventparticipation=eventparticipation)
+    if eventparticipation is not None and not eventparticipation.ranking:
+        return
+    if message == 'Added a card' or message == 'Idolized a card':
+        if not account:
+            account = ownedcard.owner_account
+        if not card:
+            card = ownedcard.card
+        defaults = {
+            'account': account,
+            'eventparticipation': None,
+            'message': message,
+            'number': None,
+            'message_data': concat_args(unicode(card), ownedcard.stored),
+            'right_picture_link': '/cards/' + str(card.id) + '/',
+            'right_picture': ownedcardimageurl({}, ownedcard),
+        }
+        defaults.update(_pushActivity_cacheaccount(account, account_owner))
+        if message == 'Added a card':
+            models.Activity.objects.create(ownedcard=ownedcard, **defaults)
+        else:
+            models.Activity.objects.update_or_create(ownedcard=ownedcard, defaults=defaults)
+    elif message == 'Rank Up':
+        defaults = {
+            'message': message,
+            'message_data': concat_args(number)
+        }
+        defaults.update(_pushActivity_cacheaccount(account, account_owner))
+        models.Activity.objects.update_or_create(account=account, message='Rank Up', number=number, defaults=defaults)
+    elif message == 'Ranked in event':
+        print 'test'
+        if not account:
+            account = eventparticipation.account
+        if not event:
+            event = eventparticipation.event
+        defaults = {
+            'account': account,
+            'ownedcard': None,
+            'eventparticipation': eventparticipation,
+            'message': message,
+            'number': None,
+            'message_data': concat_args(eventparticipation.ranking, unicode(event)),
+            'right_picture': eventimageurl({}, event, english=(account.language != 'JP')),
+            'right_picture_link': '/events/' + event.japanese_name + '/',
+        }
+        defaults.update(_pushActivity_cacheaccount(account, account_owner))
+        models.Activity.objects.update_or_create(eventparticipation=eventparticipation, defaults=defaults)
 
 def index(request):
     context = globalContext(request)
@@ -518,9 +591,19 @@ def ajaxownedcards(request, account, stored):
     return render(request, 'ownedcards.html', context)
 
 def ajaxaddcard(request):
+    """
+    SQL Queries
+    - Django session
+    - Request user
+    - Account (JOIN + center + center card)
+    - Card
+    - Insert owned card
+    - Preferences
+    - (if SR/UR) Insert activity
+    """
     if request.method != 'POST' or not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
-    account = get_object_or_404(models.Account, pk=request.POST['owner_account'], owner=request.user)
+    account = get_object_or_404(models.Account.objects.select_related('center', 'center__card'), pk=request.POST['owner_account'], owner=request.user)
     card = get_object_or_404(models.Card, pk=request.POST['card'])
     ownedcard = models.OwnedCard(card=card,
                                  owner_account=account,
@@ -528,25 +611,48 @@ def ajaxaddcard(request):
                                  skill=1,
                                  idolized=card.is_promo)
     ownedcard.save()
+    pushActivity(message="Added a card",
+                 ownedcard=ownedcard,
+                 # prefetch:
+                 card=card,
+                 account=account,
+                 account_owner=request.user)
     context = {
         'owned': ownedcard,
         'owner_account': account,
         'withcenter': True,
     }
-    pushActivity(account=ownedcard.owner_account,
-                 message="Added a card",
-                 ownedcard=ownedcard)
     return render(request, 'ownedCardOnBottomCard.html', context)
 
 def ajaxeditcard(request, ownedcard):
+    """
+    SQL Queries
+    - Get form:
+    -- Django session
+    -- Request user
+    -- Owned card (JOIN + account + card)
+    -- Accounts
+    - Save edited card:
+    -- Django session
+    -- Request user
+    -- Owned card (JOIN + account + card + account center + account center card)
+    -- (if account changed) Account (JOIN + center + center card)
+    -- Update owned card
+    -- User preferences
+    -- Activity
+    -- Update or Create activity
+    """
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = {
-        'accounts': contextAccounts(request),
+        'accounts': contextAccounts(request, with_center=False),
     }
     # Get existing owned card
     try:
-        owned_card = models.OwnedCard.objects.select_related('card', 'owner_account').get(pk=int(ownedcard), owner_account__owner=request.user)
+        model_owned_card = models.OwnedCard.objects.select_related('card', 'owner_account')
+        if request.method == 'POST':
+            model_owned_card = model_owned_card.select_related('owner_account__center', 'owner_account__center__card')
+        owned_card = model_owned_card.get(pk=int(ownedcard), owner_account__owner=request.user)
     except ObjectDoesNotExist:
         raise PermissionDenied()
     # Get form
@@ -554,7 +660,7 @@ def ajaxeditcard(request, ownedcard):
         form = forms.getOwnedCardForm(forms.OwnedCardForm(instance=owned_card), context['accounts'], owned_card=owned_card)
     # Post edit owned card
     elif request.method == 'POST':
-        (was_idolized, was_max_leveled, was_max_bonded) = (owned_card.idolized, owned_card.max_level, owned_card.max_bond)
+        was_idolized = owned_card.idolized
         if 'stored' not in request.POST:
             form = forms.EditQuickOwnedCardForm(request.POST, instance=owned_card)
         else:
@@ -566,7 +672,7 @@ def ajaxeditcard(request, ownedcard):
             # Update account
             account_changed = False
             if 'owner_account' in request.POST and request.POST['owner_account'] and request.POST['owner_account'] != str(owned_card.owner_account.id):
-                account = get_object_or_404(models.Account, pk=request.POST['owner_account'], owner=request.user)
+                account = get_object_or_404(models.Account.objects.select_related('center', 'center__card'), pk=request.POST['owner_account'], owner=request.user)
                 owned_card.owner_account = account
                 account_changed = True
             # Set expiration date for present box storage
@@ -581,12 +687,11 @@ def ajaxeditcard(request, ownedcard):
             # Update account on activity and generate activities on change
             if account_changed and owned_card.card.rarity != 'R' and owned_card.card.rarity != 'N':
                 models.Activity.objects.filter(ownedcard=owned_card).update(account=account)
+            # Push/update activity on card idolized
             if not was_idolized and owned_card.idolized:
-                pushActivity(owned_card.owner_account, "Idolized a card", ownedcard=owned_card)
-            elif not was_max_leveled and owned_card.max_level:
-                pushActivity(owned_card.owner_account, "Max Leveled a card", ownedcard=owned_card)
-            elif not was_max_bonded and owned_card.max_bond:
-                pushActivity(owned_card.owner_account, "Max Bonded a card", ownedcard=owned_card)
+                pushActivity("Idolized a card", ownedcard=owned_card,
+                             # prefetch
+                             account_owner=request.user)
             context['owned'] = owned_card
             context['withcenter'] = True
             context['owner_account'] = owned_card.owner_account
@@ -650,6 +755,15 @@ def ajaxfollowing(request, username):
                                                 })
 
 def _activities(request, account=None, follower=None, avatar_size=3):
+    """
+    SQL Queries
+    - Django session
+    - Request user
+    - (if different from request.user) Follower User
+    - Preferences
+    - Activities (JOIN + like counts)
+    - Accounts
+    """
     page = 0
     page_size = 15
     if 'page' in request.GET and request.GET['page']:
@@ -664,16 +778,23 @@ def _activities(request, account=None, follower=None, avatar_size=3):
             follower = request.user
         else:
             follower = get_object_or_404(User.objects.select_related('preferences'), username=follower)
-        accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all()).order_by('-id')[:5]
+        accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all())
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
-    if not account and not follower:
-        activities = activities.filter(account_id__in=[1,59,166])
-    activities = activities.select_related('account', 'account__owner', 'account__owner__preferences', 'ownedcard', 'ownedcard__card', 'eventparticipation', 'eventparticipation__event')
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     activities = activities.annotate(likers_count=Count('likes'))
+    accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []
+    for activity in activities:
+        message_string = models.activityMessageToString(activity.message)
+        data = [_(models.STORED_DICT[d]) if d in models.STORED_DICT else _(d) for d in activity.split_message_data()]
+        if len(data) != message_string.count('{}'):
+            activity.localized_message = 'Invalid message data'
+        else:
+            activity.localized_message = _(message_string).format(*data)
+
     context = {
         'activities': activities,
+        'accounts': accounts,
         'page': page + 1,
         'page_size': page_size,
         'avatar_size': avatar_size,
@@ -684,7 +805,6 @@ def _activities(request, account=None, follower=None, avatar_size=3):
     return context
 
 def ajaxactivities(request):
-    return render(request, 'cacheactivities.html', {})
     account = int(request.GET['account']) if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit() else None
     follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
     avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
@@ -707,7 +827,6 @@ def _contextfeed(request):
     return _activities(request, follower=request.user.username, avatar_size=avatar_size)
 
 def ajaxfeed(request):
-    return render(request, 'cacheactivities.html', {})
     return render(request, 'activities.html', _contextfeed(request))
 
 def isLiking(request, activity_obj):
@@ -952,7 +1071,9 @@ def editaccount(request, account):
                 else:
                     account.save()
                     if old_rank < account.rank:
-                        pushActivity(account, "Rank Up", rank=account.rank)
+                        pushActivity('Rank Up', number=account.rank, account=account,
+                                     # prefetch:
+                                     account_owner=request.user)
                     return redirect('/user/' + request.user.username)
     form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id').select_related('card')
     context['form'] = form
@@ -1084,7 +1205,12 @@ def eventparticipations(request, event):
                     form = forms.EventParticipationNoAccountForm(request.POST, instance=participation)
                     if form.is_valid():
                         form.save()
-                        pushActivity(findAccount(participation.account_id, context['accounts']), 'Ranked in event', eventparticipation=participation)
+                        pushActivity('Ranked in event',
+                                     eventparticipation=participation,
+                                     # Prefetch:
+                                     account=findAccount(participation.account_id, context['accounts']),
+                                     event=event,
+                                     account_owner=request.user)
         # add
         else:
             form = forms.EventParticipationForm(request.POST)
@@ -1094,6 +1220,12 @@ def eventparticipations(request, event):
                 if findAccount(participation.account_id, context['accounts']):
                     participation.event = event
                     participation.save()
+                    pushActivity('Ranked in event',
+                                 eventparticipation=participation,
+                                 # Prefetch:
+                                 account=findAccount(participation.account_id, context['accounts']),
+                                 event=event,
+                                 account_owner=request.user)
 
     # get forms to add or edit
     add_form_accounts_queryset = request.user.accounts_set.all()

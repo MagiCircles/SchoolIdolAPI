@@ -1,5 +1,6 @@
 from django import template
 from django.utils.translation import ugettext_lazy as _, string_concat
+from web.views import findAccount
 import random
 
 register = template.Library()
@@ -39,8 +40,12 @@ positiveAdjectives = [
 def randomPositiveAdjective():
     return random.choice(positiveAdjectives)
 
+def activity_is_mine(activity, accounts):
+    return findAccount(activity.account_id, accounts)
+
 register.filter('mod', mod)
 register.filter('isnone', isnone)
 register.filter('torfc2822', torfc2822)
 register.filter('addstr', addstr)
 register.filter('findModelId', findModelId)
+register.filter('activity_is_mine', activity_is_mine)

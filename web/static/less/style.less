@@ -1252,3 +1252,101 @@ h1#donators {
 .flaticon-loading {
     .animate-pulse;
 }
+
+.link {
+    text-align: left;
+    &.right {
+	text-align: right;
+    }
+}
+
+.ranking.panel-schoolidol {
+    .panel-body {
+	padding-top: 0;
+	padding-bottom: 0;
+    }
+    .name {
+	padding-top: 50px;
+	font-size: 1.5em;
+	&.name-card {
+	    padding-top: 60px;
+	    font-size: 1.8em;
+            small {
+                margin-top: 20px;
+            }
+	}
+        small {
+            text-align: right;
+            display: block;
+            font-size: 12px;
+            color: lighten(@BarColor, 30%);
+        }
+    }
+    .rank {
+	padding-top: 40px;
+	text-align: center;
+	font-size: 1.9em;
+	color: lighten(@SecondaryColor, 40%);
+	.number {
+	    color: white;
+	}
+    }
+    .row:first-child {
+	.rank {
+	    color: #C98910;
+	}
+    }
+    .row:nth-child(2) {
+	.rank {
+	    color: #A8A8A8;
+	}
+    }
+    .row:nth-child(3) {
+	.rank {
+	    color: #965A38;
+	}
+    }
+}
+.ranking.panel-schoolidol, .pastcontests.panel-schoolidol {
+    .card {
+	background-size: 150px;
+	background-repeat: no-repeat;
+	background-position: center -10px;
+	height: 130px;
+	width: 130px;
+	border-radius: 50%;
+	margin: 10px;
+	margin-right: 0;
+	border: 2px solid;
+    }
+    a.row {
+	display: block;
+	border-bottom: 1px solid @BarColor;
+	padding: 2px;
+	&:last-child {
+	    border-bottom: 0;
+	}
+    }
+}
+.pastcontests.panel-schoolidol {
+    a.row {
+	padding: 20px;
+	&:hover,
+	&:focus {
+	    text-decoration: none;
+	}
+	.col-sm-2 {
+	    float: right;
+	}
+    }
+}
+
+.border-Smile { border-color: @SmileColor!important }
+.border-Pure { border-color: @PureColor!important }
+.border-Cool { border-color: @CoolColor!important }
+.border-All { border-color: @AllColor!important }
+
+.text-Smile { color: @SmileColor }
+.text-Pure { color: @PureColor }
+.text-Cool { color: @CoolColor }
+.text-All { color: @AllColor }

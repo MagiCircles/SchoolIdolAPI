@@ -17,8 +17,10 @@ class Contest(models.Model):
         return key
 
     def alter_value(self, key, value):
-        if key == 'is_event':
-            return bool(value)
+        if value == 'False':
+            return False
+        elif value == 'True':
+            return True
         return value
 
     def queryset(self):

@@ -1,6 +1,7 @@
 {% extends "base_contest.html" %}
 {% load formattime %}
 {% load imageurl %}
+{% load i18n %}
 
 {% block title %}Vote!{% endblock %}
 
@@ -41,7 +42,7 @@
   	  {% endif %}">
   </div>
   	<div class="panel-heading">
-  	  <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} is BEST</strong>
+  	  <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% trans 'is BEST' %}</strong>
   	</div>
       </button> <!-- panel -->
       <div class="link left"><a class="text-center" href="{{ cards.left.card.website_url }}" target="_blank">About this card</a></div>
@@ -59,7 +60,7 @@
 
   	</div>
   	<div class="panel-heading">
-  	  <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} is BEST</strong>
+  	  <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% trans 'is BEST' %} </strong>
   	</div>
       </button> <!-- panel -->
       <div class="link right"><a class="text-center" href="{{ cards.right.card.website_url }}" target="_blank">About this card</a></div>

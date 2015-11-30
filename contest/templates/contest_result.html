@@ -1,6 +1,7 @@
 {% extends "base_contest.html" %}
 {% load formattime %}
 {% load imageurl %}
+{% load i18n %}
 
 {% block title %}{% if title %}{{ title }}{% else %}BEST GIRL{% endif %}{% endblock %}
 
@@ -28,7 +29,7 @@
   {% endif %}
 </h1>
 {% else %}
-<h1>Ranking</h1>
+<h1>{% trans 'Ranking' %}</h1>
 {% endif %}
 
 <div class="row">
@@ -36,7 +37,7 @@
   <div class="col-md-{% if list_card %}6{% else %}12{% endif %}">
     <div class="panel panel-schoolidol ranking">
       <div class="panel-heading">
-	<strong>BEST Girls</strong>
+	<strong>{% trans 'BEST Girls' %}</strong>
       </div>
       <div class="panel-body">
 	{% for item in list_girl %}
@@ -69,7 +70,7 @@
   <div class="col-md-{% if list_girl %}6{% else %}12{% endif %}">
     <div class="panel panel-schoolidol ranking">
       <div class="panel-heading">
-	<strong>BEST Cards</strong>
+	<strong>{% trans 'BEST Cards' %}</strong>
       </div>
       <div class="panel-body">
 	{% for item in list_card %}

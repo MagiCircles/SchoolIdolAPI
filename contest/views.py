@@ -8,6 +8,8 @@ from contest.utils import (get_votesession, validate_vote,
 import datetime
 
 def contest_view(request, contestid):
+    if contestid == 'contest':
+        return global_contest_view(request)
     contestid = int(contestid)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     current_contest = get_current_contest()

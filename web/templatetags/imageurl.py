@@ -28,7 +28,8 @@ def ownedcardimageurl(context, ownedcard, card=None):
         return '/static/default-All.png'
     if not card:
         card = ownedcard.card
-    if ownedcard.idolized:
+    idolized = True if card.is_special or card.is_promo else ownedcard.idolized
+    if idolized:
         if card.round_card_idolized_image:
             return _imageurl(card.round_card_idolized_image)
         if card.card_idolized_image:

@@ -82,9 +82,17 @@ class TransferCodeForm(ModelForm):
         fields = ('transfer_code',)
 
 class _OwnedCardForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(_OwnedCardForm, self).__init__(*args, **kwargs)
+        if self.instance and hasattr(self.instance, 'card'):
+            if self.instance.card.is_special or self.instance.card.is_promo:
+                self.fields['idolized'].widget = forms.HiddenInput()
+
     def save(self, commit=True):
         instance = super(_OwnedCardForm, self).save(commit=False)
-        if instance.card.is_promo or instance.card.is_special:
+        if instance.card.is_special:
+            instance.idolized = False
+        if instance.card.is_promo:
             instance.idolized = True
         if commit:
             instance.save()

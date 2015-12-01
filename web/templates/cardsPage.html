@@ -29,7 +29,7 @@
     </div><div class="row">
       {% endif%}
       <div class="col-sm-{% if ajax %}4{% elif total_cards == 1 %}12{% elif total_cards == 2 %}6{% else %}4{% endif %}">
-	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}" data-attribute="{{ card.attribute }}" data-rarity="{{ card.rarity }}">
+	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}" data-attribute="{{ card.attribute }}" data-rarity="{{ card.rarity }}" {% if card.is_special %}data-is-special="true"{% endif %} {% if card.is_promo %}data-is-promo="true"{% endif %}>
 	  <div class="panel panel-{{ card.attribute }}">
 	    <div class="panel-body">
 	      {% if total_results == 1 %}

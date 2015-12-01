@@ -52,10 +52,14 @@ function addCardButtonHandler() {
 			$('[data-toggle="popover"]').popover();
 			form.find('form').attr('action', '/ajax/editcard/' + ownedcardbutton.attr('data-id') + '/');
 			$('a[href="#quickAddCard"]').popover('hide');
+			var formContent = $(form.html());
+			if (card.data('is-special') == true || card.data('is-promo') == true) {
+			    formContent.find('#id_idolized').parent().parent().hide();
+			}
 			ownedcardbutton.popover({
 			    'html': true,
 			    'placement': 'top',
-			    'content': form.html(),
+			    'content': formContent,
 			}).parent().delegate('form', 'submit', function(e) {
 			    e.preventDefault();
 			    button.hide();

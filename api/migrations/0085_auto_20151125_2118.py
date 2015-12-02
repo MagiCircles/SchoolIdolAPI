@@ -20,13 +20,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='account_name',
-            field=models.CharField(default='\u30c7\u30d3 JP', max_length=100),
+            field=models.CharField(default='Deby JP', max_length=100),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='activity',
             name='account_picture',
-            field=models.CharField(default='http://www.gravatar.com/avatar/8e731f8661ed8a4549e5445ccffe388a?s=100&d=http%3A%2F%2Fschoolido.lu%2Favatar%2Ftwitter%2Fdbschoolidol', max_length=100),
+            field=models.CharField(default='http://www.gravatar.com/avatar/8e731f8661ed8a4549e5445ccffe388a?s=100&d=http%3A%2F%2Fschoolido.lu%2Favatar%2Ftwitter%2Fdbschoolidol', max_length=500),
             preserve_default=False,
         ),
     ]

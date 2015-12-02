@@ -465,7 +465,7 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     # Cached data (can be generated from foreign keys)
     message_data = models.CharField(max_length=500, blank=True, null=True)
     account_link = models.CharField(max_length=200)
-    account_picture = models.CharField(max_length=100)
+    account_picture = models.CharField(max_length=500)
     account_name = models.CharField(max_length=100)
     right_picture_link = models.CharField(max_length=200, blank=True, null=True)
     right_picture = models.CharField(max_length=100, blank=True, null=True)

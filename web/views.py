@@ -916,13 +916,15 @@ def ajaxlikeactivity(request, activity):
         raise PermissionDenied()
     activity_obj = get_object_or_404(models.Activity, id=activity)
     if activity_obj.account.owner.id != request.user.id:
-        if 'like' in request.POST and not isLiking(request, activity_obj):
-            activity_obj.likes.add(request.user)
-            activity_obj.save()
+        if 'like' in request.POST:
+            if not isLiking(request, activity_obj):
+                activity_obj.likes.add(request.user)
+                activity_obj.save()
             return HttpResponse('liked')
-        if 'unlike' in request.POST and isLiking(request, activity_obj):
-            activity_obj.likes.remove(request.user)
-            activity_obj.save()
+        if 'unlike' in request.POST:
+            if isLiking(request, activity_obj):
+                activity_obj.likes.remove(request.user)
+                activity_obj.save()
             return HttpResponse('unliked')
     raise PermissionDenied()
 

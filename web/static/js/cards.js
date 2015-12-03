@@ -20,10 +20,8 @@ $(function () {
 function addCardButtonHandler() {
     // ADD CARD
     $('a[href="#auickAddCard"]').unbind('click');
-    console.log('bind quickadd event click');
     $('a[href="#quickAddCard"]').click(function(e) {
 	e.preventDefault();
-	console.log('called twice');
 	var button = $(this);
 	var card = button.closest('.card');
 	if (card.find('.flaticon-loading').length == 0) {

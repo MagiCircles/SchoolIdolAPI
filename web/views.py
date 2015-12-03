@@ -564,6 +564,7 @@ def profile(request, username):
                                      # prefetch:
                                      account_owner=request.user)
                         context['posted_activity'] = True
+                        account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
                 else:
                     account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
             if request.user.is_staff:

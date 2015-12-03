@@ -26,6 +26,7 @@ function loadActivities() {
 			  && button.find('.loader').length == 0
 			  && ($(window).scrollTop() + $(window).height())
 			  >= ($(document).height() - button.height())) {
+			  feed = $('#myactivities').length > 0 ? true : undefined;
 			  loadMoreActivitiesOnClick(button, container, undefined, feed, avatar_size, card_size);
 		      }
 		  });
@@ -35,4 +36,19 @@ function loadActivities() {
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
     loadActivities();
+
+    $('#activities-buttons .all').click(function() {
+	if ($('#activities').length == 0) {
+	    $('#myactivities').attr('id', 'activities');
+	    console.log('all');
+	    loadActivities();
+	}
+    });
+    $('#activities-buttons .following').click(function() {
+	if ($('#myactivities').length == 0) {
+	    console.log('following');
+	    $('#activities').attr('id', 'myactivities');
+	    loadActivities();
+	}
+    });
 });

@@ -7,7 +7,7 @@
 {% block js %}
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <script src="/static/js/loadactivities.js?1"></script>
-<script src="/static/js/index.js?6"></script>
+<script src="/static/js/index.js?7"></script>
 <script>
   var follow_sentence = '{% trans 'Start following players to see their activities!' %}';
 </script>
@@ -150,6 +150,20 @@
       </div> <!-- carousel -->
 
       <div id="{% if user.is_authenticated %}my{% endif %}activities">
+	{% if user.is_authenticated %}
+	<div style="margin-bottom: 20px;" id="activities-buttons">
+	  <div class="btn-group btn-group-justified" data-toggle="buttons">
+	    <label class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %} following active">
+	      <input type="radio" name="options" autocomplete="off">
+	      {% trans 'Following' %}
+	    </label>
+	    <label class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %} all">
+	      <input type="radio" name="options" autocomplete="off" checked="">
+	      {% trans 'All' %}
+	    </label>
+	  </div>
+	</div>
+	{% endif %}
 	<div class="activities"></div>
       </div>
 

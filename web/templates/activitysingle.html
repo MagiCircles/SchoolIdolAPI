@@ -43,10 +43,11 @@
 	      {% endif %}
 	      <a href="#likecount" class="btn btn-link btn-sm">{{ activity.likers|length|add:1 }}</a>
 	    </div>
+	    {% if not single_activity %}
 	    <div class="btn-group writecomments">
 	      <a href="/activities/{{ activity.id }}/" target="_blank" class="btn btn-link btn-sm"><i class="flaticon-comments"></i> {% trans 'Write Comment' %}</a>
 	      <a href="http://schoolido.lu/activities/{{ activity.id }}/#disqus_thread" target="_blank" class="btn btn-link btn-sm disqus-comment-count" data-disqus-identifier="activity{{ activity.id }}">{% trans 'Comments' %}</a>
-	      {% if not single_activity and activity|activity_is_mine:accounts %}
+	      {% if activity|activity_is_mine:accounts %}
 	      <a href="/activities/{{ activity.id }}/" target="_blank" class="btn btn-link btn-sm">
 		<i class="flaticon-edit"></i>
 		{% if activity.message == 'Custom' %}
@@ -57,6 +58,7 @@
 	      </a>
 	      {% endif %}
 	    </div>
+	    {% endif %}
 	  </form>
 	</div>
       </div>

@@ -557,7 +557,7 @@ def profile(request, username):
                     if account.form_custom_activity.is_valid():
                         imgur = None
                         if account.form_custom_activity.cleaned_data['right_picture']:
-                            imgur = re.compile(forms.imgur_regexp).match(account.form_custom_activity.cleaned_data['right_picture']).group('imgur')
+                            imgur = get_imgur_code(account.form_custom_activity.cleaned_data['right_picture'])
                         pushActivity('Custom', account=account,
                                      message_data=account.form_custom_activity.cleaned_data['message_data'],
                                      right_picture=imgur,
@@ -882,8 +882,8 @@ def activity(request, activity):
             if form.is_valid():
                 if 'message_data' in form.cleaned_data and form.cleaned_data['message_data']:
                     context['activity'].message_data = form.cleaned_data['message_data']
-                if form.cleaned_data['right_picture'] and form.cleaned_data['right_picture'] != context['activity'].right_picture:
-                    imgur = re.compile(forms.imgur_regexp).match(form.cleaned_data['right_picture']).group('imgur')
+                if form.cleaned_data['right_picture'] and get_imgur_code(form.cleaned_data['right_picture']) != context['activity'].right_picture:
+                    imgur = get_imgur_code(form.cleaned_data['right_picture'])
                     context['activity'].right_picture = imgur
                 context['activity'].save()
         else:

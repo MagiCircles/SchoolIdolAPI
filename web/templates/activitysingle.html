@@ -41,7 +41,7 @@
 	      {% else %}
 	      <a href="/create/" class="btn btn-link btn-sm"><i class="flaticon-heart"></i> Like</a>
 	      {% endif %}
-	      <a href="#likecount" class="btn btn-link btn-sm">{{ activity.likers|length|add:1 }}</a>
+	      <a href="#likecount" class="btn btn-link btn-sm">{{ activity.likers_count|add:1 }}</a>
 	    </div>
 	    {% if not single_activity %}
 	    <div class="btn-group writecomments">

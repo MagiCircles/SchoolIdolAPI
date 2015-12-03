@@ -212,7 +212,9 @@
 		  {% trans 'Activity posted!' %}
 		</div>
 		{% endif %}
-		<h3>{% trans 'Post your own activity' %}</h3>
+		<h3>{% trans 'Post your own activity' %}
+		  <small><a href="http://schoolido.lu/activities/1743972/" target="_blank">{% trans 'What is this?' %}</a></small>
+		</h3>
 		{% csrf_token %}
 		{% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}
 		<div class="text-right">

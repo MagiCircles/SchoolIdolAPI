@@ -59,10 +59,10 @@ PLAYWITH_DICT = dict(PLAYWITH_CHOICES)
 ACTIVITY_MESSAGE_CHOICES = (
     ('Added a card', _('Added {} in {}')),
     ('Idolized a card', _('Idolized {} in {}')),
-    ('Max Leveled a card', _('Max Leveled {} in {}')),
-    ('Max Bonded a card', _('Max Bonded {} in {}')),
     ('Rank Up', _('Rank Up {}')),
     ('Ranked in event', _('Ranked {} in event {}')),
+    ('Verified', _('Just got verified: {}')),
+    ('Custom', 'Custom'),
 )
 ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
 
@@ -452,13 +452,15 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
       number
     Ranked in event (1 per eventparticipation):
       right_picture: event banner
+    Verified (1 per account):
+      number
     """
     # Foreign keys
     account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
     # Data
-    creation = models.DateTimeField(auto_now_add=True)
+    creation = models.DateTimeField(auto_now=True)
     message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
     number = models.PositiveIntegerField(null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_activities")

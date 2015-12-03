@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import BLANK_CHOICE_DASH
+from django.core.validators import RegexValidator
 from multiupload.fields import MultiFileField
 from api import models
 
@@ -192,6 +193,47 @@ class AccountStaffForm(ModelForm):
 
 class MultiImageField(MultiFileField, forms.ImageField):
     pass
+
+imgur_regexp = '^https?:\/\/(\w+\.)?imgur.com\/(?P<imgur>[\w\d]+)(\.[a-zA-Z]{3})?$'
+
+class _Activity(ModelForm):
+    def __init__(self, *args, **kwargs):
+        initial = kwargs.get('initial', {})
+        initial['right_picture'] = ''
+        kwargs['initial'] = initial
+        super(_Activity, self).__init__(*args, **kwargs)
+        self.fields['right_picture'].help_text = _('Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png')
+        self.fields['right_picture'].label = _('Picture')
+        self.fields['right_picture'].validators.append(RegexValidator(
+            regex=imgur_regexp,
+            message='Invalid Imgur URL',
+            code='invalid_url',
+        ))
+
+class EditActivityPicture(_Activity):
+    def __init__(self, *args, **kwargs):
+        super(EditActivityPicture, self).__init__(*args, **kwargs)
+        self.fields['right_picture'].required = True
+
+    class Meta:
+        model = models.Activity
+        fields = ('right_picture',)
+
+class CustomActivity(_Activity):
+    account_id = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(CustomActivity, self).__init__(*args, **kwargs)
+        self.fields['account_id'].widget = forms.HiddenInput()
+        self.fields['message_data'].widget = forms.Textarea()
+        self.fields['message_data'].required = True
+        self.fields['message_data'].label = _('Message')
+        self.fields['message_data'].widget.attrs.update({'maxlength': 500})
+        self.fields['message_data'].help_text = _('Write whatever you want. You can add formatting and links using Markdown.')
+
+    class Meta:
+        model = models.Activity
+        fields = ('account_id', 'message_data', 'right_picture')
 
 class VerificationRequestForm(ModelForm):
     upload_images = MultiImageField(min_num=0, max_num=10, required=False, help_text=_('If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn\'t work, please resize your images.'))

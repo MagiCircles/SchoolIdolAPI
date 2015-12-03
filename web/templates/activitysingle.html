@@ -3,30 +3,30 @@
 {% load storedChoiceToString %}
 {% load choicesToString %}
 {% load mod %}
+{% load markdown_deux_tags %}
 <div class="activity">
   <div class="row">
     <div class="col-xs-{{ avatar_size }}">
       <a href="{{ activity.account_link }}" target="_blank">
-	<img src="{{ activity.account_picture }}" alt="Avatar" width="100" class="img-responsive">
+	<img src="{{ activity.account_picture }}" alt="Avatar" width="100" class="img-responsive avatar">
       </a>
     </div>
     <div class="col-xs-{{ content_size }}">
       <div class="pull-right text-right">
-	<a href="{% if activity.right_picture_link %}{{ activity.right_picture_link|urlencode }}{% else %}{{ activity.account_link }}{% endif %}">
+	<a href="{% if '/' not in activity.right_picture %}#imgur{% elif activity.right_picture_link %}{{ activity.right_picture_link|urlencode }}{% else %}{{ activity.account_link }}{% endif %}" target="_blank" {% if '/' not in activity.right_picture %}data-imgur="{{ activity.right_picture }}"{% endif %}>
 	  {% if activity.message == 'Rank Up' %}
 	  <div class="rank rank-{{ card_size|default:70 }}">{{ activity.number }}</div>
 	  {% elif activity.message == 'Verified' %}
-	  <i class="verified{{ activity.number }} flaticon-star fontx2"></i>
+	  <i class="verified{{ activity.number }} flaticon-star" style="font-size: {% widthratio card_size|default:70 1.2 1 %}px;"></i>
 	  {% elif activity.right_picture %}
-	  <img src="{{ activity.right_picture }}" alt="Activity picture" width="{{ card_size|default:70 }}">
-	  {% elif activity.rank %}
+	  <img src="{% if '/' not in activity.right_picture %}http://i.imgur.com/{{ activity.right_picture }}t.png{% else %}{{ activity.right_picture }}{% endif %}" alt="Activity picture" width="{{ card_size|default:70 }}">
 	  {% endif %}
 	</a>
       </div>
       <div>
 	<small class="date">{{ activity.creation }}</small><br>
 	<strong class="account">{{ activity.account_name }}</strong><br>
-	<span class="message">{{ activity.localized_message }}</span><br>
+	<span class="message{% if activity.message == 'Custom' %} need-to-autolink{% endif %}">{% if activity.message == 'Custom' %}{{ activity.localized_message|markdown }}{% else %}{{ activity.localized_message }}{% endif %}</span><br>
 	<div class="socialbar">
 	  <form method="POST" class="form-inline likeactivity" action="/ajax/likeactivity/{{ activity.id }}/">
 	    {% csrf_token %}
@@ -46,6 +46,16 @@
 	    <div class="btn-group writecomments">
 	      <a href="/activities/{{ activity.id }}/" target="_blank" class="btn btn-link btn-sm"><i class="flaticon-comments"></i> {% trans 'Write Comment' %}</a>
 	      <a href="http://schoolido.lu/activities/{{ activity.id }}/#disqus_thread" target="_blank" class="btn btn-link btn-sm disqus-comment-count" data-disqus-identifier="activity{{ activity.id }}">{% trans 'Comments' %}</a>
+	      {% if not single_activity and activity|activity_is_mine:accounts %}
+	      <a href="/activities/{{ activity.id }}/" target="_blank" class="btn btn-link btn-sm">
+		<i class="flaticon-edit"></i>
+		{% if activity.message == 'Custom' %}
+		{% trans 'Edit' %}
+		{% else %}
+		{% trans 'Upload your own screenshot' %}
+		{% endif %}
+	      </a>
+	      {% endif %}
 	    </div>
 	  </form>
 	</div>

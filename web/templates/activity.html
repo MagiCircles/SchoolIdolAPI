@@ -3,7 +3,14 @@
 {% block title %}{{ activity }}{% endblock %}
 
 {% block js %}
+<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <script src="/static/js/loadactivities.js"></script>
+{% if is_mine %}
+<script src="/static/js/postactivity.js"></script>
+<script>
+  var imgurClientID = '{{ imgurClientID }}';
+</script>
+{% endif %}
 <script src="/static/js/feed.js"></script>
 {% endblock %}
 
@@ -15,6 +22,19 @@
   <div class="bigger">
     {% include 'activitysingle.html' %}
   </div>
+  {% if is_mine %}
+  <br><br>
+  <div class="well post-activity">
+    <form method="POST">
+      <h3>{{ form_title }}</h3>
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+      <div class="text-right">
+	<input type="submit" value="{% trans 'Apply Changes' %}" class="btn btn-Cool">
+      </div>
+    </form>
+  </div>
+  {% endif %}
   {% with disqus_identifier='activity'|addstr:activity.id %}
   {% include 'disqus.html' %}
   {% endwith %}

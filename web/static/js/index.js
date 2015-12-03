@@ -15,6 +15,10 @@ function loadActivities() {
     $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
 	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size, function(data) {
 	      container.find('.activities').html(data);
+	      if (container.find('.activities .alert-warning')) {
+		  container.find('.activities .alert-warning').replaceWith('<a href="/users/" target="_blank" class="fontx3 padding50" style="display: block">' + follow_sentence + '</a>');
+	      }
+	      updateActivities();
 	      $(window).scroll(
 		  function () {
 		      var button = $('a[href="#loadMoreActivities"]');

@@ -23,6 +23,9 @@ def get_rankeventqueryset():
 def get_rankevent_withoutranking_queryset():
     return models.Activity.objects.filter(message='Ranked in event').filter(Q(eventparticipation__ranking__isnull=True) | Q(eventparticipation__ranking=0))
 
+def get_duplicateownedcard_queryset():
+    return models.Activity.objects.filter(ownedcard__isnull=False).order_by('ownedcard_id', 'id')
+
 class Command(BaseCommand):
     can_import_settings = True
 
@@ -30,13 +33,13 @@ class Command(BaseCommand):
 
         print 'Delete activities max bonded/max leveled...'
         while models.Activity.objects.filter(Q(message='Max Leveled a card') | Q(message='Max Bonded a card')).count():
-            ids = models.Activity.objects.filter(Q(message='Max Leveled a card') | Q(message='Max Bonded a card')).values_list('pk', flat=True)[:100]
+            ids = list(models.Activity.objects.filter(Q(message='Max Leveled a card') | Q(message='Max Bonded a card')).values_list('pk', flat=True)[:100])
             total_this = models.Activity.objects.filter(pk__in=ids).delete()
         print 'Done.'
 
         print 'Delete activities rank in event without ranking...'
         while get_rankevent_withoutranking_queryset().count():
-            ids = get_rankevent_withoutranking_queryset().values_list('pk', flat=True)[:100]
+            ids = list(get_rankevent_withoutranking_queryset().values_list('pk', flat=True)[:100])
             total_this = get_rankevent_withoutranking_queryset().filter(pk__in=ids).delete()
         print 'Done.'
 
@@ -80,6 +83,25 @@ class Command(BaseCommand):
                 activity.right_picture = eventimageurl({}, activity.eventparticipation.event, english=(activity.account.language != 'JP'))
                 activity.right_picture_link = '/events/' + activity.eventparticipation.event.japanese_name + '/'
                 activity.save()
+            print '.',
+            sys.stdout.flush()
+        print 'Done.'
+
+        print 'Remove duplicate activities with ownedcards'
+        lastSeenId = float('-Inf')
+        i = 0
+        total_deleted = 0
+        while get_duplicateownedcard_queryset()[i:i+500].count():
+            activities_ownedcards = get_duplicateownedcard_queryset()[i:i+500]
+            for activity in activities_ownedcards:
+                if activity.ownedcard_id == lastSeenId:
+                    print 'delete', activity
+                    activity.delete()
+                    total_deleted += 1
+                else:
+                    lastSeenId = activity.ownedcard_id
+                pass
+            i += 500
             print '.',
             sys.stdout.flush()
         print 'Done.'

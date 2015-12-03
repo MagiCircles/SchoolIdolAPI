@@ -12,7 +12,7 @@ $('ul.nav-tabs li a').on('show.bs.tab', function (e) {
     if (tab.text() == '') {
 	if (id.indexOf('#accountTabActivities') == 0) {
 	    tab.html(loadingHTML);
-	    $.get('/ajax/activities/?avatar_size=1&account=' + account, function(data) {
+	    $.get('/ajax/activities/?avatar_size=1&card_size=133&account=' + account, function(data) {
 		tab.html(data);
 		loadMoreActivities(tab, account, undefined, 1);
 	    });

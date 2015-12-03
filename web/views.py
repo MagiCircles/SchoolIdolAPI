@@ -29,6 +29,7 @@ from utils import *
 import urllib, hashlib
 import datetime, time, pytz
 import random
+import re
 import json
 import collections
 import operator
@@ -97,7 +98,7 @@ def _pushActivity_cacheaccount(account, account_owner=None):
         'account_name': unicode(account),
     }
 
-def pushActivity(message, number=None, ownedcard=None, eventparticipation=None,
+def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, message_data=None, right_picture=None,
                  # Prefetch:
                  account=None, account_owner=None, card=None, event=None):
     """
@@ -112,14 +113,20 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None,
     Eventparticipation (for ranked in event):
     - account (or specify account)
     - event (or specify event)
-    Rank up must specify account & number
+    Rank up + Verified must specify:
+    - account
+    - number
+    Custom must specify:
+    - account
+    - message_data
+    - (optional) right_picture
     """
     if ownedcard is not None:
         if ownedcard.card.rarity == 'R' or ownedcard.card.rarity == 'N':
             return
     if eventparticipation is not None and not eventparticipation.ranking:
         return
-    if message == 'Added a card' or message == 'Idolized a card':
+    if message == 'Added a card' or message == 'Idolized a card' or message == 'Update card':
         if not account:
             account = ownedcard.owner_account
         if not card:
@@ -137,16 +144,19 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None,
         if message == 'Added a card':
             models.Activity.objects.create(ownedcard=ownedcard, **defaults)
         else:
+            if message == 'Update card':
+                del(defaults['message'])
             models.Activity.objects.update_or_create(ownedcard=ownedcard, defaults=defaults)
-    elif message == 'Rank Up':
+    elif message == 'Rank Up' or message == 'Verified':
         defaults = {
+            'account': account,
             'message': message,
-            'message_data': concat_args(number)
+            'message_data': concat_args(number) if message == 'Rank Up' else models.VERIFIED_DICT[number],
+            'number': number,
         }
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
-        models.Activity.objects.update_or_create(account=account, message='Rank Up', number=number, defaults=defaults)
+        models.Activity.objects.update_or_create(account=account, message=message, number=number, defaults=defaults)
     elif message == 'Ranked in event':
-        print 'test'
         if not account:
             account = eventparticipation.account
         if not event:
@@ -163,6 +173,15 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None,
         }
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
         models.Activity.objects.update_or_create(eventparticipation=eventparticipation, defaults=defaults)
+    elif message == 'Custom':
+        defaults = {
+            'account': account,
+            'message': message,
+            'message_data': message_data,
+            'right_picture': right_picture,
+        }
+        defaults.update(_pushActivity_cacheaccount(account, account_owner))
+        models.Activity.objects.create(**defaults)
 
 def index(request):
     context = globalContext(request)
@@ -531,6 +550,22 @@ def profile(request, username):
         for account in context['user_accounts']:
             account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
             account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
+            if context['is_me']:
+                # Form to post custom activity
+                if request.method == 'POST' and 'account_id' in request.POST and request.POST['account_id'] == str(account.id):
+                    account.form_custom_activity = forms.CustomActivity(request.POST)
+                    if account.form_custom_activity.is_valid():
+                        imgur = None
+                        if account.form_custom_activity.cleaned_data['right_picture']:
+                            imgur = re.compile(forms.imgur_regexp).match(account.form_custom_activity.cleaned_data['right_picture']).group('imgur')
+                        pushActivity('Custom', account=account,
+                                     message_data=account.form_custom_activity.cleaned_data['message_data'],
+                                     right_picture=imgur,
+                                     # prefetch:
+                                     account_owner=request.user)
+                        context['posted_activity'] = True
+                else:
+                    account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
             if request.user.is_staff:
                 account.staff_form_addcard = forms.StaffAddCardForm(initial={'owner_account': account.id})
                 account.staff_form = forms.AccountStaffForm(instance=account)
@@ -569,6 +604,7 @@ def profile(request, username):
     context['following'] = isFollowing(user, request)
     context['total_following'] = context['preferences'].following.count()
     context['total_followers'] = user.followers.count()
+    context['imgurClientID'] = settings.IMGUR_CLIENT_ID
     return render(request, 'profile.html', context)
 
 def ajaxownedcards(request, account, stored):
@@ -692,6 +728,10 @@ def ajaxeditcard(request, ownedcard):
                 pushActivity("Idolized a card", ownedcard=owned_card,
                              # prefetch
                              account_owner=request.user)
+            else:
+                pushActivity("Update card", ownedcard=owned_card,
+                             # prefetch
+                             account_owner=request.user)
             context['owned'] = owned_card
             context['withcenter'] = True
             context['owner_account'] = owned_card.owner_account
@@ -754,6 +794,15 @@ def ajaxfollowing(request, username):
     return render(request, 'followlist.html', { 'follow': user.preferences.following.all(),
                                                 })
 
+def _localized_message_activity(activity):
+    if activity.message == 'Custom':
+        return activity.message_data
+    message_string = models.activityMessageToString(activity.message)
+    data = [_(models.STORED_DICT[d]) if d in models.STORED_DICT else _(d) for d in activity.split_message_data()]
+    if len(data) == message_string.count('{}'):
+        return _(message_string).format(*data)
+    return 'Invalid message data'
+
 def _activities(request, account=None, follower=None, avatar_size=3):
     """
     SQL Queries
@@ -765,7 +814,7 @@ def _activities(request, account=None, follower=None, avatar_size=3):
     - Accounts
     """
     page = 0
-    page_size = 15
+    page_size = 5
     if 'page' in request.GET and request.GET['page']:
         page = int(request.GET['page']) - 1
         if page < 0:
@@ -781,16 +830,13 @@ def _activities(request, account=None, follower=None, avatar_size=3):
         accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all())
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
+    if not account and not follower:
+        activities = activities.filter(message='Custom')
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     activities = activities.annotate(likers_count=Count('likes'))
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []
     for activity in activities:
-        message_string = models.activityMessageToString(activity.message)
-        data = [_(models.STORED_DICT[d]) if d in models.STORED_DICT else _(d) for d in activity.split_message_data()]
-        if len(data) != message_string.count('{}'):
-            activity.localized_message = 'Invalid message data'
-        else:
-            activity.localized_message = _(message_string).format(*data)
+        activity.localized_message = _localized_message_activity(activity)
 
     context = {
         'activities': activities,
@@ -818,6 +864,32 @@ def activity(request, activity):
     context['avatar_size'] = 2
     context['content_size'] = 10
     context['card_size'] = 150
+    context['imgurClientID'] = settings.IMGUR_CLIENT_ID
+    context['is_mine'] = findAccount(context['activity'].account_id, context['accounts'])
+    context['single_activity'] = True
+    if context['is_mine']:
+        # Form to edit activity
+        if context['activity'].message == 'Custom':
+            formClass = forms.CustomActivity
+            context['form_title'] = _('Edit')
+        else:
+            formClass = forms.EditActivityPicture
+            context['form_title'] = _('Upload your own screenshot')
+        if request.method == 'POST':
+            form = formClass(request.POST, instance=context['activity'])
+            if 'account_id' in form.fields:
+                del(form.fields['account_id'])
+            if form.is_valid():
+                if 'message_data' in form.cleaned_data and form.cleaned_data['message_data']:
+                    context['activity'].message_data = form.cleaned_data['message_data']
+                if form.cleaned_data['right_picture'] and form.cleaned_data['right_picture'] != context['activity'].right_picture:
+                    imgur = re.compile(forms.imgur_regexp).match(form.cleaned_data['right_picture']).group('imgur')
+                    context['activity'].right_picture = imgur
+                context['activity'].save()
+        else:
+            form = formClass(instance=context['activity'])
+        context['form'] = form
+    context['activity'].localized_message = _localized_message_activity(context['activity'])
     return render(request, 'activity.html', context)
 
 def _contextfeed(request):
@@ -1339,7 +1411,7 @@ def staff_verification(request, verification):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
         raise PermissionDenied()
     context = globalContext(request)
-    context['verification'] = get_object_or_404(models.VerificationRequest, pk=verification)
+    context['verification'] = get_object_or_404(models.VerificationRequest.objects.select_related('account', 'account__owner', 'account__owner__preferences'), pk=verification)
 
     if str(context['verification'].verification) not in request.user.preferences.allowed_verifications.split(','):
         raise PermissionDenied()
@@ -1364,6 +1436,7 @@ def staff_verification(request, verification):
                 verification.account.verified = verification.verification
                 verification.account.save()
                 sendverificationemail()
+                pushActivity('Verified', number=verification.verification, account=verification.account, account_owner=verification.account.owner)
             elif verification.status == 0:
                 verification.verified_by = request.user
                 verification.verification_date = timezone.now()

@@ -9,8 +9,15 @@
 
 {% block js %}
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+
 <script src="/static/js/loadactivities.js"></script>
 <script src="/static/js/profile.js"></script>
+{% if is_me %}
+<script src="/static/js/postactivity.js"></script>
+{% endif %}
+<script>
+  var imgurClientID = '{{ imgurClientID }}';
+</script>
 {% endblock %}
 
 {% block content %}
@@ -197,6 +204,23 @@
 	      {% endif %}
 	    </table>
 	  </div>
+	    {% if is_me %}
+	    <div class="well post-activity">
+	      <form method="POST">
+		{% if posted_activity %}
+		<div class="alert alert-info">
+		  {% trans 'Activity posted!' %}
+		</div>
+		{% endif %}
+		<h3>{% trans 'Post your own activity' %}</h3>
+		{% csrf_token %}
+		{% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}
+		<div class="text-right">
+		  <input type="submit" value="{% trans 'Post your own activity' %}" class="btn btn-{{ attribute }}">
+		</div>
+	      </form>
+	    </div>
+	    {% endif %}
 
 	  {% if user.is_staff and show_staff %}
 	  <div class="alert alert-danger">

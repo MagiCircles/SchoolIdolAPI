@@ -865,7 +865,7 @@ def activity(request, activity):
     context['content_size'] = 10
     context['card_size'] = 150
     context['imgurClientID'] = settings.IMGUR_CLIENT_ID
-    context['is_mine'] = findAccount(context['activity'].account_id, context['accounts'])
+    context['is_mine'] = findAccount(context['activity'].account_id, context['accounts']) if 'accounts' in context else False
     context['single_activity'] = True
     if context['is_mine']:
         # Form to edit activity

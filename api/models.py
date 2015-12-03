@@ -465,7 +465,7 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     number = models.PositiveIntegerField(null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_activities")
     # Cached data (can be generated from foreign keys)
-    message_data = models.CharField(max_length=500, blank=True, null=True)
+    message_data = models.CharField(max_length=1200, blank=True, null=True)
     account_link = models.CharField(max_length=200)
     account_picture = models.CharField(max_length=500)
     account_name = models.CharField(max_length=100)

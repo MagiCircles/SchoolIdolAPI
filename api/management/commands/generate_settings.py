@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import F
 from api import models
+from collections import OrderedDict
 import sys
 import urllib2, json
 
@@ -30,6 +31,8 @@ class Command(BaseCommand):
 
         print 'Get ages'
         ages = {}
+        for i in range(10,30):
+            ages[i] = 0
         prefs = models.UserPreferences.objects.filter(birthdate__isnull=False)
         total_ages = prefs.count()
         for p in prefs:
@@ -39,9 +42,11 @@ class Command(BaseCommand):
                     ages[age] += 1
                 else:
                     ages[age] = 1
+        ages = OrderedDict(sorted(ages.items()))
 
         print 'Save generated settings'
         s = '\
+from collections import OrderedDict\n\
 TOTAL_DONATORS = ' + total_donators + '\n\
 CURRENT_CONTEST_URL = \'' + current_contest_url + '\'\n\
 CURRENT_CONTEST_IMAGE = \'' + current_contest_image + '\'\n\

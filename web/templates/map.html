@@ -23,12 +23,17 @@
     {% trans 'Add your location' %}
     {% endif %}</a>
 
+  <h1 class="margin50">{% trans 'Ages' %} <small>{{ users_total_ages }}</small></h1>
+
+  <canvas id="agechart" height="400" style="width: 100% !important; height: 200px !important; display: block;"></canvas>
+
   {% include 'disqus.html' %}
 
 </div>
 {% endblock %}
 {% block js %}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHtAPFTmOCQZrKSjZlIeoZrZYLJjKLupE"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 <script src="/static/js/oms.min.js"></script>
 {% localize off %}
 <script>
@@ -42,7 +47,23 @@
   var addresses = [
   {{ map|safe }}
   ];
+
+  var data = {
+    labels: {{ users_ages_keys }},
+    datasets: [
+      {
+        label: "Total",
+        fillColor: "#6bcbff",
+        strokeColor: "#38b9ff",
+        pointColor: "#15acff",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "#15acff",
+        data: {{ users_ages_values }}
+      }
+    ]
+  };
 </script>
 {% endlocalize %}
-<script src="/static/js/map.js"></script>
+<script src="/static/js/map.js?1"></script>
 {% endblock %}

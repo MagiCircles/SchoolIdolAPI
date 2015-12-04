@@ -28,12 +28,26 @@ class Command(BaseCommand):
             current_contest_url = '/contest/contest'
             current_contest_image = '/static/currentcontest.png'
 
+        print 'Get ages'
+        ages = {}
+        prefs = models.UserPreferences.objects.filter(birthdate__isnull=False)
+        total_ages = prefs.count()
+        for p in prefs:
+            age = p.age
+            if age in ages:
+                ages[age] += 1
+            else:
+                ages[age] = 1
+
         print 'Save generated settings'
         s = '\
 TOTAL_DONATORS = ' + total_donators + '\n\
 CURRENT_CONTEST_URL = \'' + current_contest_url + '\'\n\
 CURRENT_CONTEST_IMAGE = \'' + current_contest_image + '\'\n\
+USERS_AGES = ' + unicode(ages) + '\n\
+USERS_TOTAL_AGES = ' + unicode(total_ages) + '\n\
 '
+        print s
         f = open('schoolidolapi/generated_settings.py', 'w')
         print >> f, s
         f.close()

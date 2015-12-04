@@ -9,6 +9,9 @@ from django.core.validators import RegexValidator
 from multiupload.fields import MultiFileField
 from api import models
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class CreateUserForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     class Meta:
@@ -42,9 +45,17 @@ def getGirls():
 
 class UserPreferencesForm(ModelForm):
     best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
+    def __init__(self, *args, **kwargs):
+        super(UserPreferencesForm, self).__init__(*args, **kwargs)
+        self.fields['birthdate'].widget = DateInput()
+        self.fields['birthdate'].widget.attrs.update({
+            'class': 'calendar-widget',
+            'data-role': 'data',
+        })
+
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private')
+        fields = ('color', 'best_girl', 'location', 'birthdate', 'private', 'description', 'private')
 
 class AccountForm(ModelForm):
     class Meta:

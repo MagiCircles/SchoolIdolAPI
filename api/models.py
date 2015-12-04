@@ -109,6 +109,7 @@ LINK_DICT = dict(LINK_CHOICES)
 LINK_URLS = {
     'Best Girl': '/idol/{}/',
     'Location': 'http://maps.google.com/?q={}',
+    'Birthdate': '/map/',
     'twitter': 'http://twitter.com/{}',
     'facebook': 'https://www.facebook.com/{}',
     'reddit': 'http://www.reddit.com/user/{}',
@@ -432,6 +433,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     donation_link = models.CharField(max_length=200, null=True, blank=True)
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
     allowed_verifications = models.CharField(max_length=100, null=True, blank=True)
+    birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
 
     def avatar(self, size):
         default = 'http://schoolido.lu/static/kotori.jpg'
@@ -440,6 +442,13 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
         return ("http://www.gravatar.com/avatar/"
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))
+
+    @property
+    def age(self):
+        if not self.birthdate:
+            return None
+        today = datetime.date.today()
+        return today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
 
 admin.site.register(UserPreferences)
 

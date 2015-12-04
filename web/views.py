@@ -583,19 +583,26 @@ def profile(request, username):
     # Set links
     context['links'] = list(context['profile_user'].links.all().values())
     preferences = context['preferences']
+    if preferences.birthdate:
+        context['links'].insert(0, {
+            'type': 'Birthdate',
+            'value': string_concat(unicode(preferences.birthdate), ' (', str(preferences.age), ' ', _('years old'), ')'),
+            'flaticon': 'event',
+            'translate_type': True,
+        })
+    if preferences.location:
+        context['links'].insert(0, {
+            'type': 'Location',
+            'value': preferences.location,
+            'translate_type': True,
+            'flaticon': 'world',
+        })
     if preferences.best_girl:
         context['links'].insert(0, {
             'type': 'Best Girl',
             'value': preferences.best_girl,
             'translate_type': True,
             'div': '<div class="chibibestgirl" style="background-image: url(' + chibiimage(preferences.best_girl) + ')"></div>',
-        })
-        if preferences.location:
-            context['links'].insert(1, {
-            'type': 'Location',
-            'value': preferences.location,
-            'translate_type': True,
-            'flaticon': 'world',
         })
     context['per_line'] = 6
     if (len(context['links']) % context['per_line']) < 4:
@@ -1346,6 +1353,9 @@ def mapview(request):
         context['mapcount'] = f.read().replace('\n', '')
     if request.user.is_authenticated() and request.user.preferences.latitude:
         context['you'] = request.user.preferences
+    context['users_ages_values'] = settings.USERS_AGES.values()
+    context['users_ages_keys'] = settings.USERS_AGES.keys()
+    context['users_total_ages'] = settings.USERS_TOTAL_AGES
     return render(request, 'map.html', context)
 
 def avatar_twitter(request, username):

@@ -34,10 +34,11 @@ class Command(BaseCommand):
         total_ages = prefs.count()
         for p in prefs:
             age = p.age
-            if age in ages:
-                ages[age] += 1
-            else:
-                ages[age] = 1
+            if age > 0 and age < 88:
+                if age in ages:
+                    ages[age] += 1
+                else:
+                    ages[age] = 1
 
         print 'Save generated settings'
         s = '\

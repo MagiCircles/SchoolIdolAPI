@@ -5,8 +5,8 @@ register = template.Library()
 
 def cleanpage(current_url):
     current_url = re.sub(r'(\?page=\d+)', r'?', current_url)
-    current_url = re.sub(r'(\?\&)', r'?', current_url)
     current_url = re.sub(r'(\&page=\d+)', r'', current_url)
+    current_url = re.sub(r'(\?\&)', r'?', current_url)
     return current_url
 
 def nextpage(current_url, page_number):

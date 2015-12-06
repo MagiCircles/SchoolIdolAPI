@@ -5,6 +5,7 @@
 {% load choicesToString %}
 {% load i18n %}
 {% load l10n %}
+{% load pagination %}
 {% get_current_language as LANGUAGE_CODE %}
 
     {% if cards and total_cards != 0 or tab != 'cards' %}
@@ -370,11 +371,11 @@
     <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
       <nav>
 	<ul class="pagination pagination-sm">
-	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url|previouspage:page }}">&laquo;</a></li>
 	  {% for i in total_pages|times %}
-	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url|nextpage:i }}">{{ i|add:1 }}</a></li>
 	  {% endfor %}
-	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url|nextpage:page }}">&raquo;</a></li>
 	</ul>
       </nav>
     </div>

@@ -4,6 +4,7 @@
 {% load times %}
 {% load imageurl %}
 {% load choicesToString %}
+{% load pagination %}
 <div class="row">
   {% for user in users %}
   {% if forloop.counter0|mod:3 %}
@@ -55,11 +56,11 @@
 
   <nav id="load_more" data-next-page="{{ page|add:1 }}">
     <ul class="pagination pagination-sm">
-      <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+      <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url|previouspage:page }}">&laquo;</a></li>
       {% for i in total_pages|times %}
-      <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+      <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url|nextpage:i }}">{{ i|add:1 }}</a></li>
       {% endfor %}
-      <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+      <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url|nextpage:page }}">&raquo;</a></li>
     </ul>
   </nav>
 {% endif %}

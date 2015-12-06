@@ -266,6 +266,8 @@ def setaccountonlogin(request):
     return redirect('cards')
 
 def cards(request, card=None, ajax=False):
+    if len(request.GET.getlist('page')) > 1:
+        raise PermissionDenied()
 
     page = 0
     context = globalContext(request)
@@ -1180,6 +1182,8 @@ def editaccount(request, account):
     return render(request, 'addaccount.html', context)
 
 def users(request, ajax=False):
+    if len(request.GET.getlist('page')) > 1:
+        raise PermissionDenied()
     if ajax:
         context = {}
     else:

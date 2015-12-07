@@ -33,6 +33,16 @@ function loadActivities() {
 	  });
 }
 
+$(function() {
+    if ($('#countdown').length > 0) {
+	$('#countdown').countdown({
+	    date: countdowndate,
+	    render: countdownRender
+	});
+    }
+});
+
+
 $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
     loadActivities();

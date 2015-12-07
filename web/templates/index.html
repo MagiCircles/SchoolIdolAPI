@@ -49,16 +49,16 @@
     <div class="col-md-1"></div>
     <div class="col-md-6">
       <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
-      <div class="special-message" style="margin: 0; margin-top: 10px; max-width: none;">
-	<span id="countdown">
-	  <script>
+      <div class="special-message hidden" style="margin: 0; margin-top: 10px; max-width: none;">
+	<span id="countdown-unused">
 	    var countdowndate = "December 07, 2015 12:00:00 +0000";
 	    function countdownRender(data) {
 	    $(this.el).text('Maintenance ends in ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec);
 	    }
-	  </script>
+	  </span>
 	</h1>
-      </div>
+</div>
+
       {% if user.is_authenticated %}
       <br>
       {% else %}

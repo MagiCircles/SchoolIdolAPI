@@ -295,6 +295,24 @@
 		<a style="display: block;" href="/cards/?search=" class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to the cards page and use the filters.{% endblocktrans %} <i class="flaticon-filter"></i></a>
 		{% endif %}
 		<div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
+		  {% if is_me and account.deck %}
+		  <div class="row">
+		    {% for deck_link in deck_links %}
+		    {% if forloop.counter0|mod:4 %}
+		  </div><div class="row">
+		    {% endif %}
+		    <div class="col-md-3">
+		      <a href="/cards/?account={{ account.id }}&stored=Deck&{{ deck_link.link }}" target="_blank"
+			 class="topbutton" style="background-image: url('{{ deck_link.background }}'); background-color: {{ deck_link.color }};{% if '/static/' in deck_link.background %} background-size: 80%; background-position-x: -90%;{% endif %}">
+			<img src="/static/topbutton.png">
+			<span>
+			  {% trans deck_link.name %}
+			</span>
+		      </a>
+		    </div>
+		    {% endfor %}
+		  </div>
+		  {% endif %}
 		  {% include 'ownedcards.html' with cards=account.deck %}
 		</div>
 		<div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Album"></div>

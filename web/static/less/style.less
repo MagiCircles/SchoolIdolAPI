@@ -1226,6 +1226,39 @@ h1#donators {
     }
 }
 
+.topbutton {
+    display: block;
+    background-size: 200%;
+    background-position-y: 35%;
+    background-position-x: 70%;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    &:hover, &:focus {
+	opacity: 0.8;
+    }
+    img {
+	width: 100%;
+    }
+    span {
+	font-size: 1.5em;
+	line-height: 1em;
+	font-weight: bold;
+	color: white;
+	width: 90%;
+	padding-top: 22px;
+	padding-left: 50%;
+	padding-right: 10%;
+	display: block;
+	position: absolute;
+	top: 0;
+	text-shadow:
+	-1px -1px 0 #989898,
+	1px -1px 0 #989898,
+	-1px 1px 0 #989898,
+	1px 1px 0 #989898;
+    }
+}
+
 @media (max-width: 768px) {
     .jumbotron form {
 	width: 80%;

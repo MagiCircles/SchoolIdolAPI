@@ -22,7 +22,7 @@ from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models, raw
-from web import forms, donations, transfer_code
+from web import forms, donations, transfer_code, raw as web_raw
 from web.links import links as links_list
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl
 from utils import *
@@ -615,6 +615,8 @@ def profile(request, username):
     context['total_following'] = context['preferences'].following.count()
     context['total_followers'] = user.followers.count()
     context['imgurClientID'] = settings.IMGUR_CLIENT_ID
+    if context['is_me']:
+        context['deck_links'] = web_raw.deck_links
     return render(request, 'profile.html', context)
 
 def ajaxownedcards(request, account, stored):

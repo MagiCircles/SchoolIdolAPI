@@ -290,12 +290,9 @@
 		</div>
 	      </div>
 	      <div class="tab-content">
-		{% if is_me %}
-		<br>
-		<a style="display: block;" href="/cards/?search=" class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to the cards page and use the filters.{% endblocktrans %} <i class="flaticon-filter"></i></a>
-		{% endif %}
 		<div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
 		  {% if is_me and account.deck %}
+		  <br>
 		  <div class="row">
 		    {% for deck_link in deck_links %}
 		    {% if forloop.counter0|mod:4 %}

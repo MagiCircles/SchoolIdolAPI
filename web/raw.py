@@ -14,7 +14,7 @@ deck_links = [
         'link': 'skill=Perfect Lock',
     },
     {
-        'name': _('Your Healder cards'),
+        'name': _('Your Healer cards'),
         'background': 'http://i.schoolido.lu/cards/transparent/57idolizedTransparent.png',
         'color': '#65dba2',
         'link': 'skill=Healer',

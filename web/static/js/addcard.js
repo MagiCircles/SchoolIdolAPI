@@ -26,7 +26,7 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
 	$('#addCardModal img.idolized').prop('src', idolized_card_url).hide();
 
 	var idolizedCheckBoxHandler = function() {
-	    if($('#addCardModal #id_idolized').is(":checked")) {
+	    if($('#addCardModal #id_idolized').is(":checked") || $('#addCardModal #id_idolized').val() == 'True') {
 		$('#addCardModal #id_max_level').parent().show();
 		$('#addCardModal #id_max_bond').parent().show();
 		$('#addCardModal img.idolized').show();

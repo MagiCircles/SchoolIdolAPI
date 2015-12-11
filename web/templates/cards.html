@@ -44,7 +44,7 @@
   });
 </script>
 <script src="/static/js/cards.js?3"></script>
-<script src="/static/js/addcard.js?1"></script>
+<script src="/static/js/addcard.js?2"></script>
 {% endblock %}
 
 {% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
@@ -53,6 +53,8 @@
 {% block content %}
 <div class="hidden" id="quickaddform">
   <form class="form-horizontal" method="post" role="form" action="/ajax/addcard/">
+    <h3>{% trans 'Card added!' %}<br>
+    <small>{% trans 'You may edit it below:' %}</small></h3>
     {% csrf_token %}
     {% include "bootstrap_form_horizontal.html" with form=quickaddcard_form wrap=0 %}
     <div class="text-right">

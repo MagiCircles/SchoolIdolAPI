@@ -16,3 +16,7 @@ register.filter('nextpage', nextpage)
 def previouspage(current_url, page_number):
     return cleanpage(current_url) + 'page=' + str(page_number - 1)
 register.filter('previouspage', previouspage)
+
+@register.simple_tag(takes_context=True)
+def globalposition(context, position):
+    return ((context['page'] - 1) * context['page_size']) + position

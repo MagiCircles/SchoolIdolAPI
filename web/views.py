@@ -1190,48 +1190,100 @@ def users(request, ajax=False):
         context = {}
     else:
         context = globalContext(request)
-    page = 0
+
+    queryset = models.Account.objects.all()
     page_size = 18
+    default_ordering = 'rank'
+    context['filter_form'] = forms.FilterUserForm(request.GET)
+
+    if request.GET:
+        if 'search' in request.GET:
+            terms = request.GET['search'].split(' ')
+            for term in terms:
+                if term.isdigit():
+                    queryset = queryset.filter(Q(rank__exact=term)
+                                               | Q(friend_id__exact=term)
+                                           )
+                elif term != '':
+                    queryset = queryset.filter(Q(owner__username__icontains=term)
+                                               | Q(owner__preferences__description__icontains=term)
+                                               | Q(owner__preferences__location__icontains=term)
+                                               | Q(owner__email__iexact=term)
+                                               | Q(owner__links__value__icontains=term)
+                                               | Q(nickname__icontains=term)
+                                           )
+        if 'attribute' in request.GET and request.GET['attribute']:
+            queryset = queryset.filter(owner__preferences__color=request.GET['attribute'])
+        if 'best_girl' in request.GET and request.GET['best_girl']:
+            queryset = queryset.filter(owner__preferences__best_girl=request.GET['best_girl'])
+        # if 'location' in request.GET and request.GET['location']:
+        #     queryset = queryset.filter()
+        if 'private' in request.GET and request.GET['private']:
+            if request.GET['private'] == '2':
+                queryset = queryset.filter(owner__preferences__private=True)
+            elif request.GET['private'] == '3':
+                queryset = queryset.filter(owner__preferences__private=False)
+        if 'status' in request.GET and request.GET['status']:
+            queryset = queryset.filter(owner__preferences__status=request.GET['status'])
+        if 'language' in request.GET and request.GET['language']:
+            queryset = queryset.filter(language=request.GET['language'])
+        if 'os' in request.GET and request.GET['os']:
+            queryset = queryset.filter(os=request.GET['os'])
+        if 'verified' in request.GET and request.GET['verified']:
+            queryset = queryset.filter(verified=request.GET['verified'])
+        if 'center_attribute' in request.GET and request.GET['center_attribute']:
+            queryset = queryset.filter(center__card__attribute=request.GET['center_attribute'])
+        if 'center_rarity' in request.GET and request.GET['center_rarity']:
+            queryset = queryset.filter(center__card__rarity=request.GET['center_rarity'])
+        if 'with_friend_id' in request.GET and request.GET['with_friend_id']:
+            if request.GET['with_friend_id'] == '2':
+                queryset = queryset.filter(friend_id__isnull=False)
+            elif request.GET['with_friend_id'] == '3':
+                queryset = queryset.filter(friend_id__isnull=True)
+        if 'accept_friend_requests' in request.GET and request.GET['accept_friend_requests']:
+            if request.GET['accept_friend_requests'] == '2':
+                queryset = queryset.filter(accept_friend_requests=True)
+            elif request.GET['accept_friend_requests'] == '3':
+                queryset = queryset.filter(accept_friend_requests=False)
+        if 'play_with' in request.GET and request.GET['play_with']:
+            queryset = queryset.filter(play_with=request.GET['play_with'])
+
+    queryset = queryset.distinct()
+    queryset = queryset.prefetch_related('owner', 'owner__preferences', 'center', 'center__card')
+
+    page = 0
+    reverse = ('reverse_order' in request.GET and request.GET['reverse_order']) or not request.GET or len(request.GET) == 1
+    ordering = request.GET['ordering'] if 'ordering' in request.GET and request.GET['ordering'] else default_ordering
+    prefix = '-' if reverse else ''
+    queryset = queryset.order_by(prefix + ordering)
+
+    context['total_results'] = queryset.count()
+
     if 'page' in request.GET and request.GET['page']:
         page = int(request.GET['page']) - 1
         if page < 0:
             page = 0
-    users = User.objects.all()
-    flag = False
-    if request.GET:
-        form = forms.UserSearchForm(request.GET)
-        if form.is_valid():
-            if 'term' in form.cleaned_data and form.cleaned_data['term']:
-                terms = request.GET['term'].split(' ')
-                for term in terms:
-                    if term.isdigit():
-                        users = users.filter(Q(accounts_set__rank__exact=term)
-                                             | Q(accounts_set__friend_id__exact=term)
-                                         )
-                    else:
-                        users = users.filter(Q(username__icontains=term)
-                                             | Q(preferences__description__icontains=term)
-                                             | Q(preferences__location__icontains=term)
-                                             | Q(email__iexact=term)
-                                             | Q(links__value__icontains=term)
-                                             | Q(accounts_set__nickname__icontains=term)
-                                         )
-            if 'ordering' in form.cleaned_data and form.cleaned_data['ordering']:
-                flag = True
-                users = users.order_by(form.cleaned_data['ordering'], ('-accounts_set__rank' if form.cleaned_data['ordering'] == '-accounts_set__verified' else '-date_joined'))
-    else:
-        form = forms.UserSearchForm()
-    if not flag:
-        users = users.order_by('-accounts_set__rank')
+    queryset = queryset[(page * page_size):((page * page_size) + page_size)]
 
-    context['form'] = form
-    context['total_results'] = users.count()
-    users = users[(page * page_size):((page * page_size) + page_size)]
-    context['total_users'] = len(users)
+    context['ordering'] = ordering
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     context['page'] = page + 1
+    context['page_size'] = page_size
+    context['show_no_result'] = not ajax
+    context['show_search_results'] = bool(request.GET)
+
+    context['accounts'] = queryset
+
+    f = open('cardsinfo.json', 'r')
+    cardsinfo = json.load(f)
+    f.close()
+    context['idols'] = cardsinfo['idols']
+
+    if len(request.GET) > 1 or (len(request.GET) == 1 and 'page' not in request.GET):
+        context['filter_form'] = forms.FilterUserForm(request.GET)
+    else:
+        context['filter_form'] = forms.FilterUserForm()
     context['current'] = 'users'
-    context['users'] = users.select_related('preferences').prefetch_related(Prefetch('accounts_set', queryset=models.Account.objects.select_related('center', 'center__card'), to_attr='accounts'))
     return render(request, 'usersPage.html' if ajax else 'users.html', context)
 
 def events(request):

@@ -541,6 +541,9 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 }
 
 @media (max-width: 970px) {
+    #users {
+	padding: 20px;
+    }
     .table-buttons {
 	td {
 	    display: block;
@@ -716,11 +719,18 @@ a.panel {
     }
 }
 
+#profile-wrapper {
+    max-width: 1140px;
+    margin: auto;
+}
+
 #profile.jumbotron, #idol .jumbotron {
     margin-bottom: 0;
     padding-bottom: 30px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
     &.Smile { background-color: lighten(@SmileColor, 45%); color: darken(@SmileColor, 10%); .a-variant(@SmileColor); }
     &.Pure { background-color: lighten(@PureColor, 45%); color: darken(@PureColor, 10%); .a-variant(@PureColor); }
     &.Cool { background-color: lighten(@CoolColor, 45%); color: darken(@CoolColor, 10%); .a-variant(@CoolColor); }
@@ -777,6 +787,7 @@ a.panel {
 }
 
 #users {
+    padding: 80px;
     .jumbotron {
 	background-color: transparent;
 	padding-top: 0;
@@ -812,7 +823,7 @@ a.panel {
 			box-shadow: none;
 			margin: 0;
 			width: auto;
-		    height: auto;
+			height: auto;
 		    }
 		}
 	    }
@@ -906,9 +917,9 @@ h1#donators {
     label[for=id_card],
     #id_expiration,
     nobr
-    {
-	display: none;
-    }
+	{
+	    display: none;
+	}
     form.add, form.edit {
 	input[type=number] {
 	    .neutral-input();
@@ -952,9 +963,9 @@ h1#donators {
 	border-radius: 15px;
 	margin-bottom: 20px;
 	&:hover, &:focus {
-	    opacity: 0.6;
-	    text-decoration: none;
-	}
+		     opacity: 0.6;
+		     text-decoration: none;
+		 }
 	span {
 	    display: block;
 	    padding: 50px;
@@ -1165,8 +1176,8 @@ h1#donators {
     }
     a {
 	&:hover, &:focus {
-	    text-decoration: none;
-	}
+		     text-decoration: none;
+		 }
     }
     .transparent-hover:hover {
 	img {
@@ -1264,32 +1275,52 @@ h1#donators {
 	width: 80%;
     }
 }
+@media (max-width: 1200px) {
+    #users {
+	padding: 20px;
+    }
+    #profile {
+	&.jumbotron {
+	    padding-right: 10px;
+	    padding-left: 10px;
+	}
+    }
+}
+
+@media (min-width: 1200px) {
+    #profile {
+	&.jumbotron {
+	    padding-right: 60px;
+	    padding-left: 60px;
+	}
+    }
+}
 
 @-webkit-keyframes animate-pulse {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg);
-  }
+    0% {
+	-webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+	-webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 
 @keyframes animate-pulse {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg);
-  }
+    0% {
+	-webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+	-webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 
 .animate-pulse {
-  -webkit-animation: animate-pulse 1s infinite steps(8);
-          animation: animate-pulse 1s infinite steps(8);
+    -webkit-animation: animate-pulse 1s infinite steps(8);
+    animation: animate-pulse 1s infinite steps(8);
 }
 
 .flaticon-loading {

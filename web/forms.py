@@ -3,7 +3,7 @@ from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
 from multiupload.fields import MultiFileField
@@ -181,15 +181,6 @@ def getEventParticipationForm(form, accounts):
     form.fields['account'].empty_label = None
     return form
 
-class UserSearchForm(Form):
-    term = forms.CharField(required=False, label=_('Search'))
-    ordering = forms.ChoiceField(required=False, label='', widget=forms.RadioSelect, choices=[
-        ('-accounts_set__rank', _('Ranking')),
-        ('-accounts_set__verified', _('Verified')),
-        ('-date_joined', _('New players')),
-        ('username', _('Nickname')),
-    ], initial='-accounts_set__rank')
-
 class UserProfileStaffForm(ModelForm):
     class Meta:
         model = models.UserPreferences
@@ -315,6 +306,39 @@ class FilterSongForm(ModelForm):
     class Meta:
         model = models.Song
         fields = ('search', 'attribute', 'is_daily_rotation', 'is_event', 'available', 'ordering', 'reverse_order')
+
+class FilterUserForm(ModelForm):
+    search = forms.CharField(required=False, label=_('Search'))
+    ordering = forms.ChoiceField(choices=[
+        ('rank', _('Leaderboard')),
+        ('owner__date_joined', _('New players')),
+    ], initial='latest', required=False, label=_('Ordering'))
+    reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
+
+    attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=_('Attribute'), required=False)
+    best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
+    # location = forms.CharField(required=False, label=_('Location'))
+    private = forms.NullBooleanField(required=False, label=_('Private'))
+    status = ChoiceField(label=_('Donator'), choices=(BLANK_CHOICE_DASH + list(models.STATUS_CHOICES)), required=False)
+    with_friend_id = forms.NullBooleanField(required=True, label=string_concat(_('Friend ID'), ' (', _('specified'), ')'))
+    center_attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=string_concat(_('Center'), ': ', _('Attribute')), required=False)
+    center_rarity = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.RARITY_CHOICES)), label=string_concat(_('Center'), ': ', _('Rarity')), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(FilterUserForm, self).__init__(*args, **kwargs)
+        for field in self.fields.keys():
+            self.fields[field].widget.attrs['placeholder'] = self.fields[field].label
+        self.fields['language'].choices = BLANK_CHOICE_DASH + self.fields['language'].choices
+        self.fields['os'].choices = BLANK_CHOICE_DASH + self.fields['os'].choices
+        self.fields['verified'].choices = BLANK_CHOICE_DASH + self.fields['verified'].choices
+        del(self.fields['verified'].choices[-1])
+        self.fields['verified'].initial = None
+        self.fields['os'].initial = None
+        self.fields['language'].initial = None
+
+    class Meta:
+        model = models.Account
+        fields = ('search', 'attribute', 'best_girl', 'private', 'status', 'language', 'os', 'verified', 'center_attribute', 'center_rarity', 'with_friend_id', 'accept_friend_requests', 'play_with', 'ordering', 'reverse_order')
 
 # class TeamForm(ModelForm):
 #     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)

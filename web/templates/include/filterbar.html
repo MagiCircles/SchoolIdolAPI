@@ -1,0 +1,50 @@
+{# interfaceColor filter_form #}
+{# filter_form has to contain the fields: search, ordering and reverse_order #}
+{% load i18n %}
+{% load getattribute %}
+<nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+    <form method="GET">
+      <h4>{% trans 'Search' %}</h4>
+      <div class="section search">
+	{{ filter_form.search }}
+      </div>
+      <h4>{% trans 'Order' %}</h4>
+      <div class="section order">
+	{{ filter_form.ordering }}
+	<br>
+	<div>
+	  <div class="pull-right">
+	    {{ filter_form.reverse_order }}
+	  </div>
+	  <label for="{{ filter_form.reverse_order.id_for_label }}">{{ filter_form.reverse_order.label }}</label>
+	</div>
+      </div>
+      <h4>{% trans 'Filter' %}{% if current == 'users' %}: {% trans 'Players' %}{% endif %}</h4>
+      <div class="section filter">
+	{% for field in filter_form.fields %}
+	{% if current == 'users' and field == 'language' %}
+      </div>
+      </div>
+      <h4>{% trans 'Filter' %}{% if current == 'users' %}: {% trans 'Accounts' %}{% endif %}</h4>
+      <div class="section filter">
+	{% elif current == 'users' and field == 'private' or field == 'center_attribute' %}
+	<div class="text-right">
+	  <a href="#morefilters{% if field == 'center_attribute' %}accounts{% endif %}" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i></a>
+	</div>
+	<div id="morefilters{% if field == 'center_attribute' %}accounts{% endif %}" class="collapse">
+	{% endif %}
+	{% if field != 'search' and field != 'ordering' and field != 'reverse_order' %}
+	{% with f=filter_form|getattribute:field %}
+	<label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
+	{{ f }}<br><br>
+	{% endwith %}
+	{% endif %}
+	{% endfor %}
+	{% if current == 'users' %}</div>{% endif %}
+      </div>
+      <div class="section submit">
+	<button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
+	<br><br><br><br><br>
+      </div>
+    </form>
+  </nav>

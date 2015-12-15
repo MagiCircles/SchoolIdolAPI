@@ -20,7 +20,7 @@
 {% load colorStringToHex %}
 {% load mod %}
 
-<div class="talking-character hidden-sm hidden-xs" style="background-image: url('/static/honokoto{{ 0|random_int:6 }}.png')"></div>
+<div class="talking-character hidden-sm hidden-xs" style="background-image: url('{% if character %}{{ character|userimage }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}')"></div>
 <div class="dialog hidden-sm hidden-xs">
   <div class="dialog-background">
     <div class="row">
@@ -43,7 +43,7 @@
 
 <div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:12 }}.jpg')">
   <div style="position: fixed; top: 100px; right: 0; margin-top: 0;" class="special-message hidden-sm hidden-xs">
-    <span>Kotori & Honoka are the winners of the Love Live Community Extra Life 2015</span>
+    <span></span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>

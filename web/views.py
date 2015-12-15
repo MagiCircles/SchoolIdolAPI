@@ -200,6 +200,23 @@ def index(request):
     except: pass
     context['total_donators'] = settings.TOTAL_DONATORS
 
+    # Get random character
+    context['character'] = None
+    if request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
+        random_account = random.choice(context['accounts'])
+        if random_account.center:
+            context['character'] = random_account.center.card.transparent_idolized_image if random_account.center.idolized or random_account.center.card.is_special else random_account.center.card.transparent_image
+    if not context['character']:
+        card = models.Card.objects.filter(transparent_idolized_image__isnull=False).exclude(transparent_idolized_image='').order_by('?')
+        if request.user.is_authenticated() and request.user.preferences.best_girl:
+            card = card.filter(name=request.user.preferences.best_girl)
+        else:
+            card = card.filter(idol__main=True)
+        card = card[0]
+        context['character'] = card.transparent_idolized_image
+        if card.transparent_image and bool(random.getrandbits(1)):
+            context['character'] = card.transparent_image
+
     return render(request, 'index.html', context)
 
 def links(request):

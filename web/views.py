@@ -1287,7 +1287,7 @@ def users(request, ajax=False):
     context['page_size'] = page_size
     context['ajax'] = ajax
     context['show_no_result'] = not ajax
-    context['show_search_results'] = bool(request.GET)
+    context['show_search_results'] = bool('search' in request.GET)
 
     context['accounts'] = queryset
     context['users_language'] = request.GET['language'] if 'language' in request.GET else None

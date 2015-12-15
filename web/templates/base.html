@@ -57,8 +57,8 @@
 		  &nbsp;
 		  {% trans 'Players' %}</span>
 		<ul class="dropdown-menu" role="menu">
-		  <li class="{% if current == 'users' and users_language == 'EN' %}active{% endif %}"><a href="/users/?language=EN&verified=3"><i class="flaticon-EN"></i> {% trans 'Leaderboard' %} - {% trans 'English' %}</a></li>
-		  <li class="{% if current == 'users' and users_language == 'JP' %}active{% endif %}"><a href="/users/?language=JP&verified=3"><i class="flaticon-JP"></i> {% trans 'Leaderboard' %} - {% trans 'Japanese' %}</a></li>
+		  <li class="{% if current == 'users' and users_language == 'EN' %}active{% endif %}"><a href="/users/?language=EN&verified=3&reverse_order=on"><i class="flaticon-EN"></i> {% trans 'Leaderboard' %} - {% trans 'English' %}</a></li>
+		  <li class="{% if current == 'users' and users_language == 'JP' %}active{% endif %}"><a href="/users/?language=JP&verified=3&reverse_order=on"><i class="flaticon-JP"></i> {% trans 'Leaderboard' %} - {% trans 'Japanese' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		  <li class="{% if current == 'map' %}active{% endif %}"><a href="/map/"><i class="flaticon-world"></i> {% trans 'Map' %}</a></li>
 		</ul>

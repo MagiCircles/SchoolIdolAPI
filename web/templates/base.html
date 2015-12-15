@@ -28,16 +28,6 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
     </script>
     <![endif]-->
-    <!-- Helloify HTML Snippet -->
-    <script type="text/javascript">
-      var HelloifySettings = {account: '87f4cf9d-00a6-49ab-a057-94c763c887fc'{% if user.is_authenticated %}, name: '{{ user.username }}', email: '{{ user.email }}'{% endif %}};
-      (function(d, s, url, i, m){
-      i = d.createElement(s), m = d.getElementsByTagName(s)[0];
-      i.type = 'text/javascript'; i.async = true; i.src = url;
-      m.parentNode.insertBefore(i, m);
-      })(document, 'script', '//cdn.helloify.com/public/assets/js/helloify.min.js');
-    </script>
-    <!-- Helloify HTML Snippet -->
   </head>
   <body class="interface-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
 

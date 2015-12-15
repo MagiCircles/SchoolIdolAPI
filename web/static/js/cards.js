@@ -213,7 +213,7 @@ function collapseCards() {
     });
 }
 
-function changeAccount() {
+function changeAccount(event) {
     if ($('#id_select_account').val() == '') {
 	$('#sidebar-wrapper #id_stored').val('').change();
 	$('#sidebar-wrapper #id_stored').prop('disabled', 'disabled');
@@ -225,7 +225,7 @@ function changeAccount() {
 	$('#sidebar-wrapper #id_max_bond').prop('disabled', 'disabled');
     } else {
 	$('#sidebar-wrapper #id_stored').prop('disabled', false);
-	if(event.type == "change"){
+	if (typeof event != 'undefined' && event.type == "change") {
 		$('#sidebar-wrapper #id_stored').val('Deck').change();
 	}
 	$('#sidebar-wrapper #id_idolized').prop('disabled', false);
@@ -251,7 +251,7 @@ $(document).ready(function() {
 
     changeAccount();
     $('#id_select_account').change(function(event) {
-	changeAccount();
+	changeAccount(event);
     });
 
 

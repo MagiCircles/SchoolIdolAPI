@@ -1184,6 +1184,16 @@ def editaccount(request, account):
     return render(request, 'addaccount.html', context)
 
 def users(request, ajax=False):
+    """
+    SQL Queries
+    - Context
+    - Count accounts
+    - Accounts
+    - Users
+    - Preferences
+    - Center Owned Cards
+    - Center Cards
+    """
     if len(request.GET.getlist('page')) > 1:
         raise PermissionDenied()
     if ajax:
@@ -1224,13 +1234,19 @@ def users(request, ajax=False):
             elif request.GET['private'] == '3':
                 queryset = queryset.filter(owner__preferences__private=False)
         if 'status' in request.GET and request.GET['status']:
-            queryset = queryset.filter(owner__preferences__status=request.GET['status'])
+            if request.GET['status'] == 'only':
+                queryset = queryset.filter(owner__preferences__status__isnull=False)
+            else:
+                queryset = queryset.filter(owner__preferences__status=request.GET['status'])
         if 'language' in request.GET and request.GET['language']:
             queryset = queryset.filter(language=request.GET['language'])
         if 'os' in request.GET and request.GET['os']:
             queryset = queryset.filter(os=request.GET['os'])
         if 'verified' in request.GET and request.GET['verified']:
-            queryset = queryset.filter(verified=request.GET['verified'])
+            if request.GET['verified'] == '3':
+                queryset = queryset.filter(Q(verified=1) | Q(verified=2) | Q(verified=3))
+            else:
+                queryset = queryset.filter(verified=request.GET['verified'])
         if 'center_attribute' in request.GET and request.GET['center_attribute']:
             queryset = queryset.filter(center__card__attribute=request.GET['center_attribute'])
         if 'center_rarity' in request.GET and request.GET['center_rarity']:

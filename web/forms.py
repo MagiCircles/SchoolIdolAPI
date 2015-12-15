@@ -318,8 +318,8 @@ class FilterUserForm(ModelForm):
     attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=_('Attribute'), required=False)
     best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
     # location = forms.CharField(required=False, label=_('Location'))
-    private = forms.NullBooleanField(required=False, label=_('Private'))
-    status = ChoiceField(label=_('Donator'), choices=(BLANK_CHOICE_DASH + list(models.STATUS_CHOICES)), required=False)
+    private = forms.NullBooleanField(required=False, label=_('Private Profile'))
+    status = ChoiceField(label=_('Donators'), choices=(BLANK_CHOICE_DASH + list(models.STATUS_CHOICES)), required=False)
     with_friend_id = forms.NullBooleanField(required=True, label=string_concat(_('Friend ID'), ' (', _('specified'), ')'))
     center_attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=string_concat(_('Center'), ': ', _('Attribute')), required=False)
     center_rarity = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.RARITY_CHOICES)), label=string_concat(_('Center'), ': ', _('Rarity')), required=False)
@@ -330,11 +330,15 @@ class FilterUserForm(ModelForm):
             self.fields[field].widget.attrs['placeholder'] = self.fields[field].label
         self.fields['language'].choices = BLANK_CHOICE_DASH + self.fields['language'].choices
         self.fields['os'].choices = BLANK_CHOICE_DASH + self.fields['os'].choices
-        self.fields['verified'].choices = BLANK_CHOICE_DASH + self.fields['verified'].choices
+        self.fields['verified'].choices = BLANK_CHOICE_DASH + [(3, _('Only'))] + self.fields['verified'].choices
         del(self.fields['verified'].choices[-1])
         self.fields['verified'].initial = None
         self.fields['os'].initial = None
         self.fields['language'].initial = None
+        del(self.fields['status'].choices[0])
+        del(self.fields['status'].choices[0])
+        self.fields['status'].choices = BLANK_CHOICE_DASH + [('only', _('Only'))] + self.fields['status'].choices
+        #self.fields['status'].choices.insert(1, ('only', _('Only'))) this doesn't work i don't know why
 
     class Meta:
         model = models.Account

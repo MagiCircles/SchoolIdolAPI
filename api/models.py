@@ -344,7 +344,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     os = models.CharField(_("Operating System"), choices=OS_CHOICES, default='iOs', max_length=10)
     center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'), on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(_("Rank"), blank=True, null=True)
-    verified = models.PositiveIntegerField(default=0, choices=VERIFIED_CHOICES)
+    verified = models.PositiveIntegerField(_("Verified"), default=0, choices=VERIFIED_CHOICES)
 
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)

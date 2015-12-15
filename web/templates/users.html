@@ -6,7 +6,7 @@
 {% block title %}{% trans 'Players' %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/users.js"></script>
+<script src="/static/js/users.js?1"></script>
 <script src="/static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
@@ -59,8 +59,9 @@
   cuteform($('#id_status'), {
     'html': {
       '': '{% trans 'All' %}',
+      'only': '{% trans 'Only' %}',
       {% for status, str in filter_form.fields.status.choices %}
-      {% if status != '' %}
+      {% if status != '' and status != 'only' %}
       '{{ status }}': '{% if status != 'THANKS' %}<i class="flaticon-heart white-shadow" style="color: {{ status|userStatusToColor }}"></i> {% endif %}{% trans status|userStatusToString %}',
       {% endif %}
       {% endfor %}
@@ -97,9 +98,10 @@
     'html': {
       '': '{% trans 'All' %}',
       '0': '{% trans 'None' %}',
+      '3': '{% trans 'Only' %}',
       {% for verified, str in filter_form.fields.verified.choices %}
-      {% if verified != '' and verified != 0 %}
-      '{{ verified }}': '<i class="flaticon-star fontx1-2 white-shadow verified{{ verified }}"></i>',
+      {% if verified != '' and verified != 0 and verified != 3 %}
+      '{{ verified }}': '<i class="flaticon-star fontx1-2 white-shadow verified{{ verified }}"></i> {{ verified|verifiedToString }}',
       {% endif %}
       {% endfor %}
     }

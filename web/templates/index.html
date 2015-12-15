@@ -132,7 +132,8 @@
 
 	  <a href="{{ current_contest_url }}" class="item active"
 	     style="background-image: url('{{ current_contest_image }}')">
-	    <h2 class="special-message text-center" style="font-size: 1.5em;max-width:none;margin-top:0;padding-top:50px;"><span>Who's your favorite UR?<br><small>Special {% trans 'Contest' %}</small></span></h2>
+	    {% if current_contest_name %}
+	    <h2 class="special-message text-center" style="font-size: 1.5em;max-width:none;margin-top:0;padding-top:50px;"><span>{{ current_contest_name }}<br><small>Special {% trans 'Contest' %}</small></span></h2>{% endif %}
 	  </a>
 
 	  {% if current_en %}

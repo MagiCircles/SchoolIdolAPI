@@ -25,9 +25,11 @@ class Command(BaseCommand):
         data = json.load(response)
         current_contest_url = '/contest/'
         current_contest_image = '/static/currentcontest_no.png'
+        current_contest_name = None
         if 'current' in data and data['current']:
             current_contest_url = '/contest/contest'
             current_contest_image = '/static/currentcontest.png'
+            current_contest_name = data['name'].replace('\'', '\\\'')
 
         print 'Get ages'
         ages = {}
@@ -50,6 +52,7 @@ from collections import OrderedDict\n\
 TOTAL_DONATORS = ' + total_donators + '\n\
 CURRENT_CONTEST_URL = \'' + current_contest_url + '\'\n\
 CURRENT_CONTEST_IMAGE = \'' + current_contest_image + '\'\n\
+CURRENT_CONTEST_NAME = ' + ('None' if not current_contest_name else '\'' + current_contest_name + '\'') + '\n\
 USERS_AGES = ' + unicode(ages) + '\n\
 USERS_TOTAL_AGES = ' + unicode(total_ages) + '\n\
 '

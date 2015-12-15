@@ -49,6 +49,9 @@ def globalContext(request):
         'btnColor': 'default',
         'debug': settings.DEBUG,
         'hidenavbar': 'hidenavbar' in request.GET,
+        'current_contest_url': settings.CURRENT_CONTEST_URL,
+        'current_contest_name': settings.CURRENT_CONTEST_NAME,
+        'current_contest_image': settings.CURRENT_CONTEST_IMAGE,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
@@ -196,8 +199,6 @@ def index(request):
         context['current_en'].is_current = context['current_en'].is_world_current()
     except: pass
     context['total_donators'] = settings.TOTAL_DONATORS
-    context['current_contest_url'] = settings.CURRENT_CONTEST_URL
-    context['current_contest_image'] = settings.CURRENT_CONTEST_IMAGE
 
     return render(request, 'index.html', context)
 

@@ -1290,6 +1290,7 @@ def users(request, ajax=False):
     context['show_search_results'] = bool(request.GET)
 
     context['accounts'] = queryset
+    context['users_language'] = request.GET['language'] if 'language' in request.GET else None
 
     f = open('cardsinfo.json', 'r')
     cardsinfo = json.load(f)
@@ -1431,6 +1432,7 @@ def mapview(request):
     context['users_ages_values'] = settings.USERS_AGES.values()
     context['users_ages_keys'] = settings.USERS_AGES.keys()
     context['users_total_ages'] = settings.USERS_TOTAL_AGES
+    context['current'] = 'map'
     return render(request, 'map.html', context)
 
 def avatar_twitter(request, username):

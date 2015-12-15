@@ -51,7 +51,19 @@
 	    <li class="{% if current == 'songs' %}active{% endif %}"><a href="/songs/"><i class="flaticon-song"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Songs' %}</span></a></li>
 	    <li class="{% if current == 'events' %}active{% endif %}"><a href="/events/"><i class="flaticon-event"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Events' %}</span></a></li>
 	    <li><a href="/contest/"><i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Contest' %}</span></a></li>
-	    <li class="{% if current == 'users' %}active{% endif %}"><a href="/users/"><i class="flaticon-users"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Players' %}</span></a></li>
+	    <li class="{% if current == 'users' %}active{% endif %} dropdown">
+	      <a href="/users/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		<i class="flaticon-users"></i><span class="hidden-sm hidden-md">
+		  &nbsp;
+		  {% trans 'Players' %}</span>
+		<ul class="dropdown-menu" role="menu">
+		  <li class="{% if current == 'users' and users_language == 'EN' %}active{% endif %}"><a href="/users/?language=EN&verified=3"><i class="flaticon-EN"></i> {% trans 'Leaderboard' %} - {% trans 'English' %}</a></li>
+		  <li class="{% if current == 'users' and users_language == 'JP' %}active{% endif %}"><a href="/users/?language=JP&verified=3"><i class="flaticon-JP"></i> {% trans 'Leaderboard' %} - {% trans 'Japanese' %}</a></li>
+		<li role="presentation" class="divider"></li>
+		  <li class="{% if current == 'map' %}active{% endif %}"><a href="/map/"><i class="flaticon-world"></i> {% trans 'Map' %}</a></li>
+		</ul>
+	      </a>
+	    </li>
 	    {% if user.is_authenticated %}
 	    <li class="dropdown">	
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

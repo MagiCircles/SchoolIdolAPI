@@ -1269,6 +1269,7 @@ def users(request, ajax=False):
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
     context['page'] = page + 1
     context['page_size'] = page_size
+    context['ajax'] = ajax
     context['show_no_result'] = not ajax
     context['show_search_results'] = bool(request.GET)
 

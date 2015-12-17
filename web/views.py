@@ -404,7 +404,11 @@ def cards(request, card=None, ajax=False):
 
         if ('accounts' in context and not hasJP(context['accounts'])
             and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
-            cards = cards.filter(japan_only=False)
+            if 'is_world' in request.GET and request.GET['is_world'] == 'off':
+                cards = cards.filter(japan_only=True)
+            else:
+                cards = cards.filter(japan_only=False)
+                context['show_discover_banner'] = True
             request_get['is_world'] = True
 
         if 'ordering' in request.GET and request.GET['ordering']:

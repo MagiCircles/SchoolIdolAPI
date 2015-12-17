@@ -242,6 +242,15 @@
 {% endif %}
     {% endif %}
     <div>
+      {% if show_discover_banner %}
+      <a href="/cards/?search=&is_world=off&ordering=id&is_promo=off" target="_blank"
+	 class="toplistbanner">
+	<span>
+	  <i class="flaticon-EN"></i>
+	  {% trans 'Discover the upcoming cards before everybody else!' %}
+	</span>
+      </a>
+      {% endif %}
       {% include "cardsPage.html" %}
     </div>
     {% if not single %}

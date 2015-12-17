@@ -39,17 +39,7 @@
 		  {% endif %}
 		  <div class="text-center card_images">
 		    {% if total_results > 1 %}
-		    <a href="/cards/{{ card.id }}/" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}
-		      {% if not card.is_special and not card.is_promo %}
-		      {% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}
-			<img src="{% imageurl card=card image='card_image' %}" class="non_idolized" width="49%" alt="{{ card }}">
-			{% if total_results == 1 %}</a>{% endif %}
-		      {% endif %}
-		      {% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}
-			<img src="{% imageurl card=card image='card_idolized_image' %}" class="idolized" width="49%" alt="{{ card }} idolized">
-			{% if total_results == 1 %}</a>{% endif %}
-		      {% if total_results > 1 %}</a>{% endif %}
-		  </div>
+		    <a href="/cards/{{ card.id }}/" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}{% if not card.is_special and not card.is_promo %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}<img src="{% imageurl card=card image='card_image' %}" class="non_idolized" width="50%" alt="{{ card }}">{% if total_results == 1 %}</a>{% endif %}{% endif %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}<img src="{% imageurl card=card image='card_idolized_image' %}" class="idolized" width="{% if card.is_special or card.is_promo %}{% if total_results == 1 %}100%{% else %}50%{% endif %}{% else %}50%{% endif %}" alt="{{ card }} idolized">{% if total_results == 1 %}</a>{% endif %}{% if total_results > 1 %}</a>{% endif %}</div>
 		  {% if total_results == 1 %}
 		</div>
 		<div class="col-md-6">

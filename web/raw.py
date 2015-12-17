@@ -1,5 +1,14 @@
 from django.utils.translation import ugettext_lazy as _, string_concat
 
+notifications = {
+    'ADDACCOUNTRANK200': {
+        'link': '/editaccount/{}/#verify',
+        'link_text': _('Get verified'),
+        'message': _('Only verified accounts can have a rank above 200.'),
+        'left_html': '<i class=\'flaticon-star fontx3 verified2\'></i>',
+    },
+}
+
 deck_links = [
     {
         'name': _('Search & Filter your cards'),

@@ -57,6 +57,11 @@ def globalContext(request):
         context['accounts'] = contextAccounts(request)
         context['interfaceColor'] = request.user.preferences.color
         context['btnColor'] = request.user.preferences.color if request.user.preferences else 'default'
+    if 'notification' in request.GET:
+        try:
+            context['notification'] = web_raw.notifications[request.GET['notification']].copy()
+            context['notification']['link'] = context['notification']['link'].format(*(request.GET['notification_link_variables'].split(',')))
+        except KeyError: pass
     return context
 
 def findAccount(id, accounts, forceGetAccount=False):
@@ -520,11 +525,11 @@ def addaccount(request):
             account = form.save(commit=False)
             account.owner = request.user
             if account.rank >= 200:
-                errors = form._errors.setdefault("rank", ErrorList())
-                errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
-            else:
+                account.rank = 195
                 account.save()
-                return redirect('cards')
+                return redirect('/cards/?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
+            account.save()
+            return redirect('cards')
     else:
         form = forms.AccountForm(initial={
             'nickname': request.user.username
@@ -1174,8 +1179,9 @@ def editaccount(request, account):
             if form.is_valid():
                 account = form.save(commit=False)
                 if account.rank >= 200 and account.verified <= 0:
-                    errors = form._errors.setdefault("rank", ErrorList())
-                    errors.append(_('Only verified accounts can have a rank above 200. Contact us to get verified!'))
+                    account.rank = 195
+                    account.save()
+                    return redirect('/user/' + request.user.username + '/?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
                 else:
                     account.save()
                     if old_rank < account.rank:

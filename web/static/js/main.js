@@ -129,6 +129,17 @@ $(document).ready(function() {
 
     modalHandler();
 
+    if ($('#notifications').length > 0) {
+	$('#notifications').popover('show');
+	// dismiss on click on navbar
+	$('nav').on('click', function (e) {
+	    if ($(e.target).data('toggle') !== 'popover'
+		&& $(e.target).parents('.popover.in').length === 0) {
+		$('#notifications').popover('hide');
+	    }
+	});
+    }
+
     $('.switchLanguage').click(function(e) {
 	e.preventDefault();
 	$('#switchLanguage').find('select').val($(this).attr('data-lang'));

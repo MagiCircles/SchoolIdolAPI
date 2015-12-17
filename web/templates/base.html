@@ -77,11 +77,17 @@
 	      </ul>
 	    </li>
 	    {% if user.is_authenticated %}
-	    <li class="dropdown">	
+	    <li class="dropdown">
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	      {% if notification %}
+	      <span id="notifications" data-toggle="popover" data-content="<div class='row'><div class='col-xs-3'>{{ notification.left_html|safe }}</div><div class='col-xs-9'>{{ notification.message }}<div class='text-right'><br><a href='{{ notification.link }}' target='_blank' class='btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}'>{{ notification.link_text }}</a></div></div></div>" data-trigger="manual" data-placement="bottom" data-html="true" data-container="body">
+		{% endif %}
 		{% include 'include/avatar.html' with av_user=user av_size=10 av_image_size=22 %}
 		&nbsp;
 		<span class="hidden-sm hidden-md">{{ user.username }}</span>
+	      {% if notification %}
+	      </span>
+	      {% endif %}
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
 		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>
@@ -178,7 +184,7 @@
     <script src="/static/bower/jQuery/dist/jquery.min.js"></script>
     <script src="/static/js/jquery.form.min.js"></script>
     <script src="/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/static/js/main.js?3"></script>
+    <script src="/static/js/main.js?5"></script>
     {% block js %}{% endblock %}
 
     <script>

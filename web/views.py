@@ -914,19 +914,28 @@ def activity(request, activity):
         else:
             formClass = forms.EditActivityPicture
             context['form_title'] = _('Upload your own screenshot')
+        form = formClass(instance=context['activity'])
+        context['form_delete'] = forms.ConfirmDelete(initial={
+            'thing_to_delete': context['activity'].id,
+        })
         if request.method == 'POST':
-            form = formClass(request.POST, instance=context['activity'])
-            if 'account_id' in form.fields:
-                del(form.fields['account_id'])
-            if form.is_valid():
-                if 'message_data' in form.cleaned_data and form.cleaned_data['message_data']:
-                    context['activity'].message_data = form.cleaned_data['message_data']
-                if form.cleaned_data['right_picture'] and get_imgur_code(form.cleaned_data['right_picture']) != context['activity'].right_picture:
-                    imgur = get_imgur_code(form.cleaned_data['right_picture'])
-                    context['activity'].right_picture = imgur
-                context['activity'].save()
-        else:
-            form = formClass(instance=context['activity'])
+            print request.POST
+            if 'thing_to_delete' in request.POST:
+                context['form_delete'] = forms.ConfirmDelete(request.POST)
+                if context['form_delete'].is_valid():
+                    context['activity'].delete()
+                    return redirect('/')
+            else:
+                form = formClass(request.POST, instance=context['activity'])
+                if 'account_id' in form.fields:
+                    del(form.fields['account_id'])
+                if form.is_valid():
+                    if 'message_data' in form.cleaned_data and form.cleaned_data['message_data']:
+                        context['activity'].message_data = form.cleaned_data['message_data']
+                    if form.cleaned_data['right_picture'] and get_imgur_code(form.cleaned_data['right_picture']) != context['activity'].right_picture:
+                        imgur = get_imgur_code(form.cleaned_data['right_picture'])
+                        context['activity'].right_picture = imgur
+                    context['activity'].save()
         context['form'] = form
     context['activity'].localized_message = _localized_message_activity(context['activity'])
     return render(request, 'activity.html', context)

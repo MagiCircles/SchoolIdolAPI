@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     $('.post-activity').each(function() {
-	var form = $(this).find('form');
+	var form = $(this).find('form').first();
 	var file_input = $('<input type="file" name="imgur" />');
 	form.find('#id_right_picture').hide();
 	form.find('#id_right_picture').parent().find('.help-block').hide();

@@ -6,7 +6,7 @@
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <script src="/static/js/loadactivities.js"></script>
 {% if is_mine %}
-<script src="/static/js/postactivity.js"></script>
+<script src="/static/js/postactivity.js?1"></script>
 <script>
   var imgurClientID = '{{ imgurClientID }}';
 </script>
@@ -33,6 +33,12 @@
       <div class="text-right">
 	<input type="submit" value="{% trans 'Apply Changes' %}" class="btn btn-Cool">
       </div>
+    </form>
+    <hr>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form_delete }}
+      <input type="submit" class="btn btn-danger btn-sm" name="delete" value="{% trans 'Delete' %}">
     </form>
   </div>
   {% endif %}

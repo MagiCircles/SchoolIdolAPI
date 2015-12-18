@@ -14,18 +14,18 @@ def import_idols():
             print '  Import Idol', idol, '...',
             f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(idol.name))
             soup = BeautifulSoup(f.read())
-            content = soup.find('div', { 'id': 'mw-content-text'})
-            if content is not None:
-                content.find('div', { 'id', 'toc' }).extract()
+            html = soup.find('div', { 'id': 'mw-content-text'})
+            if html is not None:
+                html.find('div', { 'id', 'toc' }).extract()
                 defaults = {}
                 wikitable = None
                 if idx <= 9:
-                    wikitable = content.find('table', { 'class': 'wikitable' })
-                ul_ = content.find('ul')
+                    wikitable = html.find('table', { 'class': 'wikitable' })
+                ul_ = html.find('ul')
                 ul = ul_.find_all('li')
                 for li in ul:
                     if li.b is not None:
-                        title = clean(clean(li.b.extract()).replace(':', ''))
+                        title = clean(clean(li.b.extract().text).replace(':', ''))
                         content = clean(li.text)
                         if title is not None and content is not None and content != '?' and content != ' ?' and content != 'B? / W? / H?' and content != '' and content != '?cm':
                             if title == 'Age':
@@ -70,6 +70,18 @@ def import_idols():
                             url = ps[1].a.get('href')
                             defaults['official_url'] = url
 
+                if idx <= 9:
+                    tables = html.find_all('table', { 'class': 'wikitable' })
+                    for table in tables:
+                        th = table.find('th', { 'colspan': '6' })
+                        if th is not None:
+                            text = th.find('span').text
+                            if '(' in text and '#' in text:
+                                name = text.split('(')[1].split(')')[0]
+                                name = name.replace(' Ver.', '').strip()
+                                id_card = int(text.split('#')[-1].replace(']', ''))
+                                print 'Set collection', name, 'for #', str(id_card)
+                                models.Card.objects.filter(pk=id_card).update(translated_collection=name)
                 idol, created = models.Idol.objects.update_or_create(name=idol, defaults=defaults)
 
             f.close()

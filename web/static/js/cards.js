@@ -262,6 +262,7 @@ $(document).ready(function() {
     if ($('#id_sub_unit').val() != ''
 	|| $('#id_idol_year').val() != ''
 	|| $('#id_collection').val() != ''
+	|| $('#id_translated_collection').val() != ''
 	|| $('#id_is_promo').val() != ''
 	|| $('#id_is_special').val() != ''
 	|| $('#id_is_event').val() != ''

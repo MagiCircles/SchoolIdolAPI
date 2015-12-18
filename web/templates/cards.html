@@ -123,11 +123,19 @@
 	    {% endfor %}
 	  </select>
 	  <br>
-	  <label for="id_collection">{% trans 'Collection' %}</label>
+	  <label for="id_collection">{% trans 'Collection' %} ({% trans 'Japanese' %}) <i class="flaticon-JP"></i></label>
 	  <select id="id_collection" name="collection">
 	    <option value=""></option>
 	    {% for collection in filters.collections %}
 	    <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	  <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English' %}) <i class="flaticon-EN"></i></label>
+	  <select id="id_translated_collection" name="translated_collection">
+	    <option value=""></option>
+	    {% for translated_collection in filters.translated_collections %}
+	    <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{{ translated_collection.translated_collection }} ({{ translated_collection.total }})</option>
 	    {% endfor %}
 	  </select>
 	  <div id="sub_unit_wrapper">

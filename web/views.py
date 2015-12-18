@@ -326,6 +326,7 @@ def cards(request, card=None, ajax=False):
                                      | Q(japanese_center_skill__icontains=request.GET['search'])
                                      | Q(japanese_center_skill_details__icontains=request.GET['search'])
                                      | Q(japanese_collection__icontains=request.GET['search'])
+                                     | Q(translated_collection__icontains=request.GET['search'])
                                      | Q(promo_item__icontains=request.GET['search'])
                                      | Q(event__english_name__icontains=request.GET['search'])
                                      | Q(event__japanese_name__icontains=request.GET['search'])
@@ -336,6 +337,9 @@ def cards(request, card=None, ajax=False):
         if 'collection' in request.GET and request.GET['collection']:
             cards = cards.filter(japanese_collection__exact=request.GET['collection'])
             request_get['collection'] = request.GET['collection']
+        if 'translated_collection' in request.GET and request.GET['translated_collection']:
+            cards = cards.filter(translated_collection__exact=request.GET['translated_collection'])
+            request_get['translated_collection'] = request.GET['translated_collection']
         if 'sub_unit' in request.GET and request.GET['sub_unit']:
             cards = cards.filter(idol__sub_unit__exact=request.GET['sub_unit'])
             request_get['sub_unit'] = request.GET['sub_unit']
@@ -467,6 +471,7 @@ def cards(request, card=None, ajax=False):
         context['filters'] = {
             'idols': cardsinfo['idols'],
             'collections': cardsinfo['collections'],
+            'translated_collections': cardsinfo['translated_collections'],
             'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
             'skills': cardsinfo['skills'],
             'rarity_choices': models.RARITY_CHOICES,

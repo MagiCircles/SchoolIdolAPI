@@ -196,11 +196,16 @@
 			  </td>
 			</tr>
 			{% endif %}
-			{% if card.japanese_collection %}
+			{% if card.japanese_collection or card.translated_collection %}
 			<tr>
 			  <th>{% trans 'Collection' %}</th>
 			  <td>
+			    {% if card.translated_collection %}
+			    <a href="/cards/?search=&translated_collection={{ card.translated_collection }}" target="_blank">{{ card.translated_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a><br>
+			    {% endif %}
+			    {% if card.japanese_collection %}
 			    <a href="/cards/?search=&collection={{ card.japanese_collection }}" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
+			    {% endif %}
 			    <div class="pull-right">
 			      <i class="flaticon-album"></i>
 			    </div>

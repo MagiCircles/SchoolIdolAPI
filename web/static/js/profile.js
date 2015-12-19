@@ -96,6 +96,24 @@ $(document).ready(function() {
 	    freeModal(username + ': ' + text, data);
 	});
     });
+
+    if ($('#activities').length > 0) {
+	$.get('/ajax/activities/?avatar_size=0&card_size=133&user=' + $('#username').text(), function(data) {
+	    $('#activities').html(data);
+	      updateActivities();
+	      $(window).scroll(
+		  function () {
+		      var button = $('a[href="#loadMoreActivities"]');
+		      if (button.length > 0
+			  && button.find('.loader').length == 0
+			  && ($(window).scrollTop() + $(window).height())
+			  >= ($('#activities').height())) {
+			  feed = $('#myactivities').length > 0 ? true : undefined;
+			  loadMoreActivitiesOnClick(button, $('#activities'), undefined, undefined, 0, 133, $('#username').text());
+		      }
+		  });
+	});
+    }
 });
 
 (function(d, s, id) {

@@ -851,7 +851,7 @@ def _localized_message_activity(activity):
         return _(message_string).format(*data)
     return 'Invalid message data'
 
-def _activities(request, account=None, follower=None, avatar_size=3):
+def _activities(request, account=None, follower=None, user=None, avatar_size=3):
     """
     SQL Queries
     - Django session
@@ -870,6 +870,8 @@ def _activities(request, account=None, follower=None, avatar_size=3):
     activities = models.Activity.objects.all().order_by('-creation')
     if account is not None:
         activities = activities.filter(account=account)
+    if user is not None:
+        activities = activities.filter(account__owner__username=user)
     if follower is not None:
         if follower == request.user.username:
             follower = request.user
@@ -878,7 +880,7 @@ def _activities(request, account=None, follower=None, avatar_size=3):
         accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all())
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
-    if not account and not follower:
+    if not account and not follower and not user:
         activities = activities.filter(message='Custom')
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     activities = activities.annotate(likers_count=Count('likes'))
@@ -900,9 +902,10 @@ def _activities(request, account=None, follower=None, avatar_size=3):
 
 def ajaxactivities(request):
     account = int(request.GET['account']) if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit() else None
+    user = request.GET['user'] if 'user' in request.GET and request.GET['user'] else None
     follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
     avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
-    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size))
+    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size, user=user))
 
 def activity(request, activity):
     context = globalContext(request)

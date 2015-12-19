@@ -6,11 +6,13 @@
 {% load markdown_deux_tags %}
 <div class="activity">
   <div class="row">
+    {% if avatar_size != 0 %}
     <div class="col-xs-{{ avatar_size }}">
       <a href="{{ activity.account_link }}" target="_blank">
 	<img src="{{ activity.account_picture }}" alt="Avatar" width="100" class="img-responsive avatar">
       </a>
     </div>
+    {% endif %}
     <div class="col-xs-{{ content_size }}">
       <div class="pull-right text-right">
 	<a href="{% if '/' not in activity.right_picture %}#imgur{% elif activity.right_picture_link %}{{ activity.right_picture_link|urlencode }}{% else %}{{ activity.account_link }}{% endif %}" target="_blank" {% if '/' not in activity.right_picture %}data-imgur="{{ activity.right_picture }}"{% endif %}>

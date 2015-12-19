@@ -97,7 +97,7 @@ $(document).ready(function() {
 	});
     });
 
-    if ($('#activities').length > 0) {
+    if ($('#activities').length > 0 && $(window).width() >= 1200) {
 	$.get('/ajax/activities/?avatar_size=0&card_size=133&user=' + $('#username').text(), function(data) {
 	    $('#activities').html(data);
 	      updateActivities();

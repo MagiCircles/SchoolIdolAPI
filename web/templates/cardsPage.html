@@ -146,14 +146,53 @@
 			      </div>
 			      #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			    </a><br>
-			    <small>{% if card.idol.japanese_name %} {{ card.idol.japanese_name }}{% endif %} {{ card.idol.name }}
-			      <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
-				  <i class="flaticon-link"></i></a></span><br>
-			      {{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
+			    <small>{{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
 				  <i class="flaticon-link"></i></a></span> {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
 			      <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.attribute }}">
 				  <i class="flaticon-link"></i></a></span>
 			    </small>
+			  </td>
+			</tr>
+			<tr>
+			  <th>{% trans 'Idol' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <a href="/idol/{{ card.idol.name }}/" target="_blank">
+				<img src="{% chibiimage idol=card.idol.name small=True %}" class="chibi" width="60">
+			      </a>
+			    </div>
+			    {% if card.idol.japanese_name %} {{ card.idol.japanese_name }}<br>{% endif %}
+			    <strong>{{ card.idol.name }}</strong>
+			    <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
+				<i class="flaticon-link"></i></a>
+			    </span><br>
+			    {% if idol.school %}
+			    <small>
+			      {% trans 'School' %}: {{ card.idol.school }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_school={{ card.idol.school }}">
+				  <i class="flaticon-link"></i></a>
+			      </span>
+			    </small><br>
+			    {% endif %}
+			    {% if idol.year %}
+			    <small>
+			      {% trans 'Year' %}: {{ card.idol.year }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_year={{ card.idol.year }}">
+				  <i class="flaticon-link"></i></a>
+			      </span>
+			    </small><br>
+			    {% endif %}
+			    {% if card.idol.sub_unit %}
+			    <small>
+			      {% trans 'Sub Unit' %}: {{ card.idol.sub_unit }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&sub_unit={{ card.idol.sub_unit }}">
+				  <i class="flaticon-link"></i></a>
+			      </span>
+			    </small><br>
+			    {% endif %}
+			    <a href="/idol/{{ card.idol.name }}/" target="_blank">{% trans 'Learn more' %}
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a>
 			  </td>
 			</tr>
 			{% if card.release_date %}

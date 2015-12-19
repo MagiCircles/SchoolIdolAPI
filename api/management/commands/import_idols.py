@@ -21,6 +21,7 @@ def import_idols():
                 wikitable = None
                 if idx <= 9:
                     wikitable = html.find('table', { 'class': 'wikitable' })
+                    defaults['school'] = 'Otonokizaka Academy'
                 ul_ = html.find('ul')
                 ul = ul_.find_all('li')
                 for li in ul:
@@ -54,6 +55,8 @@ def import_idols():
                                 defaults['attribute'] = content
                             elif title == 'Year':
                                 defaults['year'] = content
+                            elif title == 'Former School':
+                                defaults['school'] = content
                             elif title == 'CV':
                                 defaults['cv'] = content
                                 if li.a:

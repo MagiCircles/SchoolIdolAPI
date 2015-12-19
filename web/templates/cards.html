@@ -43,7 +43,7 @@
     }
   });
 </script>
-<script src="/static/js/cards.js?4"></script>
+<script src="/static/js/cards.js?5"></script>
 <script src="/static/js/addcard.js?2"></script>
 {% endblock %}
 
@@ -147,6 +147,14 @@
 	      {% endfor %}
 	    </select>
 	  </div>
+	  <label for="id_idol_school">{% trans 'School' %}</label>
+	  <select id="id_idol_school" name="idol_school">
+	    <option value="">{% trans 'All' %}</option>
+	    {% for idol_school in filters.idol_school_choices %}
+	    <option value="{{ idol_school }}"{% if request_get.idol_school == idol_school %} selected{% endif %}>{{ idol_school }}</option>
+	    {% endfor %}
+	  </select>
+	  <br>
 	  <label for="id_idol_year">{% trans 'Year' %}</label>
 	  <select id="id_idol_year" name="idol_year" data-cuteform="true">
 	    <option value="" data-cuteform-html="{% trans 'All' %}"></option>

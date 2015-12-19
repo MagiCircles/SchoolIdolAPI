@@ -144,6 +144,7 @@ def update_raw_db():
         'idols': ValuesQuerySetToDict(models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name')),
         'sub_units': [card['sub_unit'] for card in models.Idol.objects.filter(sub_unit__isnull=False).values('sub_unit').distinct()],
         'years': [idol['year'] for idol in models.Idol.objects.filter(year__isnull=False).values('year').distinct()],
+        'schools': [idol['school'] for idol in models.Idol.objects.filter(school__isnull=False).values('school').distinct()],
         'collections': ValuesQuerySetToDict(models.Card.objects.filter(japanese_collection__isnull=False).exclude(japanese_collection__exact='').values('japanese_collection').annotate(total=Count('name')).order_by('-total', 'japanese_collection')),
         'translated_collections': ValuesQuerySetToDict(models.Card.objects.filter(translated_collection__isnull=False).exclude(translated_collection__exact='').values('translated_collection').annotate(total=Count('name')).order_by('-total', 'translated_collection')),
         'skills': ValuesQuerySetToDict(models.Card.objects.filter(skill__isnull=False).values('skill').annotate(total=Count('skill')).order_by('-total'))

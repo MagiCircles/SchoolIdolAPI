@@ -346,6 +346,9 @@ def cards(request, card=None, ajax=False):
         if 'idol_year' in request.GET and request.GET['idol_year']:
             cards = cards.filter(idol__year__exact=request.GET['idol_year'])
             request_get['idol_year'] = request.GET['idol_year']
+        if 'idol_school' in request.GET and request.GET['idol_school']:
+            cards = cards.filter(idol__school__exact=request.GET['idol_school'])
+            request_get['idol_school'] = request.GET['idol_school']
         if 'rarity' in request.GET and request.GET['rarity']:
             cards = cards.filter(rarity__exact=request.GET['rarity'])
             request_get['rarity'] = request.GET['rarity']
@@ -477,6 +480,7 @@ def cards(request, card=None, ajax=False):
             'rarity_choices': models.RARITY_CHOICES,
             'attribute_choices': models.ATTRIBUTE_CHOICES,
             'idol_year_choices': cardsinfo['years'] if 'years' in cardsinfo else [],
+            'idol_school_choices': cardsinfo['schools'] if 'schools' in cardsinfo else [],
             'stored_choices': models.STORED_CHOICES,
             'ordering_choices': (
                 ('id', _('Card #ID')),

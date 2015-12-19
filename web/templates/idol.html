@@ -30,7 +30,7 @@
       <img class="flip side-idol left" src="{% standimage idol=idol number=2 %}">
     </div>
     {% endif %}
-    <div class="col-xs-{% if idol.main and tab == 'idol' %}8{% else %}12{% endif %}">
+    <div class="col-xs-{% if idol.main and tab == 'idol' %}7{% else %}12{% endif %}">
       {% include 'include/idol_tabs.html' %}
       {% if tab == 'idol' %}
       <br>
@@ -41,6 +41,12 @@
 	    {% if idol.japanese_name %}
 	    <br>{{ idol.japanese_name }}{% endif %}</td>
 	</tr>
+	{% if idol.school %}
+	<tr>
+	  <th>{% trans 'School' %}</th>
+	  <td>{{ idol.school }}</td>
+	</tr>
+	{% endif %}
 	<tr>
 	  <th>{% trans 'Attribute' %}</th>
 	  <td>{{ idol.attribute }}<br>{{ idol.attribute|japanese_attribute }}</td>
@@ -55,6 +61,16 @@
 	<tr>
 	  <th>{% trans 'Birthday' %}</th>
 	  <td>{{ idol.birthday|date:"M d" }}</td>
+	</tr>
+	{% endif %}
+	{% if idol.sub_unit %}
+	<tr>
+	  <th>{% trans 'Sub Unit' %}</th>
+	  <td>
+	    <div class="pull-right text-right">
+	      <img src="/static/{{ idol.sub_unit }}.png" alt="{{ idol.sub_unit }}">
+	    </div>
+	    {{ idol.sub_unit }}</td>
 	</tr>
 	{% endif %}
 	{% if idol.astrological_sign %}
@@ -148,7 +164,7 @@
       {% endif %}
     </div>
     {% if idol.main and tab == 'idol' %}
-    <div class="col-xs-2">
+    <div class="{% if idol.main and tab == 'idol' %}col-xs-offset-1 {% endif %}col-xs-2">
       <img class="side-idol right" src="{% standimage idol=idol number=5 %}">
     </div>
     {% endif %}

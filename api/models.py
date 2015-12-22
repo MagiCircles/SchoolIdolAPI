@@ -25,6 +25,7 @@ RARITY_CHOICES = (
     ('SR', _('Super Rare')),
     ('UR', _('Ultra Rare')),
 )
+RARITY_DICT = dict(RARITY_CHOICES)
 
 OS_CHOICES = (
     ('Android', 'Android'),
@@ -178,6 +179,9 @@ def statusToColorString(status):
     elif status == 'PRODUCER': return _('shiny Gold')
     elif status == 'DEVOTEE': return _('shiny Gold')
     return ''
+
+def rarityToString(val):
+    return RARITY_DICT[val]
 
 def japanese_attribute(attribute):
     if attribute == 'Smile':

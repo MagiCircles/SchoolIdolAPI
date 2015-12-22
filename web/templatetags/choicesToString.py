@@ -44,6 +44,7 @@ def difficultyToString(difficulty):
 
 register.filter('verifiedToString', verifiedToString)
 register.filter('difficultyToString', difficultyToString)
+register.filter('rarityToString', models.rarityToString)
 register.filter('verificationStatusToString', models.verificationStatusToString)
 register.filter('playWithToString', playWithToString)
 register.filter('activityMessageToString', models.activityMessageToString)

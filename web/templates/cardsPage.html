@@ -146,8 +146,9 @@
 			      </div>
 			      #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			    </a><br>
-			    <small>{{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
-				  <i class="flaticon-link"></i></a></span> {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
+			    <small>{{ card.rarity|rarityToString }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
+				  <i class="flaticon-link"></i></a></span><br>
+			      {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
 			      <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.attribute }}">
 				  <i class="flaticon-link"></i></a></span>
 			    </small>

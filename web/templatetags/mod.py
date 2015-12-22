@@ -11,6 +11,15 @@ def mod(value, arg):
     else:
         return False
 
+def trans(value):
+    return _(value)
+
+def transconcat(value, svalue):
+    return string_concat(_(value), _(svalue))
+
+def transconcatspace(value, svalue):
+    return string_concat(_(value), ' ', _(svalue))
+
 def isnone(value):
     return value is None
 
@@ -44,6 +53,9 @@ def activity_is_mine(activity, accounts):
     return findAccount(activity.account_id, accounts)
 
 register.filter('mod', mod)
+register.filter('trans', trans)
+register.filter('transconcat', transconcat)
+register.filter('transconcatspace', transconcatspace)
 register.filter('isnone', isnone)
 register.filter('torfc2822', torfc2822)
 register.filter('addstr', addstr)

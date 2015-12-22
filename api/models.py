@@ -18,6 +18,7 @@ ATTRIBUTE_CHOICES = (
     ('Cool', _('Cool')),
     ('All', _('All')),
 )
+ATTRIBUTE_ARRAY = dict(ATTRIBUTE_CHOICES).keys()
 
 RARITY_CHOICES = (
     ('N', _('Normal')),
@@ -326,6 +327,9 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     # cache
     total_owners = models.PositiveIntegerField(null=True, blank=True)
     total_wishlist = models.PositiveIntegerField(null=True, blank=True)
+    ranking_attribute = models.PositiveIntegerField(null=True, blank=True)
+    ranking_rarity = models.PositiveIntegerField(null=True, blank=True)
+    ranking_special = models.PositiveIntegerField(null=True, blank=True)
 
     def japanese_attribute(self):
         return japanese_attribute(self.attribute)

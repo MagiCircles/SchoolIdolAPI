@@ -317,6 +317,70 @@
 			  </td>
 			</tr>
 			{% endif %}
+			{% if card.ranking_attribute or card.ranking_rarity or card.ranking_special %}
+			<tr>
+			  <th>{% trans 'Ranking' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-contest"></i>
+			    </div>
+			    {% with transattribute=card.attribute|trans %}
+			    {% if card.ranking_attribute %}
+			    {% if card.ranking_attribute <= 3 %}
+			    <img src="/static/medal{{ card.ranking_attribute }}.png" alt="{{ card.ranking_attribute }}" height="34">
+			    {% else %}
+			    <b>#{{ card.ranking_attribute }}</b>
+			    {% endif %}
+			    {% with attribute=transattribute %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    <a href="/cards/?attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a><br>
+			    {% endif %}
+			    {% if card.ranking_rarity %}
+			    <small>
+			    {% if card.ranking_rarity <= 3 %}
+			    <img src="/static/medal{{ card.ranking_rarity }}.png" alt="{{ card.ranking_rarity }}" height="24">
+			    {% else %}
+			    <b>#{{ card.ranking_rarity }}</b>
+			    {% endif %}
+			    {% with attribute=card.rarity|transconcatspace:card.attribute %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    <a href="/cards/?rarity={{ card.rarity }}&attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a>
+			    </small><br>
+			    {% endif %}
+			    {% if card.ranking_special %}
+			    <small>
+			    {% if card.ranking_special <= 3 %}
+			    <img src="/static/medal{{ card.ranking_special }}.png" alt="{{ card.ranking_special }}" height="24">
+			    {% else %}
+			    <b>#{{ card.ranking_special }}</b>
+			    {% endif %}
+			    {% if card.event %}
+			    {% with translatedattributerarity=card.rarity|transconcatspace:card.attribute %}
+			    {% with attribute='Event'|transconcatspace:translatedattributerarity %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    {% endwith %}
+			    <a href="/cards/?is_event=on&rarity={{ card.rarity }}&attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			    {% else %}{# promo #}
+			    {% with attribute='Promo Card'|transconcatspace:card.attribute %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    <a href="/cards/?is_promo=on&attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			    {% endif %}
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a>
+			    </small><br>
+			    {% endif %}
+			    {% endwith %}
+			  </td>
+			</tr>
+			{% endif %}
 			{% if card.total_owners or card.total_wishlist %}
 			<tr>
 			  <th>{% trans 'Players' %}</th>

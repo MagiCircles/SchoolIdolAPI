@@ -52,6 +52,7 @@ def globalContext(request):
         'current_contest_url': settings.CURRENT_CONTEST_URL,
         'current_contest_name': settings.CURRENT_CONTEST_NAME,
         'current_contest_image': settings.CURRENT_CONTEST_IMAGE,
+        'last_update': settings.GENERATED_DATE,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
@@ -489,6 +490,8 @@ def cards(request, card=None, ajax=False):
                 ('idolized_maximum_statistics_smile', _('Smile\'s statistics')),
                 ('idolized_maximum_statistics_pure', _('Pure\'s statistics')),
                 ('idolized_maximum_statistics_cool', _('Cool\'s statistics')),
+                ('total_owners', string_concat(_('Most popular'), ' (', _('Deck'), ')')),
+                ('total_wishlist', string_concat(_('Most popular'), ' (', _('Wish List'), ')')),
                 ('hp', _('HP'))
             )
         }
@@ -1312,6 +1315,24 @@ def users(request, ajax=False):
                 queryset = queryset.filter(accept_friend_requests=False)
         if 'play_with' in request.GET and request.GET['play_with']:
             queryset = queryset.filter(play_with=request.GET['play_with'])
+        if (('owns' in request.GET and request.GET['owns'].isdigit())
+            or ('wish' in request.GET and request.GET['wish'].isdigit())):
+            wish = 'owns' not in request.GET
+            context['wish'] = wish
+            card_id = request.GET['wish' if wish else 'owns']
+            try:
+                context['owns_card'] = models.Card.objects.get(pk=card_id)
+                context['owns_card_string'] = unicode(context['owns_card'])
+            except: pass
+            ownedcards = models.OwnedCard.objects.filter(card_id=card_id)
+            if not wish:
+                ownedcards = ownedcards.filter(Q(stored='Deck') | Q(stored='Album'))
+            else:
+                ownedcards = ownedcards.filter(stored='Favorite')
+            if 'owns_idolized' in request.GET:
+                ownedcards = ownedcards.filter(idolized=(request.GET['owns_idolized'] == 'on'))
+                context['owns_card_idolized'] = request.GET['owns_idolized']
+            queryset = queryset.filter(ownedcards__in=ownedcards)
 
     queryset = queryset.distinct()
     queryset = queryset.prefetch_related('owner', 'owner__preferences', 'center', 'center__card')

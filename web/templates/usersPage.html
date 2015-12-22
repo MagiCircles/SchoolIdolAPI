@@ -5,7 +5,17 @@
 {% load imageurl %}
 {% load choicesToString %}
 {% load pagination %}
-{% if show_search_results and total_results > 0 and not ajax %}
+{% if owns_card %}
+<h4 style="margin-bottom: 40px; margin-top: 0;">
+  <a href="/cards/{{ owns_card.id }}/"><img src="{% if owns_card_idolized == 'on' or owns_card.is_special or owns_card.is_promo %}{% imageurl card=owns_card image='round_card_idolized_image' %}{% else %}{% imageurl card=owns_card image='round_card_image' %}{% endif %}" alt="{{ owns_card_string }}" height="100"></a>
+  {% if wish %}
+  {% blocktrans count counter=total_results %}{{ counter }} player have the card {{ owns_card_string }} in their wish list{% plural %}{{ counter }} players have the card {{ owns_card_string }} in their wish list{% endblocktrans %} <i class="flaticon-star"></i>
+  {% else %}
+  {% blocktrans count counter=total_results %}{{ counter }} player owns the card {{ owns_card_string }}{% plural %}{{ counter }} players own the card {{ owns_card_string }}{% endblocktrans %} <i class="flaticon-deck"></i>
+  {% endif %}
+  {% if owns_card_idolized == 'on' %} ({% trans 'Idolized' %}){% elif owns_card_idolized %} ({% trans 'Not Idolized' %}){% endif %}:
+</h4>
+{% elif show_search_results and total_results > 0 and not ajax %}
 <h4 class="padding20 nomargin">
   {% blocktrans count counter=total_results %}{{ counter }} account matches your search:{% plural %}{{ counter }} accounts match your search:{% endblocktrans %}
 </h4>

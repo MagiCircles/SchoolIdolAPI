@@ -317,6 +317,33 @@
 			  </td>
 			</tr>
 			{% endif %}
+			{% if card.total_owners or card.total_wishlist %}
+			<tr>
+			  <th>{% trans 'Players' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-users"></i>
+			    </div>
+			    {% with owns_card_string=card %}
+			    {% if card.total_owners %}
+			    <i class="flaticon-deck text-{{ card.attribute }}"></i>
+			    {% blocktrans count counter=card.total_owners %}{{ counter }} player owns the card {{ owns_card_string }}{% plural %}{{ counter }} players own the card {{ owns_card_string }}{% endblocktrans %}:<br>
+			    <a href="/users/?owns={{ card.id }}&ordering=owner__date_joined&reverse_order=on" target="_blank">{% trans 'All' %}</a> -
+			    <a href="/users/?owns={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=off" target="_blank">{% trans 'Not Idolized' %}</a> -
+			    <a href="/users/?owns={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=on" target="_blank">{% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    <i class="flaticon-star text-{{ card.attribute }}"></i>
+			    {% if card.total_wishlist %}
+			    {% blocktrans count counter=card.total_wishlist %}{{ counter }} player have the card {{ owns_card_string }} in their wish list{% plural %}{{ counter }} players have the card {{ owns_card_string }} in their wish list{% endblocktrans %}:<br>
+			    <a href="/users/?wish={{ card.id }}&ordering=owner__date_joined&reverse_order=on" target="_blank">{% trans 'All' %}</a> -
+			    <a href="/users/?wish={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=off" target="_blank">{% trans 'Not Idolized' %}</a> -
+			    <a href="/users/?wish={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=on" target="_blank">{% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    {% endwith %}
+			    <small><span class="tiny text-muted">{% trans 'Last update' %}: {{ last_update }}</span></small>
+			  </td>
+			</tr>
+			{% endif %}
 			<tr>
 			  <th><small>{% trans 'Sources' %}</small></th>
 			  <td>

@@ -4,6 +4,7 @@ from api import models
 from collections import OrderedDict
 import sys
 import urllib2, json
+import time
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -49,12 +50,14 @@ class Command(BaseCommand):
         print 'Save generated settings'
         s = '\
 from collections import OrderedDict\n\
+import datetime\n\
 TOTAL_DONATORS = ' + total_donators + '\n\
 CURRENT_CONTEST_URL = \'' + current_contest_url + '\'\n\
 CURRENT_CONTEST_IMAGE = \'' + current_contest_image + '\'\n\
 CURRENT_CONTEST_NAME = ' + ('None' if not current_contest_name else '\'' + current_contest_name + '\'') + '\n\
 USERS_AGES = ' + unicode(ages) + '\n\
 USERS_TOTAL_AGES = ' + unicode(total_ages) + '\n\
+GENERATED_DATE = datetime.datetime.fromtimestamp(' + str(time.time()) + ')\n\
 '
         print s
         f = open('schoolidolapi/generated_settings.py', 'w')

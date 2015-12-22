@@ -313,19 +313,19 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     center_skill = models.TextField(null=True, blank=True)
     japanese_center_skill = models.TextField(null=True, blank=True)
     japanese_center_skill_details = models.TextField(null=True, blank=True)
-    card_url = models.CharField(max_length=200, blank=True)
     transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    card_idolized_url = models.CharField(max_length=200, blank=True)
     card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    round_card_url = models.CharField(max_length=200, blank=True, null=True)
     round_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     round_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
+    # cache
+    total_owners = models.PositiveIntegerField(null=True, blank=True)
+    total_wishlist = models.PositiveIntegerField(null=True, blank=True)
 
     def japanese_attribute(self):
         return japanese_attribute(self.attribute)

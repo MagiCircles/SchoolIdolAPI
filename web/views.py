@@ -208,7 +208,8 @@ def index(request):
 
     # Get random character
     context['character'] = None
-    if request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
+    context['character'] = 'special/767cropped.png'
+    if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center:
             context['character'] = random_account.center.card.transparent_idolized_image if random_account.center.idolized or random_account.center.card.is_special else random_account.center.card.transparent_image
@@ -934,7 +935,6 @@ def activity(request, activity):
             'thing_to_delete': context['activity'].id,
         })
         if request.method == 'POST':
-            print request.POST
             if 'thing_to_delete' in request.POST:
                 context['form_delete'] = forms.ConfirmDelete(request.POST)
                 if context['form_delete'].is_valid():

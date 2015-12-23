@@ -1359,7 +1359,7 @@ def users(request, ajax=False):
     context['show_no_result'] = not ajax
     context['show_search_results'] = bool('search' in request.GET)
 
-    context['accounts'] = queryset
+    context['accounts_list'] = queryset
     context['users_language'] = request.GET['language'] if 'language' in request.GET else None
 
     f = open('cardsinfo.json', 'r')

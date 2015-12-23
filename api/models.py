@@ -34,8 +34,8 @@ OS_CHOICES = (
 )
 
 STORED_CHOICES = (
-    ('Deck', _('Deck')),
-    ('Album', _('Album')),
+    ('Deck', string_concat(_('Deck'), ' (', _('You have it'), ')')),
+    ('Album', string_concat(_('Album'), ' (', _('You don\'t have it anymore'), ')')),
     ('Box', _('Present Box')),
     ('Favorite', _('Wish List')),
 )

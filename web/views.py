@@ -35,7 +35,7 @@ import collections
 import operator
 
 def contextAccounts(request, with_center=True):
-    accounts = request.user.accounts_set.all()
+    accounts = request.user.accounts_set.all().order_by('-rank')
     if with_center:
         accounts = accounts.select_related('center', 'center__card')
     return accounts
@@ -580,7 +580,7 @@ def profile(request, username):
         context['user_accounts'] = context['accounts']
     else:
         context['is_me'] = False
-        context['user_accounts'] = user.accounts_set.all()
+        context['user_accounts'] = user.accounts_set.all().order_by('-rank')
 
     if request.user.is_staff and 'staff' in request.GET:
         deck_queryset = models.OwnedCard.objects.filter(Q(stored='Deck') | Q(stored='Album'))

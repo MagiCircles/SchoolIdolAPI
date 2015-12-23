@@ -10,6 +10,9 @@ def verifiedToString(value):
 def playWithToString(value):
     return models.playWithToString(value)
 
+def languageToString(value):
+    return _(models.languageToString(value))
+
 skillsIcons = {
     'Score Up': 'scoreup',
     'Healer': 'healer',
@@ -52,4 +55,5 @@ register.filter('userStatusToString', models.statusToString)
 register.filter('userStatusToColor', models.statusToColor)
 register.filter('userStatusToColorString', models.statusToColorString)
 register.filter('linkTypeToString', models.linkTypeToString)
+register.filter('languageToString', languageToString)
 register.filter('skillToFlaticon', skillToFlaticon)

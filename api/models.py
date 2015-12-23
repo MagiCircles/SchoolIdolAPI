@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib import admin
 from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _, string_concat
-from api.models_languages import LANGUAGE_CHOICES
+from api.models_languages import *
 from django.core import validators
 from django.utils import timezone
 from django_prometheus.models import ExportModelOperationsMixin

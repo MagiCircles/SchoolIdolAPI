@@ -1,4 +1,4 @@
-{% load languageToString %}
+{% load choicesToString %}
 {% load i18n %}
 {% load gravatar %}
 {% load events %}
@@ -9,7 +9,7 @@
       {% endif %}
       <table class="table text-right" id="ranking{{ participation.account.language }}">
 	{% with participation.account.language|languageToString as lang %}
-	<caption class="text-center" data-language="{{ participation.account.language }}">{% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}</caption>
+	<caption class="text-center" data-language="{{ participation.account.language }}">{% trans 'School Idol Tomodachi' %} {{ lang }} {% trans 'Ranking' %}</caption>
 	{% endwith %}
 	{% endifchanged %}
 	{% with participation|tier:event as tier %}
@@ -34,7 +34,7 @@
 
 	    <span id="edit{{ participation.id }}title" class="hidden">
 	      {% with participation.account.language|languageToString as lang %}
-	      {% trans 'School Idol Tomodachi' %} {% trans lang %} {% trans 'Ranking' %}
+	      {% trans 'School Idol Tomodachi' %} {{ lang }} {% trans 'Ranking' %}
 	      {% endwith %}
 	    </span>
 

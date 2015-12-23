@@ -2,6 +2,7 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% load imageurl %}
+{% load choicesToString %}
 
 {% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endblock %}
 {% block js %}
@@ -123,7 +124,7 @@
 	    {% endfor %}
 	  </select>
 	  <br>
-	  <label for="id_collection">{% trans 'Collection' %} ({% trans 'Japanese' %}) <i class="flaticon-JP"></i></label>
+	  <label for="id_collection">{% trans 'Collection' %} ({{ 'JP'|languageToString }}) <i class="flaticon-JP"></i></label>
 	  <select id="id_collection" name="collection">
 	    <option value=""></option>
 	    {% for collection in filters.collections %}
@@ -131,7 +132,7 @@
 	    {% endfor %}
 	  </select>
 	  <br>
-	  <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English' %}) <i class="flaticon-EN"></i></label>
+	  <label for="id_translated_collection">{% trans 'Collection' %} ({{ 'EN'|languageToString }}) <i class="flaticon-EN"></i></label>
 	  <select id="id_translated_collection" name="translated_collection">
 	    <option value=""></option>
 	    {% for translated_collection in filters.translated_collections %}

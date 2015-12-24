@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans 'Discussions' %}: {{ discussion.name }}{% endblock %}
+
+{% block js %}{% endblock %}
+
+{% block content %}
+  <div
+     class="toplistbanner"
+     style="background-image: url('{{ discussion.image }}');
+	    {% if discussion.hide_background %}background-image: none;{% endif %}
+	    background-color: {% if discussion.alt_color %}{{ discussion.alt_color }}{% else %}{{ discussion.color }}{% endif %};
+	    {% if 'static/' in discussion.image %}background-size: auto; background-position: right center;{% endif %}">
+    <span>
+      <i class="flaticon-comments"></i>
+      {{ discussion.name }}<br>
+      <a href="/discussions/" class="tiny a-nodifference"><i class="tiny flaticon-back"></i><a>
+    </span>
+  </div>
+<div class="container">
+  <div class="bigger">
+  </div>
+  {% include 'disqus.html' with disqus_identifier='discussion_'|add:discussion.code %}
+  <br><br>
+</div>
+{% endblock %}

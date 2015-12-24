@@ -6,6 +6,8 @@ raw_information = {
         'cv_nickname': 'Emitsun',
         'cv_twitter': 'Nitta_Emi',
         'cv_instagram': 'Nitta_Emi',
+        'image': 'http://i.schoolido.lu/cards/transparent/28Transparent.png',
+        'color': '#f6ab29',
     },
     'Nishikino Maki': {
         'year': 'First',
@@ -13,6 +15,8 @@ raw_information = {
         'cv_nickname': 'Pile',
         'cv_twitter': 'pile_eric',
         'cv_instagram': 'pile_eric',
+        'image': 'http://i.schoolido.lu/cards/transparent/33Transparent.png',
+        'color': '#ee7b78',
     },
     'Ayase Eli': {
         'year': 'Third',
@@ -20,6 +24,8 @@ raw_information = {
         'cv_nickname': 'Nanjolno',
         'cv_twitter': 'nanjolno',
         'cv_instagram': 'nanjolno',
+        'image': 'http://i.schoolido.lu/cards/transparent/29Transparent.png',
+        'color': '#b1daef',
     },
     'Minami Kotori': {
         'year': 'Second',
@@ -27,6 +33,8 @@ raw_information = {
         'cv_nickname': 'Ucchi',
         'cv_twitter': 'aya_uchida',
         'cv_instagram': None,
+        'image': 'http://i.schoolido.lu/cards/transparent/30Transparent.png',
+        'color': '#c2b9bc',
     },
     'Hoshizora Rin': {
         'year': 'First',
@@ -34,6 +42,8 @@ raw_information = {
         'cv_nickname': 'Rippi',
         'cv_twitter': 'rippialoha',
         'cv_instagram': 'rippialoha',
+        'image': 'http://i.schoolido.lu/cards/transparent/32Transparent.png',
+        'color': '#98d3cc',
     },
     'Koizumi Hanayo': {
         'year': 'First',
@@ -41,6 +51,8 @@ raw_information = {
         'cv_nickname': 'Shikaco',
         'cv_twitter': 'shi_ka_co',
         'cv_instagram': 'shi_ka_co',
+        'image': 'http://i.schoolido.lu/cards/transparent/35Transparent.png',
+        'color': '#89c370',
     },
     'Sonoda Umi': {
         'year': 'Second',
@@ -48,6 +60,8 @@ raw_information = {
         'cv_nickname': 'Mimorin',
         'cv_twitter': 'mimori_suzuko',
         'cv_instagram': 'mimori_suzuko',
+        'image': 'http://i.schoolido.lu/cards/transparent/31Transparent.png',
+        'color': '#288bcc',
     },
     'Toujou Nozomi': {
         'year': 'Third',
@@ -55,6 +69,8 @@ raw_information = {
         'cv_nickname': 'Kussun',
         'cv_twitter': 'kusudaaina',
         'cv_instagram': 'kusudaaina',
+        'image': 'http://i.schoolido.lu/cards/transparent/34Transparent.png',
+        'color': '#8c70ad',
     },
     'Yazawa Nico': {
         'year': 'Third',
@@ -62,6 +78,8 @@ raw_information = {
         'cv_nickname': 'Soramaru',
         'cv_twitter': 'tokui_sorangley',
         'cv_instagram': None,
+        'image': 'http://i.schoolido.lu/cards/transparent/36Transparent.png',
+        'color': '#f1a6c7',
     },
 }
 

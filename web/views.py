@@ -1505,6 +1505,18 @@ def mapview(request):
     context['current'] = 'map'
     return render(request, 'map.html', context)
 
+def discussions(request):
+    context = globalContext(request)
+    context['discussions'] = web_raw.discussions
+    context['community_links'] = (link for link in links_list if link['link'] == 'communities').next()
+    context['card'] = models.Card.objects.filter(name=context['community_links']['idol'], transparent_idolized_image__isnull=False).order_by('?')[0]
+    return render(request, 'discussions.html', context)
+
+def discussion(request, discussion):
+    context = globalContext(request)
+    context['discussion'] = (d for d in web_raw.discussions if 'code' in d and d['code'] == discussion).next()
+    return render(request, 'discussion.html', context)
+
 def avatar_twitter(request, username):
     return redirect('http://avatars.io/twitter/' + username + '?size=large')
 def avatar_facebook(request, username):

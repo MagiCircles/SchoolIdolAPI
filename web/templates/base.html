@@ -75,6 +75,7 @@
 		<li class="{% if current == 'users' and users_language == 'JP' %}active{% endif %}"><a href="/users/?language=JP&verified=3&reverse_order=on"><i class="flaticon-JP"></i> {% trans 'Leaderboard' %} - {{ 'JP'|languageToString }}</a></li>
 		<li role="presentation" class="divider"></li>
 		<li class="{% if current == 'map' %}active{% endif %}"><a href="/map/"><i class="flaticon-world"></i> {% trans 'Map' %}</a></li>
+		<li class="{% if current == 'discussions' or current == 'discussion' %}active{% endif %}"><a href="/discussions/"><i class="flaticon-comments"></i> {% trans 'Discussions' %}</a></li>
 	      </ul>
 	    </li>
 	    {% if user.is_authenticated %}

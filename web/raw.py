@@ -170,6 +170,6 @@ discussions = [
     'name': idol,
     'image': api_raw.raw_information[idol]['image'],
     'color': api_raw.raw_information[idol]['color'],
-    'link': '/idol/' + idol + '/#disqus_thread',
+    'link': '/idol/' + idol + '/',
         'big': True,
 } for idol in api_raw.raw_information.keys()]

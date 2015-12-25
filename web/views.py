@@ -364,13 +364,6 @@ def cards(request, card=None, ajax=False):
         if 'ids' in request.GET and request.GET['ids']:
             cards= cards.filter(pk__in=request.GET['ids'].split(','))
 
-        if 'is_promo' in request.GET and request.GET['is_promo'] == 'on':
-            cards = cards.filter(is_promo__exact=True)
-            request_get['is_promo'] = 'on'
-        elif 'is_promo' in request.GET and request.GET['is_promo'] == 'off':
-            cards = cards.filter(is_promo__exact=False)
-            request_get['is_promo'] = 'off'
-
         if 'is_event' in request.GET and request.GET['is_event'] == 'on':
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = 'on'
@@ -424,6 +417,15 @@ def cards(request, card=None, ajax=False):
                 cards = cards.filter(japan_only=False)
                 context['show_discover_banner'] = True
             request_get['is_world'] = True
+
+        if ('accounts' in context and not hasJP(context['accounts'])
+            and 'search' not in request.GET or 'is_promo' in request.GET and request.GET['is_promo']):
+            if 'is_promo' not in request.GET or request.GET['is_promo'] == 'off':
+                cards = cards.filter(is_promo=False)
+                request_get['is_promo'] = 'off'
+            else:
+                cards = cards.filter(is_promo=True)
+                request_get['is_promo'] = 'on'
 
         if 'ordering' in request.GET and request.GET['ordering']:
             request_get['ordering'] = request.GET['ordering']

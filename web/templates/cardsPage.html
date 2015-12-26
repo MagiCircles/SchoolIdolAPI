@@ -213,8 +213,12 @@
 			<tr>
 			  <th>{% trans 'Promo Card' %}</th>
 			  <td>
+			    {% if card.promo_item %}
 			    {% trans 'This card comes with ' %}:<br>
 			    {{ card.promo_item }}
+			    {% else %}
+			    {% trans 'Yes' %}
+			    {% endif %}
 			    <div class="pull-right">
 			      <i class="flaticon-promo"></i>
 			    </div>

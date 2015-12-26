@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
+from django.conf import settings
 from multiupload.fields import MultiFileField
 from api import models
 
@@ -39,14 +40,16 @@ class ChangePasswordForm(Form):
             return self.cleaned_data
         raise forms.ValidationError(_("The two password fields did not match."))
 
-def getGirls():
-    girls = models.Card.objects.values('idol__name').annotate(total=Count('idol__name')).order_by('-total', 'idol__name')
-    return [('', '')] + [(girl['idol__name'], girl['idol__name']) for girl in girls]
+def getGirls(with_total=False, with_japanese_name=False):
+    return [('', '')] + [(idol['name'], (idol['idol__japanese_name'] if with_japanese_name and idol['idol__japanese_name'] else idol['name']) + (' (' + unicode(idol['total']) + ')' if with_total else '')) for idol in settings.CARDS_INFO['idols']]
 
 class UserPreferencesForm(ModelForm):
-    best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
+    best_girl = ChoiceField(label=_('Best Girl'), choices=[], required=False)
+
     def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
         super(UserPreferencesForm, self).__init__(*args, **kwargs)
+        self.fields['best_girl'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
         self.fields['birthdate'].widget = DateInput()
         self.fields['birthdate'].widget.attrs.update({
             'class': 'calendar-widget',
@@ -307,6 +310,37 @@ class FilterSongForm(ModelForm):
         model = models.Song
         fields = ('search', 'attribute', 'is_daily_rotation', 'is_event', 'available', 'ordering', 'reverse_order')
 
+class FilterEventForm(ModelForm):
+    search = forms.CharField(required=False, label=_('Search'))
+
+    is_world = forms.BooleanField(required=False, label=_('Worldwide only'))
+    event_type = forms.ChoiceField(label=_('Type'), choices=BLANK_CHOICE_DASH + [
+        ('Token', _('Token/Diary')),
+        ('Score Match', 'Score Match'),
+        ('Medley Festival', 'Medley Festival'),
+    ])
+    idol = ChoiceField(label=_('Idol'), choices=[], required=False)
+    idol_attribute = forms.ChoiceField(choices=[], label=string_concat(_('Super Rare'), ': ', _('Attribute')), required=False)
+    idol_skill = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + [
+        ('Perfect Lock', 'Perfect Lock'),
+        ('Score Up', 'Score Up'),
+    ]), label=string_concat(_('Super Rare'), ': ', _('Skill')), required=False)
+    participation = forms.NullBooleanField(required=False, label=_('I participated'))
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super(FilterEventForm, self).__init__(*args, **kwargs)
+        self.fields['idol'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
+        attributes = list(models.ATTRIBUTE_CHOICES)
+        del(attributes[-1])
+        self.fields['idol_attribute'].choices = BLANK_CHOICE_DASH + attributes
+        if not request or not request.user.is_authenticated():
+            del(self.fields['participation'])
+
+    class Meta:
+        model = models.Event
+        fields = ('search', 'is_world', 'event_type', 'idol', 'idol_attribute', 'idol_skill')
+
 class FilterUserForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))
     ordering = forms.ChoiceField(choices=[
@@ -316,7 +350,7 @@ class FilterUserForm(ModelForm):
     reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
 
     attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=_('Attribute'), required=False)
-    best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
+    best_girl = ChoiceField(label=_('Best Girl'), choices=[], required=False)
     # location = forms.CharField(required=False, label=_('Location'))
     private = forms.NullBooleanField(required=False, label=_('Private Profile'))
     status = ChoiceField(label=_('Donators'), choices=(BLANK_CHOICE_DASH + list(models.STATUS_CHOICES)), required=False)
@@ -325,9 +359,11 @@ class FilterUserForm(ModelForm):
     center_rarity = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.RARITY_CHOICES)), label=string_concat(_('Center'), ': ', _('Rarity')), required=False)
 
     def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
         super(FilterUserForm, self).__init__(*args, **kwargs)
         for field in self.fields.keys():
             self.fields[field].widget.attrs['placeholder'] = self.fields[field].label
+        self.fields['best_girl'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
         self.fields['language'].choices = BLANK_CHOICE_DASH + self.fields['language'].choices
         self.fields['os'].choices = BLANK_CHOICE_DASH + self.fields['os'].choices
         self.fields['verified'].choices = BLANK_CHOICE_DASH + [(3, _('Only'))] + self.fields['verified'].choices

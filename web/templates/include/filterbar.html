@@ -1,6 +1,7 @@
 {# interfaceColor filter_form #}
 {# filter_form has to contain the fields: search, ordering and reverse_order #}
 {% load i18n %}
+{% load mod %}
 {% load getattribute %}
 <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
     <form method="GET">
@@ -8,6 +9,7 @@
       <div class="section search">
 	{{ filter_form.search }}
       </div>
+      {% if filter_form.ordering %}
       <h4>{% trans 'Order' %}</h4>
       <div class="section order">
 	{{ filter_form.ordering }}
@@ -19,6 +21,7 @@
 	  <label for="{{ filter_form.reverse_order.id_for_label }}">{{ filter_form.reverse_order.label }}</label>
 	</div>
       </div>
+      {% endif %}
       <h4>{% trans 'Filter' %}{% if current == 'users' %}: {% trans 'Players' %}{% endif %}</h4>
       <div class="section filter">
 	{% for field in filter_form.fields %}
@@ -35,8 +38,15 @@
 	{% endif %}
 	{% if field != 'search' and field != 'ordering' and field != 'reverse_order' %}
 	{% with f=filter_form|getattribute:field %}
+	{% if f|is_boolean %}
+	<div>
+	  <div class="pull-right">{{ f }}</div>
+	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans f.label %}</label>
+	</div>
+	{% else %}
 	<label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
-	{{ f }}<br><br>
+	{{ f }}<br>
+	{% endif %}<br>
 	{% endwith %}
 	{% endif %}
 	{% endfor %}

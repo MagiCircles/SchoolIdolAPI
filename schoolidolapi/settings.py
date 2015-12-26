@@ -142,6 +142,9 @@ RANDOM_ORDERING_DATABASE = 'RANDOM'
 
 IMGUR_CLIENT_ID = '2e57c00bd3e1b6f'
 
+# Generated settings:
+CARDS_INFO = {'idols': []}
+
 try:
     from local_settings import *
     from generated_settings import *

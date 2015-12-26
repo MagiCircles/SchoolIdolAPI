@@ -301,9 +301,7 @@ def cards(request, card=None, ajax=False):
     if len(request.GET) == 1 and 'name' in request.GET:
         return redirect('/idol/' + request.GET['name'] + '/')
 
-    f = open('cardsinfo.json', 'r')
-    cardsinfo = json.load(f)
-    f.close()
+    cardsinfo = settings.CARDS_INFO
     max_stats = cardsinfo['max_stats']
 
     # Set defaults
@@ -476,7 +474,7 @@ def cards(request, card=None, ajax=False):
     if not ajax:
        # Get filters info for the form
         context['filters'] = {
-            'idols': cardsinfo['idols'],
+            'idols': forms.getGirls(with_total=True, with_japanese_name=request.LANGUAGE_CODE == 'ja'),
             'collections': cardsinfo['collections'],
             'translated_collections': cardsinfo['translated_collections'],
             'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
@@ -1054,12 +1052,12 @@ def edit(request):
     context['preferences'] = request.user.preferences
     context['show_verified_info'] = 'verification' in request.GET
     form = forms.UserForm(instance=request.user)
-    form_preferences = forms.UserPreferencesForm(instance=context['preferences'])
+    form_preferences = forms.UserPreferencesForm(instance=context['preferences'], request=request)
     form_addlink = forms.AddLinkForm()
     form_changepassword = forms.ChangePasswordForm()
     if request.method == "POST":
         if 'editPreferences' in request.POST:
-            form_preferences = forms.UserPreferencesForm(request.POST, instance=context['preferences'])
+            form_preferences = forms.UserPreferencesForm(request.POST, instance=context['preferences'], request=request)
             old_location = context['preferences'].location
             if form_preferences.is_valid():
                 prefs = form_preferences.save(commit=False)
@@ -1258,7 +1256,7 @@ def users(request, ajax=False):
     queryset = models.Account.objects.all()
     page_size = 18
     default_ordering = 'rank'
-    context['filter_form'] = forms.FilterUserForm(request.GET)
+    context['filter_form'] = forms.FilterUserForm(request.GET, request=request)
 
     if request.GET:
         if 'search' in request.GET:
@@ -1364,23 +1362,72 @@ def users(request, ajax=False):
     context['accounts_list'] = queryset
     context['users_language'] = request.GET['language'] if 'language' in request.GET else None
 
-    f = open('cardsinfo.json', 'r')
-    cardsinfo = json.load(f)
-    f.close()
+    cardsinfo = settings.CARDS_INFO
     context['idols'] = cardsinfo['idols']
 
     if len(request.GET) > 1 or (len(request.GET) == 1 and 'page' not in request.GET):
-        context['filter_form'] = forms.FilterUserForm(request.GET)
+        context['filter_form'] = forms.FilterUserForm(request.GET, request=request)
     else:
-        context['filter_form'] = forms.FilterUserForm()
+        context['filter_form'] = forms.FilterUserForm(request=request)
     context['current'] = 'users'
     return render(request, 'usersPage.html' if ajax else 'users.html', context)
 
 def events(request):
     context = globalContext(request)
     context['current'] = 'events'
-    events = models.Event.objects.all().order_by('-end')
-    context['events'] = events
+    queryset = models.Event.objects.all()
+
+    form_data = request.GET.copy()
+
+    if 'search' in request.GET:
+        terms = request.GET['search'].split(' ')
+        for term in terms:
+            if term != '':
+                queryset = queryset.filter(Q(japanese_name__icontains=term)
+                                           | Q(romaji_name__icontains=term)
+                                           | Q(english_name__icontains=term)
+                                           | Q(note__icontains=term)
+                                           | Q(cards__name__icontains=term)
+                                           | Q(cards__attribute__icontains=term)
+                )
+    if 'event_type' in request.GET and request.GET['event_type']:
+        if request.GET['event_type'] == 'Token':
+            queryset = queryset.exclude(japanese_name__icontains='Score Match').exclude(japanese_name__icontains='Medley Festival')
+        else:
+            queryset = queryset.filter(japanese_name__icontains=request.GET['event_type'])
+    if 'idol' in request.GET and request.GET['idol']:
+        queryset = queryset.filter(cards__name=request.GET['idol'])
+    if 'idol_attribute' in request.GET and request.GET['idol_attribute']:
+        queryset = queryset.filter(cards__attribute=request.GET['idol_attribute'])
+    if 'idol_skill' in request.GET and request.GET['idol_skill']:
+        queryset = queryset.filter(cards__skill=request.GET['idol_skill'])
+    if request.user.is_authenticated() and 'participation' in request.GET and request.GET['participation']:
+        if request.GET['participation'] == '2':
+            queryset = queryset.filter(participations__account__owner=request.user)
+        elif request.GET['participation'] == '3':
+            queryset = queryset.exclude(participations__account__owner=request.user)
+
+    if ('accounts' in context and not hasJP(context['accounts'])
+        and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
+        if 'is_world' in request.GET and request.GET['is_world'] == 'off':
+            queryset = queryset.filter(english_beginning__isnull=True)
+            form_data['is_world'] = False
+            # Remove too old events when showing upcoming ones (very unlikely to happen in EN or else)
+            if 'reverse_order' in request.GET:
+                queryset = queryset.exclude(beginning__lte=timezone.now() - relativedelta(months=15))
+                context['show_approximate_dates'] = True
+        else:
+            queryset = queryset.filter(english_beginning__isnull=False)
+            context['show_discover_banner'] = True
+            form_data['is_world'] = 'on'
+
+    queryset = queryset.distinct()
+
+    context['filter_form'] = forms.FilterEventForm(form_data, request=request)
+
+    queryset = queryset.order_by(('' if 'reverse_order' in request.GET and request.GET['reverse_order'] else '-') + 'end')
+
+    context['events'] = queryset
     context['show_english_banners'] = not onlyJP(context)
     return render(request, 'events.html', context)
 
@@ -1727,9 +1774,7 @@ def songs(request, song=None, ajax=False):
     context['show_no_result'] = not ajax
     context['show_search_results'] = bool(request.GET)
 
-    f = open('cardsinfo.json', 'r')
-    cardsinfo = json.load(f)
-    f.close()
+    cardsinfo = settings.CARDS_INFO
     max_stats = cardsinfo['songs_max_stats']
     for song in songs:
         song.length = time.strftime('%M:%S', time.gmtime(song.time))

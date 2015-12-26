@@ -2,7 +2,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.files.images import ImageFile
 from django.core.files.temp import NamedTemporaryFile
-from django.db.models import Count
 from django.forms.models import model_to_dict
 import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
@@ -10,6 +9,7 @@ from api import models
 from api.raw import raw_information
 from tinypng import shrink_file
 from web.forms import getGirls
+from api.management.commands.generate_settings import generate_settings
 import re
 import HTMLParser
 import unicodedata
@@ -35,9 +35,6 @@ attribute_jphexcolors = {'#7EF': 'Cool', '#FCE': 'Smile', '#7FA': 'Pure', '#d8bf
 local = False
 redownload = False
 noimages = False
-
-def ValuesQuerySetToDict(vqs):
-    return [item for item in vqs]
 
 def removeHTML(str):
     return re.sub('<[^<]+?>', '', str)
@@ -133,24 +130,6 @@ def update_raw_db():
         raw_information[idol]['main'] = True
         idol, created = models.Idol.objects.update_or_create(name=idol, defaults=raw_information[idol])
 
-    print "#### Update cardsinfo.json"
-    j = json.dumps({
-        'max_stats': {
-            'Smile': models.Card.objects.order_by('-idolized_maximum_statistics_smile')[:1][0].idolized_maximum_statistics_smile,
-            'Pure': models.Card.objects.order_by('-idolized_maximum_statistics_pure')[:1][0].idolized_maximum_statistics_pure,
-            'Cool': models.Card.objects.order_by('-idolized_maximum_statistics_cool')[:1][0].idolized_maximum_statistics_cool,
-        },
-        'songs_max_stats': models.Song.objects.order_by('-expert_notes')[0].expert_notes,
-        'idols': ValuesQuerySetToDict(models.Card.objects.values('name').annotate(total=Count('name')).order_by('-total', 'name')),
-        'sub_units': [card['sub_unit'] for card in models.Idol.objects.filter(sub_unit__isnull=False).values('sub_unit').distinct()],
-        'years': [idol['year'] for idol in models.Idol.objects.filter(year__isnull=False).values('year').distinct()],
-        'schools': [idol['school'] for idol in models.Idol.objects.filter(school__isnull=False).values('school').distinct()],
-        'collections': ValuesQuerySetToDict(models.Card.objects.filter(japanese_collection__isnull=False).exclude(japanese_collection__exact='').values('japanese_collection').annotate(total=Count('name')).order_by('-total', 'japanese_collection')),
-        'translated_collections': ValuesQuerySetToDict(models.Card.objects.filter(translated_collection__isnull=False).exclude(translated_collection__exact='').values('translated_collection').annotate(total=Count('name')).order_by('-total', 'translated_collection')),
-        'skills': ValuesQuerySetToDict(models.Card.objects.filter(skill__isnull=False).values('skill').annotate(total=Count('skill')).order_by('-total'))
-    })
-    f = open('cardsinfo.json', 'w')
-    print >> f, j
-    f.close()
+    generate_settings()
 
 import_raw_db = update_raw_db

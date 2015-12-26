@@ -43,9 +43,8 @@
     'modal': 'true',
     'modal-text': 'true',
     'images': {
-      '': '/static/empty.png',
-      {% for idol in idols %}
-      '{% if LANGUAGE_CODE == 'ja' %}{{ idol.japanese_name }}{% else %}{{ idol.name|escapejs }}{% endif %}': '{% chibiimage idol=idol.name small=True %}',
+      {% for idol, str in filter_form.fields.best_girl.choices %}
+      {% if idol == '' %}'': '/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
   }
   });

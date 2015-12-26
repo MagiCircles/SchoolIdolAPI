@@ -87,4 +87,4 @@ class Command(BaseCommand):
     can_import_settings = True
 
     def handle(self, *args, **options):
-        generated_settings()
+        generate_settings()

@@ -208,7 +208,6 @@ def index(request):
 
     # Get random character
     context['character'] = None
-    context['character'] = 'special/767cropped.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center:

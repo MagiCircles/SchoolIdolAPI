@@ -846,6 +846,7 @@ def _ajaxaccounttab_eventparticipations(tab, request, account, more):
     """
     context = {}
     account.eventparticipations = models.EventParticipation.objects.filter(account=account).order_by('-event__end').select_related('event')
+    context['account'] = account
     return context
 
 def _ajaxaccounttab_teams(tab, request, account, more):

@@ -69,6 +69,7 @@ function addCardButtonHandler() {
 				    $('i.flaticon-loading').remove();
 				    $('a[href="#quickAddCard"]').show();
 				    ownedcardbutton.replaceWith(newownedcardbutton);
+				    ownedcardbutton = newownedcardbutton;
 				    editCardFormHandler();
 				    $('[data-toggle="popover"]').popover();
 				},

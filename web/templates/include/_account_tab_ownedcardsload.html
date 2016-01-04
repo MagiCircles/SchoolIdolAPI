@@ -1,0 +1,11 @@
+{% load mod %}
+{% load i18n %}
+{% if not more %}
+{% if not account.total_cards or account.total_cards|subtract:cards_limit > 0 %}
+<div class="text-right padding50 fontx1-5">
+  <a href="#loadMoreCards" data-cards-limit="{{ cards_limit }}">
+    + {% trans 'Load remaining cards' %} (<span class="deck_total">{% if account.total_cards %}{{ account.total_cards|subtract:cards_limit }}{% endif %}</span>)
+  </a>
+</div>
+{% endif %}
+{% endif %}

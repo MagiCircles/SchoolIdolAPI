@@ -1,0 +1,11 @@
+{% load i18n %}
+{% if not more %}
+<h3 class="fontx2 text-left">
+  <div class="pull-right padding50 padding-novertical">
+    <i class="flaticon-star fontx1-2"></i>
+  </div>
+  {% trans 'Wish List' %}<br>
+</h3>
+{% endif %}
+{% include 'ownedcards.html' with cards=account.wishlist %}
+{% include 'include/_account_tab_ownedcardsload.html' %}

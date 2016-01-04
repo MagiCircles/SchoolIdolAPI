@@ -1,0 +1,25 @@
+{% load mod %}
+{% load i18n %}
+{% if not more %}
+{% if is_me and account.deck %}
+<br>
+<div class="row">
+  {% for deck_link in deck_links %}
+  {% if forloop.counter0|mod:4 %}
+</div><div class="row">
+  {% endif %}
+  <div class="col-md-3">
+    <a href="/cards/?account={{ account.id }}&stored=Deck&{{ deck_link.link }}" target="_blank"
+       class="topbutton" style="background-image: url('{{ deck_link.background }}'); background-color: {{ deck_link.color }};{% if '/static/' in deck_link.background %} background-size: 80%; background-position-x: -90%;{% endif %}">
+      <img src="/static/topbutton.png">
+      <span>
+	{% trans deck_link.name %}
+      </span>
+    </a>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endif %}
+{% include 'ownedcards.html' with cards=account.deck %}
+{% include 'include/_account_tab_ownedcardsload.html' %}

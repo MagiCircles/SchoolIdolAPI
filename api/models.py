@@ -140,6 +140,25 @@ LINK_RELEVANCE_CHOICES = (
 )
 LINK_RELEVANCE_DICT = dict(LINK_RELEVANCE_CHOICES)
 
+ACCOUNT_TAB_CHOICES = (
+    ('deck', _('Deck')),
+    ('album', _('Album')),
+    ('teams', _('Teams')),
+    ('events', _('Events')),
+    ('wishlist', _('Wish List')),
+    ('presentbox', _('Present Box')),
+)
+ACCOUNT_TAB_DICT = dict(ACCOUNT_TAB_CHOICES)
+
+ACCOUNT_TAB_ICONS = (
+    ('deck', 'deck'),
+    ('album', 'album'),
+    ('teams', 'more'),
+    ('events', 'event'),
+    ('wishlist', 'star'),
+    ('presentbox', 'present'),
+)
+
 def verifiedToString(val):
     val = int(val)
     return VERIFIED_DICT[val]
@@ -161,6 +180,9 @@ def storedChoiceToString(stored):
 
 def linkTypeToString(val):
     return LINK_DICT[val]
+
+def accountTabToString(val):
+    return ACCOUNT_TAB_DICT[val]
 
 def statusToString(val):
     return STATUS_DICT[val]
@@ -355,6 +377,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'), on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(_("Rank"), blank=True, null=True)
     verified = models.PositiveIntegerField(_("Verified"), default=0, choices=VERIFIED_CHOICES)
+    default_tab = models.CharField(_('Default tab'), max_length=30, choices=ACCOUNT_TAB_CHOICES, help_text=_('What people see first when they take a look at your account.'), default='deck')
 
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)
@@ -376,24 +399,24 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
 
 admin.site.register(OwnedCard)
 
-# class Team(ExportModelOperationsMixin('Team'), models.Model):
-#     owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
-#     name = models.CharField(max_length=100, verbose_name=_('Name'))
+class Team(models.Model):
+    owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
 
-#     def __unicode__(self):
-#         return self.name
+    def __unicode__(self):
+        return self.name
 
-# admin.site.register(Team)
+admin.site.register(Team)
 
-# class Member(ExportModelOperationsMixin('Member'), models.Model):
-#     team = models.ForeignKey(Team, related_name='cards')
-#     card = models.ForeignKey(OwnedCard)
-#     position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
+class Member(models.Model):
+    team = models.ForeignKey(Team, related_name='members')
+    ownedcard = models.ForeignKey(OwnedCard)
+    position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
 
-#     class Meta:
-#         unique_together = (('team', 'position'), ('team', 'card'))
+    class Meta:
+        unique_together = (('team', 'position'), ('team', 'ownedcard'))
 
-# admin.site.register(Member)
+admin.site.register(Member)
 
 class EventParticipation(ExportModelOperationsMixin('EventParticipation'), models.Model):
     event = models.ForeignKey(Event, related_name='participations')

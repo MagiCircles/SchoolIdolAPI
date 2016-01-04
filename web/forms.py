@@ -65,22 +65,30 @@ class AccountForm(ModelForm):
         model = models.Account
         fields = ('nickname', 'language', 'os', 'friend_id', 'rank')
 
+def _ownedcard_label(obj):
+    return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
+
 class OwnedCardModelChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
-        return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
+        return _ownedcard_label(obj)
 
 class FullAccountForm(ModelForm):
     center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.filter(pk=0), required=False, label=_('Center'))
     # Always override this queryset to set the current account only
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
+
+    def __init__(self, *args, **kwargs):
+        super(FullAccountForm, self).__init__(*args, **kwargs)
+        self.fields['default_tab'].choices = [(k, v) for k, v in list(models.ACCOUNT_TAB_CHOICES) if k != 'presentbox']
+
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'friend_id', 'language', 'os', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'friend_id', 'language', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests')
 
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests')
 
 class SimplePasswordForm(Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))
@@ -380,23 +388,41 @@ class FilterUserForm(ModelForm):
         model = models.Account
         fields = ('search', 'attribute', 'best_girl', 'private', 'status', 'language', 'os', 'verified', 'center_attribute', 'center_rarity', 'with_friend_id', 'accept_friend_requests', 'play_with', 'ordering', 'reverse_order')
 
-# class TeamForm(ModelForm):
-#     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card1 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card2 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card3 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card4 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card5 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card6 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card7 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card8 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     class Meta:
-#         model = models.Team
-#         fields = ('name', 'card0', 'card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8')
+class TeamForm(ModelForm):
+    """
+    Account is required to initialize this form.
+    Account must contain prefetched deck.
+    Team instance must contain prefetched all_members
+    """
+    card0 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card1 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card2 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card3 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card4 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card5 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card6 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card7 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card8 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
 
-# def getTeamForm(form, ownedcards):
-#     for i in range(9):
-#         print 'test'
-#         setattr(form, 'card' + str(i), OwnedCardModelChoiceField(queryset=ownedcards, required=False))
-#     return form
+    def __init__(self, *args, **kwargs):
+        account = kwargs.pop('account', None)
+        super(TeamForm, self).__init__(*args, **kwargs)
+        deck_choices = [(ownedcard.id, _ownedcard_label(ownedcard)) for ownedcard in account.deck]
+        for i in range(9):
+            self.fields['card' + str(i)].choices = BLANK_CHOICE_DASH + deck_choices
+        if self.instance and hasattr(self.instance, 'all_members'):
+            for member in getattr(self.instance, 'all_members'):
+                self.fields['card' + str(member.position)].initial = member.ownedcard.id
 
+    def clean(self):
+        for i in range(9):
+            ownedcard_id = self.cleaned_data['card' + str(i)]
+            if ownedcard_id is not None:
+                for j in range(9):
+                    if i != j and ownedcard_id == self.cleaned_data['card' + str(j)]:
+                        raise forms.ValidationError(_("The same card can\'t appear twice in the same team."))
+        return self.cleaned_data
+
+    class Meta:
+        model = models.Team
+        fields = ('name', 'card0', 'card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8')

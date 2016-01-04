@@ -1,10 +1,7 @@
 {% load i18n %}
-{% if eventparticipations|length == 0 %}
-<div class="text-center alert alert-warning">{% trans 'No results.' %}</div>
-{% else %}
 {% load imageurl %}
 <table class="table">
-  {% for participation in eventparticipations %}
+  {% for participation in account.eventparticipations %}
   <tr>
     <td class="text-right">
       <a href="/event/{{ participation.event.japanese_name|urlencode }}">
@@ -39,4 +36,6 @@
   </tr>
   {% endfor %}
 </table>
+{% if not account.eventparticipations %}
+<div class="text-center alert alert-warning">{% trans 'No results.' %}</div>
 {% endif %}

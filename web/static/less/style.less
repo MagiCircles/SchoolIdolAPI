@@ -786,6 +786,19 @@ a.panel {
     }
 }
 
+.album-empty {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 0 5px;
+    margin-bottom: 10px;
+    background: url('/static/empty.png');
+    background-size: 100px;
+}
+
 #users {
     padding: 80px;
     .jumbotron {
@@ -861,6 +874,19 @@ a.panel {
 }
 .verified2 {
     color: @GoldColor;
+}
+
+#addteam {
+    .cuteform-modal-button {
+	img {
+	    max-width: 100%;
+	    height: auto !important;
+	}
+    }
+    .col-md-1 {
+	padding-left: 0;
+	padding-right: 0;
+    }
 }
 
 .row.donation {
@@ -954,7 +980,7 @@ h1#donators {
     }
 }
 
-#events {
+.page-content-wrapper #events {
     max-width: 1170px;
     margin: auto;
     padding: 1px 10px;

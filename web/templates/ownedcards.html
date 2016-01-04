@@ -1,19 +1,9 @@
 {% load imageurl %}
 {% load i18n %}
+{% load mod %}
 {% with show_delete=True size=100 %}
-<br>
 {% if cards %}
-{% for card in cards %}
-{% ifchanged card.card %}
-{% include 'ownedcard.html' %}
-{% else %}
-{% if stored == 'Album' %}
-{% else %}
-{% include 'ownedcard.html' %}
-{% endif %}
-{% endifchanged %}
-{% endfor %}
-<br>
+{% for card in cards %}{% if card|is_int %}<a href="/cards/{{ card }}/" target="_blank" class="album-empty">{{ card }}</a>{% else %}{% include 'ownedcard.html' %}{% endif %}{% endfor %}
 {% else %}
 <div class="alert alert-warning">
   {% if is_me %}

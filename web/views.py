@@ -12,6 +12,7 @@ from django.contrib.auth.views import login as login_view
 from django.contrib.auth.views import password_reset_confirm as password_reset_confirm_view
 from django.db.models import Count, Q, F
 from django.db.models import Prefetch
+from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -75,6 +76,19 @@ def findAccount(id, accounts, forceGetAccount=False):
             return account
     if forceGetAccount:
         try: return models.Account.objects.get(id=id)
+        except: return None
+    return None
+
+def findOwnedCard(id, ownedCards, forceGetOwnedCard=False):
+    try:
+        id = int(id)
+    except:
+        return None
+    for ownedCard in ownedCards:
+        if ownedCard.id == id:
+            return ownedCard
+    if forceGetOwnedCard:
+        try: return models.OwnedCard.objects.get(id=id)
         except: return None
     return None
 
@@ -551,7 +565,84 @@ def addaccount(request):
     context['current'] = 'addaccount'
     return render(request, 'addaccount.html', context)
 
+def addteam(request, account):
+    """
+    SQL Queries
+    - Context
+    - Owned cards (JOIN + card)
+    """
+    context = globalContext(request)
+    account = findAccount(account, context['accounts'])
+    if not account:
+        raise Http404
+    account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
+    if request.method == 'POST':
+        form = forms.TeamForm(request.POST, account=account)
+        if form.is_valid():
+            team = models.Team.objects.create(name=form.cleaned_data['name'], owner_account=account)
+            for i in range(9):
+                if form.cleaned_data['card' + str(i)] is not None:
+                    models.Member.objects.create(team=team, ownedcard=findOwnedCard(form.cleaned_data['card' + str(i)], account.deck), position=i)
+            return redirect('/user/' + request.user.username + '/?show' + str(account.id) + '=teams#team' + str(team.id))
+    else:
+        form = forms.TeamForm(account=account)
+    context['account'] = account
+    context['form'] = form
+    return render(request, 'addteam.html', context)
+
+def editteam(request, team):
+    """
+    SQL Queries
+    - Context
+    - Owned cards (JOIN + card)
+    """
+    context = globalContext(request)
+    team = get_object_or_404(models.Team.objects.filter(owner_account__owner=request.user).select_related('owner_account').prefetch_related(Prefetch('members', queryset=models.Member.objects.select_related('ownedcard', 'ownedcard__card').order_by('position'), to_attr='all_members')), pk=team)
+    account = team.owner_account
+    account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
+    context['form_delete'] = forms.ConfirmDelete(initial={'thing_to_delete': team.id})
+    if request.method == 'POST':
+        if 'thing_to_delete' in request.POST:
+            form = forms.TeamForm(instance=team, account=account)
+            context['form_delete'] = forms.ConfirmDelete(request.POST)
+            if context['form_delete'].is_valid():
+                team.delete()
+                return redirect('/user/' + request.user.username + '/?show' + str(account.id) + '=teams')
+        else:
+            old_name = team.name
+            form = forms.TeamForm(request.POST, instance=team, account=account)
+            if form.is_valid():
+                if form.cleaned_data['name'] != old_name:
+                    team.name = form.cleaned_data['name']
+                    team.save()
+                for i in range(9):
+                    if form.cleaned_data['card' + str(i)] is not None:
+                        models.Member.objects.update_or_create(team=team, position=i, defaults={
+                            'ownedcard': findOwnedCard(form.cleaned_data['card' + str(i)], account.deck),
+                        })
+                return redirect('/user/' + request.user.username + '/?show' + str(account.id) + '=teams#team' + str(team.id))
+    else:
+        form = forms.TeamForm(instance=team, account=account)
+    context['account'] = account
+    context['form'] = form
+    context['team'] = team
+    return render(request, 'addteam.html', context)
+
 def profile(request, username):
+    """
+    SQL Queries
+    - Django session
+    - Request user
+    - (if me) Preferences
+    - (if not me) User (JOIN + preferences)
+    - Accounts (JOIN + center + center card)
+    - Deck stats (number of UR/SR in each account, raw SQL query)
+    - Account queries (see ajaxaccounttab)
+    - User links
+    - (if not me) Is following?
+    - Count followers
+    - Count following
+    """
     context = globalContext(request)
     if request.user.is_authenticated() and not request.user.is_anonymous() and request.user.username == username:
         user = request.user
@@ -575,6 +666,8 @@ def profile(request, username):
                     form_addcard.save()
                     return redirect('/user/' + context['profile_user'].username + '?staff#' + str(form_addcard.cleaned_data['owner_account']))
     if user == request.user:
+        # force execute queryset
+        [_ for account in context['accounts']]
         context['is_me'] = True
         context['user_accounts'] = context['accounts']
     else:
@@ -585,12 +678,35 @@ def profile(request, username):
         deck_queryset = models.OwnedCard.objects.filter(Q(stored='Deck') | Q(stored='Album'))
     else:
         deck_queryset = models.OwnedCard.objects.filter(stored='Deck')
-    context['user_accounts'] = context['user_accounts'].select_related('center', 'center__card').prefetch_related(Prefetch('ownedcards', queryset=deck_queryset.order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id').select_related('card'), to_attr='deck'))
+    context['user_accounts'] = context['user_accounts'].select_related('center', 'center__card')
 
     if not context['preferences'].private or context['is_me']:
+        # Get stats of cards
+        cursor = connection.cursor()
+        query = 'SELECT c.rarity, o.owner_account_id, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + ','.join([str(account.id) for account in context['user_accounts']]) + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id'
+        deck_stats = cursor.execute(query).fetchall()
         for account in context['user_accounts']:
-            account.deck_total_sr = sum(card.card.rarity == 'SR' for card in account.deck)
-            account.deck_total_ur = sum(card.card.rarity == 'UR' for card in account.deck)
+            # Set stats
+            try: account.deck_total_sr = (s[2] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()
+            except StopIteration: account.deck_total_sr = 0
+            try: account.deck_total_ur = (s[2] for s in deck_stats if s[0] == 'UR' and s[1] == account.id).next()
+            except StopIteration: account.deck_total_ur = 0
+            account.deck_total = sum([s[2] for s in deck_stats if s[1] == account.id])
+            # Get opened tab
+            if 'show' + str(account.id) in request.GET and request.GET['show' + str(account.id)] in models.ACCOUNT_TAB_DICT:
+                account.opened_tab = request.GET['show' + str(account.id)]
+            elif request.user.is_staff and 'staff' in request.GET:
+                account.opened_tab = 'deck'
+            else:
+                account.opened_tab = account.default_tab
+            # Get data of account depending on opened tab
+            account.owner = request.user
+            _context = _ajaxaccounttab_functions[account.opened_tab](account.opened_tab, request, account, more=False)
+            if account.opened_tab == 'deck':
+                account.total_cards = account.deck_total
+            if 'account' in _context:
+                account = _context['account']
+
             if context['is_me']:
                 # Form to post custom activity
                 if request.method == 'POST' and 'account_id' in request.POST and request.POST['account_id'] == str(account.id):
@@ -608,6 +724,7 @@ def profile(request, username):
                         account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
                 else:
                     account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
+            # Staff form to edit account
             if request.user.is_staff:
                 account.staff_form_addcard = forms.StaffAddCardForm(initial={'owner_account': account.id})
                 account.staff_form = forms.AccountStaffForm(instance=account)
@@ -649,33 +766,120 @@ def profile(request, username):
     if (len(context['links']) % context['per_line']) < 4:
         context['per_line'] = 4
 
+    context['accounts_tabs'] = models.ACCOUNT_TAB_ICONS
     context['current'] = 'profile'
-    context['following'] = isFollowing(user, request)
+    if not context['is_me']:
+        context['following'] = isFollowing(user, request)
     context['total_following'] = context['preferences'].following.count()
     context['total_followers'] = user.followers.count()
     context['imgurClientID'] = settings.IMGUR_CLIENT_ID
+    context['cards_limit'] = settings.CARDS_LIMIT
     if context['is_me']:
         context['deck_links'] = web_raw.deck_links
     return render(request, 'profile.html', context)
 
-def ajaxownedcards(request, account, stored):
-    if stored not in models.STORED_DICT:
-        raise Http404
-    account = get_object_or_404(models.Account.objects.select_related('owner', 'owner__preferences'), pk=account)
-    if account.owner.username != request.user.username and (account.owner.preferences.private or stored == 'Box'):
+def _ajaxaccounttab_ownedcards(tab, request, account, more):
+    """
+    SQL Queries
+    - Django session
+    - Request user
+    - Account (JOIN + owner + owner preferences)
+    - Owned cards (JOIN + card)
+    """
+    context = {}
+    if account.owner == request.user:
+        context['is_me'] = True
+    if tab == 'deck' and context['is_me']:
+        context['deck_links'] = web_raw.deck_links
+    if account.owner.username != request.user.username and (account.owner.preferences.private or tab == 'presentbox'):
         raise PermissionDenied()
-    ownedcards = account.ownedcards.filter()
-    if stored == 'Album':
-        ownedcards = ownedcards.filter(Q(stored='Album') | Q(stored='Deck')).order_by('card__id')
-    else:
-        ownedcards = ownedcards.filter(stored=stored)
-        if stored == 'Box':
-            ownedcards = ownedcards.order_by('card__id')
-        elif stored == 'Favorite':
-            ownedcards = ownedcards.order_by('-card__rarity', '-idolized', 'card__id')
-    ownedcards = ownedcards.select_related('card')
-    context = { 'cards': ownedcards, 'stored': stored, 'is_me': account.owner.username != request.user.username, 'owner_account': account }
-    return render(request, 'ownedcards.html', context)
+    ownedcards = account.ownedcards.filter(owner_account=account).select_related('card')
+    account.total_cards = None
+    if tab == 'album':
+        account.album = ownedcards.filter(Q(stored='Album') | Q(stored='Deck')).order_by('card__id')
+        if more:
+            account.album = account.album.filter(card__id__gt=settings.CARDS_LIMIT)
+        else:
+            account.album = account.album.filter(card__id__lte=settings.CARDS_LIMIT)
+        album = range(1, settings.CARDS_INFO['total_cards'] + 1) if account.language == 'JP' else settings.CARDS_INFO['en_cards'][:]
+        account.total_cards = len(album) - settings.CARDS_LIMIT
+        for owned_card in account.album:
+            try: album[owned_card.card.id - 1] = owned_card
+            except IndexError: pass
+        if more:
+            account.album = album[settings.CARDS_LIMIT:]
+        else:
+            account.album = album[:settings.CARDS_LIMIT]
+    elif tab == 'deck':
+        account.deck = ownedcards.filter(stored='Deck').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
+        if more:
+            account.deck = account.deck[settings.CARDS_LIMIT:]
+        else:
+            account.deck = account.deck[:settings.CARDS_LIMIT]
+    elif tab == 'wishlist':
+        account.wishlist = ownedcards.filter(stored='Favorite').order_by('-card__rarity', '-idolized', 'card__id')
+        account.total_cards = account.wishlist.count()
+        if more:
+            account.wishlist = account.wishlist[settings.CARDS_LIMIT:]
+        else:
+            account.wishlist = account.wishlist[:settings.CARDS_LIMIT]
+    elif tab == 'presentbox':
+        account.presentbox = ownedcards.filter(stored='Box').order_by('card__id')
+        account.total_cards = account.presentbox.count()
+        if more:
+            account.presentbox = account.presentbox[settings.CARDS_LIMIT:]
+        else:
+            account.presentbox = account.presentbox[:settings.CARDS_LIMIT]
+    context['account'] = account
+    context['cards_limit'] = settings.CARDS_LIMIT
+    context['more'] = more
+    return context
+
+def _ajaxaccounttab_eventparticipations(tab, request, account, more):
+    """
+    SQL Queries
+    - Django session
+    - Request user
+    - Account (JOIN + owner + owner preferences)
+    - Event participations (JOIN + event)
+    """
+    context = {}
+    account.eventparticipations = models.EventParticipation.objects.filter(account=account).order_by('-event__end').select_related('event')
+    return context
+
+def _ajaxaccounttab_teams(tab, request, account, more):
+    context = {}
+    if account.owner == request.user:
+        context['is_me'] = True
+    teams = models.Team.objects.filter(owner_account=account).prefetch_related(Prefetch('members', queryset=models.Member.objects.select_related('ownedcard', 'ownedcard__card').order_by('position'), to_attr='all_members'))
+    range_aligners = [0,1,2,3,4,3,2,1,0]
+    for team in teams:
+        team.owner_account = account
+        members = [{'position': i, 'virtual': True, 'range_align': range(range_aligners[i])} for i in range(9)]
+        for member in team.all_members:
+            member.range_align = members[member.position]['range_align']
+            members[member.position] = member
+        team.all_members = members
+    account.all_teams = teams
+    context['account'] = account
+    return context
+
+_ajaxaccounttab_functions = {
+    'deck': _ajaxaccounttab_ownedcards,
+    'album': _ajaxaccounttab_ownedcards,
+    'teams': _ajaxaccounttab_teams,
+    'events': _ajaxaccounttab_eventparticipations,
+    'wishlist': _ajaxaccounttab_ownedcards,
+    'presentbox': _ajaxaccounttab_ownedcards,
+}
+
+def ajaxaccounttab(request, account, tab, more=False):
+    account = get_object_or_404(models.Account.objects.select_related('owner', 'owner__preferences'), pk=account)
+    try:
+        context = _ajaxaccounttab_functions[tab](tab, request, account, more)
+    except KeyError:
+        raise Http404
+    return render(request, 'include/account_tab_' + tab + '.html', context)
 
 def ajaxaddcard(request):
     """
@@ -854,7 +1058,7 @@ def _localized_message_activity(activity):
         return _(message_string).format(*data)
     return 'Invalid message data'
 
-def _activities(request, account=None, follower=None, user=None, avatar_size=3):
+def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None):
     """
     SQL Queries
     - Django session
@@ -899,7 +1103,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3):
         'avatar_size': avatar_size,
         'content_size': 12 - avatar_size,
         'current': 'activities',
-        'card_size': request.GET['card_size'] if 'card_size' in request.GET and request.GET['card_size'] else None
+        'card_size': request.GET['card_size'] if 'card_size' in request.GET and request.GET['card_size'] else card_size
     }
     return context
 
@@ -1023,10 +1227,6 @@ def ajaxeventranking(request, event, language):
         'page': page + 1,
     }
     return render(request, 'event_ranking.html', context)
-
-def ajaxeventparticipations(request, account):
-    eventparticipations = models.EventParticipation.objects.filter(account=account).order_by('-event__end')
-    return render(request, 'ajaxevents.html', { 'eventparticipations': eventparticipations })
 
 def ajaxmodal(request, hash):
     context = {}

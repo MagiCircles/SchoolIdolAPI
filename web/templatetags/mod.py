@@ -31,6 +31,18 @@ def is_boolean(field):
         return True
     return False
 
+@register.filter
+def is_int(val):
+    return isinstance(val, int)
+
+@register.filter
+def subtract(value, arg):
+    return value - arg
+
+@register.filter
+def range(min, max):
+    return range(min, max)
+
 def isnone(value):
     return value is None
 

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load getattribute %}
+{% load imageurl %}
+
+{% block title %}{% if team %}{% trans 'Update Team' %} {{ team }}{% else %}{% trans 'Add Team' %}{% endif %}{% endblock %}
+
+{% block content %}
+
+<div class="container" id="addteam">
+  <br><br>
+  <div class="jumbotron">
+    <h1>{% if team %}{% trans 'Update Team' %}</h1><h2 class="text-center">{{ team }}</h2>{% else %}{% trans 'Add Team' %}</h1>{% endif %}
+    <br>
+    <form class="form-horizontal noform text-center" method="post" action="" role="form">
+      {% csrf_token %}
+      {% include "_bootstrap_form_horizontal_non_field_errors.html" %}
+      {% for field_name in form.fields %}
+      {% with field=form|getattribute:field_name %}
+      {% if field_name == 'name' %}
+      {% include "_bootstrap_form_horizontal_field.html" %}
+      {% else %}
+      {% if field_name == 'card0' %}
+      <div class="row">
+	{% endif %}
+	<div class="{% if field_name == 'card0' %}col-md-offset-2 {% endif %}col-md-1 col-sm-2 col-xs-3">
+	  {{ field }}
+	  {% if field_name == 'card4' %}{% trans 'Center' %}{% endif %}
+	</div>
+	{% if field_name == 'card8' %}
+      </div>
+      {% endif %}
+      {% endif %}
+      {% endwith %}
+      {% endfor %}
+      {# include "bootstrap_form_horizontal.html" with form=form wrap=0 #}
+      <br><br>
+      <div class="text-right">
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<input type="submit" class="btn btn-lg btn-Cool" value="{% if team %}{% trans 'Apply Changes' %}{% else %}{% trans 'Add Team' %}{%endif %}" />
+      </div>
+      <input type="hidden" name="next" value="/cards" />
+    </form>
+    {% if team %}
+    <hr>
+    <form method="POST">
+      {% csrf_token %}
+      <h2>{% trans 'Delete Team' %}</h2>
+      <div class="alert alert-warning">{% blocktrans %}You can't cancel this action afterwards.{% endblocktrans %}</div>
+      {{ form_delete }}
+      <input type="submit" class="btn btn-danger btn-sm" name="delete" value="{% trans 'Delete' %}">
+    </form>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  {% for field_name in form.fields %}
+  {% if field_name != 'name' %}
+  cuteform($('#id_{{ field_name }}'), {
+    'modal': 'true',
+    'html': {
+      '': '<img src="/static/empty.png" alt="empty" height="100">',
+      {% for ownedcard in account.deck %}
+      '{{ ownedcard.id }}': '{% if ownedcard.card.is_special and ownedcard.card.round_card_idolized_image %}<img src="{% imageurl card=ownedcard.card image='round_card_idolized_image' %}" alt="{{ ownedcard.card }}" height="100" style="display: inline-block">{% elif not card.idolized and ownedcard.card.round_card_image %}<img src="{% imageurl card=ownedcard.card image='round_card_image' %}" alt="{{ ownedcard.card }}" height="100" style="display: inline-block">{% elif card.idolized and ownedcard.card.round_card_idolized_image %}<img src="{% imageurl card=ownedcard.card image='round_card_idolized_image' %}" alt="{{ ownedcard.card }}" style="display: inline-block">{% else %}<div class="circled_card_100 {{ ownedcard.card.attribute }} {{ ownedcard.card.rarity }} hover" style="background-image: url(\'{% if not card.idolized and ownedcard.card.card_image %}{% imageurl card=ownedcard.card image='card_image' %}{% else %}{% imageurl card=ownedcard.card image='card_idolized_image' %}{% endif %}\');"></div>{% endif %}',
+      {% endfor %}
+    }
+  });
+  {% endif %}
+  {% endfor %}
+</script>
+{% endblock %}

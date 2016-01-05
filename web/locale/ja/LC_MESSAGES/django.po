@@ -69,66 +69,66 @@ msgstr "プレゼントボックス"
 #. List of cards you would like to have
 #: api/models.py:40 api/models.py:148 tmp/profile.html:257
 #: web/templates/include/account_tab_wishlist.html:7
-#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:513
+#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:511
 msgid "Wish List"
 msgstr "欲しいカード"
 
-#: api/models.py:393 tmp/forms.py:143 tmp/profile.html:120
+#: api/models.py:395 tmp/forms.py:143 tmp/profile.html:120
 #: web/templates/profile.html:136
 msgid "Nickname"
 msgstr "名前"
 
-#: api/models.py:394 tmp/profile.html:124 web/forms.py:376
+#: api/models.py:396 tmp/profile.html:124 web/forms.py:376
 #: web/templates/profile.html:140
 msgid "Friend ID"
 msgstr "フレンドID"
 
 #. This is an instruction dialog for users to find their "friend ID" so they can fill it in a form
-#: api/models.py:394
+#: api/models.py:396
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
 msgstr "あなたのIDは「その他」の「友達」から「ID検索」を開くことによって確認できます。\n"
 "他のプレイヤーはこの番号を使ってフレンド申請やメールを送ることができます。 "
 
 #. This is a form field for players to specify a transfer code, used to recover their account alter.
-#: api/models.py:396
+#: api/models.py:398
 msgid "Transfer Code"
 msgstr "引き継ぎパスワード"
 
 #. s/loose/lose/
-#: api/models.py:396
+#: api/models.py:398
 msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
 msgstr "引き継ぎパスワードを保存しておくことができます。保存された引き継ぎパスワードは暗号化され、あなただけが確認することができます。"
 
 #. This is a form field to specify the user's language
-#: api/models.py:399
+#: api/models.py:401
 msgid "Language"
 msgstr "言語"
 
 #. There are different versions of the game in different languages. So the "language" field corresponds to the version of the game.
-#: api/models.py:399
+#: api/models.py:401
 msgid "This is the version of the game you play."
 msgstr "プレイしているゲームの言語を選んで下さい"
 
 #. This is a form field for the user to specify the operating system of their cell phone
-#: api/models.py:400 tmp/profile.html:142 web/templates/profile.html:158
+#: api/models.py:402 tmp/profile.html:142 web/templates/profile.html:158
 #: web/templates/staff_verifications.html:27
 msgid "Operating System"
 msgstr "オペレーティングシステム"
 
 #. Card in the center position of your idol band
-#: api/models.py:401 web/forms.py:76 web/forms.py:377 web/forms.py:378
+#: api/models.py:403 web/forms.py:76 web/forms.py:377 web/forms.py:378
 #: web/templates/addteam.html:28
 msgid "Center"
 msgstr "センター"
 
-#: api/models.py:401
+#: api/models.py:403
 msgid "The character that talks to you on your home screen."
 msgstr "ホーム画面で話しているキャラクターです。"
 
 #. This word has been used for 2 ways: player rank and event rank.
 #. In Japanese, they should be different words: player rank is "ランク" and event rank is "順位",
 #. Are they able to be separated?
-#: api/models.py:402 tmp/profile.html:170 web/templates/event.html:112
+#: api/models.py:404 tmp/profile.html:170 web/templates/event.html:112
 #: web/templates/event.html.py:124 web/templates/event.html:177
 #: web/templates/event.html.py:189 web/templates/profile.html:188
 #: web/templates/songsPage.html:126 web/templates/staff_verifications.html:28
@@ -136,17 +136,17 @@ msgid "Rank"
 msgstr "ランク"
 
 #. Where the card is: in deck, in album or in present box.
-#: api/models.py:414 web/templates/cards.html:201
+#: api/models.py:416 web/templates/cards.html:201
 msgid "Stored"
 msgstr "カードの所在"
 
 #. Some cards expire. This is the date of expiration.
-#: api/models.py:415 web/templates/addCardForm.html:10
+#: api/models.py:417 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:14
 msgid "Expiration"
 msgstr "期限"
 
-#: api/models.py:416 web/templates/cards.html:209
+#: api/models.py:418 web/templates/cards.html:209
 #: web/templates/cards.html.py:212 web/templates/cardsPage.html:316
 #: web/templates/cardsPage.html.py:319 web/templates/cardsPage.html:404
 #: web/templates/cardsPage.html.py:411
@@ -227,7 +227,7 @@ msgstr "このアカウントのデータを削除せずに他のユーザーに
 #: web/templates/modalsukutomo.html:4 web/templates/songsPage.html:219
 #: web/templates/songsPage.html.py:220 web/templates/songsPage.html:221
 #: web/templates/songsPage.html.py:222 web/templates/songsPage.html:223
-#: web/views.py:1849 web/views.py:1880
+#: web/views.py:1847 web/views.py:1878
 msgid "School Idol Tomodachi"
 msgstr "スクールアイドル友達"
 
@@ -345,7 +345,7 @@ msgstr "フィルター"
 #: tmp/views.py:333 web/forms.py:341 web/templates/cards.html:73
 #: web/templates/cards.html.py:77 web/templates/cardsPage.html:160
 #: web/templates/idol.html:5 web/templates/idol.html.py:39
-#: web/templates/include/idol_tabs.html:3 web/views.py:508
+#: web/templates/include/idol_tabs.html:3 web/views.py:506
 msgid "Idol"
 msgstr "アイドル"
 
@@ -353,13 +353,13 @@ msgstr "アイドル"
 msgid "Rarity"
 msgstr "レアリティ"
 
-#: api/models.py:472 web/forms.py:342 web/forms.py:371 web/forms.py:377
+#: api/models.py:474 web/forms.py:342 web/forms.py:371 web/forms.py:377
 #: web/templates/cards.html:98 web/templates/idol.html:51
 #: web/templates/songsPage.html:108
 msgid "Attribute"
 msgstr "属性"
 
-#: api/models.py:419 web/forms.py:346 web/templates/box.html:23
+#: api/models.py:421 web/forms.py:346 web/templates/box.html:23
 #: web/templates/cards.html:73 web/templates/cards.html.py:115
 #: web/templates/cardsPage.html:263 web/templates/cardsPage.html.py:486
 #: web/templates/event.html:51 web/templates/ownedCardOnBottomCard.html:28
@@ -383,7 +383,7 @@ msgid "Reverse order"
 msgstr "逆順"
 
 #. This is a checkbox that restricts search results to only cards that are at the maximum level, among the player's collection.
-#: api/models.py:417 web/templates/cards.html:216
+#: api/models.py:419 web/templates/cards.html:216
 #: web/templates/cards.html.py:219 web/templates/ownedCardOnBottomCard.html:22
 msgid "Max Leveled"
 msgstr "レベルMAX"
@@ -405,14 +405,14 @@ msgstr "絆MAXでない"
 msgid "Not Idolized"
 msgstr "未覚醒"
 
-#: api/models.py:419 web/templates/cardsPage.html:53
+#: api/models.py:421 web/templates/cardsPage.html:53
 #: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
 #: web/templates/ownedCardOnBottomCard.html:28 web/templates/songsPage.html:94
 msgid "Level"
 msgstr "レベル"
 
 #: tmp/views.py:332 web/templates/cardsPage.html:203
-#: web/templates/events.html:43 web/views.py:507
+#: web/templates/events.html:43 web/views.py:505
 msgid "Release date"
 msgstr "公開日時"
 
@@ -421,7 +421,7 @@ msgstr "公開日時"
 msgid "Event"
 msgstr "イベント"
 
-#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:514
+#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:512
 msgid "HP"
 msgstr "体力"
 
@@ -525,7 +525,7 @@ msgstr "重要なカード"
 msgid "and"
 msgstr "そして"
 
-#: api/models.py:37 api/models.py:144 tmp/profile.html:240 web/views.py:512
+#: api/models.py:37 api/models.py:144 tmp/profile.html:240 web/views.py:510
 msgid "Deck"
 msgstr "部室"
 
@@ -539,47 +539,47 @@ msgstr "アルバム"
 msgid "Present Box"
 msgstr "プレゼント一覧"
 
-#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:506
+#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:504
 msgid "Card #ID"
 msgstr "カードID"
 
-#: tmp/views.py:334 web/views.py:509
+#: tmp/views.py:334 web/views.py:507
 msgid "Smile's statistics"
 msgstr "スマイル"
 
-#: tmp/views.py:335 web/views.py:510
+#: tmp/views.py:335 web/views.py:508
 msgid "Pure's statistics"
 msgstr "ピュア"
 
-#: tmp/views.py:336 web/views.py:511
+#: tmp/views.py:336 web/views.py:509
 msgid "Cool's statistics"
 msgstr "クール"
 
-#: api/models.py:473
+#: api/models.py:475
 msgid "Description"
 msgstr "自己紹介"
 
-#: api/models.py:473 web/forms.py:245
+#: api/models.py:475 web/forms.py:245
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr "Markdown記法を使って整形したりリンクを張ったりすることができます。"
 
-#: api/models.py:475
+#: api/models.py:477
 msgid "Location"
 msgstr "場所"
 
-#: api/models.py:475
+#: api/models.py:477
 msgid "The city you live in."
 msgstr "あなたが住んでいる場所を入力してください。"
 
-#: api/models.py:395 tmp/profile.html:129 web/templates/profile.html:145
+#: api/models.py:397 tmp/profile.html:129 web/templates/profile.html:145
 msgid "Accept friend requests"
 msgstr "フレンド申請を許可する"
 
-#: api/models.py:487 web/forms.py:374
+#: api/models.py:489 web/forms.py:374
 msgid "Private Profile"
 msgstr "プロフィールを非公開にする"
 
-#: api/models.py:487
+#: api/models.py:489
 msgid "If your profile is private, people will only see your center."
 msgstr "プロフィールを非公開にすると、他の人からはセンターだけが見えるようになります。"
 
@@ -620,7 +620,7 @@ msgstr "アイコンを変えるには同じメールアドレスでGravatarを�
 msgid "Change Avatar"
 msgstr "アイコンの変更"
 
-#: api/models.py:474 tmp/forms.py:41 web/forms.py:47 web/forms.py:372
+#: api/models.py:476 tmp/forms.py:41 web/forms.py:47 web/forms.py:372
 msgid "Best Girl"
 msgstr "推し"
 
@@ -644,7 +644,7 @@ msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s 個のアカウント:"
 
-#: api/models.py:418 web/templates/cards.html:223
+#: api/models.py:420 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
 msgid "Max Bonded (Kizuna)"
 msgstr "絆MAX"
@@ -700,17 +700,17 @@ msgstr "フォロー"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr "部員の追加・変更・検索はカードページで行うことができます。"
 
-#: api/models.py:448 tmp/forms.py:140 web/templates/cardsPage.html:329
+#: api/models.py:450 tmp/forms.py:140 web/templates/cardsPage.html:329
 #: web/templates/event_ranking.html:12 web/templates/event_ranking.html:37
 msgid "Ranking"
 msgstr "ランキング"
 
-#: api/models.py:449 web/templates/event_ranking.html:25
+#: api/models.py:451 web/templates/event_ranking.html:25
 #: web/templates/include/account_tab_events.html:22
 msgid "Song Ranking"
 msgstr "イベント楽曲ランキング"
 
-#: api/models.py:450 web/templates/event.html:106
+#: api/models.py:452 web/templates/event.html:106
 #: web/templates/event.html.py:118 web/templates/event.html:171
 #: web/templates/event.html.py:183 web/templates/event_ranking.html:27
 #: web/templates/include/account_tab_events.html:28
@@ -754,8 +754,8 @@ msgstr "削除"
 msgid "Activities"
 msgstr "新着情報"
 
-#: api/models.py:461 api/models.py:480 api/models.py:481 api/models.py:482
-#: api/models.py:483 api/models.py:485 api/models.py:486
+#: api/models.py:463 api/models.py:482 api/models.py:483 api/models.py:484
+#: api/models.py:485 api/models.py:487 api/models.py:488
 msgid "Write your username only, no URL."
 msgstr "URLではなくユーザ名のみを入力してください。"
 
@@ -927,24 +927,24 @@ msgstr "ランクアップ!"
 msgid "Ranked in event"
 msgstr "イベントでランクイン"
 
-#: api/models.py:397 tmp/profile.html:151 web/templates/profile.html:167
+#: api/models.py:399 tmp/profile.html:151 web/templates/profile.html:167
 msgid "Device"
 msgstr "端末"
 
-#: api/models.py:397
+#: api/models.py:399
 msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
 msgstr "使っている端末の種類を入力してください。例: Nexus 5, iPhone 4, iPad 2 など。"
 
-#: api/models.py:398 tmp/profile.html:157 web/templates/profile.html:173
+#: api/models.py:400 tmp/profile.html:157 web/templates/profile.html:173
 msgid "Play with"
 msgstr "プレイスタイル"
 
-#: api/models.py:412 api/models.py:427 api/models.py:447
+#: api/models.py:414 api/models.py:429 api/models.py:449
 #: web/templates/cards.html:193 web/templates/staff_verifications.html:26
 msgid "Account"
 msgstr "アカウント"
 
-#: api/models.py:85 api/models.py:403 tmp/forms.py:141 tmp/profile.html:175
+#: api/models.py:85 api/models.py:405 tmp/forms.py:141 tmp/profile.html:175
 #: tmp/profile.html.py:184 web/templates/profile.html:193
 #: web/templates/profile.html.py:202
 msgid "Verified"
@@ -1304,19 +1304,19 @@ msgstr ""
 msgid "Ultimate Idol Devotee"
 msgstr ""
 
-#: api/models.py:212
+#: api/models.py:214
 msgid "blue"
 msgstr ""
 
-#: api/models.py:213
+#: api/models.py:215
 msgid "pink"
 msgstr ""
 
-#: api/models.py:214
+#: api/models.py:216
 msgid "shiny Silver"
 msgstr ""
 
-#: api/models.py:215 api/models.py:216
+#: api/models.py:217 api/models.py:218
 msgid "shiny Gold"
 msgstr ""
 
@@ -1483,15 +1483,15 @@ msgstr "頻繁"
 msgid "Every single day"
 msgstr "毎日"
 
-#: api/models.py:460
+#: api/models.py:462
 msgid "Platform"
 msgstr "サイト"
 
-#: api/models.py:461
+#: api/models.py:463
 msgid "Username/ID"
 msgstr ""
 
-#: api/models.py:462
+#: api/models.py:464
 msgid "How often do you tweet/stream/post about Love Live?"
 msgstr "ラブライブに関する発言の頻度"
 
@@ -1568,12 +1568,12 @@ msgid "You have a transfer code saved in School Idol Tomodachi. If you reset you
 msgid_plural "You have %(counter)s transfer codes saved. If you reset your password, you will not be able to retrieve them anymore."
 msgstr[0] "アカウントには %(counter)s 個の引き継ぎパスワードが保存されています。パスワードをリセットすると保存されている引き継ぎパスワードは削除されます。"
 
-#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1294
-#: web/views.py:1355 web/views.py:1369
+#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1292
+#: web/views.py:1353 web/views.py:1367
 msgid "Wrong password."
 msgstr "パスワードが間違っています"
 
-#: api/models.py:475
+#: api/models.py:477
 msgid "It might take up to 24 hours to update your location on the map."
 msgstr "場所が地図に反映されるまでには最大で24時間かかります。"
 
@@ -1710,27 +1710,27 @@ msgstr ""
 msgid "Index fingers"
 msgstr "人差し指"
 
-#: api/models.py:572 web/templates/staff_verifications.html:25
+#: api/models.py:574 web/templates/staff_verifications.html:25
 msgid "Verification"
 msgstr ""
 
-#: api/models.py:572
+#: api/models.py:574
 msgid "What kind of verification would you like?"
 msgstr ""
 
-#: api/models.py:574 api/models.py:577
+#: api/models.py:576 api/models.py:579
 msgid "Comment"
 msgstr ""
 
-#: api/models.py:574
+#: api/models.py:576
 msgid "If you have anything to say to the person who is going to verify your account, feel free to write it here!"
 msgstr ""
 
-#: api/models.py:578
+#: api/models.py:580
 msgid "Allow us to verify your account during events"
 msgstr "イベント中の認証作業を許可する"
 
-#: api/models.py:578
+#: api/models.py:580
 msgid "Check this only if you don't care about the current event. You'll get verified faster."
 msgstr ""
 
@@ -2471,7 +2471,7 @@ msgstr ""
 msgid "Just got verified: {}"
 msgstr ""
 
-#: api/models.py:493
+#: api/models.py:495
 msgid "Birthdate"
 msgstr ""
 
@@ -2563,11 +2563,11 @@ msgstr ""
 msgid "Discuss"
 msgstr ""
 
-#: web/templates/activitysingle.html:56 web/views.py:1139
+#: web/templates/activitysingle.html:56 web/views.py:1137
 msgid "Edit"
 msgstr ""
 
-#: web/templates/activitysingle.html:58 web/views.py:1142
+#: web/templates/activitysingle.html:58 web/views.py:1140
 msgid "Upload your own screenshot"
 msgstr ""
 
@@ -2640,11 +2640,11 @@ msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
 msgstr[0] ""
 
-#: web/views.py:512 web/views.py:513
+#: web/views.py:510 web/views.py:511
 msgid "Most popular"
 msgstr ""
 
-#: web/views.py:753
+#: web/views.py:751
 msgid "years old"
 msgstr ""
 
@@ -2705,15 +2705,15 @@ msgstr "{}PがかなりUPする(+9%)"
 msgid "{} increases based on {}"
 msgstr "{}Pに応じて{}PがUPする"
 
-#: api/models.py:404
+#: api/models.py:406
 msgid "Default tab"
 msgstr ""
 
-#: api/models.py:404
+#: api/models.py:406
 msgid "What people see first when they take a look at your account."
 msgstr ""
 
-#: api/models.py:428
+#: api/models.py:430
 msgid "Name"
 msgstr ""
 
@@ -2724,4 +2724,24 @@ msgstr ""
 #: web/templates/include/_account_tab_ownedcardsload.html:7
 msgid "Load remaining cards"
 msgstr ""
+
+#: api/models.py:175
+msgid "Princess"
+msgstr "プリンセス"
+
+#: api/models.py:175
+msgid "Angel"
+msgstr "エンジェル"
+
+#: api/models.py:175
+msgid "Empress"
+msgstr "エンプレス"
+
+#: api/models.py:175
+msgid "Power"
+msgstr "パワー"
+
+#: api/models.py:175
+msgid "Heart"
+msgstr "ハート"
 

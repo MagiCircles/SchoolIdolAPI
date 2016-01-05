@@ -287,15 +287,12 @@
 			    <div class="pull-right">
 			      <i class="flaticon-center"></i>
 			    </div>
-			    {% if card.japanese_center_skill_details or card.japanese_center_skill %}
+			    {% if card.center_skill %}
 			    <p>
-			      {% if card.japanese_center_skill %}<strong>{{ card.japanese_center_skill }}</strong><br />
-			      <small>{% endif %}{% if card.japanese_center_skill_details and card.japanese_center_skill_details != 'None' %}{{ card.japanese_center_skill_details }}{% endif %}{% if card.japanese_center_skill %}</small>{% endif %}
+			      <strong>{{ card.center_skill }}</strong><br>
+			      <small>{% if card.center_skill_details %}{{ card.center_skill_details }}{% endif %}</small>
 			    </p>
 			    {% endif %}
-			    <p>
-			      {% if card.center_skill %}{{ card.center_skill }}{% endif %}
-			    </p>
 			  </td>
 			</tr>
 			{% endif %}

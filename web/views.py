@@ -483,6 +483,13 @@ def cards(request, card=None, ajax=False):
                 'Cool': ((card.idolized_maximum_statistics_cool if card.idolized_maximum_statistics_cool else 0) / max_stats['Cool']) * 100,
             }
         }
+        sentence, data = card.get_center_skill_details()
+        if sentence and data:
+            card.center_skill_details = _(sentence).format(*[_(d) for d in data])
+        if card.center_skill:
+            try:
+                card.center_skill = string_concat(_(card.center_skill.split(' ')[0]), ' ', _(card.center_skill.split(' ')[1]))
+            except: pass
 
     if not ajax:
        # Get filters info for the form

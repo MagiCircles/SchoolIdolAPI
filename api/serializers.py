@@ -4,6 +4,8 @@ from django.conf import settings
 from rest_framework import serializers
 from api import models
 from dateutil.relativedelta import relativedelta
+from django.utils.translation import ugettext_lazy as _, string_concat
+from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
 from web.utils import chibiimage
 import urllib
@@ -172,6 +174,9 @@ class CardSerializer(serializers.ModelSerializer):
     transparent_idolized_image = serializers.SerializerMethodField()
     transparent_ur_pair = serializers.SerializerMethodField()
     transparent_idolized_ur_pair = serializers.SerializerMethodField()
+    center_skill_details = serializers.SerializerMethodField()
+    japanese_center_skill = serializers.SerializerMethodField()
+    japanese_center_skill_details = serializers.SerializerMethodField()
 
     def _image_file_to_url(self, path, card, circle=False, idolized=False):
         if (not path and 'imagedefault' in self.context['request'].GET and self.context['request'].GET['imagedefault'] and self.context['request'].GET['imagedefault'].title() != 'False' and
@@ -211,6 +216,35 @@ class CardSerializer(serializers.ModelSerializer):
     def get_transparent_idolized_ur_pair(self, obj):
         return _get_image(obj.transparent_idolized_ur_pair)
 
+    def get_center_skill_details(self, obj):
+        sentence, data = obj.get_center_skill_details()
+        if sentence and data:
+            old_lang = translation.get_language()
+            translation.activate("en")
+            sentence = _(sentence).format(*data)
+            translation.activate(old_lang)
+            return sentence
+        return None
+
+    def get_japanese_center_skill(self, obj):
+        if not obj.center_skill:
+            return None
+        old_lang = translation.get_language()
+        translation.activate("ja")
+        sentence = string_concat(_(obj.center_skill.split(' ')[0]), ' ', _(obj.center_skill.split(' ')[1]))
+        translation.activate(old_lang)
+        return sentence
+
+    def get_japanese_center_skill_details(self, obj):
+        sentence, data = obj.get_center_skill_details()
+        if sentence and data:
+            old_lang = translation.get_language()
+            translation.activate("ja")
+            sentence = _(sentence).format(*[_(d) for d in data])
+            translation.activate(old_lang)
+            return sentence
+        return None
+
     def get_website_url(self, obj):
         return 'http://schoolido.lu/cards/' + str(obj.id) + '/'
 
@@ -238,7 +272,7 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards', 'transparent_image', 'transparent_idolized_image', 'transparent_ur_pair', 'transparent_idolized_ur_pair')
+        fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards', 'transparent_image', 'transparent_idolized_image', 'transparent_ur_pair', 'transparent_idolized_ur_pair')
 
 class SongSerializer(serializers.ModelSerializer):
     event = EventSerializer()

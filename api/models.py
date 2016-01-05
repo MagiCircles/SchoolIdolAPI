@@ -159,6 +159,21 @@ ACCOUNT_TAB_ICONS = (
     ('presentbox', 'present'),
 )
 
+CENTER_SKILL_SENTENCES = {
+    'Power': _('{} increases slightly (+3%)'),
+    'Heart': _('{} increases (+6%)'),
+    'UR': _('{} increases drastically (+9%)'),
+    'differentUR':  _('{} increases based on {}'),
+}
+
+CENTER_SKILL_UR = {
+    'Princess': 'Smile',
+    'Angel': 'Pure',
+    'Empress': 'Cool',
+}
+
+CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart')
+
 def verifiedToString(val):
     val = int(val)
     return VERIFIED_DICT[val]
@@ -334,8 +349,6 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     skill_details = models.TextField(null=True, blank=True)
     japanese_skill_details = models.TextField(null=True, blank=True)
     center_skill = models.TextField(null=True, blank=True)
-    japanese_center_skill = models.TextField(null=True, blank=True)
-    japanese_center_skill_details = models.TextField(null=True, blank=True)
     transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
@@ -361,6 +374,17 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
 
     def __unicode__(self):
         return u'#' + unicode(self.id) + u' ' + unicode(self.name) + u' ' + unicode(self.rarity)
+
+    def get_center_skill_details(self):
+        try:
+            attribute, skill = self.center_skill.split(' ')
+            if skill in CENTER_SKILL_UR:
+                if CENTER_SKILL_UR[skill] != attribute:
+                    return CENTER_SKILL_SENTENCES['differentUR'], [attribute, CENTER_SKILL_UR[skill]]
+                return CENTER_SKILL_SENTENCES['UR'], [attribute]
+            return CENTER_SKILL_SENTENCES[skill], [attribute]
+        except (ValueError, AttributeError, KeyError):
+            return None, None
 
 admin.site.register(Card)
 

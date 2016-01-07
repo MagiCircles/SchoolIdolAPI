@@ -708,7 +708,7 @@ def profile(request, username):
             else:
                 account.opened_tab = account.default_tab
             # Get data of account depending on opened tab
-            account.owner = request.user
+            account.owner = user
             _context = _ajaxaccounttab_functions[account.opened_tab](account.opened_tab, request, account, more=False)
             if account.opened_tab == 'deck':
                 account.total_cards = account.deck_total
@@ -795,6 +795,7 @@ def _ajaxaccounttab_ownedcards(tab, request, account, more):
     - Owned cards (JOIN + card)
     """
     context = {}
+    context['is_me'] = False
     if account.owner == request.user:
         context['is_me'] = True
     if tab == 'deck' and context['is_me']:

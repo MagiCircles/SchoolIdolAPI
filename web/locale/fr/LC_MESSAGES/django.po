@@ -96,7 +96,7 @@ msgstr "Langue"
 
 #: api/models.py:401
 msgid "This is the version of the game you play."
-msgstr "La version du jeu sur laquelle tu joues."
+msgstr "C'est la version du jeu sur laquelle tu joues."
 
 #: api/models.py:402 tmp/profile.html:142 web/templates/profile.html:158
 #: web/templates/staff_verifications.html:27
@@ -134,7 +134,7 @@ msgstr "Expiration"
 #: web/templates/cardsPage.html.py:411
 #: web/templates/ownedCardOnBottomCard.html:19 web/templates/usersPage.html:16
 msgid "Idolized"
-msgstr "Idolâtrée"
+msgstr "Idolâtrée / Idolisée"
 
 #: web/templates/403.html:3 web/templates/403.html.py:4
 msgid "Forbidden"
@@ -345,7 +345,7 @@ msgstr "Collection"
 
 #: web/templates/cards.html:231 web/templates/include/filterbar.html:13
 msgid "Order"
-msgstr "Tri"
+msgstr "Ordre"
 
 #: web/forms.py:318 web/forms.py:369 web/templates/cards.html:241
 msgid "Reverse order"
@@ -368,7 +368,7 @@ msgstr "Liens affectifs (Kizuna) pas au MAX"
 #: web/templates/cardsPage.html.py:322 web/templates/cardsPage.html:403
 #: web/templates/cardsPage.html.py:410 web/templates/usersPage.html:16
 msgid "Not Idolized"
-msgstr "Pas encore idolâtrée"
+msgstr "Pas encore idolâtrée/idolisée"
 
 #: api/models.py:421 web/templates/cardsPage.html:53
 #: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
@@ -538,7 +538,8 @@ msgstr "Profil privé"
 
 #: api/models.py:489
 msgid "If your profile is private, people will only see your center."
-msgstr "Seul le centre est visible pour les profils privés."
+msgstr "Si ton compte est privé, on pourra uniquement voir ta carte au centre.\n"
+""
 
 #: web/templates/cardsPage.html:24
 msgid "%(counter)s card matches your search:"
@@ -603,10 +604,12 @@ msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s compte :"
 msgstr[1] "%(length)s comptes :"
 
+#. I think there is no need of a translation here
 #: api/models.py:420 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
 msgid "Max Bonded (Kizuna)"
-msgstr "Liens affectifs (Kizuna) MAX"
+msgstr "Max Bonded (Kizuna) MAX\n"
+""
 
 #: web/templates/500.html:5
 msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us."
@@ -702,7 +705,7 @@ msgstr "Wiki"
 #: web/templates/event.html:223 web/templates/event_participations.html:13
 #: web/templates/event_participations.html:27
 msgid "Share your ranking"
-msgstr "Partage ton classement "
+msgstr "Partage ton classement"
 
 #: web/templates/activity.html:41 web/templates/addteam.html:51
 #: web/templates/event_participations.html:42
@@ -716,14 +719,15 @@ msgstr "Activités"
 #: api/models.py:463 api/models.py:482 api/models.py:483 api/models.py:484
 #: api/models.py:485 api/models.py:487 api/models.py:488
 msgid "Write your username only, no URL."
-msgstr "Nom d'utilisateur uniquement, pas d'URL."
+msgstr "Nom d'utilisateur uniquement, n'use pas d'URL."
 
 #. Don ou donation, les deux se disent. On dit "le don du sang", mais on dit aussi "faire une donation" / "faire un don". Au début donation m'a fait penser à de l'anglais mais après réflexion ça me semble aller bien ^^
 #: web/templates/about.html:35 web/templates/about.html.py:173
 #: web/templates/about.html:177
 msgid "Donate"
-msgstr "Donation"
+msgstr "Faire un don"
 
+#. I think donation "suits" here.
 #: web/templates/about.html:176
 msgid "If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads."
 msgstr "Si tu aimes ce site, pense à faire une donation. Celles-ci nous aident à couvrir les frais des serveurs et nous permettent de continuer de faire tourner ce service gratuitement et sans publicité."
@@ -822,7 +826,7 @@ msgstr "Parcours et recherche facilement les cartes de LoveLive! School Idol Fes
 
 #: web/templates/modalsukutomo.html:98
 msgid "Vote for the best idol"
-msgstr "Proclame ton amour"
+msgstr "Vote pour ton idole préférée !"
 
 #: web/templates/modalsukutomo.html:99
 msgid "Infinite Facemash: Pick the cutest between two random cards and help your favorite idol reach the top of the ranking!"
@@ -870,7 +874,7 @@ msgstr "a gagné une nouvelle carte"
 
 #: api/models.py:61
 msgid "Idolized a card"
-msgstr "a idolatré une carte"
+msgstr "a idolatré/idolisé une carte"
 
 #: api/models.py:62
 msgid "Max Leveled a card"
@@ -917,7 +921,7 @@ msgstr "Comment installer des applications japonaises ?"
 
 #: web/links.py:37
 msgid "APKs and Links"
-msgstr "Liens des APKs"
+msgstr "Liens et APKs"
 
 #: web/links.py:38
 msgid "If none of the Android links worked, that's what you're searching for."
@@ -1054,7 +1058,7 @@ msgstr "Remplis l'album dans le jeu - et frime avec tes cartes ;)"
 
 #: web/links.py:345
 msgid "Recruitment Simulator"
-msgstr "Simulateur de recrutement"
+msgstr "Simulateur de scout"
 
 #: web/links.py:351
 msgid "Cards you can get from songs"
@@ -1162,7 +1166,7 @@ msgstr "Cartes gagnées pendant les événements"
 
 #: web/links.py:508
 msgid "Fall in love with idols"
-msgstr "Tombe amoureux d'idoles"
+msgstr "Tombe amoureux des idoles"
 
 #: web/links.py:513
 msgid "All the characters in the game"
@@ -1338,7 +1342,7 @@ msgstr "Boîte"
 
 #: web/templates/box.html:55
 msgid "Back to boxes"
-msgstr "Retour au boîtes"
+msgstr "Retour aux boîtes"
 
 #: web/templates/boxes.html:4 web/templates/boxes.html.py:7
 msgid "Boxes"
@@ -1490,15 +1494,15 @@ msgstr "Ton code de transfert a été supprimé."
 
 #: web/templates/addaccount.html:42 web/templates/addaccount.html.py:60
 msgid "Get your saved transfer code"
-msgstr "Récupérer le code de transfert"
+msgstr "Récupérer ton code de transfert"
 
 #: web/templates/addaccount.html:52
 msgid "Delete your transfer code"
-msgstr "Supprimer le code de transfert"
+msgstr "Supprimer ton code de transfert"
 
 #: web/templates/addaccount.html:69 web/templates/addaccount.html.py:81
 msgid "Save your transfer code"
-msgstr "Sauvegarder le code de transfert"
+msgstr "Sauvegarder ton code de transfert"
 
 #: web/templates/addaccount.html:73
 msgid "Your transfer code has been securely saved."

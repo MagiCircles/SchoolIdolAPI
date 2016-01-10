@@ -543,8 +543,7 @@ msgstr "만약 너의 프로필이 비공개되면, 사람들은 오직 너의 �
 #: web/templates/cardsPage.html:24
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
-msgstr[0] "%(counter)너의 검색에 맞는 카드:  \n"
-"Plural: %(counter)너의 검색에 맞는 카드들:"
+msgstr[0] "%(counter)s너의 검색에 맞는 카드들:"
 
 #: web/templates/activities.html:9 web/templates/box.html:35
 #: web/templates/cardsPage.html:522
@@ -600,8 +599,7 @@ msgstr "아니"
 #: web/templates/profile.html:103
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
-msgstr[0] "%(length)계정:  \n"
-"Plural: %(length)계정들:"
+msgstr[0] "%(length)s계정들:"
 
 #: api/models.py:420 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
@@ -1390,9 +1388,10 @@ msgstr "너의 이름과 너의 프로필 링크는 이 페이지에 추가 될�
 msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
 msgstr "너는 뮤즈의 누가  홈페이지 앞에 있을지 결정해"
 
+#. Also write %(color)s in the message, it will be replaced with the translated color (blue, pink, gold, silver)
 #: web/templates/about.html:241
 msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
-msgstr "특별한 수치, %(color)의 하트가 너의 프로필 사진그리고 너가 어디에 있든 그것은 웹사이트에서 나타날거야."
+msgstr "특별한 수치, %(color)s의 하트가 너의 프로필 사진그리고 너가 어디에 있든 그것은 웹사이트에서 나타날거야."
 
 #: web/templates/about.html:254
 msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
@@ -1525,8 +1524,7 @@ msgstr "너의 비밀번호 바꾸기"
 #: web/templates/include/alert_transfer_code.html:3
 msgid "You have a transfer code saved in School Idol Tomodachi. If you reset your password, you will not be able to retrieve it anymore."
 msgid_plural "You have %(counter)s transfer codes saved. If you reset your password, you will not be able to retrieve them anymore."
-msgstr[0] "너는 너의 인계코드를 스쿨아이돌 토모다치에 저장했어. 만약 너가 너의 비밀번호를 재설정한다면, 너는 그것을 더이상 되찾지 못 할거야.\n"
-"Plural:너는 %(counter)만큼의 인계코들을스쿨아이돌 토모다치에 저장했어. 만약 너가 너의 비밀번호를 재설정한다면, 너는 그것을 더이상 되찾지 못 할거야."
+msgstr[0] "너는 %(counter)s만큼의 인계코들을스쿨아이돌 토모다치에 저장했어. 만약 너가 너의 비밀번호를 재설정한다면, 너는 그것을 더이상 되찾지 못 할거야."
 
 #: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1292
 #: web/views.py:1353 web/views.py:1367
@@ -2120,8 +2118,7 @@ msgstr "LoveLive! 커뮤니티"
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
-msgstr[0] "%(counter)s 너의 검색과 일치한 노래:  \n"
-"Plural: %(counter)s 너의 검색과 일치한 노래들 :"
+msgstr[0] "%(counter)s 너의 검색과 일치한 노래들 :"
 
 #: web/templates/songsPage.html:73
 msgid "Notes"
@@ -2441,7 +2438,7 @@ msgstr "생일"
 
 #: web/forms.py:218
 msgid "Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png"
-msgstr " http://i.imgur.com/6oHYT4B.png 와 같이 유효한 이메지 URL을 이용해줘."
+msgstr "http://i.imgur.com/6oHYT4B.png 와 같이 유효한 이메지 URL을 이용해줘."
 
 #: web/forms.py:219
 msgid "Picture"
@@ -2552,6 +2549,7 @@ msgstr "카드가 추가되었어!"
 msgid "You may edit it below:"
 msgstr "너는 그것을 아래에 수정할수 있을거야"
 
+#. The school the idols attend
 #: web/templates/cards.html:147 web/templates/cardsPage.html:174
 #: web/templates/idol.html:46
 msgid "School"
@@ -2561,16 +2559,16 @@ msgstr "학교"
 msgid "Discover the upcoming cards before everybody else!"
 msgstr "다가오는 카드를 다른 누구보다 빠르게 발견해봐!"
 
+#. Also write  %(attribute)s in the message, it will be replaced with the translated attribute (Smile, Pure, Cool, All)
 #: web/templates/cardsPage.html:342 web/templates/cardsPage.html.py:356
 #: web/templates/cardsPage.html:373 web/templates/cardsPage.html.py:379
 msgid "best %(attribute)s card"
-msgstr "최고의%(속성) 카드"
+msgstr "최고의%(attribute)s 카드"
 
 #: web/templates/cardsPage.html:401 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
-msgstr[0] "%(counter)s 플레이어가 가지고있는 카드 %(owns_card_string) \n"
-"Plural: %(counter)s 플레이어들이 가지고있는 카드 %(owns_card_string)"
+msgstr[0] "%(counter)s플레이어들이 가지고있는 카드 %(owns_card_string)s"
 
 #: web/templates/cardsPage.html:414
 msgid "Last update"
@@ -2603,8 +2601,7 @@ msgstr "이것은 무엇이니?"
 #: web/templates/usersPage.html:20
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
-msgstr[0] "%(counter) 너의 검색에 맞는 계정\n"
-"plural: %(counter)너의 검색에 맞는 계정들"
+msgstr[0] "%(counter)s너의 검색에 맞는 계정들"
 
 #: web/views.py:510 web/views.py:511
 msgid "Most popular"
@@ -2617,9 +2614,7 @@ msgstr "살이다"
 #: web/templates/cardsPage.html:408 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
-msgstr[0] "%(counter)의 플레이어가 그카드 %(owns_card_string)를 그들의 위시에 갖고 있습니다.\n"
-"Plural :%(counter)의 플레이어들이 그카드 %(owns_card_string)s를 그들의 위시에 갖고 있습니다.\n"
-""
+msgstr[0] "%(counter)s의 플레이어들이 그카드 %(owns_card_string)s를 그들의 위시에 갖고 있습니다."
 
 #: web/templates/discussions.html:33 web/templates/modalsukutomo.html:104
 msgid "We"
@@ -2669,6 +2664,7 @@ msgstr "{} 증가 (+6%)"
 msgid "{} increases drastically (+9%)"
 msgstr "{} 급격히 증가 (+9%)"
 
+#. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:166
 msgid "{} increases based on {}"
 msgstr "{} {}의하여 증가 "

@@ -538,8 +538,7 @@ msgstr "Profil privé"
 
 #: api/models.py:489
 msgid "If your profile is private, people will only see your center."
-msgstr "Si ton compte est privé, on pourra uniquement voir ta carte au centre.\n"
-""
+msgstr "Si ton compte est privé, on pourra uniquement voir ta carte au centre."
 
 #: web/templates/cardsPage.html:24
 msgid "%(counter)s card matches your search:"
@@ -608,8 +607,7 @@ msgstr[1] "%(length)s comptes :"
 #: api/models.py:420 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
 msgid "Max Bonded (Kizuna)"
-msgstr "Max Bonded (Kizuna) MAX\n"
-""
+msgstr "Max Bonded (Kizuna) MAX"
 
 #: web/templates/500.html:5
 msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us."

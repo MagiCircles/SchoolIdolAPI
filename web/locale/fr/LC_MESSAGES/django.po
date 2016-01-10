@@ -134,7 +134,7 @@ msgstr "Expiration"
 #: web/templates/cardsPage.html.py:411
 #: web/templates/ownedCardOnBottomCard.html:19 web/templates/usersPage.html:16
 msgid "Idolized"
-msgstr "Idolâtrée / Idolisée"
+msgstr "Idolisée"
 
 #: web/templates/403.html:3 web/templates/403.html.py:4
 msgid "Forbidden"
@@ -368,7 +368,7 @@ msgstr "Liens affectifs (Kizuna) pas au MAX"
 #: web/templates/cardsPage.html.py:322 web/templates/cardsPage.html:403
 #: web/templates/cardsPage.html.py:410 web/templates/usersPage.html:16
 msgid "Not Idolized"
-msgstr "Pas encore idolâtrée/idolisée"
+msgstr "Pas encore idolisée"
 
 #: api/models.py:421 web/templates/cardsPage.html:53
 #: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
@@ -874,7 +874,7 @@ msgstr "a gagné une nouvelle carte"
 
 #: api/models.py:61
 msgid "Idolized a card"
-msgstr "a idolatré/idolisé une carte"
+msgstr "a idolisé une carte"
 
 #: api/models.py:62
 msgid "Max Leveled a card"
@@ -2092,7 +2092,7 @@ msgstr "Partage ta collection de cartes"
 
 #: web/templates/modalsukutomo.html:62
 msgid "Keep track of the cards you idolized, max leveled or max bonded!"
-msgstr "Stocke les cartes que tu as idolâtrées, au niveau MAX ou kizuna MAX!"
+msgstr "Stocke les cartes que tu as idolisées, au niveau MAX ou kizuna MAX!"
 
 #: web/templates/modalsukutomo.html:69
 msgid "Save your scores in events"
@@ -2403,7 +2403,7 @@ msgstr "Vient d'ajouter {} dans le {}"
 #. For example: Idolized #155 Minami Kotori UR in Deck
 #: api/models.py:63
 msgid "Idolized {} in {}"
-msgstr "A idolâtré {} dans le {}"
+msgstr "A idolisé {} dans le {}"
 
 #. Keep the {} in the translation. It will be replaced with the value.
 #. For example: Rank Up 102
@@ -2675,6 +2675,7 @@ msgstr "{} augmente (+ 6%)"
 msgid "{} increases drastically (+9%)"
 msgstr "{} augmente drastiquement (+ 9%)"
 
+#. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:166
 msgid "{} increases based on {}"
 msgstr "{} augmente en se basant sur {}"

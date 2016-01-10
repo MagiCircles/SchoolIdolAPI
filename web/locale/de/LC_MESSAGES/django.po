@@ -2627,8 +2627,8 @@ msgstr "Jahre alt"
 #: web/templates/cardsPage.html:408 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
-msgstr[0] "%(counter)s Spieler hat diese Karte %(owns_card_string) in seiner Wunschliste"
-msgstr[1] "%(counter)s Spieler haben diese Karte %(owns_card_string) in ihrer Wunschliste"
+msgstr[0] "%(counter)s Spieler hat diese Karte %(owns_card_string)s in seiner Wunschliste"
+msgstr[1] "%(counter)s Spieler haben diese Karte %(owns_card_string)s in ihrer Wunschliste"
 
 #: web/templates/discussions.html:33 web/templates/modalsukutomo.html:104
 msgid "We"

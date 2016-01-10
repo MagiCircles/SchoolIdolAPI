@@ -1391,7 +1391,7 @@ msgstr "Puoi decidere quale delle idol mostrare in cima alla homepage."
 
 #: web/templates/about.html:241
 msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
-msgstr "Con questo status speciale, un grazioso cuore di colore %(color) sarà mostrato accanto al tuo avatar e ovunque appare nel sito."
+msgstr "Con questo status speciale, un grazioso cuore di colore %(color)s sarà mostrato accanto al tuo avatar e ovunque appare nel sito."
 
 #: web/templates/about.html:254
 msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
@@ -2119,8 +2119,8 @@ msgstr "la comunità di LoveLive!"
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
-msgstr[0] "%(counter) canzone corrisponde alla tua ricerca:"
-msgstr[1] "%(counter) canzoni corrispondono alla tua ricerca:"
+msgstr[0] "%(counter)s canzone corrisponde alla tua ricerca:"
+msgstr[1] "%(counter)s canzoni corrispondono alla tua ricerca:"
 
 #: web/templates/songsPage.html:73
 msgid "Notes"
@@ -2664,6 +2664,7 @@ msgstr ""
 msgid "{} increases drastically (+9%)"
 msgstr ""
 
+#. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:166
 msgid "{} increases based on {}"
 msgstr ""

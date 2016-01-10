@@ -600,9 +600,9 @@ msgstr "Нет"
 #: web/templates/profile.html:103
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
-msgstr[0] "%(length)s аккаунт"
-msgstr[1] "%(length)s аккаунтов"
-msgstr[2] "%(length)s аккаунтов"
+msgstr[0] "%(length)s аккаунт:"
+msgstr[1] "%(length)s аккаунтов:"
+msgstr[2] "%(length)s аккаунтов:"
 
 #: api/models.py:420 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
@@ -2118,6 +2118,7 @@ msgstr "Найдите игроков рядом с вами"
 msgid "the LoveLive! community"
 msgstr "Сообщество LoveLive!"
 
+#. %(counter)s  is missing here
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
@@ -2673,6 +2674,7 @@ msgstr ""
 msgid "{} increases drastically (+9%)"
 msgstr ""
 
+#. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:166
 msgid "{} increases based on {}"
 msgstr ""

@@ -1398,7 +1398,7 @@ msgstr "Du entscheides, wer von den μ's Idols am Anfang der Homepage gezeigt wi
 
 #: web/templates/about.html:241
 msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
-msgstr "Mit diesem speziellen Status wird ein %(color) Herz neben deinem Profil Icon auf deiner Profilseite und überall sonst auf der Website angezeigt."
+msgstr "Mit diesem speziellen Status wird ein %(color)s Herz neben deinem Profil Icon auf deiner Profilseite und überall sonst auf der Website angezeigt."
 
 #: web/templates/about.html:254
 msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
@@ -2401,25 +2401,25 @@ msgstr "Du bist ein"
 #. For example: Added #155 Minami Kotori UR in Favorite
 #: api/models.py:62
 msgid "Added {} in {}"
-msgstr "Hinzugefügt: () in ()"
+msgstr "Hinzugefügt: {} in {}"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Idolized #155 Minami Kotori UR in Deck
 #: api/models.py:63
 msgid "Idolized {} in {}"
-msgstr "Idoliziert: () in ()"
+msgstr "Idoliziert: {} in {}"
 
 #. Keep the {} in the translation. It will be replaced with the value.
 #. For example: Rank Up 102
 #: api/models.py:64
 msgid "Rank Up {}"
-msgstr "Rank erhöht ()"
+msgstr "Rank erhöht {}"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Ranked #253 in event Score Match Round 17
 #: api/models.py:65
 msgid "Ranked {} in event {}"
-msgstr "Rank () im Event () platziert"
+msgstr "Rank {} im Event {} platziert"
 
 #: web/forms.py:97
 msgid "Confirm that you want to delete it."
@@ -2443,7 +2443,7 @@ msgstr "Du hast es nicht mehr"
 
 #: api/models.py:66
 msgid "Just got verified: {}"
-msgstr "Du wurdest gerade verifiziert"
+msgstr "Du wurdest gerade verifiziert {}"
 
 #: api/models.py:495
 msgid "Birthdate"
@@ -2579,8 +2579,8 @@ msgstr "beste %(attribute)s Karte"
 #: web/templates/cardsPage.html:401 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
-msgstr[0] "%(counter) Spieler besitzt diese Karte %(owns_card_string)s"
-msgstr[1] "%(counter) Spieler besitzen diese Karte %(owns_card_string)s"
+msgstr[0] "%(counter)s Spieler besitzt diese Karte %(owns_card_string)s"
+msgstr[1] "%(counter)s Spieler besitzen diese Karte %(owns_card_string)s"
 
 #: web/templates/cardsPage.html:414
 msgid "Last update"
@@ -2613,8 +2613,8 @@ msgstr "Was ist das?"
 #: web/templates/usersPage.html:20
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
-msgstr[0] "%(counter) Account passt zu deiner Suche:"
-msgstr[1] "%(counter) Accounts passen zu deiner Suche:"
+msgstr[0] "%(counter)s Account passt zu deiner Suche:"
+msgstr[1] "%(counter)s Accounts passen zu deiner Suche:"
 
 #: web/views.py:510 web/views.py:511
 msgid "Most popular"
@@ -2627,8 +2627,8 @@ msgstr "Jahre alt"
 #: web/templates/cardsPage.html:408 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
-msgstr[0] "%(counter) Spieler hat diese Karte %(owns_card_string) in seiner Wunschliste"
-msgstr[1] "%(counter) Spieler haben diese Karte %(owns_card_string) in ihrer Wunschliste"
+msgstr[0] "%(counter)s Spieler hat diese Karte %(owns_card_string) in seiner Wunschliste"
+msgstr[1] "%(counter)s Spieler haben diese Karte %(owns_card_string) in ihrer Wunschliste"
 
 #: web/templates/discussions.html:33 web/templates/modalsukutomo.html:104
 msgid "We"
@@ -2668,19 +2668,20 @@ msgstr "Teams"
 
 #: api/models.py:163
 msgid "{} increases slightly (+3%)"
-msgstr "() steigt ein wenig (+3%)"
+msgstr "{} steigt ein wenig (+3%)"
 
 #: api/models.py:164
 msgid "{} increases (+6%)"
-msgstr "() steigt (+6%)"
+msgstr "{} steigt (+6%)"
 
 #: api/models.py:165
 msgid "{} increases drastically (+9%)"
-msgstr "() steigt drastisch (+9%)"
+msgstr "{} steigt drastisch (+9%)"
 
+#. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:166
 msgid "{} increases based on {}"
-msgstr "() steigt basierend auf ()"
+msgstr "{} steigt basierend auf {}"
 
 #: api/models.py:406
 msgid "Default tab"

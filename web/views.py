@@ -336,8 +336,6 @@ def cards(request, card=None, ajax=False):
                                      | Q(skill_details__icontains=request.GET['search'])
                                      | Q(japanese_skill_details__icontains=request.GET['search'])
                                      | Q(center_skill__icontains=request.GET['search'])
-                                     | Q(japanese_center_skill__icontains=request.GET['search'])
-                                     | Q(japanese_center_skill_details__icontains=request.GET['search'])
                                      | Q(japanese_collection__icontains=request.GET['search'])
                                      | Q(translated_collection__icontains=request.GET['search'])
                                      | Q(promo_item__icontains=request.GET['search'])

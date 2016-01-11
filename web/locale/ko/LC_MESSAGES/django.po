@@ -1817,7 +1817,7 @@ msgstr "너는 새로운 인계코드와함께 이메일을 받을거야"
 
 #: web/templates/addaccount.html:102
 msgid "Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!"
-msgstr ""
+msgstr "참고 : 너는 너가 어떤 문제가없는 확인하기 위해, 다시 돌아올 때까지 확인하는 데 사용되는 장치가 다른 용도로 사용되지 않아. 확인해야 할 다른 사람들을 고려하여, 가능한 한 빨리  다시 확인하길 바래!"
 
 #: web/templates/addaccount.html:108
 msgid "Open the game you want to get verified"
@@ -1853,7 +1853,7 @@ msgstr "너의 프로필을 새롭게 할 필요는 없어. 너가 입증 될때
 
 #: web/templates/addaccount.html:124
 msgid "This verification only lets you change your rank above 200. It does not give you a visible sign of verification on the website, since we did not verify your cards. The only reason you would want this verification is if your rank is above 200 and you do not wish to go through Gold/Silver verification."
-msgstr ""
+msgstr "이 검증은 오직 너의 랭크가 200이상으로 수정하게 해줘.  그것이 웹 사이트에 너의 검증 부호를주는 것은 아닙니다 200에 너의 순위를 변경 할 수 있습니다. 만약 너의 랭크가 200 이상이다, 당신은 골드 / 실버의 로 가지 않으려면이 검증을해야하는유일한 이유야."
 
 #: web/templates/addaccount.html:126
 msgid "We will enter your friend ID in the game and check your rank."
@@ -1942,7 +1942,7 @@ msgstr "Google Play에서 앱을 찾을 수 없어."
 
 #: web/templates/android.html:77
 msgid "The app is not available on Google Play, you have to download it on your phone from this page using the download button above then open it to install it."
-msgstr ""
+msgstr "그 앱은 Google Play에서 이용할 수 없어. 너는 이페이지에 있는 다운로드버튼 이용하여 다운로드를 받아야해."
 
 #: web/templates/android.html:79
 msgid "I sometimes get this message: \"Unfortunately, Sukutomo has stopped\"."
@@ -1954,7 +1954,7 @@ msgstr "아마도 다른이유때문에 발생하겠지만 항상 앱에 버그�
 
 #: web/templates/android.html:80
 msgid "Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it."
-msgstr ""
+msgstr "너가 쓸 수 있는 가장 많은 정보를 써줘(그것이 일어날때 너가 정확히 무엇을 했어? 너가 무슨 핸드폰 기종을 갖고 있어?)그리고 우리는 우리 최선으로 고쳐볼게."
 
 #: web/templates/android.html:82
 msgid "I'm a developer and I would like to help you."
@@ -1962,7 +1962,7 @@ msgstr "나는 개발자고 나는 너를 돕고싶어."
 
 #: web/templates/android.html:83
 msgid "Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready."
-msgstr ""
+msgstr "최고야! 우리는 기쁘게 기부를 받아. 그앱은 오픈소스야, 그래서 어서 포크(분기) 해봐, 그리고 그 코드로 재밌게 즐겨봐.그리고 너가 무언가 준비 되었을때 우리에게 풀 리퀘스트(분기점 합병 요구)를 보내봐."
 
 #: web/templates/android.html:84
 msgid "If you have no idea what we're talking about, don't panic. We can help you get started."
@@ -2210,19 +2210,19 @@ msgstr "많이 도와줘그리고 대단히 고마워."
 
 #: web/templates/about.html:29
 msgid "The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^"
-msgstr ""
+msgstr "그 하트워밍은 우리가 커뮤니티로부터  더 많이 할 수 있도록동기부여해줘! 그 웹사이트가 사용하기 쉽고, 분홍색이라 귀여운 동안 우리는 게임에 대해서 최대한 많은정보를 커뮤니티에 제공하는것을 도와주는것이 좋아^_^"
 
 #: web/templates/about.html:31
 msgid "We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you."
-msgstr ""
+msgstr "우리는 이것과 얼마나 갈지는 모르지만 우리가 이것을 하고 너와 굉장히 좋은 아이돌 모험을 나누어 엄청 재밌다는것만은 확실해."
 
 #: web/templates/about.html:79
 msgid "School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them."
-msgstr ""
+msgstr "스쿨아이돌 토모다치는  Love Live! 커뮤니티에서 게임 데이터를 모으기 위해서 받아 온 여러 서비스를 사용해.우리는 거기에 방문하는것을 강력히 추천할게."
 
 #: web/templates/about.html:157
 msgid "Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!"
-msgstr ""
+msgstr "우리 프로젝트는 오픈소스이고 기부자들을 위하여 열었어. 우리는 GitHub에서 풀 리퀘스트(분기점 합병 요구)를 받을때 더욱 기뻐"
 
 #: web/templates/about.html:159
 msgid "The website has been made using"
@@ -2230,15 +2230,15 @@ msgstr "웹 사이트를 사용하여 만들어지고 있어"
 
 #: web/templates/about.html:159
 msgid "so in Python 2. We also use"
-msgstr ""
+msgstr "그렇게 Python2. 우리 또한 사용해"
 
 #: web/templates/about.html:159
 msgid "for the front-end of the website."
-msgstr ""
+msgstr "웹사이트의 전체를 위해"
 
 #: web/templates/about.html:161
 msgid "We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level."
-msgstr ""
+msgstr "우리는 모든 종류의 기부는 다 받아. 플레이어를 도와주는 도구들,페이지 통계, 미니게임, 아니면 심지어 작은 CSS변경 까지 받아. 부끄러워 하지마! 만약 너가 도움을 주고싶다면, 그냥 우리에게 연락해 그리고 우리는 너의 레벨 상관없이 기쁘게 너에게 기본을 가르쳐 줄게."
 
 #: web/templates/addaccount.html:183
 msgid "Before sending your request, we highly recommend you to check that you entered all your cards."
@@ -2280,7 +2280,7 @@ msgstr "우리는 둘다 23살이고 샌 프란시스코, 캘리포니아에서 
 
 #: web/templates/about.html:27
 msgid "Though we love our job, we don't pay ourselves and don't have any income, so"
-msgstr ""
+msgstr "우리는 우리의 일을 사랑하지만, 우리는  자신에게 지불하지 않으며 어떤 소득이 없어, 그래서"
 
 #: web/links.py:11 web/links.py:16
 msgid "English Version"
@@ -2374,7 +2374,7 @@ msgstr "새로운 글 쓰기"
 
 #: web/templates/about.html:60
 msgid "with the details about what you would like us to implement"
-msgstr ""
+msgstr "너가 우리가 구현시키기 원하는 자세한 내용은 "
 
 #: web/templates/about.html:178
 msgid "Budget"
@@ -2430,7 +2430,7 @@ msgstr "너가 더이상 갖고있지 않은것"
 
 #: api/models.py:66
 msgid "Just got verified: {}"
-msgstr ""
+msgstr "막 확인했습니다 : {}"
 
 #: api/models.py:495
 msgid "Birthdate"
@@ -2563,7 +2563,7 @@ msgstr "다가오는 카드를 다른 누구보다 빠르게 발견해봐!"
 #: web/templates/cardsPage.html:342 web/templates/cardsPage.html.py:356
 #: web/templates/cardsPage.html:373 web/templates/cardsPage.html.py:379
 msgid "best %(attribute)s card"
-msgstr "최고의%(attribute)s 카드"
+msgstr "%(attribute)s최고의 카드"
 
 #: web/templates/cardsPage.html:401 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
@@ -2667,7 +2667,7 @@ msgstr "{} 급격히 증가 (+9%)"
 #. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:166
 msgid "{} increases based on {}"
-msgstr "{} {}의하여 증가 "
+msgstr "{}가(이) {}에의하여 증가"
 
 #: api/models.py:406
 msgid "Default tab"

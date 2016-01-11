@@ -101,6 +101,7 @@ from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
+    ('ko', _('Korean')),
     ('es', _('Spanish')),
     ('it', _('Italian')),
     ('de', _('German')),

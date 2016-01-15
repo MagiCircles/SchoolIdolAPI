@@ -125,7 +125,7 @@ LINK_URLS = {
     'instagram': 'https://instagram.com/{}/',
     'myfigurecollection': 'http://myfigurecollection.net/profile/{}',
     'hummingbird': 'https://hummingbird.me/users/{}',
-    'youtube': 'https://www.youtube.com/user/{}',
+    'youtube': 'https://www.youtube.com/{}',
     'deviantart': 'http://{}.deviantart.com/gallery/',
     'pixiv': 'http://www.pixiv.net/member.php?id={}',
     'github': 'https://github.com/{}',

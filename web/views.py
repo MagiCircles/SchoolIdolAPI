@@ -687,10 +687,12 @@ def profile(request, username):
 
     if not context['preferences'].private or context['is_me']:
         # Get stats of cards
-        cursor = connection.cursor()
-        query = 'SELECT c.rarity, o.owner_account_id, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + ','.join([str(account.id) for account in context['user_accounts']]) + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id'
-        cursor.execute(query)
-        deck_stats = cursor.fetchall()
+        accounts_ids = ','.join([str(account.id) for account in context['user_accounts']])
+        if accounts_ids:
+            cursor = connection.cursor()
+            query = 'SELECT c.rarity, o.owner_account_id, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + accounts_ids + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id'
+            cursor.execute(query)
+            deck_stats = cursor.fetchall()
         for account in context['user_accounts']:
             # Set stats
             try: account.deck_total_sr = (s[2] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()

@@ -296,6 +296,7 @@ class StaffFilterVerificationRequestForm(ModelForm):
 class FilterSongForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))
     ordering = forms.ChoiceField(choices=[
+        ('id', _('Date added')),
         ('latest', _('Latest unlocked songs')),
         ('name', _('Song name')),
         ('BPM', _('Beats per minute')),
@@ -303,7 +304,7 @@ class FilterSongForm(ModelForm):
         ('rank', _('Rank to unlock song')),
         ('hard_notes', _('Notes in Hard song')),
         ('expert_notes', _('Notes in Expert song')),
-    ], initial='latest', required=False, label=_('Ordering'))
+    ], initial='id', required=False, label=_('Ordering'))
     reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
     is_daily_rotation = forms.NullBooleanField(required=False, label=_('Daily rotation'))
     is_event = forms.NullBooleanField(required=False, label=_('Event'))

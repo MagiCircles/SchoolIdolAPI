@@ -1948,7 +1948,7 @@ def songs(request, song=None, ajax=False):
                 songs = songs.filter(available=False)
 
         reverse = ('reverse_order' in request.GET and request.GET['reverse_order']) or not request.GET or len(request.GET) == 1
-        ordering = request.GET['ordering'] if 'ordering' in request.GET and request.GET['ordering'] else 'latest'
+        ordering = request.GET['ordering'] if 'ordering' in request.GET and request.GET['ordering'] else 'id'
         prefix = '-' if reverse else ''
         if ordering == 'latest':
             songs = songs.order_by('-available', 'daily_rotation', 'daily_rotation_position', prefix + 'rank', 'name')

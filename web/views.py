@@ -1888,6 +1888,7 @@ def staff_verification(request, verification):
         context['verification'].save()
 
     context['verification_images'] = context['verification'].images.all()
+    context['show_profile'] = 'noprofile' not in request.GET
     return render(request, 'staff_verification.html', context)
 
 def ajaxstaffverificationdeleteimage(request, verification, image):

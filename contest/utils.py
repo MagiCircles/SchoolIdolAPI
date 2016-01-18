@@ -9,7 +9,7 @@ import uuid
 def gen_fingerprint(request):
     return request.META['REMOTE_ADDR']
 
-def passed_contests_queryset():
+def past_contests_queryset():
     now = datetime.datetime.now()
     return contest_models.Contest.objects.filter(end__lte=now)
 
@@ -66,12 +66,12 @@ def best_girls_query(contest):
     '''
     Return a list of the winners sorted by name
     '''
-    queryset = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count')
+    queryset = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').select_related('card')
     characters = [(girl['card__name'], girl['count']) for girl in queryset.all()[:10]]
     return characters
 
 def best_cards_query(contest):
-    queryset = contest_models.Vote.objects.filter(contest=contest).order_by('-counter')
+    queryset = contest_models.Vote.objects.filter(contest=contest).order_by('-counter').select_related('card')
     cards = [(vote.idolized, vote.card, vote.counter) for vote in queryset.all()[:10]]
     return cards
 

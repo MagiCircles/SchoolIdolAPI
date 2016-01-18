@@ -10,8 +10,8 @@
 <h1>{% trans 'Past Contests' %}</h1>
 <div class="panel panel-schoolidol pastcontests">
   <div class="panel-body">
-    {% for info in contests %}
-    {% with contest as info.contest %}
+    {% for contest_infos in contests %}
+    {% with contest=contest_infos.0 best_cards=contest_infos.1 %}
     <a class="row" href="{{ url_prefix }}result/{{ contest.id }}" target="_blank">
       <div class="row">
 	<div class="col-sm-8">
@@ -32,7 +32,7 @@
 	{% if best_girl %}
 	<div class="col-sm-2 text-center text-{{ best_card.attribute }}">
 	  BEST Girl
-	  <img src="http://schoolido.lu/static/idols/chibi/{{ best_girl|idolimage }}.png" style="height: 130px; width: 130px; margin: 10px 5px;">
+	  <img src="http://schoolido.lu/static/idols/chibi/{% idolimage name=best_girl %}.png" style="height: 130px; width: 130px; margin: 10px 5px;">
 	</div>
 	{% endif %}
 	{% if best_card %}
@@ -40,9 +40,9 @@
 	  BEST Card
 	  <div class="card border-{{ card.attribute }}" style="background-image: url('
   								   {% if best_card.card_image and not best_card_idolized %}
-  								   {{ best_card|imageurl:'card_image' }}
+  								   {% imageurl card=best_card image='card_image' %}
   								   {% else %}
-  								   {{ best_card|imageurl:'card_idolized_image' }}
+  								   {% imageurl card=best_card image='card_idolized_image' %}
 								   {% endif %}
 								   ')"></div>
 	</div>

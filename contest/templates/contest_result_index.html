@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load formattime %}
+{% load imageurl %}
+{% load i18n %}
+
+{% block title %}Contests listing{% endblock %}
+
+{% block content %}
+
+<h1>{% trans 'Past Contests' %}</h1>
+<div class="panel panel-schoolidol pastcontests">
+  <div class="panel-body">
+    {% for info in contests %}
+    {% with contest as info.contest %}
+    <a class="row" href="{{ url_prefix }}result/{{ contest.id }}" target="_blank">
+      <div class="row">
+	<div class="col-sm-8">
+	  <h3>{{ contest.name }}</h3>
+	  <div>
+	    <div class="pull-right text-muted">
+	      {{ info.total }} votes
+	    </div>
+	    <p class="text-muted">
+	      {% if contest.begin %}{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d %Y' }}{% if delta %} &nbsp;&nbsp;&nbsp;<a href="{{ url_prefix }}contest">{% if delta.days == 0 %}{{ delta.seconds|formatseconds }} hours left{% else %}{{ delta.days }} days left{% endif %}</a>{% endif %}{% endif %}
+	    </p>
+	  </div>
+	</div>
+	{% with best_card=info.winners.0.0 %}
+	{% with best_card_idolized=info.winners.0.1 %}
+	{% with best_girl=info.winners.1.0 %}
+	{% with best_girl_idolized=info.winners.1.1 %}
+	{% if best_girl %}
+	<div class="col-sm-2 text-center text-{{ best_card.attribute }}">
+	  BEST Girl
+	  <img src="http://schoolido.lu/static/idols/chibi/{{ best_girl|idolimage }}.png" style="height: 130px; width: 130px; margin: 10px 5px;">
+	</div>
+	{% endif %}
+	{% if best_card %}
+	<div class="col-sm-2 text-center text-{{ best_card.attribute }}">
+	  BEST Card
+	  <div class="card border-{{ card.attribute }}" style="background-image: url('
+  								   {% if best_card.card_image and not best_card_idolized %}
+  								   {{ best_card|imageurl:'card_image' }}
+  								   {% else %}
+  								   {{ best_card|imageurl:'card_idolized_image' }}
+								   {% endif %}
+								   ')"></div>
+	</div>
+	{% endif %}
+	{% endwith %}{% endwith %}{% endwith %}{% endwith %}
+      </div>
+    </a>
+    {% endwith %}
+    {% endfor %}
+  </div>
+</div>
+
+<div class="text-right">
+  <a href="{{ url_prefix }}calendar" class="btn btn-main">Calendar</a>
+</div>
+
+{% endblock %}

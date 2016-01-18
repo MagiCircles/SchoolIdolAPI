@@ -1,6 +1,7 @@
 {% load imageurl %}
 {% load i18n %}
 {% load gravatar %}
+{% load choicesToString %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -14,7 +15,7 @@
     <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" />
     <script src="/static/bower/less/dist/less.min.js"></script>
     {% else %}
-    <link rel="stylesheet" href="/static/css/style.css?9">
+    <link rel="stylesheet" href="/static/css/style.css?14">
     {% endif %}
 
     <meta property="og:image" content="{% block shareimage %}http://schoolido.lu/static/screenshots/home.png{% endblock %}"/>
@@ -50,14 +51,45 @@
 	    <li class="{% if current == 'idols' %}active{% endif %}"><a href="/idols/"><i class="flaticon-idolized"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Idols' %}</span></a></li>
 	    <li class="{% if current == 'songs' %}active{% endif %}"><a href="/songs/"><i class="flaticon-song"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Songs' %}</span></a></li>
 	    <li class="{% if current == 'events' %}active{% endif %}"><a href="/events/"><i class="flaticon-event"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Events' %}</span></a></li>
+	    {% if current_contest_name %}
+	    <li class="dropdown">
+	      <a href="/contest/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		<i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Contest' %}</span>
+		<ul class="dropdown-menu" role="menu">
+		  <li class="{% if current == 'contest' %}active{% endif %}"><a href="/contest/"><i class="flaticon-promo"></i> {% trans 'Global Contest' %}</a></li>
+		  <li class="{% if current == 'current_contest' %}active{% endif %}"><a href="{{ current_contest_url }}" target="_blank">{% trans current_contest_name %}</a></li>
+		</ul>
+	      </a>
+	    </li>
+	    {% else %}
 	    <li><a href="/contest/"><i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Contest' %}</span></a></li>
-	    <li class="{% if current == 'users' %}active{% endif %}"><a href="/users/"><i class="flaticon-users"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Players' %}</span></a></li>
+	    {% endif %}
+	    <li class="{% if current == 'users' %}active{% endif %} dropdown">
+	      <a href="/users/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		<i class="flaticon-users"></i><span class="hidden-sm hidden-md">
+		  &nbsp;
+		  {% trans 'Players' %}</span>
+	      </a>
+	      <ul class="dropdown-menu" role="menu">
+		<li class="{% if current == 'users' and users_language == 'EN' %}active{% endif %}"><a href="/users/?language=EN&verified=3&reverse_order=on"><i class="flaticon-EN"></i> {% trans 'Leaderboard' %} - {{ 'EN'|languageToString }}</a></li>
+		<li class="{% if current == 'users' and users_language == 'JP' %}active{% endif %}"><a href="/users/?language=JP&verified=3&reverse_order=on"><i class="flaticon-JP"></i> {% trans 'Leaderboard' %} - {{ 'JP'|languageToString }}</a></li>
+		<li role="presentation" class="divider"></li>
+		<li class="{% if current == 'map' %}active{% endif %}"><a href="/map/"><i class="flaticon-world"></i> {% trans 'Map' %}</a></li>
+		<li class="{% if current == 'discussions' or current == 'discussion' %}active{% endif %}"><a href="/discussions/"><i class="flaticon-comments"></i> {% trans 'Discussions' %}</a></li>
+	      </ul>
+	    </li>
 	    {% if user.is_authenticated %}
-	    <li class="dropdown">	
+	    <li class="dropdown">
 	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	      {% if notification %}
+	      <span id="notifications" data-toggle="popover" data-content="<div class='row'><div class='col-xs-3'>{{ notification.left_html|safe }}</div><div class='col-xs-9'>{{ notification.message }}<div class='text-right'><br><a href='{{ notification.link }}' target='_blank' class='btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}'>{{ notification.link_text }}</a></div></div></div>" data-trigger="manual" data-placement="bottom" data-html="true" data-container="body">
+		{% endif %}
 		{% include 'include/avatar.html' with av_user=user av_size=10 av_image_size=22 %}
 		&nbsp;
 		<span class="hidden-sm hidden-md">{{ user.username }}</span>
+	      {% if notification %}
+	      </span>
+	      {% endif %}
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
 		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>
@@ -122,7 +154,7 @@
 
     <!-- Free Modal -->
     <div class="modal fade" id="freeModal">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
 	<div class="modal-content">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -154,7 +186,7 @@
     <script src="/static/bower/jQuery/dist/jquery.min.js"></script>
     <script src="/static/js/jquery.form.min.js"></script>
     <script src="/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/static/js/main.js?3"></script>
+    <script src="/static/js/main.js?5"></script>
     {% block js %}{% endblock %}
 
     <script>
@@ -169,17 +201,6 @@
     </script>
     <script>
       window.twttr=function(t,e,r){var n,i=t.getElementsByTagName(e)[0],w=window.twttr||{};return t.getElementById(r)?w:(n=t.createElement(e),n.id=r,n.src="https://platform.twitter.com/widgets.js",i.parentNode.insertBefore(n,i),w._e=[],w.ready=function(t){w._e.push(t)},w)}(document,"script","twitter-wjs");
-    </script>
-
-    <script>
-      window.intercomSettings = {
-        app_id: "pe7y8i16",
-        {% if user.is_authenticated %}
-        name: '{{ user.username }}',
-        email: '{{ user.email }}',
-        {% endif %}
-      };
-      (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/pe7y8i16';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
     </script>
 
   </body>

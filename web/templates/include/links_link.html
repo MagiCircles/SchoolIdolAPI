@@ -1,0 +1,55 @@
+{% load imageurl %}
+{% load i18n %}
+      <div class="row">
+	<div class="col-md-5">
+	  <a href="/cards/{{ card.id }}" target="_blank">
+	    <img src="{% imageurl card=card image='transparent_idolized_image' %}" alt="{{ card.name }} #{{ card.id }}">
+	  </a>
+	</div>
+	<div class="col-md-7">
+	  <h1>{{ link.name }}</h1>
+
+	  <ul class="list-group">
+	    {% for url in link.links %}
+	    <a href="{{ url.url }}" target="_blank" class="list-group-item"{% if url.type == 'tutorial' %}
+	       data-toggle="popover" data-placement="right" data-content="Tutorial" data-trigger="hover"
+	       {% elif url.type == 'info' %}
+	       data-toggle="popover" data-placement="right" data-content="Information" data-trigger="hover"
+	       {% elif url.type == 'tool' %}
+	       data-toggle="popover" data-placement="right" data-content="Tool" data-trigger="hover"
+	       {% endif %}>
+	      {% if url.size == 'small' %}<small>{% endif %}
+		{% if url.type == 'tutorial' %}
+		<div class="pull-right{% if url.size == 'big' %} fontx2{% endif %}"><i class="flaticon-help"></i></div>
+		{% elif url.type == 'info' %}
+		<div class="pull-right{% if url.size == 'big' %} fontx2{% endif %}"><i class="flaticon-about"></i></div>
+		{% elif url.type == 'tool' %}
+		<div class="pull-right{% if url.size == 'big' %} fontx2{% endif %}"><i class="flaticon-settings"></i></div>
+		{% endif %}
+		{% if url.language == 'japanese' %}
+		<div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-JP"></i></div>
+		{% elif url.language == 'english' %}
+		<div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-EN"></i></div>
+		{% elif url.language == 'world' %}
+		<!-- <div class="pull-right{% if url.size == 'big' or url.description %} fontx2{% endif %}"><i class="flaticon-world"></i></div> -->
+		{% endif %}
+		{% if url.image %}
+		<div class="pull-right"><img src="{{ url.image }}" class="image" height="{% if url.size == 'big' %}35{% elif url.size == 'small'%}20{% else %}25{% endif %}"></div>
+		{% endif %}
+		<h{% if url.size == 'small' %}5{% else %}4{% endif %} class="list-group-item-heading{% if url.size == 'big' %} fontx2{% endif %}">{{ url.name }}</h{% if url.size == 'small' %}5{% else %}4{% endif %}>
+		{% if url.description %}
+		<p class="list-group-item-text">{{ url.description }}</p>
+		{% endif %}
+		{% if url.size == 'small' %}</small>{% endif %}
+	    </a>
+	    {% endfor %}
+	  </ul>
+	  {% if with_links_button %}
+	  <div class="text-right">
+	    <a href="/links/">
+	      <img src="/static/links.png">
+	    </a>
+	  </div>
+	  {% endif %}
+	</div>
+      </div>

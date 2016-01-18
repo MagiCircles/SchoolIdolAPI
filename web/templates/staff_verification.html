@@ -12,11 +12,13 @@
 {% load imageurl %}
 {% load mod %}
 {% if verification.status != 2 or verification.verified_by == user %}
+{% if show_profile %}
 <div class="row">
   <div class="col-md-7 text-center">
     <iframe style="width: 100%; height: 800px" src="/user/{{ verification.account.owner.username }}/?hidenavbar&staff#{{ verification.account.id }}"></iframe>
   </div>
   <div class="col-md-5">
+    {% endif %}
     <div style="height: 800px; overflow: auto;">
       <div class="jumbotron margin50 text-center">
 	<p class="padding50 verified{{ verification.verification }}">
@@ -70,7 +72,7 @@
 	  <script>
 	    var countdowndate = "{{ verification.verification_date|torfc2822 }}";
 	    function countdownRender(data) {
-	      $(this.el).text('Enter the transfer code to verify the account in ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
+	    $(this.el).text('Enter the transfer code to verify the account in ' + data.hours + ' hours, ' + data.min + ' minutes, ' + data.sec + ' seconds');
 	    }
 	  </script>
 	</h3>
@@ -133,8 +135,10 @@
       Message: {{ verification.verification_comment }}
       {% endif %}
     </div>
+    {% if show_profile %}
   </div>
 </div>
+{% endif %}
 <div id="template" class="hidden">
   {% if verification.verification == 2 %}
   <div data-name="Gold: Missing transfer code" data-btn="Gold">

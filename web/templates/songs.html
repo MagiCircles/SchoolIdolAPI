@@ -2,7 +2,6 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% load imageurl %}
-{% load getattribute %}
 
 {% block title %}{% trans 'Songs' %}{% if single %}: {{ single }}{% endif %}{% endblock %}
 {% block js %}
@@ -66,40 +65,7 @@ function songs_stats_buttons() {
 {% if not single %}
 {% if show_filter_button %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
-  <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
-    <form method="GET">
-      <h4>{% trans 'Search' %}</h4>
-      <div class="section search">
-	{{ filter_form.search }}
-      </div>
-      <h4>{% trans 'Order' %}</h4>
-      <div class="section order">
-	{{ filter_form.ordering }}
-	<br>
-	<div>
-	  <div class="pull-right">
-	    {{ filter_form.reverse_order }}
-	  </div>
-	  <label for="{{ filter_form.reverse_order.id_for_label }}">{{ filter_form.reverse_order.label }}</label>
-	</div>
-      </div>
-      <h4>{% trans 'Filter' %}</h4>
-      <div class="section filter">
-	{% for field in filter_form.fields %}
-	{% if field != 'search' and field != 'ordering' and field != 'reverse_order' %}
-	{% with f=filter_form|getattribute:field %}
-	<label for="{{ f.id_for_label }}">{{ f.label }}</label><br>
-	{{ f }}<br><br>
-	{% endwith %}
-	{% endif %}
-	{% endfor %}
-      </div>
-      <div class="section submit">
-	<button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
-	<br><br><br><br><br>
-      </div>
-    </form>
-  </nav>
+  {% include 'include/filterbar.html' %}
   <div id="page-content-wrapper">
     <a href="#" id="togglebutton" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
       <i class="flaticon-search"></i>

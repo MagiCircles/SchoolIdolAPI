@@ -102,6 +102,7 @@ from django.utils.translation import ugettext_lazy as _
 LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
+    ('ko', _('Korean')),
     ('es', _('Spanish')),
     ('it', _('Italian')),
     ('de', _('German')),
@@ -140,6 +141,13 @@ AWS_PASSWORD_EMAIL = 'password@schoolido.lu'
 DISQUS_STAFF = 'sukutomostaff'
 
 RANDOM_ORDERING_DATABASE = 'RANDOM'
+
+IMGUR_CLIENT_ID = '2e57c00bd3e1b6f'
+
+CARDS_LIMIT = 81
+
+# Generated settings:
+CARDS_INFO = {'idols': []}
 
 try:
     from local_settings import *

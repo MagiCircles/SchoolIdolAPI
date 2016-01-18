@@ -51,6 +51,7 @@ select {
 .fontx1-2 { font-size: 1.2em; }
 .fontx1-5 { font-size: 1.5em; }
 .fontx2 { font-size: 2em; }
+.fontx3 { font-size: 3em; }
 .fontx4 { font-size: 4em; }
 
 dt, dd {
@@ -540,6 +541,9 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 }
 
 @media (max-width: 970px) {
+    #users {
+	padding: 20px;
+    }
     .table-buttons {
 	td {
 	    display: block;
@@ -655,6 +659,7 @@ nav {
 .padding5 { padding: 5px; }
 .padding10 { padding: 10px; }
 .padding20 { padding: 20px; }
+.padding50 { padding: 50px; }
 .padding-novertical {
     padding-top: 0;
     padding-bottom: 0;
@@ -707,11 +712,25 @@ a.panel {
     }
 }
 
+// Markdown
+.topprofile .description, .activity .message {
+    img {
+	max-width: 100%;
+    }
+}
+
+#profile-wrapper {
+    max-width: 1140px;
+    margin: auto;
+}
+
 #profile.jumbotron, #idol .jumbotron {
     margin-bottom: 0;
     padding-bottom: 30px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
     &.Smile { background-color: lighten(@SmileColor, 45%); color: darken(@SmileColor, 10%); .a-variant(@SmileColor); }
     &.Pure { background-color: lighten(@PureColor, 45%); color: darken(@PureColor, 10%); .a-variant(@PureColor); }
     &.Cool { background-color: lighten(@CoolColor, 45%); color: darken(@CoolColor, 10%); .a-variant(@CoolColor); }
@@ -767,7 +786,21 @@ a.panel {
     }
 }
 
+.album-empty {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 0 5px;
+    margin-bottom: 10px;
+    background: url('/static/empty.png');
+    background-size: 100px;
+}
+
 #users {
+    padding: 80px;
     .jumbotron {
 	background-color: transparent;
 	padding-top: 0;
@@ -803,7 +836,7 @@ a.panel {
 			box-shadow: none;
 			margin: 0;
 			width: auto;
-		    height: auto;
+			height: auto;
 		    }
 		}
 	    }
@@ -841,6 +874,19 @@ a.panel {
 }
 .verified2 {
     color: @GoldColor;
+}
+
+#addteam {
+    .cuteform-modal-button {
+	img {
+	    max-width: 100%;
+	    height: auto !important;
+	}
+    }
+    .col-md-1 {
+	padding-left: 0;
+	padding-right: 0;
+    }
 }
 
 .row.donation {
@@ -897,9 +943,9 @@ h1#donators {
     label[for=id_card],
     #id_expiration,
     nobr
-    {
-	display: none;
-    }
+	{
+	    display: none;
+	}
     form.add, form.edit {
 	input[type=number] {
 	    .neutral-input();
@@ -927,13 +973,17 @@ h1#donators {
     .rank {
 	&.rank-70 { .hexagon(34px, @SmileColor); }
 	&.rank-133 { .hexagon(64px, @SmileColor); }
+	&.rank-150 { .hexagon(74px, @SmileColor); }
 	&:hover {
 	    .hexagon-changecolor(darken(@SmileColor, 10%));
 	}
     }
 }
 
-#events {
+#events-page {
+    max-width: 1170px;
+    margin: auto;
+    padding: 1px 10px;
     .event {
 	display: block;
 	background-size: 125%;
@@ -942,9 +992,9 @@ h1#donators {
 	border-radius: 15px;
 	margin-bottom: 20px;
 	&:hover, &:focus {
-	    opacity: 0.6;
-	    text-decoration: none;
-	}
+		     opacity: 0.6;
+		     text-decoration: none;
+		 }
 	span {
 	    display: block;
 	    padding: 50px;
@@ -1155,8 +1205,8 @@ h1#donators {
     }
     a {
 	&:hover, &:focus {
-	    text-decoration: none;
-	}
+		     text-decoration: none;
+		 }
     }
     .transparent-hover:hover {
 	img {
@@ -1216,37 +1266,111 @@ h1#donators {
     }
 }
 
+.toplistbanner {
+    display: block;
+    background-image: url('http://i.schoolido.lu/cards/transparent/444idolizedTransparent.png');
+    background-color: orange;
+    background-size: 60%;
+    background-position: 130% 35%;
+    padding: 3%;
+    background-repeat: no-repeat;
+    color: white !important;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    padding-right: 30%;
+}
+a.toplistbanner {
+    &:focus, &:hover {
+	text-decoration: none;
+	opacity: 0.9;
+    }
+}
+
+.topbutton {
+    display: block;
+    background-size: 200%;
+    background-position-y: 35%;
+    background-position-x: 70%;
+    background-repeat: no-repeat;
+    margin-bottom: 10px;
+    &:hover, &:focus {
+	opacity: 0.8;
+    }
+    img {
+	width: 100%;
+    }
+    span {
+	font-size: 1.5em;
+	line-height: 1em;
+	font-weight: bold;
+	color: white;
+	width: 90%;
+	padding-top: 22px;
+	padding-left: 50%;
+	padding-right: 10%;
+	display: block;
+	position: absolute;
+	top: 0;
+	text-shadow:
+	-1px -1px 0 #989898,
+	1px -1px 0 #989898,
+	-1px 1px 0 #989898,
+	1px 1px 0 #989898;
+    }
+}
+
 @media (max-width: 768px) {
     .jumbotron form {
 	width: 80%;
     }
 }
+@media (max-width: 1200px) {
+    #users {
+	padding: 20px;
+    }
+    #profile {
+	&.jumbotron {
+	    padding-right: 10px;
+	    padding-left: 10px;
+	}
+    }
+}
+
+@media (min-width: 1200px) {
+    #profile {
+	&.jumbotron {
+	    padding-right: 60px;
+	    padding-left: 60px;
+	}
+    }
+}
 
 @-webkit-keyframes animate-pulse {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg);
-  }
+    0% {
+	-webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+	-webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 
 @keyframes animate-pulse {
-  0% {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-            transform: rotate(359deg);
-  }
+    0% {
+	-webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+	-webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
 
 .animate-pulse {
-  -webkit-animation: animate-pulse 1s infinite steps(8);
-          animation: animate-pulse 1s infinite steps(8);
+    -webkit-animation: animate-pulse 1s infinite steps(8);
+    animation: animate-pulse 1s infinite steps(8);
 }
 
 .flaticon-loading {

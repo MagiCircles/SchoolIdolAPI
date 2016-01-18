@@ -20,7 +20,11 @@
 		</form>
 	      </div>
 	      <div class="col-md-4">
+		{% if edit.card.is_special or edit.card.is_promo %}
+		<img src="{% if edit %}{% imageurl card=edit.card image='card_idolized_image' %}{% endif %}" class="non_idolized" width="100%">
+		{% else %}
 		<img src="{% if edit %}{% imageurl card=edit.card image='card_image' %}{% endif %}" class="non_idolized" width="100%">
+		{% endif %}
 		<img src="{% if edit %}{% imageurl card=edit.card image='card_idolized_image' %}{% endif %}" class="idolized" width="100%">
 	      </div>
 	    </div>

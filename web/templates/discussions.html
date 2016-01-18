@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load imageurl %}
+{% load mod %}
+
+{% block title %}{% trans 'Discussions' %}{% endblock %}
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/discussions.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/discussions.png{% endblock %}
+
+{% block content %}
+<div class="container text-center" id="discussions">
+  <h1 class="margin50">{% trans 'Discussions' %} <small>{{ discussions|length }}</small></h1>
+
+  <div class="row">
+    {% for discussion in discussions %}
+    {% if forloop.counter0|mod:3 %}
+  </div><div class="row">
+    {% endif %}
+    <div class="col-md-4">
+      <a href="{% if discussion.link %}{{ discussion.link }}{% else %}/discussion/{{ discussion.code }}/{% endif %}"
+	 class="topbutton" style="background-image: url('{{ discussion.image }}'); background-color: {{ discussion.color }};{% if '/static/screenshots' in discussion.image %} background-size: 100%; background-position: 0 0;{% elif '/static/' in discussion.image %} background-size: 80%; background-position-x: -90%;{% endif %}{% if discussion.big %}font-size: 1.4em;{% endif %}">
+	<img src="/static/topbutton.png">
+	<span{% if '/static/screenshots' in discussion.image %} style="padding-right: 25%; padding-left: 25%;"{% endif %}>
+	  {% if discussion.big %}<br>{% endif %}
+	  {% trans discussion.name %}
+	</span>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  <br><br>
+  <h2>{% trans 'We' %} <i class="flaticon-heart color-Smile"></i> {% trans 'the LoveLive! community' %}</h2>
+
+  <br>
+  <p class="fontx1-5">
+    {% blocktrans %}So don't forget to check out the discussion boards, communities and much more from our fellow LoveLivers friends:{% endblocktrans %}
+  </p>
+  <br><br>
+</div>
+<div class="bg-Rainbow-4 home-section">
+  <div class="container">
+    {% include 'include/links_link.html' with link=community_links with_links_button=True %}
+  </div>
+</div>
+
+{% endblock %}

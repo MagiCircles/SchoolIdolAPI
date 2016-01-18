@@ -5,6 +5,7 @@
 {% load choicesToString %}
 {% load i18n %}
 {% load l10n %}
+{% load pagination %}
 {% get_current_language as LANGUAGE_CODE %}
 
     {% if cards and total_cards != 0 or tab != 'cards' %}
@@ -29,8 +30,8 @@
     </div><div class="row">
       {% endif%}
       <div class="col-sm-{% if ajax %}4{% elif total_cards == 1 %}12{% elif total_cards == 2 %}6{% else %}4{% endif %}">
-	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}" data-attribute="{{ card.attribute }}" data-rarity="{{ card.rarity }}">
-	  <div class="panel panel-{{ card.attribute }}">
+	<div class="card card-{{ card.attribute }} card-{{ card.rarity }}" id="{{ card.id }}" data-attribute="{{ card.attribute }}" data-rarity="{{ card.rarity }}" {% if card.is_special %}data-is-special="true"{% endif %} {% if card.is_promo %}data-is-promo="true"{% endif %}>
+	  <div class="panel panel-{% if card.attribute %}{{ card.attribute }}{% else %}default{% endif %}">
 	    <div class="panel-body">
 	      {% if total_results == 1 %}
 	      <div class="row">
@@ -38,17 +39,7 @@
 		  {% endif %}
 		  <div class="text-center card_images">
 		    {% if total_results > 1 %}
-		    <a href="/cards/{{ card.id }}/" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}
-		      {% if not card.is_special and not card.is_promo %}
-		      {% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}
-			<img src="{% imageurl card=card image='card_image' %}" class="non_idolized" width="49%" alt="{{ card }}">
-			{% if total_results == 1 %}</a>{% endif %}
-		      {% endif %}
-		      {% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}
-			<img src="{% imageurl card=card image='card_idolized_image' %}" class="idolized" width="49%" alt="{{ card }} idolized">
-			{% if total_results == 1 %}</a>{% endif %}
-		      {% if total_results > 1 %}</a>{% endif %}
-		  </div>
+		    <a href="/cards/{{ card.id }}/" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}{% if not card.is_special and not card.is_promo %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}<img src="{% imageurl card=card image='card_image' %}" class="non_idolized" width="50%" alt="{{ card }}">{% if total_results == 1 %}</a>{% endif %}{% endif %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}<img src="{% imageurl card=card image='card_idolized_image' %}" class="idolized" width="{% if card.is_special or card.is_promo %}{% if total_results == 1 %}100%{% else %}50%{% endif %}{% else %}50%{% endif %}" alt="{{ card }} idolized">{% if total_results == 1 %}</a>{% endif %}{% if total_results > 1 %}</a>{% endif %}</div>
 		  {% if total_results == 1 %}
 		</div>
 		<div class="col-md-6">
@@ -155,14 +146,56 @@
 			      </div>
 			      #{{ card.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			    </a><br>
-			    <small>{% if card.idol.japanese_name %} {{ card.idol.japanese_name }}{% endif %} {{ card.idol.name }}
-			      <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
+			    {% if card.rarity %}
+			    <small>{{ card.rarity|rarityToString }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
 				  <i class="flaticon-link"></i></a></span><br>
-			      {{ card.rarity }} <span class="tiny"><a target="_blank" href="/cards/?search=&rarity={{ card.rarity }}">
-				  <i class="flaticon-link"></i></a></span> {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
+			      {% endif %}
+			      {{ card|getattribute:'japanese_attribute' }} {{ card.attribute }}
 			      <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.attribute }}">
 				  <i class="flaticon-link"></i></a></span>
 			    </small>
+			  </td>
+			</tr>
+			<tr>
+			  <th>{% trans 'Idol' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <a href="/idol/{{ card.idol.name }}/" target="_blank">
+				<img src="{% chibiimage idol=card.idol.name small=True %}" class="chibi" width="60">
+			      </a>
+			    </div>
+			    {% if card.idol.japanese_name %} {{ card.idol.japanese_name }}<br>{% endif %}
+			    <strong>{{ card.idol.name }}</strong>
+			    <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
+				<i class="flaticon-link"></i></a>
+			    </span><br>
+			    {% if idol.school %}
+			    <small>
+			      {% trans 'School' %}: {{ card.idol.school }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_school={{ card.idol.school }}">
+				  <i class="flaticon-link"></i></a>
+			      </span>
+			    </small><br>
+			    {% endif %}
+			    {% if idol.year %}
+			    <small>
+			      {% trans 'Year' %}: {{ card.idol.year }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_year={{ card.idol.year }}">
+				  <i class="flaticon-link"></i></a>
+			      </span>
+			    </small><br>
+			    {% endif %}
+			    {% if card.idol.sub_unit %}
+			    <small>
+			      {% trans 'Sub Unit' %}: {{ card.idol.sub_unit }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&sub_unit={{ card.idol.sub_unit }}">
+				  <i class="flaticon-link"></i></a>
+			      </span>
+			    </small><br>
+			    {% endif %}
+			    <a href="/idol/{{ card.idol.name }}/" target="_blank">{% trans 'Learn more' %}
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a>
 			  </td>
 			</tr>
 			{% if card.release_date %}
@@ -180,8 +213,12 @@
 			<tr>
 			  <th>{% trans 'Promo Card' %}</th>
 			  <td>
+			    {% if card.promo_item %}
 			    {% trans 'This card comes with ' %}:<br>
 			    {{ card.promo_item }}
+			    {% else %}
+			    {% trans 'Yes' %}
+			    {% endif %}
 			    <div class="pull-right">
 			      <i class="flaticon-promo"></i>
 			    </div>
@@ -205,11 +242,16 @@
 			  </td>
 			</tr>
 			{% endif %}
-			{% if card.japanese_collection %}
+			{% if card.japanese_collection or card.translated_collection %}
 			<tr>
 			  <th>{% trans 'Collection' %}</th>
 			  <td>
+			    {% if card.translated_collection %}
+			    <a href="/cards/?search=&translated_collection={{ card.translated_collection }}" target="_blank">{{ card.translated_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a><br>
+			    {% endif %}
+			    {% if card.japanese_collection %}
 			    <a href="/cards/?search=&collection={{ card.japanese_collection }}" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
+			    {% endif %}
 			    <div class="pull-right">
 			      <i class="flaticon-album"></i>
 			    </div>
@@ -245,15 +287,12 @@
 			    <div class="pull-right">
 			      <i class="flaticon-center"></i>
 			    </div>
-			    {% if card.japanese_center_skill_details or card.japanese_center_skill %}
+			    {% if card.center_skill %}
 			    <p>
-			      {% if card.japanese_center_skill %}<strong>{{ card.japanese_center_skill }}</strong><br />
-			      <small>{% endif %}{% if card.japanese_center_skill_details and card.japanese_center_skill_details != 'None' %}{{ card.japanese_center_skill_details }}{% endif %}{% if card.japanese_center_skill %}</small>{% endif %}
+			      <strong>{{ card.center_skill }}</strong><br>
+			      <small>{% if card.center_skill_details %}{{ card.center_skill_details }}{% endif %}</small>
 			    </p>
 			    {% endif %}
-			    <p>
-			      {% if card.center_skill %}{{ card.center_skill }}{% endif %}
-			    </p>
 			  </td>
 			</tr>
 			{% endif %}
@@ -276,6 +315,97 @@
 			    {% if card.transparent_idolized_ur_pair %}
 			    <a href="{{ card.transparent_idolized_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Not Idolized' %}</a><br>
 			    {% endif %}
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.ranking_attribute or card.ranking_rarity or card.ranking_special %}
+			<tr>
+			  <th>{% trans 'Ranking' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-contest"></i>
+			    </div>
+			    {% with transattribute=card.attribute|trans %}
+			    {% if card.ranking_attribute %}
+			    {% if card.ranking_attribute <= 3 %}
+			    <img src="/static/medal{{ card.ranking_attribute }}.png" alt="{{ card.ranking_attribute }}" height="34">
+			    {% else %}
+			    <b>#{{ card.ranking_attribute }}</b>
+			    {% endif %}
+			    {% with attribute=transattribute %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    <a href="/cards/?attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a><br>
+			    {% endif %}
+			    {% if card.ranking_rarity %}
+			    <small>
+			    {% if card.ranking_rarity <= 3 %}
+			    <img src="/static/medal{{ card.ranking_rarity }}.png" alt="{{ card.ranking_rarity }}" height="24">
+			    {% else %}
+			    <b>#{{ card.ranking_rarity }}</b>
+			    {% endif %}
+			    {% with attribute=card.rarity|transconcatspace:card.attribute %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    <a href="/cards/?rarity={{ card.rarity }}&attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a>
+			    </small><br>
+			    {% endif %}
+			    {% if card.ranking_special %}
+			    <small>
+			    {% if card.ranking_special <= 3 %}
+			    <img src="/static/medal{{ card.ranking_special }}.png" alt="{{ card.ranking_special }}" height="24">
+			    {% else %}
+			    <b>#{{ card.ranking_special }}</b>
+			    {% endif %}
+			    {% if card.event %}
+			    {% with translatedattributerarity=card.rarity|transconcatspace:card.attribute %}
+			    {% with attribute='Event'|transconcatspace:translatedattributerarity %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    {% endwith %}
+			    <a href="/cards/?is_event=on&rarity={{ card.rarity }}&attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			    {% else %}{# promo #}
+			    {% with attribute='Promo Card'|transconcatspace:card.attribute %}
+			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
+			    {% endwith %}
+			    <a href="/cards/?is_promo=on&attribute={{ card.attribute }}&ordering=idolized_maximum_statistics_{{ card.attribute|lower }}&reverse_order=on">
+			    {% endif %}
+			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+			    </a>
+			    </small><br>
+			    {% endif %}
+			    {% endwith %}
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.total_owners or card.total_wishlist %}
+			<tr>
+			  <th>{% trans 'Players' %}</th>
+			  <td>
+			    <div class="pull-right">
+			      <i class="flaticon-users"></i>
+			    </div>
+			    {% with owns_card_string=card %}
+			    {% if card.total_owners %}
+			    <i class="flaticon-deck text-{{ card.attribute }}"></i>
+			    {% blocktrans count counter=card.total_owners %}{{ counter }} player owns the card {{ owns_card_string }}{% plural %}{{ counter }} players own the card {{ owns_card_string }}{% endblocktrans %}:<br>
+			    <a href="/users/?owns={{ card.id }}&ordering=owner__date_joined&reverse_order=on" target="_blank">{% trans 'All' %}</a> -
+			    <a href="/users/?owns={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=off" target="_blank">{% trans 'Not Idolized' %}</a> -
+			    <a href="/users/?owns={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=on" target="_blank">{% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    <i class="flaticon-star text-{{ card.attribute }}"></i>
+			    {% if card.total_wishlist %}
+			    {% blocktrans count counter=card.total_wishlist %}{{ counter }} player has the card {{ owns_card_string }} in their wish list{% plural %}{{ counter }} players have the card {{ owns_card_string }} in their wish list{% endblocktrans %}:<br>
+			    <a href="/users/?wish={{ card.id }}&ordering=owner__date_joined&reverse_order=on" target="_blank">{% trans 'All' %}</a> -
+			    <a href="/users/?wish={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=off" target="_blank">{% trans 'Not Idolized' %}</a> -
+			    <a href="/users/?wish={{ card.id }}&ordering=owner__date_joined&reverse_order=on&owns_idolized=on" target="_blank">{% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    {% endwith %}
+			    <small><span class="tiny text-muted">{% trans 'Last update' %}: {{ last_update }}</span></small>
 			  </td>
 			</tr>
 			{% endif %}
@@ -332,7 +462,7 @@
 	      <div class="row">
 		<div class="col-xs-8">
 		  {% for owned in card.owned_cards %}
-		  {% include "ownedCardOnBottomCard.html" with owned=owned owner_account=accounts|findModelId:owned.owner_account_id %}
+		  {% include "ownedCardOnBottomCard.html" with owned=owned owner_account=accounts|findModelId:owned.owner_account_id withcenter=True %}
 		  {% endfor %}
 		  <a href="{% if user.is_authenticated %}{% if accounts %}#quickAddCard{% else %}/addaccount/{% endif %}{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 		</div>
@@ -370,11 +500,11 @@
     <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
       <nav>
 	<ul class="pagination pagination-sm">
-	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:"-1" }}">&laquo;</a></li>
+	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url|previouspage:page }}">&laquo;</a></li>
 	  {% for i in total_pages|times %}
-	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url }}page={{ i|add:1 }}">{{ i|add:1 }}</a></li>
+	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url|nextpage:i }}">{{ i|add:1 }}</a></li>
 	  {% endfor %}
-	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url }}page={{ page|add:1 }}">&raquo;</a></li>
+	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url|nextpage:page }}">&raquo;</a></li>
 	</ul>
       </nav>
     </div>

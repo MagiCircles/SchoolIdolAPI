@@ -16,7 +16,6 @@ function loadMorePictures() {
     var button = $("#load_more");
     button.html('<span class="loader">Loading...</span>');
     var next_page = button.attr('data-next-page');
-    console.log('Get next page ' + next_page);
     loadPicturesJSON(next_page, function(data) {
 	button.replaceWith(picturesJSONToHTML(data, next_page));
     });

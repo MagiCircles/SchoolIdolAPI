@@ -5,6 +5,9 @@ function loadMoreUsers() {
     var next_page = button.attr('data-next-page');
     $.get('/ajax/users/' + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {
 	button.replaceWith(data);
+	// Reload disqus comments count
+	window.DISQUSWIDGETS = undefined;
+	$.getScript("http://schoolidol.disqus.com/count.js");
     });
 }
 

@@ -20,10 +20,8 @@ $(function () {
 function addCardButtonHandler() {
     // ADD CARD
     $('a[href="#auickAddCard"]').unbind('click');
-    console.log('bind quickadd event click');
     $('a[href="#quickAddCard"]').click(function(e) {
 	e.preventDefault();
-	console.log('called twice');
 	var button = $(this);
 	var card = button.closest('.card');
 	if (card.find('.flaticon-loading').length == 0) {
@@ -52,10 +50,14 @@ function addCardButtonHandler() {
 			$('[data-toggle="popover"]').popover();
 			form.find('form').attr('action', '/ajax/editcard/' + ownedcardbutton.attr('data-id') + '/');
 			$('a[href="#quickAddCard"]').popover('hide');
+			var formContent = $(form.html());
+			if (card.data('is-special') == true || card.data('is-promo') == true) {
+			    formContent.find('#id_idolized').parent().parent().hide();
+			}
 			ownedcardbutton.popover({
 			    'html': true,
 			    'placement': 'top',
-			    'content': form.html(),
+			    'content': formContent,
 			}).parent().delegate('form', 'submit', function(e) {
 			    e.preventDefault();
 			    button.hide();
@@ -67,6 +69,7 @@ function addCardButtonHandler() {
 				    $('i.flaticon-loading').remove();
 				    $('a[href="#quickAddCard"]').show();
 				    ownedcardbutton.replaceWith(newownedcardbutton);
+				    ownedcardbutton = newownedcardbutton;
 				    editCardFormHandler();
 				    $('[data-toggle="popover"]').popover();
 				},
@@ -94,13 +97,15 @@ function addCardButtonHandler() {
 }
 
 function shareButtons() {
-    stLight.options({
-	publisher: "f651d0dd-8213-437a-be4a-5ccc4d544d03",
-	doNotHash: true,
-	doNotCopy: true,
-	hashAddressBar: false,
-    });
-    stButtons.locateElements();
+    if (typeof stLight != 'undefined') {
+	stLight.options({
+	    publisher: "f651d0dd-8213-437a-be4a-5ccc4d544d03",
+	    doNotHash: true,
+	    doNotCopy: true,
+	    hashAddressBar: false,
+	});
+	stButtons.locateElements();
+    }
 }
 
 function youtubeRatio() {
@@ -211,7 +216,7 @@ function collapseCards() {
     });
 }
 
-function changeAccount() {
+function changeAccount(event) {
     if ($('#id_select_account').val() == '') {
 	$('#sidebar-wrapper #id_stored').val('').change();
 	$('#sidebar-wrapper #id_stored').prop('disabled', 'disabled');
@@ -223,7 +228,7 @@ function changeAccount() {
 	$('#sidebar-wrapper #id_max_bond').prop('disabled', 'disabled');
     } else {
 	$('#sidebar-wrapper #id_stored').prop('disabled', false);
-	if(event.type == "change"){
+	if (typeof event != 'undefined' && event.type == "change") {
 		$('#sidebar-wrapper #id_stored').val('Deck').change();
 	}
 	$('#sidebar-wrapper #id_idolized').prop('disabled', false);
@@ -249,7 +254,7 @@ $(document).ready(function() {
 
     changeAccount();
     $('#id_select_account').change(function(event) {
-	changeAccount();
+	changeAccount(event);
     });
 
 
@@ -259,7 +264,9 @@ $(document).ready(function() {
 
     if ($('#id_sub_unit').val() != ''
 	|| $('#id_idol_year').val() != ''
+	|| $('#id_idol_school').val() != ''
 	|| $('#id_collection').val() != ''
+	|| $('#id_translated_collection').val() != ''
 	|| $('#id_is_promo').val() != ''
 	|| $('#id_is_special').val() != ''
 	|| $('#id_is_event').val() != ''

@@ -8,24 +8,89 @@
 {% block content %}
 {% load imageurl %}
 {% load mod %}
-<div class="container" id="events">
-  <h1 class="text-center margin50">{% trans 'Events' %} <small>{{ events|length }}</small></h1>
-  <div class="row">
-    {% for event in events %}
-    {% if forloop.counter0|mod:2 %}
-  </div><div class="row">
-    {% endif%}
-    <div class="col-lg-6 text-center">
-      <a href="/events/{{ event.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=event english=show_english_banners %}');">
-	<span class="hidden">{{ event }}</span>
-      </a>
-      {{ event.japanese_name }}<br>
-      {% if event.english_name and event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}
-      <br><br>
+{% load choicesToString %}
+<div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
+  {% include 'include/filterbar.html' %}
+  <div id="page-content-wrapper">
+    <a href="#" id="togglebutton" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+      <i class="flaticon-search"></i>
+      <i class="flaticon-toggler hidder"></i>
+    </a>
+      {% if show_discover_banner %}
+    <a href="/events/?search=&is_world=off&reverse_order=on" target="_blank"
+       class="toplistbanner">
+      <span>
+	<i class="flaticon-EN"></i>
+	{% trans 'Discover the upcoming events before everybody else!' %}
+      </span>
+    </a>
+    {% endif %}
+    <div id="events-page">
+      <h1 class="text-center margin50">{% trans 'Events' %} <small>{{ events|length }}</small></h1>
+      <div class="row">
+	{% for event in events %}
+	{% if forloop.counter0|mod:2 %}
+      </div><div class="row">
+	{% endif%}
+	<div class="col-lg-6 text-center">
+	  <a href="/events/{{ event.japanese_name|urlencode }}/" class="event" style="background-image: url('{% eventimageurl event=event english=show_english_banners %}');">
+	    <span class="hidden">{{ event }}</span>
+	  </a>
+	  {{ event.japanese_name }}<br>
+	  {% if event.english_name and event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}
+	  <br>
+	  {% if show_approximate_dates %}
+	  <i class="flaticon-EN"></i> <strong>{% trans 'Release date' %} ({% trans 'expected' %}): {{ event.beginning|plusmonths:12|date:'F d, Y' }}</strong><br><br><br>
+	  {% endif %}
+	  <br>
+	</div>
+	{% endfor %}
+      </div>
+      <br><br><br>
     </div>
-    {% endfor %}
-  </div>
-  <br><br><br>
-</div>
+  </div> <!-- page-content-wrapper -->
+</div> <!-- wrapper -->
 {% endblock %}
   
+
+{% block js %}
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_idol_attribute'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for i, attribute in filter_form.fields.idol_attribute.choices %}
+      {% if i != '' %}
+      '{{ i }}': '/static/{{ i }}.png',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_idol_skill'), {
+    'html': {
+      '': '{% trans 'All' %}',
+      {% for skill, str in filter_form.fields.idol_skill.choices %}
+      {% if skill != '' %}
+      '{{ skill }}': '<i class="flaticon-{{ skill|skillToFlaticon }}"></i>',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_idol'), {
+    'modal': 'true',
+    'modal-text': 'true',
+    'images': {
+      {% for idol, str in filter_form.fields.idol.choices %}
+      {% if idol == '' %}'': '/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% endfor %}
+  }
+  });
+  cuteform($('#id_participation'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Yes' %}',
+      '3': '{% trans 'No' %}',
+  }
+  });
+</script>
+{% endblock %}

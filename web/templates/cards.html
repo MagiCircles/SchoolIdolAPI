@@ -2,6 +2,7 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% load imageurl %}
+{% load choicesToString %}
 
 {% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endblock %}
 {% block js %}
@@ -36,15 +37,14 @@
     'modal': 'true',
     'modal-text': 'true',
     'images': {
-      '': '/static/empty.png',
-      {% for idol in filters.idols %}
-      '{% if LANGUAGE_CODE == 'ja' %}{{ idol.japanese_name }}{% else %}{{ idol.name|escapejs }}{% endif %}': '{% chibiimage idol=idol.name small=True %}',
+      {% for idol, str in filters.idols %}
+      {% if idol == '' %}'': '/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
     }
   });
 </script>
-<script src="/static/js/cards.js?2"></script>
-<script src="/static/js/addcard.js?1"></script>
+<script src="/static/js/cards.js?7"></script>
+<script src="/static/js/addcard.js?2"></script>
 {% endblock %}
 
 {% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
@@ -53,6 +53,8 @@
 {% block content %}
 <div class="hidden" id="quickaddform">
   <form class="form-horizontal" method="post" role="form" action="/ajax/addcard/">
+    <h3>{% trans 'Card added!' %}<br>
+    <small>{% trans 'You may edit it below:' %}</small></h3>
     {% csrf_token %}
     {% include "bootstrap_form_horizontal.html" with form=quickaddcard_form wrap=0 %}
     <div class="text-right">
@@ -75,12 +77,9 @@
 	<label for="id_name">{% trans 'Idol' %}</label>
 	<select id="id_name" name="name">
 	  <optgroup>
-	    <option value=""></option>
-	  </optgroup>
-	  <optgroup>
-	    {% for idol in filters.idols %}
-	    <option value="{{ idol.name }}"{% if request_get.name == idol.name %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %} ({{ idol.total }})</option>
-	    {% if forloop.counter == 9 %}
+	    {% for idol, str in filters.idols %}
+	    <option value="{{ idol }}"{% if request_get.name == idol %} selected{% endif %}>{{ str }}</option>
+	    {% if forloop.counter == 1 or forloop.counter == 10 %}
 	  </optgroup>
 	  <optgroup>
 	    {% endif %}
@@ -107,7 +106,7 @@
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
-	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide Cards only' %}</label>
+	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
 	</div>
 	<div class="text-right">
 	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i></a>
@@ -121,11 +120,19 @@
 	    {% endfor %}
 	  </select>
 	  <br>
-	  <label for="id_collection">{% trans 'Collection' %}</label>
+	  <label for="id_collection">{% trans 'Collection' %} ({{ 'JP'|languageToString }}) <i class="flaticon-JP"></i></label>
 	  <select id="id_collection" name="collection">
 	    <option value=""></option>
 	    {% for collection in filters.collections %}
 	    <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	  <label for="id_translated_collection">{% trans 'Collection' %} ({{ 'EN'|languageToString }}) <i class="flaticon-EN"></i></label>
+	  <select id="id_translated_collection" name="translated_collection">
+	    <option value=""></option>
+	    {% for translated_collection in filters.translated_collections %}
+	    <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{{ translated_collection.translated_collection }} ({{ translated_collection.total }})</option>
 	    {% endfor %}
 	  </select>
 	  <div id="sub_unit_wrapper">
@@ -137,6 +144,14 @@
 	      {% endfor %}
 	    </select>
 	  </div>
+	  <label for="id_idol_school">{% trans 'School' %}</label>
+	  <select id="id_idol_school" name="idol_school">
+	    <option value="">{% trans 'All' %}</option>
+	    {% for idol_school in filters.idol_school_choices %}
+	    <option value="{{ idol_school }}"{% if request_get.idol_school == idol_school %} selected{% endif %}>{{ idol_school }}</option>
+	    {% endfor %}
+	  </select>
+	  <br>
 	  <label for="id_idol_year">{% trans 'Year' %}</label>
 	  <select id="id_idol_year" name="idol_year" data-cuteform="true">
 	    <option value="" data-cuteform-html="{% trans 'All' %}"></option>
@@ -240,6 +255,15 @@
 {% endif %}
     {% endif %}
     <div>
+      {% if show_discover_banner %}
+      <a href="/cards/?search=&is_world=off&ordering=id&is_promo=off" target="_blank"
+	 class="toplistbanner">
+	<span>
+	  <i class="flaticon-EN"></i>
+	  {% trans 'Discover the upcoming cards before everybody else!' %}
+	</span>
+      </a>
+      {% endif %}
       {% include "cardsPage.html" %}
     </div>
     {% if not single %}

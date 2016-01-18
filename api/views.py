@@ -5,9 +5,16 @@ from django.http import HttpResponse, Http404
 from rest_framework.response import Response
 from rest_framework import viewsets, filters, permissions, status
 from rest_framework.decorators import api_view
+from rest_framework.filters import BaseFilterBackend
 from api import permissions as api_permissions
 from api import serializers, models, raw
 from django.db.models import Count, Q
+
+class RandomBackend(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        if 'ordering' in request.query_params and request.query_params['ordering'] == 'random':
+            return queryset.order_by('?')
+        return queryset
 
 class UserFilterBackend(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
@@ -26,7 +33,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ('username', 'preferences__description', 'preferences__location', 'links__value', 'accounts_set__nickname')
     filter_fields = ('email', 'preferences__private', 'preferences__status', 'preferences__color', 'preferences__best_girl', 'preferences__location')
     ordering_fields = '__all__'
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, UserFilterBackend)
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, UserFilterBackend, RandomBackend)
     permission_classes = (api_permissions.UserPermissions, )
     lookup_field = 'username'
 
@@ -53,17 +60,25 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = models.Card.objects.all().select_related('event', 'idol')
     serializer_class = serializers.CardSerializer
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
-    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_center_skill','japanese_center_skill_details','japanese_collection','promo_item','event__english_name','event__japanese_name')
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
+    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection','promo_item','event__english_name','event__japanese_name')
     filter_class = CardFilter
     ordering_fields = '__all__'
     ordering = ('id',)
 
 class SongFilter(django_filters.FilterSet):
     is_event = django_filters.MethodFilter(action='filter_is_event')
+    is_daily_rotation = django_filters.MethodFilter(action='filter_is_daily_rotation')
+    event = django_filters.MethodFilter(action='filter_event')
 
     def filter_is_event(self, queryset, value):
         return queryset.filter(event__isnull=(False if value.title() == 'True' else True))
+
+    def filter_is_daily_rotation(self, queryset, value):
+        return queryset.filter(daily_rotation__isnull=(False if value.title() == 'True' else True))
+
+    def filter_event(self, queryset, value):
+        return queryset.filter(event__japanese_name=value)
 
     class Meta:
         model = models.Song
@@ -75,8 +90,8 @@ class SongViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = models.Song.objects.all()
     serializer_class = serializers.SongSerializer
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
-    search_fields = ('name', 'romaji_name', 'translated_name', 'event__name')
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
+    search_fields = ('name', 'romaji_name', 'translated_name')
     filter_class = SongFilter
     ordering_fields = '__all__'
     ordering = ('-available', 'daily_rotation', 'daily_rotation_position', 'rank', 'name')
@@ -88,11 +103,12 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = models.Idol.objects.all()
     serializer_class = serializers.IdolSerializer
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'cv_nickname', 'cv_twitter', 'cv_instagram', 'summary')
     filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year')
     ordering_fields = '__all__'
     ordering = ('-main', 'name')
+    lookup_field = 'name'
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -100,7 +116,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = models.Event.objects.all()
     serializer_class = serializers.EventSerializer
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('japanese_name', 'english_name')
     filter_fields = ('cards__idol__name',)
     ordering_fields = '__all__'
@@ -126,7 +142,7 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = models.Account.objects.all().select_related('owner', 'center')
     serializer_class = serializers.AccountSerializer
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, AccountFilterBackend)
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, AccountFilterBackend, RandomBackend)
     search_fields = ('owner__username', 'nickname', 'device')
     filter_fields = ('owner__username', 'nickname', 'language', 'center', 'friend_id', 'language', 'os', 'center', 'rank', 'device', 'play_with', 'accept_friend_requests', 'verified')
     ordering_fields = '__all__'
@@ -155,7 +171,7 @@ class OwnedCardViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
     serializer_class = serializers.OwnedCardSerializer
-    filter_backends = (filters.DjangoFilterBackend, OwnedCardFilterBackend, filters.OrderingFilter)
+    filter_backends = (filters.DjangoFilterBackend, OwnedCardFilterBackend, filters.OrderingFilter, RandomBackend)
     filter_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
     ordering_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
 

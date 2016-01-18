@@ -9,8 +9,15 @@
 
 {% block js %}
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
-<script src="/static/js/loadactivities.js"></script>
-<script src="/static/js/profile.js"></script>
+
+<script src="/static/js/loadactivities.js?1"></script>
+<script src="/static/js/profile.js?3"></script>
+{% if is_me %}
+<script src="/static/js/postactivity.js"></script>
+{% endif %}
+<script>
+  var imgurClientID = '{{ imgurClientID }}';
+</script>
 {% endblock %}
 
 {% block content %}
@@ -19,12 +26,16 @@
 {% load mod %}
 {% load choicesToString %}
 <div id="fb-root"></div>
-<div class="container">
+<div class="row">
+  <div class="col-lg-{% if not preferences.private %}8{% else %}12{% endif %} col-md-12 col-sm-12 col-xs-12">
+    <div class="padding20 padding-novertical">
+      <div id="profile-wrapper">
   <br><br>
   {% if user.is_staff and show_staff %}
   <form method="POST" class="alert alert-danger">
     <h1>Staff Danger Zone</h1>
-    User ID: {{ profile_user.id }}
+    User ID: {{ profile_user.id }}<br>
+    User email: {{ profile_user.email }}<br>
     {% csrf_token %}
     {% include "bootstrap_form_horizontal.html" with form=form_preferences wrap=0 %}
     <div class="text-right">
@@ -36,10 +47,10 @@
   <div class="jumbotron {{ preferences.color }}" id="profile">
     <div class="topprofile {{ preferences.color }}">
       <div class="row">
-	<div class="col-sm-2">
+	<div class="col-xs-2">
 	  {% include 'include/avatar.html' with av_user=profile_user av_size=60 av_image_size=200 %}
 	</div>
-	<div class="col-sm-10">
+	<div class="col-xs-10">
 	  <div class="info">
 	    <div class="pull-right text-right">
 	      {% if user.is_authenticated and not preferences.private and not is_me %}
@@ -167,10 +178,12 @@
 		  {{ account.play_with|playWithToString }}</td>
 	      </tr>
 	      {% endif %}
+	      {% if not preferences.private or is_me %}
 	      <tr>
 		<th>{% trans 'Significant Cards' %}</th>
-		<td><strong>{{ account.deck_total_sr }} SR</strong> {% trans 'and' %} <strong>{{ account.deck_total_ur }} UR</strong></td>
+		<td><strong>{{ account.deck_total_sr }} SR</strong> {% trans 'and' %} <strong>{{ account.deck_total_ur }} UR</strong><span class="hidden deck_total_value">{{ account.deck_total }}</span></td>
 	      </tr>
+	      {% endif %}
 	      <tr>
 		<th>{% trans 'Rank' %}</th>
 		<td><h3>{{ account.rank }}</h3></td>
@@ -197,6 +210,25 @@
 	      {% endif %}
 	    </table>
 	  </div>
+	    {% if is_me %}
+	    <div class="well post-activity">
+	      <form method="POST">
+		{% if posted_activity %}
+		<div class="alert alert-info">
+		  {% trans 'Activity posted! Click on the "Activities" tab below to see it.' %}
+		</div>
+		{% endif %}
+		<h3>{% trans 'Post your own activity' %}
+		  <small><a href="http://schoolido.lu/activities/1743972/" target="_blank">{% trans 'What is this?' %}</a></small>
+		</h3>
+		{% csrf_token %}
+		{% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}
+		<div class="text-right">
+		  <input type="submit" value="{% trans 'Post your own activity' %}" class="btn btn-{{ attribute }}">
+		</div>
+	      </form>
+	    </div>
+	    {% endif %}
 
 	  {% if user.is_staff and show_staff %}
 	  <div class="alert alert-danger">
@@ -224,68 +256,26 @@
 	  {% endif %}
 
 	  {% if preferences.private %}
-	  <div class="padding10"><small>{% trans 'This profile is private, so it is not possible to see the cards, activities and events participations.' %}</small></div>
+	  <div class="padding10">{% trans 'This profile is private, so it is not possible to see the cards, activities and events participations.' %}</div>
 	  {% endif %}
 
 	  {% if not preferences.private or is_me %}
 	  <ul class="nav nav-tabs">
-	    <li role="presentation" class="active"><a href="#accountTabCards{{ account.pk }}" data-toggle="tab"><i class="flaticon-cards"></i> {% trans 'Cards' %}</a></li>
-	    <li role="presentation"><a href="#accountTabActivities{{ account.pk }}" data-toggle="tab"><i class="flaticon-activities"></i> {% trans 'Activities' %}</a></li>
-	    <li role="presentation"><a href="#accountTabEvents{{ account.pk }}" data-toggle="tab"><i class="flaticon-event"></i> {% trans 'Events' %}</a></li>
+	    {% for tab, icon in accounts_tabs %}
+	    {% if tab != 'presentbox' or is_me %}
+	    <li role="presentation"{% if account.opened_tab == tab %} class="active"{% endif %}><a href="#accountTab{{ tab }}{{ account.pk }}" data-toggle="tab" data-tab="{{ tab }}"><i class="flaticon-{{ icon }}"></i> {% trans tab|accountTabToString %}</a></li>
+	    {% endif %}
+	    {% endfor %}
 	  </ul>
 	  <br>
 
-	  <div class="tab-content">
-	    <div id="accountTabCards{{ account.pk }}" class="tab-pane fade in active">
-	      <div role="tabpanel" class="tabpanel">
-		<div class="btn-group btn-group-justified" data-toggle="buttons">
-		  <label for="optDeck" class="cardstype btn btn-{{ attribute }} active">
-		    <input id="optDeck" name="cardstype" checked type="radio" data-target="#cardtabDeck{{ account.pk }}" >
-		    <i class="flaticon flaticon-deck"></i>
-		    {% trans 'Deck' %}
-		  </label>
-		  <label for="optAlbum" class="cardstype btn btn-{{ attribute }}">
-		    <input id="optAlbum" name="cardstype" type="radio" data-target="#cardtabAlbum{{ account.pk }}" >
-		    <i class="flaticon flaticon-album"></i>
-		    {% trans 'Album' %}
-		  </label>
-		  {% if is_me %}
-		  <label for="optBox" class="cardstype btn btn-{{ attribute }}">
-		    <input id="optBox" name="cardstype" type="radio" data-target="#cardtabBox{{ account.pk }}" >
-		    <i class=".flaticon flaticon-present"></i>
-		    {% trans 'Present Box' %}
-		  </label>
-		  {% endif %}
-		  <label for="optWishlist" class="cardstype btn btn-{{ attribute }}">
-		    <input id="optWishlist" name="cardstype" type="radio" data-target="#cardtabWishlist{{ account.pk }}" >
-		    <i class="flaticon flaticon-star"></i>
-		    {% trans 'Wish List' %}
-		  </label>
-		</div>
-	      </div>
-	      <div class="tab-content">
-		{% if is_me %}
-		<br>
-		<a style="display: block;" href="/cards/?search=" class="alert alert-info">{% blocktrans %}To search through your cards, order them, edit them or add some new, go to the cards page and use the filters.{% endblocktrans %} <i class="flaticon-filter"></i></a>
-		{% endif %}
-		<div id="cardtabDeck{{ account.pk }}" class="tab-pane fade in active cardtab-pane text-center">
-		  {% include 'ownedcards.html' with cards=account.deck %}
-		</div>
-		<div id="cardtabAlbum{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Album"></div>
-		{% if is_me %}
-		<div id="cardtabBox{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Box"></div>
-		{% endif %}
-		<div id="cardtabWishlist{{ account.pk }}" class="tab-pane fade cardtab-pane text-center" data-stored="Favorite"></div>
-		<br>
-	      </div>
-
-	    </div>
-
-	    <div id="accountTabActivities{{ account.pk}}" class="tab-pane fade"></div>
-
-	    <div id="accountTabEvents{{ account.pk }}" class="tab-pane fade"></div>
-
-	  </div>
+	  <div class="tab-content text-center">
+	    {% for tab, icon in accounts_tabs %}
+	    <div id="accountTab{{ tab }}{{ account.pk }}" data-tab="{{ tab }}" class="tab-pane fade in{% if account.opened_tab == tab %} active{% endif %}">{% if account.opened_tab == tab %}
+	      {% include 'include/account_tab_'|add:tab|add:'.html' %}
+	      {% endif %}</div>
+	    {% endfor %}
+	  </div> <!-- tab-content -->
 	  {% endif %}
 	</div>
 
@@ -308,5 +298,13 @@
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-
+</div>
+</div>
+{% if not preferences.private %}
+<div class="col-lg-4 visible-lg">
+  <div id="activities" style="margin-top: 60px;margin-right: 30px;">
+  </div>
+</div>
+{% endif %}
+</div>
 {% endblock %}

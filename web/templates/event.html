@@ -13,7 +13,7 @@
 {% endblock %}
 {% block content %}
 {% load getattribute %}
-{% load languageToString %}
+{% load choicesToString %}
 {% load gravatar %}
 {% load mod %}
 {% load tz %}
@@ -85,7 +85,7 @@
       <br>
       <table class="table">
 	{% with 'JP'|languageToString as lang %}
-	<caption class="text-center">{% trans lang %}</caption>
+	<caption class="text-center">{{ lang }}</caption>
 	{% endwith %}
 	{% if event.english_image and event.image %}
 	<tr>
@@ -99,7 +99,7 @@
 	<tr>
 	  <th>{% trans 'Dates' %}</th>
 	  <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }} - {{ event.end|timezone:"Asia/Tokyo" }}<br>
-	    {% trans 'Japanese' %} {% trans 'time' %}</td>
+	    {{ 'JP'|languageToString }} {% trans 'time' %}</td>
 	</tr>
 	{% if event.japanese_t1_points %}
 	<tr>
@@ -148,7 +148,7 @@
       <br>
       <table class="table">
 	{% with 'EN'|languageToString as lang %}
-	<caption class="text-center">{% trans lang %}</caption>
+	<caption class="text-center">{{ lang }}</caption>
 	{% endwith %}
 	{% if event.english_image and event.image %}
 	<tr>

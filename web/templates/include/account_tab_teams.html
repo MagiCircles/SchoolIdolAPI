@@ -1,0 +1,38 @@
+{% load mod %}
+{% load i18n %}
+{% with size=100 %}
+{% for team in account.all_teams %}
+<h3 id="team{{ team.id }}">{{ team.name }}{% if is_me %}
+  <a href="/editteam/{{ team.id }}/">
+    <small><i class="flaticon-edit"></i> {% trans 'Update Team' %}</small>
+  {% endif %}</a>
+</h3>
+{% for member in team.all_members %}
+<div style="display: inline-block; vertical-align: top;">
+  {% for _ in member.range_align %}
+  {{ i }}
+  <br><br>
+  {% endfor %}
+  {% if member.virtual %}
+  <img src="/static/empty.png" height="100" alt="empty">
+  {% else %}
+  {% include 'ownedcard.html' with card=member.ownedcard owner_account=team.owner_account %}
+  {% endif %}
+</div>
+{% endfor %}
+<br><br>
+{% endfor %}
+{% if not account.all_teams %}
+<div class="text-center alert alert-warning">{% trans 'No results.' %}</div>
+{% endif %}
+<br><br>
+{% if is_me %}
+<div class="text-right fontx1-5">
+  <a href="/addteam/{{ account.id }}/">
+    <i class="flaticon-add"></i>
+    {% trans 'Add Team' %}
+  </a>
+</div>
+<br><br>
+{% endif %}
+{% endwith %}

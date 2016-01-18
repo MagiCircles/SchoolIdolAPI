@@ -3,10 +3,15 @@ from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 from django.db.models.fields import BLANK_CHOICE_DASH
+from django.core.validators import RegexValidator
+from django.conf import settings
 from multiupload.fields import MultiFileField
 from api import models
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class CreateUserForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -35,51 +40,82 @@ class ChangePasswordForm(Form):
             return self.cleaned_data
         raise forms.ValidationError(_("The two password fields did not match."))
 
-def getGirls():
-    girls = models.Card.objects.values('idol__name').annotate(total=Count('idol__name')).order_by('-total', 'idol__name')
-    return [('', '')] + [(girl['idol__name'], girl['idol__name']) for girl in girls]
+def getGirls(with_total=False, with_japanese_name=False):
+    return [('', '')] + [(idol['name'], (idol['idol__japanese_name'] if with_japanese_name and idol['idol__japanese_name'] else idol['name']) + (' (' + unicode(idol['total']) + ')' if with_total else '')) for idol in settings.CARDS_INFO['idols']]
 
 class UserPreferencesForm(ModelForm):
-    best_girl = ChoiceField(label=_('Best Girl'), choices=getGirls(), required=False)
+    best_girl = ChoiceField(label=_('Best Girl'), choices=[], required=False)
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super(UserPreferencesForm, self).__init__(*args, **kwargs)
+        self.fields['best_girl'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
+        self.fields['birthdate'].widget = DateInput()
+        self.fields['birthdate'].widget.attrs.update({
+            'class': 'calendar-widget',
+            'data-role': 'data',
+        })
+
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'best_girl', 'location', 'private', 'description', 'private')
+        fields = ('color', 'best_girl', 'location', 'birthdate', 'private', 'description', 'private')
 
 class AccountForm(ModelForm):
     class Meta:
         model = models.Account
         fields = ('nickname', 'language', 'os', 'friend_id', 'rank')
 
+def _ownedcard_label(obj):
+    return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
+
 class OwnedCardModelChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
-        return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
+        return _ownedcard_label(obj)
 
 class FullAccountForm(ModelForm):
-    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False, label=_('Center'))
+    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.filter(pk=0), required=False, label=_('Center'))
     # Always override this queryset to set the current account only
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
+
+    def __init__(self, *args, **kwargs):
+        super(FullAccountForm, self).__init__(*args, **kwargs)
+        self.fields['default_tab'].choices = [(k, v) for k, v in list(models.ACCOUNT_TAB_CHOICES) if k != 'presentbox']
+
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'friend_id', 'language', 'os', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'friend_id', 'language', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests')
 
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests')
 
 class SimplePasswordForm(Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))
 
+class ConfirmDelete(forms.Form):
+    confirm = forms.BooleanField(required=True, initial=False, label=_('Confirm that you want to delete it.'))
+    thing_to_delete = forms.IntegerField(widget=forms.HiddenInput, required=True)
+
 class TransferCodeForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(), label=_('Password'))
+    confirm = forms.BooleanField(required=True, initial=False, label=_('Delete previously saved transfer code'))
     class Meta:
         model = models.Account
         fields = ('transfer_code',)
 
 class _OwnedCardForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(_OwnedCardForm, self).__init__(*args, **kwargs)
+        if self.instance and hasattr(self.instance, 'card'):
+            if self.instance.card.is_special or self.instance.card.is_promo:
+                self.fields['idolized'].widget = forms.HiddenInput()
+
     def save(self, commit=True):
         instance = super(_OwnedCardForm, self).save(commit=False)
-        if instance.card.is_promo or instance.card.is_special:
+        if instance.card.is_special:
+            instance.idolized = False
+        if instance.card.is_promo:
             instance.idolized = True
         if commit:
             instance.save()
@@ -156,15 +192,6 @@ def getEventParticipationForm(form, accounts):
     form.fields['account'].empty_label = None
     return form
 
-class UserSearchForm(Form):
-    term = forms.CharField(required=False, label=_('Search'))
-    ordering = forms.ChoiceField(required=False, label='', widget=forms.RadioSelect, choices=[
-        ('-accounts_set__rank', _('Ranking')),
-        ('-accounts_set__verified', _('Verified')),
-        ('-date_joined', _('New players')),
-        ('username', _('Nickname')),
-    ], initial='-accounts_set__rank')
-
 class UserProfileStaffForm(ModelForm):
     class Meta:
         model = models.UserPreferences
@@ -175,13 +202,54 @@ class AccountStaffForm(ModelForm):
     center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=True)
     class Meta:
         model = models.Account
-        fields = ('owner_id', 'friend_id', 'verified', 'rank', 'os', 'device', 'center')
+        fields = ('owner_id', 'friend_id', 'verified', 'rank', 'os', 'device', 'default_tab', 'nickname', 'language','play_with', 'accept_friend_requests', 'center')
 
 class MultiImageField(MultiFileField, forms.ImageField):
     pass
 
+imgur_regexp = '^https?:\/\/(\w+\.)?imgur.com\/(?P<imgur>[\w\d]+)(\.[a-zA-Z]{3})?$'
+
+class _Activity(ModelForm):
+    def __init__(self, *args, **kwargs):
+        initial = kwargs.get('initial', {})
+        initial['right_picture'] = ''
+        kwargs['initial'] = initial
+        super(_Activity, self).__init__(*args, **kwargs)
+        self.fields['right_picture'].help_text = _('Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png')
+        self.fields['right_picture'].label = _('Picture')
+        self.fields['right_picture'].validators.append(RegexValidator(
+            regex=imgur_regexp,
+            message='Invalid Imgur URL',
+            code='invalid_url',
+        ))
+
+class EditActivityPicture(_Activity):
+    def __init__(self, *args, **kwargs):
+        super(EditActivityPicture, self).__init__(*args, **kwargs)
+        self.fields['right_picture'].required = True
+
+    class Meta:
+        model = models.Activity
+        fields = ('right_picture',)
+
+class CustomActivity(_Activity):
+    account_id = forms.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        super(CustomActivity, self).__init__(*args, **kwargs)
+        self.fields['account_id'].widget = forms.HiddenInput()
+        self.fields['message_data'].widget = forms.Textarea()
+        self.fields['message_data'].required = True
+        self.fields['message_data'].label = _('Message')
+        self.fields['message_data'].widget.attrs.update({'maxlength': 1200})
+        self.fields['message_data'].help_text = _('Write whatever you want. You can add formatting and links using Markdown.')
+
+    class Meta:
+        model = models.Activity
+        fields = ('account_id', 'message_data', 'right_picture')
+
 class VerificationRequestForm(ModelForm):
-    images = MultiImageField(min_num=0, max_num=10, required=False, help_text=_('If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn\'t work, please resize your images.'))
+    upload_images = MultiImageField(min_num=0, max_num=10, required=False, help_text=_('If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn\'t work, please resize your images.'))
 
     def __init__(self, *args, **kwargs):
         account = None
@@ -196,7 +264,7 @@ class VerificationRequestForm(ModelForm):
 
     class Meta:
         model = models.VerificationRequest
-        fields = ('verification', 'comment', 'images', 'allow_during_events')
+        fields = ('verification', 'comment', 'upload_images', 'allow_during_events')
 
 class StaffVerificationRequestForm(ModelForm):
     images = MultiImageField(min_num=0, max_num=10, required=False)
@@ -228,6 +296,7 @@ class StaffFilterVerificationRequestForm(ModelForm):
 class FilterSongForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))
     ordering = forms.ChoiceField(choices=[
+        ('id', _('Date added')),
         ('latest', _('Latest unlocked songs')),
         ('name', _('Song name')),
         ('BPM', _('Beats per minute')),
@@ -235,7 +304,7 @@ class FilterSongForm(ModelForm):
         ('rank', _('Rank to unlock song')),
         ('hard_notes', _('Notes in Hard song')),
         ('expert_notes', _('Notes in Expert song')),
-    ], initial='latest', required=False, label=_('Ordering'))
+    ], initial='id', required=False, label=_('Ordering'))
     reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
     is_daily_rotation = forms.NullBooleanField(required=False, label=_('Daily rotation'))
     is_event = forms.NullBooleanField(required=False, label=_('Event'))
@@ -250,23 +319,111 @@ class FilterSongForm(ModelForm):
         model = models.Song
         fields = ('search', 'attribute', 'is_daily_rotation', 'is_event', 'available', 'ordering', 'reverse_order')
 
-# class TeamForm(ModelForm):
-#     card0 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card1 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card2 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card3 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card4 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card5 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card6 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card7 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     card8 = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=False)
-#     class Meta:
-#         model = models.Team
-#         fields = ('name', 'card0', 'card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8')
+class FilterEventForm(ModelForm):
+    search = forms.CharField(required=False, label=_('Search'))
 
-# def getTeamForm(form, ownedcards):
-#     for i in range(9):
-#         print 'test'
-#         setattr(form, 'card' + str(i), OwnedCardModelChoiceField(queryset=ownedcards, required=False))
-#     return form
+    is_world = forms.BooleanField(required=False, label=_('Worldwide only'))
+    event_type = forms.ChoiceField(label=_('Type'), choices=BLANK_CHOICE_DASH + [
+        ('Token', _('Token/Diary')),
+        ('Score Match', 'Score Match'),
+        ('Medley Festival', 'Medley Festival'),
+    ])
+    idol = ChoiceField(label=_('Idol'), choices=[], required=False)
+    idol_attribute = forms.ChoiceField(choices=[], label=string_concat(_('Super Rare'), ': ', _('Attribute')), required=False)
+    idol_skill = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + [
+        ('Perfect Lock', 'Perfect Lock'),
+        ('Score Up', 'Score Up'),
+    ]), label=string_concat(_('Super Rare'), ': ', _('Skill')), required=False)
+    participation = forms.NullBooleanField(required=False, label=_('I participated'))
 
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super(FilterEventForm, self).__init__(*args, **kwargs)
+        self.fields['idol'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
+        attributes = list(models.ATTRIBUTE_CHOICES)
+        del(attributes[-1])
+        self.fields['idol_attribute'].choices = BLANK_CHOICE_DASH + attributes
+        if not request or not request.user.is_authenticated():
+            del(self.fields['participation'])
+
+    class Meta:
+        model = models.Event
+        fields = ('search', 'is_world', 'event_type', 'idol', 'idol_attribute', 'idol_skill')
+
+class FilterUserForm(ModelForm):
+    search = forms.CharField(required=False, label=_('Search'))
+    ordering = forms.ChoiceField(choices=[
+        ('rank', _('Leaderboard')),
+        ('owner__date_joined', _('New players')),
+    ], initial='latest', required=False, label=_('Ordering'))
+    reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
+
+    attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=_('Attribute'), required=False)
+    best_girl = ChoiceField(label=_('Best Girl'), choices=[], required=False)
+    # location = forms.CharField(required=False, label=_('Location'))
+    private = forms.NullBooleanField(required=False, label=_('Private Profile'))
+    status = ChoiceField(label=_('Donators'), choices=(BLANK_CHOICE_DASH + list(models.STATUS_CHOICES)), required=False)
+    with_friend_id = forms.NullBooleanField(required=True, label=string_concat(_('Friend ID'), ' (', _('specified'), ')'))
+    center_attribute = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.ATTRIBUTE_CHOICES)), label=string_concat(_('Center'), ': ', _('Attribute')), required=False)
+    center_rarity = forms.ChoiceField(choices=(BLANK_CHOICE_DASH + list(models.RARITY_CHOICES)), label=string_concat(_('Center'), ': ', _('Rarity')), required=False)
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super(FilterUserForm, self).__init__(*args, **kwargs)
+        for field in self.fields.keys():
+            self.fields[field].widget.attrs['placeholder'] = self.fields[field].label
+        self.fields['best_girl'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
+        self.fields['language'].choices = BLANK_CHOICE_DASH + self.fields['language'].choices
+        self.fields['os'].choices = BLANK_CHOICE_DASH + self.fields['os'].choices
+        self.fields['verified'].choices = BLANK_CHOICE_DASH + [(3, _('Only'))] + self.fields['verified'].choices
+        del(self.fields['verified'].choices[-1])
+        self.fields['verified'].initial = None
+        self.fields['os'].initial = None
+        self.fields['language'].initial = None
+        del(self.fields['status'].choices[0])
+        del(self.fields['status'].choices[0])
+        self.fields['status'].choices = BLANK_CHOICE_DASH + [('only', _('Only'))] + self.fields['status'].choices
+        #self.fields['status'].choices.insert(1, ('only', _('Only'))) this doesn't work i don't know why
+
+    class Meta:
+        model = models.Account
+        fields = ('search', 'attribute', 'best_girl', 'private', 'status', 'language', 'os', 'verified', 'center_attribute', 'center_rarity', 'with_friend_id', 'accept_friend_requests', 'play_with', 'ordering', 'reverse_order')
+
+class TeamForm(ModelForm):
+    """
+    Account is required to initialize this form.
+    Account must contain prefetched deck.
+    Team instance must contain prefetched all_members
+    """
+    card0 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card1 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card2 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card3 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card4 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card5 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card6 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card7 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+    card8 = forms.TypedChoiceField(coerce=int, empty_value=None, choices=[], required=False)
+
+    def __init__(self, *args, **kwargs):
+        account = kwargs.pop('account', None)
+        super(TeamForm, self).__init__(*args, **kwargs)
+        deck_choices = [(ownedcard.id, _ownedcard_label(ownedcard)) for ownedcard in account.deck]
+        for i in range(9):
+            self.fields['card' + str(i)].choices = BLANK_CHOICE_DASH + deck_choices
+        if self.instance and hasattr(self.instance, 'all_members'):
+            for member in getattr(self.instance, 'all_members'):
+                self.fields['card' + str(member.position)].initial = member.ownedcard.id
+
+    def clean(self):
+        for i in range(9):
+            ownedcard_id = self.cleaned_data['card' + str(i)]
+            if ownedcard_id is not None:
+                for j in range(9):
+                    if i != j and ownedcard_id == self.cleaned_data['card' + str(j)]:
+                        raise forms.ValidationError(_("The same card can\'t appear twice in the same team."))
+        return self.cleaned_data
+
+    class Meta:
+        model = models.Team
+        fields = ('name', 'card0', 'card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8')

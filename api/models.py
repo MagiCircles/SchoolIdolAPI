@@ -4,12 +4,12 @@ from django.db import models
 from django.contrib import admin
 from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _, string_concat
-from api.models_languages import LANGUAGE_CHOICES
+from api.models_languages import *
 from django.core import validators
 from django.utils import timezone
 from django_prometheus.models import ExportModelOperationsMixin
 import hashlib, urllib
-
+import csv
 import datetime
 
 ATTRIBUTE_CHOICES = (
@@ -18,6 +18,7 @@ ATTRIBUTE_CHOICES = (
     ('Cool', _('Cool')),
     ('All', _('All')),
 )
+ATTRIBUTE_ARRAY = dict(ATTRIBUTE_CHOICES).keys()
 
 RARITY_CHOICES = (
     ('N', _('Normal')),
@@ -25,6 +26,7 @@ RARITY_CHOICES = (
     ('SR', _('Super Rare')),
     ('UR', _('Ultra Rare')),
 )
+RARITY_DICT = dict(RARITY_CHOICES)
 
 OS_CHOICES = (
     ('Android', 'Android'),
@@ -32,8 +34,8 @@ OS_CHOICES = (
 )
 
 STORED_CHOICES = (
-    ('Deck', _('Deck')),
-    ('Album', _('Album')),
+    ('Deck', string_concat(_('Deck'), ' (', _('You have it'), ')')),
+    ('Album', string_concat(_('Album'), ' (', _('You don\'t have it anymore'), ')')),
     ('Box', _('Present Box')),
     ('Favorite', _('Wish List')),
 )
@@ -57,12 +59,12 @@ PLAYWITH_CHOICES = (
 PLAYWITH_DICT = dict(PLAYWITH_CHOICES)
 
 ACTIVITY_MESSAGE_CHOICES = (
-    ('Added a card', _('Added a card')),
-    ('Idolized a card', _('Idolized a card')),
-    ('Max Leveled a card', _('Max Leveled a card')),
-    ('Max Bonded a card', _('Max Bonded a card')),
-    ('Rank Up', _('Rank Up')),
-    ('Ranked in event', _('Ranked in event')),
+    ('Added a card', _('Added {} in {}')),
+    ('Idolized a card', _('Idolized {} in {}')),
+    ('Rank Up', _('Rank Up {}')),
+    ('Ranked in event', _('Ranked {} in event {}')),
+    ('Verified', _('Just got verified: {}')),
+    ('Custom', 'Custom'),
 )
 ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
 
@@ -109,6 +111,7 @@ LINK_DICT = dict(LINK_CHOICES)
 LINK_URLS = {
     'Best Girl': '/idol/{}/',
     'Location': 'http://maps.google.com/?q={}',
+    'Birthdate': '/map/',
     'twitter': 'http://twitter.com/{}',
     'facebook': 'https://www.facebook.com/{}',
     'reddit': 'http://www.reddit.com/user/{}',
@@ -122,7 +125,7 @@ LINK_URLS = {
     'instagram': 'https://instagram.com/{}/',
     'myfigurecollection': 'http://myfigurecollection.net/profile/{}',
     'hummingbird': 'https://hummingbird.me/users/{}',
-    'youtube': 'https://www.youtube.com/user/{}',
+    'youtube': 'https://www.youtube.com/{}',
     'deviantart': 'http://{}.deviantart.com/gallery/',
     'pixiv': 'http://www.pixiv.net/member.php?id={}',
     'github': 'https://github.com/{}',
@@ -136,6 +139,40 @@ LINK_RELEVANCE_CHOICES = (
     (3, _('Every single day')),
 )
 LINK_RELEVANCE_DICT = dict(LINK_RELEVANCE_CHOICES)
+
+ACCOUNT_TAB_CHOICES = (
+    ('deck', _('Deck')),
+    ('album', _('Album')),
+    ('teams', _('Teams')),
+    ('events', _('Events')),
+    ('wishlist', _('Wish List')),
+    ('presentbox', _('Present Box')),
+)
+ACCOUNT_TAB_DICT = dict(ACCOUNT_TAB_CHOICES)
+
+ACCOUNT_TAB_ICONS = (
+    ('deck', 'deck'),
+    ('album', 'album'),
+    ('teams', 'more'),
+    ('events', 'event'),
+    ('wishlist', 'star'),
+    ('presentbox', 'present'),
+)
+
+CENTER_SKILL_SENTENCES = {
+    'Power': _('{} increases slightly (+3%)'),
+    'Heart': _('{} increases (+6%)'),
+    'UR': _('{} increases drastically (+9%)'),
+    'differentUR':  _('{} increases based on {}'),
+}
+
+CENTER_SKILL_UR = {
+    'Princess': 'Smile',
+    'Angel': 'Pure',
+    'Empress': 'Cool',
+}
+
+CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart')
 
 def verifiedToString(val):
     val = int(val)
@@ -159,6 +196,9 @@ def storedChoiceToString(stored):
 def linkTypeToString(val):
     return LINK_DICT[val]
 
+def accountTabToString(val):
+    return ACCOUNT_TAB_DICT[val]
+
 def statusToString(val):
     return STATUS_DICT[val]
 
@@ -177,6 +217,9 @@ def statusToColorString(status):
     elif status == 'PRODUCER': return _('shiny Gold')
     elif status == 'DEVOTEE': return _('shiny Gold')
     return ''
+
+def rarityToString(val):
+    return RARITY_DICT[val]
 
 def japanese_attribute(attribute):
     if attribute == 'Smile':
@@ -252,6 +295,7 @@ class Idol(ExportModelOperationsMixin('Idol'), models.Model):
     sub_unit = models.CharField(max_length=20, blank=True, null=True)
     main = models.BooleanField(default=False)
     age = models.PositiveIntegerField(blank=True, null=True)
+    school = models.CharField(max_length=100, blank=True, null=True)
     birthday = models.DateField(null=True, blank=True, default=None)
     astrological_sign = models.CharField(max_length=20, blank=True, null=True)
     blood = models.CharField(max_length=3, blank=True, null=True)
@@ -281,6 +325,7 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     english_collection = models.CharField(max_length=100, blank=True, null=True)
+    translated_collection = models.CharField(max_length=100, blank=True, null=True)
     rarity = models.CharField(choices=RARITY_CHOICES, max_length=10)
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
@@ -304,21 +349,22 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     skill_details = models.TextField(null=True, blank=True)
     japanese_skill_details = models.TextField(null=True, blank=True)
     center_skill = models.TextField(null=True, blank=True)
-    japanese_center_skill = models.TextField(null=True, blank=True)
-    japanese_center_skill_details = models.TextField(null=True, blank=True)
-    card_url = models.CharField(max_length=200, blank=True)
     transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    card_idolized_url = models.CharField(max_length=200, blank=True)
     card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    round_card_url = models.CharField(max_length=200, blank=True, null=True)
     round_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     round_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
+    # cache
+    total_owners = models.PositiveIntegerField(null=True, blank=True)
+    total_wishlist = models.PositiveIntegerField(null=True, blank=True)
+    ranking_attribute = models.PositiveIntegerField(null=True, blank=True)
+    ranking_rarity = models.PositiveIntegerField(null=True, blank=True)
+    ranking_special = models.PositiveIntegerField(null=True, blank=True)
 
     def japanese_attribute(self):
         return japanese_attribute(self.attribute)
@@ -328,6 +374,17 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
 
     def __unicode__(self):
         return u'#' + unicode(self.id) + u' ' + unicode(self.name) + u' ' + unicode(self.rarity)
+
+    def get_center_skill_details(self):
+        try:
+            attribute, skill = self.center_skill.split(' ')
+            if skill in CENTER_SKILL_UR:
+                if CENTER_SKILL_UR[skill] != attribute:
+                    return CENTER_SKILL_SENTENCES['differentUR'], [attribute, CENTER_SKILL_UR[skill]]
+                return CENTER_SKILL_SENTENCES['UR'], [attribute]
+            return CENTER_SKILL_SENTENCES[skill], [attribute]
+        except (ValueError, AttributeError, KeyError):
+            return None, None
 
 admin.site.register(Card)
 
@@ -343,7 +400,8 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     os = models.CharField(_("Operating System"), choices=OS_CHOICES, default='iOs', max_length=10)
     center = models.ForeignKey('OwnedCard', verbose_name=_("Center"), null=True, blank=True, help_text=_('The character that talks to you on your home screen.'), on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(_("Rank"), blank=True, null=True)
-    verified = models.PositiveIntegerField(default=0, choices=VERIFIED_CHOICES)
+    verified = models.PositiveIntegerField(_("Verified"), default=0, choices=VERIFIED_CHOICES)
+    default_tab = models.CharField(_('Default tab'), max_length=30, choices=ACCOUNT_TAB_CHOICES, help_text=_('What people see first when they take a look at your account.'), default='deck')
 
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)
@@ -365,24 +423,24 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
 
 admin.site.register(OwnedCard)
 
-# class Team(ExportModelOperationsMixin('Team'), models.Model):
-#     owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
-#     name = models.CharField(max_length=100, verbose_name=_('Name'))
+class Team(models.Model):
+    owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
 
-#     def __unicode__(self):
-#         return self.name
+    def __unicode__(self):
+        return self.name
 
-# admin.site.register(Team)
+admin.site.register(Team)
 
-# class Member(ExportModelOperationsMixin('Member'), models.Model):
-#     team = models.ForeignKey(Team, related_name='cards')
-#     card = models.ForeignKey(OwnedCard)
-#     position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
+class Member(models.Model):
+    team = models.ForeignKey(Team, related_name='members')
+    ownedcard = models.ForeignKey(OwnedCard)
+    position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
 
-#     class Meta:
-#         unique_together = (('team', 'position'), ('team', 'card'))
+    class Meta:
+        unique_together = (('team', 'position'), ('team', 'ownedcard'))
 
-# admin.site.register(Member)
+admin.site.register(Member)
 
 class EventParticipation(ExportModelOperationsMixin('EventParticipation'), models.Model):
     event = models.ForeignKey(Event, related_name='participations')
@@ -432,6 +490,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     donation_link = models.CharField(max_length=200, null=True, blank=True)
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
     allowed_verifications = models.CharField(max_length=100, null=True, blank=True)
+    birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
 
     def avatar(self, size):
         default = 'http://schoolido.lu/static/kotori.jpg'
@@ -441,19 +500,60 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 
+    @property
+    def age(self):
+        if not self.birthdate:
+            return None
+        today = datetime.date.today()
+        return today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
+
 admin.site.register(UserPreferences)
 
-# Add card to deck/album/wish list
-# Level up
-# Idolized / Max leveled / Max bonded
 class Activity(ExportModelOperationsMixin('Activity'), models.Model):
-    creation = models.DateTimeField(auto_now_add=True)
+    """
+    Added card/Idolized (1 per ownedcard):
+      right_picture: card icon
+      right_picture_link: card
+    Rank up (1 per account):
+      number
+    Ranked in event (1 per eventparticipation):
+      right_picture: event banner
+    Verified (1 per account):
+      number
+    """
+    # Foreign keys
     account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
-    message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
-    rank = models.PositiveIntegerField(null=True, blank=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
+    # Data
+    creation = models.DateTimeField(auto_now=True)
+    message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
+    number = models.PositiveIntegerField(null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_activities")
+    # Cached data (can be generated from foreign keys)
+    message_data = models.CharField(max_length=1200, blank=True, null=True)
+    account_link = models.CharField(max_length=200)
+    account_picture = models.CharField(max_length=500)
+    account_name = models.CharField(max_length=100)
+    right_picture_link = models.CharField(max_length=200, blank=True, null=True)
+    right_picture = models.CharField(max_length=100, blank=True, null=True)
+
+    def utf_8_encoder(self, unicode_csv_data):
+        for line in unicode_csv_data:
+            yield line.encode('utf-8')
+
+    def unicode_csv_reader(self, unicode_csv_data, **kwargs):
+        csv_reader = csv.reader(self.utf_8_encoder(unicode_csv_data), **kwargs)
+        for row in csv_reader:
+            yield [unicode(cell, 'utf-8') for cell in row]
+
+    def split_message_data(self):
+        if not self.message_data:
+            return []
+        reader = self.unicode_csv_reader([self.message_data])
+        for reader in reader:
+            return [r for r in reader]
+        return []
 
     def __unicode__(self):
         return u'%s %s' % (self.account, self.message)

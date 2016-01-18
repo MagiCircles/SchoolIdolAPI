@@ -3,13 +3,14 @@ function getButton(parent) {
     return parent.find('a[href="#loadMoreActivities"]');
 }
 
-function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, card_size) {
+function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, card_size, user) {
     var div = button.parent();
     var page = div.attr('data-page');
     div.html('<span class="loader">Loading...</span>');
     $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
 	  + '/?page=' + page
 	  + (typeof account == 'undefined' ? '' : ('&account=' + account))
+	  + (typeof user == 'undefined' ? '' : ('&user=' + user))
 	  + (typeof avatar_size == 'undefined' ? '' : ('&avatar_size=' + avatar_size))
 	  + (typeof card_size == 'undefined' ? '' : ('&card_size=' + card_size))
 	  ,

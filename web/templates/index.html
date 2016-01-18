@@ -5,8 +5,18 @@
 {% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}
 {% block back_button %}0{% endblock %}
 {% block js %}
+<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script src="/static/js/loadactivities.js?1"></script>
-<script src="/static/js/index.js?1"></script>
+<script src="/static/js/index.js?8"></script>
+<script>
+  var follow_sentence = "{% trans 'Start following players to see their activities!' %}";
+  $('#christmasplay').click(function(event) {
+  event.preventDefault();
+  $('#player')[0].play();
+  return false;
+  });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -15,13 +25,13 @@
 {% load colorStringToHex %}
 {% load mod %}
 
-<div class="talking-character hidden-sm hidden-xs" style="background-image: url('/static/honokoto{{ 0|random_int:6 }}.png')"></div>
+<div class="talking-character hidden-sm hidden-xs" style="background-image: url('{% if character %}{{ character|userimage }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}')"></div>
 <div class="dialog hidden-sm hidden-xs">
   <div class="dialog-background">
     <div class="row">
       <div class="col-md-8"><br>
-	<div class="twitter-text" style="font-size: 2em">
-	  <a href="https://twitter.com/schoolidolu" target="_blank">{% trans 'Follow School Idol Tomodachi on Twitter' %}</a>
+	<div class="twitter-text" style="font-size: 2em; background: white; border-radius: 5px;">
+	  <a href="https://twitter.com/schoolidolu" target="_blank" style="display: block; padding: 10px;">{% trans 'Follow School Idol Tomodachi on Twitter' %}</a>
 	</div>
 	<!-- <div class="text-right"> -->
 	<!--   <a href="https://twitter.com/schoolidolu" target="_blank"> -->
@@ -36,14 +46,24 @@
   </div>
 </div>
 
-<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:11 }}.jpg')">
-  <div style="position: fixed; top: 100px; right: 0; margin-top: 0;" class="special-message hidden-sm hidden-xs">
-    <span>Kotori & Honoka are the winners of the Love Live Community Extra Life 2015</span>
+<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:12 }}.jpg');">
+  <div style="position: fixed; top: 100px; right: 20px; margin-top: 0;" class="special-message hidden-sm hidden-xs">
+    <span></span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-6">
       <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
+      <div class="special-message hidden" style="margin: 0; margin-top: 10px; max-width: none;">
+	<span id="countdown-unused">
+	    var countdowndate = "December 07, 2015 12:00:00 +0000";
+	    function countdownRender(data) {
+	    $(this.el).text('Maintenance ends in ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec);
+	    }
+	  </span>
+	</h1>
+</div>
+
       {% if user.is_authenticated %}
       <br>
       {% else %}
@@ -117,6 +137,9 @@
 
 	  <a href="{{ current_contest_url }}" class="item active"
 	     style="background-image: url('{{ current_contest_image }}')">
+	    {% if current_contest_name %}
+	    <!--<h2 class="special-message text-center" style="font-size: 1.5em;max-width:none;margin-top:0;padding-top:50px;"><span>{{ current_contest_name }}<br><small>Special {% trans 'Contest' %}</small></span></h2>-->
+	    {% endif %}
 	  </a>
 
 	  {% if current_en %}
@@ -145,6 +168,20 @@
       </div> <!-- carousel -->
 
       <div id="{% if user.is_authenticated %}my{% endif %}activities">
+	{% if user.is_authenticated %}
+	<div style="margin-bottom: 20px;" id="activities-buttons">
+	  <div class="btn-group btn-group-justified" data-toggle="buttons">
+	    <label class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %} following active">
+	      <input type="radio" name="options" autocomplete="off">
+	      {% trans 'Following' %}
+	    </label>
+	    <label class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %} all">
+	      <input type="radio" name="options" autocomplete="off" checked="">
+	      {% trans 'All' %}
+	    </label>
+	  </div>
+	</div>
+	{% endif %}
 	<div class="activities"></div>
       </div>
 

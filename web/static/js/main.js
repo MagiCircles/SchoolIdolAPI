@@ -52,6 +52,16 @@ function globalModal(hash, modal_size) {
 }
 
 function updateActivities() {
+    $('[href=#imgur]').off('click');
+    $('[href=#imgur]').click(function(e) {
+	e.preventDefault();
+	freeModal('<br>', '<img src="http://i.imgur.com/' + $(this).data('imgur') + '.png" class="img-responsive">');
+	return false;
+    });
+    $('.activity .message.need-to-autolink').each(function() {
+	$(this).html(Autolinker.link($(this).html(), { newWindow: true, stripPrefix: true } ));
+	$(this).removeClass('need-to-autolink');
+    });
     $('.likeactivity').off('submit');
     $('.likeactivity').submit(function(e) {
 	e.preventDefault();
@@ -72,6 +82,10 @@ function updateActivities() {
 	    }
 	});
     });
+}
+
+function genericAjaxError() {
+    alert('Oops! Something bad happened. Try again.');
 }
 
 function avatarStatus() {
@@ -114,6 +128,17 @@ $(document).ready(function() {
     }
 
     modalHandler();
+
+    if ($('#notifications').length > 0) {
+	$('#notifications').popover('show');
+	// dismiss on click on navbar
+	$('nav').on('click', function (e) {
+	    if ($(e.target).data('toggle') !== 'popover'
+		&& $(e.target).parents('.popover.in').length === 0) {
+		$('#notifications').popover('hide');
+	    }
+	});
+    }
 
     $('.switchLanguage').click(function(e) {
 	e.preventDefault();

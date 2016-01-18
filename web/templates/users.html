@@ -1,10 +1,125 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load imageurl %}
+{% load choicesToString %}
 
 {% block title %}{% trans 'Players' %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/users.js"></script>
+<script src="/static/js/users.js?1"></script>
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_attribute'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for i, attribute in filter_form.fields.attribute.choices %}
+      {% if i != '' %}
+      '{{ i }}': '/static/{{ i }}.png',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_center_attribute'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for i, attribute in filter_form.fields.attribute.choices %}
+      {% if i != '' %}
+      '{{ i }}': '/static/{{ i }}.png',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_center_rarity'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for rarity, _ in filter_form.fields.center_rarity.choices %}
+      {% if rarity != '' %}
+      '{{ rarity }}': '/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_best_girl'), {
+    'modal': 'true',
+    'modal-text': 'true',
+    'images': {
+      {% for idol, str in filter_form.fields.best_girl.choices %}
+      {% if idol == '' %}'': '/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% endfor %}
+  }
+  });
+  cuteform($('#id_private'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Only' %}',
+      '3': '{% trans 'None' %}',
+    }
+  });
+  cuteform($('#id_status'), {
+    'html': {
+      '': '{% trans 'All' %}',
+      'only': '{% trans 'Only' %}',
+      {% for status, str in filter_form.fields.status.choices %}
+      {% if status != '' and status != 'only' %}
+      '{{ status }}': '{% if status != 'THANKS' %}<i class="flaticon-heart white-shadow" style="color: {{ status|userStatusToColor }}"></i> {% endif %}{% trans status|userStatusToString %}',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_language'), {
+    'html': {
+      '': '{% trans 'All' %}',
+      {% for language, str in filter_form.fields.language.choices %}
+      {% if language != '' %}
+      '{{ language }}': '<i class="flaticon-{{ language }}"></i>',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_play_with'), {
+    'html': {
+      {% for play_with, str in filter_form.fields.play_with.choices %}
+      '{{ play_with }}': '{% if play_with == '' %}{% trans 'All' %}{% elif play_with == 'Thumbs' %}<i class="flaticon-thumbs"></i>{% elif play_with == 'Fingers' or play_with == 'Hand' %}<i class="flaticon-fingers"></i>{% elif play_with == 'Index' %}<i class="flaticon-index"></i>{% elif play_with == 'Other' %}<i class="flaticon-sausage"></i>{% endif %} {% if play_with != '' %}{{ play_with|playWithToString }}{% endif %}',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_os'), {
+    'html': {
+      '': '{% trans 'All' %}',
+      {% for os, str in filter_form.fields.os.choices %}
+      {% if os != '' %}
+      '{{ os }}': '<i class="flaticon-{{ os }}"></i>',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_verified'), {
+    'html': {
+      '': '{% trans 'All' %}',
+      '0': '{% trans 'None' %}',
+      '3': '{% trans 'Only' %}',
+      {% for verified, str in filter_form.fields.verified.choices %}
+      {% if verified != '' and verified != 0 and verified != 3 %}
+      '{{ verified }}': '<i class="flaticon-star fontx1-2 white-shadow verified{{ verified }}"></i> {{ verified|verifiedToString }}',
+      {% endif %}
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_accept_friend_requests'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Yes' %}',
+      '3': '{% trans 'No' %}',
+    }
+  });
+  cuteform($('#id_with_friend_id'), {
+    'html': {
+      '1': '{% trans 'All' %}',
+      '2': '{% trans 'Yes' %}',
+      '3': '{% trans 'No' %}',
+    }
+  });
+</script>
 {% endblock %}
 
 {% block shareimage %}http://schoolido.lu/static/screenshots/players.png{% endblock %}
@@ -12,29 +127,17 @@
 
 {% block content %}
 
-<div class="container" id="users">
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-      <h1 class="text-center margin50">{% trans 'Players' %} <small>{{ total_results }}</small></h1>
-      <div class="jumbotron">
-	<form method="get" class="noform">
-	  {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
-	  <div class="text-right submitarea">
-	    <button type="submit" class="btn btn-Cool btn-sm" data-form-loader="true">{% trans 'Search' %}</button>
-	  </div>
-	</form>
-      </div><br>
+<div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
+  {% include 'include/filterbar.html' %}
+  <div id="page-content-wrapper">
+    <a href="#" id="togglebutton" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+      <i class="flaticon-search"></i>
+      <i class="flaticon-toggler hidder"></i>
+    </a>
+    <div id="users">
+      {% include "usersPage.html" %}
     </div>
-    <div class="col-md-3">
-      <div class="margin50 margin-nohorizontal text-right">
-	<a href="/map/" class="btn btn-Cool"><i class="flaticon-world"></i> {% trans 'Map' %}</a><br><br>
-      </div>
-    </div>
-  </div>
-
-  {% include 'usersPage.html' %}
-
-</div>
+  </div> <!-- page-content-wrapper -->
+</div> <!-- wrapper -->
 
 {% endblock %}

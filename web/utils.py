@@ -3,10 +3,12 @@ import json
 import os
 import string
 import random
+import re
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
+from web import forms
 
 def send_email(subject, template_name, to=[], context={}, from_email=settings.AWS_SES_RETURN_PATH):
     context = Context(context)
@@ -28,6 +30,9 @@ def is_positive_integer(string):
         return False
     return True
 
+def concat_args(*args):
+    return u'\"' + u'","'.join([unicode(value).replace('"','\"') for value in args]) + u'\"'
+
 def chibiimage(idol, small=True):
     prefix = 'small_' if small else ''
     if idol is not None:
@@ -38,3 +43,6 @@ def chibiimage(idol, small=True):
 
 def randomString(length, choice=(string.ascii_letters + string.digits)):
     return ''.join(random.SystemRandom().choice(choice) for _ in range(length))
+
+def get_imgur_code(url):
+    return re.compile(forms.imgur_regexp).match(url).group('imgur')

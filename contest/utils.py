@@ -37,7 +37,7 @@ def get_votesession(request, contest):
     Else, we return a new one.
     """
     fingerprint = gen_fingerprint(request)
-    sessions = contest_models.Session.objects.filter(fingerprint=fingerprint).all()
+    sessions = contest_models.Session.objects.filter(fingerprint=fingerprint, contest=contest).all()
     if sessions.count() >= 9:
         return sessions.order_by('?').first()
     else:

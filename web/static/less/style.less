@@ -624,6 +624,22 @@ nav {
 
 	}
     }
+    .drop-contest-menu {
+	padding: 0;
+    }
+    .drop-contest {
+	a {
+	    padding: 0;
+	    &:hover {
+		img {
+		    opacity: 0.8;
+		}
+	    }
+	}
+	img {
+	    width: 300px;
+	}
+    }
 }
 
 #sidebar-wrapper {
@@ -1010,6 +1026,153 @@ h1#donators {
     }
 }
 
+#contest-page {
+    background: url('../background.jpg') no-repeat top center;
+    background-attachment: fixed;
+    .container {
+	background-color: rgba(255, 255, 255, 0.8);
+	padding: 5%;
+	padding-top : 10px;
+    }
+    h1 {
+	text-align: center;
+	font-size: 4em;
+	margin-bottom: 40px;
+	weight: bold;
+    }
+    h2 {
+	text-align: center;
+	font-size: 2em;
+	margin-bottom: 40px;
+	weight: bold;
+    }
+    .panel {
+	padding: 0!important;
+	display: block!important;
+	width: 100%;
+	img {
+	    width: 100%;
+	}
+	.panel-heading {
+	    text-align: center;
+	    strong {
+		font-size: 1.8em;
+	    }
+	}
+    }
+    button.panel {
+	img {
+	    min-height: 400px;
+	}
+    }
+    .link {
+	text-align: left;
+	&.right {
+	    text-align: right;
+	}
+    }
+    .ranking.panel {
+	.panel-body {
+	    padding-top: 0;
+	    padding-bottom: 0;
+	}
+	.name {
+	    padding-top: 50px;
+	    font-size: 1.5em;
+	    &.name-card {
+		padding-top: 60px;
+		font-size: 1.8em;
+		small {
+                    margin-top: 20px;
+		}
+	    }
+            small {
+		text-align: right;
+		display: block;
+		font-size: 12px;
+		color: lighten(@MainColor, 30%);
+            }
+	}
+	.rank {
+	    padding-top: 40px;
+	    padding-left: 20px;
+	    text-align: center;
+	    font-size: 1.9em;
+	    color: lighten(@SecondaryColor, 40%);
+	    .flaticon-star {
+		display: block;
+		font-size: 50px;
+		width: 50px;
+		height: 50px;
+	    }
+	    .number {
+		display: block;
+		width: 50px;
+		height: 50px;
+		margin-top: -32px;
+		color: white;
+	    }
+	}
+	.panel-row:first-child {
+	    .rank {
+		color: #C98910;
+	    }
+	}
+	.panel-row:nth-child(2) {
+	    .rank {
+		color: #A8A8A8;
+	    }
+	}
+	.panel-row:nth-child(3) {
+	    .rank {
+		color: #965A38;
+	    }
+	}
+    }
+    .panel.ranking, .pastcontests.panel {
+	a.panel-row {
+	    display: block;
+	    border-bottom: 1px solid;
+	    &.Smile { border-color: lighten(@SmileColor, 30%); }
+	    &.Pure { border-color: lighten(@PureColor, 30%); }
+	    &.Cool { border-color: lighten(@CoolColor, 30%); }
+	    &.All { border-color: lighten(@AllColor, 30%); }
+	    padding: 2px;
+	    &:last-child {
+		border-bottom: 0;
+	    }
+	}
+	img.idol, img.card {
+	    display: block;
+	    height: 130px;
+	    width: 130px;
+	    margin: 10px 5px;
+	}
+    }
+    .panel.card {
+	.panel-body {
+	    padding: 10px;
+	}
+	.panel-heading {
+	    border-top-right-radius: 0;
+	    border-top-left-radius: 0;
+	}
+    }
+    .pastcontests.panel {
+	a.panel-row {
+	    padding: 20px;
+	    &:hover,
+	    &:focus {
+		text-decoration: none;
+	    }
+	    .col-sm-2 {
+		float: right;
+	    }
+	}
+    }
+
+}
+
 .table-buttons {
     width: 100%;
     border-bottom-right-radius: 6px;
@@ -1375,94 +1538,6 @@ a.toplistbanner {
 
 .flaticon-loading {
     .animate-pulse;
-}
-
-.link {
-    text-align: left;
-    &.right {
-	text-align: right;
-    }
-}
-
-.ranking.panel-schoolidol {
-    .panel-body {
-	padding-top: 0;
-	padding-bottom: 0;
-    }
-    .name {
-	padding-top: 50px;
-	font-size: 1.5em;
-	&.name-card {
-	    padding-top: 60px;
-	    font-size: 1.8em;
-            small {
-                margin-top: 20px;
-            }
-	}
-        small {
-            text-align: right;
-            display: block;
-            font-size: 12px;
-            color: lighten(@BarColor, 30%);
-        }
-    }
-    .rank {
-	padding-top: 40px;
-	text-align: center;
-	font-size: 1.9em;
-	color: lighten(@SecondaryColor, 40%);
-	.number {
-	    color: white;
-	}
-    }
-    .row:first-child {
-	.rank {
-	    color: #C98910;
-	}
-    }
-    .row:nth-child(2) {
-	.rank {
-	    color: #A8A8A8;
-	}
-    }
-    .row:nth-child(3) {
-	.rank {
-	    color: #965A38;
-	}
-    }
-}
-.ranking.panel-schoolidol, .pastcontests.panel-schoolidol {
-    .card {
-	background-size: 150px;
-	background-repeat: no-repeat;
-	background-position: center -10px;
-	height: 130px;
-	width: 130px;
-	border-radius: 50%;
-	margin: 10px;
-	margin-right: 0;
-	border: 2px solid;
-    }
-    a.row {
-	display: block;
-	border-bottom: 1px solid @BarColor;
-	padding: 2px;
-	&:last-child {
-	    border-bottom: 0;
-	}
-    }
-}
-.pastcontests.panel-schoolidol {
-    a.row {
-	padding: 20px;
-	&:hover,
-	&:focus {
-	    text-decoration: none;
-	}
-	.col-sm-2 {
-	    float: right;
-	}
-    }
 }
 
 .border-Smile { border-color: @SmileColor!important }

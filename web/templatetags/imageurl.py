@@ -22,13 +22,10 @@ def imageurl(context, card, image):
                 return url
     return '/static/default-' + card.attribute + '.png'
 
-@register.simple_tag(takes_context=True)
-def ownedcardimageurl(context, ownedcard, card=None):
-    if not ownedcard:
-        return '/static/default-All.png'
-    if not card:
-        card = ownedcard.card
-    idolized = True if card.is_special or card.is_promo else ownedcard.idolized
+@register.simple_tag()
+def cardidolizedimageurl(card, idolized):
+    if card.is_special:
+        idolized = True
     if idolized:
         if card.round_card_idolized_image:
             return _imageurl(card.round_card_idolized_image)
@@ -40,6 +37,15 @@ def ownedcardimageurl(context, ownedcard, card=None):
     if card.card_image:
         return _imageurl(card.card_image)
     return '/static/default-' + card.attribute + '.png'
+
+@register.simple_tag(takes_context=True)
+def ownedcardimageurl(context, ownedcard, card=None):
+    if not ownedcard:
+        return '/static/default-All.png'
+    if not card:
+        card = ownedcard.card
+    idolized = True if card.is_special or card.is_promo else ownedcard.idolized
+    return cardidolizedimageurl(card, idolized)
 
 @register.simple_tag(takes_context=True)
 def eventimageurl(context, event, english=False):

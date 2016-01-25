@@ -2,77 +2,77 @@
 {% load formattime %}
 {% load imageurl %}
 {% load i18n %}
+{% load random_int %}
+{% load mod %}
 
-{% block title %}Vote!{% endblock %}
+{% block shareimage %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
+
+{% block title %}{% if contest.id != 0 %}{{ contest.name }}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
 
 {% block js %}
-    <script src="/static/contest/js/vote.js"></script>
-    <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-    <script src="/static/js/countdown.js"></script>
+<script src="/static/js/contest_vote.js"></script>
+<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+{% if contest.id != 0 %}
+<script src="/static/js/contest_countdown.js"></script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 
-<h1>{{ contest.name }}
-  {% if contest.begin %}<br><small>
-    {{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
-    {% if delta %}
-    <br><a href="{{ url_prefix }}contest">
-      <span id="countdown" style="display: block; font-size: 0.6em">
-	<script>
-	  var countdowndate = "{{ contest.end|formattime:"%B %d, %Y %H:%M:%S +0000" }}";
-	</script>
-      </span>
-    </a>
-    {% endif %}
-  </small>
-  {% endif %}
-</h1>
-<form action="{{ url_prefix }}" method="post">
-  {% csrf_token %}
-  <div class="row">
-    <div class="col-md-6">
-      <button type="submit" class="panel panel-schoolidol card" name="left" value="left">
-  	<div class="panel-body">
-  	  <img src="
-  		    {% if cards.left.card.card_image and not cards.idolized_left %}
-  		    {% imageurl card=cards.left.card image='card_image' %}
-  	            {% else %}
-  	            {% imageurl card=cards.left.card image='card_idolized_image' %}
-  	  {% endif %}">
+<div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+  <div class="container">
+    <h1 class="text-{{ btnColor }}">
+      {{ contest.name }}
+      {% if contest.begin %}<br><small>
+	{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
+	{% if contest.id != 0 %}
+	<br>
+	<span id="countdown" style="display: block; font-size: 0.6em">
+	  <script>
+	    var countdowndate = "{{ contest.end|formattime:"%B %d, %Y %H:%M:%S +0000" }}";
+	  </script>
+	</span>
+	{% endif %}
+      </small>
+      {% endif %}
+    </h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="row">
+	<div class="col-md-6">
+	  <button type="submit" class="panel panel-{{ btnColor }} card" name="left" value="left">
+	    <div class="panel-body">
+	      <img src="{% if cards.left.card.card_image and not cards.left.idolized %}{% imageurl card=cards.left.card image='card_image' %}{% else %}{% imageurl card=cards.left.card image='card_idolized_image' %}{% endif %}">
+	    </div>
+	    <div class="panel-heading">
+	      <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% trans 'is BEST' %}</strong>
+	    </div>
+	  </button> <!-- panel -->
+	  <div class="link left"><a class="text-center" href="/cards/{{ cards.left.card.id }}/" target="_blank">{% trans 'About this card' %}</a></div>
+	  <br><br>
+	</div> <!-- col -->
+	<div class="col-md-6">
+	  <button type="submit" class="panel panel-{{ btnColor }} card" value="right" name="right">
+	    <div class="panel-body">
+	      <img src="{% if cards.right.card.card_image and not cards.right.idolized %}{% imageurl card=cards.right.card image='card_image' %}{% else %}{% imageurl card=cards.right.card image='card_idolized_image' %}{% endif %}">
+	    </div>
+	    <div class="panel-heading">
+	      <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% trans 'is BEST' %} </strong>
+	    </div>
+	  </button> <!-- panel -->
+	  <div class="link right"><a class="text-center" href="/cards/{{ cards.right.card.id }}/" target="_blank">{% trans 'About this card' %}</a></div>
+	  <br><br>
+	</div> <!-- col -->
+      </div> <!-- row -->
+      <input type="hidden" name="token" value="{{ token }}"/>
+    </form>
+
+    <br><br>
+    <div class="text-center">
+      <a href="{% if contest.id != 0 %}/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/best/{% endif %}" class="btn btn-{{ btnColor }} btn-block btn-xl">Ranking</a>
+    </div>
   </div>
-  	<div class="panel-heading">
-  	  <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% trans 'is BEST' %}</strong>
-  	</div>
-      </button> <!-- panel -->
-      <div class="link left"><a class="text-center" href="{{ cards.left.card.website_url }}" target="_blank">About this card</a></div>
-      <br><br>
-    </div> <!-- col -->
-    <div class="col-md-6">
-      <button type="submit" class="panel panel-schoolidol card" value="right" name="right">
-  	<div class="panel-body">
-  	  <img src="
-  		    {% if cards.right.card.card_image and not cards.right.idolized %}
-  		    {% imageurl card=cards.right.card image='card_image' %}
-  	            {% else %}
-  	            {% imageurl card=cards.right.card image='card_idolized_image' %}
-  	  {% endif %}">
-
-  	</div>
-  	<div class="panel-heading">
-  	  <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% trans 'is BEST' %} </strong>
-  	</div>
-      </button> <!-- panel -->
-      <div class="link right"><a class="text-center" href="{{ cards.right.card.website_url }}" target="_blank">About this card</a></div>
-      <br><br>
-    </div> <!-- col -->
-  </div> <!-- row -->
-  <input type="hidden" name="token" value="{{ token }}"/>
-</form>
-
-<br><br>
-<div class="text-center">
-  <a href="{{ url_prefix }}{% if contest %}result/{{ contest.id }}{% else %}best{% endif %}" class="btn btn-main btn-xl">Ranking</a>
 </div>
-
 {% endblock %}

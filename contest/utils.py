@@ -1,6 +1,7 @@
 from django.db.models import Sum
 import contest.models as contest_models
 import api.models as api_models
+from django.utils import timezone
 import random
 import hashlib
 import datetime
@@ -11,11 +12,17 @@ def gen_fingerprint(request):
 
 def past_contests_queryset():
     now = datetime.datetime.now()
-    return contest_models.Contest.objects.filter(end__lte=now)
+    return contest_models.Contest.objects.filter(end__lte=now).order_by('-end')
 
 def get_current_contest():
     now = datetime.datetime.now()
     return contest_models.Contest.objects.filter(end__gte=now, begin__lte=now).first()
+
+def is_current_contest(contest):
+    if contest.id == 0:
+        return True
+    now = timezone.now()
+    return contest.begin <= now and contest.end >= now
 
 def get_cards(contest):
     queryset = contest.queryset()
@@ -81,7 +88,7 @@ def best_single_card_query(contest):
 
 def best_single_girl_query(contest):
     girl = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').first()
-    return girl['card__name'], girl['count']
+    return girl['card__name']
 
 def best_single_cards(contest):
     cards = dict()

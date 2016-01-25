@@ -47,7 +47,7 @@ def globalContext(request):
         'show_filter_button': False,
         'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
         'interfaceColor': 'default',
-        'btnColor': 'default',
+        'btnColor': 'Smile',
         'debug': settings.DEBUG,
         'hidenavbar': 'hidenavbar' in request.GET,
         'current_contest_url': settings.CURRENT_CONTEST_URL,
@@ -57,8 +57,9 @@ def globalContext(request):
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
-        context['interfaceColor'] = request.user.preferences.color
-        context['btnColor'] = request.user.preferences.color if request.user.preferences else 'default'
+        if request.user.preferences.color:
+            context['interfaceColor'] = request.user.preferences.color
+            context['btnColor'] = request.user.preferences.color
     if 'notification' in request.GET:
         try:
             context['notification'] = web_raw.notifications[request.GET['notification']].copy()
@@ -219,6 +220,8 @@ def index(request):
         context['current_en'].is_current = context['current_en'].is_world_current()
     except: pass
     context['total_donators'] = settings.TOTAL_DONATORS
+
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
 
     # Get random character
     context['character'] = None

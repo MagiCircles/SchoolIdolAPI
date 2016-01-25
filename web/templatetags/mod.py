@@ -24,6 +24,10 @@ def transconcatspace(value, svalue):
     return string_concat(_(value), ' ', _(svalue))
 
 @register.filter
+def tourldash(string):
+    return ''.join(e if e.isalnum() else '-' for e in string)
+
+@register.filter
 def is_boolean(field):
     if isinstance(field.field, NullBooleanField):
         return False

@@ -1,38 +1,36 @@
 from django.shortcuts import render, get_object_or_404
 import contest.models as contest_models
 from django.db.models import Sum
+from django.conf import settings
 from contest.utils import (get_votesession, validate_vote,
                            best_girls_query, best_cards_query,
                            best_single_cards, past_contests_queryset,
-                           get_current_contest)
-from web.views import globalContext
+                           get_current_contest, is_current_contest)
+from web.views import globalContext as web_globalContext
 import datetime
+
+def globalContext(request):
+    context = web_globalContext(request)
+    context.update({
+        'total_backgrounds': settings.TOTAL_BACKGROUNDS,
+    })
+    return context
 
 def contest_view(request, contestid):
     context = globalContext(request)
-    if contestid == 'contest':
-        return global_contest_view(request)
-    contestid = int(contestid)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
-    current_contest = get_current_contest()
     if request.method == 'POST':
         try:
             votesession = contest_models.Session.objects.get(token=request.session['token'])
             if votesession:
                 choice = 'left' if request.POST.has_key('left') else 'right'
                 validate_vote(choice, votesession, contest)
-        except:
-            pass
+        except: pass
     cards = get_votesession(request, contest)
-    is_current = None
-    delta = datetime.datetime.combine(contest.end, datetime.datetime.min.time()) - datetime.datetime.now() if is_current else None
     request.session['token'] = cards.token
     context.update({
         'cards': cards,
         'contest': contest,
-        'current_contest': current_contest,
-        'delta': delta,
-        'is_current': True,
         'token': cards.token,
     })
     return render(request, 'contest.html', context)
@@ -42,29 +40,32 @@ def global_contest_view(request):
 
 def result_view(request, contestid):
     context = globalContext(request)
-    contestid = int(contestid)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     list_girl, list_card = None, None
     if contest.best_girl:
-        list_girl = enumerate(best_girls_query(contest))
+        list_girl = best_girls_query(contest)
     if contest.best_card:
-        list_card = enumerate(best_cards_query(contest))
+        list_card = best_cards_query(contest)
     context.update({
-        'cards': {},
         'list_girl': list_girl,
         'list_card': list_card,
         'contest': contest,
-        'delta': {},
-        'is_current': True,
+        'is_current': is_current_contest(contest),
     })
     return render(request, 'contest_result.html', context)
+
+def global_result_view(request):
+    return result_view(request, '0')
 
 def results_index_view(request):
     context = globalContext(request)
     queryset = past_contests_queryset().annotate(count=Sum('votes__counter')).all()
-    contests = [(contest, best_single_cards(contest)) for contest in queryset]
+    now = datetime.datetime.now()
+    total_votes = contest_models.Vote.objects.filter(contest__end__lte=now).values('contest_id').annotate(total_votes=Sum('counter')).order_by('-contest__end')
+    contests = [(contest, best_single_cards(contest), total_votes['total_votes']) for contest, total_votes in zip(queryset, total_votes)]
     context.update({
         'contests': contests,
         'title': 'Contests listing',
+        'current': 'past_contests',
     })
     return render(request, 'contest_result_index.html', context)

@@ -28,12 +28,10 @@ def get_cards(contest):
     queryset = contest.queryset()
     cards = [card for card in queryset]
     left = random.choice(cards)
-    right = random.choice(cards)
+    while (right.pk == left.pk):
+        right = random.choice(cards)
     left_idolized = random.choice([True, False])
     right_idolized = random.choice([True, False])
-    #FIXME handle idolized-only cards
-    while (right.pk == left.pk) and (left_idolized == right_idolized):
-        right_idolized = random.choice([True, False])
     vote_left, _ = contest_models.Vote.objects.get_or_create(card=left, idolized=left_idolized, contest=contest)
     vote_right, _ = contest_models.Vote.objects.get_or_create(card=right, idolized=right_idolized, contest=contest)
     return vote_left, vote_right
@@ -46,7 +44,7 @@ def get_votesession(request, contest):
     Else, we return a new one.
     """
     fingerprint = gen_fingerprint(request)
-    sessions = contest_models.Session.objects.filter(fingerprint=fingerprint).all()
+    sessions = contest_models.Session.objects.filter(fingerprint=fingerprint, contest=contest).all()
     if sessions.count() >= 9:
         return sessions.order_by('?').first()
     else:

@@ -28,6 +28,7 @@ def get_cards(contest):
     queryset = contest.queryset()
     cards = [card for card in queryset]
     left = random.choice(cards)
+    right = random.choice(cards)
     while (right.pk == left.pk):
         right = random.choice(cards)
     left_idolized = random.choice([True, False])

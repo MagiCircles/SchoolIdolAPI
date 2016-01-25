@@ -42,7 +42,7 @@
       {% csrf_token %}
       <div class="row">
 	<div class="col-md-6">
-	  <button type="submit" class="panel panel-{{ btnColor }} card" name="left" value="left">
+	  <button type="submit" class="panel panel-{{ btnColor }} card" name="left" value="left" id="left">
 	    <div class="panel-body">
 	      <img src="{% if cards.left.card.card_image and not cards.left.idolized %}{% imageurl card=cards.left.card image='card_image' %}{% else %}{% imageurl card=cards.left.card image='card_idolized_image' %}{% endif %}">
 	    </div>
@@ -54,7 +54,7 @@
 	  <br><br>
 	</div> <!-- col -->
 	<div class="col-md-6">
-	  <button type="submit" class="panel panel-{{ btnColor }} card" value="right" name="right">
+	  <button type="submit" class="panel panel-{{ btnColor }} card" value="right" name="right" id="right">
 	    <div class="panel-body">
 	      <img src="{% if cards.right.card.card_image and not cards.right.idolized %}{% imageurl card=cards.right.card image='card_image' %}{% else %}{% imageurl card=cards.right.card image='card_idolized_image' %}{% endif %}">
 	    </div>

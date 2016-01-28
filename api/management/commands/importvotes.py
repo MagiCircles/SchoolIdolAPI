@@ -20,7 +20,7 @@ class Command(BaseCommand):
             new_vote = ac.Vote()
             new_vote.idolized = vote['idolized']
             new_vote.counter = vote['counter']
-            id_contest = vote['contest'] if vote['contest'] != 0 else settings.GLOBAL_CONTEST_ID
-            new_vote.contest = ac.Contest.objects.get(pk=vote['contest'])
+            id_contest = vote['contest'] if vote['contest'] != 0 and vote['contest'] != '0' else settings.GLOBAL_CONTEST_ID
+            new_vote.contest = ac.Contest.objects.get(pk=id_contest)
             new_vote.card = am.Card.objects.get(id=vote['card'])
             new_vote.save()

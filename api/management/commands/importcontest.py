@@ -14,15 +14,6 @@ class Command(BaseCommand):
         contests = json.loads(file_handle.read())
         file_handle.close()
 
-        print("#Create the first contest")
-        contest = ac.Contest(pk=0)
-        contest.name = 'Who\'s the best girl?'
-        contest.begin = None
-        contest.end = None
-        contest.query = ''
-        contest.best_girl = True
-        contest.best_card = True
-        contest.save()
         for contest in contests:
             new_contest = ac.Contest(pk=contest['id'], name=contest['name'])
             new_contest.query = contest['params']
@@ -35,3 +26,12 @@ class Command(BaseCommand):
                 if result == 'best_card':
                     new_contest.best_card = True
             new_contest.save()
+        print("#Create the first contest")
+        contest = ac.Contest()
+        contest.name = 'Who\'s the best girl?'
+        contest.begin = None
+        contest.end = None
+        contest.query = ''
+        contest.best_girl = True
+        contest.best_card = True
+        contest.save()

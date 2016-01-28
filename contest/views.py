@@ -13,6 +13,7 @@ def globalContext(request):
     context = web_globalContext(request)
     context.update({
         'total_backgrounds': settings.TOTAL_BACKGROUNDS,
+        'global_contest_id': settings.GLOBAL_CONTEST_ID,
     })
     return context
 
@@ -36,7 +37,7 @@ def contest_view(request, contestid):
     return render(request, 'contest.html', context)
 
 def global_contest_view(request):
-    return contest_view(request, '0')
+    return contest_view(request, settings.GLOBAL_CONTEST_ID)
 
 def result_view(request, contestid):
     context = globalContext(request)
@@ -55,7 +56,7 @@ def result_view(request, contestid):
     return render(request, 'contest_result.html', context)
 
 def global_result_view(request):
-    return result_view(request, '0')
+    return result_view(request, settings.GLOBAL_CONTEST_ID)
 
 def results_index_view(request):
     context = globalContext(request)

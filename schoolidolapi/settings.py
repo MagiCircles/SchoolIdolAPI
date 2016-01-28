@@ -148,6 +148,8 @@ TOTAL_BACKGROUNDS = 12
 
 CARDS_LIMIT = 81
 
+GLOBAL_CONTEST_ID = 33
+
 # Generated settings:
 CARDS_INFO = {'idols': []}
 

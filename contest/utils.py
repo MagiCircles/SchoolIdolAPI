@@ -2,6 +2,7 @@ from django.db.models import Sum
 import contest.models as contest_models
 import api.models as api_models
 from django.utils import timezone
+from django.conf import settings
 import random
 import hashlib
 import datetime
@@ -19,7 +20,7 @@ def get_current_contest():
     return contest_models.Contest.objects.filter(end__gte=now, begin__lte=now).first()
 
 def is_current_contest(contest):
-    if contest.id == 0:
+    if contest.id == settings.GLOBAL_CONTEST_ID:
         return True
     now = timezone.now()
     return contest.begin <= now and contest.end >= now

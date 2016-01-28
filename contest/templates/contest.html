@@ -8,12 +8,12 @@
 {% block shareimage %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
 {% block shareimagetwitter %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
 
-{% block title %}{% if contest.id != 0 %}{{ contest.name }}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
+{% block title %}{% if contest.id != global_contest_id %}{{ contest.name }}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
 
 {% block js %}
 <script src="/static/js/contest_vote.js"></script>
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-{% if contest.id != 0 %}
+{% if contest.id != global_contest_id %}
 <script src="/static/js/contest_countdown.js"></script>
 {% endif %}
 {% endblock %}
@@ -26,7 +26,7 @@
       {{ contest.name }}
       {% if contest.begin %}<br><small>
 	{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
-	{% if contest.id != 0 %}
+	{% if contest.id != global_contest_id %}
 	<br>
 	<span id="countdown" style="display: block; font-size: 0.6em">
 	  <script>
@@ -71,7 +71,7 @@
 
     <br><br>
     <div class="text-center">
-      <a href="{% if contest.id != 0 %}/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/best/{% endif %}" class="btn btn-{{ btnColor }} btn-block btn-xl">Ranking</a>
+      <a href="{% if contest.id != global_contest_id %}/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/best/{% endif %}" class="btn btn-{{ btnColor }} btn-block btn-xl">Ranking</a>
     </div>
   </div>
 </div>

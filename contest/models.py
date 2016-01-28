@@ -2,6 +2,7 @@ from django.db import models
 import api.models as api_models
 from urlparse import parse_qs
 from django.db.models import Q
+from django.conf import settings
 
 class Contest(models.Model):
     begin = models.DateTimeField(null=True)
@@ -25,7 +26,7 @@ class Contest(models.Model):
 
     def queryset(self):
         params = self.query
-        if self.pk == 0:
+        if self.pk == settings.GLOBAL_CONTEST_ID:
             return api_models.Card.objects.all()
         if params.startswith('?'):
             params_parsed = parse_qs(params[1:])

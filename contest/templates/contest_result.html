@@ -12,7 +12,7 @@
 
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-{% if contest.id != 0 and is_current %}
+{% if contest.id != global_contest_id and is_current %}
 <script src="/static/js/contest_countdown.js"></script>
 {% endif %}
 {% endblock %}
@@ -111,11 +111,11 @@
 
     {% if is_current %}
     <div class="text-center">
-      <a href="{% if contest.id != 0 %}/contest/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">{% trans 'Vote' %}</a>
+      <a href="{% if contest.id != global_contest_id %}/contest/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">{% trans 'Vote' %}</a>
     </div>
     {% endif %}
 
-    {% if contest.id != 0 %}
+    {% if contest.id != global_contest_id %}
     {% with disqus_identifier as 'contest'|add:contest.id|string %}
     {% include 'disqus.html' %}
     {% endwith %}

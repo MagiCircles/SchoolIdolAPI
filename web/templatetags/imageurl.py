@@ -24,7 +24,7 @@ def imageurl(context, card, image):
 
 @register.simple_tag()
 def cardidolizedimageurl(card, idolized):
-    if card.is_special:
+    if card.is_special or card.is_promo:
         idolized = True
     if idolized:
         if card.round_card_idolized_image:

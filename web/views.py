@@ -1806,6 +1806,9 @@ def aboutview(request):
     for idol in raw.raw_information:
         if 'chibi' in raw.raw_information[idol]:
             context['artists'] += raw.raw_information[idol]['chibi']
+    for idol in raw.raw_information_n:
+        if 'chibi' in raw.raw_information_n[idol]:
+            context['artists'] += raw.raw_information_n[idol]['chibi']
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

@@ -164,6 +164,7 @@ raw_information['Tsushima Yoshiko'] = {
     'color': '#c3c3c3',
     'chibi': [
         ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'Erana'),
+        ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
     ],
 }
 raw_information['Kunikida Hanamaru'] = {

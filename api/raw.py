@@ -101,6 +101,9 @@ raw_information['Takami Chika'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/786Transparent.png',
     'color': '#ff9646',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'anonymous'),
+    ],
 }
 raw_information['Sakurauchi Riko'] = {
     'year': 'Second',
@@ -111,6 +114,9 @@ raw_information['Sakurauchi Riko'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/787Transparent.png',
     'color': '#ff7777',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'anonymous'),
+    ],
 }
 raw_information['Matsuura Kanan'] = {
     'year': 'Third',

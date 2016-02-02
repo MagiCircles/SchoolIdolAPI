@@ -8,6 +8,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
+from api.raw import raw_information
 from web import forms
 
 def send_email(subject, template_name, to=[], context={}, from_email=settings.AWS_SES_RETURN_PATH):
@@ -36,6 +37,8 @@ def concat_args(*args):
 def chibiimage(idol, small=True):
     prefix = 'small_' if small else ''
     if idol is not None:
+        if idol in raw_information and 'chibi' in raw_information[idol]:
+            return random.choice(raw_information[idol]['chibi'])[0]
         filename = '/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
         if os.path.isfile('web/' + filename):
             return filename

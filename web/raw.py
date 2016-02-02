@@ -172,4 +172,4 @@ discussions = [
     'color': api_raw.raw_information[idol]['color'],
     'link': '/idol/' + idol + '/',
         'big': True,
-} for idol in api_raw.raw_information.keys()]
+} for idol in api_raw.raw_information]

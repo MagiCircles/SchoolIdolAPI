@@ -1742,8 +1742,9 @@ def eventparticipations(request, event):
 def idols(request):
     context = globalContext(request)
     context['current'] = 'idols'
-    idols = models.Idol.objects.all().order_by('main', 'name')
-    context['main_idols'] = sorted(filter(lambda x: x.main == True, idols), key=operator.attrgetter('year'))
+    idols = models.Idol.objects.all().order_by('main', 'main_unit', 'name')
+    context['main_idols'] = sorted(filter(lambda x: x.main == True and x.main_unit != 'Aqours', idols), key=operator.attrgetter('year'))
+    context['aqours_idols'] = sorted(filter(lambda x: x.main == True and x.main_unit == 'Aqours', idols), key=operator.attrgetter('year'))
     context['n_idols'] = filter(lambda x: x.main == False, idols)
     return render(request, 'idols.html', context)
 
@@ -1801,6 +1802,10 @@ def aboutview(request):
             context['donators_high'].append(user)
     context['total_donators'] = settings.TOTAL_DONATORS
     context['donations'] = donations.donations
+    context['artists'] = []
+    for idol in raw.raw_information:
+        if 'chibi' in raw.raw_information[idol]:
+            context['artists'] += raw.raw_information[idol]['chibi']
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

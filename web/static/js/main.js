@@ -52,8 +52,8 @@ function globalModal(hash, modal_size) {
 }
 
 function updateActivities() {
-    $('[href=#imgur]').off('click');
-    $('[href=#imgur]').click(function(e) {
+    $('[href="#imgur"]').off('click');
+    $('[href="#imgur"]').click(function(e) {
 	e.preventDefault();
 	freeModal('<br>', '<img src="http://i.imgur.com/' + $(this).data('imgur') + '.png" class="img-responsive">');
 	return false;

@@ -95,6 +95,15 @@
 	</ul>
       </div>
     </div>
+    <h4>{% trans 'Community Artists' %}</h4>
+    <div class="row">
+      {% for artist in artists %}
+      <div class="col-md-3">
+	<a href="{{ artist.0 }}" target="_blank"><img src="{{ artist.0 }}" width="100" height="100" alt="drawing"></a> {% trans 'by' %}
+	<a href="http://schoolido.lu/user/{{ artist.1 }}/" target="_blank">{{ artist.1 }}</a>
+      </div>
+      {% endfor %}
+    </div>
 
     <hr class="margin50">
 

@@ -2,7 +2,9 @@ from django import template
 from django.conf import settings
 from web.utils import chibiimage as _chibiimage
 from api.models import LINK_URLS
+from api.raw import raw_information
 import os.path
+import string
 import re
 
 register = template.Library()
@@ -69,6 +71,10 @@ def userimage(image):
 @register.simple_tag(takes_context=True)
 def standimage(context, idol, number):
     if idol is not None:
+        if idol.main_unit == 'Aqours':
+            if number == 5:
+                return raw_information[idol.name]['image'].replace('Transparent', 'idolizedTransparent')
+            return raw_information[idol.name]['image']
         m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
         member_number = m.group('number')
         return 'http://www.lovelive-anime.jp/otonokizaka/img/member/member' + member_number + '_0'+ str(number) + '.png'

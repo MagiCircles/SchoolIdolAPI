@@ -127,6 +127,9 @@ raw_information['Matsuura Kanan'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/788Transparent.png',
     'color': '#16d5a6',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/kirisakisun.png', 'kirisakisun'),
+    ],
 }
 raw_information['Kurosawa Dia'] = {
     'year': 'Third',

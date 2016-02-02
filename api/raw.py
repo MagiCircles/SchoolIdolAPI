@@ -140,6 +140,9 @@ raw_information['Kurosawa Dia'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/789Transparent.png',
     'color': '#ff4242',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/dia.png', 'dia'),
+    ],
 }
 raw_information['Watanabe You'] = {
     'year': 'Second',

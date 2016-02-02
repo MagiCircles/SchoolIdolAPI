@@ -102,7 +102,7 @@ raw_information['Takami Chika'] = {
     'image': 'http://i.schoolido.lu/cards/transparent/786Transparent.png',
     'color': '#ff9646',
     'chibi': [
-        ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'anonymous'),
+        ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
     ],
 }
 raw_information['Sakurauchi Riko'] = {
@@ -115,7 +115,7 @@ raw_information['Sakurauchi Riko'] = {
     'image': 'http://i.schoolido.lu/cards/transparent/787Transparent.png',
     'color': '#ff7777',
     'chibi': [
-        ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'anonymous'),
+        ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'umidah'),
     ],
 }
 raw_information['Matsuura Kanan'] = {
@@ -163,7 +163,7 @@ raw_information['Tsushima Yoshiko'] = {
     'image': 'http://i.schoolido.lu/cards/transparent/791Transparent.png',
     'color': '#c3c3c3',
     'chibi': [
-        ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'anonymous'),
+        ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'Erana'),
     ],
 }
 raw_information['Kunikida Hanamaru'] = {
@@ -176,7 +176,7 @@ raw_information['Kunikida Hanamaru'] = {
     'image': 'http://i.schoolido.lu/cards/transparent/792Transparent.png',
     'color': '#e7cf0b',
     'chibi': [
-        ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'anonymous'),
+        ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
     ],
 }
 raw_information['Ohara Mari'] = {

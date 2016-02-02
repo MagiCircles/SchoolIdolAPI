@@ -141,6 +141,11 @@ raw_information['Watanabe You'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/790Transparent.png',
     'color': '#49bbee',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/iriel.png', 'iriel'),
+        ('http://i.schoolido.lu/chibi/Mochaqt.png', 'Mochaqt'),
+        ('http://i.schoolido.lu/chibi/sanjista.png', 'sanjista'),
+    ],
 }
 raw_information['Tsushima Yoshiko'] = {
     'year': 'First',
@@ -151,6 +156,9 @@ raw_information['Tsushima Yoshiko'] = {
     'cv_instagram': 'aikyan_',
     'image': 'http://i.schoolido.lu/cards/transparent/791Transparent.png',
     'color': '#c3c3c3',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'anonymous'),
+    ],
 }
 raw_information['Kunikida Hanamaru'] = {
     'year': 'First',
@@ -161,6 +169,9 @@ raw_information['Kunikida Hanamaru'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/792Transparent.png',
     'color': '#e7cf0b',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'anonymous'),
+    ],
 }
 raw_information['Ohara Mari'] = {
     'year': 'Third',
@@ -171,6 +182,9 @@ raw_information['Ohara Mari'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/793Transparent.png',
     'color': '#c450ff',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/sorutan.png', 'sorutan'),
+    ],
 }
 raw_information['Kurosawa Ruby'] = {
     'year': 'First',
@@ -181,6 +195,27 @@ raw_information['Kurosawa Ruby'] = {
     'cv_instagram': None,
     'image': 'http://i.schoolido.lu/cards/transparent/794Transparent.png',
     'color': '#f273c4',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/amukagamine.png', 'amukagamine'),
+    ],
+}
+
+raw_information_n = {
+    'Saeki Reine': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Arne.png', 'Arne'),
+        ],
+    },
+    'Aizawa Yuu': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/blueberrytrain.png', 'blueberrytrain'),
+        ],
+    },
+    'Shirase Koyuki': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),
+        ],
+    },
 }
 
 app_data = {

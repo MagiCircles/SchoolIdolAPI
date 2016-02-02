@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from api import models
 from web.views import getUserAvatar
-from web.templatetags.imageurl import chibiimage
+from web.utils import chibiimage
 from geopy.geocoders import Nominatim
 import time, sys
 from django.utils.html import escape

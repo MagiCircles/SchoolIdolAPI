@@ -141,7 +141,7 @@ raw_information['Kurosawa Dia'] = {
     'image': 'http://i.schoolido.lu/cards/transparent/789Transparent.png',
     'color': '#ff4242',
     'chibi': [
-        ('http://i.schoolido.lu/chibi/dia.png', 'dia'),
+        ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
     ],
 }
 raw_information['Watanabe You'] = {
@@ -169,7 +169,7 @@ raw_information['Tsushima Yoshiko'] = {
     'image': 'http://i.schoolido.lu/cards/transparent/791Transparent.png',
     'color': '#c3c3c3',
     'chibi': [
-        ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'Erana'),
+        ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'erana'),
         ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
     ],
 }

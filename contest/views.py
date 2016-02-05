@@ -7,6 +7,7 @@ from contest.utils import (get_votesession, validate_vote,
                            best_single_cards, past_contests_queryset,
                            get_current_contest, is_current_contest)
 from web.views import globalContext as web_globalContext
+from web.templatetags.mod import tourldash
 import datetime
 
 def globalContext(request):
@@ -20,6 +21,8 @@ def globalContext(request):
 def contest_view(request, contestid):
     context = globalContext(request)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
+    if not is_current_contest(contest):
+       return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/'
     if request.method == 'POST':
         try:
             votesession = contest_models.Session.objects.get(token=request.session['token'])

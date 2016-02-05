@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 import contest.models as contest_models
 from django.db.models import Sum
 from django.conf import settings
@@ -22,7 +22,7 @@ def contest_view(request, contestid):
     context = globalContext(request)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     if not is_current_contest(contest):
-       return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/'
+       return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/')
     if request.method == 'POST':
         try:
             votesession = contest_models.Session.objects.get(token=request.session['token'])

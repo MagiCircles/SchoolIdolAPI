@@ -116,6 +116,7 @@ raw_information['Sakurauchi Riko'] = {
     'color': '#ff7777',
     'chibi': [
         ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'umidah'),
+        ('http://i.schoolido.lu/chibi/rikofinished.png', 'Cava'),
     ],
 }
 raw_information['Matsuura Kanan'] = {
@@ -142,6 +143,7 @@ raw_information['Kurosawa Dia'] = {
     'color': '#ff4242',
     'chibi': [
         ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
+        ('http://i.schoolido.lu/chibi/xcrybxbyx.png', 'xcrybxbyx'),
     ],
 }
 raw_information['Watanabe You'] = {
@@ -171,6 +173,7 @@ raw_information['Tsushima Yoshiko'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'erana'),
         ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
+        ('http://i.schoolido.lu/chibi/hatsunemimu.png', 'hatsunemimu'),
     ],
 }
 raw_information['Kunikida Hanamaru'] = {
@@ -227,6 +230,16 @@ raw_information_n = {
     'Shirase Koyuki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),
+        ],
+    },
+    'Yazawa Cocoa': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/amukagamine2.png', 'amukagamine'),
+        ],
+    },
+    'Suda Iruka': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/ILC1ICdf.png', 'Floripendulaa'),
         ],
     },
 }

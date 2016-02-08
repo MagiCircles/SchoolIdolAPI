@@ -3,6 +3,7 @@ import api.models as api_models
 from urlparse import parse_qs
 from django.db.models import Q
 from django.conf import settings
+from django.contrib import admin
 
 class Contest(models.Model):
     begin = models.DateTimeField(null=True)
@@ -11,6 +12,9 @@ class Contest(models.Model):
     best_girl = models.BooleanField(default=False)
     best_card = models.BooleanField(default=False)
     query = models.CharField(max_length=4092, null=True)
+
+    def __unicode__(self):
+        return self.name
 
     def alter_key(self, key):
         if key == 'is_event':
@@ -39,6 +43,8 @@ class Contest(models.Model):
             for card in cards:
                 condition = condition | Q(id=card)
             return api_models.Card.objects.filter(condition)
+
+admin.site.register(Contest)
 
 class Vote(models.Model):
 	contest = models.ForeignKey(Contest, related_name='votes')

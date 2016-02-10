@@ -238,10 +238,8 @@ class CustomActivity(_Activity):
     def __init__(self, *args, **kwargs):
         super(CustomActivity, self).__init__(*args, **kwargs)
         self.fields['account_id'].widget = forms.HiddenInput()
-        self.fields['message_data'].widget = forms.Textarea()
         self.fields['message_data'].required = True
         self.fields['message_data'].label = _('Message')
-        self.fields['message_data'].widget.attrs.update({'maxlength': 1200})
         self.fields['message_data'].help_text = _('Write whatever you want. You can add formatting and links using Markdown.')
 
     class Meta:

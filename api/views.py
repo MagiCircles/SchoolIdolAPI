@@ -105,7 +105,7 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.IdolSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'cv_nickname', 'cv_twitter', 'cv_instagram', 'summary')
-    filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year')
+    filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special')
     ordering_fields = '__all__'
     ordering = ('-main', 'name')
     lookup_field = 'name'

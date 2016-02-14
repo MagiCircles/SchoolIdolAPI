@@ -5,6 +5,7 @@ from contest.utils import get_current_contest
 from collections import OrderedDict
 from web.templatetags.mod import tourldash
 from django.db.models import Count
+from django.conf import settings
 import sys
 import urllib2, json
 import time
@@ -25,7 +26,7 @@ def generate_settings():
             current_contest_name = None
         else:
             current_contest_url = '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/'
-            current_contest_image = '/static/currentcontest.png'
+            current_contest_image = (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else '/static/currentcontest.png'
             current_contest_name = current_contest.name.replace('\'', '\\\'')
 
         print 'Get ages'

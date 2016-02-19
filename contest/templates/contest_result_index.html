@@ -34,7 +34,7 @@
 	    {% if best_girl %}
 	    <div class="col-sm-2 text-center text-{{ best_card.attribute }}">
 	      BEST Girl
-	      <img src="http://schoolido.lu/static/idols/chibi/{% idolimage name=best_girl %}.png" class="idol" alt="{{ best_girl }}">
+	      <img src="{% chibiimage idol=best_girl small=False %}" class="idol" alt="{{ best_girl }}">
 	    </div>
 	    {% endif %}
 	    {% if best_card %}

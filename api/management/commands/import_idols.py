@@ -2,13 +2,12 @@
 from api.management.commands.importbasics import *
 
 def import_idols():
-    idols = getGirls()
+    idols = models.Idol.objects.all().order_by('-main', '-main_unit')
     if not local:
         print "### Import idols"
-        for (idx, (idol, _)) in enumerate(idols):
+        for idol in idols:
             if not idol:
                 continue
-            idol, created = models.Idol.objects.get_or_create(name=idol)
             if idol.attribute and not redownload:
                 continue
             print '  Import Idol', idol, '...',
@@ -19,9 +18,12 @@ def import_idols():
                 html.find('div', { 'id', 'toc' }).extract()
                 defaults = {}
                 wikitable = None
-                if idx <= 9:
+                if idol.main:
                     wikitable = html.find('table', { 'class': 'wikitable' })
-                    defaults['school'] = 'Otonokizaka Academy'
+                    if idol.main_unit == 'Aqours':
+                        defaults['school'] = 'Uranohoshi Girls\' High School'
+                    else:
+                        defaults['school'] = 'Otonokizaka Academy'
                 ul_ = html.find('ul')
                 ul = ul_.find_all('li')
                 for li in ul:
@@ -73,7 +75,7 @@ def import_idols():
                             url = ps[1].a.get('href')
                             defaults['official_url'] = url
 
-                if idx <= 9:
+                if idol.main:
                     tables = html.find_all('table', { 'class': 'wikitable' })
                     for table in tables:
                         th = table.find('th', { 'colspan': '6' })

@@ -150,6 +150,12 @@ ACCOUNT_TAB_CHOICES = (
 )
 ACCOUNT_TAB_DICT = dict(ACCOUNT_TAB_CHOICES)
 
+HOME_TAB_CHOICES = (
+    ('following', _('Following')),
+    ('all', _('All')),
+)
+ACCOUNT_TAB_DICT = dict(ACCOUNT_TAB_CHOICES)
+
 ACCOUNT_TAB_ICONS = (
     ('deck', 'deck'),
     ('album', 'album'),
@@ -492,6 +498,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
     allowed_verifications = models.CharField(max_length=100, null=True, blank=True)
     birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
+    default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
 
     def avatar(self, size):
         default = 'http://schoolido.lu/static/kotori.jpg'

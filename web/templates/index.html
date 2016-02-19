@@ -175,16 +175,16 @@
 	</a>
       </div> <!-- carousel -->
 
-      <div id="{% if user.is_authenticated %}my{% endif %}activities">
+      <div id="{% if user.is_authenticated and user.preferences.default_tab == 'following' %}my{% endif %}activities">
 	{% if user.is_authenticated %}
 	<div style="margin-bottom: 20px;" id="activities-buttons">
 	  <div class="btn-group btn-group-justified" data-toggle="buttons">
-	    <label class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %} following active">
+	    <label class="btn btn-{{ btnColor }} following{% if user.preferences.default_tab == 'following' %} active{% endif %}">
 	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'Following' %}
 	    </label>
-	    <label class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %} all">
-	      <input type="radio" name="options" autocomplete="off" checked="">
+	    <label class="btn btn-{{ btnColor }} all{% if user.preferences.default_tab == 'all' %} active{% endif %}">
+	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'All' %}
 	    </label>
 	  </div>

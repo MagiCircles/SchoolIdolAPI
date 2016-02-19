@@ -58,7 +58,7 @@ class UserPreferencesForm(ModelForm):
 
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'best_girl', 'location', 'birthdate', 'private', 'description', 'private')
+        fields = ('color', 'best_girl', 'location', 'birthdate', 'private', 'description', 'private', 'default_tab')
 
 class AccountForm(ModelForm):
     class Meta:

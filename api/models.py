@@ -58,6 +58,15 @@ PLAYWITH_CHOICES = (
 )
 PLAYWITH_DICT = dict(PLAYWITH_CHOICES)
 
+PLAYWITH_ICONS = (
+    ('Thumbs', 'thumbs'),
+    ('Fingers', 'fingers'),
+    ('Index', 'index'),
+    ('Hand', 'fingers'),
+    ('Other', 'sausage'),
+)
+PLAYWITH_ICONS_DICT = dict(PLAYWITH_ICONS)
+
 ACTIVITY_MESSAGE_CHOICES = (
     ('Added a card', _('Added {} in {}')),
     ('Idolized a card', _('Idolized {} in {}')),
@@ -164,6 +173,7 @@ ACCOUNT_TAB_ICONS = (
     ('wishlist', 'star'),
     ('presentbox', 'present'),
 )
+ACCOUNT_TAB_ICONS_DICT = dict(ACCOUNT_TAB_ICONS)
 
 CENTER_SKILL_SENTENCES = {
     'Power': _('{} increases slightly (+3%)'),
@@ -193,6 +203,9 @@ def activityMessageToString(val):
 def playWithToString(val):
     return PLAYWITH_DICT[val]
 
+def playWithToIcon(val):
+    return PLAYWITH_ICONS_DICT[val]
+
 def storedChoiceToString(stored):
     for key, string in STORED_CHOICES:
         if stored == key:
@@ -204,6 +217,9 @@ def linkTypeToString(val):
 
 def accountTabToString(val):
     return ACCOUNT_TAB_DICT[val]
+
+def accountTabToIcon(val):
+    return ACCOUNT_TAB_ICONS_DICT[val]
 
 def statusToString(val):
     return STATUS_DICT[val]
@@ -399,6 +415,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     owner = models.ForeignKey(User, related_name='accounts_set')
     nickname = models.CharField(_("Nickname"), blank=True, max_length=20)
     friend_id = models.PositiveIntegerField(_("Friend ID"), blank=True, null=True, help_text=_('You can find your friend id by going to the "Friends" section from the home, then "ID Search". Players will be able to send you friend requests or messages using this number.'))
+    show_friend_id = models.BooleanField('', default=True, help_text=_('Should your friend ID be visible to other players?'))
     accept_friend_requests = models.NullBooleanField(_('Accept friend requests'), blank=True, null=True)
     transfer_code = models.CharField(_("Transfer Code"), blank=True, max_length=100, help_text=_('It\'s important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.'))
     device = models.CharField(_('Device'), help_text=_('The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ...'), max_length=150, null=True, blank=True)
@@ -409,6 +426,9 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     rank = models.PositiveIntegerField(_("Rank"), blank=True, null=True)
     verified = models.PositiveIntegerField(_("Verified"), default=0, choices=VERIFIED_CHOICES)
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=ACCOUNT_TAB_CHOICES, help_text=_('What people see first when they take a look at your account.'), default='deck')
+    starter = models.ForeignKey(Card, verbose_name=_("Starter"), null=True, blank=True, help_text=_('The character that you selected when you started playing.'), on_delete=models.SET_NULL)
+    creation = models.DateField(blank=True, null=True, verbose_name=_('Creation'), help_text=_('When you started playing with this account.'))
+    show_creation = models.BooleanField('', default=False, help_text=_('Should this date be visible to other players?'))
 
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)

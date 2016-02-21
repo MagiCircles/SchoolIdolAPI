@@ -892,6 +892,33 @@ a.panel {
     color: @GoldColor;
 }
 
+.jumbotron {
+    .cuteform {
+    margin-top: -10px;
+    .cuteform-elt {
+	padding: 3px 10px;
+	border-radius: 5px;
+	border: 0;
+    }
+    .cuteform-selected {
+	border: 0;
+	background: white;
+    }
+    }
+    .cuteform-elt[data-cuteform-text=---------], .cuteform-elt[data-cuteform-text=Unknown], #id_starter + .cuteform .cuteform-elt, #id_color + .cuteform .cuteform-elt {
+	padding: 0px;
+	border: 3px trans;
+	&.cuteform-selected {
+	    border-radius: 50%;
+	    border: 3px solid #aaa;
+	    background: none;
+	}
+    }
+    #id_starter + .cuteform .cuteform-elt {
+	padding: 0;
+    }
+}
+
 #addteam {
     .cuteform-modal-button {
 	img {

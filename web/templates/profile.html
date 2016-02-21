@@ -134,16 +134,33 @@
 	    <table class="table">
 	      <tr>
 		<th><br>{% trans 'Nickname' %}</th>
-		<td><br>{{ account.nickname }}</td>
+		<td><br>{{ account.nickname }}
+		  {% if is_me %}<a href="/editaccount/{{ account.pk }}/" class="tiny"><i class="flaticon-edit"></i></a>{% endif %}
+		</td>
 	      </tr>
 	      <tr>
 		<th>{% trans 'Friend ID' %}</th>
-		<td>{{ account.friend_id|padzeros:9 }}</td>
+		<td>{% if account.show_friend_id or is_me %}
+		  {% if account.friend_id %}
+		  {{ account.friend_id|padzeros:9 }}
+		  {% else %}
+		  {% trans 'Unknown' %}
+		  {% endif %}
+		  {% if not account.show_friend_id and is_me %}
+		  <small class="text-muted">{% trans 'Only you can see it.' %}</small>
+		  {% endif %}
+		  {% else %}
+		  <span class="text-muted">{% trans 'Private' %}</span>
+		  {% endif %}
+		  {% if is_me and account.verified == 0 %}<a href="/editaccount/{{ account.pk }}/" class="tiny"><i class="flaticon-edit"></i></a>{% endif %}
+		</td>
 	      </tr>
 	      {% if not account.accept_friend_requests|isnone %}
 	      <tr>
 		<th>{% trans 'Accept friend requests' %}</th>
-		<td>{% if account.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}</td>
+		<td>{% if account.accept_friend_requests %}{% trans 'Yes' %}{% else %}{% trans 'No' %}{% endif %}
+		  {% if is_me %}<a href="/editaccount/{{ account.pk }}/" class="tiny"><i class="flaticon-edit"></i></a>{% endif %}
+		</td>
 	      </tr>
 	      {% endif %}
 	      <tr>
@@ -152,7 +169,8 @@
 		  <div class="pull-right">
 		    <i class="flaticon-{{ account.language }} fontx2"></i>
 		  </div>
-		  {{ account.language }}</td>
+		  {{ account.language }}
+		</td>
 	      </tr>
 	      <tr>
 		<th>{% trans 'Operating System' %}</th>
@@ -160,23 +178,53 @@
 		  <div class="pull-right">
 		    <i class="flaticon-{{ account.os }} fontx2"></i>
 		  </div>
-		  {{ account.os }}</td>
+		  {{ account.os }}
+		</td>
 	      </tr>
 	      {% if account.device %}
 	      <tr>
 		<th>{% trans 'Device' %}</th>
-		<td>{{ account.device }}</td>
+		<td>{{ account.device }}
+		</td>
 	      </tr>
+	      {% endif %}
+	      {% if account.starter %}
+	      {% if not account.center or account.center.card.id != account.starter.id %}
+	      <tr>
+		<th>{% trans 'Starter' %}</th>
+		<td>
+		  <a href="/cards/{{ account.starter.id }}/" target="_blank">
+		    {{ account.starter.name }}
+		    <div class="pull-right">
+		      <img src="{% imageurl card=account.starter image='round_card_image' %}" alt="{{ account.starter }}" width="42">
+		    </div>
+		  </a>
+		</td>
+	      </tr>
+	      {% endif %}
 	      {% endif %}
 	      {% if account.play_with %}
 	      <tr>
 		<th>{% trans 'Play with' %}</th>
 		<td>
 		  <div class="pull-right">
-		    {% if account.play_with == 'Thumbs' %}<i class="flaticon-thumbs fontx2"></i>{% elif account.play_with == 'Fingers' or account.play_with == 'Hand' %}<i class="flaticon-fingers fontx2"></i>{% elif account.play_with == 'Index' %}<i class="flaticon-index fontx2"></i>{% elif account.play_with == 'Other' %}<i class="flaticon-sausage fontx2"></i>{% endif %}
+		    <i class="flaticon-{{ account.play_with|playWithToIcon }} fontx2"></i>
 		  </div>
 		  {{ account.play_with|playWithToString }}</td>
 	      </tr>
+	      {% endif %}
+	      {% if account.creation %}
+	      {% if account.show_creation or is_me %}
+	      <tr>
+		<th>{% trans 'Creation' %}</th>
+		<td>
+		  {{ account.creation }}
+		  {% if not account.show_creation and is_me %}
+		  <small class="text-muted">{% trans 'Only you can see it.' %}</small>
+		  {% endif %}
+		</td>
+	      </tr>
+	      {% endif %}
 	      {% endif %}
 	      {% if not preferences.private or is_me %}
 	      <tr>
@@ -186,7 +234,12 @@
 	      {% endif %}
 	      <tr>
 		<th>{% trans 'Rank' %}</th>
-		<td><h3>{{ account.rank }}</h3></td>
+		<td>
+		  <h3>
+		    {% if account.rank %}{{ account.rank }}{% else %}{% trans 'Unknown' %}{% endif %}
+		    {% if is_me %}<a href="/editaccount/{{ account.pk }}/" class="tiny"><i class="tiny flaticon-edit"></i></a>{% endif %}
+		  </h3>
+		</td>
 	      </tr>
 	      {% if account.verified > 0 and account.verified < 3 %}
 	      <tr>
@@ -208,27 +261,44 @@
 		</td>
 	      </tr>
 	      {% endif %}
+	      {% if is_me %}
+	      <tr>
+		<th>{% trans 'Edit Account' %}</th>
+		<td>
+		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/">{% trans 'Edit Account' %}</a>
+		  {% if account.transfer_code %}
+		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#getTransferCode">{% trans 'Get your saved transfer code' %}</a>
+		  {% endif %}
+		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#saveTransferCode">{% trans 'Save your transfer code' %}</a>
+		  {% if account.verified == 0 %}
+		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a>
+		  {% endif %}
+		  <br><br>
+		  <a class="btn btn-{{ attribute }} btn-block btn-lg" href="#postActivity{{ account.pk }}" data-toggle="collapse">{% trans 'Post your own activity' %}</a>
+		  {% if posted_activity %}
+		  <div class="alert alert-info">
+		    {% trans 'Activity posted! Take a look at your activities on the side of your profile to see it.' %}
+		  </div>
+		  {% endif %}
+		</td>
+	      </tr>
+	      {% endif %}
 	    </table>
 	  </div>
-	    {% if is_me %}
-	    <div class="well post-activity">
-	      <form method="POST">
-		{% if posted_activity %}
-		<div class="alert alert-info">
-		  {% trans 'Activity posted! Click on the "Activities" tab below to see it.' %}
-		</div>
-		{% endif %}
-		<h3>{% trans 'Post your own activity' %}
-		  <small><a href="http://schoolido.lu/activities/1743972/" target="_blank">{% trans 'What is this?' %}</a></small>
-		</h3>
-		{% csrf_token %}
-		{% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}
-		<div class="text-right">
-		  <input type="submit" value="{% trans 'Post your own activity' %}" class="btn btn-{{ attribute }}">
-		</div>
-	      </form>
-	    </div>
-	    {% endif %}
+	  {% if is_me %}
+	  <div class="well post-activity collapse" id="postActivity{{ account.pk }}">
+	    <form method="POST">
+	      <h3>{% trans 'Post your own activity' %}
+		<small><a href="http://schoolido.lu/activities/1743972/" target="_blank">{% trans 'What is this?' %}</a></small>
+	      </h3>
+	      {% csrf_token %}
+	      {% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}
+	      <div class="text-right">
+		<input type="submit" value="{% trans 'Post your own activity' %}" class="btn btn-{{ attribute }}">
+	      </div>
+	    </form>
+	  </div>
+	  {% endif %}
 
 	  {% if user.is_staff and show_staff %}
 	  <div class="alert alert-danger">

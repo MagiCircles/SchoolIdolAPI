@@ -4,9 +4,69 @@
 {% block title %}{% if edit %}{% trans 'Edit Account' %} {{ edit }}{% else %}{% trans 'Add Account' %}{% endif %}{% endblock %}
 
 {% block js %}
+{% load imageurl %}
+{% load choicesToString %}
 {% if edit %}
 <script src="/static/js/editaccount.js?2"></script>
 {% endif %}
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_starter'), {
+    'images': {
+      '': '/static/empty.png',
+      {% for card in form.starter.field.queryset %}
+      '{{ card.id }}': '{% imageurl card=card image='round_card_image' %}',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_language'), {
+    'html': {
+      {% for language, string in form.language.field.choices %}
+      '{{ language }}': '<i class="flaticon-{{ language }}"></i> {{ string }}',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_os'), {
+    'html': {
+      {% for os, string in form.os.field.choices %}
+      '{{ os }}': '<i class="flaticon-{{ os }}"></i> {{ string }}',
+      {% endfor %}
+    }
+  });
+  {% if edit %}
+  cuteform($('#id_center'), {
+    'modal': 'true',
+    'images': {
+      '': '/static/empty.png',
+      {% for ownedcard in form.center.field.queryset %}
+      '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_default_tab'), {
+    'html': {
+      {% for default_tab, string in form.default_tab.field.choices %}
+      '{{ default_tab }}': '<i class="flaticon-{{ default_tab|accountTabToIcon }}"></i> {{ string }}',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_play_with'), {
+    'html': {
+      {% for play_with, string in form.play_with.field.choices %}
+      {% if play_with == '' %}'': '<img src="/static/empty.png" height="20">',{% else %}
+      '{{ play_with }}': '<i class="flaticon-{{ play_with|playWithToIcon }}"></i> {{ string }}',
+      {% endif %}{% endfor %}
+    }
+  });
+  cuteform($('#id_accept_friend_requests'), {
+    'html': {
+      '1': '<img src="/static/empty.png" height="20">',
+      '2': '{% trans 'Yes' %}',
+      '3': '{% trans 'No' %}',
+    }
+  });
+  {% endif %}
+</script>
 {% endblock %}
 {% block content %}
 {% load choicesToString %}
@@ -232,7 +292,7 @@
       <h2>{% trans 'Delete Account' %}</h2>
       <div class="alert alert-warning">{% blocktrans %}You can't cancel this action afterwards.{% endblocktrans %}<br>
 	{% blocktrans %}Note that we can transfer your account to another user.{% endblocktrans %}
-	<a href="#" data-toggle="modal" data-target="#contactModal">{% trans 'Contact Us' %}.</a>
+	<a href="/about/#contact" target="_blank">{% trans 'Contact Us' %}.</a>
       </div>
       {% include "bootstrap_form_horizontal.html" with form=form_delete wrap=0 %}
       <div class="text-right">

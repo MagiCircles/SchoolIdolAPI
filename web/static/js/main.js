@@ -38,6 +38,14 @@ function globalModal(hash, modal_size) {
 	window.location.href = "/about/";
 	return;
     }
+    if (typeof modal_size == 'undefined') {
+	if (hash == 'tutorialaddcard'
+	    || hash == 'aboutllsif'
+	    || hash == 'aboutsukutomo'
+	   ) {
+	    modal_size = 'lg'
+	}
+    }
     $.get('/ajax/modal/' + hash +
 	  '/?interfaceColor=' + getInterfaceColor(), function(data) {
 	      $('#modal .modal-content').html(data);

@@ -279,7 +279,7 @@ def create(request):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             preferences = models.UserPreferences.objects.create(user=user)
             login(request, user)
-            return redirect('/addaccount')
+            return redirect('/addaccount/')
     else:
         form = forms.CreateUserForm()
     context = globalContext(request)
@@ -550,6 +550,12 @@ def idol(request, idol):
         context['idol'].tag = idol.lower().replace(' ', '_')
     return render(request, 'idol.html', context)
 
+def _addaccount_savecenter(account):
+    if account.starter:
+        center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck')
+        account.center = center
+        account.save()
+
 def addaccount(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
@@ -561,9 +567,11 @@ def addaccount(request):
             if account.rank >= 200:
                 account.rank = 195
                 account.save()
+                _addaccount_savecenter(account)
                 return redirect('/cards/?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
             account.save()
-            return redirect('cards')
+            _addaccount_savecenter(account)
+            return redirect('/cards/#tutorialaddcardModal')
     else:
         form = forms.AccountForm(initial={
             'nickname': request.user.username
@@ -643,7 +651,7 @@ def profile(request, username):
     - Request user
     - (if me) Preferences
     - (if not me) User (JOIN + preferences)
-    - Accounts (JOIN + center + center card)
+    - Accounts (JOIN + center + center card + starter)
     - Deck stats (number of UR/SR in each account, raw SQL query)
     - Account queries (see ajaxaccounttab)
     - User links
@@ -686,7 +694,7 @@ def profile(request, username):
         deck_queryset = models.OwnedCard.objects.filter(Q(stored='Deck') | Q(stored='Album'))
     else:
         deck_queryset = models.OwnedCard.objects.filter(stored='Deck')
-    context['user_accounts'] = context['user_accounts'].select_related('center', 'center__card')
+    context['user_accounts'] = context['user_accounts'].select_related('center', 'center__card', 'starter')
 
     if not context['preferences'].private or context['is_me']:
         # Get stats of cards
@@ -1255,6 +1263,8 @@ def ajaxmodal(request, hash):
         return render(request, 'modalcontact.html', context)
     elif hash == 'thanks':
         return render(request, 'modalthanks.html', context)
+    elif hash == 'tutorialaddcard':
+        return render(request, 'modaltutorialaddcard.html', context)
     raise Http404
 
 def edit(request):
@@ -1411,7 +1421,7 @@ def editaccount(request, account):
         else:
             old_rank = owned_account.rank
             form = formClass(request.POST, instance=owned_account)
-            form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id').select_related('card')
+            form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('rarity', '-idolized', 'attribute', 'card__id').select_related('card')
             if form.is_valid():
                 account = form.save(commit=False)
                 if account.rank >= 200 and account.verified <= 0:

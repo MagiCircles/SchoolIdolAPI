@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import get_object_or_404
 from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
@@ -12,6 +13,14 @@ from api import models
 
 class DateInput(forms.DateInput):
     input_type = 'date'
+
+def date_input(field):
+    field.widget = DateInput()
+    field.widget.attrs.update({
+        'class': 'calendar-widget',
+        'data-role': 'data',
+    })
+    return field
 
 class CreateUserForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -50,20 +59,31 @@ class UserPreferencesForm(ModelForm):
         request = kwargs.pop('request', None)
         super(UserPreferencesForm, self).__init__(*args, **kwargs)
         self.fields['best_girl'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
-        self.fields['birthdate'].widget = DateInput()
-        self.fields['birthdate'].widget.attrs.update({
-            'class': 'calendar-widget',
-            'data-role': 'data',
-        })
+        self.fields['birthdate'] = date_input(self.fields['birthdate'])
 
     class Meta:
         model = models.UserPreferences
         fields = ('color', 'best_girl', 'location', 'birthdate', 'private', 'description', 'private', 'default_tab')
 
-class AccountForm(ModelForm):
+class _AccountForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(_AccountForm, self).__init__(*args, **kwargs)
+        self.fields['starter'].queryset = models.Card.objects.filter(rarity='R', pk__lte=36)
+        if 'creation' in self.fields:
+            self.fields['creation'] = date_input(self.fields['creation'])
+
+    def clean_creation(self):
+        if 'creation' in self.cleaned_data:
+            if self.cleaned_data['creation'] < datetime.date(2013, 4, 16):
+                raise forms.ValidationError(_('The game didn\'t even existed at that time.'))
+            if self.cleaned_data['creation'] > datetime.date.today():
+                raise forms.ValidationError(_('This date cannot be in the future.'))
+            return self.cleaned_data['creation']
+
+class AccountForm(_AccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'language', 'os', 'friend_id', 'rank')
+        fields = ('nickname', 'language', 'os', 'friend_id', 'rank', 'starter')
 
 def _ownedcard_label(obj):
     return unicode(obj.card) + ' ' + ('idolized' if obj.idolized else '')
@@ -72,7 +92,7 @@ class OwnedCardModelChoiceField(ModelChoiceField):
     def label_from_instance(self, obj):
         return _ownedcard_label(obj)
 
-class FullAccountForm(ModelForm):
+class FullAccountForm(_AccountForm):
     center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.filter(pk=0), required=False, label=_('Center'))
     # Always override this queryset to set the current account only
     # form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck')
@@ -83,12 +103,12 @@ class FullAccountForm(ModelForm):
 
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'friend_id', 'language', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'friend_id', 'show_friend_id', 'language', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests', 'starter', 'creation', 'show_creation')
 
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests')
+        fields = ('nickname', 'center', 'rank', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests', 'starter', 'creation', 'show_creation', 'show_friend_id')
 
 class SimplePasswordForm(Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))

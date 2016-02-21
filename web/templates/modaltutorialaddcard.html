@@ -1,0 +1,38 @@
+{% load i18n %}
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <h4 class="modal-title">{% trans 'Start sharing your beautiful collection!' %} </h4>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-5">
+      <h2 class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">{% trans 'Simply click "+" to add cards to your account' %}</h2>
+      <ul>
+	<li>{% trans 'If you idolized a card or if you want to add it to another account, use the bubble.' %}</li>
+	<li>{% blocktrans %}Click "Advanced" for more options: max bonded (kizuna), max leveled, skill level, where you have it (deck, album, present box).{% endblocktrans %}</li>
+	<li>{% trans 'To search for specific cards, use the filters bar on the right (idol, rarity, attribute).' %}</li>
+      </ul>
+      <div class="text-muted">
+	<h5>{% trans 'Learn more' %}</h5>
+	<ul class="tiny">
+	  <li><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-edit-a-card%3F">{% trans 'How to edit a card?' %}</a></li>
+	  <li><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-delete-a-card%3F">{% trans 'How to delete a card?' %}</a></li>
+	  <li><a href="/edit/#editaccounts" target="_blank">{% trans 'Edit your accounts' %}</a></li>
+	  <li><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-add-an-account-to-your-profile%3F">{% trans 'How to add an account to your profile?' %}</a></li>
+	  <li><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/SchoolIdolTomodachi/SchoolIdolAPI/wiki/What%27s-the-difference-between-the-deck%2C-the-album-and-the-present-box%3F">{% blocktrans %}What's the difference between the deck, the album and the present box?{% endblocktrans %}</a></li>
+	  <li><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Why-my-cards-are-not-automatically-imported%3F">{% trans 'Why my cards are not automatically imported?' %}</a></li>
+	  <li><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/SchoolIdolTomodachi/SchoolIdolAPI/wiki/">{% trans 'Help' %}</a></li>
+	</ul>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <video width="500" height="402" autoplay loop poster="http://i.schoolido.lu/static/addCardTuto.png">
+	<source src="http://i.schoolido.lu/static/addCardTuto.mp4" type="video/mp4" />
+	Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <a class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" data-dismiss="modal" style="opacity: 0.5;">{% trans 'Get Started' %}</a>
+</div>

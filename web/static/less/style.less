@@ -1053,13 +1053,68 @@ h1#donators {
     }
 }
 
-#contest-page {
+#trivia-page {
+    .flaticon-loading {
+        font-size: 4em;
+        color: #777;
+    }
+    .question {
+        padding: 30px;
+        padding-top: 0;
+        font-size: 2em;
+    }
+    .progress {
+        width: 60%;
+        margin: auto;
+    }
+    .progress-bar {
+        width: 10%;
+    }
+    .trivia_idol {
+        cursor: pointer;
+        padding: 20px;
+        display: inline-block;
+        transition: opacity 0.2s ease;
+        font-weight: normal;
+        figcaption {
+            padding: 10px;
+        }
+        &:hover, &:focus {
+            opacity: 0.5;
+        }
+    }
+    .final_result {
+        width: 60%;
+        margin: auto;
+        .final_score {
+            display: block;
+            padding: 30px 0;
+            font-size: 6em;
+            &:after {
+                content: "/ 10";
+                font-size: 0.4em;
+                color: #777;
+            }
+        }
+        .score_comment {
+            padding: 50px 0;
+            font-size: 2em;
+            font-weight: normal;
+        }
+        .progress {
+            width: 100%;
+        }
+    }
+}
+
+#contest-page, #trivia-page {
     background: url('../background.jpg') no-repeat top center;
     background-attachment: fixed;
     .container {
 	background-color: rgba(255, 255, 255, 0.8);
 	padding: 5%;
 	padding-top : 10px;
+        min-height: 800px;
     }
     h1 {
 	text-align: center;
@@ -1073,6 +1128,8 @@ h1#donators {
 	margin-bottom: 40px;
 	weight: bold;
     }
+}
+#contest-page {
     .panel {
 	padding: 0!important;
 	display: block!important;

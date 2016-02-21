@@ -24,6 +24,7 @@
     {% include 'activitysingle.html' %}
   </div>
   {% if is_mine %}
+  {% if activity.message != 'Trivia' and activity.message != 'Verified' and activity.message != 'Rank Up' %}
   <br><br>
   <div class="well post-activity">
     <form method="POST">
@@ -41,6 +42,7 @@
       <input type="submit" class="btn btn-danger btn-sm" name="delete" value="{% trans 'Delete' %}">
     </form>
   </div>
+  {% endif %}
   {% endif %}
   {% with disqus_identifier='activity'|addstr:activity.id %}
   {% include 'disqus.html' %}

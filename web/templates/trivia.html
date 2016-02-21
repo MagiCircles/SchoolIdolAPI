@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load random_int %}
+{% block title %}{% trans 'Love Live! School Idol Trivia' %}{% endblock %}
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/trivia.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/trivia.png{% endblock %}
+
+{% block content %}
+<div id="trivia-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+<div class="container text-center">
+  <h1 class="margin50"><img src="/static/lltrivia.png" alt="{% trans 'Love Live! School Idol Trivia' %}" class="img-responsive"></h1>
+  <div id="elm-trivia"></div>
+  <br><br><br><br><br><br>
+  {% include 'disqus.html' %}
+</div>
+{% endblock %}
+{% block js %}
+<script src="/static/js/trivia.js"></script>
+<script>
+  Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}'});
+</script>
+{% endblock %}

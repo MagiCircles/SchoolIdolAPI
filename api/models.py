@@ -73,6 +73,7 @@ ACTIVITY_MESSAGE_CHOICES = (
     ('Rank Up', _('Rank Up {}')),
     ('Ranked in event', _('Ranked {} in event {}')),
     ('Verified', _('Just got verified: {}')),
+    ('Trivia', _('{}/10 on School Idol Trivia! {}')),
     ('Custom', 'Custom'),
 )
 ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
@@ -189,6 +190,15 @@ CENTER_SKILL_UR = {
 }
 
 CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart')
+
+def triviaScoreToSentence(score):
+  if score <= 0: return _('Ouch!')
+  elif score <= 3: return _('Oh no...')
+  elif score <= 5: return _('Meh.')
+  elif score <= 7: return _('Not bad!')
+  elif score <= 8: return _('Yay~')
+  elif score == 9: return _('Awesome!')
+  return _('Woohoo!')
 
 def verifiedToString(val):
     val = int(val)

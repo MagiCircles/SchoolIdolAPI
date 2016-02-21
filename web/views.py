@@ -140,6 +140,9 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
     Rank up + Verified must specify:
     - account
     - number
+    Trivia must specify:
+    - number (= score)
+    - message_data (= sentence)
     Custom must specify:
     - account
     - message_data
@@ -197,6 +200,16 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         }
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
         models.Activity.objects.update_or_create(eventparticipation=eventparticipation, defaults=defaults)
+    elif message == 'Trivia':
+        defaults = {
+            'account': account,
+            'message': message,
+            'number': number,
+            'message_data': concat_args(number, message_data),
+        }
+        defaults.update(_pushActivity_cacheaccount(account, account_owner))
+        activity = models.Activity.objects.create(**defaults)
+        return activity
     elif message == 'Custom':
         defaults = {
             'account': account,
@@ -2023,3 +2036,21 @@ def songs(request, song=None, ajax=False):
 
 def ajaxsongs(request):
     return songs(request, ajax=True)
+
+def trivia(request):
+    context = globalContext(request)
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    return render(request, 'trivia.html', context)
+
+@csrf_exempt
+def sharetrivia(request):
+    if request.method == 'POST' and 'score' in request.POST:
+        if not request.user.is_authenticated():
+            return redirect('/create/')
+        accounts = contextAccounts(request, with_center=True)
+        try:
+            activity = pushActivity('Trivia', account=accounts[0], account_owner=request.user, number=request.POST['score'], message_data=models.triviaScoreToSentence(int(request.POST['score'])))
+            return redirect('/activities/' + str(activity.pk) + '/')
+        except IndexError:
+            return redirect('/addaccount/')
+    raise PermissionDenied()

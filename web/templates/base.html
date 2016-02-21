@@ -53,13 +53,14 @@
 	    <li class="{% if current == 'events' %}active{% endif %}"><a href="/events/"><i class="flaticon-event"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Events' %}</span></a></li>
 	    <li class="dropdown">
 	      <a href="/contest/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-		<i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Contest' %}</span>
+		<i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Fun' %}</span>
 		<ul class="dropdown-menu drop-contest-menu" role="menu">
 		  <li class="drop-contest"><a href="/contest/"><img src="/static/currentcontest_no.png"></a></li>
 		  {% if current_contest_name %}
 		  <li class="drop-contest"><a href="{{ current_contest_url }}"><img src="{{ current_contest_image }}"></a></li>
 		  {% endif %}
 		  <li class="active"><a href="/contest/results/" class="text-center fontx1-5">{% trans 'Past Contests' %}</a></li>
+		  <li class="drop-contest"><a href="/trivia/"><img src="/static/lltriviabanner.png"></a></li>
 		</ul>
 	      </a>
 	    </li>

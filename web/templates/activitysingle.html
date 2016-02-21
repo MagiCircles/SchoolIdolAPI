@@ -15,11 +15,13 @@
     {% endif %}
     <div class="col-xs-{{ content_size }}">
       <div class="pull-right text-right">
-	<a href="{% if '/' not in activity.right_picture %}#imgur{% elif activity.right_picture_link %}{{ activity.right_picture_link|urlencode }}{% else %}{{ activity.account_link }}{% endif %}" target="_blank" {% if '/' not in activity.right_picture %}data-imgur="{{ activity.right_picture }}"{% endif %}>
+	<a href="{% if activity.message == 'Trivia' %}/trivia/{% else %}{% if '/' not in activity.right_picture %}#imgur{% elif activity.right_picture_link %}{{ activity.right_picture_link|urlencode }}{% else %}{{ activity.account_link }}{% endif %}{% endif %}" target="_blank" {% if '/' not in activity.right_picture %}data-imgur="{{ activity.right_picture }}"{% endif %} class="a-nodifference">
 	  {% if activity.message == 'Rank Up' %}
 	  <div class="rank rank-{{ card_size|default:70 }}">{{ activity.number }}</div>
 	  {% elif activity.message == 'Verified' %}
 	  <i class="verified{{ activity.number }} flaticon-star" style="font-size: {% widthratio card_size|default:70 1.2 1 %}px;"></i>
+	  {% elif activity.message == 'Trivia' %}
+	  <i class="text-Smile flaticon-promo" style="font-size: {% widthratio card_size|default:70 1.2 1 %}px;"></i>
 	  {% elif activity.right_picture %}
 	  <img src="{% if '/' not in activity.right_picture %}http://i.imgur.com/{{ activity.right_picture }}t.png{% else %}{{ activity.right_picture }}{% endif %}" alt="Activity picture" width="{{ card_size|default:70 }}">
 	  {% endif %}
@@ -55,7 +57,9 @@
 		{% if activity.message == 'Custom' %}
 		{% trans 'Edit' %}
 		{% else %}
+                {% if activity.message != 'Trivia' and activity.message != 'Verified' and activity.message != 'Rank Up' %}
 		{% trans 'Upload your own screenshot' %}
+                {% endif %}
 		{% endif %}
 	      </a>
 	      {% endif %}

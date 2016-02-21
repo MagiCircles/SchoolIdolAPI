@@ -74,10 +74,11 @@ class _AccountForm(ModelForm):
 
     def clean_creation(self):
         if 'creation' in self.cleaned_data:
-            if self.cleaned_data['creation'] < datetime.date(2013, 4, 16):
-                raise forms.ValidationError(_('The game didn\'t even existed at that time.'))
-            if self.cleaned_data['creation'] > datetime.date.today():
-                raise forms.ValidationError(_('This date cannot be in the future.'))
+            if self.cleaned_data['creation']:
+                if self.cleaned_data['creation'] < datetime.date(2013, 4, 16):
+                    raise forms.ValidationError(_('The game didn\'t even existed at that time.'))
+                if self.cleaned_data['creation'] > datetime.date.today():
+                    raise forms.ValidationError(_('This date cannot be in the future.'))
             return self.cleaned_data['creation']
 
 class AccountForm(_AccountForm):

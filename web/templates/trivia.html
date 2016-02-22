@@ -16,7 +16,7 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="/static/js/trivia.js"></script>
+<script src="/static/bower/lltrivia/dist/trivia.js"></script>
 <script>
   Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}'});
 </script>

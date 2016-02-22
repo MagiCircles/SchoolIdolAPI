@@ -1,19 +1,20 @@
 {
-    "name": "School Idol API",
-    "version": "0.0.0",
-    "authors": [
-	"db0company <db0company@gmail.com>"
-    ],
-    "description": "The ultimate resource for the game School Idol Festival",
-    "license": "Apache2",
-    "dependencies": {
-	"less": "~2.0.0",
-	"bootstrap": "~3.3.5",
-	"Autolinker.js": "0.15.2",
-	"css-hexagon": "0.0.0",
-	"countdown": "2.1.0",
-	"jquery-easing": "*",
-	"jquery-visible": "1.2.0",
-	"CuteForm": "~0.0.3"
-    }
+  "name": "School Idol API",
+  "version": "0.0.0",
+  "authors": [
+    "db0company <db0company@gmail.com>"
+  ],
+  "description": "The ultimate resource for the game School Idol Festival",
+  "license": "Apache2",
+  "dependencies": {
+    "less": "~2.0.0",
+    "bootstrap": "~3.3.5",
+    "Autolinker.js": "0.15.2",
+    "css-hexagon": "0.0.0",
+    "countdown": "2.1.0",
+    "jquery-easing": "*",
+    "jquery-visible": "1.2.0",
+    "CuteForm": "~0.0.3",
+    "lltrivia": "git@github.com:SchoolIdolTomodachi/lltrivia.git#2"
+  }
 }

@@ -446,7 +446,27 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=ACCOUNT_TAB_CHOICES, help_text=_('What people see first when they take a look at your account.'), default='deck')
     starter = models.ForeignKey(Card, verbose_name=_("Starter"), null=True, blank=True, help_text=_('The character that you selected when you started playing.'), on_delete=models.SET_NULL)
     creation = models.DateField(blank=True, null=True, verbose_name=_('Creation'), help_text=_('When you started playing with this account.'))
-    show_creation = models.BooleanField('', default=False, help_text=_('Should this date be visible to other players?'))
+    show_creation = models.BooleanField('', default=True, help_text=_('Should this date be visible to other players?'))
+    loveca = models.PositiveIntegerField(_('Love gems'), help_text=string_concat(_('Number of {} you currently have in your account.').format(_('Love gems')), ' ', _('This field is completely optional, it\'s here to help you manage your accounts.')), default=0)
+    friend_points = models.PositiveIntegerField(_('Friend Points'), help_text=string_concat(_('Number of {} you currently have in your account.').format(_('Friend Points')), ' ', _('This field is completely optional, it\'s here to help you manage your accounts.')), default=0)
+    g = models.PositiveIntegerField('G', help_text=string_concat(_('Number of {} you currently have in your account.').format('G'), ' ', _('This field is completely optional, it\'s here to help you manage your accounts.')), default=0)
+    tickets = models.PositiveIntegerField('Scouting Tickets', help_text=string_concat(_('Number of {} you currently have in your account.').format('Scouting Tickets'), ' ', _('This field is completely optional, it\'s here to help you manage your accounts.')), default=0)
+    vouchers = models.PositiveIntegerField('Vouchers (blue tickets)', help_text=string_concat(_('Number of {} you currently have in your account.').format('Vouchers (blue tickets)'), ' ', _('This field is completely optional, it\'s here to help you manage your accounts.')), default=0)
+    bought_loveca = models.PositiveIntegerField(_('Total love gems bought'), help_text=_('You can calculate that number in "Other" then "Purchase History". Leave it empty to stay F2P.'), null=True, blank=True)
+    show_items = models.BooleanField('', default=True, help_text=_('Should your items be visible to other players?'))
+
+    @property
+    def money_spent(self):
+        if not self.bought_loveca:
+            return None
+        return int(round(self.bought_loveca * 0.6))
+
+    @property
+    def days_played(self):
+        if not self.creation:
+            return None
+        today = datetime.date.today()
+        return (today - self.creation).days
 
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)

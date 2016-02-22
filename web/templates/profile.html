@@ -117,7 +117,7 @@
       </div>
       <div class="panel-body">
 	<div class="padding20 padding-novertical">
-	  <div class="pull-right" style="padding: 20px;">
+	  <div class="pull-right" style="padding: 20px 0 0 20px;">
 	    {% if account.center %}
 	    <a href="{% if is_me %}/editaccount/{{ account.pk }}/{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
 	      {% include 'ownedcard.html' with card=account.center owner_account=account nolink=True size=200 %}
@@ -219,8 +219,31 @@
 		<th>{% trans 'Creation' %}</th>
 		<td>
 		  {{ account.creation }}
+                  ({{ account.days_played }} {% trans 'days' %})
 		  {% if not account.show_creation and is_me %}
 		  <small class="text-muted">{% trans 'Only you can see it.' %}</small>
+		  {% endif %}
+		</td>
+	      </tr>
+	      {% endif %}
+	      {% endif %}
+	      {% if account.loveca or account.tickets or account.g or account.vouchers or account.bought_loveca %}
+              {% if account.show_items or is_me %}
+	      <tr>
+		<th>{% trans 'Items' %}</th>
+		<td class="profile-items">
+                  {% if account.loveca %}{{ account.loveca }} <img src="/static/items/loveca.png" alt="loveca">{% endif %}
+                  {% if account.friend_points %}{{ account.friend_points }} <img src="/static/items/friend_points.png" alt="friend_points">{% endif %}
+                  {% if account.g %}{{ account.g }} <img src="/static/items/g.png" alt="g">{% endif %}
+                  {% if account.tickets %}{{ account.tickets }} <img src="/static/items/tickets.png" alt="tickets">{% endif %}
+                  {% if account.vouchers %}{{ account.vouchers }} <img src="/static/items/vouchers.png" alt="vouchers">{% endif %}
+                  {% if account.bought_loveca %}
+                  <br>
+                  <strong>{% trans 'Total love gems bought' %}: </strong>{{ account.bought_loveca }} <img src="/static/items/loveca.png" alt="loveca">
+                  (~${{ account.money_spent }} {% trans 'spent' %})
+                  {% endif %}
+		  {% if not account.show_items and is_me %}
+		  <br><small class="text-muted">{% trans 'Only you can see it.' %}</small>
 		  {% endif %}
 		</td>
 	      </tr>

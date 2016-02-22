@@ -104,12 +104,12 @@ class FullAccountForm(_AccountForm):
 
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'friend_id', 'show_friend_id', 'language', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests', 'starter', 'creation', 'show_creation')
+        fields = ('nickname', 'center', 'rank', 'friend_id', 'show_friend_id', 'language', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests', 'starter', 'creation', 'show_creation', 'loveca', 'friend_points', 'g', 'tickets', 'vouchers', 'bought_loveca', 'show_items')
 
 class FullAccountNoFriendIDForm(FullAccountForm):
     class Meta:
         model = models.Account
-        fields = ('nickname', 'center', 'rank', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests', 'starter', 'creation', 'show_creation', 'show_friend_id')
+        fields = ('nickname', 'center', 'rank', 'os', 'device', 'default_tab', 'play_with', 'accept_friend_requests', 'starter', 'creation', 'show_creation', 'show_friend_id', 'loveca', 'friend_points', 'g', 'tickets', 'vouchers', 'bought_loveca', 'show_items')
 
 class SimplePasswordForm(Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}), label=_('Password'))

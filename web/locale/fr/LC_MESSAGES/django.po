@@ -114,21 +114,21 @@ msgstr "Le personnage qui te parle sur l'écran d'accueil."
 
 #: api/models.py:444 tmp/profile.html:170 web/templates/event.html:112
 #: web/templates/event.html.py:124 web/templates/event.html:177
-#: web/templates/event.html.py:189 web/templates/profile.html:236
+#: web/templates/event.html.py:189 web/templates/profile.html:249
 #: web/templates/songsPage.html:126 web/templates/staff_verifications.html:28
 msgid "Rank"
 msgstr "Niveau"
 
-#: api/models.py:459 web/templates/cards.html:201
+#: api/models.py:478 web/templates/cards.html:201
 msgid "Stored"
 msgstr "Possession"
 
-#: api/models.py:460 web/templates/addCardForm.html:10
+#: api/models.py:479 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:14
 msgid "Expiration"
 msgstr "Expiration"
 
-#: api/models.py:461 contest/templates/contest_result.html:98
+#: api/models.py:480 contest/templates/contest_result.html:98
 #: web/templates/cards.html:209 web/templates/cards.html.py:212
 #: web/templates/cardsPage.html:310 web/templates/cardsPage.html.py:313
 #: web/templates/cardsPage.html:398 web/templates/cardsPage.html.py:405
@@ -150,7 +150,8 @@ msgstr "Erreur inattendue"
 
 #: web/templates/addCardForm.html:13 web/templates/addaccount.html:206
 #: web/templates/event.html:66 web/templates/event.html.py:75
-#: web/templates/index.html:61
+#: web/templates/index.html:61 web/templates/profile.html:222
+#: web/templates/profile.html.py:235
 msgid "days"
 msgstr "jours"
 
@@ -159,7 +160,7 @@ msgstr "jours"
 #: web/templates/addteam.html:40 web/templates/cards.html:62
 #: web/templates/edit.html:21 web/templates/edit.html.py:80
 #: web/templates/edit.html:95 web/templates/event_participations.html:44
-#: web/templates/profile.html:42 web/templates/profile.html.py:311
+#: web/templates/profile.html:42 web/templates/profile.html.py:324
 msgid "Apply Changes"
 msgstr "Sauvegarder"
 
@@ -326,13 +327,13 @@ msgstr "Idole"
 msgid "Rarity"
 msgstr "Rareté"
 
-#: api/models.py:517 web/forms.py:351 web/forms.py:380 web/forms.py:386
+#: api/models.py:536 web/forms.py:351 web/forms.py:380 web/forms.py:386
 #: web/templates/cards.html:98 web/templates/idol.html:51
 #: web/templates/songsPage.html:108
 msgid "Attribute"
 msgstr "Attribut"
 
-#: api/models.py:464 web/forms.py:355 web/templates/box.html:23
+#: api/models.py:483 web/forms.py:355 web/templates/box.html:23
 #: web/templates/cards.html:73 web/templates/cards.html.py:115
 #: web/templates/cardsPage.html:263 web/templates/cardsPage.html.py:480
 #: web/templates/event.html:51 web/templates/ownedCardOnBottomCard.html:28
@@ -352,7 +353,7 @@ msgstr "Ordre"
 msgid "Reverse order"
 msgstr "Ordre inversé"
 
-#: api/models.py:462 web/templates/cards.html:216
+#: api/models.py:481 web/templates/cards.html:216
 #: web/templates/cards.html.py:219 web/templates/ownedCardOnBottomCard.html:22
 msgid "Max Leveled"
 msgstr "Niveau MAX"
@@ -371,7 +372,7 @@ msgstr "Liens affectifs (Kizuna) pas au MAX"
 msgid "Not Idolized"
 msgstr "Pas encore idolisée"
 
-#: api/models.py:464 web/templates/cardsPage.html:53
+#: api/models.py:483 web/templates/cardsPage.html:53
 #: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
 #: web/templates/ownedCardOnBottomCard.html:28 web/templates/songsPage.html:94
 msgid "Level"
@@ -403,7 +404,7 @@ msgid "Comments"
 msgstr "Commentaires"
 
 #: tmp/profile.html:214 web/templates/addCardForm.html:18
-#: web/templates/profile.html:321
+#: web/templates/profile.html:334
 msgid "Add this card"
 msgstr "Ajouter cette carte"
 
@@ -474,12 +475,12 @@ msgstr "Pas de centre."
 msgid "Game Version"
 msgstr "Version du jeu"
 
-#: tmp/profile.html:166 web/templates/profile.html:231
+#: tmp/profile.html:166 web/templates/profile.html:244
 msgid "Significant Cards"
 msgstr "Cartes importantes"
 
 #: tmp/profile.html:167 web/templates/about.html:169
-#: web/templates/index.html:92 web/templates/profile.html:232
+#: web/templates/index.html:92 web/templates/profile.html:245
 msgid "and"
 msgstr "et"
 
@@ -513,19 +514,19 @@ msgstr "Statistiques Pure"
 msgid "Cool's statistics"
 msgstr "Statistiques Cool"
 
-#: api/models.py:518
+#: api/models.py:537
 msgid "Description"
 msgstr "Description"
 
-#: api/models.py:518 web/forms.py:264
+#: api/models.py:537 web/forms.py:264
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr "Cette zone de texte est complètement libre. Tu peux formater le texte ou ajouter des liens en utilisant la syntaxe Markdown."
 
-#: api/models.py:520
+#: api/models.py:539
 msgid "Location"
 msgstr "Lieu"
 
-#: api/models.py:520
+#: api/models.py:539
 msgid "The city you live in."
 msgstr "La ville dans laquelle tu vis."
 
@@ -533,11 +534,11 @@ msgstr "La ville dans laquelle tu vis."
 msgid "Accept friend requests"
 msgstr "Accepte les demandes en ami dans le jeu"
 
-#: api/models.py:532 web/forms.py:383
+#: api/models.py:551 web/forms.py:383
 msgid "Private Profile"
 msgstr "Profil privé"
 
-#: api/models.py:532
+#: api/models.py:551
 msgid "If your profile is private, people will only see your center."
 msgstr "Si ton compte est privé, on pourra uniquement voir ta carte au centre."
 
@@ -579,7 +580,7 @@ msgstr "Pour modifier ton avatar, utilise Gravatar avec la même adresse e-mail 
 msgid "Change Avatar"
 msgstr "Modifier l'avatar"
 
-#: api/models.py:519 tmp/forms.py:41 web/forms.py:56 web/forms.py:381
+#: api/models.py:538 tmp/forms.py:41 web/forms.py:56 web/forms.py:381
 msgid "Best Girl"
 msgstr "Idole préférée"
 
@@ -606,7 +607,7 @@ msgstr[0] "%(length)s compte :"
 msgstr[1] "%(length)s comptes :"
 
 #. I think there is no need of a translation here
-#: api/models.py:463 web/templates/cards.html:223
+#: api/models.py:482 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
 msgid "Max Bonded (Kizuna)"
 msgstr "Liens affectifs (Kizuna) MAX"
@@ -617,7 +618,7 @@ msgstr "Quelque chose d'étrange est arrivé, et on dirait que c'est la faute de
 
 #: web/templates/addaccount.html:4 web/templates/addaccount.html.py:79
 #: web/templates/addaccount.html:276 web/templates/edit.html:113
-#: web/templates/profile.html:266 web/templates/profile.html.py:268
+#: web/templates/profile.html:279 web/templates/profile.html.py:281
 msgid "Edit Account"
 msgstr "Modifier le compte"
 
@@ -661,18 +662,18 @@ msgstr "Abonnements"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr "Pour chercher les cartes, les trier, les modifier ou en ajouter de nouvelles, va sur la page des cartes et utilise les filtres."
 
-#: api/models.py:493 contest/templates/contest_result.html:11 tmp/forms.py:140
+#: api/models.py:512 contest/templates/contest_result.html:11 tmp/forms.py:140
 #: web/templates/cardsPage.html:323 web/templates/event_ranking.html:12
 #: web/templates/event_ranking.html:37
 msgid "Ranking"
 msgstr "Classement"
 
-#: api/models.py:494 web/templates/event_ranking.html:25
+#: api/models.py:513 web/templates/event_ranking.html:25
 #: web/templates/include/account_tab_events.html:22
 msgid "Song Ranking"
 msgstr "Classement Chanson"
 
-#: api/models.py:495 web/templates/event.html:106
+#: api/models.py:514 web/templates/event.html:106
 #: web/templates/event.html.py:118 web/templates/event.html:171
 #: web/templates/event.html.py:183 web/templates/event_ranking.html:27
 #: web/templates/include/account_tab_events.html:28
@@ -717,8 +718,8 @@ msgstr "Supprimer"
 msgid "Activities"
 msgstr "Activités"
 
-#: api/models.py:506 api/models.py:525 api/models.py:526 api/models.py:527
-#: api/models.py:528 api/models.py:530 api/models.py:531
+#: api/models.py:525 api/models.py:544 api/models.py:545 api/models.py:546
+#: api/models.py:547 api/models.py:549 api/models.py:550
 msgid "Write your username only, no URL."
 msgstr "Nom d'utilisateur uniquement, n'use pas d'URL."
 
@@ -841,7 +842,7 @@ msgstr "Chat"
 msgid "You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user."
 msgstr "Tu peux nous contacter si tu rencontres un problème avec ton compte, par exemple en cas de perte de ton mot de passe ou si tu souhaites transférer un compte vers un autre utilisateur."
 
-#: tmp/profile.html:222 web/templates/profile.html:329
+#: tmp/profile.html:222 web/templates/profile.html:342
 msgid "This profile is private, so it is not possible to see the cards, activities and events participations."
 msgstr "Ce profil est privé. Il n'est pas possible de consulter ses cartes, ses activités, ni ses participations aux évènements."
 
@@ -905,14 +906,14 @@ msgstr "Modèle de téléphone/tablette. Exemple : Nexus 5, iPhone 4, iPad 2, ..
 msgid "Play with"
 msgstr "Joue avec"
 
-#: api/models.py:457 api/models.py:472 api/models.py:492
+#: api/models.py:476 api/models.py:491 api/models.py:511
 #: web/templates/cards.html:193 web/templates/staff_verifications.html:26
 msgid "Account"
 msgstr "Compte"
 
 #: api/models.py:95 api/models.py:445 tmp/forms.py:141 tmp/profile.html:175
-#: tmp/profile.html.py:184 web/templates/profile.html:246
-#: web/templates/profile.html.py:255
+#: tmp/profile.html.py:184 web/templates/profile.html:259
+#: web/templates/profile.html.py:268
 msgid "Verified"
 msgstr "Vérification"
 
@@ -1228,8 +1229,8 @@ msgstr "Zone horaire"
 #: tmp/profile.html:178 tmp/profile.html.py:189 web/raw.py:8
 #: web/templates/addaccount.html:147 web/templates/addaccount.html.py:254
 #: web/templates/edit.html:101 web/templates/edit.html.py:113
-#: web/templates/profile.html:249 web/templates/profile.html.py:260
-#: web/templates/profile.html:274 web/templates/staff_verifications.html:30
+#: web/templates/profile.html:262 web/templates/profile.html.py:273
+#: web/templates/profile.html:287 web/templates/staff_verifications.html:30
 msgid "Get verified"
 msgstr "Demande à être vérifié"
 
@@ -1421,15 +1422,15 @@ msgstr "Images"
 msgid "Forgot password?"
 msgstr "Mot de passe oublié ?"
 
-#: tmp/profile.html:187 web/templates/profile.html:258
+#: tmp/profile.html:187 web/templates/profile.html:271
 msgid "You are Bronze Verified. Only you can see it."
 msgstr "Tu as une vérification bronze. Les autres joueurs ne voient pas cette information."
 
-#: tmp/profile.html:189 web/templates/profile.html:260
+#: tmp/profile.html:189 web/templates/profile.html:273
 msgid "Silver"
 msgstr "Argent"
 
-#: tmp/profile.html:189 web/templates/profile.html:260
+#: tmp/profile.html:189 web/templates/profile.html:273
 msgid "Gold"
 msgstr "Or"
 
@@ -1449,15 +1450,15 @@ msgstr "Souvent"
 msgid "Every single day"
 msgstr "Tous les jours"
 
-#: api/models.py:505
+#: api/models.py:524
 msgid "Platform"
 msgstr "Plate-forme"
 
-#: api/models.py:506
+#: api/models.py:525
 msgid "Username/ID"
 msgstr "Nom d'utilisateur / Identifiant"
 
-#: api/models.py:507
+#: api/models.py:526
 msgid "How often do you tweet/stream/post about Love Live?"
 msgstr "À quelle fréquence tu tweet/stream/poste à propos de Love Live ?"
 
@@ -1494,7 +1495,7 @@ msgid "Your transfer code has been deleted."
 msgstr "Ton code de transfert a été supprimé."
 
 #: web/templates/addaccount.html:102 web/templates/addaccount.html.py:120
-#: web/templates/profile.html:270
+#: web/templates/profile.html:283
 msgid "Get your saved transfer code"
 msgstr "Récupérer ton code de transfert"
 
@@ -1503,7 +1504,7 @@ msgid "Delete your transfer code"
 msgstr "Supprimer ton code de transfert"
 
 #: web/templates/addaccount.html:129 web/templates/addaccount.html.py:141
-#: web/templates/profile.html:272
+#: web/templates/profile.html:285
 msgid "Save your transfer code"
 msgstr "Sauvegarder ton code de transfert"
 
@@ -1542,7 +1543,7 @@ msgstr[1] "Tu as %(counter)s codes de transfert sauvegardés sur School Idol Tom
 msgid "Wrong password."
 msgstr "Mauvais mot de passe."
 
-#: api/models.py:520
+#: api/models.py:539
 msgid "It might take up to 24 hours to update your location on the map."
 msgstr "Mettre à jour ta position sur la carte du monde peut mettre jusqu'à 24 heures."
 
@@ -1679,27 +1680,27 @@ msgstr "Vérification bronze"
 msgid "Index fingers"
 msgstr "Indexes"
 
-#: api/models.py:618 web/templates/staff_verifications.html:25
+#: api/models.py:637 web/templates/staff_verifications.html:25
 msgid "Verification"
 msgstr "Vérification"
 
-#: api/models.py:618
+#: api/models.py:637
 msgid "What kind of verification would you like?"
 msgstr "Quel type de vérification préfères-tu ?"
 
-#: api/models.py:620 api/models.py:623
+#: api/models.py:639 api/models.py:642
 msgid "Comment"
 msgstr "Message"
 
-#: api/models.py:620
+#: api/models.py:639
 msgid "If you have anything to say to the person who is going to verify your account, feel free to write it here!"
 msgstr "Si tu as quelque chose à dire à la personne qui va s'occuper de vérifier ton compte, tu peux l'écrire ici !"
 
-#: api/models.py:624
+#: api/models.py:643
 msgid "Allow us to verify your account during events"
 msgstr "Autorisé à vérifier ton compte pendant les événements"
 
-#: api/models.py:624
+#: api/models.py:643
 msgid "Check this only if you don't care about the current event. You'll get verified faster."
 msgstr "Coche cette case uniquement si tu n'as pas l'intention de jouer l'événement en cours sérieusement. Tu seras vérifié plus rapidement."
 
@@ -2446,7 +2447,7 @@ msgstr "Tu ne l'as plus"
 msgid "Just got verified: {}"
 msgstr "Vient d'être vérifié : {}"
 
-#: api/models.py:538
+#: api/models.py:557
 msgid "Birthdate"
 msgstr "Date de naissance"
 
@@ -2599,12 +2600,12 @@ msgstr "Joyeux Noël !"
 msgid "Ages"
 msgstr "Âges"
 
-#: web/templates/profile.html:277 web/templates/profile.html.py:291
-#: web/templates/profile.html:297
+#: web/templates/profile.html:290 web/templates/profile.html.py:304
+#: web/templates/profile.html:310
 msgid "Post your own activity"
 msgstr "Poste ta propre activité"
 
-#: web/templates/profile.html:292
+#: web/templates/profile.html:305
 msgid "What is this?"
 msgstr "Qu'est-ce que c'est ?"
 
@@ -2682,7 +2683,7 @@ msgstr "{} augmente drastiquement (+ 9%)"
 msgid "{} increases based on {}"
 msgstr "{} augmente en se basant sur {}"
 
-#: api/models.py:446 api/models.py:539
+#: api/models.py:446 api/models.py:558
 msgid "Default tab"
 msgstr "Onglet par défaut"
 
@@ -2690,7 +2691,7 @@ msgstr "Onglet par défaut"
 msgid "What people see first when they take a look at your account."
 msgstr "Visible en premier lorsque les visiteurs voient ton compte."
 
-#: api/models.py:473
+#: api/models.py:492
 msgid "Name"
 msgstr "Nom"
 
@@ -2804,6 +2805,7 @@ msgid "The character that you selected when you started playing."
 msgstr "Le personnage que tu as sélectionné quand tu as commencé à jouer."
 
 #: api/models.py:448 web/templates/profile.html:219
+#: web/templates/profile.html.py:232
 msgid "Creation"
 msgstr "Création"
 
@@ -2815,7 +2817,7 @@ msgstr "La date à laquelle tu as commencé à jouer avec ce compte."
 msgid "Should this date be visible to other players?"
 msgstr "Souhaites-tu que cette date soit visible publiquement sur ton profil ?"
 
-#: api/models.py:539
+#: api/models.py:558
 msgid "The activities you see by default on the homepage."
 msgstr "Les activités que tu vois par défaut sur la page d'accueil du site."
 
@@ -2875,11 +2877,12 @@ msgstr "Quelle est la différence entre le deck, l'album et la boîte à cadeaux
 msgid "Why my cards are not automatically imported?"
 msgstr "Pourquoi mes cartes ne sont pas importées automatiquement ?"
 
-#: web/templates/profile.html:147 web/templates/profile.html.py:239
+#: web/templates/profile.html:147 web/templates/profile.html.py:252
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: web/templates/profile.html:150 web/templates/profile.html.py:223
+#: web/templates/profile.html:150 web/templates/profile.html.py:224
+#: web/templates/profile.html:237
 msgid "Only you can see it."
 msgstr "Tu es le seul à pouvoir le voir."
 
@@ -2887,11 +2890,37 @@ msgstr "Tu es le seul à pouvoir le voir."
 msgid "Private"
 msgstr "Privé"
 
-#: web/templates/profile.html:280
+#: web/templates/profile.html:293
 msgid "Activity posted! Take a look at your activities on the side of your profile to see it."
 msgstr "Activité postée ! Jette un œil à tes activités sur la partie droite de ton profil pour la voir."
 
 #: web/templates/trivia.html:4 web/templates/trivia.html.py:12
 msgid "Love Live! School Idol Trivia"
 msgstr "Love Live! School Idol Trivia"
+
+#: api/models.py:450
+msgid "Love gems"
+msgstr "Love gems"
+
+#: api/models.py:450 api/models.py:451 api/models.py:452 api/models.py:453
+#: api/models.py:454
+msgid "Number of {} you currently have in your account."
+msgstr "Le nombre de {} que tu as actuellement sur ton compte."
+
+#: api/models.py:450 api/models.py:451 api/models.py:452 api/models.py:453
+#: api/models.py:454
+msgid "This field is completely optional, it's here to help you manage your accounts."
+msgstr "Ce champs est complètement optionnel. C'est pour t'aider gérer tes comptes."
+
+#: api/models.py:451
+msgid "Friend Points"
+msgstr "Points Friends"
+
+#: api/models.py:455
+msgid "Total love gems bought"
+msgstr "Total de love gems acheté"
+
+#: api/models.py:455
+msgid "You can calculate that number in \"Other\" then \"Purchase History\". Leave it empty to stay F2P."
+msgstr "Tu peux calculer ce nombre en allant sur \"Other\" puis \"Purchase History\". Laisse ce champs vide pour rester \"F2P\"."
 

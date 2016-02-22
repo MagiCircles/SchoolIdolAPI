@@ -191,14 +191,22 @@ CENTER_SKILL_UR = {
 
 CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart')
 
+TRIVIA_SCORE_SENTENCES = [
+    _('Ouch!'),
+    _('Oh no...'),
+    _('Oh no...'),
+    _('Oh no...'),
+    _('Meh.'),
+    _('Meh.'),
+    _('Not bad!'),
+    _('Not bad!'),
+    _('Yay~'),
+    _('Awesome!'),
+    _('Woohoo!'),
+]
+
 def triviaScoreToSentence(score):
-  if score <= 0: return _('Ouch!')
-  elif score <= 3: return _('Oh no...')
-  elif score <= 5: return _('Meh.')
-  elif score <= 7: return _('Not bad!')
-  elif score <= 8: return _('Yay~')
-  elif score == 9: return _('Awesome!')
-  return _('Woohoo!')
+    return TRIVIA_SCORE_SENTENCES[score]
 
 def verifiedToString(val):
     val = int(val)

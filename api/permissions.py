@@ -9,7 +9,7 @@ class IsStaffOrSelf(permissions.BasePermission):
         return (
             request.method in permissions.SAFE_METHODS
             or obj is None
-            #or request.user.is_staff
+            or request.user.is_staff
             or obj.owner == request.user
         )
 

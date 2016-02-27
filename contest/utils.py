@@ -26,16 +26,13 @@ def is_current_contest(contest):
     return contest.begin <= now and contest.end >= now
 
 def get_cards(contest):
-    queryset = contest.queryset()
-    cards = [card for card in queryset]
+    cards = contest.queryset()
     left = random.choice(cards)
     right = random.choice(cards)
     while (right.pk == left.pk):
         right = random.choice(cards)
-    left_idolized = random.choice([True, False])
-    right_idolized = random.choice([True, False])
-    vote_left, _ = contest_models.Vote.objects.get_or_create(card=left, idolized=left_idolized, contest=contest)
-    vote_right, _ = contest_models.Vote.objects.get_or_create(card=right, idolized=right_idolized, contest=contest)
+    vote_left, _ = contest_models.Vote.objects.get_or_create(card=left, idolized=left.vote_idolized, contest=contest)
+    vote_right, _ = contest_models.Vote.objects.get_or_create(card=right, idolized=right.vote_idolized, contest=contest)
     return vote_left, vote_right
 
 def get_votesession(request, contest):

@@ -109,11 +109,26 @@
       {% endif %}
     </div> <!-- row -->
 
-    {% if is_current %}
     <div class="text-center">
-      <a href="{% if contest.id != global_contest_id %}/contest/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">{% trans 'Vote' %}</a>
+      <div class="row">
+	{% if contest.id != global_contest_id %}
+	<div class="{% if not is_current %}col-md-offset-4 {% endif %}col-md-4">
+	  <a href="/contest/collection/{{ contest.id }}/{{ contest.name|tourldash }}/" class="btn btn-block btn-{{ btnColor }} btn-xl">
+	    <i class="flaticon-album"></i>
+	    {% trans 'Collection' %}
+	  </a>
+	</div>
+	{% endif %}
+	{% if is_current %}
+	<div class="col-md-{% if contest.id == global_contest_id %}12{% else %}8{% endif %}">
+	  <a href="{% if contest.id != global_contest_id %}/contest/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">
+	    <i class="flaticon-promo"></i>
+	    {% trans 'Vote' %}
+	  </a>
+	</div>
+	{% endif %}
+      </div>
     </div>
-    {% endif %}
 
     {% if contest.id != global_contest_id %}
     {% include 'disqus.html' with disqus_identifier='contest'|addstr:contest.id %}

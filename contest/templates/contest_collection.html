@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load imageurl %}
+{% load random_int %}
+{% load i18n %}
+{% load formattime %}
+{% load mod %}
+{% load
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
+
+{% block title %}{% trans 'Collection' %} - {{ contest.name }}{% endblock %}
+
+{% block js %}
+{% endblock %}
+
+{% block content %}
+<div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+  <div class="container">
+    <h1 class="text-{{ btnColor }}">
+      {{ contest.name }}
+      <br><small>{% trans 'Collection' %}</small>
+    </h1>
+
+    <div class="row">
+      {% for card in cards %}
+      {% if forloop.counter0|mod:4 %}
+    </div><div class="row">
+      {% endif%}
+      <div class="col-sm-3" style="min-height: 422px;">
+	<a href="/cards/{{ card.id }}" target="_blank" class="panel panel-{{ btnColor }}">
+	  <div class="panel-body">
+	    <img src="{% if card.card_image and not card.vote_idolized %}{% imageurl card=card image='card_image' %}{% else %}{% imageurl card=card image='card_idolized_image' %}{% endif %}">
+	  </div>
+	  <div class="panel-heading">
+	    <strong>#{{ card.id }} {{ card.name|shortname }}{% if card.vote_idolized %} {% trans 'Idolized' %}{% endif %}</strong>
+	  </div>
+	</a>
+      </div>
+      {% endfor %}
+    </div> <!-- row -->
+
+    <div class="text-center">
+      <div class="row">
+	{% if contest.id != global_contest_id %}
+	<div class="{% if not is_current %}col-md-offset-4 {% endif %}col-md-4">
+	  <a href="{% if contest.id != global_contest_id %}/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/best/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">
+	    <i class="flaticon-contest"></i>
+	    {% trans 'Ranking' %}
+	  </a>
+	</div>
+	{% endif %}
+	{% if is_current %}
+	<div class="col-md-8">
+	  <a href="{% if contest.id != global_contest_id %}/contest/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">
+	    <i class="flaticon-promo"></i>
+	    {% trans 'Vote' %}
+	  </a>
+	</div>
+	{% endif %}
+      </div>
+    </div>
+
+    {% if contest.id != global_contest_id %}
+    {% include 'disqus.html' with disqus_identifier='contest'|addstr:contest.id %}
+    {% else %}
+    {% include 'disqus.html' with disqus_identifier='contestglobal' %}
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

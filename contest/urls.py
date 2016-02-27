@@ -4,6 +4,8 @@ from contest import views
 urlpatterns = patterns('',
     url(r'^result/(?P<contestid>\w+)[/]+$', views.result_view),
     url(r'^result/(?P<contestid>\w+)/[\w-]+[/]+$', views.result_view),
+    url(r'^collection/(?P<contestid>\w+)[/]+$', views.collection_view),
+    url(r'^collection/(?P<contestid>\w+)/[\w-]+[/]+$', views.collection_view),
     url(r'^best[/]+$', views.global_result_view),
     url(r'^result[/]+$', views.global_result_view),
     url(r'^results[/]+$', views.results_index_view),

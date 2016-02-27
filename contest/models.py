@@ -4,6 +4,8 @@ from urlparse import parse_qs
 from django.db.models import Q
 from django.conf import settings
 from django.contrib import admin
+from random import shuffle
+from copy import copy
 
 class Contest(models.Model):
     begin = models.DateTimeField(null=True)
@@ -29,21 +31,53 @@ class Contest(models.Model):
             return True
         return value
 
+    def _queryset_idolized_and_normal(self, queryset):
+        cards = []
+        for card in queryset:
+            card.vote_idolized = False
+            cards.append(copy(card))
+            card.vote_idolized = True
+            cards.append(card)
+        return cards
+
     def queryset(self):
         params = self.query
         if self.pk == settings.GLOBAL_CONTEST_ID:
-            return api_models.Card.objects.all()
+            return self._queryset_idolized_and_normal(api_models.Card.objects.all())
         if params.startswith('?'):
             params_parsed = parse_qs(params[1:])
             params = {self.alter_key(key): self.alter_value(key, value[0]) for key, value in params_parsed.iteritems()}
-            queryset = api_models.Card.objects.filter(**params).all()
-            return queryset
+            queryset = api_models.Card.objects.filter(**params).all().order_by('id')
+            return self._queryset_idolized_and_normal(queryset)
         else:
-            cards = [int(num) for num in params.split(',')]
-            condition = Q()
-            for card in cards:
-                condition = condition | Q(id=card)
-            return api_models.Card.objects.filter(condition)
+            cards_ids = params.replace('i', '').replace('n', '').split(',')
+            cards_objects = api_models.Card.objects.filter(pk__in=cards_ids).order_by('id')
+            cards_list = params.split(',')
+            cards = []
+            for card_info in cards_list:
+                card_id = int(card_info.replace('n', '').replace('i', ''))
+                for card in cards_objects:
+                    if card.id == card_id:
+                        if 'n' in card_info:
+                            card.vote_idolized = False
+                            cards.append(card)
+                        elif 'i' in card_info:
+                            card.vote_idolized = True
+                            cards.append(card)
+                        else:
+                            card.vote_idolized = False
+                            cards.append(copy(card))
+                            card.vote_idolized = True
+                            cards.append(card)
+            return cards
+
+    def voted_cards(self):
+        votes = self.votes.all().order_by('card__id', 'idolized').select_related('card')
+        cards = []
+        for vote in votes:
+            vote.card.vote_idolized = vote.idolized
+            cards.append(vote.card)
+        return cards
 
 admin.site.register(Contest)
 

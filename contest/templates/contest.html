@@ -71,8 +71,24 @@
 
     <br><br>
     <div class="text-center">
-      <a href="{% if contest.id != global_contest_id %}/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/best/{% endif %}" class="btn btn-{{ btnColor }} btn-block btn-xl">Ranking</a>
+      <div class="row">
+	{% if contest.id != global_contest_id %}
+	<div class="col-md-4">
+	  <a href="/contest/collection/{{ contest.id }}/{{ contest.name|tourldash }}/" class="btn btn-block btn-{{ btnColor }} btn-xl">
+	    <i class="flaticon-album"></i>
+	    {% trans 'Collection' %}
+	  </a>
+	</div>
+	{% endif %}
+	<div class="col-md-{% if contest.id == global_contest_id %}12{% else %}8{% endif %}">
+	  <a href="{% if contest.id != global_contest_id %}/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/{% else %}/contest/best/{% endif %}" class="btn btn-block btn-{{ btnColor }} btn-xl">
+	    <i class="flaticon-contest"></i>
+	    {% trans 'Ranking' %}
+	  </a>
+	</div>
+      </div>
     </div>
+
   </div>
 </div>
 {% endblock %}

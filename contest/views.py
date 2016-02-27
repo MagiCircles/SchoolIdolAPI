@@ -61,6 +61,25 @@ def result_view(request, contestid):
 def global_result_view(request):
     return result_view(request, settings.GLOBAL_CONTEST_ID)
 
+def collection_view(request, contestid):
+    try:
+        if int(contestid) == settings.GLOBAL_CONTEST_ID:
+            return redirect('/cards/')
+    except ValueError: return redirect('/contest/results/')
+    context = globalContext(request)
+    contest = get_object_or_404(contest_models.Contest, pk=contestid)
+    is_current = is_current_contest(contest)
+    if is_current:
+        cards = contest.queryset()
+    else:
+        cards = contest.voted_cards()
+    context.update({
+        'contest': contest,
+        'is_current': is_current,
+        'cards': cards,
+    })
+    return render(request, 'contest_collection.html', context)
+
 def results_index_view(request):
     context = globalContext(request)
     queryset = past_contests_queryset().annotate(count=Sum('votes__counter')).all()

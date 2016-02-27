@@ -54,7 +54,7 @@ class CardFilter(django_filters.FilterSet):
         model = models.Card
         fields = ('name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event')
 
-class CardViewSet(viewsets.ReadOnlyModelViewSet):
+class CardViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows cards to be viewed.
     """
@@ -63,6 +63,7 @@ class CardViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection','promo_item','event__english_name','event__japanese_name')
     filter_class = CardFilter
+    permission_classes = (api_permissions.IsStaffOrReadOnly, )
     ordering_fields = '__all__'
     ordering = ('id',)
 
@@ -157,7 +158,7 @@ class OwnedCardFilterBackend(filters.BaseFilterBackend):
             queryset = queryset.filter(card__event__isnull=(False if request.query_params['card__is_event'].title() == 'True' else True))
         return queryset
 
-class OwnedCardViewSet(viewsets.ReadOnlyModelViewSet):
+class OwnedCardViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows owned cards to be viewed or edited.
     """
@@ -174,6 +175,7 @@ class OwnedCardViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.DjangoFilterBackend, OwnedCardFilterBackend, filters.OrderingFilter, RandomBackend)
     filter_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
     ordering_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
+    permission_classes = (api_permissions.IsStaffOrSelf, )
 
 class CardIdViewSet(CardViewSet):
     """

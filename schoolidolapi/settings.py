@@ -38,11 +38,12 @@ INSTALLED_APPS = (
     'markdown_deux',
     'corsheaders',
     'bootstrap_form_horizontal',
+    'django.contrib.admin',
+    'oauth2_provider',
     'rest_framework',
     'api',
     'storages',
     'web',
-    'django.contrib.admin',
     'django.contrib.auth',
     'django_prometheus',
     'contest'
@@ -51,7 +52,7 @@ INSTALLED_APPS = (
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-        'api.permissions.IsAdminOrSelf',
+        'api.permissions.IsStaffOrSelf',
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'api.renderers.JSONRenderer',
@@ -60,6 +61,9 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 10,
     'MAX_PAGINATE_BY': 100,
     'PAGINATE_BY_PARAM': 'page_size',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    ),
 }
 
 MIDDLEWARE_CLASSES = (

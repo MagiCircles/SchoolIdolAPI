@@ -483,6 +483,10 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
     max_bond = models.BooleanField(_("Max Bonded (Kizuna)"), default=False)
     skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
 
+    @property
+    def owner(self):
+        return self.owner_account.owner
+
     def __unicode__(self):
         return unicode(self.owner_account) + u' owns ' + unicode(self.card)
 

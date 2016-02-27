@@ -1,12 +1,27 @@
 from rest_framework import permissions
 
-class IsAdminOrSelf(permissions.BasePermission):
+class IsStaffOrSelf(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return True
 
     def has_object_permission(self, request, view, obj=None):
-        return request.method == 'GET' or obj is None or request.user.is_superuser or (hasattr(obj, 'owner') and obj.owner == request.user)
+        return (
+            request.method in permissions.SAFE_METHODS
+            or obj is None
+            #or request.user.is_staff
+            or obj.owner == request.user
+        )
+
+class IsStaffOrReadOnly(permissions.BasePermission):
+
+     def has_permission(self, request, view):
+         return (
+             request.method in permissions.SAFE_METHODS
+             or (request.user
+                 and request.user.is_authenticated()
+                 and request.user.is_staff
+         ))
 
 class UserPermissions(permissions.BasePermission):
 

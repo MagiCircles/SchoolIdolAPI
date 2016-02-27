@@ -161,36 +161,33 @@ class CardIdSerializer(serializers.ModelSerializer):
         model = models.Card
         fields = ('id',)
 
+class ImageField(serializers.ImageField):
+    def to_representation(self, value):
+        if value:
+            return u'%s%s' % (settings.IMAGES_HOSTING_PATH, value.name)
+        return None
 
 class CardSerializer(serializers.ModelSerializer):
-    event = EventSerializer()
-    idol = IdolSerializer()
+    event = EventSerializer(read_only=True)
+    idol = IdolSerializer(read_only=True)
     name = serializers.SerializerMethodField() # left for backward compatibility
     japanese_name = serializers.SerializerMethodField() # left for backward compatibility
-    card_image = serializers.SerializerMethodField()
-    card_idolized_image = serializers.SerializerMethodField()
-    round_card_image = serializers.SerializerMethodField()
-    round_card_idolized_image = serializers.SerializerMethodField()
+    card_image = ImageField()
+    card_idolized_image = ImageField()
+    round_card_image = ImageField()
+    round_card_idolized_image = ImageField()
     owned_cards = serializers.SerializerMethodField()
     japanese_attribute = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
     non_idolized_max_level = serializers.SerializerMethodField()
     idolized_max_level = serializers.SerializerMethodField()
-    transparent_image = serializers.SerializerMethodField()
-    transparent_idolized_image = serializers.SerializerMethodField()
-    transparent_ur_pair = serializers.SerializerMethodField()
-    transparent_idolized_ur_pair = serializers.SerializerMethodField()
+    transparent_image = ImageField()
+    transparent_idolized_image = ImageField()
+    transparent_ur_pair = ImageField()
+    transparent_idolized_ur_pair = ImageField()
     center_skill_details = serializers.SerializerMethodField()
     japanese_center_skill = serializers.SerializerMethodField()
     japanese_center_skill_details = serializers.SerializerMethodField()
-
-    def _image_file_to_url(self, path, card, circle=False, idolized=False):
-        if (not path and 'imagedefault' in self.context['request'].GET and self.context['request'].GET['imagedefault'] and self.context['request'].GET['imagedefault'].title() != 'False' and
-            (idolized or circle or (not card.is_special and not card.is_promo))):
-            if circle:
-                return _get_image('/static/circle-' + card.attribute + '.png')
-            return _get_image('/static/default-' + card.attribute + '.png')
-        return _get_image(path)
 
     def get_name(self, obj):
         if obj.idol:
@@ -204,23 +201,6 @@ class CardSerializer(serializers.ModelSerializer):
 
     def get_japanese_attribute(self, obj):
         return obj.japanese_attribute()
-
-    def get_card_image(self, obj):
-        return self._image_file_to_url(str(obj.card_image), obj)
-    def get_card_idolized_image(self, obj):
-        return self._image_file_to_url(str(obj.card_idolized_image), obj, idolized=True)
-    def get_round_card_image(self, obj):
-        return self._image_file_to_url(str(obj.round_card_image), obj, circle=True)
-    def get_round_card_idolized_image(self, obj):
-        return self._image_file_to_url(str(obj.round_card_idolized_image), obj, circle=True, idolized=True)
-    def get_transparent_image(self, obj):
-        return _get_image(obj.transparent_image)
-    def get_transparent_idolized_image(self, obj):
-        return _get_image(obj.transparent_idolized_image)
-    def get_transparent_ur_pair(self, obj):
-        return _get_image(obj.transparent_ur_pair)
-    def get_transparent_idolized_ur_pair(self, obj):
-        return _get_image(obj.transparent_idolized_ur_pair)
 
     def get_center_skill_details(self, obj):
         sentence, data = obj.get_center_skill_details()
@@ -275,6 +255,33 @@ class CardSerializer(serializers.ModelSerializer):
             return None
         account = int(self.context['request'].query_params['account'])
         return OwnedCardWithoutCardSerializer(obj.get_owned_cards_for_account(account), many=True, context=self.context).data
+
+    def _save_fk(self, card):
+        changed = False
+        event = self.context['request'].data.get('event', None)
+        idol = self.context['request'].data.get('idol', None)
+        if event:
+            if event == 'None':
+                card.event = None
+            else:
+                event = models.Event.objects.get(japanese_name=event)
+                card.event = event
+            changed = True
+        if idol:
+            idol = models.Idol.objects.get(name=idol)
+            card.idol = idol
+            changed = True
+        if changed:
+            card.save()
+        return card
+
+    def create(self, validated_data):
+        card = super(CardSerializer, self).create(validated_data)
+        return self._save_fk(card)
+
+    def update(self, instance, validated_data):
+        card = super(CardSerializer, self).update(instance, validated_data)
+        return self._save_fk(card)
 
     class Meta:
         model = models.Card

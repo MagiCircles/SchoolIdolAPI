@@ -20,39 +20,39 @@ msgstr "Pure"
 msgid "Cool"
 msgstr "Cool"
 
-#: api/models.py:19 web/templates/cards.html:149
+#: api/models.py:19 api/models.py:165 web/templates/cards.html:149
 #: web/templates/cards.html.py:157 web/templates/cards.html:166
 #: web/templates/cards.html.py:174 web/templates/cards.html:182
-#: web/templates/cardsPage.html:402 web/templates/cardsPage.html.py:409
+#: web/templates/cardsPage.html:396 web/templates/cardsPage.html.py:403
 #: web/templates/events.html:71 web/templates/events.html.py:90
-#: web/templates/index.html:180 web/templates/songs.html:23
+#: web/templates/index.html:177 web/templates/songs.html:23
 #: web/templates/songs.html.py:30 web/templates/songs.html:37
 #: web/templates/users.html:53 web/templates/users.html.py:60
 #: web/templates/users.html:71 web/templates/users.html.py:82
 #: web/templates/users.html:88 web/templates/users.html.py:98
 #: web/templates/users.html:110 web/templates/users.html.py:117
 msgid "All"
-msgstr "全部"
+msgstr "全"
 
 #: api/models.py:24 web/templatetags/choicesToString.py:39
 msgid "Normal"
-msgstr "Normal"
+msgstr "N"
 
 #: api/models.py:25
 msgid "Rare"
-msgstr "Rare"
+msgstr "R"
 
-#: api/models.py:26 web/forms.py:342 web/forms.py:346
+#: api/models.py:26 web/forms.py:351 web/forms.py:355
 msgid "Super Rare"
-msgstr "Super Rare"
+msgstr "SR"
 
 #: api/models.py:27
 msgid "Ultra Rare"
-msgstr "Ultra Rare"
+msgstr "UR"
 
 #: web/templates/ownedCardOnBottomCard.html:10
 msgid "In deck"
-msgstr "桌面"
+msgstr "社員一覽"
 
 #: web/templates/ownedCardOnBottomCard.html:12
 msgid "In album"
@@ -60,78 +60,78 @@ msgstr "相簿"
 
 #: web/templates/ownedCardOnBottomCard.html:14
 msgid "In present box"
-msgstr "社員一覽"
+msgstr "禮物盒"
 
-#: api/models.py:40 api/models.py:148 tmp/profile.html:257
+#: api/models.py:40 api/models.py:158 tmp/profile.html:257
 #: web/templates/include/account_tab_wishlist.html:7
-#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:511
+#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:529
 msgid "Wish List"
 msgstr "願望清單"
 
-#: api/models.py:395 tmp/forms.py:143 tmp/profile.html:120
+#: api/models.py:434 tmp/forms.py:143 tmp/profile.html:120
 #: web/templates/profile.html:136
 msgid "Nickname"
 msgstr "暱稱"
 
-#: api/models.py:396 tmp/profile.html:124 web/forms.py:376
-#: web/templates/profile.html:140
+#: api/models.py:435 tmp/profile.html:124 web/forms.py:385
+#: web/templates/profile.html:142
 msgid "Friend ID"
 msgstr "好友 ID"
 
-#: api/models.py:396
+#: api/models.py:435
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
 msgstr "你可以透過首頁的\"好友\"、\"ID 搜尋\"來搜尋你的好友。玩家也可以透過此功能提出好友申請或是寄出短信。"
 
-#: api/models.py:398
+#: api/models.py:438
 msgid "Transfer Code"
 msgstr "資料轉移碼"
 
-#: api/models.py:398
+#: api/models.py:438
 msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
-msgstr "定時發行並保存資料轉移碼是相當重要的，它可以幫助你在遺失裝置時取回你的遊戲帳號。你可以把資料轉移碼記錄在這你，而且只有你能看到它。"
+msgstr "定時發行並保存資料轉移碼是相當重要的，它可以幫助你在遺失裝置時取回你的遊戲帳號。你可以把資料轉移碼記錄在這此，而且只有你能看到它。"
 
-#: api/models.py:401
+#: api/models.py:441
 msgid "Language"
 msgstr "語言"
 
-#: api/models.py:401
+#: api/models.py:441
 msgid "This is the version of the game you play."
 msgstr "這是你的遊戲版本"
 
-#: api/models.py:402 tmp/profile.html:142 web/templates/profile.html:158
+#: api/models.py:442 tmp/profile.html:142 web/templates/profile.html:176
 #: web/templates/staff_verifications.html:27
 msgid "Operating System"
 msgstr "操作系統"
 
-#: api/models.py:403 web/forms.py:76 web/forms.py:377 web/forms.py:378
+#: api/models.py:443 web/forms.py:97 web/forms.py:386 web/forms.py:387
 #: web/templates/addteam.html:28
 msgid "Center"
 msgstr "主力"
 
-#: api/models.py:403
+#: api/models.py:443
 msgid "The character that talks to you on your home screen."
 msgstr "在首頁會和你說話的角色"
 
-#: api/models.py:404 tmp/profile.html:170 web/templates/event.html:112
+#: api/models.py:444 tmp/profile.html:170 web/templates/event.html:112
 #: web/templates/event.html.py:124 web/templates/event.html:177
-#: web/templates/event.html.py:189 web/templates/profile.html:188
+#: web/templates/event.html.py:189 web/templates/profile.html:249
 #: web/templates/songsPage.html:126 web/templates/staff_verifications.html:28
 msgid "Rank"
 msgstr "等級"
 
-#: api/models.py:416 web/templates/cards.html:201
+#: api/models.py:478 web/templates/cards.html:201
 msgid "Stored"
 msgstr "儲存"
 
-#: api/models.py:417 web/templates/addCardForm.html:10
+#: api/models.py:479 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:14
 msgid "Expiration"
 msgstr "有效日期"
 
-#: api/models.py:418 web/templates/cards.html:209
-#: web/templates/cards.html.py:212 web/templates/cardsPage.html:316
-#: web/templates/cardsPage.html.py:319 web/templates/cardsPage.html:404
-#: web/templates/cardsPage.html.py:411
+#: api/models.py:480 contest/templates/contest_result.html:98
+#: web/templates/cards.html:209 web/templates/cards.html.py:212
+#: web/templates/cardsPage.html:310 web/templates/cardsPage.html.py:313
+#: web/templates/cardsPage.html:398 web/templates/cardsPage.html.py:405
 #: web/templates/ownedCardOnBottomCard.html:19 web/templates/usersPage.html:16
 msgid "Idolized"
 msgstr "特訓"
@@ -142,100 +142,102 @@ msgstr "被禁止"
 
 #: web/templates/403.html:5
 msgid "You are not supposed to do this, so we blocked you. Sorry!"
-msgstr "我們阻止你，因為你不應該這樣做。抱歉!"
+msgstr "你不應該這樣做，所以我們封鎖了你，抱歉!"
 
 #: web/templates/500.html:3 web/templates/500.html.py:4
 msgid "Unexpected Error"
 msgstr "意外的錯誤"
 
-#: web/templates/addCardForm.html:13 web/templates/addaccount.html:146
+#: web/templates/addCardForm.html:13 web/templates/addaccount.html:206
 #: web/templates/event.html:66 web/templates/event.html.py:75
-#: web/templates/index.html:61
+#: web/templates/index.html:61 web/templates/profile.html:222
+#: web/templates/profile.html.py:235
 msgid "days"
 msgstr "日"
 
-#: tmp/profile.html:26 tmp/profile.html.py:204 web/templates/activity.html:34
-#: web/templates/addCardForm.html:18 web/templates/addaccount.html:28
+#: tmp/profile.html:26 tmp/profile.html.py:204 web/templates/activity.html:35
+#: web/templates/addCardForm.html:18 web/templates/addaccount.html:88
 #: web/templates/addteam.html:40 web/templates/cards.html:62
 #: web/templates/edit.html:21 web/templates/edit.html.py:80
 #: web/templates/edit.html:95 web/templates/event_participations.html:44
-#: web/templates/profile.html:42 web/templates/profile.html.py:241
+#: web/templates/profile.html:42 web/templates/profile.html.py:324
 msgid "Apply Changes"
 msgstr "保存修改"
 
-#: web/templates/addCardForm.html:35 web/templates/addaccount.html:233
+#: web/templates/addCardForm.html:35 web/templates/addaccount.html:293
 #: web/templates/addteam.html:49
 msgid "You can't cancel this action afterwards."
-msgstr "你不能事後取消此操作。"
+msgstr "完成後你並不可以取消此操作。"
 
 #: web/templates/addCardForm.html:40
 msgid "Delete this card"
 msgstr "刪除這張卡片"
 
-#: web/templates/addaccount.html:27 web/templates/addteam.html:39
+#: web/templates/addaccount.html:87 web/templates/addteam.html:39
 #: web/templates/edit.html:20 web/templates/edit.html.py:53
 #: web/templates/edit.html:79 web/templates/edit.html.py:94
 #: web/templates/edit.html:118
 msgid "Back to my profile"
 msgstr "回到我的簡介"
 
-#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:20
-#: web/templates/addaccount.html:28 web/templates/base.html:112
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:80
+#: web/templates/addaccount.html:88 web/templates/base.html:113
 #: web/templates/edit.html:119
 msgid "Add Account"
 msgstr "新增一個帳號"
 
-#: web/templates/addaccount.html:234
+#: web/templates/addaccount.html:294
 msgid "Note that we can transfer your account to another user."
 msgstr "注意我們可以將你的帳號轉移給其他使用者"
 
 #: NEW_INDEX.html:49 api/management/commands/email_no_transfer_code.py:21
 #: web/links.py:272 web/raw.py:69 web/raw.py:78 web/templates/about.html:71
-#: web/templates/base.html:10 web/templates/base.html.py:46
-#: web/templates/cardsPage.html:455 web/templates/cardsPage.html.py:456
-#: web/templates/cardsPage.html:457 web/templates/cardsPage.html.py:458
-#: web/templates/cardsPage.html:459 web/templates/emails/base.html:9
+#: web/templates/base.html:10 web/templates/base.html.py:47
+#: web/templates/cardsPage.html:449 web/templates/cardsPage.html.py:450
+#: web/templates/cardsPage.html:451 web/templates/cardsPage.html.py:452
+#: web/templates/cardsPage.html:453 web/templates/emails/base.html:9
 #: web/templates/emails/base.html.py:412 web/templates/emails/base.html:508
 #: web/templates/event_ranking.html:12 web/templates/event_ranking.html:37
 #: web/templates/index.html:56 web/templates/index.html.py:82
 #: web/templates/modalsukutomo.html:4 web/templates/songsPage.html:219
 #: web/templates/songsPage.html.py:220 web/templates/songsPage.html:221
 #: web/templates/songsPage.html.py:222 web/templates/songsPage.html:223
-#: web/views.py:1847 web/views.py:1878
+#: web/views.py:1886 web/views.py:1917
 msgid "School Idol Tomodachi"
-msgstr "學園偶像朋友"
+msgstr "School Idol Tomodachi"
 
-#: web/templates/base.html:23
+#: web/templates/base.html:24
 msgid "Browse & track your cards. Vote for the best girl."
 msgstr "瀏覽並追蹤你的卡片。選出最棒的女孩。"
 
-#: tmp/profile.html:227 web/raw.py:150 web/templates/base.html:50
+#: tmp/profile.html:227 web/raw.py:150 web/templates/base.html:51
 #: web/templates/box.html:50 web/templates/include/idol_tabs.html:4
 msgid "Cards"
 msgstr "卡片"
 
-#: tmp/profile.html:58 web/templates/addaccount.html:219
-#: web/templates/addaccount.html.py:222 web/templates/base.html:96
+#: tmp/profile.html:58 web/templates/addaccount.html:279
+#: web/templates/addaccount.html.py:282 web/templates/base.html:97
 #: web/templates/edit.html:5 web/templates/edit.html.py:71
 #: web/templates/profile.html:74
 msgid "Your Settings"
 msgstr "你的設定"
 
-#: web/templates/base.html:115
+#: web/templates/base.html:116
 msgid "Logout"
 msgstr "登出"
 
-#: web/templates/base.html:113 web/templates/edit.html:101
+#: web/templates/base.html:114 web/templates/edit.html:101
+#: web/templates/modaltutorialaddcard.html:20
 msgid "Edit your accounts"
 msgstr "編輯你的帳號"
 
-#: web/templates/base.html:119 web/templates/create.html:18
+#: web/templates/base.html:120 web/templates/create.html:18
 #: web/templates/login.html:4 web/templates/login.html.py:12
 #: web/templates/login.html:21
 msgid "Login"
 msgstr "登入"
 
-#: web/templates/base.html:120 web/templates/create.html:4
+#: web/templates/base.html:121 web/templates/create.html:4
 #: web/templates/create.html.py:11 web/templates/create.html:19
 #: web/templates/login.html:19
 msgid "Sign Up"
@@ -253,20 +255,20 @@ msgstr "LoveLive! 特許經營"
 msgid "is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab."
 msgstr "這不是代表LoveLive!也和LoveLive!沒有關聯。LoveLive!、學園偶像計畫、學園偶像祭，這些商標都是屬於ASCII Media Works、Dengeki G's Magazine、 Sunrise Studio、Bushiroad 和 KLab.。"
 
-#: web/templates/about.html:101
+#: web/templates/about.html:111
 msgid "Icon Credits"
 msgstr "頭像編輯者"
 
-#: web/templates/base.html:165 web/templates/cards.html:245
+#: web/templates/base.html:166 web/templates/cards.html:245
 #: web/templates/include/filterbar.html:56
-#: web/templates/staff_verification.html:128
+#: web/templates/staff_verification.html:130
 msgid "Go"
 msgstr "開始"
 
-#: web/templates/500.html:5 web/templates/addaccount.html:235
+#: web/templates/500.html:5 web/templates/addaccount.html:295
 #: web/templates/baseMenu.html:7 web/templates/modalcontact.html:4
 msgid "Contact Us"
-msgstr "聯繫我們"
+msgstr "聯絡我們"
 
 #: web/templates/about.html:50 web/templates/about.html.py:63
 #: web/templates/modalcontact.html:8 web/templates/modalcontact.html.py:22
@@ -279,13 +281,13 @@ msgstr "無法尋找到網頁"
 
 #: web/templates/baseError.html:11
 msgid "404. This is not the page you are looking for."
-msgstr "404. 這不是你正在瀏覽的網頁。"
+msgstr "404. 這不是你要尋找的網頁。"
 
 #: web/templates/baseError.html:12
 msgid "Back to homepage"
 msgstr "回到首頁"
 
-#: web/templates/base.html:71 web/templates/cardsPage.html:393
+#: web/templates/base.html:72 web/templates/cardsPage.html:387
 #: web/templates/include/filterbar.html:25 web/templates/users.html:6
 msgid "Players"
 msgstr "玩家"
@@ -296,13 +298,13 @@ msgstr "開發人員"
 
 #: web/templates/baseMenu.html:11
 msgid "Switch language:"
-msgstr "轉換語言:"
+msgstr "轉換語言："
 
 #: web/templates/cards.html:7
 msgid "Cards Album"
 msgstr "卡片相簿"
 
-#: tmp/forms.py:138 web/forms.py:308 web/forms.py:333 web/forms.py:364
+#: tmp/forms.py:138 web/forms.py:316 web/forms.py:342 web/forms.py:373
 #: web/templates/cards.html:71 web/templates/cards.html.py:73
 #: web/templates/include/filterbar.html:8
 #: web/templates/staff_verifications.html:18
@@ -314,26 +316,26 @@ msgstr "搜尋"
 msgid "Filter"
 msgstr "篩選器"
 
-#: tmp/views.py:333 web/forms.py:341 web/templates/cards.html:73
+#: tmp/views.py:333 web/forms.py:350 web/templates/cards.html:73
 #: web/templates/cards.html.py:77 web/templates/cardsPage.html:160
 #: web/templates/idol.html:5 web/templates/idol.html.py:39
-#: web/templates/include/idol_tabs.html:3 web/views.py:506
+#: web/templates/include/idol_tabs.html:3 web/views.py:524
 msgid "Idol"
 msgstr "偶像"
 
-#: web/forms.py:378 web/templates/cards.html:90
+#: web/forms.py:387 web/templates/cards.html:90
 msgid "Rarity"
 msgstr "稀有度"
 
-#: api/models.py:474 web/forms.py:342 web/forms.py:371 web/forms.py:377
+#: api/models.py:536 web/forms.py:351 web/forms.py:380 web/forms.py:386
 #: web/templates/cards.html:98 web/templates/idol.html:51
 #: web/templates/songsPage.html:108
 msgid "Attribute"
 msgstr "屬性"
 
-#: api/models.py:421 web/forms.py:346 web/templates/box.html:23
+#: api/models.py:483 web/forms.py:355 web/templates/box.html:23
 #: web/templates/cards.html:73 web/templates/cards.html.py:115
-#: web/templates/cardsPage.html:263 web/templates/cardsPage.html.py:486
+#: web/templates/cardsPage.html:263 web/templates/cardsPage.html.py:480
 #: web/templates/event.html:51 web/templates/ownedCardOnBottomCard.html:28
 msgid "Skill"
 msgstr "技能"
@@ -341,17 +343,17 @@ msgstr "技能"
 #: web/templates/cards.html:73 web/templates/cards.html.py:123
 #: web/templates/cards.html:131 web/templates/cardsPage.html:247
 msgid "Collection"
-msgstr "蒐集品"
+msgstr "系列"
 
 #: web/templates/cards.html:231 web/templates/include/filterbar.html:13
 msgid "Order"
-msgstr "其他"
+msgstr "排序"
 
-#: web/forms.py:318 web/forms.py:369 web/templates/cards.html:241
+#: web/forms.py:327 web/forms.py:378 web/templates/cards.html:241
 msgid "Reverse order"
-msgstr "順序相反"
+msgstr "顛倒排序"
 
-#: api/models.py:419 web/templates/cards.html:216
+#: api/models.py:481 web/templates/cards.html:216
 #: web/templates/cards.html.py:219 web/templates/ownedCardOnBottomCard.html:22
 msgid "Max Leveled"
 msgstr "已滿等"
@@ -364,29 +366,29 @@ msgstr "未滿等"
 msgid "Not Max Bonded"
 msgstr "絆未滿"
 
-#: web/templates/cards.html:213 web/templates/cardsPage.html:313
-#: web/templates/cardsPage.html.py:322 web/templates/cardsPage.html:403
-#: web/templates/cardsPage.html.py:410 web/templates/usersPage.html:16
+#: web/templates/cards.html:213 web/templates/cardsPage.html:307
+#: web/templates/cardsPage.html.py:316 web/templates/cardsPage.html:397
+#: web/templates/cardsPage.html.py:404 web/templates/usersPage.html:16
 msgid "Not Idolized"
 msgstr "尚未特訓"
 
-#: api/models.py:421 web/templates/cardsPage.html:53
+#: api/models.py:483 web/templates/cardsPage.html:53
 #: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
 #: web/templates/ownedCardOnBottomCard.html:28 web/templates/songsPage.html:94
 msgid "Level"
 msgstr "等級"
 
 #: tmp/views.py:332 web/templates/cardsPage.html:203
-#: web/templates/events.html:43 web/views.py:505
+#: web/templates/events.html:43 web/views.py:523
 msgid "Release date"
 msgstr "發布日期"
 
-#: web/forms.py:320 web/templates/cards.html:73
+#: web/forms.py:329 web/templates/cards.html:73
 #: web/templates/cardsPage.html:230 web/templates/songsPage.html:150
 msgid "Event"
 msgstr "活動"
 
-#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:512
+#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:530
 msgid "HP"
 msgstr "體力"
 
@@ -394,55 +396,55 @@ msgstr "體力"
 msgid "Center Skill"
 msgstr "主唱特技"
 
-#: web/templates/activitysingle.html:51 web/templates/cardsPage.html:431
-#: web/templates/idols.html:27 web/templates/idols.html.py:53
-#: web/templates/include/idol_tabs.html:8 web/templates/songsPage.html:195
-#: web/templates/usersPage.html:56
+#: web/templates/activitysingle.html:53 web/templates/cardsPage.html:425
+#: web/templates/idols.html:27 web/templates/idols.html.py:47
+#: web/templates/idols.html:73 web/templates/include/idol_tabs.html:8
+#: web/templates/songsPage.html:195 web/templates/usersPage.html:56
 msgid "Comments"
-msgstr "評分"
+msgstr "留言"
 
 #: tmp/profile.html:214 web/templates/addCardForm.html:18
-#: web/templates/profile.html:251
+#: web/templates/profile.html:334
 msgid "Add this card"
 msgstr "新增這張卡片"
 
-#: web/templates/cardsPage.html:473
+#: web/templates/cardsPage.html:467
 msgid "Create an account to add this card to your collection"
 msgstr "新增一個帳號來存放這張卡片"
 
-#: web/templates/cardsPage.html:214 web/templates/cardsPage.html.py:480
+#: web/templates/cardsPage.html:214 web/templates/cardsPage.html.py:474
 msgid "Promo Card"
 msgstr "特典卡"
 
-#: web/templates/cardsPage.html:217 web/templates/cardsPage.html.py:480
+#: web/templates/cardsPage.html:217 web/templates/cardsPage.html.py:474
 msgid "This card comes with "
 msgstr "購買CD或是雜誌贈送的卡片"
 
-#: web/templates/cardsPage.html:483
+#: web/templates/cardsPage.html:477
 msgid "Event Card"
 msgstr "活動卡"
 
-#: web/templates/cardsPage.html:483
+#: web/templates/cardsPage.html:477
 msgid "This card first appeared during the event"
-msgstr "這張卡片首次出現在活動裡"
+msgstr "這張卡片首次出現在活動中"
 
-#: web/templates/cardsPage.html:486
+#: web/templates/cardsPage.html:480
 msgid "Special Card"
-msgstr "特殊卡片(羊駝和老師)"
+msgstr "特殊卡片"
 
-#: web/templates/cardsPage.html:486
+#: web/templates/cardsPage.html:480
 msgid "This card cannot be added in a team."
 msgstr "這張卡片不能增加在隊伍裡"
 
-#: web/templates/cardsPage.html:489
+#: web/templates/cardsPage.html:483
 msgid "This card is only available in the Japanese version of the game."
 msgstr "這張卡片只能在日版遊戲裡獲得"
 
-#: web/templates/cardsPage.html:491
+#: web/templates/cardsPage.html:485
 msgid "This card is available on all the versions of the game in the world."
-msgstr "這張卡片在世界任何版本的遊戲裡都可以取得"
+msgstr "這張卡片在世界任何版本的遊戲裡都可以獲得"
 
-#: NEW_INDEX.html:5 web/templates/base.html:10 web/templates/base.html.py:23
+#: NEW_INDEX.html:5 web/templates/base.html:10 web/templates/base.html.py:24
 #: web/templates/index.html:5 web/templates/links.html:5
 #: web/templates/modalsukutomo.html:7
 msgid "The Ultimate Resource For LoveLive! School Idol Festival players"
@@ -468,95 +470,95 @@ msgstr "沒有帳號"
 msgid "No Center Specified"
 msgstr "沒有指定的主唱"
 
-#: tmp/profile.html:134 web/templates/profile.html:150
+#: tmp/profile.html:134 web/templates/profile.html:167
 msgid "Game Version"
 msgstr "遊戲版本"
 
-#: tmp/profile.html:166 web/templates/profile.html:183
+#: tmp/profile.html:166 web/templates/profile.html:244
 msgid "Significant Cards"
 msgstr "重要的卡片"
 
-#: tmp/profile.html:167 web/templates/about.html:159
-#: web/templates/index.html:92 web/templates/profile.html:184
+#: tmp/profile.html:167 web/templates/about.html:169
+#: web/templates/index.html:92 web/templates/profile.html:245
 msgid "and"
 msgstr "和"
 
-#: api/models.py:37 api/models.py:144 tmp/profile.html:240 web/views.py:510
+#: api/models.py:37 api/models.py:154 tmp/profile.html:240 web/views.py:528
 msgid "Deck"
-msgstr "隊伍"
+msgstr "社員一覽"
 
-#: api/models.py:38 api/models.py:145 tmp/profile.html:245
+#: api/models.py:38 api/models.py:155 tmp/profile.html:245
 #: web/templates/include/account_tab_album.html:7
 msgid "Album"
 msgstr "相簿"
 
-#: api/models.py:39 api/models.py:149 tmp/profile.html:251
+#: api/models.py:39 api/models.py:159 tmp/profile.html:251
 #: web/templates/include/account_tab_presentbox.html:7
 msgid "Present Box"
-msgstr "社員一覽"
+msgstr "禮物盒"
 
-#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:504
+#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:522
 msgid "Card #ID"
-msgstr "卡片#ID "
+msgstr "卡片#ID"
 
-#: tmp/views.py:334 web/views.py:507
+#: tmp/views.py:334 web/views.py:525
 msgid "Smile's statistics"
 msgstr "Smile 的統計"
 
-#: tmp/views.py:335 web/views.py:508
+#: tmp/views.py:335 web/views.py:526
 msgid "Pure's statistics"
 msgstr "Pure 的統計"
 
-#: tmp/views.py:336 web/views.py:509
+#: tmp/views.py:336 web/views.py:527
 msgid "Cool's statistics"
 msgstr "Cool 的統計"
 
-#: api/models.py:475
+#: api/models.py:537
 msgid "Description"
 msgstr "描述"
 
-#: api/models.py:475 web/forms.py:245
+#: api/models.py:537 web/forms.py:264
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr "寫下你想寫的。如果你想要制定文本，請使用\"Markdown\""
 
-#: api/models.py:477
+#: api/models.py:539
 msgid "Location"
 msgstr "地點"
 
-#: api/models.py:477
+#: api/models.py:539
 msgid "The city you live in."
 msgstr "你住的城市"
 
-#: api/models.py:397 tmp/profile.html:129 web/templates/profile.html:145
+#: api/models.py:437 tmp/profile.html:129 web/templates/profile.html:160
 msgid "Accept friend requests"
 msgstr "接受交友申請"
 
-#: api/models.py:489 web/forms.py:374
+#: api/models.py:551 web/forms.py:383
 msgid "Private Profile"
-msgstr "私人資料"
+msgstr "私人資訊"
 
-#: api/models.py:489
+#: api/models.py:551
 msgid "If your profile is private, people will only see your center."
 msgstr "如果你的個人資料是私密的，其他人將只能看到你的主唱"
 
 #: web/templates/cardsPage.html:24
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
-msgstr[0] "%(counter)s 張卡片符合條件:"
+msgstr[0] "%(counter)s 張卡片符合搜尋條件:"
 
 #: web/templates/activities.html:9 web/templates/box.html:35
-#: web/templates/cardsPage.html:522
+#: web/templates/cardsPage.html:516
 #: web/templates/include/account_tab_events.html:40
 #: web/templates/include/account_tab_teams.html:26
 #: web/templates/songsPage.html:273 web/templates/staff_verifications.html:67
 msgid "No results."
 msgstr "沒有結果"
 
-#: web/templates/cardsPage.html:523 web/templates/songsPage.html:274
+#: web/templates/cardsPage.html:517 web/templates/songsPage.html:274
 msgid "No idols match your search."
 msgstr "沒有偶像符合搜尋條件"
 
-#: web/templates/cardsPage.html:525 web/templates/songsPage.html:276
+#: web/templates/cardsPage.html:519 web/templates/songsPage.html:276
 msgid "Change filters"
 msgstr "更換篩選條件"
 
@@ -570,37 +572,38 @@ msgstr "頭像"
 
 #: web/templates/edit.html:63
 msgid "To change your avatar, use Gravatar with the same email address."
-msgstr "使用Gravatar和同一個郵件地址來更換你的頭像"
+msgstr "使用同一個電子郵件於Gravatar更換你的頭像"
 
 #: web/templates/edit.html:65
 msgid "Change Avatar"
 msgstr "更換頭像"
 
-#: api/models.py:476 tmp/forms.py:41 web/forms.py:47 web/forms.py:372
+#: api/models.py:538 tmp/forms.py:41 web/forms.py:56 web/forms.py:381
 msgid "Best Girl"
-msgstr "最喜歡的女孩"
+msgstr "最喜歡的偶像"
 
-#: tmp/profile.html:130 web/templates/cardsPage.html:220
-#: web/templates/events.html:91 web/templates/profile.html:146
-#: web/templates/songs.html:38 web/templates/songsPage.html:182
-#: web/templates/users.html:111 web/templates/users.html.py:118
+#: tmp/profile.html:130 web/templates/addaccount.html:64
+#: web/templates/cardsPage.html:220 web/templates/events.html:91
+#: web/templates/profile.html:161 web/templates/songs.html:38
+#: web/templates/songsPage.html:182 web/templates/users.html:111
+#: web/templates/users.html.py:118
 msgid "Yes"
 msgstr "是"
 
-#: tmp/profile.html:130 web/templates/events.html:92
-#: web/templates/profile.html:146 web/templates/songs.html:39
-#: web/templates/songsPage.html:182 web/templates/users.html:112
-#: web/templates/users.html.py:119
+#: tmp/profile.html:130 web/templates/addaccount.html:65
+#: web/templates/events.html:92 web/templates/profile.html:161
+#: web/templates/songs.html:39 web/templates/songsPage.html:182
+#: web/templates/users.html:112 web/templates/users.html.py:119
 msgid "No"
 msgstr "否"
 
-#: tmp/profile.html:86 web/templates/base.html:99
+#: tmp/profile.html:86 web/templates/base.html:100
 #: web/templates/profile.html:103
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s 個帳號:"
 
-#: api/models.py:420 web/templates/cards.html:223
+#: api/models.py:482 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
 msgid "Max Bonded (Kizuna)"
 msgstr "絆滿"
@@ -609,23 +612,23 @@ msgstr "絆滿"
 msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us."
 msgstr "我們的伺服器發生問題，造成了一些怪異。如果這錯誤持續發生，請聯繫我們"
 
-#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:19
-#: web/templates/addaccount.html:216 web/templates/edit.html:113
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:79
+#: web/templates/addaccount.html:276 web/templates/edit.html:113
+#: web/templates/profile.html:279 web/templates/profile.html.py:281
 msgid "Edit Account"
 msgstr "編輯你的帳號"
 
-#: web/templates/addaccount.html:232 web/templates/addaccount.html.py:239
+#: web/templates/addaccount.html:292 web/templates/addaccount.html.py:299
 msgid "Delete Account"
 msgstr "刪除你的帳號"
 
-#: web/templates/base.html:57 web/templates/base.html.py:65
-#: web/templates/index.html:141
+#: web/templates/index.html:138
 msgid "Contest"
-msgstr "競赛"
+msgstr "比賽"
 
-#: tmp/profile.html:4 web/templates/about.html:130
-#: web/templates/about.html.py:303 web/templates/about.html:345
-#: web/templates/base.html:95 web/templates/idol.html:129
+#: tmp/profile.html:4 web/templates/about.html:140
+#: web/templates/about.html.py:313 web/templates/about.html:355
+#: web/templates/base.html:96 web/templates/idol.html:129
 #: web/templates/profile.html:4
 msgid "Profile"
 msgstr "簡介"
@@ -646,7 +649,7 @@ msgstr "關注"
 msgid "Followers"
 msgstr "跟隨者"
 
-#: tmp/profile.html:53 web/templates/index.html:176
+#: api/models.py:164 tmp/profile.html:53 web/templates/index.html:173
 #: web/templates/profile.html:69
 msgid "Following"
 msgstr "正在關注"
@@ -655,17 +658,18 @@ msgstr "正在關注"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr "請到卡片的頁面新增或編輯你的卡片"
 
-#: api/models.py:450 tmp/forms.py:140 web/templates/cardsPage.html:329
-#: web/templates/event_ranking.html:12 web/templates/event_ranking.html:37
+#: api/models.py:512 contest/templates/contest_result.html:11 tmp/forms.py:140
+#: web/templates/cardsPage.html:323 web/templates/event_ranking.html:12
+#: web/templates/event_ranking.html:37
 msgid "Ranking"
 msgstr "排名"
 
-#: api/models.py:451 web/templates/event_ranking.html:25
+#: api/models.py:513 web/templates/event_ranking.html:25
 #: web/templates/include/account_tab_events.html:22
 msgid "Song Ranking"
 msgstr "活動歌曲排名"
 
-#: api/models.py:452 web/templates/event.html:106
+#: api/models.py:514 web/templates/event.html:106
 #: web/templates/event.html.py:118 web/templates/event.html:171
 #: web/templates/event.html.py:183 web/templates/event_ranking.html:27
 #: web/templates/include/account_tab_events.html:28
@@ -676,8 +680,8 @@ msgstr "活動分數"
 msgid "in"
 msgstr "在"
 
-#: api/models.py:147 tmp/profile.html:229 web/raw.py:164
-#: web/templates/base.html:53 web/templates/events.html:3
+#: api/models.py:157 tmp/profile.html:229 web/raw.py:164
+#: web/templates/base.html:54 web/templates/events.html:3
 #: web/templates/events.html.py:29
 msgid "Events"
 msgstr "活動"
@@ -688,10 +692,10 @@ msgstr "日期"
 
 #: web/templates/event.html:130
 msgid "Note"
-msgstr ""
+msgstr "附註"
 
-#: web/templates/cardsPage.html:424 web/templates/event.html:135
-#: web/templates/idol.html:150
+#: web/templates/cardsPage.html:418 web/templates/event.html:135
+#: web/templates/idol.html:148
 msgid "Wiki"
 msgstr "百科"
 
@@ -700,26 +704,26 @@ msgstr "百科"
 msgid "Share your ranking"
 msgstr "分享你的排名"
 
-#: web/templates/activity.html:41 web/templates/addteam.html:51
+#: web/templates/activity.html:42 web/templates/addteam.html:51
 #: web/templates/event_participations.html:42
 msgid "Delete"
 msgstr "刪除"
 
 #: tmp/profile.html:228
 msgid "Activities"
-msgstr ""
+msgstr "活動"
 
-#: api/models.py:463 api/models.py:482 api/models.py:483 api/models.py:484
-#: api/models.py:485 api/models.py:487 api/models.py:488
+#: api/models.py:525 api/models.py:544 api/models.py:545 api/models.py:546
+#: api/models.py:547 api/models.py:549 api/models.py:550
 msgid "Write your username only, no URL."
-msgstr "你的帳號名就好，不需要網址。"
+msgstr "只可以有你的帳號名，不要網址。"
 
-#: web/templates/about.html:35 web/templates/about.html.py:173
-#: web/templates/about.html:177
+#: web/templates/about.html:35 web/templates/about.html.py:183
+#: web/templates/about.html:187
 msgid "Donate"
 msgstr "捐款"
 
-#: web/templates/about.html:176
+#: web/templates/about.html:186
 msgid "If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads."
 msgstr "如果你喜歡這個網站，請考慮捐款。這會協助我們支付伺服器的費用，並容許我們繼續維持網站沒有廣告及免費使用。"
 
@@ -727,11 +731,11 @@ msgstr "如果你喜歡這個網站，請考慮捐款。這會協助我們支付
 msgid "Thank you"
 msgstr "謝謝"
 
-#: tmp/forms.py:142 web/forms.py:367
+#: tmp/forms.py:142 web/forms.py:376
 msgid "New players"
 msgstr "新玩家"
 
-#: web/templates/base.html:51 web/templates/idols.html:9
+#: web/templates/base.html:52 web/templates/idols.html:9
 msgid "Idols"
 msgstr "偶像"
 
@@ -741,7 +745,7 @@ msgstr "歲數"
 
 #: web/templates/idol.html:62
 msgid "Birthday"
-msgstr "出生日期"
+msgstr "生日"
 
 #: web/templates/idol.html:78
 msgid "Astrological Sign"
@@ -780,29 +784,29 @@ msgstr "年級"
 msgid "CV"
 msgstr "聲優"
 
-#: web/templates/idol.html:143
+#: web/templates/idol.html:141
 msgid "Summary"
 msgstr "簡介"
 
 #: web/templates/map.html:21
 msgid "Edit your location"
-msgstr "編輯你所在的地點"
+msgstr "編輯你所在的地方"
 
 #: web/templates/map.html:23
 msgid "Add your location"
-msgstr "新增你所在的地點"
+msgstr "新增你所在的地方"
 
-#: web/forms.py:375 web/templates/about.html:178
-#: web/templates/about.html.py:280
+#: web/forms.py:384 web/templates/about.html:188
+#: web/templates/about.html.py:290
 msgid "Donators"
 msgstr "捐款者"
 
-#: web/templates/about.html:77 web/templates/cardsPage.html:419
-#: web/templates/idol.html:148 web/templates/songsPage.html:186
+#: web/templates/about.html:77 web/templates/cardsPage.html:413
+#: web/templates/idol.html:146 web/templates/songsPage.html:186
 msgid "Sources"
 msgstr "資料來源"
 
-#: web/templates/base.html:77 web/templates/map.html:14
+#: web/templates/base.html:78 web/templates/map.html:14
 msgid "Map"
 msgstr "地圖"
 
@@ -828,17 +832,17 @@ msgstr "聊天室"
 
 #: web/templates/about.html:53 web/templates/modalcontact.html:11
 msgid "You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user."
-msgstr "如果你對編輯你的帳號有任何的困難 (例如遺失了你的密碼或想把帳號轉移到別的使用者)，可以聯繫我們。"
+msgstr "如果你的帳號有任何的問題(例如遺失了你的密碼或想把帳號轉移到別的使用者)，你可以聯繫我們。"
 
-#: tmp/profile.html:222 web/templates/profile.html:259
+#: tmp/profile.html:222 web/templates/profile.html:342
 msgid "This profile is private, so it is not possible to see the cards, activities and events participations."
 msgstr ""
 
-#: api/models.py:46 web/forms.py:261 web/forms.py:263
+#: api/models.py:46 web/forms.py:280 web/forms.py:282
 msgid "Silver Verified"
 msgstr "銀色認證"
 
-#: api/models.py:47 web/forms.py:263
+#: api/models.py:47 web/forms.py:282
 msgid "Gold Verified"
 msgstr "金色認證"
 
@@ -880,28 +884,28 @@ msgstr "升等"
 
 #: api/models.py:65
 msgid "Ranked in event"
-msgstr "有排名在活動"
+msgstr "在活動中有排名"
 
-#: api/models.py:399 tmp/profile.html:151 web/templates/profile.html:167
+#: api/models.py:439 tmp/profile.html:151 web/templates/profile.html:186
 msgid "Device"
-msgstr "手機機型"
+msgstr "手機型號"
 
-#: api/models.py:399
+#: api/models.py:439
 msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
-msgstr "你用的手機機型。例:Nexus 5, iPhone 4, iPad 2, ... "
+msgstr "你的手機型號。例:Nexus 5, iPhone 4, iPad 2, ... "
 
-#: api/models.py:400 tmp/profile.html:157 web/templates/profile.html:173
+#: api/models.py:440 tmp/profile.html:157 web/templates/profile.html:208
 msgid "Play with"
 msgstr "你用哪個手玩"
 
-#: api/models.py:414 api/models.py:429 api/models.py:449
+#: api/models.py:476 api/models.py:491 api/models.py:511
 #: web/templates/cards.html:193 web/templates/staff_verifications.html:26
 msgid "Account"
 msgstr "帳號"
 
-#: api/models.py:85 api/models.py:405 tmp/forms.py:141 tmp/profile.html:175
-#: tmp/profile.html.py:184 web/templates/profile.html:193
-#: web/templates/profile.html.py:202
+#: api/models.py:95 api/models.py:445 tmp/forms.py:141 tmp/profile.html:175
+#: tmp/profile.html.py:184 web/templates/profile.html:259
+#: web/templates/profile.html.py:268
 msgid "Verified"
 msgstr "認證"
 
@@ -911,32 +915,32 @@ msgstr "怎麼安裝日版應用程式?"
 
 #: web/links.py:37
 msgid "APKs and Links"
-msgstr ""
+msgstr "APK和網站連結"
 
 #: web/links.py:38
 msgid "If none of the Android links worked, that's what you're searching for."
-msgstr ""
+msgstr "如果以上的Android連結用不到，那這就是你要找的東西。"
 
 #: web/links.py:44
 msgid "Other Android APKs mirror"
-msgstr ""
+msgstr "其他Android的APK"
 
 #: web/links.py:58
 msgid "Play on a rooted Android"
-msgstr ""
+msgstr "在有root的Android上遊玩"
 
 #: web/links.py:51
 msgid "\"Illegal access detected!\"? Here is the solution."
-msgstr ""
+msgstr "“非法的進入！”？這裏有解決辦法。"
 
 #: web/links.py:66
 msgid "Play on a PC"
-msgstr "在PC上玩"
+msgstr "在電腦上玩"
 
-#: web/links.py:80 web/templates/about.html:164
-#: web/templates/modalabout.html:22
+#: web/links.py:80 web/templates/about.html:174
+#: web/templates/modalabout.html:22 web/templates/modaltutorialaddcard.html:37
 msgid "Get Started"
-msgstr ""
+msgstr "上手於這個遊戲"
 
 #: web/links.py:85
 msgid "Beginner's guide"
@@ -948,7 +952,7 @@ msgstr "菜單翻譯"
 
 #: web/links.py:100
 msgid "Useful if you play on the Japanese version."
-msgstr ""
+msgstr "如果你有玩日版，那這個菜單翻譯很有用"
 
 #: web/links.py:106
 msgid "GamePlay"
@@ -968,11 +972,11 @@ msgstr "遊戲點數和虛擬貨幣"
 
 #: web/links.py:133
 msgid "Save your Transfer Code"
-msgstr "儲存你的引繼碼"
+msgstr "儲存你的轉移碼"
 
 #: web/links.py:134
 msgid "First thing to do! In case you lose your device, it will allow you to retrieve your precious account."
-msgstr ""
+msgstr "第一時間要做的東西！如果你遺失了帳戶，它可以把你寶貴的帳戶拿回。"
 
 #: web/links.py:162
 msgid "Points required to rank up"
@@ -980,7 +984,7 @@ msgstr "升級所需的經驗值"
 
 #: web/links.py:169
 msgid "Edit your \"about me\" section in the game"
-msgstr ""
+msgstr "更新你在遊戲裡的自我介紹"
 
 #: web/links.py:178
 msgid "News & Updates"
@@ -988,35 +992,35 @@ msgstr "新聞及更新"
 
 #: web/links.py:183
 msgid "Game Facebook Page"
-msgstr "遊戲Facebook粉絲專頁"
+msgstr "LoveLive! 學園偶像祭的Facebook專頁"
 
 #: web/links.py:185
 msgid "Official page with news about the game."
-msgstr "官方粉專以及遊戲新聞"
+msgstr "官方粉專以及遊戲公告"
 
 #: web/links.py:218
 msgid "Updates about the cards and the community (this website!)."
-msgstr ""
+msgstr "卡片和本網頁的公告"
 
 #: web/links.py:226
 msgid "Funny quotes from frustrated players."
-msgstr ""
+msgstr "來自不耐煩的玩家的笑點"
 
 #: web/links.py:231
 msgid "English In Game Updates"
-msgstr "英服更新新聞"
+msgstr "英服更新"
 
 #: web/links.py:237
 msgid "Japanese In Game Updates"
-msgstr "日服更新新聞"
+msgstr "日服更新"
 
 #: web/links.py:238
 msgid "Translated in English."
-msgstr ""
+msgstr "英語翻譯"
 
 #: web/links.py:244
 msgid "Official News about LoveLive! Franchise"
-msgstr "LoveLive!特許經營官方新聞"
+msgstr "LoveLive!的官方公告"
 
 #: web/links.py:252
 msgid "Communities"
@@ -1140,7 +1144,7 @@ msgstr ""
 
 #: web/links.py:480
 msgid "Japanese Events Tier 2 Cutoff Predictor"
-msgstr ""
+msgstr "日版活動二線分數線預測"
 
 #: web/links.py:492
 msgid "List of all events"
@@ -1156,7 +1160,7 @@ msgstr "活動卡"
 
 #: web/links.py:508
 msgid "Fall in love with idols"
-msgstr ""
+msgstr "喜歡上偶像"
 
 #: web/links.py:513
 msgid "All the characters in the game"
@@ -1168,7 +1172,7 @@ msgstr ""
 
 #: web/links.py:521
 msgid "Vote for the BEST GIRL"
-msgstr ""
+msgstr "投票給你的本命"
 
 #: web/links.py:523
 msgid "Vote for your favorite cards on School Idol Contest, the Facemash."
@@ -1184,7 +1188,7 @@ msgstr ""
 
 #: web/links.py:551
 msgid "Official Website"
-msgstr ""
+msgstr "官網"
 
 #: web/links.py:557
 msgid "Information about the anime"
@@ -1206,7 +1210,7 @@ msgstr ""
 msgid "by the Reddit /r/LoveLive community"
 msgstr ""
 
-#: web/templates/baseMenu.html:8
+#: web/templates/baseMenu.html:8 web/templates/modaltutorialaddcard.html:24
 msgid "Help"
 msgstr "幫助"
 
@@ -1215,10 +1219,10 @@ msgid "time"
 msgstr "時間"
 
 #: tmp/profile.html:178 tmp/profile.html.py:189 web/raw.py:8
-#: web/templates/addaccount.html:87 web/templates/addaccount.html.py:194
+#: web/templates/addaccount.html:147 web/templates/addaccount.html.py:254
 #: web/templates/edit.html:101 web/templates/edit.html.py:113
-#: web/templates/profile.html:196 web/templates/profile.html.py:207
-#: web/templates/staff_verifications.html:30
+#: web/templates/profile.html:262 web/templates/profile.html.py:273
+#: web/templates/profile.html:287 web/templates/staff_verifications.html:30
 msgid "Get verified"
 msgstr "獲取認證"
 
@@ -1235,45 +1239,45 @@ msgid "Buy music on iTunes"
 msgstr "在 iTunes 上購買音樂"
 
 #: web/links.py:6 web/templates/android.html:32
-#: web/templates/cardsPage.html:307 web/templates/modalabout.html:21
+#: web/templates/cardsPage.html:301 web/templates/modalabout.html:21
 msgid "Download"
 msgstr "下載"
 
-#: api/models.py:73
+#: api/models.py:83
 msgid "Idol Supporter"
 msgstr "偶像支持者"
 
-#: api/models.py:74
+#: api/models.py:84
 msgid "Idol Lover"
 msgstr "偶像愛好者"
 
-#: api/models.py:75
+#: api/models.py:85
 msgid "Idol Ambassador"
 msgstr ""
 
-#: api/models.py:76
+#: api/models.py:86
 msgid "Idol Producer"
 msgstr ""
 
-#: api/models.py:77
+#: api/models.py:87
 msgid "Ultimate Idol Devotee"
 msgstr ""
 
-#: api/models.py:214
+#: api/models.py:254
 msgid "blue"
-msgstr ""
+msgstr "藍"
 
-#: api/models.py:215
+#: api/models.py:255
 msgid "pink"
-msgstr ""
+msgstr "粉紅"
 
-#: api/models.py:216
+#: api/models.py:256
 msgid "shiny Silver"
-msgstr ""
+msgstr "亮銀"
 
-#: api/models.py:217 api/models.py:218
+#: api/models.py:257 api/models.py:258
 msgid "shiny Gold"
-msgstr ""
+msgstr "亮金"
 
 #: web/links.py:50
 msgid "APKs to play on rooted Android"
@@ -1307,7 +1311,7 @@ msgstr ""
 msgid "LoveLive! Wikia"
 msgstr "LoveLive! Wikia"
 
-#: web/templates/activitysingle.html:50
+#: web/templates/activitysingle.html:52
 msgid "Write Comment"
 msgstr ""
 
@@ -1341,13 +1345,13 @@ msgstr ""
 #: web/templates/cards.html:139 web/templates/cardsPage.html:190
 #: web/templates/idol.html:68
 msgid "Sub Unit"
-msgstr ""
+msgstr "小隊"
 
 #: web/templates/cards.html:164
 msgid "Promo Cards"
 msgstr "特典卡片"
 
-#: web/forms.py:388 web/forms.py:395 web/templates/cards.html:167
+#: web/forms.py:397 web/forms.py:404 web/templates/cards.html:167
 #: web/templates/cards.html.py:175 web/templates/cards.html:183
 #: web/templates/songs.html:24 web/templates/songs.html.py:31
 #: web/templates/users.html:54 web/templates/users.html.py:61
@@ -1366,39 +1370,39 @@ msgstr "無"
 msgid "Special Cards"
 msgstr "特殊卡片"
 
-#: web/templates/about.html:206
+#: web/templates/about.html:216
 msgid "Donation"
-msgstr ""
+msgstr "捐款"
 
-#: web/templates/about.html:224
+#: web/templates/about.html:234
 msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!"
 msgstr ""
 
-#: web/templates/about.html:227
+#: web/templates/about.html:237
 msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page."
 msgstr ""
 
-#: web/templates/about.html:230
+#: web/templates/about.html:240
 msgid "Your name and a link to your profile will be added to this page."
 msgstr ""
 
-#: web/templates/about.html:270
+#: web/templates/about.html:280
 msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
 msgstr ""
 
-#: web/templates/about.html:241
+#: web/templates/about.html:251
 msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
 msgstr ""
 
-#: web/templates/about.html:254
+#: web/templates/about.html:264
 msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
 msgstr ""
 
-#: web/templates/about.html:260
+#: web/templates/about.html:270
 msgid "We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!"
 msgstr ""
 
-#: web/templates/about.html:261
+#: web/templates/about.html:271
 msgid "Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^"
 msgstr ""
 
@@ -1410,93 +1414,95 @@ msgstr "圖片"
 msgid "Forgot password?"
 msgstr "忘記密碼？"
 
-#: tmp/profile.html:187 web/templates/profile.html:205
+#: tmp/profile.html:187 web/templates/profile.html:271
 msgid "You are Bronze Verified. Only you can see it."
 msgstr ""
 
-#: tmp/profile.html:189 web/templates/profile.html:207
+#: tmp/profile.html:189 web/templates/profile.html:273
 msgid "Silver"
-msgstr ""
+msgstr "銀"
 
-#: tmp/profile.html:189 web/templates/profile.html:207
+#: tmp/profile.html:189 web/templates/profile.html:273
 msgid "Gold"
-msgstr ""
+msgstr "金"
 
-#: api/models.py:136
+#: api/models.py:146
 msgid "Never"
 msgstr "從來不"
 
-#: api/models.py:137
+#: api/models.py:147
 msgid "Sometimes"
 msgstr "有時候"
 
-#: api/models.py:138
+#: api/models.py:148
 msgid "Often"
 msgstr "經常"
 
-#: api/models.py:139
+#: api/models.py:149
 msgid "Every single day"
 msgstr "每天"
 
-#: api/models.py:462
+#: api/models.py:524
 msgid "Platform"
 msgstr "平台"
 
-#: api/models.py:463
+#: api/models.py:525
 msgid "Username/ID"
 msgstr "用戶名/ID"
 
-#: api/models.py:464
+#: api/models.py:526
 msgid "How often do you tweet/stream/post about Love Live?"
-msgstr ""
+msgstr "你多常發布有關 Love Live 的消息?"
 
-#: tmp/forms.py:26 web/forms.py:33
+#: tmp/forms.py:26 web/forms.py:42
 msgid "Old Password"
 msgstr "舊的密碼"
 
-#: tmp/forms.py:27 web/forms.py:34
+#: tmp/forms.py:27 web/forms.py:43
 msgid "New Password"
 msgstr "新密碼"
 
-#: tmp/forms.py:28 web/forms.py:35
+#: tmp/forms.py:28 web/forms.py:44
 msgid "New Password Again"
 msgstr "再次輸入新密碼"
 
-#: tmp/forms.py:34 web/forms.py:41
+#: tmp/forms.py:34 web/forms.py:50
 msgid "The two password fields did not match."
-msgstr ""
+msgstr "輸入的兩個密碼不吻合"
 
-#: tmp/forms.py:69 tmp/forms.py:72 web/forms.py:94 web/forms.py:101
+#: tmp/forms.py:69 tmp/forms.py:72 web/forms.py:115 web/forms.py:122
 msgid "Password"
 msgstr "密碼"
 
 #: web/links.py:73
 msgid "Taiwanese version APK"
-msgstr ""
+msgstr "台版遊戲 APK"
 
 #: web/links.py:371
 msgid "Accounts Giveaways"
-msgstr ""
+msgstr "贈送帳號"
 
-#: web/templates/addaccount.html:37
+#: web/templates/addaccount.html:97
 msgid "Your transfer code has been deleted."
 msgstr "你的資料引繼碼被刪除了"
 
-#: web/templates/addaccount.html:42 web/templates/addaccount.html.py:60
+#: web/templates/addaccount.html:102 web/templates/addaccount.html.py:120
+#: web/templates/profile.html:283
 msgid "Get your saved transfer code"
-msgstr ""
+msgstr "領取你的引繼碼"
 
-#: web/templates/addaccount.html:52
+#: web/templates/addaccount.html:112
 msgid "Delete your transfer code"
-msgstr ""
+msgstr "刪除你的引繼碼"
 
-#: web/templates/addaccount.html:69 web/templates/addaccount.html.py:81
+#: web/templates/addaccount.html:129 web/templates/addaccount.html.py:141
+#: web/templates/profile.html:285
 msgid "Save your transfer code"
-msgstr ""
+msgstr "儲存你的引繼碼"
 
-#: web/templates/addaccount.html:73
+#: web/templates/addaccount.html:133
 msgid "Your transfer code has been securely saved."
-msgstr ""
+msgstr "你的資料引繼碼成功的被儲存了。"
 
 #: web/templates/edit.html:29
 msgid "Links"
@@ -1523,12 +1529,12 @@ msgid "You have a transfer code saved in School Idol Tomodachi. If you reset you
 msgid_plural "You have %(counter)s transfer codes saved. If you reset your password, you will not be able to retrieve them anymore."
 msgstr[0] ""
 
-#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1292
-#: web/views.py:1353 web/views.py:1367
+#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1323
+#: web/views.py:1384 web/views.py:1398
 msgid "Wrong password."
 msgstr "密碼錯誤"
 
-#: api/models.py:477
+#: api/models.py:539
 msgid "It might take up to 24 hours to update your location on the map."
 msgstr ""
 
@@ -1615,7 +1621,7 @@ msgstr ""
 #. Android App
 #: 
 msgid "none"
-msgstr ""
+msgstr "無"
 
 #. Android App
 #: 
@@ -1655,7 +1661,7 @@ msgstr ""
 #: NEW_INDEX.html:34 web/templates/index.html:34
 #: web/templates/index.html.py:38
 msgid "Follow School Idol Tomodachi on Twitter"
-msgstr ""
+msgstr "在推特上追蹤「學園偶像朋友」"
 
 #: api/models.py:48
 msgid "Bronze Verified"
@@ -1663,29 +1669,29 @@ msgstr ""
 
 #: api/models.py:55
 msgid "Index fingers"
-msgstr ""
+msgstr "食指"
 
-#: api/models.py:574 web/templates/staff_verifications.html:25
+#: api/models.py:637 web/templates/staff_verifications.html:25
 msgid "Verification"
 msgstr ""
 
-#: api/models.py:574
+#: api/models.py:637
 msgid "What kind of verification would you like?"
 msgstr ""
 
-#: api/models.py:576 api/models.py:579
+#: api/models.py:639 api/models.py:642
 msgid "Comment"
 msgstr "留言"
 
-#: api/models.py:576
+#: api/models.py:639
 msgid "If you have anything to say to the person who is going to verify your account, feel free to write it here!"
 msgstr ""
 
-#: api/models.py:580
+#: api/models.py:643
 msgid "Allow us to verify your account during events"
 msgstr ""
 
-#: api/models.py:580
+#: api/models.py:643
 msgid "Check this only if you don't care about the current event. You'll get verified faster."
 msgstr ""
 
@@ -1697,214 +1703,215 @@ msgstr ""
 msgid "Download the app"
 msgstr "下載應用程式"
 
-#: web/forms.py:252
+#: web/forms.py:271
 msgid "If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn't work, please resize your images."
 msgstr ""
 
-#: web/forms.py:310
+#: web/forms.py:319
 msgid "Latest unlocked songs"
 msgstr ""
 
-#: web/forms.py:311
+#: web/forms.py:320
 msgid "Song name"
 msgstr "歌曲名稱"
 
-#: web/forms.py:312 web/templates/songsPage.html:131
+#: web/forms.py:321 web/templates/songsPage.html:131
 msgid "Beats per minute"
-msgstr ""
+msgstr "BPM"
 
-#: web/forms.py:313
+#: web/forms.py:322
 msgid "Song length"
 msgstr "歌曲長度"
 
-#: web/forms.py:314
+#: web/forms.py:323
 msgid "Rank to unlock song"
 msgstr "解鎖歌曲所需的等級"
 
-#: web/forms.py:315
+#: web/forms.py:324
 msgid "Notes in Hard song"
 msgstr ""
 
-#: web/forms.py:316
+#: web/forms.py:325
 msgid "Notes in Expert song"
 msgstr ""
 
-#: web/forms.py:317 web/forms.py:368
+#: web/forms.py:326 web/forms.py:377
 msgid "Ordering"
-msgstr ""
+msgstr "排序"
 
-#: web/forms.py:319 web/templates/songsPage.html:167
+#: web/forms.py:328 web/templates/songsPage.html:167
 msgid "Daily rotation"
 msgstr "每日推薦"
 
-#: web/forms.py:321
+#: web/forms.py:330
 msgid "Available"
-msgstr ""
+msgstr "配信中"
 
 #: web/links.py:563
 msgid "Susume Love Live! Fansite"
 msgstr ""
 
-#: web/templates/about.html:21 web/templates/about.html.py:178
+#: web/templates/about.html:21 web/templates/about.html.py:188
 #: web/templates/baseMenu.html:6
 msgid "About us"
-msgstr ""
+msgstr "關於我們"
 
 #: web/templates/about.html:34 web/templates/about.html.py:47
 #: web/templates/android.html:71 web/templates/android.html.py:80
 #: web/templates/android.html:84
 msgid "Contact us"
-msgstr ""
+msgstr "聯絡我們"
 
-#: web/templates/about.html:106
+#: web/templates/about.html:116
 msgid "Staff members"
 msgstr ""
 
-#: web/templates/about.html:118
+#: web/templates/about.html:128
 msgid "Owner"
 msgstr ""
 
-#: web/templates/about.html:120
+#: web/templates/about.html:130
 msgid "Staff"
 msgstr ""
 
-#: web/templates/about.html:133
+#: web/templates/about.html:143
 msgid "Takes care of verifications:"
 msgstr ""
 
-#: web/templates/about.html:155 web/templates/android.html:83
+#: web/templates/about.html:165 web/templates/android.html:83
 msgid "Contribute"
 msgstr "貢獻"
 
-#: web/templates/about.html:155
+#: web/templates/about.html:165
 msgid "Dev"
 msgstr ""
 
-#: web/templates/about.html:248
+#: web/templates/about.html:258
 msgid "We will send you a cute postcard signed by the 2 developers :)"
 msgstr ""
 
-#: web/templates/addaccount.html:92
+#: web/templates/addaccount.html:152
 msgid "Generate a transfer code on the game."
 msgstr ""
 
-#: web/templates/addaccount.html:92
+#: web/templates/addaccount.html:152
 msgid "How to generate a transfer code?"
 msgstr ""
 
-#: web/templates/addaccount.html:93
+#: web/templates/addaccount.html:153
 msgid "Upload the screenshot or write it down below."
 msgstr ""
 
-#: web/templates/addaccount.html:97
+#: web/templates/addaccount.html:157
 msgid "If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Check the box below."
 msgstr ""
 
-#: web/templates/addaccount.html:98
+#: web/templates/addaccount.html:158
 msgid "If you still play between events, we can notify you before we start the process. Ask for it in your message."
 msgstr ""
 
-#: web/templates/addaccount.html:100
+#: web/templates/addaccount.html:160
 msgid "We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else"
 msgstr ""
 
-#: web/templates/addaccount.html:101
+#: web/templates/addaccount.html:161
 msgid "You will then receive an email with your new transfer code."
 msgstr ""
 
-#: web/templates/addaccount.html:102
+#: web/templates/addaccount.html:162
 msgid "Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!"
 msgstr ""
 
-#: web/templates/addaccount.html:108
+#: web/templates/addaccount.html:168
 msgid "Open the game you want to get verified"
 msgstr ""
 
-#: web/templates/addaccount.html:109
+#: web/templates/addaccount.html:169
 msgid "Take screenshots and upload them below."
 msgstr ""
 
-#: web/templates/addaccount.html:109
+#: web/templates/addaccount.html:169
 msgid "How to take screenshots?"
 msgstr "怎麼截圖?"
 
-#: web/templates/addaccount.html:111
+#: web/templates/addaccount.html:171
 msgid "Go to \"Members\" (部員) then \"Member List\" (部員リスト), order by \"Rarity\" (レアリティ) and take screenshots of all the pages that have URs or SRs"
 msgstr ""
 
-#: web/templates/addaccount.html:113
+#: web/templates/addaccount.html:173
 msgid "If you have SR/UR cards in your album (you used to have them but you sold them or used them in training), also take a screenshot of said cards in your album."
 msgstr ""
 
-#: web/templates/addaccount.html:114
+#: web/templates/addaccount.html:174
 msgid "If you have SR/UR cards in your present box, also take a screenshot of the cards in your present box."
 msgstr ""
 
-#: web/templates/addaccount.html:117
+#: web/templates/addaccount.html:177
 msgid "Go to \"Other\" (その他) then \"Profile\" (プロフィール) and take a screenshot"
 msgstr ""
 
-#: web/templates/addaccount.html:120
+#: web/templates/addaccount.html:180
 msgid "No need to refresh your profile, you will receive an email when you're verified!"
 msgstr ""
 
-#: web/templates/addaccount.html:124
+#: web/templates/addaccount.html:184
 msgid "This verification only lets you change your rank above 200. It does not give you a visible sign of verification on the website, since we did not verify your cards. The only reason you would want this verification is if your rank is above 200 and you do not wish to go through Gold/Silver verification."
 msgstr ""
 
-#: web/templates/addaccount.html:126
+#: web/templates/addaccount.html:186
 msgid "We will enter your friend ID in the game and check your rank."
 msgstr ""
 
-#: web/templates/addaccount.html:127
+#: web/templates/addaccount.html:187
 msgid "You will receive an email when your account has been set as verified and you'll be able to set your rank above 200."
 msgstr ""
 
-#: web/templates/addaccount.html:137
+#: web/templates/addaccount.html:197
 msgid "Cancel"
 msgstr "取消"
 
-#: web/templates/addaccount.html:144
+#: web/templates/addaccount.html:204
 msgid "Your position in the verification queue"
 msgstr ""
 
-#: web/templates/addaccount.html:146
+#: web/templates/addaccount.html:206
 msgid "day"
-msgstr ""
+msgstr "日"
 
-#: web/templates/addaccount.html:185
+#: web/templates/addaccount.html:245
 msgid "Check your cards"
-msgstr ""
+msgstr "查看你的卡片"
 
-#: web/templates/addaccount.html:205
+#: web/templates/addaccount.html:265
 msgid "read our FAQ"
 msgstr "閱讀我們的「常見問題」(FAQ)"
 
-#: web/templates/addaccount.html:213
+#: web/templates/addaccount.html:273
 msgid "Your rank must be over 80."
 msgstr "你的等級必須超過80"
 
-#: web/templates/addaccount.html:216
+#: web/templates/addaccount.html:276
 msgid "You must specify your friend ID in your account."
 msgstr ""
 
-#: web/templates/addaccount.html:219
+#: web/templates/addaccount.html:279
 msgid "You must provide a valid email address in your settings."
 msgstr ""
 
-#: web/templates/addaccount.html:222
+#: web/templates/addaccount.html:282
 msgid "Your profile must not be private."
 msgstr ""
 
 #: web/templates/android.html:7
 msgid "Download the School Idol Tomodachi app on Google Play"
-msgstr ""
+msgstr "在Google Play商店下載「學園偶像朋友」"
 
 #: web/templates/android.html:21
 msgid "Sukutomo"
-msgstr ""
+msgstr "SukuTomo"
 
-#: web/templates/android.html:21 web/templates/usersPage.html:52
+#: web/templates/about.html:102 web/templates/android.html:21
+#: web/templates/usersPage.html:52
 msgid "by"
 msgstr ""
 
@@ -1914,7 +1921,7 @@ msgstr ""
 
 #: web/templates/android.html:28
 msgid "download it here"
-msgstr ""
+msgstr "從這裡下載"
 
 #: web/raw.py:78 web/raw.py:85 web/raw.py:91 web/raw.py:97 web/raw.py:103
 #: web/templates/android.html:56
@@ -1965,7 +1972,7 @@ msgstr ""
 msgid "If you have no idea what we're talking about, don't panic. We can help you get started."
 msgstr ""
 
-#: web/raw.py:157 web/templates/base.html:52 web/templates/songs.html:6
+#: web/raw.py:157 web/templates/base.html:53 web/templates/songs.html:6
 msgid "Songs"
 msgstr "歌曲"
 
@@ -1985,12 +1992,12 @@ msgstr "進階"
 msgid "Edit card"
 msgstr "編輯卡片"
 
+#: web/templates/cardsPage.html:307 web/templates/cardsPage.html.py:310
 #: web/templates/cardsPage.html:313 web/templates/cardsPage.html.py:316
-#: web/templates/cardsPage.html:319 web/templates/cardsPage.html.py:322
 msgid "Transparent"
 msgstr "透明"
 
-#: web/templates/cardsPage.html:319 web/templates/cardsPage.html.py:322
+#: web/templates/cardsPage.html:313 web/templates/cardsPage.html.py:316
 msgid "UR Pair"
 msgstr "UR 合卡"
 
@@ -2020,8 +2027,9 @@ msgid "is crowdfunded by our Idol Producer"
 msgstr ""
 
 #: web/templates/cardsPage.html:196 web/templates/index.html:90
+#: web/templates/modaltutorialaddcard.html:16
 msgid "Learn more"
-msgstr ""
+msgstr "了解更多"
 
 #: web/templates/index.html:92
 msgid "donators"
@@ -2041,7 +2049,7 @@ msgstr "所有卡片"
 
 #: web/templates/modalsukutomo.html:24
 msgid "All the Events"
-msgstr ""
+msgstr "所有的活動"
 
 #: web/templates/modalsukutomo.html:25
 msgid "Get ready for your favorite idol: check the list of events in advance to see what's next!"
@@ -2049,7 +2057,7 @@ msgstr ""
 
 #: web/templates/modalsukutomo.html:32
 msgid "All the Songs"
-msgstr ""
+msgstr "所有的歌曲"
 
 #: web/templates/modalsukutomo.html:33
 msgid "Search for your favorite songs, find the shortest, longest, hardest, and more!"
@@ -2057,7 +2065,7 @@ msgstr ""
 
 #: web/templates/modalsukutomo.html:40
 msgid "All the Idols"
-msgstr ""
+msgstr "所有的偶像"
 
 #: web/templates/modalsukutomo.html:41
 msgid "Did you know that Rin hates fish but loves ramen? All you need to know about the idols!"
@@ -2095,7 +2103,7 @@ msgstr ""
 msgid "Meet new friends, and more!"
 msgstr ""
 
-#: web/forms.py:366 web/templates/base.html:74 web/templates/base.html.py:75
+#: web/forms.py:375 web/templates/base.html:75 web/templates/base.html.py:76
 #: web/templates/modalsukutomo.html:82
 msgid "Leaderboard"
 msgstr "排行榜"
@@ -2217,31 +2225,31 @@ msgstr ""
 msgid "School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them."
 msgstr ""
 
-#: web/templates/about.html:157
+#: web/templates/about.html:167
 msgid "Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!"
 msgstr ""
 
-#: web/templates/about.html:159
+#: web/templates/about.html:169
 msgid "The website has been made using"
 msgstr ""
 
-#: web/templates/about.html:159
+#: web/templates/about.html:169
 msgid "so in Python 2. We also use"
 msgstr ""
 
-#: web/templates/about.html:159
+#: web/templates/about.html:169
 msgid "for the front-end of the website."
 msgstr ""
 
-#: web/templates/about.html:161
+#: web/templates/about.html:171
 msgid "We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level."
 msgstr ""
 
-#: web/templates/addaccount.html:183
+#: web/templates/addaccount.html:243
 msgid "Before sending your request, we highly recommend you to check that you entered all your cards."
 msgstr ""
 
-#: web/templates/addaccount.html:204
+#: web/templates/addaccount.html:264
 msgid "If you have any question regarding verifications,"
 msgstr ""
 
@@ -2260,7 +2268,7 @@ msgstr ""
 msgid "So don't forget to check out the guides, tutorials, tools, discussion boards, and much more from our fellow LoveLivers friends:"
 msgstr ""
 
-#: web/templates/addaccount.html:95
+#: web/templates/addaccount.html:155
 msgid "No matter when you send your request, your account will be verified anytime when there is no event going on."
 msgstr ""
 
@@ -2338,15 +2346,15 @@ msgstr ""
 msgid "seconds"
 msgstr "秒"
 
-#: api/models.py:82
+#: api/models.py:92
 msgid "Rejected"
 msgstr "被駁回"
 
-#: api/models.py:83
+#: api/models.py:93
 msgid "Pending"
 msgstr "審核中"
 
-#: api/models.py:84
+#: api/models.py:94
 msgid "In Progress"
 msgstr ""
 
@@ -2370,79 +2378,79 @@ msgstr ""
 msgid "with the details about what you would like us to implement"
 msgstr ""
 
-#: web/templates/about.html:178
+#: web/templates/about.html:188
 msgid "Budget"
 msgstr ""
 
-#: web/templates/about.html:238 web/templates/about.html.py:268
+#: web/templates/about.html:248 web/templates/about.html.py:278
 msgid "You're an"
-msgstr ""
+msgstr "你是一個"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Added #155 Minami Kotori UR in Favorite
-#: api/models.py:62
+#: api/models.py:71
 msgid "Added {} in {}"
-msgstr ""
+msgstr "新增 {} 到 {}"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Idolized #155 Minami Kotori UR in Deck
-#: api/models.py:63
+#: api/models.py:72
 msgid "Idolized {} in {}"
-msgstr ""
+msgstr "覺醒了 {} 於 {}"
 
 #. Keep the {} in the translation. It will be replaced with the value.
 #. For example: Rank Up 102
-#: api/models.py:64
+#: api/models.py:73
 msgid "Rank Up {}"
-msgstr ""
+msgstr "升等 {}"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Ranked #253 in event Score Match Round 17
-#: api/models.py:65
+#: api/models.py:74
 msgid "Ranked {} in event {}"
-msgstr ""
+msgstr "排名 {} 在活動 {}"
 
-#: web/forms.py:97
+#: web/forms.py:118
 msgid "Confirm that you want to delete it."
-msgstr ""
+msgstr "確認你想要刪除它。"
 
-#: web/forms.py:102
+#: web/forms.py:123
 msgid "Delete previously saved transfer code"
 msgstr ""
 
-#: web/templates/about.html:140
+#: web/templates/about.html:150
 msgid "Total"
 msgstr ""
 
 #: api/models.py:37
 msgid "You have it"
-msgstr ""
+msgstr "你擁有它"
 
 #: api/models.py:38
 msgid "You don't have it anymore"
-msgstr ""
+msgstr "你不再擁有它"
 
-#: api/models.py:66
+#: api/models.py:75
 msgid "Just got verified: {}"
 msgstr ""
 
-#: api/models.py:495
+#: api/models.py:557
 msgid "Birthdate"
-msgstr ""
+msgstr "生日"
 
-#: web/forms.py:218
+#: web/forms.py:239
 msgid "Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png"
 msgstr ""
 
-#: web/forms.py:219
+#: web/forms.py:240
 msgid "Picture"
-msgstr ""
+msgstr "照片"
 
-#: web/forms.py:243
+#: web/forms.py:263
 msgid "Message"
-msgstr ""
+msgstr "訊息"
 
-#: web/forms.py:376
+#: web/forms.py:385
 msgid "specified"
 msgstr ""
 
@@ -2456,11 +2464,11 @@ msgstr ""
 
 #: web/raw.py:22
 msgid "Your Perfect Lock cards"
-msgstr ""
+msgstr "你的強判卡"
 
 #: web/raw.py:28
 msgid "Your Healer cards"
-msgstr ""
+msgstr "你的回體卡"
 
 #: web/raw.py:34
 msgid "Cards you should max level"
@@ -2484,11 +2492,11 @@ msgstr ""
 
 #: web/raw.py:85 web/raw.py:91 web/raw.py:97 web/raw.py:103
 msgid "LoveLive! School Idol Festival"
-msgstr ""
+msgstr "LoveLive! 學園偶像祭"
 
 #: web/raw.py:109 web/raw.py:115 web/raw.py:122
 msgid "LoveLive!"
-msgstr ""
+msgstr "LoveLive!"
 
 #: web/raw.py:109
 msgid "Drawings & fan-arts"
@@ -2496,7 +2504,7 @@ msgstr ""
 
 #: web/raw.py:115
 msgid "Cosplay"
-msgstr ""
+msgstr "Cosplay"
 
 #: web/raw.py:122
 msgid "MEMES & comedy"
@@ -2504,33 +2512,33 @@ msgstr ""
 
 #: web/raw.py:129
 msgid "Your best SOLO YOLOs"
-msgstr ""
+msgstr "你最好的單抽"
 
 #: web/raw.py:136
 msgid "Your best 10+1 pulls"
-msgstr ""
+msgstr "你最好的11連抽"
 
 #: web/raw.py:143
 msgid "Your best scores"
-msgstr ""
+msgstr "你最高的分數"
 
 #: web/raw.py:150 web/raw.py:157 web/raw.py:164
 msgid "Discuss"
 msgstr ""
 
-#: web/templates/activitysingle.html:56 web/views.py:1137
+#: web/templates/activitysingle.html:58 web/views.py:1166
 msgid "Edit"
-msgstr ""
+msgstr "編輯"
 
-#: web/templates/activitysingle.html:58 web/views.py:1140
+#: web/templates/activitysingle.html:61 web/views.py:1169
 msgid "Upload your own screenshot"
-msgstr ""
+msgstr "上傳自己的截圖"
 
 #: web/templates/base.html:59
 msgid "Global Contest"
-msgstr ""
+msgstr "全球競賽"
 
-#: web/templates/base.html:78 web/templates/discussion.html:3
+#: web/templates/base.html:79 web/templates/discussion.html:3
 #: web/templates/discussions.html:6 web/templates/discussions.html.py:13
 msgid "Discussions"
 msgstr ""
@@ -2546,29 +2554,29 @@ msgstr ""
 #: web/templates/cards.html:147 web/templates/cardsPage.html:174
 #: web/templates/idol.html:46
 msgid "School"
-msgstr ""
+msgstr "學校"
 
 #: web/templates/cards.html:263
 msgid "Discover the upcoming cards before everybody else!"
-msgstr ""
+msgstr "探索即將推出的新卡片!"
 
-#: web/templates/cardsPage.html:342 web/templates/cardsPage.html.py:356
-#: web/templates/cardsPage.html:373 web/templates/cardsPage.html.py:379
+#: web/templates/cardsPage.html:336 web/templates/cardsPage.html.py:350
+#: web/templates/cardsPage.html:367 web/templates/cardsPage.html.py:373
 msgid "best %(attribute)s card"
 msgstr ""
 
-#: web/templates/cardsPage.html:401 web/templates/usersPage.html:14
+#: web/templates/cardsPage.html:395 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
 msgstr[0] ""
 
-#: web/templates/cardsPage.html:414
+#: web/templates/cardsPage.html:408
 msgid "Last update"
-msgstr ""
+msgstr "最後更新"
 
 #: web/templates/include/filterbar.html:31
 msgid "Accounts"
-msgstr ""
+msgstr "帳號"
 
 #: web/templates/index.html:51
 msgid "Merry Christmas!"
@@ -2578,57 +2586,54 @@ msgstr "圣诞快乐"
 msgid "Ages"
 msgstr ""
 
-#: web/templates/profile.html:218
-msgid "Activity posted! Click on the \"Activities\" tab below to see it."
-msgstr ""
-
-#: web/templates/profile.html:221 web/templates/profile.html.py:227
+#: web/templates/profile.html:290 web/templates/profile.html.py:304
+#: web/templates/profile.html:310
 msgid "Post your own activity"
 msgstr ""
 
-#: web/templates/profile.html:222
+#: web/templates/profile.html:305
 msgid "What is this?"
-msgstr ""
+msgstr "這是什麼?"
 
 #: web/templates/usersPage.html:20
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
 msgstr[0] ""
 
-#: web/views.py:510 web/views.py:511
+#: web/views.py:528 web/views.py:529
 msgid "Most popular"
-msgstr ""
+msgstr "人氣最高"
 
-#: web/views.py:751
+#: web/views.py:779
 msgid "years old"
-msgstr ""
+msgstr "歲"
 
-#: web/templates/cardsPage.html:408 web/templates/usersPage.html:12
+#: web/templates/cardsPage.html:402 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
 msgstr[0] ""
 
 #: web/templates/discussions.html:33 web/templates/modalsukutomo.html:104
 msgid "We"
-msgstr ""
+msgstr "我們"
 
 #: web/templates/discussions.html:37
 msgid "So don't forget to check out the discussion boards, communities and much more from our fellow LoveLivers friends:"
 msgstr ""
 
-#: web/forms.py:335 web/templates/cards.html:109
+#: web/forms.py:344 web/templates/cards.html:109
 msgid "Worldwide only"
 msgstr "世界通用的卡片"
 
-#: web/forms.py:336
+#: web/forms.py:345
 msgid "Type"
 msgstr ""
 
-#: web/forms.py:337
+#: web/forms.py:346
 msgid "Token/Diary"
 msgstr ""
 
-#: web/forms.py:347
+#: web/forms.py:356
 msgid "I participated"
 msgstr ""
 
@@ -2640,39 +2645,40 @@ msgstr ""
 msgid "expected"
 msgstr ""
 
-#: api/models.py:146
+#: api/models.py:156
 msgid "Teams"
-msgstr ""
+msgstr "隊伍"
 
-#: api/models.py:163
+#: api/models.py:180
 msgid "{} increases slightly (+3%)"
 msgstr ""
 
-#: api/models.py:164
+#: api/models.py:181
 msgid "{} increases (+6%)"
 msgstr ""
 
-#: api/models.py:165
+#: api/models.py:182
 msgid "{} increases drastically (+9%)"
-msgstr ""
+msgstr "{} 大幅增加 (+9%)"
 
-#: api/models.py:166
+#. Center skill details, for example: "Pure increases based on Cool"
+#: api/models.py:183
 msgid "{} increases based on {}"
-msgstr ""
+msgstr "{}數值因{}而增加"
 
-#: api/models.py:406
+#: api/models.py:446 api/models.py:558
 msgid "Default tab"
 msgstr ""
 
-#: api/models.py:406
+#: api/models.py:446
 msgid "What people see first when they take a look at your account."
 msgstr ""
 
-#: api/models.py:430
+#: api/models.py:492
 msgid "Name"
-msgstr ""
+msgstr "名字"
 
-#: web/forms.py:434
+#: web/forms.py:443
 msgid "The same card can't appear twice in the same team."
 msgstr ""
 
@@ -2680,23 +2686,225 @@ msgstr ""
 msgid "Load remaining cards"
 msgstr ""
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Princess"
-msgstr ""
+msgstr "Princess"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Angel"
-msgstr ""
+msgstr "Angel"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Empress"
-msgstr ""
+msgstr "Empress"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Power"
+msgstr "Power"
+
+#: api/models.py:192
+msgid "Heart"
+msgstr "Heart"
+
+#: contest/templates/contest.html:11
+msgid "The ultimate battle between School Idols"
 msgstr ""
 
-#: api/models.py:175
-msgid "Heart"
+#: contest/templates/contest.html:50 contest/templates/contest.html.py:62
+msgid "is BEST"
+msgstr ""
+
+#: contest/templates/contest.html:53 contest/templates/contest.html.py:65
+msgid "About this card"
+msgstr "關於這張卡片"
+
+#: contest/templates/contest_result.html:45
+msgid "BEST Girls"
+msgstr ""
+
+#: contest/templates/contest_result.html:79
+msgid "BEST Cards"
+msgstr ""
+
+#: contest/templates/contest_result.html:114
+msgid "Vote"
+msgstr "投票"
+
+#: contest/templates/contest_result_index.html:11
+#: contest/templates/contest_result_index.html:16 web/templates/base.html:63
+msgid "Past Contests"
+msgstr "競賽紀錄"
+
+#: contest/templates/contest_result_index.html:53
+msgid "Suggest a special contest"
+msgstr ""
+
+#: web/forms.py:318
+msgid "Date added"
+msgstr ""
+
+#: api/models.py:76
+msgid "{}/10 on School Idol Trivia! {}"
+msgstr ""
+
+#: api/models.py:195
+msgid "Ouch!"
+msgstr "哎呀..."
+
+#: api/models.py:196 api/models.py:197 api/models.py:198
+msgid "Oh no..."
+msgstr "糟糕..."
+
+#: api/models.py:199 api/models.py:200
+msgid "Meh."
+msgstr "還可以。"
+
+#: api/models.py:201 api/models.py:202
+msgid "Not bad!"
+msgstr "還不錯!"
+
+#: api/models.py:203
+msgid "Yay~"
+msgstr ""
+
+#: api/models.py:204
+msgid "Awesome!"
+msgstr ""
+
+#: api/models.py:205
+msgid "Woohoo!"
+msgstr ""
+
+#: api/models.py:436
+msgid "Should your friend ID be visible to other players?"
+msgstr "希望公開你的帳號ID嗎?"
+
+#: api/models.py:447 web/templates/profile.html:194
+msgid "Starter"
+msgstr ""
+
+#: api/models.py:447
+msgid "The character that you selected when you started playing."
+msgstr ""
+
+#: api/models.py:448 web/templates/profile.html:219
+#: web/templates/profile.html.py:232
+msgid "Creation"
+msgstr ""
+
+#: api/models.py:448
+msgid "When you started playing with this account."
+msgstr ""
+
+#: api/models.py:449
+msgid "Should this date be visible to other players?"
+msgstr "希望公開這個日期嗎?"
+
+#: api/models.py:558
+msgid "The activities you see by default on the homepage."
+msgstr ""
+
+#: web/forms.py:79
+msgid "The game didn't even existed at that time."
+msgstr ""
+
+#: web/forms.py:81
+msgid "This date cannot be in the future."
+msgstr ""
+
+#: web/templates/about.html:98
+msgid "Community Artists"
+msgstr ""
+
+#: web/templates/base.html:57
+msgid "Fun"
+msgstr "娛樂"
+
+#: web/templates/modaltutorialaddcard.html:4
+msgid "Start sharing your beautiful collection!"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:9
+msgid "Simply click \"+\" to add cards to your account"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:11
+msgid "If you idolized a card or if you want to add it to another account, use the bubble."
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:12
+msgid "Click \"Advanced\" for more options: max bonded (kizuna), max leveled, skill level, where you have it (deck, album, present box)."
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:13
+msgid "To search for specific cards, use the filters bar on the right (idol, rarity, attribute)."
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:18
+msgid "How to edit a card?"
+msgstr "怎麼編輯卡片?"
+
+#: web/templates/modaltutorialaddcard.html:19
+msgid "How to delete a card?"
+msgstr "怎麼刪除卡片?"
+
+#: web/templates/modaltutorialaddcard.html:21
+msgid "How to add an account to your profile?"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:22
+msgid "What's the difference between the deck, the album and the present box?"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:23
+msgid "Why my cards are not automatically imported?"
+msgstr ""
+
+#. Context?
+#: web/templates/profile.html:147 web/templates/profile.html.py:252
+msgid "Unknown"
+msgstr ""
+
+#: web/templates/profile.html:150 web/templates/profile.html.py:224
+#: web/templates/profile.html:237
+msgid "Only you can see it."
+msgstr ""
+
+#: web/templates/profile.html:153
+msgid "Private"
+msgstr ""
+
+#: web/templates/profile.html:293
+msgid "Activity posted! Take a look at your activities on the side of your profile to see it."
+msgstr ""
+
+#: web/templates/trivia.html:4 web/templates/trivia.html.py:12
+msgid "Love Live! School Idol Trivia"
+msgstr ""
+
+#: api/models.py:450
+msgid "Love gems"
+msgstr "Loveca"
+
+#: api/models.py:450 api/models.py:451 api/models.py:452 api/models.py:453
+#: api/models.py:454
+msgid "Number of {} you currently have in your account."
+msgstr ""
+
+#: api/models.py:450 api/models.py:451 api/models.py:452 api/models.py:453
+#: api/models.py:454
+msgid "This field is completely optional, it's here to help you manage your accounts."
+msgstr ""
+
+#: api/models.py:451
+msgid "Friend Points"
+msgstr ""
+
+#: api/models.py:455
+msgid "Total love gems bought"
+msgstr ""
+
+#: api/models.py:455
+msgid "You can calculate that number in \"Other\" then \"Purchase History\". Leave it empty to stay F2P."
 msgstr ""
 

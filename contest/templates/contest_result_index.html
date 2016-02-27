@@ -23,12 +23,13 @@
 	    <div class="col-sm-8">
 	      <h3 class="text-{{ best_card.attribute }}">{{ contest.name }}</h3>
 	      <div>
-		<div class="pull-right text-muted">
-		  {{ total_votes }} votes
-		</div>
 		<p class="text-muted">
 		  {{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d %Y' }}
 		</p>
+		<div class="text-right text-muted">
+		  {{ total_votes }} {% trans 'votes' %}<br>
+		  <span class="disqus-comment-count" data-disqus-identifier="contest{{ contest.id }}"></span>
+		</div>
 	      </div>
 	    </div>
 	    {% if best_girl %}

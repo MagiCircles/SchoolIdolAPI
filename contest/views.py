@@ -20,6 +20,8 @@ def globalContext(request):
 
 def contest_view(request, contestid):
     context = globalContext(request)
+    if settings.HIGH_TRAFFIC:
+        return render(request, 'disabled.html', context)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     if not is_current_contest(contest):
        return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/')
@@ -44,6 +46,8 @@ def global_contest_view(request):
 
 def result_view(request, contestid):
     context = globalContext(request)
+    if settings.HIGH_TRAFFIC:
+        return render(request, 'disabled.html', context)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     list_girl, list_card = None, None
     if contest.best_girl:
@@ -66,6 +70,8 @@ def collection_view(request, contestid):
         if int(contestid) == settings.GLOBAL_CONTEST_ID:
             return redirect('/cards/')
     except ValueError: return redirect('/contest/results/')
+    if settings.HIGH_TRAFFIC:
+        return render(request, 'disabled.html', context)
     context = globalContext(request)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     is_current = is_current_contest(contest)
@@ -82,6 +88,8 @@ def collection_view(request, contestid):
 
 def results_index_view(request):
     context = globalContext(request)
+    if settings.HIGH_TRAFFIC:
+        return render(request, 'disabled.html', context)
     queryset = past_contests_queryset().annotate(count=Sum('votes__counter')).all()
     now = datetime.datetime.now()
     total_votes = contest_models.Vote.objects.filter(contest__end__lte=now).values('contest_id').annotate(total_votes=Sum('counter')).order_by('-contest__end')

@@ -54,6 +54,7 @@ def globalContext(request):
         'current_contest_name': settings.CURRENT_CONTEST_NAME,
         'current_contest_image': settings.CURRENT_CONTEST_IMAGE,
         'last_update': settings.GENERATED_DATE,
+        'high_traffic': settings.HIGH_TRAFFIC,
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
@@ -936,12 +937,13 @@ def ajaxaddcard(request):
                                  skill=1,
                                  idolized=card.is_promo)
     ownedcard.save()
-    pushActivity(message="Added a card",
-                 ownedcard=ownedcard,
-                 # prefetch:
-                 card=card,
-                 account=account,
-                 account_owner=request.user)
+    if not settings.HIGH_TRAFFIC:
+        pushActivity(message="Added a card",
+                     ownedcard=ownedcard,
+                     # prefetch:
+                     card=card,
+                     account=account,
+                     account_owner=request.user)
     context = {
         'owned': ownedcard,
         'owner_account': account,
@@ -1142,6 +1144,8 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
     return context
 
 def ajaxactivities(request):
+    if settings.HIGH_TRAFFIC:
+        return render(request, 'cacheactivities.html')
     account = int(request.GET['account']) if 'account' in request.GET and request.GET['account'] and request.GET['account'].isdigit() else None
     user = request.GET['user'] if 'user' in request.GET and request.GET['user'] else None
     follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
@@ -1199,6 +1203,8 @@ def _contextfeed(request):
     return _activities(request, follower=request.user.username, avatar_size=avatar_size)
 
 def ajaxfeed(request):
+    if settings.HIGH_TRAFFIC:
+        return render(request, 'cacheactivities.html')
     return render(request, 'activities.html', _contextfeed(request))
 
 def isLiking(request, activity_obj):

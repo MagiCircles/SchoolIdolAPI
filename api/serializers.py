@@ -170,7 +170,6 @@ class ImageField(serializers.ImageField):
 class CardSerializer(serializers.ModelSerializer):
     event = EventSerializer(read_only=True)
     idol = IdolSerializer(read_only=True)
-    name = serializers.SerializerMethodField() # left for backward compatibility
     japanese_name = serializers.SerializerMethodField() # left for backward compatibility
     card_image = ImageField(required=False)
     card_idolized_image = ImageField(required=False)
@@ -188,11 +187,6 @@ class CardSerializer(serializers.ModelSerializer):
     center_skill_details = serializers.SerializerMethodField()
     japanese_center_skill = serializers.SerializerMethodField()
     japanese_center_skill_details = serializers.SerializerMethodField()
-
-    def get_name(self, obj):
-        if obj.idol:
-            return obj.idol.name
-        return None
 
     def get_japanese_name(self, obj):
         if obj.idol:
@@ -270,6 +264,7 @@ class CardSerializer(serializers.ModelSerializer):
         if idol:
             idol = models.Idol.objects.get(name=idol)
             card.idol = idol
+            #card.name = idol.name
             changed = True
         if changed:
             card.save()

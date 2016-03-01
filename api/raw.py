@@ -118,6 +118,7 @@ raw_information['Sakurauchi Riko'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/rikofinished.png', 'Cava'),
+        ('http://i.schoolido.lu/chibi/rVpndCvn.png', 'Yukimochi'),
     ],
 }
 raw_information['Matsuura Kanan'] = {

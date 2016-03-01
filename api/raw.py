@@ -103,6 +103,7 @@ raw_information['Takami Chika'] = {
     'color': '#ff9646',
     'chibi': [
         ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
+        ('http://i.schoolido.lu/chibi/mzZeOlyc.png', 'sayakax'),
     ],
 }
 raw_information['Sakurauchi Riko'] = {
@@ -130,6 +131,7 @@ raw_information['Matsuura Kanan'] = {
     'color': '#16d5a6',
     'chibi': [
         ('http://i.schoolido.lu/chibi/kirisakisun.png', 'kirisakisun'),
+        ('http://i.schoolido.lu/chibi/KyYKeLBU.png', 'sayakax'),
     ],
 }
 raw_information['Kurosawa Dia'] = {
@@ -187,6 +189,7 @@ raw_information['Kunikida Hanamaru'] = {
     'color': '#e7cf0b',
     'chibi': [
         ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
+        ('http://i.schoolido.lu/chibi/michellecipher.png', 'michellecipher'),
     ],
 }
 raw_information['Ohara Mari'] = {

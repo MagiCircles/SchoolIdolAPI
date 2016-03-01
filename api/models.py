@@ -371,6 +371,7 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     is_promo = models.BooleanField(default=False, help_text="Promo cards are already idolized. It is not possible to scout them, since they come with bought items or in the game on special occasions.")
     promo_item = models.CharField(max_length=100, blank=True, null=True)
+    promo_link = models.CharField(max_length=300, blank=True, null=True)
     release_date = models.DateField(default=datetime.date(2013, 4, 16), null=True, blank=True)
     event = models.ForeignKey(Event, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")

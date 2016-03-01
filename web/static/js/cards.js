@@ -208,8 +208,8 @@ function statistics_buttons() {
 }
 
 function collapseCards() {
-    $('.card a[data-target^=#collapseMore]').unbind('click');
-    $('.card a[data-target^=#collapseMore]').click(function(event) {
+    $('.card a[data-target^="#collapseMore"]').unbind('click');
+    $('.card a[data-target^="#collapseMore"]').click(function(event) {
 	event.preventDefault();
 	$($(this).attr('data-target')).collapse('toggle');
 	return false;

@@ -6,7 +6,7 @@
 {% block back_button %}0{% endblock %}
 {% block js %}
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
-<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<!--<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>-->
 <script src="/static/js/loadactivities.js?1"></script>
 <script src="/static/js/index.js?8"></script>
 <script>
@@ -48,15 +48,7 @@
 
 <div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
   <div style="position: fixed; top: 100px; right: 20px; margin-top: 0;" class="special-message hidden-sm hidden-xs">
-    <span><img src="http://db0company.github.io/CuteForm/images/ja.png" alt="JP"> Maintenance starts in:<br>
-      <span id="countdown" style="font-size: 1em"></span>
-      <script>
-	var countdowndate = "March 01, 2016 17:00:00 +0000";
-	function countdownRender(data) {
-	$(this.el).text(data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
-	}
-    </script>
-    </span>
+    <span></span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>

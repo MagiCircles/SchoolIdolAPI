@@ -48,19 +48,21 @@
 
 <div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
   <div style="position: fixed; top: 100px; right: 20px; margin-top: 0;" class="special-message hidden-sm hidden-xs">
-    <span></span>
+    <span><img src="http://db0company.github.io/CuteForm/images/ja.png" alt="JP"> Maintenance starts in:<br>
+      <span id="countdown" style="font-size: 1em"></span>
+      <script>
+	var countdowndate = "March 01, 2016 17:00:00 +0000";
+	function countdownRender(data) {
+	$(this.el).text(data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
+	}
+    </script>
+    </span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>
     <div class="col-md-6">
       <h1 class="hidden">{% trans "School Idol Tomodachi" %}</h1>
       <div class="special-message hidden" style="margin: 0; margin-top: 10px; max-width: none;">
-	<span id="countdown-unused">
-	    var countdowndate = "December 07, 2015 12:00:00 +0000";
-	    function countdownRender(data) {
-	    $(this.el).text('Maintenance ends in ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec);
-	    }
-	  </span>
 	</h1>
 </div>
 

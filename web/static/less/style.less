@@ -1064,15 +1064,38 @@ h1#donators {
     }
     .question {
         padding: 30px;
-        padding-top: 0;
+        padding-top: 30px;
         font-size: 2em;
     }
-    .progress {
+    .progress, .nav-tabs {
         width: 60%;
         margin: auto;
     }
     .progress-bar {
         width: 10%;
+    }
+    .question-with-image {
+        display: block;
+        padding: 25% 0 10% 0;
+    }
+    .image-with-question {
+        width: 140%;
+        margin: -20%;
+        margin-top: -60%;
+    }
+    .image-question-detail {
+        width: 250px;
+        height: 250px;
+        background-size: 1000px;
+        background-position: center center;
+        margin: auto;
+        margin-top: 20px;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    .choice-image {
+        width: 100px;
+        padding: 20px;
     }
     .trivia_idol {
         cursor: pointer;
@@ -1585,6 +1608,12 @@ a.toplistbanner {
 	    padding-right: 10px;
 	    padding-left: 10px;
 	}
+    }
+    #trivia-page {
+        .image-with-question {
+            width: 100%;
+            margin: 0;
+        }
     }
 }
 

@@ -20,12 +20,12 @@ msgstr "Pure"
 msgid "Cool"
 msgstr "Cool"
 
-#: api/models.py:19 web/templates/cards.html:149
+#: api/models.py:19 api/models.py:165 web/templates/cards.html:149
 #: web/templates/cards.html.py:157 web/templates/cards.html:166
 #: web/templates/cards.html.py:174 web/templates/cards.html:182
-#: web/templates/cardsPage.html:402 web/templates/cardsPage.html.py:409
+#: web/templates/cardsPage.html:396 web/templates/cardsPage.html.py:403
 #: web/templates/events.html:71 web/templates/events.html.py:90
-#: web/templates/index.html:180 web/templates/songs.html:23
+#: web/templates/index.html:177 web/templates/songs.html:23
 #: web/templates/songs.html.py:30 web/templates/songs.html:37
 #: web/templates/users.html:53 web/templates/users.html.py:60
 #: web/templates/users.html:71 web/templates/users.html.py:82
@@ -40,11 +40,11 @@ msgstr "Normal"
 
 #: api/models.py:25
 msgid "Rare"
-msgstr "Raras"
+msgstr "Rara"
 
-#: api/models.py:26 web/forms.py:342 web/forms.py:346
+#: api/models.py:26 web/forms.py:351 web/forms.py:355
 msgid "Super Rare"
-msgstr "Super Raras"
+msgstr "Super Rara"
 
 #: api/models.py:27
 msgid "Ultra Rare"
@@ -62,78 +62,77 @@ msgstr "No álbum"
 msgid "In present box"
 msgstr "Na caixa de presentes"
 
-#: api/models.py:40 api/models.py:148 tmp/profile.html:257
+#: api/models.py:40 api/models.py:158 tmp/profile.html:257
 #: web/templates/include/account_tab_wishlist.html:7
-#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:511
+#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:529
 msgid "Wish List"
 msgstr "Lista de Desejos"
 
-#. I wrote Nickname because the portuguese I know is the european one ( even tho its not a portuguese word is how they say it for sure)  so the words that are different in the brazillian portuguese should be written in both "sub-languages"
-#: api/models.py:395 tmp/forms.py:143 tmp/profile.html:120
+#: api/models.py:434 tmp/forms.py:143 tmp/profile.html:120
 #: web/templates/profile.html:136
 msgid "Nickname"
-msgstr "Apelido/Nickname"
+msgstr "Nickname"
 
-#: api/models.py:396 tmp/profile.html:124 web/forms.py:376
-#: web/templates/profile.html:140
+#: api/models.py:435 tmp/profile.html:124 web/forms.py:385
+#: web/templates/profile.html:142
 msgid "Friend ID"
 msgstr "Friend ID"
 
-#: api/models.py:396
+#: api/models.py:435
 #, fuzzy
 msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
 msgstr "Para encontrares o teu ID vai à secção de \"Friends\" do teu ecrã principal e depois a \"ID Search\". Outros jogadores poderão mandar-te pedidos de amizade ou mensagens se usarem esse número."
 
-#: api/models.py:398
+#: api/models.py:438
 msgid "Transfer Code"
 msgstr "Código de Transferência"
 
-#: api/models.py:398
+#: api/models.py:438
 msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
 msgstr "É importante ter sempre um código de transferência ativo, uma vez que vai permitir-te recuperar a tua conta no caso de a perderes o teu dispositivo. Nós podemos armazená-lo por ti aqui: só tu serás capaz de vê-lo. Para o gerares, vai até às configurações e usa o primeiro botão por baixo daquele para mudar teu nome."
 
-#: api/models.py:401
+#: api/models.py:441
 msgid "Language"
 msgstr "Idioma"
 
-#: api/models.py:401
+#: api/models.py:441
 msgid "This is the version of the game you play."
 msgstr "Esta é a versão do jogo que jogas."
 
-#: api/models.py:402 tmp/profile.html:142 web/templates/profile.html:158
+#: api/models.py:442 tmp/profile.html:142 web/templates/profile.html:176
 #: web/templates/staff_verifications.html:27
 msgid "Operating System"
 msgstr "Sistema Operacional"
 
-#: api/models.py:403 web/forms.py:76 web/forms.py:377 web/forms.py:378
+#: api/models.py:443 web/forms.py:97 web/forms.py:386 web/forms.py:387
 #: web/templates/addteam.html:28
 msgid "Center"
 msgstr "Centro"
 
-#: api/models.py:403
+#: api/models.py:443
 msgid "The character that talks to you on your home screen."
 msgstr "A personagem que fala contigo no teu ecrã principal."
 
-#: api/models.py:404 tmp/profile.html:170 web/templates/event.html:112
+#: api/models.py:444 tmp/profile.html:170 web/templates/event.html:112
 #: web/templates/event.html.py:124 web/templates/event.html:177
-#: web/templates/event.html.py:189 web/templates/profile.html:188
+#: web/templates/event.html.py:189 web/templates/profile.html:249
 #: web/templates/songsPage.html:126 web/templates/staff_verifications.html:28
 msgid "Rank"
 msgstr "Rank"
 
-#: api/models.py:416 web/templates/cards.html:201
+#: api/models.py:478 web/templates/cards.html:201
 msgid "Stored"
 msgstr "Armazenado"
 
-#: api/models.py:417 web/templates/addCardForm.html:10
+#: api/models.py:479 web/templates/addCardForm.html:10
 #: web/templates/ownedCardOnBottomCard.html:14
 msgid "Expiration"
 msgstr "Expiração"
 
-#: api/models.py:418 web/templates/cards.html:209
-#: web/templates/cards.html.py:212 web/templates/cardsPage.html:316
-#: web/templates/cardsPage.html.py:319 web/templates/cardsPage.html:404
-#: web/templates/cardsPage.html.py:411
+#: api/models.py:480 contest/templates/contest_result.html:98
+#: web/templates/cards.html:209 web/templates/cards.html.py:212
+#: web/templates/cardsPage.html:310 web/templates/cardsPage.html.py:313
+#: web/templates/cardsPage.html:398 web/templates/cardsPage.html.py:405
 #: web/templates/ownedCardOnBottomCard.html:19 web/templates/usersPage.html:16
 msgid "Idolized"
 msgstr "Idolizada"
@@ -150,22 +149,23 @@ msgstr "Não é suposto fazeres isso e, por isso, bloqueamos-te. Desculpa!"
 msgid "Unexpected Error"
 msgstr "Erro Inesperado"
 
-#: web/templates/addCardForm.html:13 web/templates/addaccount.html:146
+#: web/templates/addCardForm.html:13 web/templates/addaccount.html:206
 #: web/templates/event.html:66 web/templates/event.html.py:75
-#: web/templates/index.html:61
+#: web/templates/index.html:61 web/templates/profile.html:222
+#: web/templates/profile.html.py:235
 msgid "days"
 msgstr "dias"
 
-#: tmp/profile.html:26 tmp/profile.html.py:204 web/templates/activity.html:34
-#: web/templates/addCardForm.html:18 web/templates/addaccount.html:28
+#: tmp/profile.html:26 tmp/profile.html.py:204 web/templates/activity.html:35
+#: web/templates/addCardForm.html:18 web/templates/addaccount.html:88
 #: web/templates/addteam.html:40 web/templates/cards.html:62
 #: web/templates/edit.html:21 web/templates/edit.html.py:80
 #: web/templates/edit.html:95 web/templates/event_participations.html:44
-#: web/templates/profile.html:42 web/templates/profile.html.py:241
+#: web/templates/profile.html:42 web/templates/profile.html.py:324
 msgid "Apply Changes"
 msgstr "Aplicar Mudanças"
 
-#: web/templates/addCardForm.html:35 web/templates/addaccount.html:233
+#: web/templates/addCardForm.html:35 web/templates/addaccount.html:293
 #: web/templates/addteam.html:49
 msgid "You can't cancel this action afterwards."
 msgstr "Tu não vais poder cancelar essa operacão mais tarde."
@@ -174,70 +174,71 @@ msgstr "Tu não vais poder cancelar essa operacão mais tarde."
 msgid "Delete this card"
 msgstr "Apagar esta carta"
 
-#: web/templates/addaccount.html:27 web/templates/addteam.html:39
+#: web/templates/addaccount.html:87 web/templates/addteam.html:39
 #: web/templates/edit.html:20 web/templates/edit.html.py:53
 #: web/templates/edit.html:79 web/templates/edit.html.py:94
 #: web/templates/edit.html:118
 msgid "Back to my profile"
 msgstr "Voltar ao meu perfil"
 
-#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:20
-#: web/templates/addaccount.html:28 web/templates/base.html:112
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:80
+#: web/templates/addaccount.html:88 web/templates/base.html:113
 #: web/templates/edit.html:119
 msgid "Add Account"
 msgstr "Adicionar Conta"
 
-#: web/templates/addaccount.html:234
+#: web/templates/addaccount.html:294
 msgid "Note that we can transfer your account to another user."
 msgstr "Podemos transferir a tua conta para outro utilizador."
 
 #: NEW_INDEX.html:49 api/management/commands/email_no_transfer_code.py:21
 #: web/links.py:272 web/raw.py:69 web/raw.py:78 web/templates/about.html:71
-#: web/templates/base.html:10 web/templates/base.html.py:46
-#: web/templates/cardsPage.html:455 web/templates/cardsPage.html.py:456
-#: web/templates/cardsPage.html:457 web/templates/cardsPage.html.py:458
-#: web/templates/cardsPage.html:459 web/templates/emails/base.html:9
+#: web/templates/base.html:10 web/templates/base.html.py:47
+#: web/templates/cardsPage.html:449 web/templates/cardsPage.html.py:450
+#: web/templates/cardsPage.html:451 web/templates/cardsPage.html.py:452
+#: web/templates/cardsPage.html:453 web/templates/emails/base.html:9
 #: web/templates/emails/base.html.py:412 web/templates/emails/base.html:508
 #: web/templates/event_ranking.html:12 web/templates/event_ranking.html:37
 #: web/templates/index.html:56 web/templates/index.html.py:82
 #: web/templates/modalsukutomo.html:4 web/templates/songsPage.html:219
 #: web/templates/songsPage.html.py:220 web/templates/songsPage.html:221
 #: web/templates/songsPage.html.py:222 web/templates/songsPage.html:223
-#: web/views.py:1847 web/views.py:1878
+#: web/views.py:1886 web/views.py:1917
 msgid "School Idol Tomodachi"
 msgstr "School Idol Tomodachi"
 
-#: web/templates/base.html:23
+#: web/templates/base.html:24
 msgid "Browse & track your cards. Vote for the best girl."
-msgstr "Navegua e acompanha as tuas cartas. Vota para a melhor."
+msgstr "Navega e acompanha as tuas cartas. Vota para a melhor."
 
-#: tmp/profile.html:227 web/raw.py:150 web/templates/base.html:50
+#: tmp/profile.html:227 web/raw.py:150 web/templates/base.html:51
 #: web/templates/box.html:50 web/templates/include/idol_tabs.html:4
 msgid "Cards"
 msgstr "Cartas"
 
-#: tmp/profile.html:58 web/templates/addaccount.html:219
-#: web/templates/addaccount.html.py:222 web/templates/base.html:96
+#: tmp/profile.html:58 web/templates/addaccount.html:279
+#: web/templates/addaccount.html.py:282 web/templates/base.html:97
 #: web/templates/edit.html:5 web/templates/edit.html.py:71
 #: web/templates/profile.html:74
 msgid "Your Settings"
 msgstr "Configurações"
 
-#: web/templates/base.html:115
+#: web/templates/base.html:116
 msgid "Logout"
 msgstr "Logout"
 
-#: web/templates/base.html:113 web/templates/edit.html:101
+#: web/templates/base.html:114 web/templates/edit.html:101
+#: web/templates/modaltutorialaddcard.html:20
 msgid "Edit your accounts"
 msgstr "Editar as tuas contas"
 
-#: web/templates/base.html:119 web/templates/create.html:18
+#: web/templates/base.html:120 web/templates/create.html:18
 #: web/templates/login.html:4 web/templates/login.html.py:12
 #: web/templates/login.html:21
 msgid "Login"
 msgstr "Login"
 
-#: web/templates/base.html:120 web/templates/create.html:4
+#: web/templates/base.html:121 web/templates/create.html:4
 #: web/templates/create.html.py:11 web/templates/create.html:19
 #: web/templates/login.html:19
 msgid "Sign Up"
@@ -256,17 +257,17 @@ msgid "is not a representative and is not associated with LoveLive!. LoveLive!, 
 msgstr "não é representativo e não está associado a LoveLive!.\n"
 "LoveLive!, School Idol Project, School Idol Festival, os seus logos e as suas imagens de cartas são marcas registadas de ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad e KLab."
 
-#: web/templates/about.html:101
+#: web/templates/about.html:111
 msgid "Icon Credits"
 msgstr "Icon Credits"
 
-#: web/templates/base.html:165 web/templates/cards.html:245
+#: web/templates/base.html:166 web/templates/cards.html:245
 #: web/templates/include/filterbar.html:56
-#: web/templates/staff_verification.html:128
+#: web/templates/staff_verification.html:130
 msgid "Go"
 msgstr "Ir"
 
-#: web/templates/500.html:5 web/templates/addaccount.html:235
+#: web/templates/500.html:5 web/templates/addaccount.html:295
 #: web/templates/baseMenu.html:7 web/templates/modalcontact.html:4
 msgid "Contact Us"
 msgstr "Contacta-nos"
@@ -288,7 +289,7 @@ msgstr "404. Esta não é a página que estás à procura."
 msgid "Back to homepage"
 msgstr "Voltar para a página principal"
 
-#: web/templates/base.html:71 web/templates/cardsPage.html:393
+#: web/templates/base.html:72 web/templates/cardsPage.html:387
 #: web/templates/include/filterbar.html:25 web/templates/users.html:6
 msgid "Players"
 msgstr "Jogadores"
@@ -305,7 +306,7 @@ msgstr "Mudar Idioma:"
 msgid "Cards Album"
 msgstr "Álbum de Cartas"
 
-#: tmp/forms.py:138 web/forms.py:308 web/forms.py:333 web/forms.py:364
+#: tmp/forms.py:138 web/forms.py:316 web/forms.py:342 web/forms.py:373
 #: web/templates/cards.html:71 web/templates/cards.html.py:73
 #: web/templates/include/filterbar.html:8
 #: web/templates/staff_verifications.html:18
@@ -317,26 +318,26 @@ msgstr "Pesquisar"
 msgid "Filter"
 msgstr "Filtro"
 
-#: tmp/views.py:333 web/forms.py:341 web/templates/cards.html:73
+#: tmp/views.py:333 web/forms.py:350 web/templates/cards.html:73
 #: web/templates/cards.html.py:77 web/templates/cardsPage.html:160
 #: web/templates/idol.html:5 web/templates/idol.html.py:39
-#: web/templates/include/idol_tabs.html:3 web/views.py:506
+#: web/templates/include/idol_tabs.html:3 web/views.py:524
 msgid "Idol"
 msgstr "Idolo"
 
-#: web/forms.py:378 web/templates/cards.html:90
+#: web/forms.py:387 web/templates/cards.html:90
 msgid "Rarity"
 msgstr "Raridade"
 
-#: api/models.py:474 web/forms.py:342 web/forms.py:371 web/forms.py:377
+#: api/models.py:536 web/forms.py:351 web/forms.py:380 web/forms.py:386
 #: web/templates/cards.html:98 web/templates/idol.html:51
 #: web/templates/songsPage.html:108
 msgid "Attribute"
 msgstr "Atributo"
 
-#: api/models.py:421 web/forms.py:346 web/templates/box.html:23
+#: api/models.py:483 web/forms.py:355 web/templates/box.html:23
 #: web/templates/cards.html:73 web/templates/cards.html.py:115
-#: web/templates/cardsPage.html:263 web/templates/cardsPage.html.py:486
+#: web/templates/cardsPage.html:263 web/templates/cardsPage.html.py:480
 #: web/templates/event.html:51 web/templates/ownedCardOnBottomCard.html:28
 msgid "Skill"
 msgstr "Habilidade"
@@ -350,11 +351,11 @@ msgstr "Coleção"
 msgid "Order"
 msgstr "Ordem"
 
-#: web/forms.py:318 web/forms.py:369 web/templates/cards.html:241
+#: web/forms.py:327 web/forms.py:378 web/templates/cards.html:241
 msgid "Reverse order"
 msgstr "Ordem reversa"
 
-#: api/models.py:419 web/templates/cards.html:216
+#: api/models.py:481 web/templates/cards.html:216
 #: web/templates/cards.html.py:219 web/templates/ownedCardOnBottomCard.html:22
 msgid "Max Leveled"
 msgstr "Nível maximizado"
@@ -367,29 +368,29 @@ msgstr "Nível não maximizado"
 msgid "Not Max Bonded"
 msgstr "Bond não maximizado"
 
-#: web/templates/cards.html:213 web/templates/cardsPage.html:313
-#: web/templates/cardsPage.html.py:322 web/templates/cardsPage.html:403
-#: web/templates/cardsPage.html.py:410 web/templates/usersPage.html:16
+#: web/templates/cards.html:213 web/templates/cardsPage.html:307
+#: web/templates/cardsPage.html.py:316 web/templates/cardsPage.html:397
+#: web/templates/cardsPage.html.py:404 web/templates/usersPage.html:16
 msgid "Not Idolized"
 msgstr "Não Idolizada"
 
-#: api/models.py:421 web/templates/cardsPage.html:53
+#: api/models.py:483 web/templates/cardsPage.html:53
 #: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
 #: web/templates/ownedCardOnBottomCard.html:28 web/templates/songsPage.html:94
 msgid "Level"
 msgstr "Nível"
 
 #: tmp/views.py:332 web/templates/cardsPage.html:203
-#: web/templates/events.html:43 web/views.py:505
+#: web/templates/events.html:43 web/views.py:523
 msgid "Release date"
 msgstr "Data de lançamento"
 
-#: web/forms.py:320 web/templates/cards.html:73
+#: web/forms.py:329 web/templates/cards.html:73
 #: web/templates/cardsPage.html:230 web/templates/songsPage.html:150
 msgid "Event"
 msgstr "Evento"
 
-#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:512
+#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:530
 msgid "HP"
 msgstr "HP"
 
@@ -397,55 +398,55 @@ msgstr "HP"
 msgid "Center Skill"
 msgstr "Habilidade de Líder"
 
-#: web/templates/activitysingle.html:51 web/templates/cardsPage.html:431
-#: web/templates/idols.html:27 web/templates/idols.html.py:53
-#: web/templates/include/idol_tabs.html:8 web/templates/songsPage.html:195
-#: web/templates/usersPage.html:56
+#: web/templates/activitysingle.html:53 web/templates/cardsPage.html:425
+#: web/templates/idols.html:27 web/templates/idols.html.py:47
+#: web/templates/idols.html:73 web/templates/include/idol_tabs.html:8
+#: web/templates/songsPage.html:195 web/templates/usersPage.html:56
 msgid "Comments"
 msgstr "Comentários"
 
 #: tmp/profile.html:214 web/templates/addCardForm.html:18
-#: web/templates/profile.html:251
+#: web/templates/profile.html:334
 msgid "Add this card"
 msgstr "Adicionar esta carta"
 
-#: web/templates/cardsPage.html:473
+#: web/templates/cardsPage.html:467
 msgid "Create an account to add this card to your collection"
 msgstr "Criar uma conta para adicionar esta carta à tua coleção"
 
-#: web/templates/cardsPage.html:214 web/templates/cardsPage.html.py:480
+#: web/templates/cardsPage.html:214 web/templates/cardsPage.html.py:474
 msgid "Promo Card"
 msgstr "Carta Promocional"
 
-#: web/templates/cardsPage.html:217 web/templates/cardsPage.html.py:480
+#: web/templates/cardsPage.html:217 web/templates/cardsPage.html.py:474
 msgid "This card comes with "
 msgstr "Esta carta vem com"
 
-#: web/templates/cardsPage.html:483
+#: web/templates/cardsPage.html:477
 msgid "Event Card"
 msgstr "Carta de Evento"
 
-#: web/templates/cardsPage.html:483
+#: web/templates/cardsPage.html:477
 msgid "This card first appeared during the event"
 msgstr "Esta carta apareceu pela primeira vez durante um evento"
 
-#: web/templates/cardsPage.html:486
+#: web/templates/cardsPage.html:480
 msgid "Special Card"
 msgstr "Carta Especial"
 
-#: web/templates/cardsPage.html:486
+#: web/templates/cardsPage.html:480
 msgid "This card cannot be added in a team."
 msgstr "Esta carta não pode ser adicionada a uma equipa."
 
-#: web/templates/cardsPage.html:489
+#: web/templates/cardsPage.html:483
 msgid "This card is only available in the Japanese version of the game."
 msgstr "Esta carta só está disponível na versão Japonesa do jogo."
 
-#: web/templates/cardsPage.html:491
+#: web/templates/cardsPage.html:485
 msgid "This card is available on all the versions of the game in the world."
 msgstr "Esta carta está disponível em todas as versões do jogo no mundo."
 
-#: NEW_INDEX.html:5 web/templates/base.html:10 web/templates/base.html.py:23
+#: NEW_INDEX.html:5 web/templates/base.html:10 web/templates/base.html.py:24
 #: web/templates/index.html:5 web/templates/links.html:5
 #: web/templates/modalsukutomo.html:7
 msgid "The Ultimate Resource For LoveLive! School Idol Festival players"
@@ -471,74 +472,74 @@ msgstr "Nenhuma conta."
 msgid "No Center Specified"
 msgstr "Nenhuma Líder especificada."
 
-#: tmp/profile.html:134 web/templates/profile.html:150
+#: tmp/profile.html:134 web/templates/profile.html:167
 msgid "Game Version"
 msgstr "Versão do Jogo"
 
-#: tmp/profile.html:166 web/templates/profile.html:183
+#: tmp/profile.html:166 web/templates/profile.html:244
 msgid "Significant Cards"
 msgstr "Cartas Significantes"
 
-#: tmp/profile.html:167 web/templates/about.html:159
-#: web/templates/index.html:92 web/templates/profile.html:184
+#: tmp/profile.html:167 web/templates/about.html:169
+#: web/templates/index.html:92 web/templates/profile.html:245
 msgid "and"
 msgstr "e"
 
-#: api/models.py:37 api/models.py:144 tmp/profile.html:240 web/views.py:510
+#: api/models.py:37 api/models.py:154 tmp/profile.html:240 web/views.py:528
 msgid "Deck"
 msgstr "Baralho"
 
-#: api/models.py:38 api/models.py:145 tmp/profile.html:245
+#: api/models.py:38 api/models.py:155 tmp/profile.html:245
 #: web/templates/include/account_tab_album.html:7
 msgid "Album"
 msgstr "Álbum"
 
-#: api/models.py:39 api/models.py:149 tmp/profile.html:251
+#: api/models.py:39 api/models.py:159 tmp/profile.html:251
 #: web/templates/include/account_tab_presentbox.html:7
 msgid "Present Box"
 msgstr "Caixa de Presentes"
 
-#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:504
+#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:522
 msgid "Card #ID"
 msgstr "#ID de Carta"
 
-#: tmp/views.py:334 web/views.py:507
+#: tmp/views.py:334 web/views.py:525
 msgid "Smile's statistics"
 msgstr "Estatísticas de Smile"
 
-#: tmp/views.py:335 web/views.py:508
+#: tmp/views.py:335 web/views.py:526
 msgid "Pure's statistics"
 msgstr "Estatísticas de Pure"
 
-#: tmp/views.py:336 web/views.py:509
+#: tmp/views.py:336 web/views.py:527
 msgid "Cool's statistics"
 msgstr "Estatísticas de Cool"
 
-#: api/models.py:475
+#: api/models.py:537
 msgid "Description"
 msgstr "Descrição"
 
-#: api/models.py:475 web/forms.py:245
+#: api/models.py:537 web/forms.py:264
 msgid "Write whatever you want. You can add formatting and links using Markdown."
 msgstr "Escreve o que quiseres. Podes adicionar formatações e links com o Markdown"
 
-#: api/models.py:477
+#: api/models.py:539
 msgid "Location"
 msgstr "Localização"
 
-#: api/models.py:477
+#: api/models.py:539
 msgid "The city you live in."
 msgstr "A cidade em que vives."
 
-#: api/models.py:397 tmp/profile.html:129 web/templates/profile.html:145
+#: api/models.py:437 tmp/profile.html:129 web/templates/profile.html:160
 msgid "Accept friend requests"
 msgstr "Aceitar pedidos de amizade"
 
-#: api/models.py:489 web/forms.py:374
+#: api/models.py:551 web/forms.py:383
 msgid "Private Profile"
 msgstr "Perfil Privado"
 
-#: api/models.py:489
+#: api/models.py:551
 msgid "If your profile is private, people will only see your center."
 msgstr "Se o teu perfil é privado as pessoas só poderão ver a tua Líder ."
 
@@ -546,21 +547,21 @@ msgstr "Se o teu perfil é privado as pessoas só poderão ver a tua Líder ."
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
 msgstr[0] "%(counter)s cartas combinam com a tua pesquisa:"
-msgstr[1] "%(counter)s cartas combinam com a tua pesquisa"
+msgstr[1] "%(counter)s cartas combinam com a tua pesquisa:"
 
 #: web/templates/activities.html:9 web/templates/box.html:35
-#: web/templates/cardsPage.html:522
+#: web/templates/cardsPage.html:516
 #: web/templates/include/account_tab_events.html:40
 #: web/templates/include/account_tab_teams.html:26
 #: web/templates/songsPage.html:273 web/templates/staff_verifications.html:67
 msgid "No results."
 msgstr "Nenhum resultado."
 
-#: web/templates/cardsPage.html:523 web/templates/songsPage.html:274
+#: web/templates/cardsPage.html:517 web/templates/songsPage.html:274
 msgid "No idols match your search."
 msgstr "Nenhum ídolo combina com a tua pesquisa."
 
-#: web/templates/cardsPage.html:525 web/templates/songsPage.html:276
+#: web/templates/cardsPage.html:519 web/templates/songsPage.html:276
 msgid "Change filters"
 msgstr "Mudar filtros"
 
@@ -580,32 +581,33 @@ msgstr "Para mudares o teu avatar, usa o Gravatar com o mesmo email."
 msgid "Change Avatar"
 msgstr "Mudar Avatar"
 
-#: api/models.py:476 tmp/forms.py:41 web/forms.py:47 web/forms.py:372
+#: api/models.py:538 tmp/forms.py:41 web/forms.py:56 web/forms.py:381
 msgid "Best Girl"
 msgstr "Ídolo Preferido"
 
-#: tmp/profile.html:130 web/templates/cardsPage.html:220
-#: web/templates/events.html:91 web/templates/profile.html:146
-#: web/templates/songs.html:38 web/templates/songsPage.html:182
-#: web/templates/users.html:111 web/templates/users.html.py:118
+#: tmp/profile.html:130 web/templates/addaccount.html:64
+#: web/templates/cardsPage.html:220 web/templates/events.html:91
+#: web/templates/profile.html:161 web/templates/songs.html:38
+#: web/templates/songsPage.html:182 web/templates/users.html:111
+#: web/templates/users.html.py:118
 msgid "Yes"
 msgstr "Sim"
 
-#: tmp/profile.html:130 web/templates/events.html:92
-#: web/templates/profile.html:146 web/templates/songs.html:39
-#: web/templates/songsPage.html:182 web/templates/users.html:112
-#: web/templates/users.html.py:119
+#: tmp/profile.html:130 web/templates/addaccount.html:65
+#: web/templates/events.html:92 web/templates/profile.html:161
+#: web/templates/songs.html:39 web/templates/songsPage.html:182
+#: web/templates/users.html:112 web/templates/users.html.py:119
 msgid "No"
 msgstr "Não"
 
-#: tmp/profile.html:86 web/templates/base.html:99
+#: tmp/profile.html:86 web/templates/base.html:100
 #: web/templates/profile.html:103
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
 msgstr[0] "%(length)s conta:"
 msgstr[1] "%(length)s contas:"
 
-#: api/models.py:420 web/templates/cards.html:223
+#: api/models.py:482 web/templates/cards.html:223
 #: web/templates/cards.html.py:226 web/templates/ownedCardOnBottomCard.html:25
 msgid "Max Bonded (Kizuna)"
 msgstr "Bond maximizado"
@@ -614,23 +616,23 @@ msgstr "Bond maximizado"
 msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us."
 msgstr "Algo estranho aconteceu e parece que é a culpa do nosso servidor. Se o erro persistir por favor contacta-nos."
 
-#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:19
-#: web/templates/addaccount.html:216 web/templates/edit.html:113
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:79
+#: web/templates/addaccount.html:276 web/templates/edit.html:113
+#: web/templates/profile.html:279 web/templates/profile.html.py:281
 msgid "Edit Account"
 msgstr "Editar conta"
 
-#: web/templates/addaccount.html:232 web/templates/addaccount.html.py:239
+#: web/templates/addaccount.html:292 web/templates/addaccount.html.py:299
 msgid "Delete Account"
 msgstr "Apagar conta"
 
-#: web/templates/base.html:57 web/templates/base.html.py:65
-#: web/templates/index.html:141
+#: web/templates/index.html:138
 msgid "Contest"
 msgstr "Competição"
 
-#: tmp/profile.html:4 web/templates/about.html:130
-#: web/templates/about.html.py:303 web/templates/about.html:345
-#: web/templates/base.html:95 web/templates/idol.html:129
+#: tmp/profile.html:4 web/templates/about.html:140
+#: web/templates/about.html.py:313 web/templates/about.html:355
+#: web/templates/base.html:96 web/templates/idol.html:129
 #: web/templates/profile.html:4
 msgid "Profile"
 msgstr "Perfil"
@@ -651,7 +653,7 @@ msgstr "Seguir"
 msgid "Followers"
 msgstr "Seguidores"
 
-#: tmp/profile.html:53 web/templates/index.html:176
+#: api/models.py:164 tmp/profile.html:53 web/templates/index.html:173
 #: web/templates/profile.html:69
 msgid "Following"
 msgstr "Segues"
@@ -660,17 +662,18 @@ msgstr "Segues"
 msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
 msgstr "Para pesquisares através das tuas cartas, ordenas-as, edita-as ou adiciona alguma nova, vai para a página de cartas e usa os filtros."
 
-#: api/models.py:450 tmp/forms.py:140 web/templates/cardsPage.html:329
-#: web/templates/event_ranking.html:12 web/templates/event_ranking.html:37
+#: api/models.py:512 contest/templates/contest_result.html:11 tmp/forms.py:140
+#: web/templates/cardsPage.html:323 web/templates/event_ranking.html:12
+#: web/templates/event_ranking.html:37
 msgid "Ranking"
 msgstr "Ranking"
 
-#: api/models.py:451 web/templates/event_ranking.html:25
+#: api/models.py:513 web/templates/event_ranking.html:25
 #: web/templates/include/account_tab_events.html:22
 msgid "Song Ranking"
 msgstr "Ranking da Música"
 
-#: api/models.py:452 web/templates/event.html:106
+#: api/models.py:514 web/templates/event.html:106
 #: web/templates/event.html.py:118 web/templates/event.html:171
 #: web/templates/event.html.py:183 web/templates/event_ranking.html:27
 #: web/templates/include/account_tab_events.html:28
@@ -681,8 +684,8 @@ msgstr "Pontos"
 msgid "in"
 msgstr "no"
 
-#: api/models.py:147 tmp/profile.html:229 web/raw.py:164
-#: web/templates/base.html:53 web/templates/events.html:3
+#: api/models.py:157 tmp/profile.html:229 web/raw.py:164
+#: web/templates/base.html:54 web/templates/events.html:3
 #: web/templates/events.html.py:29
 msgid "Events"
 msgstr "Eventos"
@@ -695,8 +698,8 @@ msgstr "Datas"
 msgid "Note"
 msgstr "Nota"
 
-#: web/templates/cardsPage.html:424 web/templates/event.html:135
-#: web/templates/idol.html:150
+#: web/templates/cardsPage.html:418 web/templates/event.html:135
+#: web/templates/idol.html:148
 msgid "Wiki"
 msgstr "Wiki"
 
@@ -705,7 +708,7 @@ msgstr "Wiki"
 msgid "Share your ranking"
 msgstr "Partilha o teu ranking"
 
-#: web/templates/activity.html:41 web/templates/addteam.html:51
+#: web/templates/activity.html:42 web/templates/addteam.html:51
 #: web/templates/event_participations.html:42
 msgid "Delete"
 msgstr "Apagar"
@@ -714,17 +717,17 @@ msgstr "Apagar"
 msgid "Activities"
 msgstr "Atividades"
 
-#: api/models.py:463 api/models.py:482 api/models.py:483 api/models.py:484
-#: api/models.py:485 api/models.py:487 api/models.py:488
+#: api/models.py:525 api/models.py:544 api/models.py:545 api/models.py:546
+#: api/models.py:547 api/models.py:549 api/models.py:550
 msgid "Write your username only, no URL."
 msgstr "Escreve apenas o teu nome de utilizador, não coloques URL(s)"
 
-#: web/templates/about.html:35 web/templates/about.html.py:173
-#: web/templates/about.html:177
+#: web/templates/about.html:35 web/templates/about.html.py:183
+#: web/templates/about.html:187
 msgid "Donate"
 msgstr "Doar"
 
-#: web/templates/about.html:176
+#: web/templates/about.html:186
 msgid "If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads."
 msgstr "Se gostas deste website por favor pensa em fazer uma doação. A tua doação vai ajudar-nos a pagar os custos do servidor e vai permitir o site a continuar a ser grátis e sem anúncios"
 
@@ -732,11 +735,11 @@ msgstr "Se gostas deste website por favor pensa em fazer uma doação. A tua doa
 msgid "Thank you"
 msgstr "Obrigado"
 
-#: tmp/forms.py:142 web/forms.py:367
+#: tmp/forms.py:142 web/forms.py:376
 msgid "New players"
 msgstr "Novos jogadores"
 
-#: web/templates/base.html:51 web/templates/idols.html:9
+#: web/templates/base.html:52 web/templates/idols.html:9
 msgid "Idols"
 msgstr "Ídolos"
 
@@ -785,9 +788,9 @@ msgstr "Ano"
 msgid "CV"
 msgstr "CV"
 
-#: web/templates/idol.html:143
+#: web/templates/idol.html:141
 msgid "Summary"
-msgstr ""
+msgstr "Sumário"
 
 #: web/templates/map.html:21
 msgid "Edit your location"
@@ -797,17 +800,17 @@ msgstr "Editar a tua localização"
 msgid "Add your location"
 msgstr "Adicionar a tua localização"
 
-#: web/forms.py:375 web/templates/about.html:178
-#: web/templates/about.html.py:280
+#: web/forms.py:384 web/templates/about.html:188
+#: web/templates/about.html.py:290
 msgid "Donators"
 msgstr "Pessoas que doaram"
 
-#: web/templates/about.html:77 web/templates/cardsPage.html:419
-#: web/templates/idol.html:148 web/templates/songsPage.html:186
+#: web/templates/about.html:77 web/templates/cardsPage.html:413
+#: web/templates/idol.html:146 web/templates/songsPage.html:186
 msgid "Sources"
 msgstr "Fontes"
 
-#: web/templates/base.html:77 web/templates/map.html:14
+#: web/templates/base.html:78 web/templates/map.html:14
 msgid "Map"
 msgstr "Mapa"
 
@@ -835,15 +838,15 @@ msgstr "Chat"
 msgid "You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user."
 msgstr "Deves contactar-nos se tiveres problemas com a tua conta tais como perderes a tua palavra-passe ou se queres transferir uma conta para outro utilizador"
 
-#: tmp/profile.html:222 web/templates/profile.html:259
+#: tmp/profile.html:222 web/templates/profile.html:342
 msgid "This profile is private, so it is not possible to see the cards, activities and events participations."
 msgstr "Este perfil é privado e, por isso, não é possível ver as cartas nem participações em eventos"
 
-#: api/models.py:46 web/forms.py:261 web/forms.py:263
+#: api/models.py:46 web/forms.py:280 web/forms.py:282
 msgid "Silver Verified"
 msgstr "Prata Verificada"
 
-#: api/models.py:47 web/forms.py:263
+#: api/models.py:47 web/forms.py:282
 msgid "Gold Verified"
 msgstr "Ouro Verificado"
 
@@ -887,26 +890,26 @@ msgstr "Rank Up"
 msgid "Ranked in event"
 msgstr "Nos Rankings do evento"
 
-#: api/models.py:399 tmp/profile.html:151 web/templates/profile.html:167
+#: api/models.py:439 tmp/profile.html:151 web/templates/profile.html:186
 msgid "Device"
 msgstr "Plataforma em que jogas"
 
-#: api/models.py:399
+#: api/models.py:439
 msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
 msgstr "O modelo da tua plataforma. Exemplo: Nexus 5, iPhone 4, iPad 2..."
 
-#: api/models.py:400 tmp/profile.html:157 web/templates/profile.html:173
+#: api/models.py:440 tmp/profile.html:157 web/templates/profile.html:208
 msgid "Play with"
 msgstr "Jogas com"
 
-#: api/models.py:414 api/models.py:429 api/models.py:449
+#: api/models.py:476 api/models.py:491 api/models.py:511
 #: web/templates/cards.html:193 web/templates/staff_verifications.html:26
 msgid "Account"
 msgstr "Conta"
 
-#: api/models.py:85 api/models.py:405 tmp/forms.py:141 tmp/profile.html:175
-#: tmp/profile.html.py:184 web/templates/profile.html:193
-#: web/templates/profile.html.py:202
+#: api/models.py:95 api/models.py:445 tmp/forms.py:141 tmp/profile.html:175
+#: tmp/profile.html.py:184 web/templates/profile.html:259
+#: web/templates/profile.html.py:268
 msgid "Verified"
 msgstr "Verificada"
 
@@ -928,7 +931,7 @@ msgstr "Outros Android APKs"
 
 #: web/links.py:58
 msgid "Play on a rooted Android"
-msgstr ""
+msgstr "Jogar no Android"
 
 #: web/links.py:51
 msgid "\"Illegal access detected!\"? Here is the solution."
@@ -938,8 +941,8 @@ msgstr "\"Acesso ilegal detetado!\"? Aqui está a solução."
 msgid "Play on a PC"
 msgstr "Jogo(a) num PC"
 
-#: web/links.py:80 web/templates/about.html:164
-#: web/templates/modalabout.html:22
+#: web/links.py:80 web/templates/about.html:174
+#: web/templates/modalabout.html:22 web/templates/modaltutorialaddcard.html:37
 msgid "Get Started"
 msgstr "Começar"
 
@@ -1185,1528 +1188,1734 @@ msgstr "Generador de Rankings de Ídolos pessoais"
 
 #: web/links.py:531
 msgid "Check \"Love Live!\" and press \"Music Start!\"."
-msgstr ""
+msgstr "Vai a \"LoveLive!\" e carrega em \"Music Start!\""
 
 #: web/links.py:551
 msgid "Official Website"
-msgstr ""
+msgstr "Website Oficial"
 
 #: web/links.py:557
 msgid "Information about the anime"
-msgstr ""
+msgstr "Informações do Anime"
 
 #: web/links.py:569
 msgid "LoveLive! Discography"
-msgstr ""
+msgstr "Discografia LoveLive!"
 
 #: web/links.py:575
 msgid "LoveLive! The Manga"
-msgstr ""
+msgstr "LoveLive! A Manga"
 
 #: web/links.py:600
 msgid "Love Live music on videos"
-msgstr ""
+msgstr "Músicas nos vídeos de Love Live"
 
 #: web/links.py:601
 msgid "by the Reddit /r/LoveLive community"
-msgstr ""
+msgstr "by the Reddit /r/LoveLive community"
 
-#: web/templates/baseMenu.html:8
+#: web/templates/baseMenu.html:8 web/templates/modaltutorialaddcard.html:24
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: web/templates/event.html:102 web/templates/event.html.py:166
 msgid "time"
-msgstr ""
+msgstr "tempo"
 
 #: tmp/profile.html:178 tmp/profile.html.py:189 web/raw.py:8
-#: web/templates/addaccount.html:87 web/templates/addaccount.html.py:194
+#: web/templates/addaccount.html:147 web/templates/addaccount.html.py:254
 #: web/templates/edit.html:101 web/templates/edit.html.py:113
-#: web/templates/profile.html:196 web/templates/profile.html.py:207
-#: web/templates/staff_verifications.html:30
+#: web/templates/profile.html:262 web/templates/profile.html.py:273
+#: web/templates/profile.html:287 web/templates/staff_verifications.html:30
 msgid "Get verified"
-msgstr ""
+msgstr "Verifica-te"
 
 #: tmp/views.py:386 tmp/views.py:853
 msgid "Only verified accounts can have a rank above 200. Contact us to get verified!"
-msgstr ""
+msgstr "Só contas verificadas podem ter um rank superior a 200. Contacta-nos para ser verificado!"
 
 #: web/links.py:32
 msgid "Follow this tutorial to play the Japanese version of the game. You'll be able to download it directly from the App Store or Play Store!"
-msgstr ""
+msgstr "Segue este tutorial para jogares a versão Japonesa do jogo. Vais poder fazer o download diretamente da App Store ou da Play Store!"
 
 #: web/links.py:594
 msgid "Buy music on iTunes"
-msgstr ""
+msgstr "Comprar músicas no iTunes"
 
 #: web/links.py:6 web/templates/android.html:32
-#: web/templates/cardsPage.html:307 web/templates/modalabout.html:21
+#: web/templates/cardsPage.html:301 web/templates/modalabout.html:21
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
-#: api/models.py:73
+#: api/models.py:83
 msgid "Idol Supporter"
-msgstr ""
+msgstr "ajudante do Ídolo"
 
-#: api/models.py:74
+#: api/models.py:84
 msgid "Idol Lover"
-msgstr ""
+msgstr "Apaixonado pelo Ídolo"
 
-#: api/models.py:75
+#: api/models.py:85
 msgid "Idol Ambassador"
-msgstr ""
+msgstr "Embaixador do Ídolo"
 
-#: api/models.py:76
+#: api/models.py:86
 msgid "Idol Producer"
-msgstr ""
+msgstr "Produtor do Ídolo"
 
-#: api/models.py:77
+#: api/models.py:87
 msgid "Ultimate Idol Devotee"
-msgstr ""
+msgstr "Membro altamente devotado ao Ídolo"
 
-#: api/models.py:214
+#: api/models.py:254
 msgid "blue"
-msgstr ""
+msgstr "azul"
 
-#: api/models.py:215
+#: api/models.py:255
 msgid "pink"
-msgstr ""
+msgstr "cor-de-rosa"
 
-#: api/models.py:216
+#: api/models.py:256
 msgid "shiny Silver"
-msgstr ""
+msgstr "prateado"
 
-#: api/models.py:217 api/models.py:218
+#: api/models.py:257 api/models.py:258
 msgid "shiny Gold"
-msgstr ""
+msgstr "dourado"
 
 #: web/links.py:50
 msgid "APKs to play on rooted Android"
-msgstr ""
+msgstr "APKs para jogar no Andriod"
 
 #: web/links.py:59
 msgid "If the APKs above didn't work, here is a backup solution"
-msgstr ""
+msgstr "Se os APKs acima não funcionaram, aqui está uma outra solução"
 
 #: web/links.py:92
 msgid "Video tutorials"
-msgstr ""
+msgstr "Tutoriais em vídeo"
 
 #: web/links.py:94
 msgid "Easy tutorials for beginners and advanced players by Eryn"
-msgstr ""
+msgstr "Tutoriais fáceis para iniciantes ou jogadores avançados by Eryn"
 
 #: web/links.py:410
 msgid "Android Training App"
-msgstr ""
+msgstr "Aplicação de Treino para Android"
 
 #: web/links.py:472
 msgid "Events Points Calculator"
-msgstr ""
+msgstr "Calculador de Pontos de Evento"
 
 #: web/links.py:486
 msgid "English Events Tiers Cutoff Predictor"
-msgstr ""
+msgstr "Previsor de pontos necessários para tiers na versão inglesa"
 
 #: web/links.py:543
 msgid "LoveLive! Wikia"
-msgstr ""
+msgstr "LoveLive! Wikia"
 
-#: web/templates/activitysingle.html:50
+#: web/templates/activitysingle.html:52
 msgid "Write Comment"
-msgstr ""
+msgstr "Escrever um comentário"
 
 #: web/templates/addteam.html:6 web/templates/addteam.html.py:13
 #: web/templates/include/account_tab_teams.html:7
 msgid "Update Team"
-msgstr ""
+msgstr "Editar a Equipa"
 
 #: web/templates/addteam.html:6 web/templates/addteam.html.py:13
 #: web/templates/addteam.html:40
 #: web/templates/include/account_tab_teams.html:33
 msgid "Add Team"
-msgstr ""
+msgstr "Adicionar Equipa"
 
 #: web/templates/addteam.html:48
 msgid "Delete Team"
-msgstr ""
+msgstr "Apagar Equipa"
 
 #: web/templates/box.html:5
 msgid "Box"
-msgstr ""
+msgstr "Caixa"
 
 #: web/templates/box.html:55
 msgid "Back to boxes"
-msgstr ""
+msgstr "De volta às caixas"
 
 #: web/templates/boxes.html:4 web/templates/boxes.html.py:7
 msgid "Boxes"
-msgstr ""
+msgstr "Caixas"
 
 #: web/templates/cards.html:139 web/templates/cardsPage.html:190
 #: web/templates/idol.html:68
 msgid "Sub Unit"
-msgstr ""
+msgstr "Sub Unit"
 
 #: web/templates/cards.html:164
 msgid "Promo Cards"
-msgstr ""
+msgstr "Cartas Promocionais"
 
-#: web/forms.py:388 web/forms.py:395 web/templates/cards.html:167
+#: web/forms.py:397 web/forms.py:404 web/templates/cards.html:167
 #: web/templates/cards.html.py:175 web/templates/cards.html:183
 #: web/templates/songs.html:24 web/templates/songs.html.py:31
 #: web/templates/users.html:54 web/templates/users.html.py:61
 #: web/templates/users.html:100
 msgid "Only"
-msgstr ""
+msgstr "Só"
 
 #: web/templates/cards.html:168 web/templates/cards.html.py:176
 #: web/templates/cards.html:184 web/templates/songs.html:25
 #: web/templates/songs.html.py:32 web/templates/users.html:55
 #: web/templates/users.html.py:99
 msgid "None"
-msgstr ""
+msgstr "Nenhuma"
 
 #: web/templates/cards.html:172
 msgid "Special Cards"
-msgstr ""
+msgstr "Cartas Especiais"
 
-#: web/templates/about.html:206
+#: web/templates/about.html:216
 msgid "Donation"
-msgstr ""
+msgstr "Doação"
 
-#: web/templates/about.html:224
+#: web/templates/about.html:234
 msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!"
-msgstr ""
+msgstr "O teu nome, o teu perfil, um link para o teu perfil e um link para qualquer local que queiras divulgar (o teu Twitter, Tumblr, Twitch outro qualquer outro website!) vão ser adicionados à tua PÁGINA PRINCIPAL do School Idol Tomodachi! "
 
-#: web/templates/about.html:227
+#: web/templates/about.html:237
 msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page."
-msgstr ""
+msgstr "O teu nome, o teu perfil, um link para o teu perfil e um link para qualquer local que queiras divulgar (o teu Twitter, Tumblr, Twitch outro qualquer outro website!) vão ser adicionados a esta página."
 
-#: web/templates/about.html:230
+#: web/templates/about.html:240
 msgid "Your name and a link to your profile will be added to this page."
-msgstr ""
+msgstr "O teu nome, o teu perfil, um link para o teu perfil vão ser adicionados a esta página."
+
+#: web/templates/about.html:280
+msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
+msgstr "Tu decides quem o Ídolo das μ que será mostrado no topo da tua página principal"
+
+#: web/templates/about.html:251
+msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
+msgstr "Com estas opções especiais, um coração %(color)s vai aparecer ao lado da tua foto de perfil no teu perfil e em todo o lado neste website."
+
+#: web/templates/about.html:264
+msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
+msgstr "Vamos mandar-te uma caixa (manualmente feita) que contém 10+1 envelopes com cartas de papel aleatórias do jogo!"
 
 #: web/templates/about.html:270
-msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
-msgstr ""
-
-#: web/templates/about.html:241
-msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
-msgstr ""
-
-#: web/templates/about.html:254
-msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
-msgstr ""
-
-#: web/templates/about.html:260
 msgid "We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!"
-msgstr ""
+msgstr "Vamos discutir e depois implementar a ferramenta que gostarias de ver no website. Tu decides o que quiseres e podes torná-lo realidade!"
 
-#: web/templates/about.html:261
+#: web/templates/about.html:271
 msgid "Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^"
-msgstr ""
+msgstr "Nota que tem que concordar com as nossas possibilidades e em concordância com o espírito do website ^_^"
 
 #: web/templates/include/idol_tabs.html:6
 msgid "Pictures"
-msgstr ""
+msgstr "Imagens"
 
 #: web/templates/login.html:20
 msgid "Forgot password?"
-msgstr ""
+msgstr "Esqueceste-te da palavra-passe?"
 
-#: tmp/profile.html:187 web/templates/profile.html:205
+#: tmp/profile.html:187 web/templates/profile.html:271
 msgid "You are Bronze Verified. Only you can see it."
-msgstr ""
+msgstr "Tu estás a um nível de verificação de Bronze"
 
-#: tmp/profile.html:189 web/templates/profile.html:207
+#: tmp/profile.html:189 web/templates/profile.html:273
 msgid "Silver"
-msgstr ""
+msgstr "Prata"
 
-#: tmp/profile.html:189 web/templates/profile.html:207
+#: tmp/profile.html:189 web/templates/profile.html:273
 msgid "Gold"
-msgstr ""
+msgstr "Ouro"
 
-#: api/models.py:136
+#: api/models.py:146
 msgid "Never"
-msgstr ""
+msgstr "Nunca"
 
-#: api/models.py:137
+#: api/models.py:147
 msgid "Sometimes"
-msgstr ""
+msgstr "Às vezes"
 
-#: api/models.py:138
+#: api/models.py:148
 msgid "Often"
-msgstr ""
+msgstr "Frequentemente"
 
-#: api/models.py:139
+#: api/models.py:149
 msgid "Every single day"
-msgstr ""
+msgstr "Todos os dias"
 
-#: api/models.py:462
+#: api/models.py:524
 msgid "Platform"
-msgstr ""
+msgstr "Plataforma"
 
-#: api/models.py:463
+#: api/models.py:525
 msgid "Username/ID"
-msgstr ""
+msgstr "Nome de Utilizador/ID"
 
-#: api/models.py:464
+#: api/models.py:526
 msgid "How often do you tweet/stream/post about Love Live?"
-msgstr ""
+msgstr "Com que frequência postas algo sobre Love Live?"
 
-#: tmp/forms.py:26 web/forms.py:33
+#: tmp/forms.py:26 web/forms.py:42
 msgid "Old Password"
-msgstr ""
+msgstr "Palavra-passe antiga"
 
-#: tmp/forms.py:27 web/forms.py:34
+#: tmp/forms.py:27 web/forms.py:43
 msgid "New Password"
-msgstr ""
+msgstr "Nova Palavra-passe"
 
-#: tmp/forms.py:28 web/forms.py:35
+#: tmp/forms.py:28 web/forms.py:44
 msgid "New Password Again"
-msgstr ""
+msgstr "Nova Palavra-passe (outra vez)"
 
-#: tmp/forms.py:34 web/forms.py:41
+#: tmp/forms.py:34 web/forms.py:50
 msgid "The two password fields did not match."
-msgstr ""
+msgstr "As duas palavras-passe não são iguais"
 
-#: tmp/forms.py:69 tmp/forms.py:72 web/forms.py:94 web/forms.py:101
+#: tmp/forms.py:69 tmp/forms.py:72 web/forms.py:115 web/forms.py:122
 msgid "Password"
-msgstr ""
+msgstr "Palavra-passe"
 
 #: web/links.py:73
 msgid "Taiwanese version APK"
-msgstr ""
+msgstr "Versão Taiwanesa APKs"
 
 #: web/links.py:371
 msgid "Accounts Giveaways"
-msgstr ""
+msgstr "Giveaways de contas"
 
-#: web/templates/addaccount.html:37
+#: web/templates/addaccount.html:97
 msgid "Your transfer code has been deleted."
-msgstr ""
+msgstr "O teu código de transferência foi apagado"
 
-#: web/templates/addaccount.html:42 web/templates/addaccount.html.py:60
+#: web/templates/addaccount.html:102 web/templates/addaccount.html.py:120
+#: web/templates/profile.html:283
 msgid "Get your saved transfer code"
-msgstr ""
+msgstr "Obter o teu código de transferência guardado"
 
-#: web/templates/addaccount.html:52
+#: web/templates/addaccount.html:112
 msgid "Delete your transfer code"
-msgstr ""
+msgstr "Apagar o teu código de transferência"
 
-#: web/templates/addaccount.html:69 web/templates/addaccount.html.py:81
+#: web/templates/addaccount.html:129 web/templates/addaccount.html.py:141
+#: web/templates/profile.html:285
 msgid "Save your transfer code"
-msgstr ""
+msgstr "Guardar o teu código de transferência"
 
-#: web/templates/addaccount.html:73
+#: web/templates/addaccount.html:133
 msgid "Your transfer code has been securely saved."
-msgstr ""
+msgstr "O teu código de transferência foi guardado com segurança"
 
 #: web/templates/edit.html:29
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 #: web/templates/edit.html:39
 msgid "Delete Link"
-msgstr ""
+msgstr "Apagar Link"
 
 #: web/templates/edit.html:46 web/templates/edit.html.py:54
 msgid "Add Link"
-msgstr ""
+msgstr "Adicionar Link"
 
 #: web/templates/edit.html:74
 msgid "If you change your username, all the external links to your profile will not work anymore. All your comments will be deleted. If you wish to transfer your comments, contact us."
-msgstr ""
+msgstr "Se mudares o teu nome de utilizador todos os links externos para o teu perfil não irão funcionar. Todos os teus comentários serão apagados. Se quiseres transferir os comentários, contacta-nos."
 
 #: web/templates/edit.html:87
 msgid "Change your password"
-msgstr ""
+msgstr "Mudar a tua palavra-passe"
 
 #: web/templates/include/alert_transfer_code.html:3
 msgid "You have a transfer code saved in School Idol Tomodachi. If you reset your password, you will not be able to retrieve it anymore."
 msgid_plural "You have %(counter)s transfer codes saved. If you reset your password, you will not be able to retrieve them anymore."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Tu tens um código de transferência guardado no School Idol Tomodachi. Se quiseres mudar a tua palavra-passe não tu poderemos mostrar."
+msgstr[1] "Tu tens %(counter)s códigos de transferência guardados no School Idol Tomodachi. Se quiseres mudar a tua palavra-passe não os poderemos mostrar."
 
-#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1292
-#: web/views.py:1353 web/views.py:1367
+#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1323
+#: web/views.py:1384 web/views.py:1398
 msgid "Wrong password."
-msgstr ""
+msgstr "Palavra-passe errada"
 
-#: api/models.py:477
+#: api/models.py:539
 msgid "It might take up to 24 hours to update your location on the map."
-msgstr ""
+msgstr "Pode demorar 24 horas a colocar a tua localização no mapa."
 
 #. Android App
 #: 
 msgid "app_name"
-msgstr ""
+msgstr "nome da aplicação"
 
 #. Android App
 #: 
 msgid "welcome"
-msgstr ""
+msgstr "bem-vindo"
 
 #. Android App
 #: 
 msgid "action_settings"
-msgstr ""
+msgstr "ação_defenições"
 
 #. Android App
 #: 
 msgid "title_activity_card"
-msgstr ""
+msgstr "título_atividade_carta"
 
 #. Android App
 #: 
 msgid "title_activity_card_info1"
-msgstr ""
+msgstr "título_atividade_carta_info1"
 
 #. Android App
 #: 
 msgid "skill"
-msgstr ""
+msgstr "habilidade"
 
 #. Android App
 #: 
 msgid "center_skill"
-msgstr ""
+msgstr "habilidade de líder"
 
 #. Android App
 #: 
 msgid "release_date"
-msgstr ""
+msgstr "data de lançamento"
 
 #. Android App
 #: 
 msgid "stats"
-msgstr ""
+msgstr "estatísticas"
 
 #. Android App
 #: 
 msgid "level_1"
-msgstr ""
+msgstr "nível 1"
 
 #. Android App
 #: 
 msgid "level_30"
-msgstr ""
+msgstr "nível 30"
 
 #. Android App
 #: 
 msgid "level_40"
-msgstr ""
+msgstr "nível 40"
 
 #. Android App
 #: 
 msgid "level_60"
-msgstr ""
+msgstr "nível 60"
 
 #. Android App
 #: 
 msgid "level_80"
-msgstr ""
+msgstr "nível 80"
 
 #. Android App
 #: 
 msgid "level_100"
-msgstr ""
+msgstr "nível 100"
 
 #. Android App
 #: 
 msgid "unknown"
-msgstr ""
+msgstr "desconhecido"
 
 #. Android App
 #: 
 msgid "none"
-msgstr ""
+msgstr "nenhum"
 
 #. Android App
 #: 
 msgid "title_activity_menu"
-msgstr ""
+msgstr "título_atividade_menu"
 
 #. Android App
 #: 
 msgid "title_activity_idols"
-msgstr ""
+msgstr "título_atividade_ídolo"
 
 #. Android App
 #: 
 msgid "search_idols"
-msgstr ""
+msgstr "pesquisar_ídolos"
 
 #. Android App
 #: 
 msgid "search_idols_hint"
-msgstr ""
+msgstr "pesquisar_ídolos_dica"
 
 #. Android App
 #: 
 msgid "title_activity_web"
-msgstr ""
+msgstr "título_atividade_web"
 
 #. Android App
 #: 
 msgid "only_japan"
-msgstr ""
+msgstr "só_Japão"
 
 #. Android App
 #: 
 msgid "worldwide"
-msgstr ""
+msgstr "Mundial"
 
 #: NEW_INDEX.html:34 web/templates/index.html:34
 #: web/templates/index.html.py:38
 msgid "Follow School Idol Tomodachi on Twitter"
-msgstr ""
+msgstr "Segue o School Idol Tomodachi no Twitter"
 
 #: api/models.py:48
 msgid "Bronze Verified"
-msgstr ""
+msgstr "Bronze Verificado"
 
 #: api/models.py:55
 msgid "Index fingers"
-msgstr ""
+msgstr "Indicadores"
 
-#: api/models.py:574 web/templates/staff_verifications.html:25
+#: api/models.py:637 web/templates/staff_verifications.html:25
 msgid "Verification"
-msgstr ""
+msgstr "Verificação"
 
-#: api/models.py:574
+#: api/models.py:637
 msgid "What kind of verification would you like?"
-msgstr ""
+msgstr "Que tipo de verificação gostarias de ter?"
 
-#: api/models.py:576 api/models.py:579
+#: api/models.py:639 api/models.py:642
 msgid "Comment"
-msgstr ""
+msgstr "Comentar"
 
-#: api/models.py:576
+#: api/models.py:639
 msgid "If you have anything to say to the person who is going to verify your account, feel free to write it here!"
-msgstr ""
+msgstr "Se tens algo para dizer à pessoa que vai verificar a tua conta, toma a liberdade de escrevê-lo aqui!"
 
-#: api/models.py:580
+#: api/models.py:643
 msgid "Allow us to verify your account during events"
-msgstr ""
+msgstr "Permite-nos verificar a tua conta durante eventos"
 
-#: api/models.py:580
+#: api/models.py:643
 msgid "Check this only if you don't care about the current event. You'll get verified faster."
-msgstr ""
+msgstr "Dá apenas permissão se não quiseres saber do evento a decorrer. Vais ser verificado mais rapidamente."
 
 #: web/templates/android.html:25
 msgid "School Idol Tomodachi makes its Android debut!"
-msgstr ""
+msgstr "O School Idol Tomodachi faz a sua estreia para Andorid!"
 
 #: index.html:32
 msgid "Download the app"
-msgstr ""
+msgstr "Fazer download da aplicação"
 
-#: web/forms.py:252
+#: web/forms.py:271
 msgid "If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn't work, please resize your images."
-msgstr ""
+msgstr "Se os teus ficheiros são muitos grandes envia-os um a um. Primeiro faz o upload de um imagem e, depois, edita o teu pedido no segundo e assim sucessivamente. Se mesmo nem uma imagem funcionar, por favor muda-lhes o tamanho."
 
-#: web/forms.py:310
+#: web/forms.py:319
 msgid "Latest unlocked songs"
-msgstr ""
+msgstr "Músicas desbloqueadas recentemente"
 
-#: web/forms.py:311
+#: web/forms.py:320
 msgid "Song name"
-msgstr ""
+msgstr "Nome da música"
 
-#: web/forms.py:312 web/templates/songsPage.html:131
+#: web/forms.py:321 web/templates/songsPage.html:131
 msgid "Beats per minute"
-msgstr ""
+msgstr "Beats por minuto"
 
-#: web/forms.py:313
+#: web/forms.py:322
 msgid "Song length"
-msgstr ""
+msgstr "Duração da música"
 
-#: web/forms.py:314
+#: web/forms.py:323
 msgid "Rank to unlock song"
-msgstr ""
+msgstr "Rank para desbloquear a música"
 
-#: web/forms.py:315
+#: web/forms.py:324
 msgid "Notes in Hard song"
-msgstr ""
+msgstr "Notas na música Difícil"
 
-#: web/forms.py:316
+#: web/forms.py:325
 msgid "Notes in Expert song"
-msgstr ""
+msgstr "Notas na música em Expert"
 
-#: web/forms.py:317 web/forms.py:368
+#: web/forms.py:326 web/forms.py:377
 msgid "Ordering"
-msgstr ""
+msgstr "Ordem"
 
-#: web/forms.py:319 web/templates/songsPage.html:167
+#: web/forms.py:328 web/templates/songsPage.html:167
 msgid "Daily rotation"
-msgstr ""
+msgstr "Rotação Diária"
 
-#: web/forms.py:321
+#: web/forms.py:330
 msgid "Available"
-msgstr ""
+msgstr "Dispinível"
 
 #: web/links.py:563
 msgid "Susume Love Live! Fansite"
-msgstr ""
+msgstr "Susume Love Live! Fansite"
 
-#: web/templates/about.html:21 web/templates/about.html.py:178
+#: web/templates/about.html:21 web/templates/about.html.py:188
 #: web/templates/baseMenu.html:6
 msgid "About us"
-msgstr ""
+msgstr "Sobre nós"
 
 #: web/templates/about.html:34 web/templates/about.html.py:47
 #: web/templates/android.html:71 web/templates/android.html.py:80
 #: web/templates/android.html:84
 msgid "Contact us"
-msgstr ""
+msgstr "Contacta-nos"
 
-#: web/templates/about.html:106
+#: web/templates/about.html:116
 msgid "Staff members"
-msgstr ""
+msgstr "Membros do staff"
 
-#: web/templates/about.html:118
+#: web/templates/about.html:128
 msgid "Owner"
-msgstr ""
+msgstr "Dono"
 
-#: web/templates/about.html:120
+#: web/templates/about.html:130
 msgid "Staff"
-msgstr ""
+msgstr "Staff"
 
-#: web/templates/about.html:133
+#: web/templates/about.html:143
 msgid "Takes care of verifications:"
-msgstr ""
+msgstr "Cuida das verificações:"
 
-#: web/templates/about.html:155 web/templates/android.html:83
+#: web/templates/about.html:165 web/templates/android.html:83
 msgid "Contribute"
-msgstr ""
+msgstr "Contributo"
 
-#: web/templates/about.html:155
+#: web/templates/about.html:165
 msgid "Dev"
-msgstr ""
+msgstr "Dev"
 
-#: web/templates/about.html:248
+#: web/templates/about.html:258
 msgid "We will send you a cute postcard signed by the 2 developers :)"
-msgstr ""
+msgstr "Vamos mandar-te um postal assinado pelos dois criadores :)"
 
-#: web/templates/addaccount.html:92
+#: web/templates/addaccount.html:152
 msgid "Generate a transfer code on the game."
-msgstr ""
+msgstr "Gerar um código de tranferência no jogo"
 
-#: web/templates/addaccount.html:92
+#: web/templates/addaccount.html:152
 msgid "How to generate a transfer code?"
-msgstr ""
+msgstr "Como gerar um código de transferência"
 
-#: web/templates/addaccount.html:93
+#: web/templates/addaccount.html:153
 msgid "Upload the screenshot or write it down below."
-msgstr ""
+msgstr "Upload a screenshot ou escrevê-lo abaixo."
 
-#: web/templates/addaccount.html:97
+#: web/templates/addaccount.html:157
 msgid "If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Check the box below."
-msgstr ""
+msgstr "Se não jogas durante eventos ou não te interessa um evento, podemos verificar-te durante eventos, o que tornará o processo muito mais rápido para nós. Vê a caixa abaixo."
 
-#: web/templates/addaccount.html:98
+#: web/templates/addaccount.html:158
 msgid "If you still play between events, we can notify you before we start the process. Ask for it in your message."
-msgstr ""
+msgstr "Se tu jogas mesmo entre eventos, nós podemos notificar-te antes de começarmos o processo. Pede-o na tua mensagem"
 
-#: web/templates/addaccount.html:100
+#: web/templates/addaccount.html:160
 msgid "We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else"
-msgstr ""
+msgstr "Nós vamos introduzir o código de transferência num dos teus dispositivos e ver a informação. Nós não vamos fazer nada com o teu LP, lovecas, cartas ou qualquer outra coisa"
 
-#: web/templates/addaccount.html:101
+#: web/templates/addaccount.html:161
 msgid "You will then receive an email with your new transfer code."
-msgstr ""
+msgstr "Vais depois receber um e-mail com o teu novo código de transferência."
 
-#: web/templates/addaccount.html:102
+#: web/templates/addaccount.html:162
 msgid "Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!"
-msgstr ""
+msgstr "Nota: O dispositivo usado para verificar a tua conta não vai ser usado para nada até tu teres a tua conta outra vez para garantirmos que não há problemas. Em consideração pelos outros que querem ser verificados, por favor, "
 
-#: web/templates/addaccount.html:108
+#: web/templates/addaccount.html:168
 msgid "Open the game you want to get verified"
-msgstr ""
+msgstr "Abre o jogo que queres verificar"
 
-#: web/templates/addaccount.html:109
+#: web/templates/addaccount.html:169
 msgid "Take screenshots and upload them below."
-msgstr ""
+msgstr "Tira screenshots e faz o upload delas abaixo"
 
-#: web/templates/addaccount.html:109
+#: web/templates/addaccount.html:169
 msgid "How to take screenshots?"
-msgstr ""
+msgstr "Como é que tiro screenshots?"
 
-#: web/templates/addaccount.html:111
+#: web/templates/addaccount.html:171
 msgid "Go to \"Members\" (部員) then \"Member List\" (部員リスト), order by \"Rarity\" (レアリティ) and take screenshots of all the pages that have URs or SRs"
-msgstr ""
+msgstr "Vai a \"Membros\" (部員) e, depois, a \"Member List\" (部員リスト), ordenar por \"Rarity\" (レアリティ)  e tira screenshots a todas as páginas que têm URs e SRs"
 
-#: web/templates/addaccount.html:113
+#: web/templates/addaccount.html:173
 msgid "If you have SR/UR cards in your album (you used to have them but you sold them or used them in training), also take a screenshot of said cards in your album."
-msgstr ""
+msgstr "Se tens cartas SRs/URs no teu álbum (que tiveste mas que vendeste ou usaste para praticar), tira também uma screenshot dessas cartas no álbum."
 
-#: web/templates/addaccount.html:114
+#: web/templates/addaccount.html:174
 msgid "If you have SR/UR cards in your present box, also take a screenshot of the cards in your present box."
-msgstr ""
+msgstr "Se tiveres cartas SRs/URs na tua caixa de presentes tira também uma screenshot às cartas na tua caixa de presentes"
 
-#: web/templates/addaccount.html:117
+#: web/templates/addaccount.html:177
 msgid "Go to \"Other\" (その他) then \"Profile\" (プロフィール) and take a screenshot"
-msgstr ""
+msgstr "Vai a \"Other\" (その他) e, depois, a \"Profile\" (プロフィール) e tira uma screenshot"
 
-#: web/templates/addaccount.html:120
+#: web/templates/addaccount.html:180
 msgid "No need to refresh your profile, you will receive an email when you're verified!"
-msgstr ""
+msgstr "Não é preciso atualizar o teu perfil, vais receber um e-mail quando fores verificado!"
 
-#: web/templates/addaccount.html:124
+#: web/templates/addaccount.html:184
 msgid "This verification only lets you change your rank above 200. It does not give you a visible sign of verification on the website, since we did not verify your cards. The only reason you would want this verification is if your rank is above 200 and you do not wish to go through Gold/Silver verification."
-msgstr ""
+msgstr "Esta verificação só permite que mudes o teu rank para cima de 200. Não vai haver nenhum sinal neste website de que foste verificado porque não verificamos as tuas cartas. A única razão para que poderás querer a verificação é para colocares o teu rank acima de 200 e não queres ir para a verificação de Prata/Ouro"
 
-#: web/templates/addaccount.html:126
+#: web/templates/addaccount.html:186
 msgid "We will enter your friend ID in the game and check your rank."
-msgstr ""
+msgstr "Nós vamos introduzir o teu friend ID no jogo e verificar o teu rank"
 
-#: web/templates/addaccount.html:127
+#: web/templates/addaccount.html:187
 msgid "You will receive an email when your account has been set as verified and you'll be able to set your rank above 200."
-msgstr ""
+msgstr "Vais receber um e-mail quando a tua conta estiver verificada e poderás colocar o teu rank acima de 200."
 
-#: web/templates/addaccount.html:137
+#: web/templates/addaccount.html:197
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
-#: web/templates/addaccount.html:144
+#: web/templates/addaccount.html:204
 msgid "Your position in the verification queue"
-msgstr ""
+msgstr "A tua posição na fila de verificações"
 
-#: web/templates/addaccount.html:146
+#: web/templates/addaccount.html:206
 msgid "day"
-msgstr ""
+msgstr "dia"
 
-#: web/templates/addaccount.html:185
+#: web/templates/addaccount.html:245
 msgid "Check your cards"
-msgstr ""
+msgstr "Verifica as tuas cartas"
 
-#: web/templates/addaccount.html:205
+#: web/templates/addaccount.html:265
 msgid "read our FAQ"
-msgstr ""
+msgstr "Lê o nosso FAQ"
 
-#: web/templates/addaccount.html:213
+#: web/templates/addaccount.html:273
 msgid "Your rank must be over 80."
-msgstr ""
+msgstr "O teu rank tem de ser maior de 80"
 
-#: web/templates/addaccount.html:216
+#: web/templates/addaccount.html:276
 msgid "You must specify your friend ID in your account."
-msgstr ""
+msgstr "Tu tens de especificar o teu friend ID na tua conta."
 
-#: web/templates/addaccount.html:219
+#: web/templates/addaccount.html:279
 msgid "You must provide a valid email address in your settings."
-msgstr ""
+msgstr "Tens de usar um email válido nas tuas defenições."
 
-#: web/templates/addaccount.html:222
+#: web/templates/addaccount.html:282
 msgid "Your profile must not be private."
-msgstr ""
+msgstr "O teu perfil não pode ser privado."
 
 #: web/templates/android.html:7
 msgid "Download the School Idol Tomodachi app on Google Play"
-msgstr ""
+msgstr "Faz o Download da aplicação School Idol Tomodachi no Google Play"
 
 #: web/templates/android.html:21
 msgid "Sukutomo"
-msgstr ""
+msgstr "Sukutomo"
 
-#: web/templates/android.html:21 web/templates/usersPage.html:52
+#: web/templates/about.html:102 web/templates/android.html:21
+#: web/templates/usersPage.html:52
 msgid "by"
-msgstr ""
+msgstr "de"
 
 #: web/templates/android.html:28
 msgid "If you're searching for the game itself, you can"
-msgstr ""
+msgstr "Se estás a procurar no próprio jogo, tu podes"
 
 #: web/templates/android.html:28
 msgid "download it here"
-msgstr ""
+msgstr "faz o download aqui"
 
 #: web/raw.py:78 web/raw.py:85 web/raw.py:91 web/raw.py:97 web/raw.py:103
 #: web/templates/android.html:56
 msgid "F.A.Q."
-msgstr ""
+msgstr "F.A.Q."
 
 #: web/templates/android.html:59
 msgid "I get this message when I try to install the apk: \"Install blocked. For security, your phone is set to block installation of apps obtained from unknown sources.\""
-msgstr ""
+msgstr "Eu recebo esta mensagem quando tento instalar a apk: \"Instalação bloqueada. Para segurança, o teu telemóvel bloqueia a instalação de aplicações obtidas de fontes desconhecidas.\""
 
 #: web/templates/android.html:69
 msgid "What should I do if I find a bug or want to make a suggestion?"
-msgstr ""
+msgstr "O que devo fazer quando encontro um bug ou quero fazer uma sugestão?"
 
 #: web/templates/android.html:72
 msgid "We're more than happy to help you and discuss with you."
-msgstr ""
+msgstr "Nós estamos muito felizes por podermos falar contigo."
 
 #: web/templates/android.html:76
 msgid "I can't find the app on Google Play."
-msgstr ""
+msgstr "Não consigo encontrar a aplicação no Google Play"
 
 #: web/templates/android.html:77
 msgid "The app is not available on Google Play, you have to download it on your phone from this page using the download button above then open it to install it."
-msgstr ""
+msgstr "A aplicação não está disponível no Google Play, tu tens que fazer o download do teu telemóvel por esta página usando o butão de download acima. Depois, abre-o para instalares. "
 
 #: web/templates/android.html:79
 msgid "I sometimes get this message: \"Unfortunately, Sukutomo has stopped\"."
-msgstr ""
+msgstr "Às vezes recebo a mensagem \"Infelizmente, Sukutomo parou\"."
 
 #: web/templates/android.html:80
 msgid "It might happen for different reasons, but it always means there is a bug in the app."
-msgstr ""
+msgstr "Pode ocorrer por razões diferentes mas isso quer sempre dizer que há um bug na aplicação."
 
 #: web/templates/android.html:80
 msgid "Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it."
-msgstr ""
+msgstr "Escreve o máximo de informação que possas (O que estavas a fazer quando aconteceu? Que tipo de telemóvel tens?) e nós vamos fazer o nosso melhor para o melhorar."
 
 #: web/templates/android.html:82
 msgid "I'm a developer and I would like to help you."
-msgstr ""
+msgstr "Eu sou programador e gostava de ajudar."
 
 #: web/templates/android.html:83
 msgid "Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready."
-msgstr ""
+msgstr "Boa! Nós aceitamos contribuições. A aplicação é uma ideia em aberto, por isso, tenta trabalha-a, diverte-te com o código e envia-nos pedido quando tiveres algo pronto."
 
 #: web/templates/android.html:84
 msgid "If you have no idea what we're talking about, don't panic. We can help you get started."
-msgstr ""
+msgstr "Se não sabes nada do que estamos a falar, não entres em pânico. Nós podemos ajudar-te a começar."
 
-#: web/raw.py:157 web/templates/base.html:52 web/templates/songs.html:6
+#: web/raw.py:157 web/templates/base.html:53 web/templates/songs.html:6
 msgid "Songs"
-msgstr ""
+msgstr "Músicas"
 
 #: web/templates/box.html:9
 msgid "Promo Up"
-msgstr ""
+msgstr "Promo Up"
 
 #: web/templates/box.html:10
 msgid "Level up the skill of your promo cards using R cards that have the same skill"
-msgstr ""
+msgstr "Aumenta o nível de habilidade das tuas cartas promocionais usando Cartas R como a mesma habilidade"
 
 #: web/templates/cards.html:61
 msgid "Advanced"
-msgstr ""
+msgstr "Avançado"
 
 #: web/templates/cards.html:280
 msgid "Edit card"
-msgstr ""
+msgstr "Editar carta"
+
+#: web/templates/cardsPage.html:307 web/templates/cardsPage.html.py:310
+#: web/templates/cardsPage.html:313 web/templates/cardsPage.html.py:316
+msgid "Transparent"
+msgstr "Tarnsparente"
 
 #: web/templates/cardsPage.html:313 web/templates/cardsPage.html.py:316
-#: web/templates/cardsPage.html:319 web/templates/cardsPage.html.py:322
-msgid "Transparent"
-msgstr ""
-
-#: web/templates/cardsPage.html:319 web/templates/cardsPage.html.py:322
 msgid "UR Pair"
-msgstr ""
+msgstr "Par de UR"
 
 #: web/templates/emails/base.html:527
 msgid "Thanks for using our site!"
-msgstr ""
+msgstr "Obrigado por usares o nosso site!"
 
 #: web/templates/emails/transfercoderemovedb.html:8
 msgid "Hi"
-msgstr ""
+msgstr "Olá"
 
 #: web/templates/event_participations.html:16
 #: web/templates/event_participations.html:58
 msgid "Back to event"
-msgstr ""
+msgstr "De volta ao evento"
 
 #: web/templates/event_participations.html:52
 msgid "None of your accounts are allowed to add an event participation. It might be because the event is not finished yet."
-msgstr ""
+msgstr "Nenhuma das tuas contas pode adicionar a participação num evento. Pode ser porqe o evento ainda não acabou."
 
 #: web/templates/event_ranking.html:50
 msgid "Load more..."
-msgstr ""
+msgstr "Carregar mais..."
 
 #: web/templates/index.html:87
 msgid "is crowdfunded by our Idol Producer"
-msgstr ""
+msgstr "é coofundado pelo nosso Produtor de Ídolos"
 
 #: web/templates/cardsPage.html:196 web/templates/index.html:90
+#: web/templates/modaltutorialaddcard.html:16
 msgid "Learn more"
-msgstr ""
+msgstr "Saber mais"
 
 #: web/templates/index.html:92
 msgid "donators"
-msgstr ""
+msgstr "doadores"
 
 #: web/templates/modalabout.html:4
 msgid "About the game LoveLive! School Idol Festival"
-msgstr ""
+msgstr "sobre o jogo LoveLive! School Idol Festival"
 
 #: web/templates/modalsukutomo.html:9
 msgid "LoveLive! School Idol Festival Game Database"
-msgstr ""
+msgstr "Dados do jogo LoveLive! School Idol Festival "
 
 #: web/templates/modalsukutomo.html:16
 msgid "All the Cards"
-msgstr ""
+msgstr "Todas as Cartas"
 
 #: web/templates/modalsukutomo.html:24
 msgid "All the Events"
-msgstr ""
+msgstr "Todos os Eventos"
 
 #: web/templates/modalsukutomo.html:25
 msgid "Get ready for your favorite idol: check the list of events in advance to see what's next!"
-msgstr ""
+msgstr "Prepara-te para o teu ídolo preferiso: verifica a lista de eventos para saberes qual é o próximo!"
 
 #: web/templates/modalsukutomo.html:32
 msgid "All the Songs"
-msgstr ""
+msgstr "Todas as Músicas"
 
 #: web/templates/modalsukutomo.html:33
 msgid "Search for your favorite songs, find the shortest, longest, hardest, and more!"
-msgstr ""
+msgstr "Pesquisa as tuas músicas preferidas, encontra as mais curtas, longas, mais difíceis, etc!"
 
 #: web/templates/modalsukutomo.html:40
 msgid "All the Idols"
-msgstr ""
+msgstr "Todos os Ídolos"
 
 #: web/templates/modalsukutomo.html:41
 msgid "Did you know that Rin hates fish but loves ramen? All you need to know about the idols!"
-msgstr ""
+msgstr "Sabias que a Rin odeia peixe mas adora ramen"
 
 #: web/templates/modalsukutomo.html:46
 msgid "Track your progress"
-msgstr ""
+msgstr "Segue o teu progresso"
 
 #: web/templates/modalsukutomo.html:53
 msgid "Customize your own profile"
-msgstr ""
+msgstr "Edita o teu perfil"
 
 #: web/templates/modalsukutomo.html:54
 msgid "Create your account and join the community!"
-msgstr ""
+msgstr "Cria uma conta e junta-te à cumunidade!"
 
 #: web/templates/modalsukutomo.html:61
 msgid "Showcase your collection of cards"
-msgstr ""
+msgstr "Mostra a tua coleção de cartas"
 
 #: web/templates/modalsukutomo.html:62
 msgid "Keep track of the cards you idolized, max leveled or max bonded!"
-msgstr ""
+msgstr "Vê as cartas que idolizaste e maximizaste o nível e o bond!"
 
 #: web/templates/modalsukutomo.html:69
 msgid "Save your scores in events"
-msgstr ""
+msgstr "Guarda o teu score dos eventos"
 
 #: web/templates/modalsukutomo.html:70
 msgid "Tier 1, tier 2, final score & ranking position!"
-msgstr ""
+msgstr "Tier 1, tier 2, score final & posição no ranking!"
 
 #: web/templates/modalsukutomo.html:75
 msgid "Meet new friends, and more!"
-msgstr ""
+msgstr "Conhece novos amigos e mais!"
 
-#: web/forms.py:366 web/templates/base.html:74 web/templates/base.html.py:75
+#: web/forms.py:375 web/templates/base.html:75 web/templates/base.html.py:76
 #: web/templates/modalsukutomo.html:82
 msgid "Leaderboard"
-msgstr ""
+msgstr "Ranking"
 
 #: web/templates/modalsukutomo.html:83
 msgid "Do you think you can beat all the top players and become the highest ranked player in the world?"
-msgstr ""
+msgstr "Achas que podes bater todos os melhores jogadores e tornar-te o jogador com maior ranking do mundo?"
 
 #: web/templates/modalsukutomo.html:90
 msgid "Find players near you"
-msgstr ""
+msgstr "Encontra jogadores perto de ti"
 
 #: web/templates/discussions.html:33 web/templates/modalsukutomo.html:104
 msgid "the LoveLive! community"
-msgstr ""
+msgstr "a comunidade LoveLive!"
 
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(counter)s música combina com a tua pesquisa:"
+msgstr[1] "(counter)s músicas combinam com a tua pesquisa:"
 
 #: web/templates/songsPage.html:73
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #: web/templates/songsPage.html:121
 msgid "Unlock"
-msgstr ""
+msgstr "Desbloquear"
 
 #: web/templates/songsPage.html:140
 msgid "Length"
-msgstr ""
+msgstr "Duração"
 
 #: web/templates/songsPage.html:177
 msgid "Currently available"
-msgstr ""
+msgstr "Disponível "
 
 #: web/templates/staff_verifications.html:29
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: web/templatetags/choicesToString.py:38
 msgid "Easy"
-msgstr ""
+msgstr "Easy"
 
 #: web/templatetags/choicesToString.py:40
 msgid "Hard"
-msgstr ""
+msgstr "Hard"
 
 #: web/templatetags/choicesToString.py:41
 msgid "Expert"
-msgstr ""
+msgstr "Expert"
 
 #: web/templatetags/choicesToString.py:42
 msgid "Random"
-msgstr ""
+msgstr "Random"
 
 #: web/templatetags/mod.py:66
 msgid "lovely"
-msgstr ""
+msgstr "amoroso"
 
 #: web/templatetags/mod.py:67
 msgid "awesome"
-msgstr ""
+msgstr "boa "
 
 #: web/templatetags/mod.py:68
 msgid "incredible"
-msgstr ""
+msgstr "incrível"
 
 #: web/templatetags/mod.py:69
 msgid "adorable"
-msgstr ""
+msgstr "adorável"
 
 #: web/templatetags/mod.py:70
 msgid "generous"
-msgstr ""
+msgstr "generoso"
 
 #: web/templatetags/mod.py:71
 msgid "idols-addicted"
-msgstr ""
+msgstr "viciado em ídolos"
 
 #: web/templatetags/mod.py:72
 msgid "friendly"
-msgstr ""
+msgstr "amigável"
 
 #: web/templatetags/mod.py:73
 msgid "kind"
-msgstr ""
+msgstr "bem-educado"
 
 #: web/templatetags/mod.py:74
 msgid "warmhearted"
-msgstr ""
+msgstr "Coração quente"
 
 #: web/templatetags/mod.py:75
 msgid "nice"
-msgstr ""
+msgstr "bom"
 
 #: web/templates/about.html:25
 msgid "We are two developers and relatively casual players of the game. It's the first project we made together."
-msgstr ""
+msgstr "Nós somos os dois criadores e jogamos casualmente o jogo. É o primeiro projeto que fazemos juntos."
 
 #: web/templates/about.html:27
 msgid "any donation"
-msgstr ""
+msgstr "qualquer doação"
 
 #: web/templates/about.html:27
 msgid "helps a lot and is greatly appreciated."
-msgstr ""
+msgstr "ajuda muito  e é muito apreciado"
 
 #: web/templates/about.html:29
 msgid "The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^"
-msgstr ""
+msgstr "O grande apoio da comunidade continua a motivar-nos para fazermos mais! nós adoramos ajudar a comunidade dando toda a informação que pudermos sobre o jogo, enquanto mantemos o site fácil de usar e rosa ^_^"
 
 #: web/templates/about.html:31
 msgid "We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you."
-msgstr ""
+msgstr "Não sabemos o quão longe vamos chegar, mas sabemos uma coisa de certeza, estamos a divertir-nos muito a partilhar esta aventura maluca contigo."
 
 #: web/templates/about.html:79
 msgid "School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them."
-msgstr ""
+msgstr "O School Idol Tomodachi usa múltiplos serviços externos fornecidos peloa comunidade LoveLive! para recolher dados do jogo. Nós recomendamos que os vejas. "
 
-#: web/templates/about.html:157
+#: web/templates/about.html:167
 msgid "Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!"
-msgstr ""
+msgstr "O nosso projeto é uma ideia em aberto e está aberto a contribuições. estamos felizes por aceitar pedidos no GitHub!"
 
-#: web/templates/about.html:159
+#: web/templates/about.html:169
 msgid "The website has been made using"
-msgstr ""
+msgstr "O website foi criado usando"
 
-#: web/templates/about.html:159
+#: web/templates/about.html:169
 msgid "so in Python 2. We also use"
-msgstr ""
+msgstr "então no Python 2 nós também usamos"
 
-#: web/templates/about.html:159
+#: web/templates/about.html:169
 msgid "for the front-end of the website."
-msgstr ""
+msgstr "Do início ao fim do website"
 
-#: web/templates/about.html:161
+#: web/templates/about.html:171
 msgid "We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level."
-msgstr ""
+msgstr "Nós aceitamos todo o tipo de contribuições, de ferramentas para ajudar os jogadores, páginas estatísticas, mini-jogos, ou até pequenas mudanças CSS . Não sejas tímido! se precisas de ajuda, contacta-nos e nós vamos ensinar-te as bases, não importa o teu nível. "
 
-#: web/templates/addaccount.html:183
+#: web/templates/addaccount.html:243
 msgid "Before sending your request, we highly recommend you to check that you entered all your cards."
-msgstr ""
+msgstr "Antes de enviares o teu pedido, nós recomendamos que verifiques se introduziste todas as cartas."
 
-#: web/templates/addaccount.html:204
+#: web/templates/addaccount.html:264
 msgid "If you have any question regarding verifications,"
-msgstr ""
+msgstr "Se tens alguma questão em relação às verificações,"
 
 #: web/templates/android.html:26
 msgid "Download the app to browse all the cards from the game School Idol Festival directly from your pocket."
-msgstr ""
+msgstr "Faz o Download da aplicação para veres todas as cartas do jogo School Idol Festival no teu bolso."
 
 #: web/templates/android.html:62
 msgid "<li>Go to Settings</li>\n"
 "\t<li>Go to Security</li>\n"
 "\t<li>Scroll down and check “Unknown sources” box</li>\n"
 "\t<li>Tap ‘OK” when it show the warning</li>"
-msgstr ""
+msgstr "<li>Vai a Definições</li>\n"
+"<li>Vai a Segurança</li>\n"
+"<li>Verifica o campo \"Unknown sources\"</li>\n"
+"<li>Seleciona \"OK\" quando vires o aviso</li>"
 
 #: web/templates/modalsukutomo.html:113
 msgid "So don't forget to check out the guides, tutorials, tools, discussion boards, and much more from our fellow LoveLivers friends:"
-msgstr ""
+msgstr "Não te esqueças de ver os guias, tutoriais, ferramentas, discussões e muito mais dos nosso amigos LoveLivers."
 
-#: web/templates/addaccount.html:95
+#: web/templates/addaccount.html:155
 msgid "No matter when you send your request, your account will be verified anytime when there is no event going on."
-msgstr ""
+msgstr "Quando mandaste o teu pedido não é relevante, a tua conta vai ser verificada quando não houver nenhum evento."
 
 #: web/templates/modalsukutomo.html:91
 msgid "Share your location with the community and travel around the world map to meet new friends!"
-msgstr ""
+msgstr "Partilha a tua localização com a comunidade e viaja pelo mapa mundo para conheceres novos amigos!"
 
 #: web/templates/about.html:27
 msgid "We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded:"
-msgstr ""
+msgstr "Nós temos os dois 23 anos e vivemos em São Francisco, California. Nós estudamos na mesma universidade de ciência informática e trabalhamos os dois como engenheiros de software na empresa que fundamos:"
 
 #: web/templates/about.html:27
 msgid "Though we love our job, we don't pay ourselves and don't have any income, so"
-msgstr ""
+msgstr "Mesmo adorando o nosso emprego, nós não nos pagamos e não temos outras fontes de rendimento, por isso"
 
 #: web/links.py:11 web/links.py:16
 msgid "English Version"
-msgstr ""
+msgstr "Versão Inglesa"
 
 #: web/links.py:21 web/links.py:26
 msgid "Japanese Version"
-msgstr ""
+msgstr "Versão Japonesa"
 
 #: web/links.py:141
 msgid "Japanese Bushimo Love Live! Festival Wiki"
-msgstr ""
+msgstr "Bushimo Love Live! Festival Wiki Japonês"
 
 #: web/links.py:148
 msgid "Japanese Love Live! Festival Gamerch Wiki"
-msgstr ""
+msgstr "Love Live! Festival Gamerch Wiki Japonês"
 
 #: web/links.py:155
 msgid "Chinese MoeGirl Wiki"
-msgstr ""
+msgstr "MoeGirl Wiki Chinês"
 
 #: web/links.py:190
 msgid "Love Live Facebook Page"
-msgstr ""
+msgstr "Página do Facebook de Love Live"
 
 #: web/links.py:203 web/links.py:209
 msgid "Official"
-msgstr ""
+msgstr "Oficial"
 
 #: web/links.py:264
 msgid "Facebook Group"
-msgstr ""
+msgstr "Grupo do Facebook"
 
 #: web/links.py:302
 msgid "Player.me Community"
-msgstr ""
+msgstr "Comunidade Player.me"
 
 #: web/links.py:588
 msgid "Youtube Channel μ's（ラブライブ！） by Lantis"
-msgstr ""
+msgstr "Canal do Youtube μ's（ラブライブ！） de Lantis"
 
 #: web/templates/event.html:66 web/templates/event.html.py:75
 #: web/templates/index.html:61
 msgid "hours"
-msgstr ""
+msgstr "horas"
 
 #: web/templates/event.html:66 web/templates/event.html.py:75
 #: web/templates/index.html:61
 msgid "minutes"
-msgstr ""
+msgstr "minutos"
 
 #: web/templates/event.html:66
 msgid "seconds left"
-msgstr ""
+msgstr "segundos até ao fim"
 
 #: web/templates/event.html:75
 msgid "Starts in"
-msgstr ""
+msgstr "Começa em "
 
 #: web/templates/event.html:75
 msgid "seconds"
-msgstr ""
+msgstr "segundos"
 
-#: api/models.py:82
+#: api/models.py:92
 msgid "Rejected"
-msgstr ""
+msgstr "Rejeitado"
 
-#: api/models.py:83
+#: api/models.py:93
 msgid "Pending"
-msgstr ""
+msgstr "Pendente"
 
-#: api/models.py:84
+#: api/models.py:94
 msgid "In Progress"
-msgstr ""
+msgstr "Em Progresso"
 
 #: web/templates/about.html:56
 msgid "For suggestions or bug reports, we recommend you to:"
-msgstr ""
+msgstr "Para sugestões ou para reportar um bug, nós recomendamos que tu:"
 
 #: web/templates/about.html:59
 msgid "Browse the upcoming features on"
-msgstr ""
+msgstr "Pesquisa as ferramentas futuras em"
 
 #: web/templates/about.html:59
 msgid "our Tasks manager"
-msgstr ""
+msgstr "o nosso menager de tarefas"
 
 #: web/templates/about.html:60
 msgid "Create a new issue"
-msgstr ""
+msgstr "Criar um"
 
 #: web/templates/about.html:60
 msgid "with the details about what you would like us to implement"
-msgstr ""
+msgstr "com os detalhes que gostavas que implementassemos"
 
-#: web/templates/about.html:178
+#: web/templates/about.html:188
 msgid "Budget"
-msgstr ""
+msgstr "Orçamento"
 
-#: web/templates/about.html:238 web/templates/about.html.py:268
+#: web/templates/about.html:248 web/templates/about.html.py:278
 msgid "You're an"
-msgstr ""
+msgstr "Tu és"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Added #155 Minami Kotori UR in Favorite
-#: api/models.py:62
+#: api/models.py:71
 msgid "Added {} in {}"
-msgstr ""
+msgstr "Adicionada a {} em {}"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Idolized #155 Minami Kotori UR in Deck
-#: api/models.py:63
+#: api/models.py:72
 msgid "Idolized {} in {}"
-msgstr ""
+msgstr "Idolizada a {} em {} "
 
 #. Keep the {} in the translation. It will be replaced with the value.
 #. For example: Rank Up 102
-#: api/models.py:64
+#: api/models.py:73
 msgid "Rank Up {}"
-msgstr ""
+msgstr "Rank Up {}"
 
 #. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
 #. For example: Ranked #253 in event Score Match Round 17
-#: api/models.py:65
+#: api/models.py:74
 msgid "Ranked {} in event {}"
-msgstr ""
+msgstr "Posição {} no evento {}"
 
-#: web/forms.py:97
+#: web/forms.py:118
 msgid "Confirm that you want to delete it."
-msgstr ""
+msgstr "Confirma que o queres apagar."
 
-#: web/forms.py:102
+#: web/forms.py:123
 msgid "Delete previously saved transfer code"
-msgstr ""
+msgstr "Apagar o Transfer Code anteriormente guardado"
 
-#: web/templates/about.html:140
+#: web/templates/about.html:150
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: api/models.py:37
 msgid "You have it"
-msgstr ""
+msgstr "Tu tens"
 
 #: api/models.py:38
 msgid "You don't have it anymore"
-msgstr ""
+msgstr "Já não a tens"
 
-#: api/models.py:66
+#: api/models.py:75
 msgid "Just got verified: {}"
-msgstr ""
+msgstr "Acabou de ser verificado: {}"
 
-#: api/models.py:495
+#: api/models.py:557
 msgid "Birthdate"
-msgstr ""
+msgstr "Data de nascimento"
 
-#: web/forms.py:218
+#: web/forms.py:239
 msgid "Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png"
-msgstr ""
+msgstr "Usa um URL válido como, por exemplo http://i.imgur.com/6oHYT4B.png"
 
-#: web/forms.py:219
+#: web/forms.py:240
 msgid "Picture"
-msgstr ""
+msgstr "Imagem"
 
-#: web/forms.py:243
+#: web/forms.py:263
 msgid "Message"
-msgstr ""
+msgstr "Mensagem"
 
-#: web/forms.py:376
+#: web/forms.py:385
 msgid "specified"
-msgstr ""
+msgstr "especificado"
 
 #: web/raw.py:9
 msgid "Only verified accounts can have a rank above 200."
-msgstr ""
+msgstr "Só contas verificadas pode, ter o rank acima de 200"
 
 #: web/raw.py:16
 msgid "Search & Filter your cards"
-msgstr ""
+msgstr "Perquisa e Filtra as tuas cartas"
 
 #: web/raw.py:22
 msgid "Your Perfect Lock cards"
-msgstr ""
+msgstr "As tuas Perfect Lockers"
 
 #: web/raw.py:28
 msgid "Your Healer cards"
-msgstr ""
+msgstr "As tuas Healers"
 
 #: web/raw.py:34
 msgid "Cards you should max level"
-msgstr ""
+msgstr "Cartas às que devias maximizar o nível"
 
 #: web/raw.py:40
 msgid "Your top Smile cards"
-msgstr ""
+msgstr "As tuas melhores cartas de Smile"
 
 #: web/raw.py:46
 msgid "Your top Pure cards"
-msgstr ""
+msgstr "As tuas melhores cartas de Pure"
 
 #: web/raw.py:52
 msgid "Your top Cool cards"
-msgstr ""
+msgstr "As tuas melhores cartas de Cool"
 
 #: web/raw.py:58
 msgid "Cards you should max bond (kizuna)"
-msgstr ""
+msgstr "Cartas às quais devias maximizar o bond (kizuna)"
 
 #: web/raw.py:85 web/raw.py:91 web/raw.py:97 web/raw.py:103
 msgid "LoveLive! School Idol Festival"
-msgstr ""
+msgstr "LoveLive! School Idol Festival"
 
 #: web/raw.py:109 web/raw.py:115 web/raw.py:122
 msgid "LoveLive!"
-msgstr ""
+msgstr "LoveLive!"
 
 #: web/raw.py:109
 msgid "Drawings & fan-arts"
-msgstr ""
+msgstr "Desenhos"
 
 #: web/raw.py:115
 msgid "Cosplay"
-msgstr ""
+msgstr "Cosplay"
 
 #: web/raw.py:122
 msgid "MEMES & comedy"
-msgstr ""
+msgstr "MEMES & comédia"
 
 #: web/raw.py:129
 msgid "Your best SOLO YOLOs"
-msgstr ""
+msgstr "Os teus melhores SOLO YOLOs"
 
 #: web/raw.py:136
 msgid "Your best 10+1 pulls"
-msgstr ""
+msgstr "Os teus melhores 10+1s"
 
 #: web/raw.py:143
 msgid "Your best scores"
-msgstr ""
+msgstr "Os teus melhores scores"
 
 #: web/raw.py:150 web/raw.py:157 web/raw.py:164
 msgid "Discuss"
-msgstr ""
+msgstr "Discução"
 
-#: web/templates/activitysingle.html:56 web/views.py:1137
+#: web/templates/activitysingle.html:58 web/views.py:1166
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
-#: web/templates/activitysingle.html:58 web/views.py:1140
+#: web/templates/activitysingle.html:61 web/views.py:1169
 msgid "Upload your own screenshot"
-msgstr ""
+msgstr "Upload a tua screenshot"
 
 #: web/templates/base.html:59
 msgid "Global Contest"
-msgstr ""
+msgstr "Concurso Global"
 
-#: web/templates/base.html:78 web/templates/discussion.html:3
+#: web/templates/base.html:79 web/templates/discussion.html:3
 #: web/templates/discussions.html:6 web/templates/discussions.html.py:13
 msgid "Discussions"
-msgstr ""
+msgstr "Discuções"
 
 #: web/templates/cards.html:56
 msgid "Card added!"
-msgstr ""
+msgstr "Carta adicionada!"
 
 #: web/templates/cards.html:57
 msgid "You may edit it below:"
-msgstr ""
+msgstr "Tu podes editá-lo abaixo"
 
 #: web/templates/cards.html:147 web/templates/cardsPage.html:174
 #: web/templates/idol.html:46
 msgid "School"
-msgstr ""
+msgstr "Escola"
 
 #: web/templates/cards.html:263
 msgid "Discover the upcoming cards before everybody else!"
-msgstr ""
+msgstr "Descobre as cartas futuras antes que toda a gente!"
 
-#: web/templates/cardsPage.html:342 web/templates/cardsPage.html.py:356
-#: web/templates/cardsPage.html:373 web/templates/cardsPage.html.py:379
+#: web/templates/cardsPage.html:336 web/templates/cardsPage.html.py:350
+#: web/templates/cardsPage.html:367 web/templates/cardsPage.html.py:373
 msgid "best %(attribute)s card"
-msgstr ""
+msgstr "melhor carta %(attribute)s "
 
-#: web/templates/cardsPage.html:401 web/templates/usersPage.html:14
+#: web/templates/cardsPage.html:395 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s jogadore tem a carta %(owns_card_string)s"
+msgstr[1] "%(counter)s jogadores têm a carta %(owns_card_string)s"
 
-#: web/templates/cardsPage.html:414
+#: web/templates/cardsPage.html:408
 msgid "Last update"
-msgstr ""
+msgstr "Último update"
 
 #: web/templates/include/filterbar.html:31
 msgid "Accounts"
-msgstr ""
+msgstr "Contas"
 
 #: web/templates/index.html:51
 msgid "Merry Christmas!"
-msgstr ""
+msgstr "Feliz Natal!"
 
 #: web/templates/map.html:26
 msgid "Ages"
-msgstr ""
+msgstr "Idades"
 
-#: web/templates/profile.html:218
-msgid "Activity posted! Click on the \"Activities\" tab below to see it."
-msgstr ""
-
-#: web/templates/profile.html:221 web/templates/profile.html.py:227
+#: web/templates/profile.html:290 web/templates/profile.html.py:304
+#: web/templates/profile.html:310
 msgid "Post your own activity"
-msgstr ""
+msgstr "Posta a tua própria atividade"
 
-#: web/templates/profile.html:222
+#: web/templates/profile.html:305
 msgid "What is this?"
-msgstr ""
+msgstr "O que é isto?"
 
 #: web/templates/usersPage.html:20
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s conta combina com a tua pesquisa"
+msgstr[1] "%(counter)s combinam com a tua pesquisa"
 
-#: web/views.py:510 web/views.py:511
+#: web/views.py:528 web/views.py:529
 msgid "Most popular"
-msgstr ""
+msgstr "Mais popular"
 
-#: web/views.py:751
+#: web/views.py:779
 msgid "years old"
-msgstr ""
+msgstr "Idade"
 
-#: web/templates/cardsPage.html:408 web/templates/usersPage.html:12
+#: web/templates/cardsPage.html:402 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s jogador têm a carta %(owns_card_string)s na sua lista de desejos"
+msgstr[1] "%(counter)s jogadores têm a carta %(owns_card_string)s na sua lista de desejos"
 
 #: web/templates/discussions.html:33 web/templates/modalsukutomo.html:104
 msgid "We"
-msgstr ""
+msgstr "Nós"
 
 #: web/templates/discussions.html:37
 msgid "So don't forget to check out the discussion boards, communities and much more from our fellow LoveLivers friends:"
-msgstr ""
+msgstr "Não te esqueças de verificar as discussões, comunidades e muito mais dos teus amigos LoveLivers:"
 
-#: web/forms.py:335 web/templates/cards.html:109
+#: web/forms.py:344 web/templates/cards.html:109
 msgid "Worldwide only"
 msgstr "Mundiais apenas"
 
-#: web/forms.py:336
+#: web/forms.py:345
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
-#: web/forms.py:337
+#: web/forms.py:346
 msgid "Token/Diary"
-msgstr ""
+msgstr "Token/Diary"
 
-#: web/forms.py:347
+#: web/forms.py:356
 msgid "I participated"
-msgstr ""
+msgstr "Eu participei"
 
 #: web/templates/events.html:24
 msgid "Discover the upcoming events before everybody else!"
-msgstr ""
+msgstr "Descobre os eventos futuros antes de toda a gente!"
 
 #: web/templates/events.html:43
 msgid "expected"
-msgstr ""
+msgstr "espectado"
 
-#: api/models.py:146
+#: api/models.py:156
 msgid "Teams"
-msgstr ""
+msgstr "Equipas"
 
-#: api/models.py:163
+#: api/models.py:180
 msgid "{} increases slightly (+3%)"
-msgstr ""
+msgstr "{} aumenta ligeiramente (+3%)"
 
-#: api/models.py:164
+#: api/models.py:181
 msgid "{} increases (+6%)"
-msgstr ""
+msgstr "{} aumenta (+6%)"
 
-#: api/models.py:165
+#: api/models.py:182
 msgid "{} increases drastically (+9%)"
-msgstr ""
+msgstr "{} aumenta drasticamente (+9%)"
 
-#: api/models.py:166
+#. Center skill details, for example: "Pure increases based on Cool"
+#: api/models.py:183
 msgid "{} increases based on {}"
-msgstr ""
+msgstr "{} aumenta em função de {}"
 
-#: api/models.py:406
+#: api/models.py:446 api/models.py:558
 msgid "Default tab"
-msgstr ""
+msgstr "Aba padrão"
 
-#: api/models.py:406
+#: api/models.py:446
 msgid "What people see first when they take a look at your account."
-msgstr ""
+msgstr "O que as pessoas vêem primeiro quando chegam à tua conta. "
 
-#: api/models.py:430
+#: api/models.py:492
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
-#: web/forms.py:434
+#: web/forms.py:443
 msgid "The same card can't appear twice in the same team."
-msgstr ""
+msgstr "A mesma carta não pode aparecer duas vezes na mesma equipa."
 
 #: web/templates/include/_account_tab_ownedcardsload.html:7
 msgid "Load remaining cards"
-msgstr ""
+msgstr "Load as cartas em falta"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Princess"
-msgstr ""
+msgstr "Princess"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Angel"
-msgstr ""
+msgstr "Angel"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Empress"
-msgstr ""
+msgstr "Empress"
 
-#: api/models.py:175
+#: api/models.py:192
 msgid "Power"
+msgstr "power"
+
+#: api/models.py:192
+msgid "Heart"
+msgstr "Heart"
+
+#: contest/templates/contest.html:11
+msgid "The ultimate battle between School Idols"
+msgstr "A grande batalha entre Ídolos"
+
+#: contest/templates/contest.html:50 contest/templates/contest.html.py:62
+msgid "is BEST"
+msgstr "é melhor"
+
+#: contest/templates/contest.html:53 contest/templates/contest.html.py:65
+msgid "About this card"
+msgstr "Sobre esta carta"
+
+#: contest/templates/contest_result.html:45
+msgid "BEST Girls"
+msgstr "Melhores Ídolos"
+
+#: contest/templates/contest_result.html:79
+msgid "BEST Cards"
+msgstr "Melhores Cartas"
+
+#: contest/templates/contest_result.html:114
+msgid "Vote"
+msgstr "Vota"
+
+#: contest/templates/contest_result_index.html:11
+#: contest/templates/contest_result_index.html:16 web/templates/base.html:63
+msgid "Past Contests"
+msgstr "Concursos passados"
+
+#: contest/templates/contest_result_index.html:53
+msgid "Suggest a special contest"
+msgstr "Sugere um concurso"
+
+#: web/forms.py:318
+msgid "Date added"
+msgstr "Data em que foi adicionada"
+
+#: api/models.py:76
+msgid "{}/10 on School Idol Trivia! {}"
 msgstr ""
 
-#: api/models.py:175
-msgid "Heart"
+#: api/models.py:195
+msgid "Ouch!"
+msgstr ""
+
+#: api/models.py:196 api/models.py:197 api/models.py:198
+msgid "Oh no..."
+msgstr ""
+
+#: api/models.py:199 api/models.py:200
+msgid "Meh."
+msgstr ""
+
+#: api/models.py:201 api/models.py:202
+msgid "Not bad!"
+msgstr ""
+
+#: api/models.py:203
+msgid "Yay~"
+msgstr ""
+
+#: api/models.py:204
+msgid "Awesome!"
+msgstr ""
+
+#: api/models.py:205
+msgid "Woohoo!"
+msgstr ""
+
+#: api/models.py:436
+msgid "Should your friend ID be visible to other players?"
+msgstr ""
+
+#: api/models.py:447 web/templates/profile.html:194
+msgid "Starter"
+msgstr ""
+
+#: api/models.py:447
+msgid "The character that you selected when you started playing."
+msgstr ""
+
+#: api/models.py:448 web/templates/profile.html:219
+#: web/templates/profile.html.py:232
+msgid "Creation"
+msgstr ""
+
+#: api/models.py:448
+msgid "When you started playing with this account."
+msgstr ""
+
+#: api/models.py:449
+msgid "Should this date be visible to other players?"
+msgstr ""
+
+#: api/models.py:558
+msgid "The activities you see by default on the homepage."
+msgstr ""
+
+#: web/forms.py:79
+msgid "The game didn't even existed at that time."
+msgstr ""
+
+#: web/forms.py:81
+msgid "This date cannot be in the future."
+msgstr ""
+
+#: web/templates/about.html:98
+msgid "Community Artists"
+msgstr ""
+
+#: web/templates/base.html:57
+msgid "Fun"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:4
+msgid "Start sharing your beautiful collection!"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:9
+msgid "Simply click \"+\" to add cards to your account"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:11
+msgid "If you idolized a card or if you want to add it to another account, use the bubble."
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:12
+msgid "Click \"Advanced\" for more options: max bonded (kizuna), max leveled, skill level, where you have it (deck, album, present box)."
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:13
+msgid "To search for specific cards, use the filters bar on the right (idol, rarity, attribute)."
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:18
+msgid "How to edit a card?"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:19
+msgid "How to delete a card?"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:21
+msgid "How to add an account to your profile?"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:22
+msgid "What's the difference between the deck, the album and the present box?"
+msgstr ""
+
+#: web/templates/modaltutorialaddcard.html:23
+msgid "Why my cards are not automatically imported?"
+msgstr ""
+
+#: web/templates/profile.html:147 web/templates/profile.html.py:252
+msgid "Unknown"
+msgstr ""
+
+#: web/templates/profile.html:150 web/templates/profile.html.py:224
+#: web/templates/profile.html:237
+msgid "Only you can see it."
+msgstr ""
+
+#: web/templates/profile.html:153
+msgid "Private"
+msgstr ""
+
+#: web/templates/profile.html:293
+msgid "Activity posted! Take a look at your activities on the side of your profile to see it."
+msgstr ""
+
+#: web/templates/trivia.html:4 web/templates/trivia.html.py:12
+msgid "Love Live! School Idol Trivia"
+msgstr ""
+
+#: api/models.py:450
+msgid "Love gems"
+msgstr ""
+
+#: api/models.py:450 api/models.py:451 api/models.py:452 api/models.py:453
+#: api/models.py:454
+msgid "Number of {} you currently have in your account."
+msgstr ""
+
+#: api/models.py:450 api/models.py:451 api/models.py:452 api/models.py:453
+#: api/models.py:454
+msgid "This field is completely optional, it's here to help you manage your accounts."
+msgstr ""
+
+#: api/models.py:451
+msgid "Friend Points"
+msgstr ""
+
+#: api/models.py:455
+msgid "Total love gems bought"
+msgstr ""
+
+#: api/models.py:455
+msgid "You can calculate that number in \"Other\" then \"Purchase History\". Leave it empty to stay F2P."
 msgstr ""
 

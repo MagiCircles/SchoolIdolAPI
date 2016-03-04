@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Staff - Reports{% endblock %}
+
+{% block js %}
+<script src="/static/js/staff_report.js"></script>
+{% endblock %}
+
+{% block content %}
+{% load choicesToString %}
+{% load pagination %}
+{% load imageurl %}
+<div class="container">
+  <br><br>
+  <h1 class="text-center">Staff Moderation Reports <small>{{ total }}</small></h1>
+  <br>
+  <div class="text-right">
+  <a href="." class="btn btn-sm btn-info"><span style="color: white!important">View Pending reports</span></a>
+  <a href="?status=3" class="btn btn-sm btn-danger"><span style="color: white!important">View Accepted reports</span></a>
+  <a href="?status=0" class="btn btn-sm btn-success"><span style="color: white!important">View Rejected reports</span></a>
+  </div>
+  <br>
+  {% if reports %}
+  <table class="table table-bordered">
+    <tr>
+      <th>Reported</th>
+      <th>By / Status</th>
+      <th>Messages</th>
+      <th>Moderate</th>
+    </tr>
+    {% for report in reports %}
+    <tr class="{% if report.status == 0 %}success{% elif report.status == 3 %}danger{% elif report.status == 2 %}warning{% else %}info{% endif %}">
+      <td>
+        {% if report.fake_account %}
+        <h4>Fake account</h4>
+        <a href="/user/{{ report.fake_account.owner.username }}/#{{ report.fake_account.id }}" target="_blank">{{ report.fake_account }}</a><br>
+        Rank {{ report.fake_account.rank }}<br>
+        {% if report.fake_account.verification %}
+        <span class="verified{{ report.fake_account.verified }}">
+	  <i class="flaticon-star"></i>
+	  {{ report.fake_account.verified|verifiedToString }}
+        </span>
+        {% endif %}
+        {% endif %}
+        {% if report.fake_eventparticipation %}
+        <h4>Fake event participation</h4>
+        <img src="{% eventimageurl event=report.fake_eventparticipation.event %}" class="img-responsive" width="200">
+        <a href="/user/{{ report.fake_eventparticipation.account.owner.username }}/#{{ report.fake_eventparticipation.account.id }}" target="_blank">{{ report.fake_eventparticipation.account }}</a><br>
+        Event Rank: {{ report.fake_eventparticipation.ranking }}<br>
+        Event Points: {{ report.fake_eventparticipation.points }}<br>
+        Event Song Rank: {{ report.fake_eventparticipation.song_ranking }}<br>
+        {% endif %}
+      </td>
+      <td>
+        Reported by:<br>
+        {% if report.reported_by %}
+        {% include 'include/avatar.html' with av_user=report.reported_by av_fixed=True av_size=100 av_image_size=100 av_link=True av_external=True av_username=True %}
+        {% else %}
+        Anonymous
+        {% endif %}
+        <br><br>
+        {{ report.status|reportStatusToString }}
+      </td>
+      <td>
+        <dl>
+          <dt>Reporter message:</dt>
+          <dd>
+            {% if report.comment %}<p class="well">{{ report.comment }}</p>{% else %}No message{% endif %}
+          </dd>
+          <dt>Report date:</dt>
+          <dd>
+            {{ report.creation }}
+          </dd>
+          <dt>Reporter images:</dt>
+          <dd>
+            {% if report.report_images %}
+            {% for image in report.report_images %}
+            <a href="{{ image.image|userimage }}" target="_blank"><img src="{{ image.image|userimage }}" width="100"></a>
+	    {% endfor %}{% else %}No images{% endif %}
+          </dd>
+          {% if report.status == 3 or report.status == 0 %}
+          {% if report.moderated_by %}
+          <dt>Moderated by:</dt>
+          <dd>
+            <a href="/user/{{ report.moderated_by.username }}/" target="_blank">
+              {{ report.moderated_by.username }}
+            </a>
+          </dd>
+          <dt>Moderation date:</dt>
+          <dd>
+            {{ report.moderation_date }}
+          </dd>
+          <dt>Moderation message:</dt>
+          <dd>
+            {% if report.moderation_comment %}<p class="well">{{ report.moderation_comment }}</p>{% else %}No message{% endif %}
+          </dd>
+          {% endif %}
+        </dl>
+        {% endif %}
+      </td>
+      <td data-report-id="{{ report.id }}">
+      {% if report.status != 3 and report.status != 0 %}
+        <textarea class="form-control" placeholder="Your message to the owner of the reported {% if report.fake_account %}account{% else %}event participation{% endif %} (optional)"></textarea><br>
+        <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will {% if report.fake_account %}mark this account as fake,<br>notify the reporter<br>and suggest the owner to get verified{% else %} delete this event participation<br>and notify the owner by email{% endif %}</small></button>
+        <button data-href="/ajax/staff/report/{{ report.id }}/reject/" class="btn btn-block btn-success reject-report">Reject this report<br><small>Will reject this report,<br>nobody gets notified</small></button>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="alert alert-info">
+    No results.
+  </div>
+  {% endif %}
+  <ul class="pager">
+    {% if page > 1 %}
+    <li><a href="{{ current_url|previouspage:page }}">Previous</a></li>
+    {% endif %}
+    <li><a href="{{ current_url|nextpage:page }}">Next</a></li>
+  </ul>
+
+  {% include 'disqus.html' with disqus_identifier='staff-reports' %}
+</div>
+{% endblock %}

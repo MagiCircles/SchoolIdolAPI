@@ -102,17 +102,21 @@
     {% else %}
     <h2>{% blocktrans count counter=length %}{{ length }} account:{% plural %}{{ length }} accounts:{% endblocktrans %}</h2>
     {% for account in user_accounts %}
-    {% with account.center.card.attribute|default:'All' as attribute %}
-    <div class="panel panel-{{ attribute }} profile-account" id="{{ account.pk }}">
+    {% with account|accountattribute as attribute %}
+    <div class="panel panel-{{ attribute }} {% if account.fake %}fake-account{% endif %} profile-account" id="{{ account.pk }}">
       <div class="panel-heading">
 	<h3>
-	  {% if is_me %}
-	  <div class="pull-right" style="letter-spacing: 10px;">
-	    <a href="/editaccount/{{ account.pk }}/">
+	  <div class="pull-right">
+	    {% if is_me %}
+	    <a href="/editaccount/{{ account.pk }}/" style="letter-spacing: 10px;">
 	      <i class="flaticon-edit"></i>
 	    </a>
+            {% elif not account.fake %}
+	    <a href="/reportaccount/{{ account.pk }}/" class="tiny">
+              {% trans 'Report' %}
+	    </a>
+	    {% endif %}
 	  </div>
-	  {% endif %}
 	  <a href="#{{ account.pk }}">{{ account }}</a></h3>
       </div>
       <div class="panel-body">
@@ -138,6 +142,18 @@
 		  {% if is_me %}<a href="/editaccount/{{ account.pk }}/" class="tiny"><i class="flaticon-edit"></i></a>{% endif %}
 		</td>
 	      </tr>
+	      {% if account.fake %}
+	      <tr>
+		<th>{% trans 'Fake' %}</th>
+		<td>
+                  <h3 class="text-danger">{% trans 'Reported as a fake account' %}
+                    {% if is_me and account.deck and account.friend_id and account.rank >= 80 %}
+		    <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a>
+		    {% endif %}
+                  </h3>
+		</td>
+	      </tr>
+              {% else %}
 	      <tr>
 		<th>{% trans 'Friend ID' %}</th>
 		<td>{% if account.show_friend_id or is_me %}
@@ -155,6 +171,7 @@
 		  {% if is_me and account.verified == 0 %}<a href="/editaccount/{{ account.pk }}/" class="tiny"><i class="flaticon-edit"></i></a>{% endif %}
 		</td>
 	      </tr>
+              {% endif %}
 	      {% if not account.accept_friend_requests|isnone %}
 	      <tr>
 		<th>{% trans 'Accept friend requests' %}</th>
@@ -293,7 +310,7 @@
 		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#getTransferCode">{% trans 'Get your saved transfer code' %}</a>
 		  {% endif %}
 		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#saveTransferCode">{% trans 'Save your transfer code' %}</a>
-		  {% if account.verified == 0 %}
+		  {% if account.verified == 0 and account.deck and account.friend_id and account.rank >= 80 %}
 		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a>
 		  {% endif %}
 		  <br><br>

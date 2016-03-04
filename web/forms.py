@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
 from django.conf import settings
+from web.utils import randomString
 from multiupload.fields import MultiFileField
 from api import models
 
@@ -228,8 +229,6 @@ class AccountStaffForm(ModelForm):
 class MultiImageField(MultiFileField, forms.ImageField):
     pass
 
-imgur_regexp = '^https?:\/\/(\w+\.)?imgur.com\/(?P<imgur>[\w\d]+)(\.[a-zA-Z]{3})?$'
-
 class _Activity(ModelForm):
     def __init__(self, *args, **kwargs):
         initial = kwargs.get('initial', {})
@@ -239,7 +238,7 @@ class _Activity(ModelForm):
         self.fields['right_picture'].help_text = _('Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png')
         self.fields['right_picture'].label = _('Picture')
         self.fields['right_picture'].validators.append(RegexValidator(
-            regex=imgur_regexp,
+            regex=settings.IMGUR_REGEXP,
             message='Invalid Imgur URL',
             code='invalid_url',
         ))
@@ -311,6 +310,34 @@ class StaffFilterVerificationRequestForm(ModelForm):
     class Meta:
         model = models.VerificationRequest
         fields = ('status', 'verified_by', 'verification', 'OS', 'language', 'allow_during_events')
+
+class ModerationReportForm(ModelForm):
+    images = MultiImageField(min_num=0, max_num=10, required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        self.account = kwargs.pop('account', None)
+        self.eventparticipation = kwargs.pop('eventparticipation', None)
+        super(ModerationReportForm, self).__init__(*args, **kwargs)
+
+    def save(self):
+        instance = super(ModerationReportForm, self).save(commit=False)
+        if self.request.user.is_authenticated():
+            instance.reported_by = self.request.user
+        if self.account is not None:
+            instance.fake_account = self.account
+        elif self.eventparticipation is not None:
+            instance.fake_eventparticipation = self.eventparticipation
+        instance.save()
+        for image in self.cleaned_data['images']:
+            imageObject = models.UserImage.objects.create()
+            imageObject.image.save(randomString(64), image)
+            instance.images.add(imageObject)
+        return instance
+
+    class Meta:
+        model = models.ModerationReport
+        fields = ('comment', 'images')
 
 class FilterSongForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))

@@ -1,0 +1,35 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Thank you for reporting this fake account! {{ report.fake_account }}{% endblock %}
+{% block headersubject %}Thank you for reporting this fake account! {{ report.fake_account }}{% endblock %}
+{% block content %}
+Hi {{ report.reported_by.username }},
+<br><br>
+
+<p>
+  This account you reported has been reviewed by a moderator and marked as fake. Thank you so much for your help!
+</p>
+{% if report.moderation_comment %}
+<p>
+  Moderator comment:<br>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+{% endblock %}
+
+{% block actionbuttontitle %}
+{{ report.fake_account }}
+{% endblock %}
+{% block actionbuttonalt %}
+{{ report.fake_account }}
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu/user/{{ report.fake_account.owner.username }}/#{{ report.fake_account.pk }}
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

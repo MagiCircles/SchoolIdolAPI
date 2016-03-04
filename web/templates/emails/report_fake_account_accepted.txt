@@ -1,0 +1,11 @@
+Hi {{ report.reported_by.username }},
+
+This account you reported has been reviewed by a moderator and marked as fake. Thank you so much for your help!
+{% if report.moderation_comment %}
+Moderator comment:
+{{ report.moderation_comment }}
+{% endif %}
+
+{{ report.fake_account }}: http://schoolido.lu/user/{{ report.fake_account.owner.username }}/#{{ report.fake_account.pk }}
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/))

@@ -1,0 +1,14 @@
+Hi {{ report.reported_by.username }},
+
+This event participation you reported has been reviewed by a moderator and deleted. Thank you so much for your help!
+
+{% if report.moderation_comment %}Moderator comment:
+{{ report.moderation_comment }}{% endif %}
+
+- Account: {{ report.fake_eventparticipation.account }}
+- Event: {{ report.fake_eventparticipation.event.japanese_name }}
+- Ranking: #{{ report.fake_eventparticipation.ranking }}
+- Song Ranking: #{{ report.fake_eventparticipation.song_ranking }}
+- Points: {{ report.fake_eventparticipation.points }}
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/)

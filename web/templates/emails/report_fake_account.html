@@ -1,0 +1,43 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Account marked as fake: {{ report.fake_account }}{% endblock %}
+{% block headersubject %}Account marked as fake: {{ report.fake_account }}{% endblock %}
+{% block content %}
+Hi {{ report.fake_account.owner.username }},
+<br><br>
+
+<p>
+  Your account has been reported, and a moderator confirmed it was "fake".
+</p>
+{% if report.moderation_comment %}
+<p>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+<h5>What does it mean?</h5>
+<ul>
+  <li>Don't worry, your account and all the cards you added don't get deleted.</li>
+  <li>Your account is now marked as fake on your profile.</li>
+  <li>Your account will not appear in the leaderboard anymore.</li>
+</ul>
+<p>
+  If your account is actually real, please don't blame us: we're humans, we make mistakes. Just <a href="http://schoolido.lu/editaccount/{{ report.fake_account.id }}/#verify">get your account verified</a> and this will be fixed.
+</p>
+{% endblock %}
+
+{% block actionbuttontitle %}
+Your account
+{% endblock %}
+{% block actionbuttonalt %}
+Your account
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu/user/{{ report.fake_account.owner.username }}/#{{ report.fake_account.pk }}
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

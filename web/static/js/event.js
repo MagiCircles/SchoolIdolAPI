@@ -16,12 +16,14 @@ function loadmoreranking() {
 	    button.remove();
 	    table.append(newTable.html());
 	    loadmoreranking();
+            $('[data-toggle="tooltip"]').tooltip();
 	});
 	return false;
     });
 }
 
 $(function() {
+    $('[data-toggle="tooltip"]').tooltip();
     if ($('#countdown').length > 0) {
 	$('#countdown').countdown({
 	    date: countdowndate,

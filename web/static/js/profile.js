@@ -3,12 +3,12 @@ var loadingHTML = '<br><div class="alert alert-warning">Loading...</div>';
 
 function removeLoadOnEmpty(tab_elt, account) {
     if (tab_elt.find('.deck_total').text() == '') {
-	tab_elt.find('[href=#loadMoreCards]').parent().remove();
+	tab_elt.find('[href="#loadMoreCards"]').parent().remove();
     }
 }
 
 function loadMoreCards(tab, tab_elt, account) {
-    var button = tab_elt.find('[href=#loadMoreCards]');
+    var button = tab_elt.find('[href="#loadMoreCards"]');
     var parentbutton = button.parent();
     button.unbind('click');
     button.click(function(e) {
@@ -24,11 +24,11 @@ function loadMoreCards(tab, tab_elt, account) {
 
 var onLoadTab = {
     'deck': function(tab_elt, account) {
-	var remaining = parseInt($('#' + account + ' .deck_total_value').text()) - parseInt(tab_elt.find('[href=#loadMoreCards]').attr('data-cards-limit'));
+	var remaining = parseInt($('#' + account + ' .deck_total_value').text()) - parseInt(tab_elt.find('[href="#loadMoreCards"]').attr('data-cards-limit'));
 	if (remaining  > 0) {
 	    tab_elt.find('.deck_total').text(remaining);
 	} else {
-	    tab_elt.find('[href=#loadMoreCards]').parent().remove();
+	    tab_elt.find('[href="#loadMoreCards"]').parent().remove();
 	}
 	loadMoreCards('deck', tab_elt, account);
     },
@@ -128,7 +128,7 @@ $(document).ready(function() {
 	      updateActivities();
 	      $(window).scroll(
 		  function () {
-		      var button = $('a[href=#loadMoreActivities]');
+		      var button = $('a[href="#loadMoreActivities"]');
 		      if (button.length > 0
 			  && button.find('.loader').length == 0
 			  && ($(window).scrollTop() + $(window).height())

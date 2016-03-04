@@ -1,0 +1,44 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Event participation deleted {{ report.fake_eventparticipation.event.japanese_name }}{% endblock %}
+{% block headersubject %}Event participation deleted {{ report.fake_eventparticipation.event.japanese_name }}{% endblock %}
+
+{% block content %}
+Hi {{ report.fake_eventparticipation.account.owner.username }},
+<br><br>
+
+<p>
+  Your event participation has been reported, and a moderator confirmed it was fake, so it has been deleted from the event ranking.
+</p>
+{% if report.moderation_comment %}
+<p>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+
+<ul>
+  <li>Account: {{ report.fake_eventparticipation.account }}</li>
+  <li>Event: {{ report.fake_eventparticipation.event.japanese_name }}</li>
+  <li>Ranking: #{{ report.fake_eventparticipation.ranking }}</li>
+  <li>Song Ranking: #{{ report.fake_eventparticipation.song_ranking }}</li>
+  <li>Points: {{ report.fake_eventparticipation.points }}</li>
+</ul>
+
+{% endblock %}
+
+{% block actionbuttontitle %}
+{{ report.fake_eventparticipation.event.japanese_name }}
+{% endblock %}
+{% block actionbuttonalt %}
+{{ report.fake_eventparticipation.event.japanese_name }}
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu/events/{{ report.fake_eventparticipation.event.japanese_name }}/
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+Hi {{ report.fake_account.owner.username }},
+
+Your account has been reported, and a moderator confirmed it was "fake".
+{% if report.moderation_comment %}
+{{ report.moderation_comment }}
+{% endif %}
+What does it mean?
+
+- Don't worry, your account and all the cards you added don't get deleted.
+- Your account is now marked as fake on your profile.
+- Your account will not appear in the leaderboard anymore.
+
+If your account is actually real, please don't blame us: we're humans, we make mistakes. Just get your account verified and this will be fixed: http://schoolido.lu/editaccount/{{ report.fake_account.id }}/#verify
+
+Your account: http://schoolido.lu/user/{{ report.fake_account.owner.username }}/#{{ report.fake_account.pk }}
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/))

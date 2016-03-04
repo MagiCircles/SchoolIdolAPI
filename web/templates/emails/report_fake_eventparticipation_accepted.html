@@ -1,0 +1,34 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Thank you for reporting this fake eventparticipation! {{ report.fake_eventparticipation.event.japanese_name }} {{ report.fake_eventparticipation.account }}{% endblock %}
+{% block headersubject %}Thank you for reporting this fake eventparticipation! {{ report.fake_eventparticipation.event.japanese_name }} {{ report.fake_eventparticipation.account }}{% endblock %}
+
+{% block content %}
+Hi {{ report.reported_by.username }},
+<br><br>
+
+<p>
+  This event participation you reported has been reviewed by a moderator and deleted. Thank you so much for your help!
+</p>
+{% if report.moderation_comment %}
+<p>
+  Moderator comment:<br>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+
+<ul>
+  <li>Account: {{ report.fake_eventparticipation.account }}</li>
+  <li>Event: {{ report.fake_eventparticipation.event.japanese_name }}</li>
+  <li>Ranking: #{{ report.fake_eventparticipation.ranking }}</li>
+  <li>Song Ranking: #{{ report.fake_eventparticipation.song_ranking }}</li>
+  <li>Points: {{ report.fake_eventparticipation.points }}</li>
+</ul>
+
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

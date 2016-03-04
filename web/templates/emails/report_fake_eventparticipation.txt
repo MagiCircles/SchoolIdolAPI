@@ -1,0 +1,15 @@
+Hi {{ report.fake_eventparticipation.account.owner.username }},
+
+Your event participation has been reported, and a moderator confirmed it was fake, so it has been deleted from the event ranking.
+
+{% if report.moderation_comment %}{{ report.moderation_comment }}{% endif %}
+
+- Account: {{ report.fake_eventparticipation.account }}
+- Event: {{ report.fake_eventparticipation.event.japanese_name }}
+- Ranking: #{{ report.fake_eventparticipation.ranking }}
+- Song Ranking: #{{ report.fake_eventparticipation.song_ranking }}
+- Points: {{ report.fake_eventparticipation.points }}
+
+Event {{ report.fake_eventparticipation.event.japanese_name }}: http://schoolido.lu/events/{{ report.fake_eventparticipation.event.japanese_name }}/
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/)

@@ -9,7 +9,6 @@ from django.template.loader import get_template
 from django.template import Context
 from django.conf import settings
 from api.raw import raw_information, raw_information_n
-from web import forms
 
 def send_email(subject, template_name, to=[], context={}, from_email=settings.AWS_SES_RETURN_PATH):
     context = Context(context)
@@ -54,4 +53,4 @@ def randomString(length, choice=(string.ascii_letters + string.digits)):
     return ''.join(random.SystemRandom().choice(choice) for _ in range(length))
 
 def get_imgur_code(url):
-    return re.compile(forms.imgur_regexp).match(url).group('imgur')
+    return re.compile(settings.IMGUR_REGEXP).match(url).group('imgur')

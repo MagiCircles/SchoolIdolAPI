@@ -1348,6 +1348,30 @@ def edit(request):
     context['current'] = 'edit'
     return render(request, 'edit.html', context)
 
+def report(request, account=None, eventparticipation=None):
+    context = globalContext(request)
+    if account:
+        context['account'] = findAccount(int(account), context.get('accounts', []), forceGetAccount=True)
+        if not context['account']: raise Http404
+        context['eventparticipation'] = None
+    else:
+        context['eventparticipation'] = get_object_or_404(models.EventParticipation.objects.select_related('event', 'account', 'account__owner'), pk=eventparticipation)
+        context['account'] = None
+    context['report'] = None
+    if request.user.is_authenticated():
+        try: context['report'] = models.ModerationReport.objects.get(reported_by=request.user, fake_account=context['account'], fake_eventparticipation=context['eventparticipation'])
+        except ObjectDoesNotExist: pass
+    if request.method == 'POST':
+        context['form'] = forms.ModerationReportForm(request.POST, request.FILES, instance=context['report'], request=request, account=context['account'], eventparticipation=context['eventparticipation'])
+        if context['form'].is_valid():
+            context['report'] = context['form'].save()
+            context['reported'] = True
+    else:
+        context['form'] = forms.ModerationReportForm(instance=context['report'], request=request, account=context['account'], eventparticipation=context['eventparticipation'])
+    if context['report']:
+        context['report_images'] = context['report'].images.all()
+    return render(request, 'report.html', context)
+
 def editaccount(request, account):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
@@ -1494,7 +1518,7 @@ def users(request, ajax=False):
     else:
         context = globalContext(request)
 
-    queryset = models.Account.objects.all()
+    queryset = models.Account.objects.exclude(fake=True)
     page_size = 18
     default_ordering = 'rank'
     context['filter_form'] = forms.FilterUserForm(request.GET, request=request)
@@ -1904,6 +1928,7 @@ def staff_verification(request, verification):
                 verification.verification_date = timezone.now()
                 verification.verified_by = request.user
                 verification.account.verified = verification.verification
+                verification.account.fake = False
                 verification.account.save()
                 sendverificationemail()
                 pushActivity('Verified', number=verification.verification, account=verification.account, account_owner=verification.account.owner)
@@ -1952,6 +1977,80 @@ def ajaxverification(request, verification, status):
         verification.verified_by = request.user
     verification.save()
     return HttpResponse('status changed')
+
+def staff_reports(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
+        raise PermissionDenied()
+    context = globalContext(request)
+    context['reports'] = models.ModerationReport.objects
+    if 'status' not in request.GET or not request.GET['status']:
+        context['reports'] = context['reports'].filter(Q(status=1) | Q(status=2))
+    else:
+        context['reports'] = context['reports'].filter(status=request.GET['status'])
+    if 'status' in request.GET and request.GET['status'] and (request.GET['status'] == '0' or request.GET['status'] == '3'):
+        context['reports'] = context['reports'].order_by('-moderation_date')
+    else:
+        context['reports'] = context['reports'].order_by('-status', '-fake_account__rank', 'fake_eventparticipation__ranking', '-fake_eventparticipation__points', 'creation')
+    context['reports'] = context['reports'].select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner', 'reported_by', 'moderated_by')
+    page = 0
+    page_size = 10
+    if 'page' in request.GET and request.GET['page']:
+        page = int(request.GET['page']) - 1
+        if page < 0:
+            page = 0
+    context['total'] = context['reports'].count()
+    context['page'] = page + 1
+    context['reports'] = context['reports'][(page * page_size):((page * page_size) + page_size)]
+    context['reports'] = context['reports'].prefetch_related(Prefetch('images', to_attr='report_images'))
+    context['disqus_shortname'] = settings.DISQUS_STAFF
+    return render(request, 'staff_reports.html', context)
+
+@csrf_exempt
+def ajaxreport(request, report_id, status):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or request.method != 'POST':
+        raise PermissionDenied()
+    report = get_object_or_404(models.ModerationReport.objects.select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner'), pk=report_id)
+    report.moderated_by = request.user
+    report.moderation_date = timezone.now()
+    report.moderation_comment = request.POST.get('comment', None)
+    context = {'report': report}
+    if status == 'accept':
+        if report.fake_account:
+            report.fake_account.fake = True
+            report.fake_account.verified = 0
+            report.fake_account.verificationrequest.all().update(status=0) # Verification requests rejected
+            report.fake_account.save()
+            if report.fake_account.owner.email:
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Account marked as "fake": ' + unicode(report.fake_account)),
+                           template_name='report_fake_account',
+                           to=[report.fake_account.owner.email, 'contact@schoolido.lu'],
+                           context=context,
+                       )
+            if report.reported_by and report.reported_by.email:
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake account! ' + unicode(report.fake_account)),
+                           template_name='report_fake_account_accepted',
+                           to=[report.reported_by.email, 'contact@schoolido.lu'],
+                           context=context,
+                       )
+        elif report.fake_eventparticipation:
+            if report.fake_eventparticipation.account.owner.email:
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Event participation deleted: ' + unicode(report.fake_eventparticipation.event)),
+                           template_name='report_fake_eventparticipation',
+                           to=[report.fake_eventparticipation.account.owner.email, 'contact@schoolido.lu'],
+                           context=context,
+                       )
+            if report.reported_by and report.reported_by.email:
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake event participation! ' + unicode(report.fake_eventparticipation.event.japanese_name)),
+                           template_name='report_fake_eventparticipation_accepted',
+                           to=[report.reported_by.email, 'contact@schoolido.lu'],
+                           context=context,
+                       )
+            report.fake_eventparticipation.delete()
+        report.status = 3 # Accepted
+    elif status == 'reject':
+        report.status = 0 # Rejected
+    report.save()
+    return HttpResponse(status)
             
 def songs(request, song=None, ajax=False):
     page = 0

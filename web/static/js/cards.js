@@ -2,7 +2,7 @@
 function hidePopovers() {
     $('.ownedcardonbottom').popover('hide');
     $('.ownedcardonbottom').popover('disable');
-    $('[data-toggle=popover]').popover('hide');
+    $('[data-toggle="popover"]').popover('hide');
 }
 
 $(function () {
@@ -28,8 +28,8 @@ function addCardButtonHandler() {
 	    button.hide();
 	    button.before('<i class="flaticon-loading"></i>');
 	    var form = $('#quickaddform');
-	    form.find('[name=card]').attr('value', card.prop('id'));
-	    form.find('[name=card]').closest('.form-group').hide();
+	    form.find('[name="card"]').attr('value', card.prop('id'));
+	    form.find('[name="card"]').closest('.form-group').hide();
 	    form.find('input.btn').removeClass('btn-Smile btn-Pure btn-Cool btn-All btn-default');
 	    form.find('input.btn').addClass('btn-' + card.attr('data-attribute'));
 	    form.find('form').attr('action', '/ajax/addcard/');
@@ -80,7 +80,7 @@ function addCardButtonHandler() {
 			    form.find('#id_owner_account option').removeAttr('selected');
 			    form.find('#id_owner_account option').prop('selected', false);
 			    form.find('#id_owner_account option[value=' + $(this).val() + ']').attr('selected', true);
-			}).delegate('a[href=#editCard]', 'click', function() {
+			}).delegate('a[href="#editCard"]', 'click', function() {
 			    onClickEditCard($(this), ownedcardbutton);
 			});
 			ownedcardbutton.popover('show');

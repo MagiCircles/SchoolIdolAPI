@@ -107,6 +107,14 @@ def linkurl(link):
 def chibiimage(context, idol, small=True):
     return _chibiimage(idol, small)
 
+@register.filter
+def accountattribute(account):
+    if account.fake:
+        return 'default'
+    if account.center:
+        return account.center.card.attribute
+    return 'All'
+
 register.filter('userimage', userimage)
 register.filter('linkimage', linkimage)
 register.filter('linkurl', linkurl)

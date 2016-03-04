@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load imageurl %}
+
+{% block title %}{% trans 'Report' %}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <br><br>
+  <div class="jumbotron">
+    <h1>{% trans 'Report' %}</h1>
+    <h2 class="text-center">
+      {% if account %}
+      {{ account }}
+      {% else %}
+      <img src="{% eventimageurl event=eventparticipation.event %}" width="100">
+      <small>{{ eventparticipation.event.japanese_name }}</small> {{ eventparticipation.account }} #{{ eventparticipation.ranking }}
+      {% endif %}
+    </h2>
+    <br>
+    <form class="form-horizontal" method="post" enctype="multipart/form-data">
+      {% if reported %}
+      <div class="fontx2">{% trans 'Thank you' %}</div>
+      <div class="text-right">
+	<a href="{% if account %}/reportaccount/{{ account.id }}/{% else %}/reporteventparticipation/{{ eventparticipation.pk }}/{% endif %}" class="btn btn-lg btn-Cool">{% trans 'Edit' %}</a>
+	<a href="/" class="btn btn-lg btn-Cool">{% trans 'Back to homepage' %}</a>
+      </div>
+      {% else %}
+      <div class="alert alert-warning">
+        <p>
+          {% if account %}
+          {% trans 'If your report is accepted, the account will be marked as fake and will never appear in leaderboards.'%}
+          {% else %}
+          {% trans 'If your report is accepted, the event participation will be deleted and will not appear in the event ranking anymore.'%}
+          {% endif %}
+        </p>
+        <p>
+          {% trans 'If you can, provide proofs below. Only moderators will be able to read your messages and see your pictures, not the owner.'%}
+        </p>
+      </div>
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+      <br><br>
+      <div class="text-right">
+	<button type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Report' %}</button>
+      </div>
+      {% endif %}
+      {% for image in report_images %}
+      <a href="{{ image.image|userimage }}" target="_blank"><img src="{{ image.image|userimage }}" width="100"></a>
+      {% endfor %}
+    </form>
+  </div>
+</div>
+{% endblock %}

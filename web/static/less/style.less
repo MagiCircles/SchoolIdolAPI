@@ -74,7 +74,7 @@ dt, dd {
 	position: absolute;
 	bottom: -20px;
 	right: 0;
-	content: "\e01b";
+	content: "\f119";
 	display: block;
 	font-family: Flaticon;
     }
@@ -800,6 +800,9 @@ a.panel {
 	    text-decoration: none!important;
 	}
     }
+    &.fake-account {
+        opacity: 0.7;
+    }
 }
 
 .profile-items img {
@@ -1371,6 +1374,20 @@ h1#donators {
 	    height: 40px;
 	    margin: -10px 0;
 	}
+    }
+    .event-report, .event-edit {
+        &:hover, &:focus {
+            text-decoration: none;
+        }
+    }
+    .event-report {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    &:hover {
+        .event-report {
+            opacity: 1;
+        }
     }
 }
 

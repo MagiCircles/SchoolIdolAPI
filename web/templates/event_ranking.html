@@ -26,22 +26,17 @@
 	  {% endif %}
 	  <td class="text-right">{% if participation.points %}{{ participation.points }} {% trans 'Points' %}{% endif %}</td>
 	  <td class="text-right">{% if participation.ranking %}<strong># {{ participation.ranking }}</strong>{% endif %}</td>
-	  {% if participation.account.owner == user %}
 	  <td width="17">
-	    <a href="/events/{{ event.japanese_name|urlencode }}/participations/#edit{{ participation.id }}" class="event-edit">
+	    {% if participation.account.owner == user %}
+	    <a href="/events/{{ event.japanese_name|urlencode }}/participations/#edit{{ participation.id }}" class="event-edit" data-toggle="tooltip" data-placement="top" title="{% trans 'Edit' %}">
 	      <i class="flaticon-edit"></i>
 	    </a>
-
-	    <span id="edit{{ participation.id }}title" class="hidden">
-	      {% with participation.account.language|languageToString as lang %}
-	      {% trans 'School Idol Tomodachi' %} {{ lang }} {% trans 'Ranking' %}
-	      {% endwith %}
-	    </span>
-
-	  </td>
-	  {% else %}
-	  <td></td>
-	  {% endif %}
+            {% else %}
+	    <a href="/reporteventparticipation/{{ participation.id }}/" class="event-report" data-toggle="tooltip" data-placement="top" title="{% trans 'Report' %}">
+	      <i class="flaticon-warning"></i>
+	    </a>
+            {% endif %}
+          </td>
 	</tr>
 	{% endwith %}
 	{% endfor %}

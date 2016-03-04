@@ -96,6 +96,14 @@ VERIFICATION_STATUS_CHOICES = (
 )
 VERIFICATION_STATUS_DICT = dict(VERIFICATION_STATUS_CHOICES)
 
+MODERATION_REPORT_STATUS_CHOICES = (
+    (0, _('Rejected')),
+    (1, _('Pending')),
+    (2, _('In Progress')),
+    (3, _('Accepted')),
+)
+MODERATION_REPORT_STATUS_DICT = dict(MODERATION_REPORT_STATUS_CHOICES)
+
 LINK_CHOICES = (
     ('twitter', 'Twitter'),
     ('facebook', 'Facebook'),
@@ -214,6 +222,9 @@ def verifiedToString(val):
 
 def verificationStatusToString(val):
     return VERIFICATION_STATUS_DICT[val]
+
+def reportStatusToString(val):
+    return MODERATION_REPORT_STATUS_DICT[val]
 
 def activityMessageToString(val):
     return ACTIVITY_MESSAGE_DICT[val]
@@ -455,6 +466,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     vouchers = models.PositiveIntegerField('Vouchers (blue tickets)', help_text=string_concat(_('Number of {} you currently have in your account.').format('Vouchers (blue tickets)'), ' ', _('This field is completely optional, it\'s here to help you manage your accounts.')), default=0)
     bought_loveca = models.PositiveIntegerField(_('Total love gems bought'), help_text=_('You can calculate that number in "Other" then "Purchase History". Leave it empty to stay F2P.'), null=True, blank=True)
     show_items = models.BooleanField('', default=True, help_text=_('Should your items be visible to other players?'))
+    fake = models.BooleanField(_('Fake'), default=False)
 
     @property
     def money_spent(self):
@@ -649,6 +661,20 @@ class VerificationRequest(ExportModelOperationsMixin('VerificationRequest'), mod
     allow_during_events = models.BooleanField(_('Allow us to verify your account during events'), default=False, help_text=_('Check this only if you don\'t care about the current event. You\'ll get verified faster.'))
 
 admin.site.register(VerificationRequest)
+
+class ModerationReport(models.Model):
+    reported_by = models.ForeignKey(User, related_name='reports_sent', null=True, on_delete=models.SET_NULL)
+    moderated_by = models.ForeignKey(User, related_name='moderation_done', null=True, on_delete=models.SET_NULL)
+    creation = models.DateTimeField(auto_now_add=True)
+    moderation_date = models.DateTimeField(null=True)
+    fake_account = models.ForeignKey(Account, related_name='moderationreport', null=True)
+    fake_eventparticipation = models.ForeignKey(EventParticipation, related_name='moderationreport', null=True)
+    status = models.PositiveIntegerField(default=1, choices=MODERATION_REPORT_STATUS_CHOICES)
+    comment = models.TextField(_('Comment'), null=True, blank=True)
+    images = models.ManyToManyField(UserImage, related_name="report")
+    moderation_comment = models.TextField(_('Comment'), null=True, blank=True)
+
+admin.site.register(ModerationReport)
 
 class Song(ExportModelOperationsMixin('Song'), models.Model):
     name = models.CharField(max_length=100, unique=True)

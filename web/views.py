@@ -174,7 +174,9 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         else:
             if message == 'Update card':
                 del(defaults['message'])
-            models.Activity.objects.update_or_create(ownedcard=ownedcard, defaults=defaults)
+            updated = models.Activity.objects.filter(ownedcard=ownedcard).update(**defaults)
+            if not updated:
+                models.Activity.objects.create(ownedcard=ownedcard, message='Added a card', **defaults)
     elif message == 'Rank Up' or message == 'Verified':
         defaults = {
             'account': account,

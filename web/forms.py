@@ -159,6 +159,10 @@ class StaffAddCardForm(ModelForm):
     card = forms.IntegerField()
     owner_account = forms.IntegerField()
 
+    def __init__(self, *args, **kwargs):
+        super(StaffAddCardForm, self).__init__(*args, **kwargs)
+        self.fields['owner_account'].widget = forms.HiddenInput()
+
     def save(self, commit=True):
         self.instance.card = get_object_or_404(models.Card, pk=self.cleaned_data['card'])
         self.instance.owner_account = get_object_or_404(models.Account, pk=self.cleaned_data['owner_account'])
@@ -219,12 +223,18 @@ class UserProfileStaffForm(ModelForm):
         model = models.UserPreferences
         fields = ('status', 'donation_link', 'donation_link_title', 'description', 'location', 'location_changed')
 
-class AccountStaffForm(ModelForm):
+class AccountAdminForm(ModelForm):
     owner_id = forms.IntegerField(required=False)
     center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=True)
     class Meta:
         model = models.Account
         fields = ('owner_id', 'friend_id', 'verified', 'rank', 'os', 'device', 'default_tab', 'nickname', 'language','play_with', 'accept_friend_requests', 'center')
+
+class AccountStaffForm(ModelForm):
+    center = OwnedCardModelChoiceField(queryset=models.OwnedCard.objects.all(), required=True)
+    class Meta:
+        model = models.Account
+        fields = ('friend_id', 'rank', 'center')
 
 class MultiImageField(MultiFileField, forms.ImageField):
     pass

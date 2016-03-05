@@ -668,7 +668,7 @@ class ModerationReport(models.Model):
     creation = models.DateTimeField(auto_now_add=True)
     moderation_date = models.DateTimeField(null=True)
     fake_account = models.ForeignKey(Account, related_name='moderationreport', null=True)
-    fake_eventparticipation = models.ForeignKey(EventParticipation, related_name='moderationreport', null=True)
+    fake_eventparticipation = models.ForeignKey(EventParticipation, related_name='moderationreport', null=True, on_delete=models.SET_NULL)
     status = models.PositiveIntegerField(default=1, choices=MODERATION_REPORT_STATUS_CHOICES)
     comment = models.TextField(_('Comment'), null=True, blank=True)
     images = models.ManyToManyField(UserImage, related_name="report")

@@ -372,6 +372,7 @@ class FilterEventForm(ModelForm):
     event_type = forms.ChoiceField(label=_('Type'), choices=BLANK_CHOICE_DASH + [
         ('Token', _('Token/Diary')),
         ('Score Match', 'Score Match'),
+        ('Challenge Festival', _('Challenge Festival')),
         ('Medley Festival', 'Medley Festival'),
     ])
     idol = ChoiceField(label=_('Idol'), choices=[], required=False)

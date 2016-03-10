@@ -21,6 +21,9 @@
 	<a class="panel-row {{ btnColor }}" href="/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/" target="_blank">
 	  <div class="row">
 	    <div class="col-sm-8">
+	      {% if contest.image %}
+	      <img src="{{ contest.image|userimage }}" class="img-responsive" style="border-radius: 10px;" />
+	      {% endif %}
 	      <h3 class="text-{{ best_card.attribute }}">{{ contest.name }}</h3>
 	      <div>
 		<p class="text-muted">

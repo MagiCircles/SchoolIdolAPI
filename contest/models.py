@@ -15,6 +15,7 @@ class Contest(models.Model):
     best_card = models.BooleanField(default=False)
     query = models.CharField(max_length=4092, null=True)
     image = models.ImageField(upload_to='contest/', null=True, blank=True)
+    result_image = models.ImageField(upload_to='contest_results/', null=True, blank=True)
 
     def __unicode__(self):
         return self.name

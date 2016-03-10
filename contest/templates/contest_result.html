@@ -82,7 +82,7 @@
       <div class="col-md-{% if list_girl %}6{% else %}12{% endif %}">
 	<div class="panel panel-{{ btnColor }} ranking">
 	  <div class="panel-heading">
-	    <strong>{% trans 'BEST Cards' %}</strong>
+	    <strong>{% if contest.id == 37 %}Least favorite cards{% else %}{% trans 'BEST Cards' %}{% endif %}</strong>
 	  </div>
 	  <div class="panel-body">
 	    {% for item in list_card %}

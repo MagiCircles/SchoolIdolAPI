@@ -47,7 +47,7 @@
 	      <img src="{% if cards.left.card.card_image and not cards.left.idolized %}{% imageurl card=cards.left.card image='card_image' %}{% else %}{% imageurl card=cards.left.card image='card_idolized_image' %}{% endif %}">
 	    </div>
 	    <div class="panel-heading">
-	      <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% trans 'is BEST' %}</strong>
+	      <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% if contest.id == 37 %}is meh...{% else %}{% trans 'is BEST' %}{% endif %}</strong>
 	    </div>
 	  </button> <!-- panel -->
 	  <div class="link left"><a class="text-center" href="/cards/{{ cards.left.card.id }}/" target="_blank">{% trans 'About this card' %}</a></div>
@@ -59,7 +59,7 @@
 	      <img src="{% if cards.right.card.card_image and not cards.right.idolized %}{% imageurl card=cards.right.card image='card_image' %}{% else %}{% imageurl card=cards.right.card image='card_idolized_image' %}{% endif %}">
 	    </div>
 	    <div class="panel-heading">
-	      <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% trans 'is BEST' %} </strong>
+	      <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% if contest.id == 37 %}is meh...{% else %}{% trans 'is BEST' %}{% endif %}</strong>
 	    </div>
 	  </button> <!-- panel -->
 	  <div class="link right"><a class="text-center" href="/cards/{{ cards.right.card.id }}/" target="_blank">{% trans 'About this card' %}</a></div>

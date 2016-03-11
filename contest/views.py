@@ -32,12 +32,14 @@ def contest_view(request, contestid):
                 choice = 'left' if request.POST.has_key('left') else 'right'
                 validate_vote(choice, votesession, contest)
         except: pass
-    cards = get_votesession(request, contest)
+    reused_session, cards = get_votesession(request, contest)
     request.session['token'] = cards.token
     context.update({
+        'reused_session': reused_session,
         'cards': cards,
         'contest': contest,
         'token': cards.token,
+        'contest_max_sessions': settings.CONTEST_MAX_SESSIONS,
     })
     return render(request, 'contest.html', context)
 

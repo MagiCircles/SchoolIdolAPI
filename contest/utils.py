@@ -37,15 +37,15 @@ def get_cards(contest):
 
 def get_votesession(request, contest):
     """
-    A player shouldn't be able to skip more than 9 votes.
-    If there is more than 9 votesessions for this browser,
-    we return a random one from the previous votesessions
-    Else, we return a new one.
+    A player shouldn't be able to skip more than settings.CONTEST_MAX_SESSIONS votes.
+    If there is more than settings.CONTEST_MAX_SESSIONS votesessions for this browser,
+    we return True + a random one from the previous votesessions
+    Else, we return False + a new one.
     """
     fingerprint = gen_fingerprint(request)
     sessions = contest_models.Session.objects.filter(fingerprint=fingerprint, contest=contest).all()
-    if sessions.count() >= 9:
-        return sessions.order_by('?').first()
+    if sessions.count() >= settings.CONTEST_MAX_SESSIONS:
+        return (True, sessions.order_by('?').first())
     else:
         left, right= get_cards(contest)
         session = contest_models.Session(left=left, right=right,
@@ -54,7 +54,7 @@ def get_votesession(request, contest):
                                          contest=contest,
                                          date=datetime.datetime.now())
         session.save()
-        return session
+        return (False, session)
 
 def validate_vote(choice, session, contest):
     if choice == 'left':

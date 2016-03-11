@@ -39,6 +39,9 @@
     </h1>
 
     <form method="post">
+      {% if reused_session %}
+      <div class="alert alert-warning">{% blocktrans %}You can only skip {{ contest_max_sessions }} times. Vote now to get more options.{% endblocktrans %}</div>
+      {% endif %}
       {% csrf_token %}
       <div class="row">
 	<div class="col-md-6">

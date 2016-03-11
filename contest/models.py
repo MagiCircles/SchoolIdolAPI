@@ -61,10 +61,10 @@ class Contest(models.Model):
                     if card.id == card_id:
                         if 'n' in card_info:
                             card.vote_idolized = False
-                            cards.append(card)
+                            cards.append(copy(card))
                         elif 'i' in card_info:
                             card.vote_idolized = True
-                            cards.append(card)
+                            cards.append(copy(card))
                         else:
                             card.vote_idolized = False
                             cards.append(copy(card))

@@ -15,6 +15,10 @@ def past_contests_queryset():
     now = datetime.datetime.now()
     return contest_models.Contest.objects.filter(end__lte=now).order_by('-end')
 
+def future_contests_queryset():
+    now = datetime.datetime.now()
+    return contest_models.Contest.objects.filter(begin__gt=now).order_by('begin')
+
 def get_current_contest():
     now = datetime.datetime.now()
     return contest_models.Contest.objects.filter(end__gte=now, begin__lte=now).first()

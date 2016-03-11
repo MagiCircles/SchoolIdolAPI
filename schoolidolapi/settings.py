@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'markdown_deux',
     'corsheaders',
     'bootstrap_form_horizontal',
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'oauth2_provider',
     'rest_framework',

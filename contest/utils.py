@@ -29,6 +29,10 @@ def is_current_contest(contest):
     now = timezone.now()
     return contest.begin <= now and contest.end >= now
 
+def is_future_contest(contest):
+    now = timezone.now()
+    return contest.begin > now
+
 def get_cards(contest):
     cards = contest.queryset()
     left = random.choice(cards)

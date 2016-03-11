@@ -7,7 +7,7 @@ from contest.utils import (get_votesession, validate_vote,
                            best_girls_query, best_cards_query,
                            best_single_cards, past_contests_queryset,
                            get_current_contest, is_current_contest,
-                           future_contests_queryset)
+                           is_future_contest, future_contests_queryset)
 from web.views import globalContext as web_globalContext
 from web.templatetags.mod import tourldash
 import datetime
@@ -79,7 +79,7 @@ def collection_view(request, contestid):
     context = globalContext(request)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     is_current = is_current_contest(contest)
-    if is_current:
+    if is_current or is_future_contest(contest):
         cards = contest.queryset()
     else:
         cards = contest.voted_cards()

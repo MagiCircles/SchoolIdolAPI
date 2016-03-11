@@ -405,6 +405,12 @@ def cards(request, card=None, ajax=False):
         elif 'is_special' in request.GET and request.GET['is_special'] == 'off':
             cards = cards.filter(is_special__exact=False)
             request_get['is_special'] = 'off'
+        if 'release_after' in request.GET and request.GET['release_after']:
+            cards = cards.filter(release_date__gte=datetime.datetime.strptime(request.GET['release_after'] + '-01', "%Y-%m-%d"))
+            request_get['release_after'] = request.GET['release_after']
+        if 'release_before' in request.GET and request.GET['release_before']:
+            cards = cards.filter(release_date__lte=datetime.datetime.strptime(request.GET['release_before'] + '-01', "%Y-%m-%d"))
+            request_get['release_before'] = request.GET['release_before']
 
         if 'account' in request.GET and request.GET['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
             account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)

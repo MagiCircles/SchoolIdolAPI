@@ -1,3 +1,7 @@
 from django.contrib import admin
+from contest import forms, models
 
-# Register your models here.
+class ContestAdmin(admin.ModelAdmin):
+    form = forms.ContestForm
+
+admin.site.register(models.Contest, ContestAdmin)

@@ -3,7 +3,6 @@ import api.models as api_models
 from urlparse import parse_qs
 from django.db.models import Q
 from django.conf import settings
-from django.contrib import admin
 from random import shuffle
 from copy import copy
 
@@ -14,7 +13,9 @@ class Contest(models.Model):
     best_girl = models.BooleanField(default=False)
     best_card = models.BooleanField(default=False)
     query = models.CharField(max_length=4092, null=True)
+    suggested_by = models.ForeignKey(api_models.User, related_name='suggested_contests', on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='contest/', null=True, blank=True)
+    image_by = models.ForeignKey(api_models.User, related_name='designed_contest_banners', on_delete=models.SET_NULL, null=True, blank=True)
     result_image = models.ImageField(upload_to='contest_results/', null=True, blank=True)
 
     def __unicode__(self):
@@ -79,8 +80,6 @@ class Contest(models.Model):
             vote.card.vote_idolized = vote.idolized
             cards.append(vote.card)
         return cards
-
-admin.site.register(Contest)
 
 class Vote(models.Model):
 	contest = models.ForeignKey(Contest, related_name='votes')

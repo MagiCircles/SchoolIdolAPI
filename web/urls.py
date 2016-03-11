@@ -1,6 +1,7 @@
 from django.conf.urls import include, patterns, url
 from django.conf import settings
 from web import views
+from web import autocomplete_views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
@@ -72,6 +73,8 @@ urlpatterns = patterns('',
     url(r'^ajax/staff/report/(?P<report_id>\d+)/accept/$', views.ajaxreport, {'status': 'accept'}, name='ajaxreport'),
     url(r'^ajax/staff/report/(?P<report_id>\d+)/reject/$', views.ajaxreport, {'status': 'reject'}, name='ajaxreport'),
     url(r'^ajax/trivia/share/', views.sharetrivia, name='sharetrivia'),
+
+    url(r'^autocomplete/user/', autocomplete_views.UserAutocomplete.as_view(), name='autocomplete-user'),
 
     url(r'^avatar/twitter/(?P<username>[\w.@+-]+)[/]+$', views.avatar_twitter, name='avatar_twitter'),
     url(r'^avatar/facebook/(?P<username>[\w.@+-]+)[/]+$', views.avatar_facebook, name='avatar_facebook'),

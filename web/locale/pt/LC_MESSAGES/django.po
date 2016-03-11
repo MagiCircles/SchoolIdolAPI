@@ -2183,8 +2183,7 @@ msgstr "maravilhosos"
 
 #: web/templatetags/mod.py:68
 msgid "incredible"
-msgstr "incríveis\n"
-""
+msgstr "incríveis"
 
 #: web/templatetags/mod.py:69
 msgid "adorable"

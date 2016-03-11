@@ -275,7 +275,6 @@ $(document).ready(function() {
 	|| $('#id_release_after').val() != ''
 	|| $('#id_select_account').val() != ''
 	|| $('#id_stored').val() != ''
-	|| $('#id_idolized').val() != ''
 	|| $('#id_max_level').val() != ''
 	|| $('#id_max_bond').val() != ''
        ) {

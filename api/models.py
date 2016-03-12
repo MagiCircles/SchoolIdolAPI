@@ -404,8 +404,6 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     center_skill = models.TextField(null=True, blank=True)
     transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
-    transparent_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
-    transparent_idolized_ur_pair = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     round_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)

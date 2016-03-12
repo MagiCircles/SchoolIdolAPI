@@ -296,7 +296,7 @@
 			  </td>
 			</tr>
 			{% endif %}
-			{% if card.transparent_image or card.transparent_idolized_image or card.transparent_ur_pair or card.transparent_idolized_ur_pair %}
+			{% if card.transparent_image or card.transparent_idolized_image %}
 			<tr>
 			  <th>{% trans 'Download' %}</th>
 			  <td>
@@ -308,12 +308,6 @@
 			    {% endif %}
 			    {% if card.transparent_idolized_image %}
 			    <a href="{{ card.transparent_idolized_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Idolized' %}</a><br>
-			    {% endif %}
-			    {% if card.transparent_ur_pair %}
-			    <a href="{{ card.transparent_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Idolized' %}</a><br>
-			    {% endif %}
-			    {% if card.transparent_idolized_ur_pair %}
-			    <a href="{{ card.transparent_idolized_ur_pair|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'UR Pair' %} - {% trans 'Not Idolized' %}</a><br>
 			    {% endif %}
 			  </td>
 			</tr>

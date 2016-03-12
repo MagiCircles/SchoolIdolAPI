@@ -52,7 +52,7 @@ class CardFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Card
-        fields = ('name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event')
+        fields = ('name', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event')
 
 class CardViewSet(viewsets.ModelViewSet):
     """

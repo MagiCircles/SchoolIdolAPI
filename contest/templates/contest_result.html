@@ -52,7 +52,7 @@
 	  </div>
 	  <div class="panel-body">
 	    {% for girl in list_girl %}
-	    {% with idol=girl.0 total_votes=girl.1 %}
+	    {% with idol=girl.0 total_votes=girl.1 total_cards=girl.2 votes_per_card=girl.3 %}
 	    <a class="panel-row {{ btnColor }}" href="/idol/{{ idol|urlencode }}/" target="_blank">
 	      <div class="row">
 		<div class="col-sm-2">
@@ -67,7 +67,8 @@
 		  </div>
 		  <div class="name name-card">
 		    <strong>{{ idol }}</strong>
-		    <small>{{ total_votes }} votes</small>
+		    <small><strong>{% trans 'Score' %}: {{ votes_per_card }}</strong>
+		      <br>{{ total_votes }} {% trans 'votes' %} - {{ total_cards }} {% trans 'cards' %}</small>
 		  </div>
 		</div>
 	      </div>

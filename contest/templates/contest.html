@@ -11,7 +11,7 @@
 {% block title %}{% if contest.id != global_contest_id %}{{ contest.name }}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/contest_vote.js"></script>
+<script src="/static/js/contest_vote.js?1"></script>
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id %}
 <script src="/static/js/contest_countdown.js"></script>
@@ -43,6 +43,7 @@
       <div class="alert alert-warning">{% blocktrans %}You can only skip {{ contest_max_sessions }} times. Vote now to get more options.{% endblocktrans %}</div>
       {% endif %}
       {% csrf_token %}
+      <input type="hidden" name="vote_side" id="vote_side" />
       <div class="row">
 	<div class="col-md-6">
 	  <button type="submit" class="panel panel-{{ btnColor }} card" name="left" value="left" id="left">

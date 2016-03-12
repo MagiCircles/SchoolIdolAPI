@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Count, F
 import contest.models as contest_models
 import api.models as api_models
 from django.utils import timezone
@@ -69,8 +69,7 @@ def validate_vote(choice, session, contest):
         vote = session.left
     elif choice == 'right':
         vote = session.right
-    vote.counter += 1
-    vote.save()
+    contest_models.Vote.objects.filter(pk=vote.id).update(counter=F('counter') + 1)
     session.delete()
     return
 
@@ -78,8 +77,10 @@ def best_girls_query(contest):
     '''
     Return a list of the winners sorted by name
     '''
-    queryset = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').select_related('card')
-    characters = [(girl['card__name'], girl['count']) for girl in queryset.all()[:10]]
+    query = 'SELECT `id`, `name`, `total_votes`, `num_cards_for_girl`, `total_votes`/`num_cards_for_girl` AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
+    queryset = contest_models.Vote.objects.raw(query)
+    characters = [(vote.name, vote.total_votes, vote.num_cards_for_girl, vote.score) for vote in queryset]
+    print characters
     return characters
 
 def best_cards_query(contest):

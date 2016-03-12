@@ -27,13 +27,11 @@ def contest_view(request, contestid):
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     if not is_current_contest(contest):
        return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/')
-    if request.method == 'POST':
-        try:
-            votesession = contest_models.Session.objects.get(token=request.session['token'])
-            if votesession:
-                choice = 'left' if request.POST.has_key('left') else 'right'
-                validate_vote(choice, votesession, contest)
-        except: pass
+    if request.method == 'POST' and 'vote_side' in request.POST and request.POST['vote_side']:
+        votesession = contest_models.Session.objects.get(token=request.session['token'])
+        if votesession:
+            choice = request.POST['vote_side']
+            validate_vote(choice, votesession, contest)
     reused_session, cards = get_votesession(request, contest)
     request.session['token'] = cards.token
     context.update({

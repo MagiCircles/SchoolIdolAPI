@@ -86,6 +86,7 @@ class Vote(models.Model):
 	card = models.ForeignKey(api_models.Card, related_name='votes')
 	idolized = models.BooleanField(default=False)
 	counter = models.PositiveIntegerField(default=0)
+        negative_counter = models.PositiveIntegerField(default=0)
 
 class Session(models.Model):
 	right = models.ForeignKey(Vote, related_name='right')

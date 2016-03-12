@@ -69,7 +69,9 @@
 		    <small>
 		      {% if girl.score %}
 		      <strong>{% trans 'Score' %}: {{ girl.score }}</strong>
-		      <br>{{ girl.total_votes }} {% trans 'votes' %} - {{ girl.total_cards }} {% trans 'cards' %}
+		      <br>{{ girl.total_votes }} {% trans 'votes' %}
+		      {% if user.is_staff %}- {{ girl.total_negative_votes }} neg {% trans 'votes' %}{% endif %}
+		      - {{ girl.total_cards }} {% trans 'cards' %}
 		      {% else %}
 		      {{ girl.total_votes }} {% trans 'votes' %}
 		      {% endif %}

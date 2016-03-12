@@ -27,7 +27,8 @@ def contest_view(request, contestid):
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     if not is_current_contest(contest):
        return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/')
-    if request.method == 'POST' and 'vote_side' in request.POST and request.POST['vote_side']:
+    if (request.method == 'POST' and 'vote_side' in request.POST and request.POST['vote_side']
+        and (request.POST['vote_side'] == 'right' or request.POST['vote_side'] == 'left')):
         votesession = contest_models.Session.objects.get(token=request.session['token'])
         if votesession:
             choice = request.POST['vote_side']

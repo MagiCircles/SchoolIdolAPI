@@ -68,9 +68,12 @@ def get_votesession(request, contest):
 def validate_vote(choice, session, contest):
     if choice == 'left':
         vote = session.left
+        negative_vote = session.right
     elif choice == 'right':
         vote = session.right
+        negative_vote = session.left
     contest_models.Vote.objects.filter(pk=vote.id).update(counter=F('counter') + 1)
+    contest_models.Vote.objects.filter(pk=negative_vote.id).update(negative_counter=F('negative_counter') + 1)
     session.delete()
     return
 
@@ -79,11 +82,12 @@ def best_girls_query(contest):
     Return a list of the winners sorted by name
     '''
     if contest.id == settings.GLOBAL_CONTEST_ID or contest.begin >= datetime.datetime(2016, 03, 05, tzinfo=pytz.UTC):
-        query = 'SELECT `id`, `name`, `total_votes`, `num_cards_for_girl`, `total_votes`/`num_cards_for_girl` AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
+        query = 'SELECT `id`, `name`, `total_votes`, `total_negative_votes`, `num_cards_for_girl`, (CASE `total_negative_votes` WHEN `total_negative_votes` = 0 THEN 1 ELSE (`total_votes`/`total_negative_votes`) END) AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, SUM(contest_vote.negative_counter) AS total_negative_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
         queryset = contest_models.Vote.objects.raw(query)
         characters = [{
             'name': vote.name,
             'total_votes': vote.total_votes,
+            'total_negative_votes': vote.total_negative_votes,
             'total_cards': vote.num_cards_for_girl,
             'score': vote.score,
         } for vote in queryset]

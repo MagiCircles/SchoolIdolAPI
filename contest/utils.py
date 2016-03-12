@@ -78,7 +78,7 @@ def best_girls_query(contest):
     '''
     Return a list of the winners sorted by name
     '''
-    if contest.begin >= datetime.datetime(2016, 03, 05, tzinfo=pytz.UTC):
+    if contest.id == settings.GLOBAL_CONTEST_ID or contest.begin >= datetime.datetime(2016, 03, 05, tzinfo=pytz.UTC):
         query = 'SELECT `id`, `name`, `total_votes`, `num_cards_for_girl`, `total_votes`/`num_cards_for_girl` AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
         queryset = contest_models.Vote.objects.raw(query)
         characters = [{

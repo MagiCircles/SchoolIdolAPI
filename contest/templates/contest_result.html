@@ -68,7 +68,7 @@
 		    <strong>{{ girl.name }}</strong>
 		    <small>
 		      {% if girl.score %}
-		      <strong>{% trans 'Score' %}: {{ girl.score }}</strong>
+		      <strong>{% trans 'Score' %}: {{ girl.score|multiply:100|floatformat:2 }}%</strong>
 		      <br>{{ girl.total_votes }} {% trans 'votes' %}
 		      {% if user.is_staff %}- {{ girl.total_negative_votes }} neg {% trans 'votes' %}{% endif %}
 		      - {{ girl.total_cards }} {% trans 'cards' %}

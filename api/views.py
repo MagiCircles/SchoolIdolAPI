@@ -61,7 +61,7 @@ class CardViewSet(viewsets.ModelViewSet):
     queryset = models.Card.objects.all().select_related('event', 'idol')
     serializer_class = serializers.CardSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
-    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection','promo_item','event__english_name','event__japanese_name')
+    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection', 'translated_collection', 'promo_item','event__english_name','event__japanese_name')
     filter_class = CardFilter
     permission_classes = (api_permissions.IsStaffOrReadOnly, )
     ordering_fields = '__all__'

@@ -52,8 +52,7 @@
 	  </div>
 	  <div class="panel-body">
 	    {% for girl in list_girl %}
-	    {% with idol=girl.0 total_votes=girl.1 total_cards=girl.2 votes_per_card=girl.3 %}
-	    <a class="panel-row {{ btnColor }}" href="/idol/{{ idol|urlencode }}/" target="_blank">
+	    <a class="panel-row {{ btnColor }}" href="/idol/{{ girl.name|urlencode }}/" target="_blank">
 	      <div class="row">
 		<div class="col-sm-2">
 		  <div class="rank">
@@ -63,17 +62,22 @@
 		</div>
 		<div class="col-sm-10">
 		  <div class="pull-right">
-		    <img src="{% chibiimage idol=idol small=False %}" class="idol" alt="{{ idol }}">
+		    <img src="{% chibiimage idol=girl.name small=False %}" class="idol" alt="{{ girl.name }}">
 		  </div>
 		  <div class="name name-card">
-		    <strong>{{ idol }}</strong>
-		    <small><strong>{% trans 'Score' %}: {{ votes_per_card }}</strong>
-		      <br>{{ total_votes }} {% trans 'votes' %} - {{ total_cards }} {% trans 'cards' %}</small>
+		    <strong>{{ girl.name }}</strong>
+		    <small>
+		      {% if girl.score %}
+		      <strong>{% trans 'Score' %}: {{ girl.score }}</strong>
+		      <br>{{ girl.total_votes }} {% trans 'votes' %} - {{ girl.total_cards }} {% trans 'cards' %}
+		      {% else %}
+		      {{ girl.total_votes }} {% trans 'votes' %}
+		      {% endif %}
+		    </small>
 		  </div>
 		</div>
 	      </div>
 	    </a>
-	    {% endwith %}
 	    {% endfor %}
 	  </div> <!-- panel-body -->
 	</div> <!-- panel -->

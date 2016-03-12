@@ -6,6 +6,7 @@ from django.conf import settings
 import random
 import hashlib
 import datetime
+import pytz
 import uuid
 
 def gen_fingerprint(request):
@@ -77,10 +78,21 @@ def best_girls_query(contest):
     '''
     Return a list of the winners sorted by name
     '''
-    query = 'SELECT `id`, `name`, `total_votes`, `num_cards_for_girl`, `total_votes`/`num_cards_for_girl` AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
-    queryset = contest_models.Vote.objects.raw(query)
-    characters = [(vote.name, vote.total_votes, vote.num_cards_for_girl, vote.score) for vote in queryset]
-    print characters
+    if contest.begin >= datetime.datetime(2016, 03, 05, tzinfo=pytz.UTC):
+        query = 'SELECT `id`, `name`, `total_votes`, `num_cards_for_girl`, `total_votes`/`num_cards_for_girl` AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
+        queryset = contest_models.Vote.objects.raw(query)
+        characters = [{
+            'name': vote.name,
+            'total_votes': vote.total_votes,
+            'total_cards': vote.num_cards_for_girl,
+            'score': vote.score,
+        } for vote in queryset]
+    else:
+        queryset = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').select_related('card')
+        characters = [{
+            'name': girl['card__name'],
+            'total_votes': girl['count']
+        } for girl in queryset.all()[:10]]
     return characters
 
 def best_cards_query(contest):

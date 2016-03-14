@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_en_events(args):
+def import_en_events(opt):
     local = opt['local']
     print '### Import EN events T1/T2 cutoffs from decaf wiki'
     if local:

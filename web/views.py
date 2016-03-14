@@ -251,10 +251,11 @@ def index(request):
             card = card.filter(name=request.user.preferences.best_girl)
         else:
             card = card.filter(idol__main=True)
-        card = card[0]
-        context['character'] = card.transparent_idolized_image
-        if card.transparent_image and bool(random.getrandbits(1)):
-            context['character'] = card.transparent_image
+        if card:
+            card = card[0]
+            context['character'] = card.transparent_idolized_image
+            if card.transparent_image and bool(random.getrandbits(1)):
+                context['character'] = card.transparent_image
 
     return render(request, 'index.html', context)
 

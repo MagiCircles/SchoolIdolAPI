@@ -24,6 +24,10 @@ def transconcatspace(value, svalue):
     return string_concat(_(value), ' ', _(svalue))
 
 @register.filter
+def multiply(value1, value2):
+    return value1 * value2
+
+@register.filter
 def tourldash(string):
     return ''.join(e if e.isalnum() else '-' for e in string)
 

@@ -21,7 +21,18 @@
 	<a class="panel-row {{ btnColor }}" href="/contest/result/{{ contest.id }}/{{ contest.name|tourldash }}/" target="_blank">
 	  <div class="row">
 	    <div class="col-sm-8">
+	      {% if contest.image %}
+	      <img src="{{ contest.image|userimage }}" class="img-responsive" style="border-radius: 10px;" />
+	      {% endif %}
 	      <h3 class="text-{{ best_card.attribute }}">{{ contest.name }}</h3>
+	      <span class="text-muted">
+		{% if contest.suggested_by %}
+		{% trans 'Suggested by' %} {% include 'include/avatar.html' with av_user=contest.suggested_by av_fixed=True av_size=20 av_image_size=30 av_username=True %}
+		{% endif %}
+		{% if contest.image_by %}
+		{% trans 'Image by' %} {% include 'include/avatar.html' with av_user=contest.image_by av_fixed=True av_size=20 av_image_size=30 av_username=True %}
+		{% endif %}
+	      </span>
 	      <div>
 		<p class="text-muted">
 		  {{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d %Y' }}

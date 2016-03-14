@@ -174,7 +174,9 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         else:
             if message == 'Update card':
                 del(defaults['message'])
-            models.Activity.objects.update_or_create(ownedcard=ownedcard, defaults=defaults)
+            updated = models.Activity.objects.filter(ownedcard=ownedcard).update(**defaults)
+            if not updated:
+                models.Activity.objects.create(ownedcard=ownedcard, message='Added a card', **defaults)
     elif message == 'Rank Up' or message == 'Verified':
         defaults = {
             'account': account,
@@ -403,6 +405,12 @@ def cards(request, card=None, ajax=False):
         elif 'is_special' in request.GET and request.GET['is_special'] == 'off':
             cards = cards.filter(is_special__exact=False)
             request_get['is_special'] = 'off'
+        if 'release_after' in request.GET and request.GET['release_after']:
+            cards = cards.filter(release_date__gte=datetime.datetime.strptime(request.GET['release_after'] + '-01', "%Y-%m-%d"))
+            request_get['release_after'] = request.GET['release_after']
+        if 'release_before' in request.GET and request.GET['release_before']:
+            cards = cards.filter(release_date__lte=datetime.datetime.strptime(request.GET['release_before'] + '-01', "%Y-%m-%d"))
+            request_get['release_before'] = request.GET['release_before']
 
         if 'account' in request.GET and request.GET['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
             account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)
@@ -680,12 +688,13 @@ def profile(request, username):
         user = get_object_or_404(User.objects.select_related('preferences'), username=username)
     context['profile_user'] = user
     context['preferences'] = user.preferences
-    if request.user.is_staff:
-        context['form_preferences'] = forms.UserProfileStaffForm(instance=context['preferences'])
+    if request.user.is_staff and (request.user.is_superuser or request.user.preferences.allowed_verifications):
+        if request.user.is_superuser:
+            context['form_preferences'] = forms.UserProfileStaffForm(instance=context['preferences'])
         if 'staff' in request.GET:
             context['show_staff'] = True
         if request.method == 'POST':
-            if 'editPreferences' in request.POST:
+            if 'editPreferences' in request.POST and request.user.is_superuser:
                 form_preferences = forms.UserProfileStaffForm(request.POST, instance=context['preferences'])
                 if form_preferences.is_valid():
                     prefs = form_preferences.save()
@@ -758,15 +767,16 @@ def profile(request, username):
                 else:
                     account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
             # Staff form to edit account
-            if request.user.is_staff:
+            if request.user.is_staff and (request.user.is_superuser or request.user.preferences.allowed_verifications):
+                staffFormClass = forms.AccountAdminForm if request.user.is_superuser else forms.AccountStaffForm
                 account.staff_form_addcard = forms.StaffAddCardForm(initial={'owner_account': account.id})
-                account.staff_form = forms.AccountStaffForm(instance=account)
+                account.staff_form = staffFormClass(instance=account)
                 account.staff_form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('card__id').select_related('card')
                 if request.method == 'POST' and ('editAccount' + str(account.id)) in request.POST:
-                    account.staff_form = forms.AccountStaffForm(request.POST, instance=account)
+                    account.staff_form = staffFormClass(request.POST, instance=account)
                     if account.staff_form.is_valid():
                         account = account.staff_form.save(commit=False)
-                        if 'owner_id' in account.staff_form.cleaned_data and account.staff_form.cleaned_data['owner_id']:
+                        if request.user.is_superuser and 'owner_id' in account.staff_form.cleaned_data and account.staff_form.cleaned_data['owner_id']:
                             account_new_user = models.User.objects.get(pk=account.staff_form.cleaned_data['owner_id'])
                             account.owner = account_new_user
                         account.save()
@@ -821,6 +831,8 @@ def _ajaxaccounttab_ownedcards(tab, request, account, more):
     """
     context = {}
     context['is_me'] = False
+    if 'staff' in request.GET:
+        context['show_staff'] = True
     if account.owner == request.user:
         context['is_me'] = True
     if tab == 'deck' and context['is_me']:

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load imageurl %}
+{% load i18n %}
+{% load random_int %}
+{% load mod %}
+{% load formattime %}
+
+{% block title %}Schedule of the future contests{% endblock %}
+
+{% block content %}
+<div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+  <div class="container">
+    <h1 class="text-{{ btnColor }}">Schedule of the future contests</h1>
+    <div class="panel panel-{{ btnColor }} pastcontests">
+      <div class="panel-body">
+	{% for contest in contests %}
+	{% if contest.delta %}
+	<a href="#" class="panel-row {{ btnColor }}">
+	  <p>{{ contest.delta.days }} days break</p>
+	</a>
+	{% endif %}
+	<a class="panel-row {{ btnColor }}" href="/contest/collection/{{ contest.id }}/{{ contest.name|tourldash }}/" target="_blank">
+	  {% if contest.image %}
+	  <img src="{{ contest.image|userimage }}" class="img-responsive" style="border-radius: 10px;" />
+	  {% endif %}
+	  <h3 class="text-{{ best_card.attribute }}">{{ contest.name }}</h3>
+	  <span class="text-muted">
+	    {% if contest.suggested_by %}
+	    {% trans 'Suggested by' %} {% include 'include/avatar.html' with av_user=contest.suggested_by av_fixed=True av_size=20 av_image_size=30 av_username=True %}
+	    {% endif %}
+	    {% if contest.image_by %}
+	    {% trans 'Image by' %} {% include 'include/avatar.html' with av_user=contest.image_by av_fixed=True av_size=20 av_image_size=30 av_username=True %}
+	    {% endif %}
+	  </span>
+	  <div>
+	    <p class="text-muted">
+	      {% if contest.begin %}{{ contest.begin|formattime:'%B %d' }}{% endif %} - {% if contest.end %}{{ contest.end|formattime:'%B %d %Y' }}{% endif %}
+	    </p>
+	  </div>
+	  <p>{% if contest.best_girl %}Best Girls{% endif %} {% if contest.best_card %}Best Cards{% endif %}</p>
+	</a>
+	{% endfor %}
+      </div> <!-- panel-body -->
+    </div> <!-- panel -->
+  </div> <!-- container -->
+</div> <!-- contest-page -->
+{% endblock %}

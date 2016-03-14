@@ -46,13 +46,17 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class CardFilter(django_filters.FilterSet):
     is_event = django_filters.MethodFilter(action='filter_is_event')
+    ids = django_filters.MethodFilter(action='filter_ids')
 
     def filter_is_event(self, queryset, value):
         return queryset.filter(event__isnull=(False if value.title() == 'True' else True))
 
+    def filter_ids(self, queryset, value):
+        return queryset.filter(id__in=value.split(','))
+
     class Meta:
         model = models.Card
-        fields = ('name', 'japanese_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event')
+        fields = ('name', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event', 'ids')
 
 class CardViewSet(viewsets.ModelViewSet):
     """
@@ -61,7 +65,7 @@ class CardViewSet(viewsets.ModelViewSet):
     queryset = models.Card.objects.all().select_related('event', 'idol')
     serializer_class = serializers.CardSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
-    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection','promo_item','event__english_name','event__japanese_name')
+    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection', 'translated_collection', 'promo_item','event__english_name','event__japanese_name')
     filter_class = CardFilter
     permission_classes = (api_permissions.IsStaffOrReadOnly, )
     ordering_fields = '__all__'

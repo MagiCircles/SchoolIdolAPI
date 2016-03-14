@@ -3,7 +3,6 @@ import api.models as api_models
 from urlparse import parse_qs
 from django.db.models import Q
 from django.conf import settings
-from django.contrib import admin
 from random import shuffle
 from copy import copy
 
@@ -14,7 +13,10 @@ class Contest(models.Model):
     best_girl = models.BooleanField(default=False)
     best_card = models.BooleanField(default=False)
     query = models.CharField(max_length=4092, null=True)
+    suggested_by = models.ForeignKey(api_models.User, related_name='suggested_contests', on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='contest/', null=True, blank=True)
+    image_by = models.ForeignKey(api_models.User, related_name='designed_contest_banners', on_delete=models.SET_NULL, null=True, blank=True)
+    result_image = models.ImageField(upload_to='contest_results/', null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -60,10 +62,10 @@ class Contest(models.Model):
                     if card.id == card_id:
                         if 'n' in card_info:
                             card.vote_idolized = False
-                            cards.append(card)
+                            cards.append(copy(card))
                         elif 'i' in card_info:
                             card.vote_idolized = True
-                            cards.append(card)
+                            cards.append(copy(card))
                         else:
                             card.vote_idolized = False
                             cards.append(copy(card))
@@ -79,13 +81,12 @@ class Contest(models.Model):
             cards.append(vote.card)
         return cards
 
-admin.site.register(Contest)
-
 class Vote(models.Model):
 	contest = models.ForeignKey(Contest, related_name='votes')
 	card = models.ForeignKey(api_models.Card, related_name='votes')
 	idolized = models.BooleanField(default=False)
 	counter = models.PositiveIntegerField(default=0)
+        negative_counter = models.PositiveIntegerField(default=0)
 
 class Session(models.Model):
 	right = models.ForeignKey(Vote, related_name='right')

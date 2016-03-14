@@ -271,6 +271,12 @@ $(document).ready(function() {
 	|| $('#id_is_special').val() != ''
 	|| $('#id_is_event').val() != ''
 	|| $('#id_skill').val() != ''
+	|| $('#id_release_before').val() != ''
+	|| $('#id_release_after').val() != ''
+	|| $('#id_select_account').val() != ''
+	|| $('#id_stored').val() != ''
+	|| $('#id_max_level').val() != ''
+	|| $('#id_max_bond').val() != ''
        ) {
 	$('#morefilters.collapse').collapse('show');
     }

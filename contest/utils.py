@@ -1,4 +1,4 @@
-from django.db.models import Sum
+from django.db.models import Sum, Count, F
 import contest.models as contest_models
 import api.models as api_models
 from django.utils import timezone
@@ -6,6 +6,7 @@ from django.conf import settings
 import random
 import hashlib
 import datetime
+import pytz
 import uuid
 
 def gen_fingerprint(request):
@@ -14,6 +15,10 @@ def gen_fingerprint(request):
 def past_contests_queryset():
     now = datetime.datetime.now()
     return contest_models.Contest.objects.filter(end__lte=now).order_by('-end')
+
+def future_contests_queryset():
+    now = datetime.datetime.now()
+    return contest_models.Contest.objects.filter(begin__gt=now).order_by('begin')
 
 def get_current_contest():
     now = datetime.datetime.now()
@@ -24,6 +29,10 @@ def is_current_contest(contest):
         return True
     now = timezone.now()
     return contest.begin <= now and contest.end >= now
+
+def is_future_contest(contest):
+    now = timezone.now()
+    return contest.begin > now
 
 def get_cards(contest):
     cards = contest.queryset()
@@ -37,15 +46,15 @@ def get_cards(contest):
 
 def get_votesession(request, contest):
     """
-    A player shouldn't be able to skip more than 9 votes.
-    If there is more than 9 votesessions for this browser,
-    we return a random one from the previous votesessions
-    Else, we return a new one.
+    A player shouldn't be able to skip more than settings.CONTEST_MAX_SESSIONS votes.
+    If there is more than settings.CONTEST_MAX_SESSIONS votesessions for this browser,
+    we return True + a random one from the previous votesessions
+    Else, we return False + a new one.
     """
     fingerprint = gen_fingerprint(request)
     sessions = contest_models.Session.objects.filter(fingerprint=fingerprint, contest=contest).all()
-    if sessions.count() >= 9:
-        return sessions.order_by('?').first()
+    if sessions.count() >= settings.CONTEST_MAX_SESSIONS:
+        return (True, sessions.order_by('?').first())
     else:
         left, right= get_cards(contest)
         session = contest_models.Session(left=left, right=right,
@@ -54,15 +63,17 @@ def get_votesession(request, contest):
                                          contest=contest,
                                          date=datetime.datetime.now())
         session.save()
-        return session
+        return (False, session)
 
 def validate_vote(choice, session, contest):
     if choice == 'left':
         vote = session.left
+        negative_vote = session.right
     elif choice == 'right':
         vote = session.right
-    vote.counter += 1
-    vote.save()
+        negative_vote = session.left
+    contest_models.Vote.objects.filter(pk=vote.id).update(counter=F('counter') + 1)
+    contest_models.Vote.objects.filter(pk=negative_vote.id).update(negative_counter=F('negative_counter') + 1)
     session.delete()
     return
 
@@ -70,8 +81,22 @@ def best_girls_query(contest):
     '''
     Return a list of the winners sorted by name
     '''
-    queryset = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').select_related('card')
-    characters = [(girl['card__name'], girl['count']) for girl in queryset.all()[:10]]
+    if contest.id == settings.GLOBAL_CONTEST_ID or contest.begin >= datetime.datetime(2016, 03, 05, tzinfo=pytz.UTC):
+        query = 'SELECT `id`, `name`, `total_votes`, `total_negative_votes`, `num_cards_for_girl`, (CASE `total_negative_votes` WHEN (`total_negative_votes` + `total_negative_votes`) = 0 THEN 1 ELSE (`total_votes` / ' + ('CAST((`total_negative_votes` + `total_votes`) AS FLOAT)' if 'mysql' not in settings.DATABASES['default']['ENGINE'] else '(`total_negative_votes` + `total_votes`)') + ') END) AS `score` FROM (SELECT contest_vote.id AS id, api_card.name AS name, SUM(contest_vote.counter) AS total_votes, SUM(contest_vote.negative_counter) AS total_negative_votes, COUNT(contest_vote.card_id) AS num_cards_for_girl FROM contest_vote INNER JOIN api_card ON ( contest_vote.card_id = api_card.id ) WHERE contest_vote.contest_id = {} GROUP BY api_card.name) t ORDER BY `score` DESC LIMIT 10;'.format(contest.id)
+        queryset = contest_models.Vote.objects.raw(query)
+        characters = [{
+            'name': vote.name,
+            'total_votes': vote.total_votes,
+            'total_negative_votes': vote.total_negative_votes,
+            'total_cards': vote.num_cards_for_girl,
+            'score': vote.score,
+        } for vote in queryset]
+    else:
+        queryset = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').select_related('card')
+        characters = [{
+            'name': girl['card__name'],
+            'total_votes': girl['count']
+        } for girl in queryset.all()[:10]]
     return characters
 
 def best_cards_query(contest):

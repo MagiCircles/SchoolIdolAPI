@@ -43,7 +43,7 @@
     }
   });
 </script>
-<script src="/static/js/cards.js?7"></script>
+<script src="/static/js/cards.js?9"></script>
 <script src="/static/js/addcard.js?2"></script>
 {% endblock %}
 
@@ -73,7 +73,7 @@
 	<input type="text" id="search" placeholder="{% trans 'Search' %}" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="{% trans 'Search' %}: {% trans 'Idol' %}, {% trans 'Skill' %}, {% trans 'Collection' %}, {% trans 'Promo Item' %}, {% trans 'Event' %}, ..." data-trigger="focus" value="{{ request_get.search }}">
       </div>
       <h4>{% trans 'Filter' %}</h4>
-      <div class="section filter">
+      <div class="section filter" style="padding-bottom: 0;">
 	<label for="id_name">{% trans 'Idol' %}</label>
 	<select id="id_name" name="name">
 	  <optgroup>
@@ -108,10 +108,38 @@
 	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
 	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
 	</div>
+	<br>
 	<div class="text-right">
-	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i></a>
+	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i> <span class="fontx1-2">{% trans 'More options' %}</span></a>
 	</div>
-	<div id="morefilters" class="collapse">
+      </div>
+      <div id="morefilters" class="collapse">
+	<div class="section morefilters">
+	  <div>
+	    <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
+	    <select id="id_is_promo" name="is_promo" data-cuteform="true">
+	      <option data-cuteform-html="{% trans 'All' %}" value=""></option>
+	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	    </select>
+	  </div>
+	  <div>
+	    <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards' %}</label>
+	    <select id="id_is_special" name="is_special" data-cuteform="true">
+	      <option value="" data-cuteform-html="{% trans 'All' %}"></option>
+	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_special == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_special == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	    </select>
+	  </div>
+	  <div>
+	    <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
+	    <select id="id_is_event" name="is_event" data-cuteform="true">
+	      <option data-cuteform-html="{% trans 'All' %}" value=""></option>
+	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+	    </select>
+	  </div>
+	  <br>
 	  <label for="id_skill">{% trans 'Skill' %}</label>
 	  <select id="id_skill" name="skill">
 	    <option value=""></option>
@@ -120,19 +148,19 @@
 	    {% endfor %}
 	  </select>
 	  <br>
-	  <label for="id_collection">{% trans 'Collection' %} ({{ 'JP'|languageToString }}) <i class="flaticon-JP"></i></label>
-	  <select id="id_collection" name="collection">
-	    <option value=""></option>
-	    {% for collection in filters.collections %}
-	    <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
-	    {% endfor %}
-	  </select>
-	  <br>
 	  <label for="id_translated_collection">{% trans 'Collection' %} ({{ 'EN'|languageToString }}) <i class="flaticon-EN"></i></label>
 	  <select id="id_translated_collection" name="translated_collection">
 	    <option value=""></option>
 	    {% for translated_collection in filters.translated_collections %}
 	    <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{{ translated_collection.translated_collection }} ({{ translated_collection.total }})</option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	  <label for="id_collection">{% trans 'Collection' %} ({{ 'JP'|languageToString }}) <i class="flaticon-JP"></i></label>
+	  <select id="id_collection" name="collection">
+	    <option value=""></option>
+	    {% for collection in filters.collections %}
+	    <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
 	    {% endfor %}
 	  </select>
 	  <div id="sub_unit_wrapper">
@@ -160,74 +188,54 @@
 	    {% endfor %}
 	  </select>
 	  <br>
-	  <div>
-	    <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
-	    <select id="id_is_promo" name="is_promo" data-cuteform="true">
-	      <option data-cuteform-html="{% trans 'All' %}" value=""></option>
-	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-	    </select>
-	  </div>
-	  <div>
-	    <label for="id_is_special"><i class="flaticon-skill"></i> {% trans 'Special Cards' %}</label>
-	    <select id="id_is_special" name="is_special" data-cuteform="true">
-	      <option value="" data-cuteform-html="{% trans 'All' %}"></option>
-	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_special == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_special == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-	    </select>
-	  </div>
-	  <div>
-	    <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
-	    <select id="id_is_event" name="is_event" data-cuteform="true">
-	      <option data-cuteform-html="{% trans 'All' %}" value=""></option>
-	      <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-	      <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-	    </select>
-	  </div>
+	  <label for="id_release_after">{% trans 'Release date' %} ({% trans 'after' %}):</label>
+	  <input id="id_release_after" type="month" name="release_after" value="{{ request_get.release_after }}" class="form-control">
+	  <label for="id_release_before">{% trans 'Release date' %} ({% trans 'before' %}):</label>
+	  <input id="id_release_before" type="month" name="release_before" value="{{ request_get.release_before }}" class="form-control">
+	</div> <!-- section -->
+	{% if user.is_authenticated %}
+	<h4>{{ user }}</h4>
+	<div class="section yours">
+	  <label for="id_select_account">{% trans 'Account' %}</label>
+	  <select id="id_select_account" name="account">
+	    <option value=""></option>
+	    {% for account in accounts %}
+	    <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
+	    {% endfor %}
+	  </select>
 	  <br>
+	  <label for="id_stored">{% trans 'Stored' %}</label>
+	  <select id="id_stored" name="stored">
+	    <option value=""></option>
+	    {% for i, stored in filters.stored_choices %}
+	    <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
+	    {% endfor %}
+	  </select>
+	  <br>
+	  <label for="id_idolized"><i class="flaticon-idolized"></i> {% trans 'Idolized' %}</label>
+	  <select id="id_idolized" name="idolized">
+	    <option value=""></option>
+	    <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
+	    <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
+	  </select>
+	  <brf>
+	  <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
+	  <select id="id_max_level" name="max_level">
+	    <option value=""></option>
+	    <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
+	    <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
+	  </select>
+	  <br>
+	  <label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
+	  <select id="id_max_bond" name="max_bond">
+	    <option value=""></option>
+	    <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
+	    <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
+	  </select>
 	</div>
-      </div>
-      {% if user.is_authenticated %}
-      <h4>{{ user }}</h4>
-      <div class="section yours">
-	<label for="id_select_account">{% trans 'Account' %}</label>
-	<select id="id_select_account" name="account">
-	  <option value=""></option>
-	  {% for account in accounts %}
-	  <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
-	  {% endfor %}
-	</select>
-	<br>
-	<label for="id_stored">{% trans 'Stored' %}</label>
-	<select id="id_stored" name="stored">
-	  <option value=""></option>
-	  {% for i, stored in filters.stored_choices %}
-	  <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
-	  {% endfor %}
-	</select>
-	<br>
-	<label for="id_idolized"><i class="flaticon-idolized"></i> {% trans 'Idolized' %}</label>
-	<select id="id_idolized" name="idolized">
-	  <option value=""></option>
-	  <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
-	  <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
-	</select>
-	<br>
-	<label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
-	<select id="id_max_level" name="max_level">
-	  <option value=""></option>
-	  <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
-	  <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
-	</select>
-	<br>
-	<label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
-	<select id="id_max_bond" name="max_bond">
-	  <option value=""></option>
-	  <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
-	  <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
-	</select>
-      </div>
-      {% endif %}
+	{% endif %}
+      </div> <!-- collapse -->
+      <br>
       <h4>{% trans 'Order' %}</h4>
       <div class="section order">
 	<select id="id_ordering" name="ordering">

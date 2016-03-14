@@ -11,7 +11,7 @@
 {% block title %}{% if contest.id != global_contest_id %}{{ contest.name }}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/contest_vote.js"></script>
+<script src="/static/js/contest_vote.js?1"></script>
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id %}
 <script src="/static/js/contest_countdown.js"></script>
@@ -39,7 +39,11 @@
     </h1>
 
     <form method="post">
+      {% if reused_session %}
+      <div class="alert alert-warning">{% blocktrans %}You can only skip {{ contest_max_sessions }} times. Vote now to get more options.{% endblocktrans %}</div>
+      {% endif %}
       {% csrf_token %}
+      <input type="hidden" name="vote_side" id="vote_side" />
       <div class="row">
 	<div class="col-md-6">
 	  <button type="submit" class="panel panel-{{ btnColor }} card" name="left" value="left" id="left">
@@ -47,7 +51,7 @@
 	      <img src="{% if cards.left.card.card_image and not cards.left.idolized %}{% imageurl card=cards.left.card image='card_image' %}{% else %}{% imageurl card=cards.left.card image='card_idolized_image' %}{% endif %}">
 	    </div>
 	    <div class="panel-heading">
-	      <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% trans 'is BEST' %}</strong>
+	      <strong>#{{ cards.left.card.id }} {{ cards.left.card.name|shortname }} {% if contest.id == 37 %}is meh...{% else %}{% trans 'is BEST' %}{% endif %}</strong>
 	    </div>
 	  </button> <!-- panel -->
 	  <div class="link left"><a class="text-center" href="/cards/{{ cards.left.card.id }}/" target="_blank">{% trans 'About this card' %}</a></div>
@@ -59,7 +63,7 @@
 	      <img src="{% if cards.right.card.card_image and not cards.right.idolized %}{% imageurl card=cards.right.card image='card_image' %}{% else %}{% imageurl card=cards.right.card image='card_idolized_image' %}{% endif %}">
 	    </div>
 	    <div class="panel-heading">
-	      <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% trans 'is BEST' %} </strong>
+	      <strong>#{{ cards.right.card.id }} {{ cards.right.card.name|shortname }} {% if contest.id == 37 %}is meh...{% else %}{% trans 'is BEST' %}{% endif %}</strong>
 	    </div>
 	  </button> <!-- panel -->
 	  <div class="link right"><a class="text-center" href="/cards/{{ cards.right.card.id }}/" target="_blank">{% trans 'About this card' %}</a></div>

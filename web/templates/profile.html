@@ -11,7 +11,7 @@
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 
 <script src="/static/js/loadactivities.js?1"></script>
-<script src="/static/js/profile.js?3"></script>
+<script src="/static/js/profile.js?4"></script>
 {% if is_me %}
 <script src="/static/js/postactivity.js"></script>
 {% endif %}
@@ -31,7 +31,7 @@
     <div class="padding20 padding-novertical">
       <div id="profile-wrapper">
   <br><br>
-  {% if user.is_staff and show_staff %}
+  {% if user.is_superuser and show_staff %}
   <form method="POST" class="alert alert-danger">
     <h1>Staff Danger Zone</h1>
     User ID: {{ profile_user.id }}<br>

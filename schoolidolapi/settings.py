@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'markdown_deux',
     'corsheaders',
     'bootstrap_form_horizontal',
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'oauth2_provider',
     'rest_framework',
@@ -153,6 +155,8 @@ IMGUR_REGEXP = '^https?:\/\/(\w+\.)?imgur.com\/(?P<imgur>[\w\d]+)(\.[a-zA-Z]{3})
 IMGUR_CLIENT_ID = '2e57c00bd3e1b6f'
 
 TOTAL_BACKGROUNDS = 12
+
+CONTEST_MAX_SESSIONS = 9
 
 CARDS_LIMIT = 81
 

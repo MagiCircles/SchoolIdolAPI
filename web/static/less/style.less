@@ -1,7 +1,7 @@
 
 @import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700);
 
-@import "../css/flaticon.css";
+@import "../css/flaticon.css?1";
 @import "../bower/css-hexagon/hexagon.less";
 
 @import "variables.less";
@@ -1166,6 +1166,21 @@ h1#donators {
 	width: 100%;
 	img {
 	    width: 100%;
+	}
+	.avatar_wrapper {
+	    display: inline-block;
+	    h4 {
+		display: inline-block;
+		margin-right: 20px;
+		margin-bottom: 20px;
+	    }
+	    &:after {
+		display: inline;
+		position: initial;
+	    }
+	}
+	img.avatar {
+	    width: auto;
 	}
 	.panel-heading {
 	    text-align: center;

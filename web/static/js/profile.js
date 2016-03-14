@@ -10,12 +10,14 @@ function removeLoadOnEmpty(tab_elt, account) {
 function loadMoreCards(tab, tab_elt, account) {
     var button = tab_elt.find('[href="#loadMoreCards"]');
     var parentbutton = button.parent();
+    var show_staff = $('.tab-content form.delete').length > 0;
     button.unbind('click');
     button.click(function(e) {
 	e.preventDefault();
 	parentbutton.html(loadingHTML);
-	$.get('/ajax/accounttab/' + account + '/' + tab + '/more/', function(data) {
+	$.get('/ajax/accounttab/' + account + '/' + tab + '/more/' + (show_staff ? '?staff' : ''), function(data) {
 	    parentbutton.replaceWith(data);
+	    staff_delete_card_handler();
 	    popovers();
 	});
 	return false;
@@ -79,6 +81,22 @@ function popovers() {
 	content: function() {
 	    return $(this).find('.owned_card_details').html();
 	},
+    });
+}
+
+function staff_delete_card_handler() {
+    $('.tab-content form.delete').unbind('submit');
+    $('.tab-content form.delete').submit(function(e) {
+	e.preventDefault();
+	var form = $(this);
+	form.ajaxSubmit({
+	    success: function(data) {
+		form.prev().remove();
+		form.remove();
+	    },
+	    error: genericAjaxError,
+	});
+	return false;
     });
 }
 
@@ -149,6 +167,8 @@ $(document).ready(function() {
 	}
 	
     });
+
+    staff_delete_card_handler();
 });
 
 (function(d, s, id) {

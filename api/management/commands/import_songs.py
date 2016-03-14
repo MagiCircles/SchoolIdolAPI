@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_songs():
+def import_songs(opt):
+    local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
     events = models.Event.objects.exclude(japanese_name__contains='Score Match').exclude(japanese_name__contains='Medley Festival').exclude(japanese_name__contains='again').order_by('beginning')
     print '### Import songs'
     if local:
@@ -100,10 +101,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload, noimages
-        local = 'local' in args
-        redownload = 'redownload' in args
-        noimages = 'noimages' in args
-
-        import_songs()
+        opt = opt_parse(args)
+        import_songs(args)
         import_raw_db()

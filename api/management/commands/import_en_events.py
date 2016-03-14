@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_en_events():
+def import_en_events(args):
+    local = opt['local']
     print '### Import EN events T1/T2 cutoffs from decaf wiki'
     if local:
         f = open('eventsEN.html', 'r')
@@ -64,9 +65,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload
-        local = 'local' in args
-        redownload = 'redownload' in args
-
-        import_en_events()
+        opt = opt_parse(args)
+        import_en_events(args)
         import_raw_db()

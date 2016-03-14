@@ -20,6 +20,7 @@ import time
 import csv
 import json
 import dateutil.parser
+import argparse
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -125,11 +126,19 @@ def downloadBestWikiaImage(url):
 
 def update_raw_db():
     print "#### Update raw information"
-    for idol in raw_information.keys():
-        card = models.Card.objects.filter(name=idol).order_by('id')[0]
-        raw_information[idol]['main'] = True
-        idol, created = models.Idol.objects.update_or_create(name=idol, defaults=raw_information[idol])
-
     generate_settings()
+
+def opt_parse(args, delete=False):
+    opt = {
+        'local': False,
+        'redownload': False,
+        'noimages': False,
+        'delete': False,
+    }
+    if 'local' in args: opt['local'] = True
+    if 'redownload' in args: opt['redownload'] = True
+    if 'noimages' in args: opt['noimages'] = True
+    if 'delete' in args: opt['delete'] = True
+    return opt
 
 import_raw_db = update_raw_db

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_jp_events():
+def import_jp_events(opt):
+    local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
     print '### Import events from decaf wiki'
     if local:
         f = open('events.html', 'r')
@@ -68,10 +69,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload, noimages
-        local = 'local' in args
-        redownload = 'redownload' in args
-        noimages = 'noimages' in args
-
-        import_jp_events()
+        opt = opt_parse(args)
+        import_jp_events(opt)
         import_raw_db()

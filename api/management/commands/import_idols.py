@@ -1,8 +1,13 @@
 #-*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_idols():
+def import_idols(opt):
+    local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
     idols = models.Idol.objects.all().order_by('-main', '-main_unit')
+    for idol in raw_information.keys():
+        card = models.Card.objects.filter(name=idol).order_by('id')[0]
+        raw_information[idol]['main'] = True
+        idol, created = models.Idol.objects.update_or_create(name=idol, defaults=raw_information[idol])
     if not local:
         print "### Import idols"
         for idol in idols:
@@ -97,9 +102,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload
-        local = 'local' in args
-        redownload = 'redownload' in args
+        opt = opt_parse(args)
 
-        import_idols()
+        import_idols(opt)
         import_raw_db()

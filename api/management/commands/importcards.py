@@ -15,26 +15,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload, noimages
-        local = 'local' in args
-        redownload = 'redownload' in args
-        noimages = 'noimages' in args
-
-        if 'delete' in args:
+        opt = opt_parse(args)
+        if opt['delete']:
             models.Card.objects.all().delete()
             models.Event.objects.all().delete()
             models.Idol.objects.all().delete()
+            models.Song.objects.all().delete()
             return
 
-        importcards_stats()
-        import_jp_events()
-        import_en_events()
-        import_wikia()
-        importcards_japanese()
-        if not noimages:
-            import_transparent_images()
-        import_video_stories()
-        import_idols()
-        import_songs()
+        importcards_stats(opt)
+        import_jp_events(opt)
+        import_en_events(opt)
+        import_idols(opt)
+        import_songs(opt)
 
         import_raw_db()

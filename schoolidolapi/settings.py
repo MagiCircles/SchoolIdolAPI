@@ -160,14 +160,19 @@ CONTEST_MAX_SESSIONS = 9
 
 CARDS_LIMIT = 81
 
+AWS_SES_RETURN_PATH = 'test@schoolido.lu'
+
 GLOBAL_CONTEST_ID = 33
 
 # Generated settings:
 CARDS_INFO = {'idols': []}
 
 try:
-    from local_settings import *
     from generated_settings import *
+except ImportError, e:
+    pass
+try:
+    from local_settings import *
 except ImportError, e:
     pass
 

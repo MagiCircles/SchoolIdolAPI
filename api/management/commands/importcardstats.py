@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def importcards_stats():
+def importcards_stats(opt):
+    local = opt['local']
     print '### Import card ids & stats from decaf wiki'
     if local:
         f = open('decaf.html', 'r')
@@ -118,10 +119,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload
-        local = 'local' in args
-        redownload = 'redownload' in args
+        opt = opt_parse(args)
 
-        importcards_stats()
+        importcards_stats(opt)
         import_raw_db()
 

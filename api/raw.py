@@ -234,6 +234,7 @@ raw_information_n = {
     'Shirase Koyuki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),
+            ('http://i.schoolido.lu/chibi/mSWSzdpL.png', 'wisterias'),
         ],
     },
     'Yazawa Cocoa': {
@@ -246,6 +247,61 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/ILC1ICdf.png', 'Floripendulaa'),
         ],
     },
+    'Fumiko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/jFSIZc8Q.png', 'ro'),
+        ],
+    },
+    'Mika': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/rhmEJfsv.png', 'ro'),
+        ],
+    },
+    'Hideko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/gRO5xpq-.png', 'ro'),
+        ],
+    },
+    'Tanaka Sachiko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/ptMjxhp7.png', 'navacandi'),
+        ],
+    },
+    'Ayanokouji Himeno': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/gxgTA7lp.png', 'mikamikaluv'),
+        ],
+    },
+    'Aikawa Ryou': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/fkOH0_a5.png', 'KomaHina'),
+        ],
+    },
+    'Kamiya Rika': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/l-IIoh-y.png', 'KomaHina'),
+        ],
+    },
+    'Takamagahara Mutsuki': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/BGAc5tG.png', 'chim'),
+        ],
+    },
+    'Toudou Erena': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/erena.png', 'db0'),
+        ],
+    },
+    'Yuuki Anju': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/anju.png', 'db0'),
+        ],
+    },
+    'Kira Tsubasa': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
+        ],
+    }
 }
 
 app_data = {

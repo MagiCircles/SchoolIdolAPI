@@ -234,6 +234,7 @@ raw_information_n = {
     'Kizaki Akira': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Cb2AYdGv.png', 'enjugrove'),
+            ('http://i.schoolido.lu/chibi/ansRYwX.png', 'RinNyaDesu'),
         ],
     },
     'Shirase Koyuki': {
@@ -270,6 +271,7 @@ raw_information_n = {
     'Tanaka Sachiko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/ptMjxhp7.png', 'navacandi'),
+            ('http://i.schoolido.lu/chibi/JMPkVuz.png', 'RinNyaDesu'),
         ],
     },
     'Ayanokouji Himeno': {
@@ -306,7 +308,28 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
         ],
-    }
+    },
+    'Hyoudou Sayuri': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/BqO0ND0.png', 'RinNyaDesu'),
+        ],
+    },
+    'Rebecca': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/qNXBWGi.png', 'RinNyaDesu'),
+        ],
+    },
+    'Saiki Fuu': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/w9btKBR.png', 'RinNyaDesu'),
+            ('http://i.schoolido.lu/chibi/vH8sCkU.png', 'chim'),
+        ],
+    },
+    'Isabella': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/zknSMul.png', 'RinNyaDesu'),
+        ],
+    },
 }
 
 app_data = {

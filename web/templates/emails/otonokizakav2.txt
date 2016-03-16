@@ -1,0 +1,7 @@
+Hi {{ user.username }},
+
+Due to a system administration mistake, the database of the Otonokizaka Forum (http://otonokizaka.org/) has been entirely deleted. The team has decided to take it as an opportunity to change the forum engine and improve the quality of the community overall.
+
+The accounts there couldn't be saved either, so if you want to re-join the community, you'll have to re-create an account. Click here to register: http://otonokizaka.org/index.php?register/
+
+We removed the link on your School Idol Tomodachi profile, since it's not valid anymore. Don't forget to re-add it by going to your settings right after you re-registered on the forum!

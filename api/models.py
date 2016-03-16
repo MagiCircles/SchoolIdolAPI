@@ -135,7 +135,7 @@ LINK_URLS = {
     'reddit': 'http://www.reddit.com/user/{}',
     'line': 'http://line.me/#{}',
     'tumblr': 'http://{}.tumblr.com/',
-    'otonokizaka': 'http://otonokizaka.org/member.php?action=profile&uid={}',
+    'otonokizaka': 'http://otonokizaka.org/index.php?user/{}/',
     'twitch': 'http://twitch.tv/{}',
     'steam': 'http://steamcommunity.com/id/{}',
     'osu': 'http://osu.ppy.sh/u/{}',

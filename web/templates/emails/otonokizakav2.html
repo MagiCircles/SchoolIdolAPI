@@ -1,0 +1,23 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Otonokizaka.org Forum version 2 is up! Re-create your account now~{% endblock %}
+{% block content %}
+Hi {{ user.username }},
+<br><br>
+
+<p>
+  Due to a system administration mistake, the database of the <a href="http://otonokizaka.org/">Otonokizaka Forum</a> has been entirely deleted. The team has decided to take it as an opportunity to change the forum engine and improve the quality of the community overall.
+</p>
+
+<p>
+  The accounts there couldn't be saved either, so if you want to re-join the community, you'll have to re-create an account. <a href="http://otonokizaka.org/index.php?register/">Click here to register!</a>
+</p>
+<p>
+  We removed the link on your School Idol Tomodachi profile, since it's not valid anymore. Don't forget to re-add it by going to your settings right after you re-registered on the forum!
+</p>
+{% endblock %}
+
+{% block actionbuttontitle %}Otonokizaka Forum{% endblock %}
+{% block actionbuttonalt %}Otonokizaka Forum{% endblock %}
+
+{% block actionlink %}http://otonokizaka.org/{% endblock %}

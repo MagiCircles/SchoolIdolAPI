@@ -231,6 +231,11 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/blueberrytrain.png', 'blueberrytrain'),
         ],
     },
+    'Kizaki Akira': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Cb2AYdGv.png', 'enjugrove'),
+        ],
+    },
     'Shirase Koyuki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),

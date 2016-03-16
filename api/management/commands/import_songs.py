@@ -42,9 +42,15 @@ def import_songs(opt):
                 song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡').replace('！', '!')
                 print 'Import {}...'.format(song['name']),
                 song['attribute'] = attribute_jphexcolors[tds[1]['style'].replace(';', '').split(':')[-1]]
-                song['BPM'] = int(clean(tds[2].text).split('-')[-1].replace('bpm', '0'))
-                time = clean(tds[3].text)
-                song['time'] = int(time[:-3]) * 60 + int(time[-2:])
+                try:
+                    song['BPM'] = int(clean(tds[2].text).split('-')[-1].replace('bpm', '0'))
+                except:
+                    song['BPM'] = 0
+                try:
+                    time = clean(tds[3].text)
+                    song['time'] = int(time[:-3]) * 60 + int(time[-2:])
+                except:
+                    song['time'] = None
                 song['easy_difficulty'] = int(clean(tds[4].text))
                 song['easy_notes'] = int(clean(tds[5].text))
                 song['normal_difficulty'] = int(clean(tds[6].text))

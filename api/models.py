@@ -8,6 +8,7 @@ from api.models_languages import *
 from django.core import validators
 from django.utils import timezone
 from django_prometheus.models import ExportModelOperationsMixin
+from api.raw import raw_information
 import hashlib, urllib
 import csv
 import datetime
@@ -268,6 +269,11 @@ def statusToColorString(status):
     elif status == 'PRODUCER': return _('shiny Gold')
     elif status == 'DEVOTEE': return _('shiny Gold')
     return ''
+
+def idolToColor(idol_name):
+    if idol_name in raw_information:
+        return raw_information[idol_name]['color']
+    return '#ccc'
 
 def rarityToString(val):
     return RARITY_DICT[val]

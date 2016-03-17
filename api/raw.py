@@ -295,16 +295,22 @@ raw_information_n = {
         ],
     },
     'Toudou Erena': {
+        'main_unit': 'A-RISE',
+        'sub_unit': 'A-RISE',
         'chibi': [
             ('http://i.schoolido.lu/chibi/erena.png', 'db0'),
         ],
     },
     'Yuuki Anju': {
+        'main_unit': 'A-RISE',
+        'sub_unit': 'A-RISE',
         'chibi': [
             ('http://i.schoolido.lu/chibi/anju.png', 'db0'),
         ],
     },
     'Kira Tsubasa': {
+        'main_unit': 'A-RISE',
+        'sub_unit': 'A-RISE',
         'chibi': [
             ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
         ],

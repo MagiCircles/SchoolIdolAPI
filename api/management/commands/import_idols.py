@@ -8,6 +8,8 @@ def import_idols(opt):
         card = models.Card.objects.filter(name=idol).order_by('id')[0]
         raw_information[idol]['main'] = True
         idol, created = models.Idol.objects.update_or_create(name=idol, defaults=raw_information[idol])
+    for n in raw_information_n.keys():
+        idol, created = models.Idol.objects.update_or_create(name=n, defaults=raw_information_n[n])
     if not local:
         print "### Import idols"
         for idol in idols:

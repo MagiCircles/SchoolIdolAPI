@@ -42,9 +42,15 @@ def import_songs(opt):
                 song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡').replace('！', '!')
                 print 'Import {}...'.format(song['name']),
                 song['attribute'] = attribute_jphexcolors[tds[1]['style'].replace(';', '').split(':')[-1]]
-                song['BPM'] = int(clean(tds[2].text).split('-')[-1].replace('bpm', '0'))
-                time = clean(tds[3].text)
-                song['time'] = int(time[:-3]) * 60 + int(time[-2:])
+                try:
+                    song['BPM'] = int(clean(tds[2].text).split('-')[-1].replace('bpm', '0'))
+                except:
+                    song['BPM'] = 0
+                try:
+                    time = clean(tds[3].text)
+                    song['time'] = int(time[:-3]) * 60 + int(time[-2:])
+                except:
+                    song['time'] = None
                 song['easy_difficulty'] = int(clean(tds[4].text))
                 song['easy_notes'] = int(clean(tds[5].text))
                 song['normal_difficulty'] = int(clean(tds[6].text))
@@ -82,16 +88,50 @@ def import_songs(opt):
                         song.save()
                     f_song.close()
                 if redownload or song.itunes_id is None:
-                    print '  Import itunes song id...',
-                    url = u'https://itunes.apple.com/search?term=' + song.name
+                    song_name = song.name.replace('&', ' ')
+                    print '  Import itunes song id...'
+                    url = u'https://itunes.apple.com/search?country=JP&term=' + song_name + (' μ\'s' if song_name != 'Super LOVE=Super LIVE!' else '')
+                    print '     ', url
                     response = urllib.urlopen(url.encode("UTF-8"))
                     data = json.loads(response.read())
                     if 'results' in data and len(data['results']) and 'trackId' in data['results'][0]:
-                        song.itunes_id = data['results'][0]['trackId']
+                        if song_name == 'Paradise Live' or song_name == 'Love wing bell' or song_name == 'Happy maker!':
+                            song.itunes_id = data['results'][1]['trackId']
+                        elif song_name == '思い出以上になりたくて':
+                            song.itunes_id = 0
+                        else:
+                            song.itunes_id = data['results'][0]['trackId']
                         print 'Done.'
                     else:
-                        song.itunes_id = 0
-                        print 'None found.'
+                        # Try with Aqours
+                        url = u'https://itunes.apple.com/search?country=JP&term=' + song_name + ' Aqours'
+                        print '     ', url
+                        response = urllib.urlopen(url.encode("UTF-8"))
+                        data = json.loads(response.read())
+                        if 'results' in data and len(data['results']) and 'trackId' in data['results'][0]:
+                            song.itunes_id = data['results'][0]['trackId']
+                            print 'Done.'
+                        else:
+                            # Try with A-RISE
+                            url = u'https://itunes.apple.com/search?country=JP&term=' + song_name + ' A-RISE'
+                            print '     ', url
+                            response = urllib.urlopen(url.encode("UTF-8"))
+                            data = json.loads(response.read())
+                            if 'results' in data and len(data['results']) and 'trackId' in data['results'][0]:
+                                song.itunes_id = data['results'][0]['trackId']
+                                print 'Done.'
+                            else:
+                                # Try with nothing
+                                url = u'https://itunes.apple.com/search?country=JP&term=' + song_name
+                                print '     ', url
+                                response = urllib.urlopen(url.encode("UTF-8"))
+                                data = json.loads(response.read())
+                                if 'results' in data and len(data['results']) and 'trackId' in data['results'][0] and song_name != 'LONELIEST BABY' and song_name != '好きですが好きですか?' and song_name != 'Storm in Lover' and song_name != 'Anemone heart' and song_name != 'なわとび' and song_name != 'Beat in Angel':
+                                    song.itunes_id = data['results'][0]['trackId']
+                                    print 'Done \033[33mwithout singer.\033[0m'
+                                else:
+                                    song.itunes_id = 0
+                                    print '\033[91mNone found.\033[0m'
                     song.save()
                 songs.append(song)
     f.close()
@@ -102,5 +142,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         opt = opt_parse(args)
-        import_songs(args)
+        import_songs(opt)
         import_raw_db()

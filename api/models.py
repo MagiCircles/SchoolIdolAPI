@@ -8,6 +8,7 @@ from api.models_languages import *
 from django.core import validators
 from django.utils import timezone
 from django_prometheus.models import ExportModelOperationsMixin
+from api.raw import raw_information
 import hashlib, urllib
 import csv
 import datetime
@@ -135,7 +136,7 @@ LINK_URLS = {
     'reddit': 'http://www.reddit.com/user/{}',
     'line': 'http://line.me/#{}',
     'tumblr': 'http://{}.tumblr.com/',
-    'otonokizaka': 'http://otonokizaka.org/member.php?action=profile&uid={}',
+    'otonokizaka': 'http://otonokizaka.org/index.php?user/{}/',
     'twitch': 'http://twitch.tv/{}',
     'steam': 'http://steamcommunity.com/id/{}',
     'osu': 'http://osu.ppy.sh/u/{}',
@@ -268,6 +269,11 @@ def statusToColorString(status):
     elif status == 'PRODUCER': return _('shiny Gold')
     elif status == 'DEVOTEE': return _('shiny Gold')
     return ''
+
+def idolToColor(idol_name):
+    if idol_name in raw_information:
+        return raw_information[idol_name]['color']
+    return '#ccc'
 
 def rarityToString(val):
     return RARITY_DICT[val]

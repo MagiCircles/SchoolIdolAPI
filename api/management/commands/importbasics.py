@@ -6,7 +6,7 @@ from django.forms.models import model_to_dict
 import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
 from api import models
-from api.raw import raw_information
+from api.raw import raw_information, raw_information_n
 from tinypng import shrink_file
 from web.forms import getGirls
 from api.management.commands.generate_settings import generate_settings

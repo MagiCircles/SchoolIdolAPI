@@ -1,7 +1,7 @@
 
 function collapseSongs() {
-    $('.song a[data-target^=#collapseMore]').unbind('click');
-    $('.song a[data-target^=#collapseMore]').click(function(event) {
+    $('.song a[data-target^="#collapseMore"]').unbind('click');
+    $('.song a[data-target^="#collapseMore"]').click(function(event) {
 	event.preventDefault();
 	$($(this).attr('data-target')).collapse('toggle');
 	var song = $(this).closest('.song');
@@ -15,31 +15,43 @@ function collapseSongs() {
 function pauseAllSongs() {
     $('audio').each(function() {
 	$(this)[0].pause();
-	$(this).closest('div').find('[href=#play] i').removeClass();
-	$(this).closest('div').find('[href=#play] i').addClass('flaticon-play');
+	$(this).closest('div').find('[href="#play"] i').removeClass();
+	$(this).closest('div').find('[href="#play"] i').addClass('flaticon-play');
     });
 }
 
+var alert_displayed = false;
+
 function loadiTunesData(song, successCallback, errorCallback) {
-    var itunes_id = song.find('[href=#play]').data('itunes-id');
+    var itunes_id = song.find('[href="#play"]').data('itunes-id');
+    var errorCallback = typeof errorCallback == 'undefined' ? function() {} : errorCallback;
     $.ajax({
 	"url": 'https://itunes.apple.com/lookup',
 	"dataType": "jsonp",
 	"data": {
 	    "id": itunes_id,
+	    "country": "JP",
 	},
 	"error": function (jqXHR, textStatus, message) {
 	    errorCallback();
-	    alert('Oops! This music doesn\'t seem to be valid anymore. Please contact us and we will fix this.');
+	    if (alert_displayed == false) {
+		alert('Oops! The song previews don\'t seem to be work anymore. Please contact us and we will fix this.');
+		alert_displayed = true;
+	    }
 	},
 	"success": function (data, textStatus, jqXHR) {
-	    data = data['results'][0];
-	    song.find('.itunes').find('.album').prop('src', data['artworkUrl60']);
-	    song.find('.itunes').find('a').prop('href', data['trackViewUrl'] + '&at=1001l8e6');
-	    song.find('.itunes').show('slow');
-	    song.find('audio source').prop('src', data['previewUrl'])
-	    song.find('audio')[0].load();
-	    successCallback(data);
+	    if (data['results'].length == 0) {
+		errorCallback();
+		alert('Oops! This song preview (' + song.find('.song_name').text() + ') doesn\'t seem to be valid anymore. Please contact us and we will fix this.');
+	    } else {
+		data = data['results'][0];
+		song.find('.itunes').find('.album').prop('src', data['artworkUrl60']);
+		song.find('.itunes').find('a').prop('href', data['trackViewUrl'] + '&at=1001l8e6');
+		song.find('.itunes').show('slow');
+		song.find('audio source').prop('src', data['previewUrl'])
+		song.find('audio')[0].load();
+		successCallback(data);
+	    }
 	}
     });
 }
@@ -48,8 +60,25 @@ function playSongButtons() {
     $('audio').on('ended', function() {
 	pauseAllSongs();
     });
-    $('[href=#play]').unbind('click');
-    $('[href=#play]').click(function(event) {
+    $('.song').each(function() {
+	var song = $(this);
+	if (song.find('audio source').attr('src') == '') {
+	    var button = song.find('[href="#play"]');
+	    if (button.length > 0) {
+		var button_i = button.find('i');
+		button_i.removeClass();
+		button_i.addClass('flaticon-loading');
+		loadiTunesData(song, function(data) {
+		    button_i.removeClass();
+		    button_i.addClass('flaticon-play');
+		}, function() {
+		    button.hide();
+		});
+	    }
+	}
+    });
+    $('[href="#play"]').unbind('click');
+    $('[href="#play"]').click(function(event) {
 	event.preventDefault();
 	var button = $(this);
 	var button_i = button.find('i');
@@ -64,17 +93,6 @@ function playSongButtons() {
 	    song.find('audio')[0].play();
 	    button_i.removeClass();
 	    button_i.addClass('flaticon-pause');
-	} else {
-	    button_i.removeClass();
-	    button_i.addClass('flaticon-loading');
-	    loadiTunesData(song, function(data) {
-		song.find('audio')[0].play();
-		button_i.removeClass();
-		button_i.addClass('flaticon-pause');
-	    }, function() {
-		button_i.removeClass();
-		button_i.addClass('flaticon-play');
-	    });
 	}
 	return false;
     });

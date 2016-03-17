@@ -102,6 +102,16 @@ class SongViewSet(viewsets.ReadOnlyModelViewSet):
     ordering = ('-available', 'daily_rotation', 'daily_rotation_position', 'rank', 'name')
     lookup_field = 'name'
 
+class IdolFilter(django_filters.FilterSet):
+    for_trivia = django_filters.MethodFilter(action='filter_for_trivia')
+
+    def filter_for_trivia(self, queryset, value):
+        return queryset.filter(Q(hobbies__isnull=False) | Q(favorite_food__isnull=False) | Q(least_favorite_food__isnull=False))
+
+    class Meta:
+        model = models.Idol
+        fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special', 'for_trivia')
+
 class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows idols to be viewed.
@@ -110,7 +120,7 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.IdolSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'cv_nickname', 'cv_twitter', 'cv_instagram', 'summary')
-    filter_fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special')
+    filter_class = IdolFilter
     ordering_fields = '__all__'
     ordering = ('-main', 'name')
     lookup_field = 'name'

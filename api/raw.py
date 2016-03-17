@@ -231,9 +231,16 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/blueberrytrain.png', 'blueberrytrain'),
         ],
     },
+    'Kizaki Akira': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Cb2AYdGv.png', 'enjugrove'),
+            ('http://i.schoolido.lu/chibi/ansRYwX.png', 'RinNyaDesu'),
+        ],
+    },
     'Shirase Koyuki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),
+            ('http://i.schoolido.lu/chibi/mSWSzdpL.png', 'wisterias'),
         ],
     },
     'Yazawa Cocoa': {
@@ -244,6 +251,89 @@ raw_information_n = {
     'Suda Iruka': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/ILC1ICdf.png', 'Floripendulaa'),
+        ],
+    },
+    'Fumiko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/jFSIZc8Q.png', 'ro'),
+        ],
+    },
+    'Mika': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/rhmEJfsv.png', 'ro'),
+        ],
+    },
+    'Hideko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/gRO5xpq-.png', 'ro'),
+        ],
+    },
+    'Tanaka Sachiko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/ptMjxhp7.png', 'navacandi'),
+            ('http://i.schoolido.lu/chibi/JMPkVuz.png', 'RinNyaDesu'),
+        ],
+    },
+    'Ayanokouji Himeno': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/gxgTA7lp.png', 'mikamikaluv'),
+        ],
+    },
+    'Aikawa Ryou': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/fkOH0_a5.png', 'KomaHina'),
+        ],
+    },
+    'Kamiya Rika': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/l-IIoh-y.png', 'KomaHina'),
+        ],
+    },
+    'Takamagahara Mutsuki': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/BGAc5tG.png', 'chim'),
+        ],
+    },
+    'Toudou Erena': {
+        'main_unit': 'A-RISE',
+        'sub_unit': 'A-RISE',
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/erena.png', 'db0'),
+        ],
+    },
+    'Yuuki Anju': {
+        'main_unit': 'A-RISE',
+        'sub_unit': 'A-RISE',
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/anju.png', 'db0'),
+        ],
+    },
+    'Kira Tsubasa': {
+        'main_unit': 'A-RISE',
+        'sub_unit': 'A-RISE',
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
+        ],
+    },
+    'Hyoudou Sayuri': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/BqO0ND0.png', 'RinNyaDesu'),
+        ],
+    },
+    'Rebecca': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/qNXBWGi.png', 'RinNyaDesu'),
+        ],
+    },
+    'Saiki Fuu': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/w9btKBR.png', 'RinNyaDesu'),
+            ('http://i.schoolido.lu/chibi/vH8sCkU.png', 'chim'),
+        ],
+    },
+    'Isabella': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/zknSMul.png', 'RinNyaDesu'),
         ],
     },
 }

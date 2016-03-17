@@ -2148,6 +2148,7 @@ def songs(request, song=None, ajax=False):
         song.percent_stats['expert_random'] = ((song.expert_notes if song.expert_notes else 0) / max_stats) * 100
     context['max_stats'] = max_stats
 
+    context['ajax'] = ajax
     if ajax:
         return render(request, 'songsPage.html', context)
     return render(request, 'songs.html', context)

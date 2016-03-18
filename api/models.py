@@ -50,6 +50,14 @@ VERIFIED_CHOICES = (
 )
 VERIFIED_DICT = dict(VERIFIED_CHOICES)
 
+VERIFIED_UNTRANSLATED_CHOICES = (
+    (0, ''),
+    (1, 'Silver Verified'),
+    (2, 'Gold Verified'),
+    (3, 'Bronze Verified'),
+)
+VERIFIED_UNTRANSLATED_DICT = dict(VERIFIED_UNTRANSLATED_CHOICES)
+
 PLAYWITH_CHOICES = (
     ('Thumbs', _('Thumbs')),
     ('Fingers', _('All fingers')),
@@ -97,11 +105,27 @@ VERIFICATION_STATUS_CHOICES = (
 )
 VERIFICATION_STATUS_DICT = dict(VERIFICATION_STATUS_CHOICES)
 
-MODERATION_REPORT_STATUS_CHOICES = (
+VERIFICATION_STATUS_CHOICES = (
     (0, _('Rejected')),
     (1, _('Pending')),
     (2, _('In Progress')),
-    (3, _('Accepted')),
+    (3, _('Verified')),
+)
+VERIFICATION_STATUS_DICT = dict(VERIFICATION_STATUS_CHOICES)
+
+VERIFICATION_UNTRANSLATED_STATUS_CHOICES = (
+    (0, 'Rejected'),
+    (1, 'Pending'),
+    (2, 'In Progress'),
+    (3, 'Verified'),
+)
+VERIFICATION_UNTRANSLATED_STATUS_DICT = dict(VERIFICATION_UNTRANSLATED_STATUS_CHOICES)
+
+MODERATION_REPORT_STATUS_CHOICES = (
+    (0, 'Rejected'),
+    (1, 'Pending'),
+    (2, 'In Progress'),
+    (3, 'Accepted'),
 )
 MODERATION_REPORT_STATUS_DICT = dict(MODERATION_REPORT_STATUS_CHOICES)
 
@@ -221,8 +245,15 @@ def verifiedToString(val):
     val = int(val)
     return VERIFIED_DICT[val]
 
+def verifiedUntranslatedToString(val):
+    val = int(val)
+    return VERIFIED_UNTRANSLATED_DICT[val]
+
 def verificationStatusToString(val):
     return VERIFICATION_STATUS_DICT[val]
+
+def verificationUntranslatedStatusToString(val):
+    return VERIFICATION_UNTRANSLATED_STATUS_DICT[val]
 
 def reportStatusToString(val):
     return MODERATION_REPORT_STATUS_DICT[val]

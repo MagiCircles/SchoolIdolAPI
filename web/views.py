@@ -1926,7 +1926,7 @@ def staff_verification(request, verification):
     if 'verificationRequest' in request.POST:
         form = forms.StaffVerificationRequestForm(request.POST, request.FILES, instance=context['verification'])
         if form.is_valid():
-            sendverificationemail = lambda: send_email(subject=(string_concat(_(u'School Idol Tomodachi'), u'✨ ', _(models.verifiedToString(context['verification'].verification)), u': ', _(models.verificationStatusToString(context['verification'].status)))),
+            sendverificationemail = lambda: send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + models.verifiedUntranslatedToString(context['verification'].verification) + u': ' + models.verificationUntranslatedStatusToString(context['verification'].status)),
                template_name='verified',
                to=[context['verification'].account.owner.email, 'contact@schoolido.lu'],
                context=context,
@@ -1958,7 +1958,7 @@ def staff_verification(request, verification):
         context['verification'].verification_date = timezone.now() + relativedelta(minutes=int(request.POST['notification_minutes']))
         context['verification'].status = 2
         context['verification'].verified_by = request.user
-        send_email(subject=(string_concat(_(u'School Idol Tomodachi'), u'✨ ', _(models.verifiedToString(context['verification'].verification)), u': ', unicode(request.POST['notification_minutes']), ' minutes notification before we verify your account')),
+        send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + models.verifiedUntranslatedToString(context['verification'].verification) + u': ' + unicode(request.POST['notification_minutes']) + u' minutes notification before we verify your account'),
                    template_name='verification_notification',
                    to=[context['verification'].account.owner.email, 'contact@schoolido.lu'],
                    context=context,

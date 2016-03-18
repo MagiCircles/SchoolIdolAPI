@@ -5,7 +5,7 @@ Hi {{ verification.account.owner.username }},
 {% if verification.status == 0 %}
 Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime. To do so, click the button below to re-submit your request. Do not reply to this email.
 {% elif verification.status == 3 %}
-  Congratulations! You are now {{ verification.verification|verifiedToString }}.
+  Congratulations! You are now {{ verification.verification|verifiedUntranslatedToString }}.
   {% if verification.verification == 3 %}
   You can now set your rank above 200. Nobody else can see your verification status.
   {% else %}

@@ -46,9 +46,11 @@ def difficultyToString(difficulty):
     return difficultyStrings[difficulty]
 
 register.filter('verifiedToString', verifiedToString)
+register.filter('verifiedUntranslatedToString', models.verifiedUntranslatedToString)
 register.filter('difficultyToString', difficultyToString)
 register.filter('rarityToString', models.rarityToString)
 register.filter('verificationStatusToString', models.verificationStatusToString)
+register.filter('verificationUntranslatedStatusToString', models.verificationUntranslatedStatusToString)
 register.filter('reportStatusToString', models.reportStatusToString)
 register.filter('playWithToString', playWithToString)
 register.filter('playWithToIcon', models.playWithToIcon)

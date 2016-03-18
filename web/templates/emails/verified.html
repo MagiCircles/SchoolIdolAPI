@@ -2,8 +2,8 @@
 {% load imageurl %}
 {% load choicesToString %}
 
-{% block subject %}{{ verification.verification|verifiedToString }}: {{ verification.status|verificationStatusToString }}{% endblock %}
-{% block headersubject %}{{ verification.verification|verifiedToString }}: {{ verification.status|verificationStatusToString }}{% endblock %}
+{% block subject %}{{ verification.verification|verifiedUntranslatedToString }}: {{ verification.status|verificationUntranslatedStatusToString }}{% endblock %}
+{% block headersubject %}{{ verification.verification|verifiedUntranslatedToString }}: {{ verification.status|verificationUntranslatedStatusToString }}{% endblock %}
 {% block content %}
 Hi {{ verification.account.owner.username }},
 <br><br>
@@ -12,12 +12,12 @@ Hi {{ verification.account.owner.username }},
   {% if verification.status == 0 %}
   Unfortunately, your verification request has been rejected. Don't worry, you can re-submit your verification request anytime. To do so, click the button below to re-submit your request. Do not reply to this email.
   {% elif verification.status == 3 %}
-  Congratulations! You are now {{ verification.verification|verifiedToString }}.
+  Congratulations! You are now {{ verification.verification|verifiedUntranslatedToString }}.
   {% if verification.verification == 3 %}
   You can now set your rank above 200. Nobody else can see your verification status.
   {% else %}
   Feel free to brag about it now that you look so shiny~
-  <a href="http://twitter.com/share?text=I'm {{ verification.verification|verifiedToString }} on School Idol Tomodachi!&url=http://schoolido.lu/user/{{ verification.account.owner.username }}/&hashtags=LLSIF,LoveLive,スクフェス">Tweet it</a> or <a href="http://www.facebook.com/sharer/sharer.php?u=http://schoolido.lu/user/{{ verification.account.owner.username }}/">share it on Facebook</a>.
+  <a href="http://twitter.com/share?text=I'm {{ verification.verification|verifiedUntranslatedToString }} on School Idol Tomodachi!&url=http://schoolido.lu/user/{{ verification.account.owner.username }}/&hashtags=LLSIF,LoveLive,スクフェス">Tweet it</a> or <a href="http://www.facebook.com/sharer/sharer.php?u=http://schoolido.lu/user/{{ verification.account.owner.username }}/">share it on Facebook</a>.
   {% endif %}
   {% endif %}
 </p>
@@ -76,9 +76,6 @@ http://schoolido.lu/user/{{ verification.account.owner.username }}/#{{ verificat
 {% endblock %}
 
 {% block footersentence %}
-{% if verification_images|length == 1 and verification.verification == 2 and verification.status == 3 %}
-Make sure you display the images in this e-mail to get your transfer code, or click here: {{ verification_images.image|userimage }}
-{% endif %}
 <div style="text-align: right">
   Verified by <a href="http://schoolido.lu/user/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a>
 </div>

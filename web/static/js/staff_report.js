@@ -3,7 +3,8 @@ function handle_report(e) {
     e.preventDefault();
     var button = $(this);
     button.closest('td').append('<i class="flaticon-loading"></i>');
-    button.closest('td').find('button').hide();
+    $('.accept-report').hide();
+    $('.reject-report').hide();
     $.ajax({
         method: 'POST',
         url: button.data('href'),
@@ -11,7 +12,10 @@ function handle_report(e) {
             'comment': button.closest('td').find('textarea').val(),
         },
         success: function(data) {
-            button.closest('tr').hide('slow');
+            var fakething = button.closest('tr').data('fake-thing');
+            $('[data-fake-thing="' + fakething + '"]').hide('slow');
+            $('.accept-report').show();
+            $('.reject-report').show();
         },
         error: genericAjaxError,
     });

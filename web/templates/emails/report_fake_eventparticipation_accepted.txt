@@ -1,4 +1,4 @@
-Hi {{ report.reported_by.username }},
+Hi {{ reported_by.username }},
 
 This event participation you reported has been reviewed by a moderator and deleted. Thank you so much for your help!
 

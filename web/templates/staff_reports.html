@@ -3,7 +3,7 @@
 {% block title %}Staff - Reports{% endblock %}
 
 {% block js %}
-<script src="/static/js/staff_report.js"></script>
+<script src="/static/js/staff_report.js?1"></script>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +29,7 @@
       <th>Moderate</th>
     </tr>
     {% for report in reports %}
-    <tr class="{% if report.status == 0 %}success{% elif report.status == 3 %}danger{% elif report.status == 2 %}warning{% else %}info{% endif %}">
+    <tr class="{% if report.status == 0 %}success{% elif report.status == 3 %}danger{% elif report.status == 2 %}warning{% else %}info{% endif %}" data-fake-thing="{% if report.fake_account %}account{{ report.fake_account.id }}{% elif report.fake_eventparticipation %}eventparticipation{{ report.fake_eventparticipation.id }}{% endif %}">
       <td>
         {% if report.fake_account %}
         <h4>Fake account</h4>

@@ -23,7 +23,7 @@
       {% if reported %}
       <div class="fontx2">{% trans 'Thank you' %}</div>
       <div class="text-right">
-	<a href="{% if account %}/reportaccount/{{ account.id }}/{% else %}/reporteventparticipation/{{ eventparticipation.pk }}/{% endif %}" class="btn btn-lg btn-Cool">{% trans 'Edit' %}</a>
+	{% if user.is_authenticated %}<a href="{% if account %}/reportaccount/{{ account.id }}/{% else %}/reporteventparticipation/{{ eventparticipation.pk }}/{% endif %}" class="btn btn-lg btn-Cool">{% trans 'Edit' %}</a>{% endif %}
 	<a href="/" class="btn btn-lg btn-Cool">{% trans 'Back to homepage' %}</a>
       </div>
       {% else %}

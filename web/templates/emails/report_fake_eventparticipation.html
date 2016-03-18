@@ -1,7 +1,7 @@
 {% extends 'emails/base.html' %}
 
-{% block subject %}Event participation deleted {{ report.fake_eventparticipation.event.japanese_name }}{% endblock %}
-{% block headersubject %}Event participation deleted {{ report.fake_eventparticipation.event.japanese_name }}{% endblock %}
+{% block subject %}Event participation deleted - {% if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name %}{{ report.fake_eventparticipation.event.english_name }}{% else %}{{ report.fake_eventparticipation.event.japanese_name }}{% endif %}{% endblock %}
+{% block headersubject %}Event participation deleted - {% if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name %}{{ report.fake_eventparticipation.event.english_name }}{% else %}{{ report.fake_eventparticipation.event.japanese_name }}{% endif %}{% endblock %}
 
 {% block content %}
 Hi {{ report.fake_eventparticipation.account.owner.username }},
@@ -18,7 +18,7 @@ Hi {{ report.fake_eventparticipation.account.owner.username }},
 
 <ul>
   <li>Account: {{ report.fake_eventparticipation.account }}</li>
-  <li>Event: {{ report.fake_eventparticipation.event.japanese_name }}</li>
+  <li>Event: <a href="http://schoolido.lu/events/{{ report.fake_eventparticipation.event.japanese_name|urlencode }}/">{% if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name %}{{ report.fake_eventparticipation.event.english_name }}{% else %}{{ report.fake_eventparticipation.event.japanese_name }}{% endif %}</a></li>
   <li>Ranking: #{{ report.fake_eventparticipation.ranking }}</li>
   <li>Song Ranking: #{{ report.fake_eventparticipation.song_ranking }}</li>
   <li>Points: {{ report.fake_eventparticipation.points }}</li>
@@ -27,14 +27,14 @@ Hi {{ report.fake_eventparticipation.account.owner.username }},
 {% endblock %}
 
 {% block actionbuttontitle %}
-{{ report.fake_eventparticipation.event.japanese_name }}
+{% if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name %}{{ report.fake_eventparticipation.event.english_name }}{% else %}{{ report.fake_eventparticipation.event.japanese_name }}{% endif %}
 {% endblock %}
 {% block actionbuttonalt %}
-{{ report.fake_eventparticipation.event.japanese_name }}
+{% if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name %}{{ report.fake_eventparticipation.event.english_name }}{% else %}{{ report.fake_eventparticipation.event.japanese_name }}{% endif %}
 {% endblock %}
 
 {% block actionlink %}
-http://schoolido.lu/events/{{ report.fake_eventparticipation.event.japanese_name }}/
+http://schoolido.lu/events/{{ report.fake_eventparticipation.event.japanese_name|urlencode }}/
 {% endblock %}
 
 {% block footersentence %}

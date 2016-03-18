@@ -332,6 +332,7 @@ class ModerationReportForm(ModelForm):
 
     def save(self):
         instance = super(ModerationReportForm, self).save(commit=False)
+        instance.status = 1
         if self.request.user.is_authenticated():
             instance.reported_by = self.request.user
         if self.account is not None:

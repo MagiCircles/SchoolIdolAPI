@@ -2026,7 +2026,8 @@ def ajaxreport(request, report_id, status):
     report = get_object_or_404(models.ModerationReport.objects.select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner'), pk=report_id)
     report.moderated_by = request.user
     report.moderation_date = timezone.now()
-    report.moderation_comment = request.POST.get('comment', None)
+    moderation_comment = request.POST.get('comment', None)
+    report.moderation_comment = moderation_comment
     context = {'report': report}
     if status == 'accept':
         if report.fake_account:
@@ -2040,30 +2041,41 @@ def ajaxreport(request, report_id, status):
                            to=[report.fake_account.owner.email, 'contact@schoolido.lu'],
                            context=context,
                        )
-            if report.reported_by and report.reported_by.email:
-                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake account! ' + unicode(report.fake_account)),
-                           template_name='report_fake_account_accepted',
-                           to=[report.reported_by.email, 'contact@schoolido.lu'],
-                           context=context,
-                       )
+            all_reports = models.ModerationReport.objects.filter(fake_account=report.fake_account).select_related('reported_by')
+            for _report in all_reports:
+                if _report.reported_by and _report.reported_by.email:
+                    context['reported_by'] = _report.reported_by
+                    send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake account! ' + unicode(report.fake_account)),
+                               template_name='report_fake_account_accepted',
+                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               context=context,
+                           )
         elif report.fake_eventparticipation:
             if report.fake_eventparticipation.account.owner.email:
-                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Event participation deleted: ' + unicode(report.fake_eventparticipation.event)),
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Event participation deleted: ' + (report.fake_eventparticipation.event.english_name if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name else report.fake_eventparticipation.event.japanese_name)),
                            template_name='report_fake_eventparticipation',
                            to=[report.fake_eventparticipation.account.owner.email, 'contact@schoolido.lu'],
                            context=context,
                        )
-            if report.reported_by and report.reported_by.email:
-                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake event participation! ' + unicode(report.fake_eventparticipation.event.japanese_name)),
-                           template_name='report_fake_eventparticipation_accepted',
-                           to=[report.reported_by.email, 'contact@schoolido.lu'],
-                           context=context,
-                       )
+            all_reports = models.ModerationReport.objects.filter(fake_eventparticipation=report.fake_eventparticipation).select_related('reported_by')
+            for _report in all_reports:
+                if _report.reported_by and _report.reported_by.email:
+                    context['reported_by'] = _report.reported_by
+                    send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake event participation! ' + unicode(report.fake_eventparticipation.event.japanese_name)),
+                               template_name='report_fake_eventparticipation_accepted',
+                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               context=context,
+                           )
+            moderation_comment = (u'' if not moderation_comment else unicode(moderation_comment)) + u'------ Event "{}" + Account owner {} #{} + Ranking #{} + Song Ranking #{} + Points {}'.format(report.fake_eventparticipation.event.japanese_name, report.fake_eventparticipation.account.owner.username, report.fake_eventparticipation.account.id, report.fake_eventparticipation.ranking, report.fake_eventparticipation.song_ranking, report.fake_eventparticipation.points)
+        all_reports.update(status=3, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
+        if report.fake_eventparticipation:
             report.fake_eventparticipation.delete()
-        report.status = 3 # Accepted
     elif status == 'reject':
-        report.status = 0 # Rejected
-    report.save()
+        if report.fake_account:
+            all_reports = models.ModerationReport.objects.filter(fake_account=report.fake_account)
+        elif report.fake_eventparticipation:
+            all_reports = models.ModerationReport.objects.filter(fake_eventparticipation=report.fake_eventparticipation)
+        all_reports.update(status=0, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
     return HttpResponse(status)
             
 def songs(request, song=None, ajax=False):

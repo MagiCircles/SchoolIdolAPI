@@ -1119,7 +1119,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
     - Accounts
     """
     page = 0
-    page_size = 5
+    page_size = 10
     if 'page' in request.GET and request.GET['page']:
         page = int(request.GET['page']) - 1
         if page < 0:
@@ -1139,6 +1139,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
         activities = activities.filter(message='Custom')
+    activities = activities.distinct()
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     activities = activities.annotate(likers_count=Count('likes'))
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []

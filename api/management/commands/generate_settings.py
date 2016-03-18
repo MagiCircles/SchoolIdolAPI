@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import F
 from api import models
-from contest.utils import get_current_contest
+from contest.utils import get_current_contests
 from collections import OrderedDict
 from web.templatetags.mod import tourldash
 from django.db.models import Count
@@ -16,18 +16,22 @@ def ValuesQuerySetToDict(vqs):
 def generate_settings():
 
         print 'Get total donators'
-        total_donators = str(models.UserPreferences.objects.filter(status__isnull=False).exclude(status__exact='').count())
+        total_donators = unicode(models.UserPreferences.objects.filter(status__isnull=False).exclude(status__exact='').count())
 
         print 'Check the current contest'
-        current_contest = get_current_contest()
-        if current_contest is None:
-            current_contest_url = '/contest/'
-            current_contest_image = '/static/currentcontest_no.png'
-            current_contest_name = None
+        current_contests = get_current_contests()
+        if not current_contests:
+            current_contests = [{
+                'url': '/contest/',
+                'image': '/static/currentcontest_no.png',
+                'name': None,
+            }]
         else:
-            current_contest_url = '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/'
-            current_contest_image = (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else '/static/currentcontest.png'
-            current_contest_name = current_contest.name.replace('\'', '\\\'')
+            current_contests = [{
+                'url': '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
+                'image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else '/static/currentcontest.png',
+                'name': current_contest.name,
+            } for current_contest in current_contests]
 
         print 'Get ages'
         ages = {}
@@ -45,7 +49,7 @@ def generate_settings():
         ages = OrderedDict(sorted(ages.items()))
 
         print 'Get cardsinfo dictionary'
-        cards_info = str({
+        cards_info = unicode({
             'max_stats': {
                 'Smile': models.Card.objects.order_by('-idolized_maximum_statistics_smile')[:1][0].idolized_maximum_statistics_smile,
                 'Pure': models.Card.objects.order_by('-idolized_maximum_statistics_pure')[:1][0].idolized_maximum_statistics_pure,
@@ -64,17 +68,15 @@ def generate_settings():
         })
 
         print 'Save generated settings'
-        s = '\
+        s = u'\
 from collections import OrderedDict\n\
 import datetime\n\
-TOTAL_DONATORS = ' + total_donators + '\n\
-CURRENT_CONTEST_URL = \'' + current_contest_url + '\'\n\
-CURRENT_CONTEST_IMAGE = \'' + current_contest_image + '\'\n\
-CURRENT_CONTEST_NAME = ' + ('None' if not current_contest_name else '\'' + current_contest_name + '\'') + '\n\
-USERS_AGES = ' + unicode(ages) + '\n\
-USERS_TOTAL_AGES = ' + unicode(total_ages) + '\n\
-GENERATED_DATE = datetime.datetime.fromtimestamp(' + str(time.time()) + ')\n\
-CARDS_INFO = ' + cards_info + '\n\
+TOTAL_DONATORS = ' + total_donators + u'\n\
+CURRENT_CONTESTS = ' + unicode(current_contests) + u'\n\
+USERS_AGES = ' + unicode(ages) + u'\n\
+USERS_TOTAL_AGES = ' + unicode(total_ages) + u'\n\
+GENERATED_DATE = datetime.datetime.fromtimestamp(' + unicode(time.time()) + u')\n\
+CARDS_INFO = ' + cards_info + u'\n\
 '
         print s
         f = open('schoolidolapi/generated_settings.py', 'w')

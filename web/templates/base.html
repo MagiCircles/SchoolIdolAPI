@@ -55,9 +55,11 @@
 	      <a href="/contest/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		<i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Fun' %}</span>
 		<ul class="dropdown-menu drop-contest-menu" role="menu">
-		  <li class="drop-contest"><a href="/contest/"><img src="/static/currentcontest_no.png"></a></li>
-		  {% if current_contest_name %}
-		  <li class="drop-contest"><a href="{{ current_contest_url }}"><img src="{{ current_contest_image }}"></a></li>
+		  <li class="drop-contest"><a href="/contest/"><img src="/static/currentcontest_no.png" alt="Global Contest"></a></li>
+		  {% if current_contests.0.name %}{# means it's not just the global #}
+		  {% for contest in current_contests %}
+		  <li class="drop-contest"><a href="{{ contest.url }}"><img src="{{ contest.image }}" alt="{{ contest.name }}"></a></li>
+		  {% endfor %}
 		  {% endif %}
 		  <li class="active"><a href="/contest/results/" class="text-center fontx1-5">{% trans 'Past Contests' %}</a></li>
 		  <li class="drop-contest"><a href="/trivia/"><img src="/static/lltriviabanner.png"></a></li>

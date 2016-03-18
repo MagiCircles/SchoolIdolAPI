@@ -50,9 +50,7 @@ def globalContext(request):
         'btnColor': 'Smile',
         'debug': settings.DEBUG,
         'hidenavbar': 'hidenavbar' in request.GET,
-        'current_contest_url': settings.CURRENT_CONTEST_URL,
-        'current_contest_name': settings.CURRENT_CONTEST_NAME,
-        'current_contest_image': settings.CURRENT_CONTEST_IMAGE,
+        'current_contests': settings.CURRENT_CONTESTS,
         'last_update': settings.GENERATED_DATE,
         'high_traffic': settings.HIGH_TRAFFIC,
     }
@@ -230,11 +228,14 @@ def index(request):
     try:
         context['current_jp'] = models.Event.objects.order_by('-beginning')[0]
         context['current_jp'].is_current = context['current_jp'].is_japan_current()
+        context['current_jp'].slide_position = len(contest['current_contests']) + 1
     except: pass
     try:
         context['current_en'] = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
         context['current_en'].is_current = context['current_en'].is_world_current()
+        context['current_en'].slide_position = len(contest['current_contests'])
     except: pass
+    context['trivia_slide_position'] = len(context['current_contests']) + 2
     context['total_donators'] = settings.TOTAL_DONATORS
 
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS

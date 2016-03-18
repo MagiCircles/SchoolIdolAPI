@@ -6,7 +6,7 @@ from django.conf import settings
 from contest.utils import (get_votesession, validate_vote,
                            best_girls_query, best_cards_query,
                            best_single_cards, past_contests_queryset,
-                           get_current_contest, is_current_contest,
+                           is_current_contest,
                            is_future_contest, future_contests_queryset)
 from web.views import globalContext as web_globalContext
 from web.templatetags.mod import tourldash

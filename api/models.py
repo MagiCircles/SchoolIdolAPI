@@ -9,9 +9,11 @@ from django.core import validators
 from django.utils import timezone
 from django_prometheus.models import ExportModelOperationsMixin
 from api.raw import raw_information
+from web.utils import randomString
 import hashlib, urllib
 import csv
 import datetime
+import os
 
 ATTRIBUTE_CHOICES = (
     ('Smile', _('Smile')),
@@ -96,6 +98,18 @@ STATUS_CHOICES = (
     ('DEVOTEE', _('Ultimate Idol Devotee')),
 )
 STATUS_DICT = dict(STATUS_CHOICES)
+
+STAFF_PERMISSIONS_CHOICES = (
+    ('VERIFICATION_1', string_concat(_('Takes care of verifications:'), ' ', _('Silver Verified'))),
+    ('VERIFICATION_2', string_concat(_('Takes care of verifications:'), ' ', _('Gold Verified'))),
+    ('VERIFICATION_3', string_concat(_('Takes care of verifications:'), ' ', _('Bronze Verified'))),
+    ('ACTIVE_MODERATOR', string_concat(_('Active'), ' ', _('Moderator'))),
+    ('DECISIVE_MODERATOR', string_concat(_('Decisive'), ' ', _('Moderator'))),
+    ('COMMUNITY_MANAGER', _('Community Manager')),
+    ('DATABASE_MAINTAINER', _('Database Maintainer')),
+    ('DEVELOPER', _('Developer')),
+)
+STAFF_PERMISSIONS_DICT = dict(STAFF_PERMISSIONS_CHOICES)
 
 VERIFICATION_STATUS_CHOICES = (
     (0, _('Rejected')),
@@ -255,6 +269,9 @@ def verificationStatusToString(val):
 def verificationUntranslatedStatusToString(val):
     return VERIFICATION_UNTRANSLATED_STATUS_DICT[val]
 
+def staffPermissionToString(val):
+    return STAFF_PERMISSIONS_DICT[val]
+
 def reportStatusToString(val):
     return MODERATION_REPORT_STATUS_DICT[val]
 
@@ -318,6 +335,10 @@ def japanese_attribute(attribute):
         return u'クール'
     return u'❤'
 
+def event_EN_upload_to(instance, filename):
+    name, extension = os.path.splitext(filename)
+    return 'events/EN/' + (instance.english_name if instance.english_name else instance.japanese_name) + randomString(16) + extension
+
 class Event(ExportModelOperationsMixin('Event'), models.Model):
     japanese_name = models.CharField(max_length=100, unique=True)
     romaji_name = models.CharField(max_length=100, blank=True, null=True)
@@ -336,7 +357,7 @@ class Event(ExportModelOperationsMixin('Event'), models.Model):
     japanese_t2_rank = models.PositiveIntegerField(null=True, blank=True)
     note = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to='events/', null=True, blank=True)
-    english_image = models.ImageField(upload_to='events/EN/', null=True, blank=True)
+    english_image = models.ImageField(upload_to=event_EN_upload_to, null=True, blank=True)
 
     def is_japan_current(self):
         return (self.beginning is not None
@@ -606,7 +627,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
     donation_link = models.CharField(max_length=200, null=True, blank=True)
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
-    allowed_verifications = models.CharField(max_length=100, null=True, blank=True)
+    _staff_permissions = models.CharField(max_length=100, null=True, blank=True)
     birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
 
@@ -617,6 +638,23 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
         return ("http://www.gravatar.com/avatar/"
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))
+
+    @property
+    def staff_permissions(self):
+        if self._staff_permissions:
+            return self._staff_permissions.split(',')
+        return []
+
+    def has_permission(self, permission):
+        return permission in self.staff_permissions
+
+    @property
+    def has_verification_permissions(self):
+        return 'VERIFICATION' in self._staff_permissions
+
+    @property
+    def allowed_verifications(self):
+        return [int(permission.replace('VERIFICATION_', '')) for permission in self.staff_permissions if 'VERIFICATION' in permission]
 
     @property
     def age(self):

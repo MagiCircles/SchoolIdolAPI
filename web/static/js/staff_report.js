@@ -25,4 +25,7 @@ function handle_report(e) {
 $(document).ready(function() {
     $('.accept-report').click(handle_report);
     $('.reject-report').click(handle_report);
+    $('textarea').click(function(e) {
+        $(this).closest('td').find('.textarea-check').show('slow');
+    });
 });

@@ -2,7 +2,7 @@
 from api.management.commands.importbasics import *
 
 def import_idols(opt):
-    local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
+    local, redownload = opt['local'], opt['redownload']
     idols = models.Idol.objects.all().order_by('-main', '-main_unit')
     for idol in raw_information.keys():
         card = models.Card.objects.filter(name=idol).order_by('id')[0]

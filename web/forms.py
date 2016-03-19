@@ -350,6 +350,12 @@ class ModerationReportForm(ModelForm):
         model = models.ModerationReport
         fields = ('comment', 'images')
 
+class StaffEnglishBannerForm(ModelForm):
+    event = forms.ModelChoiceField(queryset=models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning'))
+    class Meta:
+        model = models.Event
+        fields = ('event', 'english_image',)
+
 class FilterSongForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))
     ordering = forms.ChoiceField(choices=[

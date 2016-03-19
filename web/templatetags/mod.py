@@ -48,6 +48,10 @@ def subtract(value, arg):
     return value - arg
 
 @register.filter
+def has_permission(user, permission):
+    return user.has_permission(permission)
+
+@register.filter
 def range(min, max):
     return range(min, max)
 

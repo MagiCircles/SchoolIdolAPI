@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
-from api.management.commands.importcardstats import importcards_stats
+from api.management.commands.importcardstats import importcardstats
 from api.management.commands.import_jp_events import import_jp_events
 from api.management.commands.import_en_events import import_en_events
 from api.management.commands.import_wikia import import_wikia
@@ -23,7 +23,7 @@ class Command(BaseCommand):
             models.Song.objects.all().delete()
             return
 
-        importcards_stats(opt)
+        importcardstats(opt)
         import_jp_events(opt)
         import_en_events(opt)
         import_idols(opt)

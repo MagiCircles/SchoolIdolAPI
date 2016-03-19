@@ -13,8 +13,9 @@
 {% block content %}
 {% load choicesToString %}
 {% load mod %}
+{% load imageurl %}
 
-<div class="container">
+<div class="container" id="about-page">
   <div class="margin50">
     <div id="about"></div>
     <br>
@@ -105,6 +106,17 @@
       </div>
       {% endfor %}
     </div>
+    <h4>{% trans 'Graphic Designers' %}</h4>
+    <br>
+    <div class="row">
+      {% for c in graphic_designers %}
+      <div class="col-md-3">
+	<a href="{{ c.image|userimage }}" target="_blank" class="graphic_designer" style="background-image: url('{{ c.image|userimage }}');"></a> {% trans 'by' %}
+	<a href="/user/{{ c.image_by.username }}/" target="_blank">{{ c.image_by.username }}</a>
+	<br><br>
+      </div>
+      {% endfor %}
+    </div>
 
     <hr class="margin50">
 
@@ -139,16 +151,26 @@
 		<a href="/user/{{ user.username}}/" target="_blank" class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %} btn-lg">
 		  {% trans 'Profile' %}
 		</a>
-		{% if user.preferences.allowed_verifications %}<br><br>
-		{% trans 'Takes care of verifications:' %}<br>
-		{% for verification in user.preferences.allowed_verifications %}
-		{% if verification != '3' %}
-		<span class="verified{{ verification }}"><i class="flaticon-star"></i>
-		  {{ verification|verifiedToString }}</span><br>
-		{% endif %}
-		{% endfor %}
-		{% trans 'Total' %}: {{ user.verifications_done }}
-		{% endif %}
+                <br><br>
+                <ul style="padding-left: 0; list-style-type: circle;">
+                  {% for permission in user.preferences.staff_permissions %}
+                  {% if 'VERIFICATION' not in permission %}
+                  <li>{{ permission|staffPermissionToString }}</li>
+                  {% endif %}
+                  {% endfor %}
+                  {% if user.preferences.has_verification_permissions %}
+		  <li>
+                    {% trans 'Takes care of verifications:' %}<br>
+                    {% for verification in user.preferences.allowed_verifications %}
+                    {% if verification != 3 %}
+                    <span class="verified{{ verification }}"><i class="flaticon-star"></i>
+                      {{ verification|verifiedToString }}</span><br>
+                    {% endif %}
+                    {% endfor %}
+		    {% trans 'Total' %}: {{ user.verifications_done }}
+                  </li>
+		  {% endif %}
+                </ul>
 	      </div>
 	    </div>
 	  </div>

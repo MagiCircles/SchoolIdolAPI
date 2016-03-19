@@ -1,7 +1,8 @@
 #-*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_wikia():
+def import_wikia(opt):
+    local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
     print '### Import card pictures and skills details from wikia'
     if local:
         f = open('wikia.html', 'r')
@@ -52,10 +53,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload, noimages
-        local = 'local' in args
-        redownload = 'redownload' in args
-        noimages = 'noimages' in args
+        opt = opt_parse(args)
 
-        import_wikia()
+        import_wikia(opt)
         import_raw_db()

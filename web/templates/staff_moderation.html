@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Staff - Moderation{% endblock %}
+
+{% block js %}
+<script>var disqus_api_key = '{{ disqus_api_key }}';</script>
+<script src="/static/bower/jquery-timeago/jquery.timeago.js"></script>
+<script src="/static/js/staff_moderation.js"></script>
+{% endblock %}
+
+{% block content %}
+{% load choicesToString %}
+{% load pagination %}
+{% load imageurl %}
+<div class="container">
+  <br><br>
+  <h1 class="text-center">Staff Active Moderation</h1>
+  <br>
+  <h1>Step 1. Moderate Event participations</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <a href="/event/{{ latest_jp.japanese_name|urlencode }}/"
+         target="_blank" style="white-space: normal"
+         class="btn btn-block btn-{{ btnColor }} btn-lg">
+        <h1>Check the ranking of the latest JP event</h1>
+        <p>Check the ranking and points. Share a screenshot to proove that it's wrong.</p>
+        <img src="{% eventimageurl event=latest_jp english=False %}" class="img-responsive">
+      </a>
+    </div>
+    <div class="col-md-6">
+      <a href="/event/{{ latest_en.japanese_name|urlencode }}/"
+         target="_blank" style="white-space: normal"
+         class="btn btn-block btn-{{ btnColor }} btn-lg">
+        <h1>Check the ranking of the latest EN event</h1>
+        <p>Check the ranking and points. Share a screenshot to proove that it's wrong.</p>
+        <img src="{% eventimageurl event=latest_en english=True %}" class="img-responsive">
+      </a>
+    </div>
+  </div>
+  <br><br>
+  <h1>Step 2. Moderate Accounts</h1>
+  <a href="/users/?verified=0&language=JP&reverse_order=on"
+     target="_blank" style="white-space: normal"
+     class="btn btn-block btn-{{ btnColor }} btn-lg">
+    <h1>Check unverified high ranked JP accounts</h1>
+    <p>Check the friend ID in game and if you decide to report, share a screenshot</p>
+  </a><br>
+  <a href="/users/?verified=0&language=EN&reverse_order=on"
+     target="_blank" style="white-space: normal"
+     class="btn btn-block btn-{{ btnColor }} btn-lg">
+    <h1>Check unverified high ranked EN accounts</h1>
+    <p>Check the friend ID in game and if you decide to report, share a screenshot</p>
+  </a><br><br>
+  <a href="/users/?verified=3&language=JP&reverse_order=on"
+     target="_blank" style="white-space: normal"
+     class="btn btn-block btn-{{ btnColor }} btn-lg">
+    <h1>Check verified JP accounts</h1>
+    <p>Look at activities to find anything suspicious (rank jumps to quickly, 10+ URs at the same time, etc.)</p>
+  </a><br>
+  <a href="/users/?verified=3&language=EN&reverse_order=on"
+     target="_blank" style="white-space: normal"
+     class="btn btn-block btn-{{ btnColor }} btn-lg">
+    <h1>Check verified EN accounts</h1>
+    <p>Look at activities to find anything suspicious (rank jumps to quickly, 10+ URs at the same time, etc.)</p>
+  </a><br><br>
+  <hr>
+  <br><br>
+  <h1>Step 3. Moderate Comments</h1>
+  <h2>Read all the latest comments</h2>
+  <p>Report any spam, insult or negative comment</p>
+  <br><br>
+  <style type="text/css" media="screen"> .dsq-widget ul.dsq-widget-list { padding: 0; margin: 0; text-align: left; } img.dsq-widget-avatar { width: 32px; height: 32px; border: 0px; margin: 0px; padding: 0px 3px 3px 0px; float: left; } a.dsq-widget-user { font-weight: bold; } a.dsq-widget-thread { font-weight: bold; } p.dsq-widget-meta { clear: both; font-size: 80%; padding: 0; margin: 0; } li.dsq-widget-item { margin: 15px 0; list-style-type: none; clear: both; } span.dsq-widget-clout { padding: 0 2px; background-color: #ff7300; color: #fff; } table.dsq-widget-horiz td { padding-right: 15px; } .dsq-widget-comment p { display: inline; } </style>
+  <div id="disqus_comments">
+    <div class="disqus_loading" style="font-size: 4em; text-align: center;"><i class="flaticon-loading"></i></div>
+  </div>
+  <br><br><br><br><br>
+  {% include 'disqus.html' with disqus_identifier='staff-moderation' %}
+</div>
+{% endblock %}

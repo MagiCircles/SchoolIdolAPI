@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
 
-def import_video_stories():
+def import_video_stories(opt):
     print '### Import video stories'
     if local:
         f = open('videos.csv', 'r')
@@ -26,9 +26,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        global local, redownload
-        local = 'local' in args
-        redownload = 'redownload' in args
+        opt = opt_parse(args)
 
-        import_video_stories()
+        import_video_stories(opt)
         import_raw_db()

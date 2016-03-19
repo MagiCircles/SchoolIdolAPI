@@ -6,6 +6,7 @@ from django import template
 from django.http import HttpResponse, Http404
 from django.template import RequestContext, loader
 from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.core.files.images import ImageFile
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import login as login_view
@@ -23,6 +24,7 @@ from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
 from api import models, raw
+from contest import models as contest_models
 from web import forms, donations, transfer_code, raw as web_raw
 from web.links import links as links_list
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl
@@ -1861,7 +1863,6 @@ def aboutview(request):
     context['donators_high'] = []
     for user in users:
         if user.is_staff:
-            user.preferences.allowed_verifications = user.preferences.allowed_verifications.split(',') if user.preferences.allowed_verifications else []
             context['staff'].append(user)
         if user.preferences.status == 'THANKS' or user.preferences.status == 'SUPPORTER' or user.preferences.status == 'LOVER' or user.preferences.status == 'AMBASSADOR':
             context['donators_low'].append(user)
@@ -1876,10 +1877,12 @@ def aboutview(request):
     for idol in raw.raw_information_n:
         if 'chibi' in raw.raw_information_n[idol]:
             context['artists'] += raw.raw_information_n[idol]['chibi']
+
+    context['graphic_designers'] = contest_models.Contest.objects.filter(image_by__isnull=False, begin__lte=timezone.now()).exclude(image='').select_related('image_by')
     return render(request, 'about.html', context)
 
 def staff_verifications(request):
-    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.allowed_verifications:
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
         raise PermissionDenied()
     context = globalContext(request)
     context['verifications'] = models.VerificationRequest.objects
@@ -1897,7 +1900,7 @@ def staff_verifications(request):
         context['verifications'] = context['verifications'].filter(allow_during_events=True)
     if 'verification' in request.GET and int(request.GET['verification']) > 0:
         context['verifications'] = context['verifications'].filter(verification=request.GET['verification'])
-    context['verifications'] = context['verifications'].filter(verification__in=request.user.preferences.allowed_verifications.split(','))
+    context['verifications'] = context['verifications'].filter(verification__in=request.user.preferences.allowed_verifications)
     if 'status' in request.GET and request.GET['status'] and (request.GET['status'] == '0' or request.GET['status'] == '3'):
         context['verifications'] = context['verifications'].order_by('-verification_date')
     else:
@@ -1992,8 +1995,59 @@ def ajaxverification(request, verification, status):
     verification.save()
     return HttpResponse('status changed')
 
+def staff_moderation(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('ACTIVE_MODERATOR'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    now = timezone.now()
+    context['latest_en'] = models.Event.objects.filter(english_end__lte=now).order_by('-english_beginning')[0]
+    context['latest_jp'] = models.Event.objects.filter(end__lte=now).order_by('-beginning')[0]
+    context['disqus_api_key'] = settings.DISQUS_API_KEY
+    return render(request, 'staff_moderation.html', context)
+
+def staff_database(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    if 'englishEvent' in request.POST:
+        context['english_event_form'] = forms.StaffEnglishBannerForm(request.POST, request.FILES)
+        if context['english_event_form'].is_valid():
+            event = context['english_event_form'].cleaned_data['event']
+            image = context['english_event_form'].cleaned_data['english_image']
+            filename = image.name
+            image = shrinkImageFromData(image.read())
+            event.english_image.save(models.event_EN_upload_to(event, filename), image)
+            context['uploaded_event'] = event
+    else:
+        context['english_event_form'] = forms.StaffEnglishBannerForm()
+    return render(request, 'staff_database.html', context)
+
+def staff_database_script(request, script):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER') or request.method != 'POST':
+        raise PermissionDenied()
+    context = globalContext(request)
+    context['script'] = script
+    opt = {
+        'local': False,
+        'redownload': 'redownload' in request.POST,
+        'noimages': 'noimages' in request.POST,
+        'reload': False,
+        'retry': False,
+    }
+    if script == 'import_songs':
+        if opt['redownload']:
+            opt['noimages'] = True
+    try:
+        m = __import__('api.management.commands.' + script, fromlist=[''])
+        with Capturing() as output:
+            getattr(m, script)(opt)
+            context['output'] = output
+    except AttributeError:
+        raise Http404
+    return render(request, 'staff_database_script.html', context)
+
 def staff_reports(request):
-    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DECISIVE_MODERATOR'):
         raise PermissionDenied()
     context = globalContext(request)
     context['reports'] = models.ModerationReport.objects
@@ -2024,6 +2078,8 @@ def ajaxreport(request, report_id, status):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or request.method != 'POST':
         raise PermissionDenied()
     report = get_object_or_404(models.ModerationReport.objects.select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner'), pk=report_id)
+    if report.reported_by_id == request.user.id:
+        raise PermissionDenied()
     report.moderated_by = request.user
     report.moderation_date = timezone.now()
     moderation_comment = request.POST.get('comment', None)
@@ -2077,7 +2133,7 @@ def ajaxreport(request, report_id, status):
             all_reports = models.ModerationReport.objects.filter(fake_eventparticipation=report.fake_eventparticipation)
         all_reports.update(status=0, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
     return HttpResponse(status)
-            
+
 def songs(request, song=None, ajax=False):
     page = 0
     context = globalContext(request)

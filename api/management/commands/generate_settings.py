@@ -13,7 +13,7 @@ import time
 def ValuesQuerySetToDict(vqs):
     return [item for item in vqs]
 
-def generate_settings():
+def generate_settings(opt={}):
 
         print 'Get total donators'
         total_donators = unicode(models.UserPreferences.objects.filter(status__isnull=False).exclude(status__exact='').count())

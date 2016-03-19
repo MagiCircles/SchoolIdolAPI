@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Staff - Database Maintenance - {{ script }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <br><br>
+  <h1 class="text-center">{{ script }}</h1>
+
+  <pre>{% for o in output %}{{ o }}
+    {% endfor %}</pre>
+  <div class="text-right">
+    <a href="/staff/database/" class="btn btn-{{ btnColor }}">Back to database maintenance</a>
+    <br><br><br><br>
+</div>
+{% endblock %}

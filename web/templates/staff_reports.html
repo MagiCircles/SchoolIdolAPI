@@ -3,7 +3,7 @@
 {% block title %}Staff - Reports{% endblock %}
 
 {% block js %}
-<script src="/static/js/staff_report.js?1"></script>
+<script src="/static/js/staff_report.js?2"></script>
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,7 @@
       <th>Reported</th>
       <th>By / Status</th>
       <th>Messages</th>
-      <th>Moderate</th>
+      <th style="max-width: 250px;">Moderate</th>
     </tr>
     {% for report in reports %}
     <tr class="{% if report.status == 0 %}success{% elif report.status == 3 %}danger{% elif report.status == 2 %}warning{% else %}info{% endif %}" data-fake-thing="{% if report.fake_account %}account{{ report.fake_account.id }}{% elif report.fake_eventparticipation %}eventparticipation{{ report.fake_eventparticipation.id }}{% endif %}">
@@ -98,11 +98,27 @@
         </dl>
         {% endif %}
       </td>
-      <td data-report-id="{{ report.id }}">
-      {% if report.status != 3 and report.status != 0 %}
+      <td data-report-id="{{ report.id }}" style="max-width: 250px;">
+        {% if report.status != 3 and report.status != 0 %}
+        {% if report.reported_by == user %}
+        You can't moderate your own reports.<br>
+        This is to ensure that at least 2 moderators check that the {% if report.fake_account %}account{% else %}event participation{% endif %} is fake or not.
+        {% else %}
+        <ul>
+          <li><strong>Never accept or reject a report without checking first using your own game or screenshots.</strong>{% if report.fake_account %}
+            <ul>
+              <li><i>Enter the friend ID in your game to check the rank</i></li>
+              <li><i>Look at the bonded members</i></li>
+            </ul>{% endif %}
+          </li>
+          <li>If you can't say for sure that it's fake or not, leave it and someone else will take care of it.</li>
+          <li>You may also ask the other staff members if you're not sure.</li>
+        </ul>
         <textarea class="form-control" placeholder="Your message to the owner of the reported {% if report.fake_account %}account{% else %}event participation{% endif %} (optional)"></textarea><br>
+        <p class="textarea-check" style="display: none">Be friendly and check your grammar and spelling.</p>
         <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will {% if report.fake_account %}mark this account as fake,<br>notify the reporter<br>and suggest the owner to get verified{% else %} delete this event participation<br>and notify the owner by email{% endif %}</small></button>
         <button data-href="/ajax/staff/report/{{ report.id }}/reject/" class="btn btn-block btn-success reject-report">Reject this report<br><small>Will reject this report,<br>nobody gets notified</small></button>
+        {% endif %}
         {% endif %}
       </td>
     </tr>

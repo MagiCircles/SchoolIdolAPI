@@ -1,8 +1,18 @@
 {% load i18n %}
+{% load mod %}
 {% if user.is_staff %}
+{% if user.preferences|has_permission:'ACTIVE_MODERATOR' %}
+<li><a href="/staff/moderation/"><i class="flaticon-skill"></i> Active Moderation</a></li>
+{% endif %}
+{% if user.preferences|has_permission:'DECISIVE_MODERATOR' %}
 <li><a href="/staff/reports/"><i class="flaticon-warning"></i> Moderation Reports</a></li>
-{% if user.preferences.allowed_verifications %}
+<li><a href="https://disqus.com/admin/moderate/#/pending" target="_blank"><i class="flaticon-comments"></i> Reported comments</a></li>
+{% endif %}
+{% if user.preferences.has_verification_permissions %}
 <li><a href="/staff/verifications/"><i class="flaticon-star"></i> Verifications</a></li>
+{% endif %}
+{% if user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+<li><a href="/staff/database/"><i class="flaticon-album"></i> Database Maintenance</a></li>
 {% endif %}
 <li role="presentation" class="divider"></li>
 {% endif %}

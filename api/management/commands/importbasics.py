@@ -3,12 +3,13 @@ from django.core.management.base import BaseCommand, CommandError
 from django.core.files.images import ImageFile
 from django.core.files.temp import NamedTemporaryFile
 from django.forms.models import model_to_dict
+from django.conf import settings
 import urllib2, urllib
 from bs4 import BeautifulSoup, Comment
 from api import models
 from api.raw import raw_information, raw_information_n
-from tinypng import shrink_file
 from web.forms import getGirls
+from web.utils import shrunkImage
 from api.management.commands.generate_settings import generate_settings
 import re
 import HTMLParser
@@ -95,20 +96,6 @@ def downloadFile(url):
     img_temp.write(urllib2.urlopen(req).read())
     img_temp.flush()
     return ImageFile(img_temp)
-
-def shrunkImage(picture, url):
-    from django.conf import settings
-    api_key = settings.TINYPNG_API_KEY
-    if not api_key or not url.endswith('.png'):
-        return picture
-    img_shrunked = NamedTemporaryFile(delete=False)
-    shrink_info = shrink_file(
-            picture.name,
-            api_key=api_key,
-            out_filepath=img_shrunked.name
-    )
-    img_shrunked.flush()
-    return ImageFile(img_shrunked)
 
 def downloadShrunkedImage(url):
     downloaded = downloadFile(url)

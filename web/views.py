@@ -692,7 +692,7 @@ def profile(request, username):
         user = get_object_or_404(User.objects.select_related('preferences'), username=username)
     context['profile_user'] = user
     context['preferences'] = user.preferences
-    if request.user.is_staff and (request.user.is_superuser or request.user.preferences.allowed_verifications):
+    if request.user.is_staff and (request.user.is_superuser or request.user.preferences.has_verification_permissions):
         if request.user.is_superuser:
             context['form_preferences'] = forms.UserProfileStaffForm(instance=context['preferences'])
         if 'staff' in request.GET:
@@ -771,7 +771,7 @@ def profile(request, username):
                 else:
                     account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
             # Staff form to edit account
-            if request.user.is_staff and (request.user.is_superuser or request.user.preferences.allowed_verifications):
+            if request.user.is_staff and (request.user.is_superuser or request.user.preferences.has_verification_permissions):
                 staffFormClass = forms.AccountAdminForm if request.user.is_superuser else forms.AccountStaffForm
                 account.staff_form_addcard = forms.StaffAddCardForm(initial={'owner_account': account.id})
                 account.staff_form = staffFormClass(instance=account)
@@ -1924,7 +1924,7 @@ def staff_verification(request, verification):
     context = globalContext(request)
     context['verification'] = get_object_or_404(models.VerificationRequest.objects.select_related('account', 'account__owner', 'account__owner__preferences'), pk=verification)
 
-    if str(context['verification'].verification) not in request.user.preferences.allowed_verifications.split(','):
+    if str(context['verification'].verification) not in request.user.preferences.allowed_verifications:
         raise PermissionDenied()
     context['form'] = forms.StaffVerificationRequestForm(instance=context['verification'])
     if 'verificationRequest' in request.POST:

@@ -43,7 +43,7 @@ urlpatterns = patterns('',
     url(r'^staff/reports[/]$', views.staff_reports, name='staff_reports'),
     url(r'^staff/moderation[/]$', views.staff_moderation, name='staff_moderation'),
     url(r'^staff/database[/]$', views.staff_database, name='staff_database'),
-    url(r'^staff/database/(?P<script>[\w -)]+)[/]$', views.staff_database_script, name='staff_database_script'),
+    url(r'^staff/database/(?P<script>[\w -_]+)[/]$', views.staff_database_script, name='staff_database_script'),
 
     url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset',
         {'html_email_template_name': 'registration/password_reset_email_html.html',

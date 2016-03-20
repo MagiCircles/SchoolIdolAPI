@@ -313,6 +313,7 @@ raw_information_n = {
         'sub_unit': 'A-RISE',
         'chibi': [
             ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
+            ('http://i.schoolido.lu/chibi/JXg1NvP6.png', 'sayakax'),
         ],
     },
     'Hyoudou Sayuri': {

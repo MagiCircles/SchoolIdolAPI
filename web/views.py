@@ -1878,7 +1878,14 @@ def aboutview(request):
         if 'chibi' in raw.raw_information_n[idol]:
             context['artists'] += raw.raw_information_n[idol]['chibi']
 
-    context['graphic_designers'] = contest_models.Contest.objects.filter(image_by__isnull=False, begin__lte=timezone.now()).exclude(image='').select_related('image_by')
+    contests = contest_models.Contest.objects.filter(begin__lte=timezone.now()).filter(Q(image_by__isnull=False) | Q(result_image_by__isnull=False)).select_related('image_by', 'result_image_by')
+    context['graphic_designers'] = []
+    for contest in contests:
+        if contest.image_by and contest.image:
+            context['graphic_designers'].append((contest.image, contest.image_by))
+        if contest.result_image_by and contest.result_image:
+            context['graphic_designers'].append((contest.result_image, contest.result_image_by))
+    print context['graphic_designers']
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

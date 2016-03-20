@@ -109,12 +109,14 @@
     <h4>{% trans 'Graphic Designers' %}</h4>
     <br>
     <div class="row">
-      {% for c in graphic_designers %}
+      {% for g in graphic_designers %}
+      {% with image=g.0 by=g.1 %}
       <div class="col-md-3">
-	<a href="{{ c.image|userimage }}" target="_blank" class="graphic_designer" style="background-image: url('{{ c.image|userimage }}');"></a> {% trans 'by' %}
-	<a href="/user/{{ c.image_by.username }}/" target="_blank">{{ c.image_by.username }}</a>
+	<a href="{{ image|userimage }}" target="_blank" class="graphic_designer" style="background-image: url('{{ image|userimage }}');"></a> {% trans 'by' %}
+	<a href="/user/{{ by.username }}/" target="_blank">{{ by.username }}</a>
 	<br><br>
       </div>
+      {% endwith %}
       {% endfor %}
     </div>
 

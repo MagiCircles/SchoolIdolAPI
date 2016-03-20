@@ -627,7 +627,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
     donation_link = models.CharField(max_length=200, null=True, blank=True)
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
-    _staff_permissions = models.CharField(max_length=100, null=True, blank=True)
+    _staff_permissions = models.CharField(max_length=200, null=True, blank=True)
     birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
 

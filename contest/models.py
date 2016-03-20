@@ -14,9 +14,11 @@ class Contest(models.Model):
     best_card = models.BooleanField(default=False)
     query = models.CharField(max_length=4092, null=True)
     suggested_by = models.ForeignKey(api_models.User, related_name='suggested_contests', on_delete=models.SET_NULL, null=True, blank=True)
+    homepage_image = models.ImageField(upload_to='contest/', null=True, blank=True)
     image = models.ImageField(upload_to='contest/', null=True, blank=True)
     image_by = models.ForeignKey(api_models.User, related_name='designed_contest_banners', on_delete=models.SET_NULL, null=True, blank=True)
     result_image = models.ImageField(upload_to='contest_results/', null=True, blank=True)
+    result_image_by = models.ForeignKey(api_models.User, related_name='designed_contest_result_banners', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __unicode__(self):
         return self.name

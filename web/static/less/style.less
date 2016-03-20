@@ -1160,27 +1160,35 @@ h1#donators {
     }
 }
 #contest-page {
+    .panel, h1, .contest-footer {
+        .avatar_wrapper {
+	    display: inline-block;
+	    h4 {
+	        display: inline-block;
+	        margin-right: 20px;
+	        margin-bottom: 20px;
+	    }
+	    &:after {
+	        display: inline;
+	        position: initial;
+	    }
+        }
+        img.avatar {
+	    width: auto;
+            border-radius: 5px;
+        }
+    }
+    .credit_people {
+        font-size: 16px;
+        display: block;
+        height: 30px;
+    }
     .panel {
 	padding: 0!important;
 	display: block!important;
 	width: 100%;
 	img {
 	    width: 100%;
-	}
-	.avatar_wrapper {
-	    display: inline-block;
-	    h4 {
-		display: inline-block;
-		margin-right: 20px;
-		margin-bottom: 20px;
-	    }
-	    &:after {
-		display: inline;
-		position: initial;
-	    }
-	}
-	img.avatar {
-	    width: auto;
 	}
 	.panel-heading {
 	    text-align: center;

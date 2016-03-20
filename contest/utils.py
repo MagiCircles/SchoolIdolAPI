@@ -105,12 +105,18 @@ def best_cards_query(contest):
     return cards
 
 def best_single_card_query(contest):
-    vote = contest_models.Vote.objects.filter(contest=contest).order_by('-counter').first()
-    return vote.card, vote.idolized
+    try:
+        vote = contest_models.Vote.objects.filter(contest=contest).order_by('-counter').first()
+        return vote.card, vote.idolized
+    except AttributeError:
+        return None, None
 
 def best_single_girl_query(contest):
-    girl = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').first()
-    return girl['card__name']
+    try:
+        girl = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').first()
+        return girl['card__name']
+    except (AttributeError, TypeError):
+        return None
 
 def best_single_cards(contest):
     cards = dict()

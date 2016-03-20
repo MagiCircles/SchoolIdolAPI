@@ -24,7 +24,8 @@
   <div class="container">
     <h1 class="text-{{ btnColor }}">
       {{ contest.name }}
-      {% if contest.begin %}<br><small>
+      <br>
+      {% if contest.begin %}<small>
 	{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
 	{% if contest.id != global_contest_id %}
 	<br>

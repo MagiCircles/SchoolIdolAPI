@@ -24,8 +24,24 @@
 <div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
   <div class="container">
     <h1 class="text-{{ btnColor }}">
+      {% if contest.homepage_image and not contest.result_image %}
+      <img src="{{ contest.homepage_image|userimage }}" style="max-width: 100%; border-radius: 10px;" alt="{{ contest.name }}" />
+      {% else %}
       {{ contest.name }}
-      {% if contest.begin %}<br><small>
+      {% endif %}
+      {% if contest.suggested_by or contest.image_by %}
+      <small class="credit_people{% if contest.homepage_image and not contest.result_image %} text-right{% endif %}">
+        {% if contest.suggested_by %}
+        {% trans 'Suggested by' %} {% include 'include/avatar.html' with av_user=contest.suggested_by av_fixed=True av_size=20 av_image_size=30 av_username=True av_link=True av_external=True %}
+        {% endif %}
+        {% if contest.image_by %}
+        {% trans 'Image by' %} {% include 'include/avatar.html' with av_user=contest.image_by av_fixed=True av_size=20 av_image_size=30 av_username=True av_link=True av_external=True %}
+        {% else %}
+        <br>
+        {% endif %}
+      </small>
+      {% endif %}
+      {% if contest.begin %}<small>
 	{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
 	{% if is_current %}
 	<br><a href="/contest/{{ contest.id }}/{{ contest.name|tourldash }}/">
@@ -40,6 +56,11 @@
       {% endif %}
       {% if contest.result_image %}
       <br><a href="#results" class="page-scroll"><img src="{{ contest.result_image|userimage }}" style="max-width: 100%; border-radius: 10px;" /></a>
+      {% if contest.result_image_by %}
+      <small class="credit_people text-right">
+        {% trans 'Image by' %} {% include 'include/avatar.html' with av_user=contest.result_image_by av_fixed=True av_size=20 av_image_size=30 av_username=True av_link=True av_external=True %}
+      </small>
+      {% endif %}
       {% endif %}
     </h1>
 

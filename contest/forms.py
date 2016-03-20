@@ -6,6 +6,7 @@ from contest import models
 class ContestForm(forms.ModelForm):
     suggested_by_username = forms.CharField(required=False)
     image_by_username = forms.CharField(required=False)
+    result_image_by_username = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(ContestForm, self).__init__(*args, **kwargs)
@@ -13,6 +14,8 @@ class ContestForm(forms.ModelForm):
             self.fields['suggested_by_username'].initial = self.instance.suggested_by.username
         if self.instance and self.instance.image_by:
             self.fields['image_by_username'].initial = self.instance.image_by.username
+        if self.instance and self.instance.result_image_by:
+            self.fields['result_image_by_username'].initial = self.instance.result_image_by.username
 
     def save(self, commit=False):
         instance = super(ContestForm, self).save(commit=False)
@@ -22,6 +25,9 @@ class ContestForm(forms.ModelForm):
         if self.cleaned_data['image_by_username']:
             try: instance.image_by = api_models.User.objects.get(username=self.cleaned_data['image_by_username'])
             except: instance.image_by = None
+        if self.cleaned_data['result_image_by_username']:
+            try: instance.result_image_by = api_models.User.objects.get(username=self.cleaned_data['result_image_by_username'])
+            except: instance.result_image_by = None
         if commit:
             instance.save()
         return instance
@@ -29,4 +35,4 @@ class ContestForm(forms.ModelForm):
     class Meta:
         model = models.Contest
         fields = ('__all__')
-        exclude = ('suggested_by', 'image_by')
+        exclude = ('suggested_by', 'image_by', 'result_image_by')

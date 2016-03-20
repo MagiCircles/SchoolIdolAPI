@@ -24,7 +24,7 @@ def contest_view(request, contestid):
     context = globalContext(request)
     if settings.HIGH_TRAFFIC:
         return render(request, 'disabled.html', context)
-    contest = get_object_or_404(contest_models.Contest, pk=contestid)
+    contest = get_object_or_404(contest_models.Contest.objects.select_related('suggested_by', 'image_by'), pk=contestid)
     if not is_current_contest(contest):
        return redirect('/contest/result/' + contestid + '/' + tourldash(contest.name) + '/')
     if (request.method == 'POST' and 'vote_side' in request.POST and request.POST['vote_side']

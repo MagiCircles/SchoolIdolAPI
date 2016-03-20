@@ -219,6 +219,9 @@
 			    {% else %}
 			    {% trans 'Yes' %}
 			    {% endif %}
+                            {% if card.promo_link %}
+		            <a href="{{ card.promo_link }}" target="_blank" class="btn btn-{% if card.attribute %}{{ card.attribute }}{% else %}default{% endif %}" style="letter-spacing: normal; color: white;">{% trans 'Buy it!' %}</a>
+                            {% endif %}
 			    <div class="pull-right">
 			      <i class="flaticon-promo"></i>
 			    </div>

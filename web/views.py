@@ -1924,7 +1924,7 @@ def staff_verification(request, verification):
     context = globalContext(request)
     context['verification'] = get_object_or_404(models.VerificationRequest.objects.select_related('account', 'account__owner', 'account__owner__preferences'), pk=verification)
 
-    if str(context['verification'].verification) not in request.user.preferences.allowed_verifications:
+    if context['verification'].verification not in request.user.preferences.allowed_verifications:
         raise PermissionDenied()
     context['form'] = forms.StaffVerificationRequestForm(instance=context['verification'])
     if 'verificationRequest' in request.POST:

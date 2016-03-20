@@ -336,6 +336,16 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/zknSMul.png', 'RinNyaDesu'),
         ],
     },
+    'Emma': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/chibi-emma.png', 'shellshark'),
+        ],
+    },
+    'Shinomiya Akiru': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/jxgJ52t.png', 'chim'),
+        ],
+    },
 }
 
 app_data = {

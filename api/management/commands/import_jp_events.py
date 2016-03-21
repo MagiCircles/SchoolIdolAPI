@@ -13,10 +13,10 @@ def import_jp_events(opt):
         line = h.unescape(line)
         data = str(line).split('||')
         if len(data) > 1:
+            name = clean(data[1].replace('[[', '').replace(']]', '').split('|')[-1]).replace('μs', 'μ\'s')
             dates = data[0].replace('|', '').split(' - ')
             beginning = eventDateFromString(clean(dates[0]) + ' 4pm', timezone=japantz)
-            end = eventDateFromString(str(beginning.year) + '/' + clean(dates[1]) + ' 3pm', timezone=japantz)
-            name = clean(data[1].replace('[[', '').replace(']]', '').split('|')[-1]).replace('μs', 'μ\'s')
+            end = eventDateFromString(str(beginning.year) + '/' + clean(dates[1]) + (' 2pm' if name == 'Medley Festival Round 11' else ' 3pm'), timezone=japantz)
             t1_points = optInt(clean(data[3]))
             i = 4
             if 'rowspan' in data[i] or len(data) == 7 or len(data) == 8:

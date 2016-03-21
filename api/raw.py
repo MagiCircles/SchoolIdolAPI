@@ -347,6 +347,11 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/jxgJ52t.png', 'chim'),
         ],
     },
+    'Miyashita Coco': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/coco.png', 'Akiza15'),
+        ],
+    },
 }
 
 app_data = {

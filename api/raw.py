@@ -352,6 +352,16 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/coco.png', 'Akiza15'),
         ],
     },
+    'Ranpha': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Ranpha.png', 'Akiza15'),
+        ],
+    },
+    'Leo': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/leo_by_ne_chi-d9vubg7.png', 'Nechi'),
+        ],
+    },
 }
 
 app_data = {

@@ -6,7 +6,7 @@ Your account has been reported, and a moderator confirmed it was "fake".
 {% endif %}
 What does it mean?
 
-- Don't worry, your account and all the cards you added don't get deleted.
+- Don't worry, your account and all the cards you added don't get deleted. You can still use your account, add cards, manage teams, etc.
 - Your account is now marked as fake on your profile.
 - Your account will not appear in the leaderboard anymore.
 

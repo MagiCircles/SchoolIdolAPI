@@ -28,12 +28,12 @@ def imageurl(context, card, image):
 def cleanurl(context, card, idolized):
     if idolized:
         if card.clean_ur_idolized:
-            return str(card.clean_ur_idolized).replace('web/static', '/static')
-        return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card.card_idolized_image))
+            return _imageurl(str(card.clean_ur_idolized))
+        return _imageurl(str(card.card_idolized_image))
     else:
         if card.clean_ur:
-            return str(card.clean_ur).replace('web/static', '/static')
-        return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card.card_image))
+            return _imageurl(str(card.clean_ur))
+        return _imageurl(str(card.card_image))
 
 @register.simple_tag()
 def cardidolizedimageurl(card, idolized):

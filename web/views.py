@@ -1886,7 +1886,6 @@ def aboutview(request):
             context['graphic_designers'].append((contest.image, contest.image_by))
         if contest.result_image_by and contest.result_image:
             context['graphic_designers'].append((contest.result_image, contest.result_image_by))
-    print context['graphic_designers']
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

@@ -5,8 +5,8 @@
 
 {% block title %}{% trans 'UR Pairs' %}{% endblock %}
 {% block content %}
-<div id="ur_pairs">
-  <h1 class="text-center margin50">{% trans 'UR Pairs' %} <small>{{ total }}</small></h1>
+<div id="ur_pairs" class="margin50">
+  <h1 class="text-center padding50">{% trans 'UR Pairs' %} <small>{{ total }}</small></h1>
   <table class="table table-bordered">
     <tr>
       <th>
@@ -57,5 +57,9 @@
     </tr>
     {% endfor %}
   </table>
+</div>
+<br><br><br>
+<div class="container">
+  {% include 'disqus.html' with disqus_identifier='urpairs' %}
 </div>
 {% endblock %}

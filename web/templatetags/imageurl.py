@@ -24,6 +24,17 @@ def imageurl(context, card, image):
                 return url
     return '/static/default-' + card.attribute + '.png'
 
+@register.simple_tag(takes_context=True)
+def cleanurl(context, card, idolized):
+    if idolized:
+        if card.clean_ur_idolized:
+            return str(card.clean_ur_idolized).replace('web/static', '/static')
+        return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card.card_idolized_image))
+    else:
+        if card.clean_ur:
+            return str(card.clean_ur).replace('web/static', '/static')
+        return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card.card_image))
+
 @register.simple_tag()
 def cardidolizedimageurl(card, idolized):
     if card.is_special or card.is_promo:

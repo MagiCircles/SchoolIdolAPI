@@ -468,6 +468,11 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     round_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
+    ur_pair = models.ForeignKey('self', related_name='other_ur_pair', on_delete=models.SET_NULL, null=True, blank=True)
+    ur_pair_reverse = models.BooleanField(default=False)
+    ur_pair_idolized_reverse = models.BooleanField(default=False)
+    clean_ur = models.ImageField(upload_to='web/static/cards/ur_pairs/', null=True, blank=True)
+    clean_ur_idolized = models.ImageField(upload_to='web/static/cards/ur_pairs/', null=True, blank=True)
     # cache
     total_owners = models.PositiveIntegerField(null=True, blank=True)
     total_wishlist = models.PositiveIntegerField(null=True, blank=True)

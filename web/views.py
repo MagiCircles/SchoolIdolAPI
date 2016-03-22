@@ -27,6 +27,7 @@ from web import forms, donations, transfer_code, raw as web_raw
 from web.links import links as links_list
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl
 from utils import *
+from collections import OrderedDict
 import urllib, hashlib
 import datetime, time, pytz
 import random
@@ -2173,3 +2174,31 @@ def sharetrivia(request):
         except IndexError:
             return redirect('/addaccount/')
     raise PermissionDenied()
+
+def urpairs(request):
+    context = globalContext(request)
+    cards = models.Card.objects.filter(ur_pair__isnull=False).order_by('idol__name', 'ur_pair__idol__name')
+    idols = models.Idol.objects.filter(main_unit = 'μ\'s').order_by('name')
+    data = OrderedDict()
+    for card in cards:
+        if card.idol.name not in data:
+            show_idolized = False
+            data[card.idol.name] = OrderedDict()
+            for idol in idols:
+                if card.idol.name == idol.name:
+                    show_idolized = True
+                data[card.idol.name][idol.name] = [None, show_idolized]
+        data[card.idol.name][card.ur_pair.idol.name][0] = card
+    alone_cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False, ur_pair__isnull=True).exclude(translated_collection='Initial')
+    for c in alone_cards:
+        for idol, card in data[c.idol.name].items():
+            if card[0] is None and idol != c.idol.name:
+                data[c.idol.name][idol][0] = c
+        for idol in idols:
+            if data[idol.name][c.idol.name][0] is None and idol.name != c.idol.name:
+                data[idol.name][c.idol.name][0] = c
+
+    context['total'] = int(len(cards) / 2)
+    context['data'] = data
+    context['idols'] = idols
+    return render(request, 'urpairs.html', context)

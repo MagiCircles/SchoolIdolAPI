@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load imageurl %}
+{% load choicesToString %}
+{% load i18n %}
+
+{% block title %}{% trans 'UR Pairs' %}{% endblock %}
+{% block content %}
+<div id="ur_pairs">
+  <h1 class="text-center margin50">{% trans 'UR Pairs' %} <small>{{ total }}</small></h1>
+  <table class="table table-bordered">
+    <tr>
+      <th>
+      </th>
+      {% for idol, pair in data.items %}
+      <th>
+	<img src="{% chibiimage idol=idol small=False %}" alt="{{ idol }}">
+      </th>
+      {% endfor %}
+    </tr>
+    {% for idol, paired_idols in data.items %}
+    <tr>
+      <th>
+	<img src="{% chibiimage idol=idol small=False %}" alt="{{ idol }}">
+      </th>
+      {% for paired_idol, card in paired_idols.items %}
+      {% if idol == paired_idol %}
+      <td style="background-color: {{ idol|idolToColor }}">
+      </td>
+      {% else %}
+      <td style="width: 10%">
+	{% if card.0 %}
+	{% if card.0.ur_pair %}
+	{% if card.1 %}
+	{% if card.0.ur_pair_idolized_reverse %}
+	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=True %}
+	{% else %}
+	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=True %}
+	{% endif %}
+	{% else %}
+	{% if card.0.ur_pair_reverse %}
+	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=False %}
+	{% else %}
+	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=False %}
+	{% endif %}
+	{% endif %}
+	{% else %}
+	{% if card.1 %}
+	{% include 'include/urpair.html' with left=card.0 right=None idolized=True %}
+	{% else %}
+	{% include 'include/urpair.html' with left=card.0 right=None idolized=False %}
+	{% endif %}
+	{% endif %}
+	{% endif %}
+      </td>
+      {% endif %}
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

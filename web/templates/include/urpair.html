@@ -1,0 +1,3 @@
+{% load imageurl %}
+{% load choicesToString %}
+<a href="/cards/{{ left.id  }}/" target="_blank"><img src="{% if idolized %}{% cleanurl card=left idolized=True %}{% else %}{% cleanurl card=left idolized=False %}{% endif %}" alt="{{ left }}"></a>{% if right %}<a href="/cards/{{ right.id  }}/" target="_blank"><img src="{% if idolized %}{% cleanurl card=right idolized=True %}{% else %}{% cleanurl card=right idolized=False %}{% endif %}" alt="{{ right }}"></a>{% else %}<span class="question" style="color: {{ left.name|idolToColor }}">?</span>{% endif %}

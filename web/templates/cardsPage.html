@@ -296,7 +296,38 @@
 			  </td>
 			</tr>
 			{% endif %}
-			{% if card.transparent_image or card.transparent_idolized_image %}
+			{% if card.ur_pair %}
+			<tr>
+			  <th>{% trans 'Paired With' %}</th>
+			  <td>
+                            <a href="/cards/{{ card.ur_pair.id }}/" target="_blank">
+			      <div class="pull-right">
+				{% if card.round_card_image %}
+				<img src="{% imageurl card=card.ur_pair image='round_card_image' %}" alt="{{ card.ur_pair }}" height="70">
+				{% else %}
+				<i class="flaticon-img"></i>
+				{% endif %}
+			      </div>
+                              #{{ card.ur_pair.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+                            </a><br>
+                            <small>
+			      {% if LANGUAGE_CODE == "ja" %}
+			      {{ card.ur_pair.idol.japanese_name }}
+			      {% else %}
+			      {{ card.ur_pair.idol.name }}
+			      {% endif %}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.ur_pair.idol.name }}">
+                                  <i class="flaticon-link"></i></a></span><br>
+                              {{ card.ur_pair|getattribute:'japanese_attribute' }} {{ card.ur_pair.attribute }}
+                              <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.ur_pair.attribute }}">
+                                  <i class="flaticon-link"></i></a></span>
+                            </small>
+			    <br>
+			    <a href="/urpairs/" target="_blank">{% trans "See all UR Pairs" %} <span class="tiny"><i class="flaticon-link"></i></span></a>
+			  </td>
+			</tr>
+			{% endif %}
+			{% if card.transparent_image or card.transparent_idolized_image or card.clean_ur or card.clean_ur_idolized %}
 			<tr>
 			  <th>{% trans 'Download' %}</th>
 			  <td>
@@ -308,6 +339,12 @@
 			    {% endif %}
 			    {% if card.transparent_idolized_image %}
 			    <a href="{{ card.transparent_idolized_image|userimage }}" target="_blank">{% trans 'Transparent'%}: {% trans 'Idolized' %}</a><br>
+			    {% endif %}
+			    {% if card.clean_ur %}
+			    <a href="{{ card.clean_ur|userimage }}" target="_blank">{% trans 'Clean UR'%}: {% trans 'Not Idolized' %}</a><br>
+			    {% endif %}
+			    {% if card.clean_ur_idolized %}
+			    <a href="{{ card.clean_ur_idolized|userimage }}" target="_blank">{% trans 'Clean UR'%}: {% trans 'Idolized' %}</a><br>
 			    {% endif %}
 			  </td>
 			</tr>
@@ -408,6 +445,9 @@
 			  <td>
 			    <small>
 			      <a href="http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List" target="_blank">Wikia</a>,
+			      {% if card.clean_ur or card.clean_ur_idolized %}
+			      <a href="http://asahaka-scfes.blogspot.com/" target="_blank">Clean UR Pairs</a>,
+			      {% endif %}
 			      <a href="https://sif.kirara.ca/" target="_blank">SIF Kirara</a>,
 			      <a href="http://decaf.kouhi.me/lovelive/" target="_blank">{% trans 'Wiki' %}</a>,
 			      <a href="http://www59.atwiki.jp/lovelive-sif/" target="_blank">情報まとめwiki</a>

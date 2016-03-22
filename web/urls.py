@@ -41,6 +41,7 @@ urlpatterns = patterns('',
     url(r'^staff/verifications[/]$', views.staff_verifications, name='staff_verifications'),
     url(r'^staff/verification/(?P<verification>\d+)[/]$', views.staff_verification, name='staff_verification'),
     url(r'^staff/reports[/]$', views.staff_reports, name='staff_reports'),
+    url(r'^urpairs[/]+$', views.urpairs, name='urpairs'),
 
     url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset',
         {'html_email_template_name': 'registration/password_reset_email_html.html',

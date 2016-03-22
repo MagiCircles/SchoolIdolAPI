@@ -47,6 +47,11 @@ class GroupViewSet(viewsets.ModelViewSet):
 class CardFilter(django_filters.FilterSet):
     is_event = django_filters.MethodFilter(action='filter_is_event')
     ids = django_filters.MethodFilter(action='filter_ids')
+    for_trivia = django_filters.MethodFilter(action='filter_for_trivia')
+
+    def filter_for_trivia(self, queryset, value):
+        return queryset.filter(Q(idol__hobbies__isnull=False) | Q(idol__favorite_food__isnull=False) | Q(idol__least_favorite_food__isnull=False))
+
 
     def filter_is_event(self, queryset, value):
         return queryset.filter(event__isnull=(False if value.title() == 'True' else True))

@@ -147,7 +147,7 @@
 	  <div class="inside">
 	    <div class="row">
 	      <div class="col-xs-5">
-		{% include 'include/avatar.html' with av_user=user av_image_size=150 av_size=50 av_link=True av_external=True %}
+		{% include 'include/avatar.html' with av_user=user av_image_size=150 av_size=30 av_link=True av_external=True %}
 	      </div>
 	      <div class="col-xs-7">
 		<a href="/user/{{ user.username}}/" target="_blank" class="btn btn-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}default{% endif %} btn-lg">

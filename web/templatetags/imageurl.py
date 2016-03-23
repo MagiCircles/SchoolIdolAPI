@@ -36,6 +36,18 @@ def cleanurl(context, card, idolized):
         return _imageurl(str(card.card_image))
 
 @register.simple_tag()
+def cardrawurl(card_id, idol_name, image_type):
+    if image_type == 'round_card_image':
+        return _imageurl('cards/' + str(card_id) + 'Round' + idol_name + '.png')
+    elif image_type == 'round_card_idolized_image':
+        return _imageurl('cards/' + str(card_id) + 'RoundIdolized' + idol_name + '.png')
+    elif image_type == 'card_image':
+        return _imageurl('cards/' + str(card_id) + idol_name + '.png')
+    elif image_type == 'card_image':
+        return _imageurl('cards/' + str(card_id) + 'idolized' + idol_name + '.png')
+    return '/static/empty.png'
+
+@register.simple_tag()
 def cardidolizedimageurl(card, idolized):
     if card.is_special or card.is_promo:
         idolized = True

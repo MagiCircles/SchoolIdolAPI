@@ -445,6 +445,7 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     event = models.ForeignKey(Event, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
     japan_only = models.BooleanField(default=True)
+    seal_shop = models.BooleanField(default=False)
     hp = models.PositiveIntegerField(null=True, default=0, blank=True)
     minimum_statistics_smile = models.PositiveIntegerField(null=True)
     minimum_statistics_pure = models.PositiveIntegerField(null=True)
@@ -468,6 +469,7 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     round_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
+    _skill_up_cards = models.CharField(max_length=100, blank=True, null=True)
     ur_pair = models.ForeignKey('self', related_name='other_ur_pair', on_delete=models.SET_NULL, null=True, blank=True)
     ur_pair_reverse = models.BooleanField(default=False)
     ur_pair_idolized_reverse = models.BooleanField(default=False)
@@ -499,6 +501,12 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
             return CENTER_SKILL_SENTENCES[skill], [attribute]
         except (ValueError, AttributeError, KeyError):
             return None, None
+
+    @property
+    def skill_up_cards(self):
+        if not self._skill_up_cards:
+            return []
+        return [(int(s.split('-')[0]), s.split('-')[-1]) for s in self._skill_up_cards.split(',')]
 
 admin.site.register(Card)
 

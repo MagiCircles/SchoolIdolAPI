@@ -314,6 +314,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
             ('http://i.schoolido.lu/chibi/JXg1NvP6.png', 'sayakax'),
+            ('http://i.schoolido.lu/chibi/LjKkSm6f.png', 'mahousho_'),
         ],
     },
     'Hyoudou Sayuri': {
@@ -360,6 +361,16 @@ raw_information_n = {
     'Leo': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/leo_by_ne_chi-d9vubg7.png', 'Nechi'),
+        ],
+    },
+    'Midou Yuuri': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/c4pCGPop.png', 'KomaHina'),
+        ],
+    },
+    'Kurosaki Shun': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/UFYLg3My.png', 'KomaHina'),
         ],
     },
 }

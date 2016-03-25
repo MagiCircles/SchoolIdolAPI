@@ -39,7 +39,7 @@
       {% endif %}
       <div class="col-xs-4 {{ idol.attribute }}">
 	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
-	  <img class="chibi img-responsive" src="{% chibiimage idol=idol.name small=False %}" alt="{{ idol.name }}">
+	  <img class="chibi" src="{% chibiimage idol=idol.name small=False %}" alt="{{ idol.name }}" style="width: 180%; margin: 0 -40%;">
 	  <br><div class="name">
 	    <img src="/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
 	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
@@ -66,7 +66,7 @@
       {% endif %}
       <div class="col-xs-4 {{ idol.attribute }}">
 	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
-	  <img src="{% chibiimage idol=idol.name small=False %}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}" height="127" width="127"><br><br>
+	  <img src="{% chibiimage idol=idol.name small=False %}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}" style="width: 130%; margin: 0 -15%;"><br><br>
 	  <img src="/static/{{ idol.attribute }}.png" class="attribute" width="15" height="15">
 	  {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
 	</a>

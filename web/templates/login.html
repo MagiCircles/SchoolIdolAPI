@@ -16,11 +16,11 @@
       {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
       <br><br>
       <div class="text-right">
-	<a href="/create/" class="btn btn-lg btn-link">{% trans 'Sign Up' %}</a>
+	<a href="/create/{% if next %}?next={{ next }}{% endif %}" class="btn btn-lg btn-link">{% trans 'Sign Up' %}</a>
 	<a href="/password_reset/" class="btn btn-lg btn-link">{% trans 'Forgot password?' %}</a>
 	<button type="submit" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Login' %}</button>
       </div>
-      <input type="hidden" name="next" value="/setaccountonlogin" />
+      <input type="hidden" name="next" value="{% if next %}{{ next }}{% else %}/cards/{% endif %}" />
     </form>
   </div>
 </div>

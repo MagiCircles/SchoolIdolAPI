@@ -300,16 +300,17 @@ def create(request):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             preferences = models.UserPreferences.objects.create(user=user)
             login(request, user)
-            return redirect('/addaccount/')
+            return redirect('/addaccount/' + ('?next=' + request.GET['next'] if 'next' in request.GET else ''))
     else:
         form = forms.CreateUserForm()
     context = globalContext(request)
     context['form'] = form
     context['current'] = 'create'
+    context['next'] = request.GET.get('next', None)
     return render(request, 'create.html', context)
 
 def login_custom_view(request):
-    response = login_view(request, template_name='login.html', extra_context={'interfaceColor': 'default'})
+    response = login_view(request, template_name='login.html', extra_context={'interfaceColor': 'default', 'next': request.GET['next'] if 'next' in request.GET else None})
     if (isinstance(response, HttpResponseRedirect) and 'password' in request.POST
         and request.user.is_authenticated() and not request.user.is_anonymous()):
         accounts = request.user.accounts_set.all()
@@ -595,10 +596,10 @@ def addaccount(request):
                 account.rank = 195
                 account.save()
                 _addaccount_savecenter(account)
-                return redirect('/cards/?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
+                return redirect((request.GET['next'] if 'next' in request.GET else '/cards/') + '?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
             account.save()
             _addaccount_savecenter(account)
-            return redirect('/cards/#tutorialaddcardModal')
+            return redirect(request.GET['next'] if 'next' in request.GET else '/cards/#tutorialaddcardModal')
     else:
         form = forms.AccountForm(initial={
             'nickname': request.user.username

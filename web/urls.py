@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import include, patterns, url
 from django.conf import settings
 from web import views
@@ -45,6 +46,7 @@ urlpatterns = patterns('',
     url(r'^staff/database[/]$', views.staff_database, name='staff_database'),
     url(r'^staff/database/(?P<script>[\w -_]+)[/]$', views.staff_database_script, name='staff_database_script'),
     url(r'^urpairs[/]+$', views.urpairs, name='urpairs'),
+    url(r'^.sicaltriofestival[/]+$', views.usicaltriofestival, name='usicaltriofestival'),
 
     url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset',
         {'html_email_template_name': 'registration/password_reset_email_html.html',

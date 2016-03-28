@@ -2278,3 +2278,47 @@ def urpairs(request):
     context['data'] = data
     context['idols'] = idols
     return render(request, 'urpairs.html', context)
+
+def usicaltriofestival(request):
+    context = globalContext(request)
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    context['entries'] = models.usicaltriofestival_entries[:]
+    if (request.method == 'POST'
+        and 'cancel' in request.POST
+        and request.user.is_authenticated()):
+        models.UsicalVote.objects.filter(user=request.user).delete()
+    context['your_vote'] = None
+    context['is_fes_staff'] = False
+    if request.user.is_authenticated():
+        context['is_fes_staff'] = request.user.username in ['test3'] or request.user.is_staff
+        try: context['your_vote'] = models.UsicalVote.objects.get(user=request.user)
+        except ObjectDoesNotExist: pass
+    if (request.method == 'POST'
+        and 'entry' in request.POST
+        and request.user.is_authenticated()
+        and context['your_vote'] is None):
+        try:
+            entry = int(request.POST['entry'])
+            if entry not in dict(models.usicaltriofestival_entries).keys():
+                raise ValueError()
+            try:
+                context['your_vote'] = models.UsicalVote.objects.create(user=request.user, entry=entry)
+            except IntegrityError:
+                context['error'] = 'Already voted'
+        except ValueError:
+            context['error'] = 'Invalid entry'
+    if request.user.is_authenticated() and context['is_fes_staff'] and 'view_ranking' in request.GET:
+        context['view_ranking'] = True
+        context['total_votes'] = models.UsicalVote.objects.all().count()
+        query = 'SELECT id, entry, COUNT(entry) AS votes FROM api_usicalvote GROUP BY entry ORDER BY votes DESC;'
+        context['top_votes'] = models.UsicalVote.objects.raw(query)
+        for (index, entry) in enumerate(context['entries']):
+            for vote in context['top_votes']:
+                if vote.entry == entry[0]:
+                    context['entries'][index] = (entry[0], entry[1], vote.votes)
+                    break
+                context['entries'][index] = (entry[0], entry[1], 0)
+        context['entries'] = sorted(context['entries'], key=lambda x: x[2], reverse=True)
+    else:
+        random.shuffle(context['entries'])
+    return render(request, 'usicaltriofestival.html', context)

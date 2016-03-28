@@ -798,3 +798,16 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
         return self.name
 
 admin.site.register(Song)
+
+usicaltriofestival_entries = [
+    (1, '<iframe style="width: 100%" height="200" src="http://www.youtube.com/embed/AvacR2G0Q9w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (2, '<iframe style="width: 100%" height="200" src="http://www.youtube.com/embed/AvacR2G0Q9w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (3, '<iframe style="width: 100%" height="200" src="http://www.youtube.com/embed/AvacR2G0Q9w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (4, '<iframe style="width: 100%" height="200" src="http://www.youtube.com/embed/AvacR2G0Q9w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (5, '<iframe style="width: 100%" height="200" src="http://www.youtube.com/embed/AvacR2G0Q9w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (6, '<iframe style="width: 100%" height="200" src="http://www.youtube.com/embed/AvacR2G0Q9w?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+]
+
+class UsicalVote(models.Model):
+    entry = models.PositiveIntegerField(default=0, choices=usicaltriofestival_entries)
+    user = models.ForeignKey(User, related_name='usical_vote', unique=True)

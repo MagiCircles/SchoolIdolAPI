@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load mod %}
+{% load random_int %}
+
+{% block title %}μ'sical Trio Festival{% endblock %}
+
+{% block shareimage %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
+
+{% block content %}
+<div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+  <div class="container text-center">
+    <h1 class="margin50">
+      {% if is_fes_staff %}
+      <small>Staff only: <a href="?{% if not view_ranking %}view_ranking{% endif %}">{% if view_ranking %}Hide{% else %}View{% endif %} ranking</a></small>
+      {% endif %}
+      <img src="/static/usicaltriofestival.png" class="img-responsive">
+      <span class="hidden">μ'sical Trio Festival</span>
+    </h1>
+    {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
+    {% endif %}
+    <div class="row">
+      {% for entry in entries %}
+      {% if forloop.counter0|mod:3 %}
+    </div><div class="row">
+      {% endif %}
+      <div class="col-md-4">
+	<div class="panel panel-{{ btnColor }}">
+	  <div class="panel-body">
+	    {{ entry.1|safe }}
+	  </div>
+	  <div class="panel-footer">
+	    {% if view_ranking %}
+	    #{{ forloop.counter }} with {{ entry.2 }} votes<br><br>
+	    {% endif %}
+	    {% if not your_vote %}
+	    {% if user.is_authenticated %}
+	    <form method="POST" class="text-right">
+	      {% csrf_token %}
+	      <input type="hidden" name="entry" value="{{ entry.0 }}">
+	      <button type="submit" class="btn btn-{{ btnColor }}">
+		<i class="flaticon-promo"></i>
+		{% trans 'Vote' %}
+	      </button>
+	    </form>
+	    {% else %}
+	    <div class="text-right">
+	      <a href="/create/?next=/μsicaltriofestival/" class="btn btn-{{ btnColor }}">
+		<i class="flaticon-promo"></i>
+		{% trans 'Vote' %}
+	      </a>
+	    </div>
+	    {% endif %}
+	    {% elif your_vote.entry == entry.0 %}
+	    You voted for this group.
+	    <form method="POST" style="display: inline-block">
+	      {% csrf_token %}
+	      <input type="submit" name="cancel" value="{% trans 'Cancel' %}" class="btn btn-danger btn-xs">
+	    </form>
+	    {% else %}
+	    <span class="text-muted">Already voted.</span>
+	    {% endif %}
+	  </div> <!-- panel-footer -->
+	</div> <!-- panel -->
+	<br><br>
+      </div> <!-- col -->
+      {% endfor %}
+    </div> <!-- row -->
+    <br><br><br>
+    {% include 'disqus.html' %}
+  </div> <!-- container -->
+</div> <!-- background -->
+{% endblock %}

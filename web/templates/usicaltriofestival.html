@@ -31,12 +31,23 @@
       <div class="col-md-4">
 	<div class="panel panel-{{ btnColor }}">
 	  <div class="panel-body">
-	    {{ entry.1|safe }}
+	    {{ entry.4|safe }}
+	    <h4>{{ entry.1 }}
+	      <br><small>
+		{% if entry.3 %}
+		<a href="/songs/{{ entry.2|urlencode }}/" target="_blank">
+		  {% endif %}
+		  {{ entry.2 }}
+		  {% if entry.3 %}
+		</a>
+		{% endif %}
+	      </small>
+	    </h4>
 	  </div>
 	  <div class="panel-footer">
 	    {% if view_ranking %}
-	    #{{ forloop.counter }} with {{ entry.2 }} votes<br><br>
-	    {% endif %}
+	    #{{ forloop.counter }} with {{ entry.5 }} votes
+	    {% else %}
 	    {% if not your_vote %}
 	    {% if user.is_authenticated %}
 	    <form method="POST" class="text-right">
@@ -63,6 +74,7 @@
 	    </form>
 	    {% else %}
 	    <span class="text-muted">Already voted.</span>
+	    {% endif %}
 	    {% endif %}
 	  </div> <!-- panel-footer -->
 	</div> <!-- panel -->

@@ -2426,7 +2426,7 @@ def usicaltriofestival(request):
     context['your_vote'] = None
     context['is_fes_staff'] = False
     if request.user.is_authenticated():
-        context['is_fes_staff'] = request.user.username in ['test3'] or request.user.is_staff
+        context['is_fes_staff'] = request.user.username in ['ainlina', 'schoolidolpanda', 'OceanSong', 'QUARTZ'] or request.user.is_staff
         try: context['your_vote'] = models.UsicalVote.objects.get(user=request.user)
         except ObjectDoesNotExist: pass
     if (request.method == 'POST'
@@ -2435,7 +2435,7 @@ def usicaltriofestival(request):
         and context['your_vote'] is None):
         try:
             entry = int(request.POST['entry'])
-            if entry not in dict(models.usicaltriofestival_entries).keys():
+            if entry not in dict(models.usicaltriofestival_entries_db).keys():
                 raise ValueError()
             try:
                 context['your_vote'] = models.UsicalVote.objects.create(user=request.user, entry=entry)
@@ -2451,9 +2451,9 @@ def usicaltriofestival(request):
         for (index, entry) in enumerate(context['entries']):
             for vote in context['top_votes']:
                 if vote.entry == entry[0]:
-                    context['entries'][index] = (entry[0], entry[1], vote.votes)
+                    context['entries'][index] = entry + (vote.votes,)
                     break
-                context['entries'][index] = (entry[0], entry[1], 0)
+                context['entries'][index] = entry + (0,)
         context['entries'] = sorted(context['entries'], key=lambda x: x[2], reverse=True)
     else:
         random.shuffle(context['entries'])

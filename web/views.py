@@ -2454,7 +2454,7 @@ def usicaltriofestival(request):
                     context['entries'][index] = entry + (vote.votes,)
                     break
                 context['entries'][index] = entry + (0,)
-        context['entries'] = sorted(context['entries'], key=lambda x: x[2], reverse=True)
+        context['entries'] = sorted(context['entries'], key=lambda x: x[5], reverse=True)
     else:
         random.shuffle(context['entries'])
     return render(request, 'usicaltriofestival.html', context)

@@ -44,6 +44,13 @@ STORED_CHOICES = (
 )
 STORED_DICT = dict(STORED_CHOICES)
 
+STORED_DICT_FOR_ACTIVITIES = {
+    'Deck': _('Deck'),
+    'Album': _('Album'),
+    'Box': _('Present Box'),
+    'Favorite': _('Wish List'),
+}
+
 VERIFIED_CHOICES = (
     (0, ''),
     (1, _('Silver Verified')),
@@ -297,7 +304,7 @@ def accountTabToString(val):
     return ACCOUNT_TAB_DICT[val]
 
 def accountTabToIcon(val):
-    return ACCOUNT_TAB_ICONS_DICT[val]
+    return ACCOUNT_TAB_ICONS_DICT[val.lower()]
 
 def statusToString(val):
     return STATUS_DICT[val]

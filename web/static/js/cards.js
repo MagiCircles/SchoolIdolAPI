@@ -165,7 +165,7 @@ function pagination() {
 	    if (button.length > 0
 		&& button.find('.loader').length == 0
 		&& ($(window).scrollTop() + $(window).height())
-		>= ($(document).height() - button.height())) {
+		>= ($(document).height() - button.height() - ($('.card img.idolized').first().height() * 2))) {
 		load_more_function();
 	    }
 	});
@@ -277,8 +277,17 @@ $(document).ready(function() {
 	|| $('#id_stored').val() != ''
 	|| $('#id_max_level').val() != ''
 	|| $('#id_max_bond').val() != ''
+	|| $('#view_albumbuilder').is(':checked') != ''
        ) {
 	$('#morefilters.collapse').collapse('show');
     }
 
+    $('#view_albumbuilder').parent().click(function(e) {
+	$('#albumbuilder_extraform').show('fast');
+	$('#user_filters').hide('fast');
+    });
+    $('#view_cards').parent().click(function(e) {
+	$('#albumbuilder_extraform').hide('fast');
+	$('#user_filters').show('fast');
+    });
 });

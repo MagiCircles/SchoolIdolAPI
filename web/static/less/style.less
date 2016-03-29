@@ -305,10 +305,10 @@ nav + main {
 .progress-bar-Pure { background-color: @PureColor }
 .progress-bar-Cool { background-color: @CoolColor }
 
-.text-Smile { color: @SmileColor }
-.text-Pure { color: @PureColor }
-.text-Cool { color: @CoolColor }
-.text-All { color: @AllColor }
+.text-Smile { color: @SmileColor; .a-variant-important(@SmileColor) }
+.text-Pure { color: @PureColor; .a-variant-important(@PureColor) }
+.text-Cool { color: @CoolColor; .a-variant-important(@CoolColor) }
+.text-All { color: @AllColor; .a-variant-important(@AllColor) }
 .text-grey { color: @GreyColor }
 
 .custom-btn(@color, @inverse: #fff) {
@@ -1030,6 +1030,52 @@ h1#donators {
     }
 }
 
+#albumbuilder {
+    max-width: 1170px;
+    margin: auto;
+    padding: 1px 10px;
+    .images-link {
+	.a-nodifference();
+    }
+    .table {
+	i[class^="flaticon"] {
+	    font-size: 25px;
+            transition: opacity 0.2s ease;
+	    cursor: pointer;
+	    &.disable {
+		opacity: 0.2;
+	    }
+	    &:hover {
+		opacity: 0.7;
+	    }
+	}
+	.skill-form {
+	    input, .btn {
+		width: 60px;
+		display: block;
+	    }
+	    input {
+		.neutral-input();
+		text-align: center;
+		margin-bottom: 0;
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	    }
+	    .btn {
+		border-top-right-radius: 0;
+		border-top-left-radius: 0;
+	    }
+	}
+	td, th {
+	    text-align: center;
+	    vertical-align: middle;
+	    &.text-left {
+		text-align: left;
+	    }
+	}
+    }
+}
+
 #events-page {
     max-width: 1170px;
     margin: auto;
@@ -1598,6 +1644,39 @@ a.toplistbanner {
     &:focus, &:hover {
 	text-decoration: none;
 	opacity: 0.9;
+    }
+}
+
+.idol-btn {
+    background-size: 200%;
+    background-position-y: 35%;
+    background-position-x: 70%;
+    background-repeat: no-repeat;
+    white-space: normal;
+    min-height: 60px;
+    margin-bottom: 15px;
+    transition: opacity 0.2s ease;
+    &.btn-sm {
+    }
+    span {
+	font-size: 1.5em;
+	line-height: 1.5em;
+	font-weight: bold;
+	color: white;
+	width: 100%;
+	padding: 22px 0;
+	padding-left: 45%;
+	padding-right: 2%;
+	display: block;
+	text-shadow:
+	-1px -1px 0 #989898,
+	1px -1px 0 #989898,
+	-1px 1px 0 #989898,
+	1px 1px 0 #989898,
+	0 0 10px #989898,
+    }
+    &:hover, &:focus {
+	opacity: 0.8;
     }
 }
 

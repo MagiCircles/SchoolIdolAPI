@@ -5,17 +5,29 @@
 <br>
 <div class="row">
   {% for deck_link in deck_links %}
-  {% if forloop.counter0|mod:4 %}
-</div><div class="row">
-  {% endif %}
-  <div class="col-md-3">
+  <div class="col-md-{% if deck_link.col_size %}{{ deck_link.col_size }}{% else %}4{% endif %}">
     <a href="/cards/?account={{ account.id }}&stored=Deck&{{ deck_link.link }}" target="_blank"
-       class="topbutton" style="background-image: url('{{ deck_link.background }}'); background-color: {{ deck_link.color }};{% if '/static/' in deck_link.background %} background-size: 80%; background-position-x: -90%;{% endif %}">
-      <img src="/static/topbutton.png">
-      <span>
+       class="btn btn-block idol-btn {% if deck_link.sm %}btn-sm{% endif %}" style="background-image: url('{{ deck_link.background }}'); background-color: {{ deck_link.color }};{% if deck_link.background_size %} background-size: {{ deck_link.background_size }}%;{% endif %}{% if deck_link.background_position_x %} background-position-x: {{ deck_link.background_position_x }}%;{% endif %}">
+      <span style="	text-shadow:
+	-1px -1px 0 {{ deck_link.color }},
+	1px -1px 0 {{ deck_link.color }},
+	-1px 1px 0 {{ deck_link.color }},
+	1px 1px 0 {{ deck_link.color }},
+	0 0 10px {{ deck_link.color }};
+">
 	{% trans deck_link.name %}
       </span>
     </a>
+  {% if deck_link.end_row %}
+</div><div class="row">
+  {% endif %}
+    <!-- <a href="/cards/?account={{ account.id }}&stored=Deck&{{ deck_link.link }}" target="_blank" -->
+    <!--    class="topbutton" style="background-image: url('{{ deck_link.background }}'); background-color: {{ deck_link.color }};{% if '/static/' in deck_link.background %} background-size: 80%; background-position-x: -90%;{% endif %}"> -->
+    <!--   <img src="/static/topbutton.png"> -->
+    <!--   <span> -->
+    <!-- 	{% trans deck_link.name %} -->
+    <!--   </span> -->
+    <!-- </a> -->
   </div>
   {% endfor %}
 </div>

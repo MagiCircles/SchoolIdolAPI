@@ -1,0 +1,67 @@
+{% load i18n %}
+{% load imageurl %}
+{% load choicesToString %}
+<div id="albumbuilder">
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="margin50">
+	{% trans 'Album Builder' %}
+	<br><small>
+	  {% if account.center %}
+	  {% include 'ownedcard.html' with card=account.center nolink=True size=30 classes='center circled' no_details=True %}
+	  {% endif %}
+	  {{ account }}
+	  <span class="tiny"><a href="/user/{{ user.username }}/#{{ account.pk }}" target="_blank"><i class="flaticon-link"></i></a></span>
+	</small>
+      </h1>
+    </div>
+    <div class="col-md-6">
+      <br><br><br>
+      <i class="flaticon-album text-{{ btnColor }}"></i> {{ 'Album'|storedChoiceToString }}<br>
+      <i class="flaticon-deck text-{{ btnColor }}"></i> {{ 'Deck'|storedChoiceToString }}<br>
+      <i>{% trans 'The cards in your deck automatically appear in your album.' %}</i><br>
+      <br>
+    </div>
+  </div>
+  <table class="table table-responsive" data-account-id="{{ account.id }}">
+    <tr>
+      <th colspan="2" width="350">{% trans 'Cards' %}</th>
+      <th>{% trans 'Add this card' %}</th>
+      <th>{% trans 'Stored' %}</th>
+      <th>{% trans 'Idolized' %}</th>
+      <th>{% trans 'Max Leveled' %}</th>
+      <th>{% trans 'Max Bonded (Kizuna)' %}</th>
+      <th>{% trans 'Skill' %}</th>
+      <th>{% trans 'Delete' %}</th>
+    </tr>
+    {% for card in cards %}
+    <tr class="tr_card text-{{ card.attribute }}" data-id="{{ card.id }}" data-rarity="{{ card.rarity }}" data-attribute="{{ card.attribute }}" data-is-special="{{ card.is_special }}" data-is-promo="{{ card.is_promo }}">
+      <td rowspan="{{ card.owned_cards|length|add:1 }}" width="150">
+	<a href="/cards/{{ card.id }}/" target="_blank" class="images-link">
+	  <img src="{% if card.is_promo or card.is_special %}/static/empty.png{% else %}{% imageurl card=card image='round_card_image' %}{% endif %}" alt="{{ card }}" height="60" width="60">
+	  <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="60" width="60">
+	</a>
+      </td>
+      <td rowspan="{{ card.owned_cards|length|add:1 }}" class="text-left" width="200">
+	<a href="/cards/{{ card.id }}/" target="_blank">{{ card }}</a>
+      </td>
+      <td rowspan="{{ card.owned_cards|length|add:1 }}">
+	<i class="flaticon-add"></i>
+      </td>
+      {% if not card.owned_cards %}
+      <td colspan="6" class="tr_card_padder"></td>
+      {% endif %}
+    </tr>
+    {% for ownedcard in card.owned_cards %}
+    <tr class="tr_ownedcard text-{{ card.attribute }}" data-id="{{ ownedcard.id }}" data-card-id="{{ card.id }}">
+      <td><i class="flaticon-{{ ownedcard.stored|accountTabToIcon }}" data-toggle="tooltip" data-placement="top" title="{% trans 'Click to switch Deck/Album' %}"></i></td>
+      <td>{% if not card.is_promo and not card.is_special %}<i class="flaticon-idolized{% if not ownedcard.idolized %} disable{% endif %}"></i>{% endif %}</td>
+      <td>{% if not card.is_special %}<i class="flaticon-max-level{% if not ownedcard.max_level %} disable{% endif %}"{% if not ownedcard.idolized %} style="display: none"{% endif %}></i>{% endif %}</td>
+      <td>{% if not card.is_special %}<i class="flaticon-max-bond{% if not ownedcard.max_bond %} disable{% endif %}"{% if not ownedcard.idolized %} style="display: none"{% endif %}></i>{% endif %}</td>
+      <td class="td-for-skill">{% if ownedcard.stored != 'Album' and card.rarity != 'N' and not card.is_special %}<i class="flaticon-skill{% if ownedcard.skill < 2 %} disable{% endif %}"><small>{{ ownedcard.skill }}</small></i><div class="skill-form" style="display: none"><input type="number" min="1" max="8" value="{{ ownedcard.skill }}" class="form-control input-sm"><button class="btn btn-{{ card.attribute }} btn-sm" type="button">{% trans 'Go' %}</button>{% endif %}</td>
+      <td><i class="flaticon-delete disable"></i></td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+  </table>
+</div>

@@ -1,5 +1,5 @@
 
-function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
+function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
     $('#addCardModal #id_max_level').parent().hide();
     $('#addCardModal #id_max_bond').parent().hide();
 
@@ -12,6 +12,16 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
 	}
     };
     expirationHandler();
+
+    var storedOnChange = function() {
+	if ($('#addCardModal #id_stored').val() == 'Album') {
+	    $('#addCardModal #id_skill').closest('.form-group').hide();
+	    $('#addCardModal #id_skill').val(1);
+	} else {
+	    $('#addCardModal #id_skill').closest('.form-group').show();
+	}
+    };
+    storedOnChange();
 
     if (typeof non_idolized_card_url == 'undefined') {
 	$('#addCardModal #id_idolized').prop('checked', true);
@@ -49,6 +59,7 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url) {
     $('#addCardModal #id_stored').unbind('change');
     $('#addCardModal #id_stored').change(function() {
 	expirationHandler();
+	storedOnChange();
     });
 }
 
@@ -63,7 +74,8 @@ function onClickEditCard(cardButton, ownedcardelt) {
 	hidePopovers();
 
 	addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
-			   $('#addCardModal img.idolized').prop('src'));
+			   $('#addCardModal img.idolized').prop('src'),
+			   card);
 
 	var onDone = function() {
 	    $('#addCardModal').modal('hide');
@@ -85,7 +97,8 @@ function onClickEditCard(cardButton, ownedcardelt) {
 			$('#addCardModal .modal-body').html(data);
 			$('#addCardModal form.edit').submit(onSubmit);
 			addCardFormHandler($('#addCardModal img.non_idolized').prop('src'),
-					   $('#addCardModal img.idolized').prop('src'));
+					   $('#addCardModal img.idolized').prop('src'),
+					   card);
 		    }
 		},
 		error: function() {

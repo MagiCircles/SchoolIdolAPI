@@ -1,0 +1,12 @@
+{# this code is a duplicate from albumBuilder for django template performance reasons #}
+{# required: card, ownedcard #}
+{% load choicesToString %}
+{% load i18n %}
+    <tr class="tr_ownedcard text-{{ card.attribute }}" data-id="{{ ownedcard.id }}" data-card-id="{{ card.id }}">
+      <td><i class="flaticon-{{ ownedcard.stored|accountTabToIcon }}" data-toggle="tooltip" data-placement="top" title="{% trans 'Click to switch Deck/Album' %}"></i></td>
+      <td>{% if not card.is_promo and not card.is_special %}<i class="flaticon-idolized{% if not ownedcard.idolized %} disable{% endif %}"></i>{% endif %}</td>
+      <td>{% if not card.is_special %}<i class="flaticon-max-level{% if not ownedcard.max_level %} disable{% endif %}"{% if not ownedcard.idolized %} style="display: none"{% endif %}></i>{% endif %}</td>
+      <td>{% if not card.is_special %}<i class="flaticon-max-bond{% if not ownedcard.max_bond %} disable{% endif %}"{% if not ownedcard.idolized %} style="display: none"{% endif %}></i>{% endif %}</td>
+      <td class="td-for-skill">{% if ownedcard.stored != 'Album' and card.rarity != 'N' and not card.is_special %}<i class="flaticon-skill{% if ownedcard.skill < 2 %} disable{% endif %}"><small>{{ ownedcard.skill }}</small></i><div class="skill-form" style="display: none"><input type="number" min="1" max="8" value="{{ ownedcard.skill }}" class="form-control input-sm"><button class="btn btn-{{ card.attribute }} btn-sm" type="button">{% trans 'Go' %}</button>{% endif %}</td>
+      <td><i class="flaticon-delete disable"></i></td>
+    </tr>

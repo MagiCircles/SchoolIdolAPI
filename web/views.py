@@ -23,6 +23,7 @@ from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from django.forms.util import ErrorList
 from django.forms.models import model_to_dict
+from django.http import JsonResponse
 from api import models, raw
 from contest import models as contest_models
 from web import forms, donations, transfer_code, raw as web_raw
@@ -328,20 +329,7 @@ def setaccountonlogin(request):
         return redirect('addaccount')
     return redirect('cards')
 
-def cards(request, card=None, ajax=False):
-    if len(request.GET.getlist('page')) > 1:
-        raise PermissionDenied()
-
-    page = 0
-    context = globalContext(request)
-    context['total_results'] = 0
-
-    if len(request.GET) == 1 and 'name' in request.GET:
-        return redirect('/idol/' + request.GET['name'] + '/')
-
-    cardsinfo = settings.CARDS_INFO
-    max_stats = cardsinfo['max_stats']
-
+def get_cards_queryset(request, context, card=None):
     # Set defaults
     request_get = {
         'ordering': 'id',
@@ -473,19 +461,68 @@ def cards(request, card=None, ajax=False):
         prefix = '-' if request_get['reverse_order'] else ''
         cards = cards.order_by(prefix + request_get['ordering'], prefix +'id')
 
+    else:
+        context['total_results'] = 1
+        cards = models.Card.objects.filter(pk=int(card))
+        context['single'] = cards[0]
+
+    context['request_get'] = request_get
+    return context, cards
+
+def get_cards_form_filters(request, cardsinfo):
+    # Get filters info for the form
+    return {
+        'idols': forms.getGirls(with_total=True, with_japanese_name=request.LANGUAGE_CODE == 'ja'),
+        'collections': cardsinfo['collections'],
+        'translated_collections': cardsinfo['translated_collections'],
+        'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
+        'skills': cardsinfo['skills'],
+        'rarity_choices': models.RARITY_CHOICES,
+        'attribute_choices': models.ATTRIBUTE_CHOICES,
+        'idol_year_choices': cardsinfo['years'] if 'years' in cardsinfo else [],
+        'idol_school_choices': cardsinfo['schools'] if 'schools' in cardsinfo else [],
+        'stored_choices': models.STORED_CHOICES,
+        'ordering_choices': (
+            ('id', _('Card #ID')),
+            ('release_date', _('Release date')),
+            ('name', _('Idol')),
+            ('idolized_maximum_statistics_smile', _('Smile\'s statistics')),
+            ('idolized_maximum_statistics_pure', _('Pure\'s statistics')),
+            ('idolized_maximum_statistics_cool', _('Cool\'s statistics')),
+            ('total_owners', string_concat(_('Most popular'), ' (', _('Deck'), ')')),
+            ('total_wishlist', string_concat(_('Most popular'), ' (', _('Wish List'), ')')),
+            ('hp', _('HP'))
+        )
+    }
+
+def cards(request, card=None, ajax=False):
+    if len(request.GET.getlist('page')) > 1:
+        raise PermissionDenied()
+
+    if 'view' in request.GET and request.GET['view'] == 'albumbuilder':
+        return redirect('/cards/albumbuilder/' + get_parameters_to_string(request))
+    page = 0
+    context = globalContext(request)
+    context['total_results'] = 0
+
+    if len(request.GET) == 1 and 'name' in request.GET:
+        return redirect('/idol/' + request.GET['name'] + '/')
+
+    cardsinfo = settings.CARDS_INFO
+    max_stats = cardsinfo['max_stats']
+
+    context, cards = get_cards_queryset(request=request, context=context, card=card)
+
+    if card is None:
         context['total_results'] = cards.count()
         # Set limit
-        page_size = 9
+        page_size = 18
         if 'page' in request.GET and request.GET['page']:
             page = int(request.GET['page']) - 1
             if page < 0:
                 page = 0
         cards = cards[(page * page_size):((page * page_size) + page_size)]
         context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
-    else:
-        context['total_results'] = 1
-        cards = models.Card.objects.filter(pk=int(card))
-        context['single'] = cards[0]
 
     cards = cards.select_related('event', 'idol')
     if request.user.is_authenticated() and not request.user.is_anonymous():
@@ -521,30 +558,7 @@ def cards(request, card=None, ajax=False):
             except: pass
 
     if not ajax:
-       # Get filters info for the form
-        context['filters'] = {
-            'idols': forms.getGirls(with_total=True, with_japanese_name=request.LANGUAGE_CODE == 'ja'),
-            'collections': cardsinfo['collections'],
-            'translated_collections': cardsinfo['translated_collections'],
-            'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
-            'skills': cardsinfo['skills'],
-            'rarity_choices': models.RARITY_CHOICES,
-            'attribute_choices': models.ATTRIBUTE_CHOICES,
-            'idol_year_choices': cardsinfo['years'] if 'years' in cardsinfo else [],
-            'idol_school_choices': cardsinfo['schools'] if 'schools' in cardsinfo else [],
-            'stored_choices': models.STORED_CHOICES,
-            'ordering_choices': (
-                ('id', _('Card #ID')),
-                ('release_date', _('Release date')),
-                ('name', _('Idol')),
-                ('idolized_maximum_statistics_smile', _('Smile\'s statistics')),
-                ('idolized_maximum_statistics_pure', _('Pure\'s statistics')),
-                ('idolized_maximum_statistics_cool', _('Cool\'s statistics')),
-                ('total_owners', string_concat(_('Most popular'), ' (', _('Deck'), ')')),
-                ('total_wishlist', string_concat(_('Most popular'), ' (', _('Wish List'), ')')),
-                ('hp', _('HP'))
-            )
-        }
+        context['filters'] = get_cards_form_filters(request, cardsinfo)
 
     context['total_cards'] = len(cards)
     if context['total_cards'] > 0:
@@ -552,10 +566,9 @@ def cards(request, card=None, ajax=False):
     context['cards'] = enumerate(cards)
     context['max_stats'] = max_stats
     context['show_filter_button'] = False if 'single' in context and context['single'] else True
-    context['request_get'] = request_get
     context['show_filter_bar'] = context['show_filter_button']
-    context['show_total_results'] = 'search' in request_get
-    if 'search' not in request_get and 'name' in request_get:
+    context['show_total_results'] = 'search' in context['request_get']
+    if 'search' not in context['request_get'] and 'name' in context['request_get']:
         context['show_filter_bar'] = False
     context['current'] = 'cards'
     if request.user.is_authenticated() and not request.user.is_anonymous():
@@ -1107,7 +1120,7 @@ def _localized_message_activity(activity):
     if activity.message == 'Custom':
         return activity.message_data
     message_string = models.activityMessageToString(activity.message)
-    data = [_(models.STORED_DICT[d]) if d in models.STORED_DICT else _(d) for d in activity.split_message_data()]
+    data = [_(models.STORED_DICT_FOR_ACTIVITIES[d]) if d in models.STORED_DICT_FOR_ACTIVITIES else _(d) for d in activity.split_message_data()]
     if len(data) == message_string.count('{}'):
         return _(message_string).format(*data)
     return 'Invalid message data'
@@ -2278,6 +2291,129 @@ def urpairs(request):
     context['data'] = data
     context['idols'] = idols
     return render(request, 'urpairs.html', context)
+
+def albumbuilder(request):
+    """
+    SQL Queries:
+    - Context
+    - Cards
+    - Owned Cards
+    """
+    if not request.user.is_authenticated():
+        return redirect('/create/?next=/cards/albumbuilder/')
+    context = globalContext(request)
+    if 'albumbuilder_account' in request.GET:
+        account = findAccount(int(request.GET['albumbuilder_account']), context.get('accounts', []), forceGetAccount=False)
+        if not account:
+            raise Http404
+    else:
+        return redirect('/cards/')
+    context, cards = get_cards_queryset(request=request, context=context, card=None)
+    owned_queryset = models.OwnedCard.objects.filter(owner_account=account).order_by('-idolized', '-id')
+    owned_queryset = owned_queryset.filter(Q(stored='Deck') | Q(stored='Album'))
+    cards = cards.prefetch_related(Prefetch('ownedcards', queryset=owned_queryset, to_attr='owned_cards'))
+    if account.language != 'JP':
+        cards = cards.filter(japan_only=False)
+    cardsinfo = settings.CARDS_INFO
+    context['filters'] = get_cards_form_filters(request, cardsinfo)
+    context['show_filter_button'] = True
+    context['account'] = account
+    context['cards'] = cards
+    context['albumbuilder_account'] = account
+    context['view'] = 'albumbuilder'
+    return render(request, 'cards.html', context)
+
+ajax_albumbuilder_editable = ['stored', 'idolized', 'max_level', 'max_bond', 'skill']
+
+@csrf_exempt
+def ajax_albumbuilder_addcard(request, card_id):
+    """
+    SQL Queries
+    - Session
+    - User
+    - Account
+    - Card
+    - Create owned card
+    - (If not R or N) Create activity
+    """
+    if request.method != 'POST' or not request.user.is_authenticated() or 'account' not in request.POST:
+        raise PermissionDenied()
+    account = get_object_or_404(models.Account, id=request.POST['account'], owner=request.user)
+    card = get_object_or_404(models.Card, id=card_id)
+    idolized = True if card.is_promo else bool(int(request.POST.get('idolized', 0)))
+    if idolized:
+        max_level = bool(int(request.POST.get('max_level', 0)))
+        max_bond = bool(int(request.POST.get('max_bond', 0)))
+    else:
+        max_level = False
+        max_bond = False
+    ownedcard = models.OwnedCard.objects.create(owner_account=account,
+                                                card=card,
+                                                stored=request.POST.get('stored', 'Album'),
+                                                idolized=idolized,
+                                                max_level=max_level,
+                                                max_bond=max_bond,
+                                                skill=1)
+    if not settings.HIGH_TRAFFIC:
+        pushActivity(message="Added a card",
+                     ownedcard=ownedcard,
+                     # prefetch:
+                     card=card,
+                     account=account,
+                     account_owner=request.user)
+    return render(request, 'albumBuilder_ownedCard.html', {
+        'card': card,
+        'ownedcard': ownedcard,
+    })
+
+@csrf_exempt
+def ajax_albumbuilder_editcard(request, ownedcard_id):
+    """
+    SQL Queries
+    If stored or idolized:
+    - Session
+    - User
+    - Owned card (JOIN + account + card)
+    - User preferences
+    - Update activity
+    - Update owned card
+    Else:
+    - Session
+    - User
+    - Owned card
+    - Update owned card
+    """
+    if request.method != 'POST' or not request.user.is_authenticated():
+        raise PermissionDenied()
+    queryset = models.OwnedCard.objects
+    if 'idolized' in request.POST or 'stored' in request.POST:
+        queryset = queryset.select_related('card', 'owner_account')
+    ownedcard = get_object_or_404(queryset, id=ownedcard_id, owner_account__owner=request.user)
+    for (key, value) in request.POST.items():
+        if value == 'true':
+            value = True
+        elif value == 'false':
+            value = False
+        if key in ajax_albumbuilder_editable:
+            setattr(ownedcard, key, value)
+        else:
+            raise PermissionDenied()
+    if not ownedcard.idolized:
+        ownedcard.max_bond = False
+        ownedcard.max_level = False
+    if ownedcard.stored == 'Album':
+        ownedcard.skill = 1
+    ownedcard.save()
+    # Push/update activity on card idolized
+    if 'idolized' in request.POST and ownedcard.idolized:
+        pushActivity("Idolized a card", ownedcard=ownedcard,
+                     # prefetch
+                     account_owner=request.user)
+    elif 'stored' in request.POST or 'idolized' in request.POST:
+        pushActivity("Update card", ownedcard=ownedcard,
+                     # prefetch
+                     account_owner=request.user)
+    return JsonResponse(model_to_dict(ownedcard))
 
 def usicaltriofestival(request):
     context = globalContext(request)

@@ -93,3 +93,6 @@ def randomString(length, choice=(string.ascii_letters + string.digits)):
 
 def get_imgur_code(url):
     return re.compile(settings.IMGUR_REGEXP).match(url).group('imgur')
+
+def get_parameters_to_string(request):
+    return '?' + '&'.join([p[0] + '=' + p[1] for p in request.GET.items()])

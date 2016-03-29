@@ -92,7 +92,7 @@
 		      <strong>{% trans 'Score' %}: {{ girl.score|multiply:100|floatformat:2 }}%</strong>
 		      <br>{{ girl.total_votes }} {% trans 'votes' %}
 		      {% if user.is_staff %}- {{ girl.total_negative_votes }} neg {% trans 'votes' %}{% endif %}
-		      - {{ girl.total_cards }} {% trans 'cards' %}
+		      - {{ girl.total_cards }} {% trans 'Cards' %}
 		      {% else %}
 		      {{ girl.total_votes }} {% trans 'votes' %}
 		      {% endif %}

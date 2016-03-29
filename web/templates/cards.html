@@ -4,9 +4,8 @@
 {% load imageurl %}
 {% load choicesToString %}
 
-{% block title %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endblock %}
+{% block title %}{% if view == 'albumbuilder' %}{% trans 'Album Builder' %}{% else %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endif %}{% endblock %}
 {% block js %}
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 <script src="/static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
@@ -43,14 +42,26 @@
     }
   });
 </script>
-<script src="/static/js/cards.js?9"></script>
-<script src="/static/js/addcard.js?2"></script>
+<script src="/static/js/cards.js?10"></script>
+{% if view == 'albumbuilder' %}
+<script src="/static/js/albumbuilder.js"></script>
+<script>
+  var deck_disable_title = "{% trans 'You can only have one in your album.' %}";
+  var deck_enable_title = "{% trans 'Click to switch Deck/Album' %}";
+  var album_confirm_add_when_deck = "{% trans 'The cards in your deck automatically appear in your album.' %} {% trans 'Are you sure you also want to add it in your album?' %}";
+  var go_message = "{% trans 'Go' %}";
+</script>
+{% else %}
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script src="/static/js/addcard.js?3"></script>
+{% endif %}
 {% endblock %}
 
 {% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
 {% block shareimagetwitter %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
 
 {% block content %}
+{% if view != 'albumbuilder' %}
 <div class="hidden" id="quickaddform">
   <form class="form-horizontal" method="post" role="form" action="/ajax/addcard/">
     <h3>{% trans 'Card added!' %}<br>
@@ -63,6 +74,7 @@
     </div>
   </form>
 </div>
+{% endif %}
 {% if not single %}
 {% if show_filter_button %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
@@ -103,11 +115,13 @@
 	  {% endfor %}
 	</select>
 	<br>
+	{% if view != 'albumbuilder' %}
 	<br>
 	<div>
 	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
 	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
 	</div>
+	{% endif %}
 	<br>
 	<div class="text-right">
 	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i> <span class="fontx1-2">{% trans 'More options' %}</span></a>
@@ -193,45 +207,65 @@
 	  <label for="id_release_before">{% trans 'Release date' %} ({% trans 'before' %}):</label>
 	  <input id="id_release_before" type="month" name="release_before" value="{{ request_get.release_before }}" class="form-control">
 	</div> <!-- section -->
-	{% if user.is_authenticated %}
-	<h4>{{ user }}</h4>
-	<div class="section yours">
-	  <label for="id_select_account">{% trans 'Account' %}</label>
-	  <select id="id_select_account" name="account">
-	    <option value=""></option>
-	    {% for account in accounts %}
-	    <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
-	    {% endfor %}
-	  </select>
-	  <br>
-	  <label for="id_stored">{% trans 'Stored' %}</label>
-	  <select id="id_stored" name="stored">
-	    <option value=""></option>
-	    {% for i, stored in filters.stored_choices %}
-	    <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
-	    {% endfor %}
-	  </select>
-	  <br>
-	  <label for="id_idolized"><i class="flaticon-idolized"></i> {% trans 'Idolized' %}</label>
-	  <select id="id_idolized" name="idolized">
-	    <option value=""></option>
-	    <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
-	    <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
-	  </select>
-	  <brf>
-	  <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
-	  <select id="id_max_level" name="max_level">
-	    <option value=""></option>
-	    <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
-	    <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
-	  </select>
-	  <br>
-	  <label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
-	  <select id="id_max_bond" name="max_bond">
-	    <option value=""></option>
-	    <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
-	    <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
-	  </select>
+	<h4>{% trans 'View' %}</h4>
+	<div class="section view">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-{{ btnColor }}{% if view != 'albumbuilder' %} active{% endif %}">
+              <input type="radio" name="view" id="view_cards" autocomplete="off" value="cards"{% if view != 'albumbuilder' %} checked{% endif %}> {% trans 'Cards' %}
+            </label>
+            <label class="btn btn-{{ btnColor }}{% if view == 'albumbuilder' %} active{% endif %}">
+              <input type="radio" name="view" id="view_albumbuilder" autocomplete="off" value="albumbuilder"{% if view == 'albumbuilder' %} checked{% endif %}> {% trans 'Album Builder' %}
+            </label>
+          </div>
+	  {% if user.is_authenticated %}
+          <div id="albumbuilder_extraform"{% if view != 'albumbuilder' %} style="display: none;"{% endif %}>
+	    <br>
+	    <label for="id_albumbuilder_account">{% trans 'Account' %}</label>
+	    <select id="id_albumbuilder_account" name="albumbuilder_account">
+	      {% for account in accounts %}
+	      <option value="{{ account.id }}"{% if view == 'albumbuilder' and albumbuilder_account.id == account.id %} selected{% endif %}>{{ account }}</option>
+	      {% endfor %}
+	    </select>
+          </div>
+	  <div id="user_filters"{% if view == 'albumbuilder' %} style="display: none"{% endif %}>
+	    <br>
+	    <label for="id_select_account">{% trans 'Account' %}</label>
+	    <select id="id_select_account" name="account">
+	      <option value=""></option>
+	      {% for account in accounts %}
+	      <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
+	      {% endfor %}
+	    </select>
+	    <br>
+	    <label for="id_stored">{% trans 'Stored' %}</label>
+	    <select id="id_stored" name="stored">
+	      <option value=""></option>
+	      {% for i, stored in filters.stored_choices %}
+	      <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
+	      {% endfor %}
+	    </select>
+	    <br>
+	    <label for="id_idolized"><i class="flaticon-idolized"></i> {% trans 'Idolized' %}</label>
+	    <select id="id_idolized" name="idolized">
+	      <option value=""></option>
+	      <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
+	      <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
+	    </select>
+	    <brf>
+	      <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
+	      <select id="id_max_level" name="max_level">
+		<option value=""></option>
+		<option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
+		<option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
+	      </select>
+	      <br>
+	      <label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
+	      <select id="id_max_bond" name="max_bond">
+		<option value=""></option>
+		<option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
+		<option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
+	      </select>
+	  </div>
 	</div>
 	{% endif %}
       </div> <!-- collapse -->
@@ -263,35 +297,39 @@
 {% endif %}
     {% endif %}
     <div>
+      {% if view == 'albumbuilder' %}
+      {% include "albumBuilder.html" %}
+      {% else %}
       {% if show_discover_banner %}
       <a href="/cards/?search=&is_world=off&ordering=id&is_promo=off" target="_blank"
 	 class="toplistbanner">
 	<span>
 	  <i class="flaticon-EN"></i>
-	  {% trans 'Discover the upcoming cards before everybody else!' %}
+	  {% trans 'Click this banner to discover the upcoming cards in EN!' %}
 	</span>
       </a>
       {% endif %}
       {% include "cardsPage.html" %}
+      {% endif %}
     </div>
     {% if not single %}
   </div> <!-- page-content-wrapper -->
 </div> <!-- wrapper -->
 {% endif %}
 
-    <!-- Modal -->
-    <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="Addcard" aria-hidden="true">
-      <div class="modal-dialog">
-	<div class="modal-content">
-	  <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	    <h4 class="modal-title">{% trans 'Edit card' %}</h4>
-	  </div>
-	  <div class="modal-body">
-	  </div>
-	</div>
+{% if view != 'albumbuilder' %}
+<!-- Modal -->
+<div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="Addcard" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<h4 class="modal-title">{% trans 'Edit card' %}</h4>
+      </div>
+      <div class="modal-body">
       </div>
     </div>
-    
+  </div>
+</div>
+{% endif %}
 {% endblock %}
-

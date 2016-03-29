@@ -1,11 +1,27 @@
 {% load i18n %}
 {% if not more %}
+{% if is_me %}
+<a href="/cards/albumbuilder/?albumbuilder_account={{ account.id }}&ordering=id" target="_blank"
+   class="btn btn-block idol-btn" style="background-image: url('http://i.schoolido.lu/cards/transparent/464Transparent.png'); background-color: #17B6CA; background-size: 62%; background-position-y: 32%; background-position-x: -16%;">
+  <span style="	text-shadow:
+	       -1px -1px 0 #17B6CA,
+	       1px -1px 0 #17B6CA,
+	       -1px 1px 0 #17B6CA,
+	       1px 1px 0 #17B6CA,
+	       0 0 10px #17B6CA;
+	       ">
+    <small>{% trans 'Keep track of your cards easily, try the' %}</small><br>
+    <strong style="font-size: 30px;">{% trans 'Album Builder' %}</strong>
+  </span>
+</a>
+{% endif %}
 <h3 class="fontx2 text-left">
   <div class="pull-right padding50 padding-novertical">
     <i class="flaticon-album fontx1-2"></i>
   </div>
   {% trans 'Album' %}<br>
 </h3>
+<br>
 {% endif %}
 {% include 'ownedcards.html' with cards=account.album %}
 {% include 'include/_account_tab_ownedcardsload.html' %}

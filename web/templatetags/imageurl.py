@@ -17,11 +17,7 @@ def imageurl(context, card, image):
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
-            return '%s%s' % (settings.IMAGES_HOSTING_PATH, str(card_image))
-        elif hasattr(card, image.replace('image', 'url')):
-            url = getattr(card, image.replace('image', 'url'))
-            if url:
-                return url
+            return _imageurl(unicode(card_image))
     return '/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)

@@ -8,6 +8,20 @@
 {% block shareimage %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
 {% block shareimagetwitter %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
 
+{% block js %}
+<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script>
+  var countdowndate = "April 3, 2016 21:00:00 +0000";
+  function countdownRender(data) {
+  $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
+  }
+  $('#countdown').countdown({
+  date: countdowndate,
+  render: countdownRender
+  });
+</script>
+{% endblock %}
+
 {% block content %}
 <div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
   <div class="container text-center">
@@ -18,6 +32,11 @@
       <img src="/static/usicaltriofestival.png" class="img-responsive">
       <span class="hidden">μ'sical Trio Festival</span>
     </h1>
+    <iframe style="width: 100%" height="550" src="http://www.youtube.com/embed/jhrbxYQ2kvM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+    <div class="text-right">
+      <a href="https://docs.google.com/document/d/1xASQ8dRHXYAbAjz59NnvrUHjY295_4Qdsep9VQNXE9s/edit" target="_blank">{% trans 'Learn more' %}</a>
+    </div>
+    <h2 id="countdown"></h2>
     {% if error %}
     <div class="alert alert-danger">
       {{ error }}

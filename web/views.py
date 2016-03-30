@@ -2449,11 +2449,11 @@ def usicaltriofestival(request):
         query = 'SELECT id, entry, COUNT(entry) AS votes FROM api_usicalvote GROUP BY entry ORDER BY votes DESC;'
         context['top_votes'] = models.UsicalVote.objects.raw(query)
         for (index, entry) in enumerate(context['entries']):
+            context['entries'][index] = entry + (0,)
             for vote in context['top_votes']:
                 if vote.entry == entry[0]:
-                    context['entries'][index] = entry + (vote.votes,)
+                    context['entries'][index] = (entry[0], entry[1], entry[2], entry[3], entry[4], vote.votes)
                     break
-                context['entries'][index] = entry + (0,)
         context['entries'] = sorted(context['entries'], key=lambda x: x[5], reverse=True)
     else:
         random.shuffle(context['entries'])

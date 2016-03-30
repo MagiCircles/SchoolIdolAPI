@@ -335,7 +335,9 @@
 			  <th>{% trans 'Level up her skill with' %}</th>
 			  <td>
                             {% for skill_up_card in card.skill_up_cards %}
-                            <a href="/cards/{{ skill_up_card.0 }}/" target="_blank"><img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_image' %}"  height="50" width="50" class="padding5"></a>
+                            <a href="/cards/{{ skill_up_card.0 }}/" target="_blank" class="padding5 inline-block">
+			      <img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_image' %}" height="40" width="40"><img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_idolized_image' %}" height="40" width="40">
+			    </a>
                             {% endfor %}
 			  </td>
 			</tr>

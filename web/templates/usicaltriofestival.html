@@ -11,7 +11,7 @@
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script>
-  var countdowndate = "April 3, 2016 21:00:00 +0000";
+  var countdowndate = "April 3, 2016 21:00:00 -0800";
   function countdownRender(data) {
   $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
   }
@@ -41,6 +41,9 @@
     <div class="alert alert-danger">
       {{ error }}
     </div>
+    {% endif %}
+    {% if view_ranking %}
+    <h4>Total votes: {{ total_votes }}</h4>
     {% endif %}
     <div class="row">
       {% for entry in entries %}

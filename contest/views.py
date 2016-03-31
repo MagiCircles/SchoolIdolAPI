@@ -41,6 +41,8 @@ def contest_view(request, contestid):
         'contest': contest,
         'token': cards.token,
         'contest_max_sessions': settings.CONTEST_MAX_SESSIONS,
+        # April fool stuff
+        'force_dummy': True,
     })
     return render(request, 'contest.html', context)
 
@@ -86,6 +88,8 @@ def collection_view(request, contestid):
         'contest': contest,
         'is_current': is_current,
         'cards': cards,
+        # April fool stuff
+        'force_dummy': True,
     })
     return render(request, 'contest_collection.html', context)
 

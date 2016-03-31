@@ -2285,7 +2285,7 @@ def urpairs(request):
     """
     context = globalContext(request)
     cards = models.Card.objects.filter(ur_pair__isnull=False).order_by('idol__name', 'ur_pair__idol__name').select_related('idol', 'ur_pair', 'ur_pair__idol')
-    idols = [name for (name, idol) in raw_information.items() if idol['main_unit'] != 'Aqours']
+    idols = sorted([name for (name, idol) in raw_information.items() if idol['main_unit'] != 'Aqours'])
     data = OrderedDict()
     for card in cards:
         if card.idol.name not in data:

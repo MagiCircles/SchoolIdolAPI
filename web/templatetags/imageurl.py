@@ -24,11 +24,11 @@ def imageurl(context, card, image):
 def cleanurl(context, card, idolized):
     if idolized:
         if card.clean_ur_idolized:
-            return _imageurl(str(card.clean_ur_idolized))
+            return _imageurl(str(card.clean_ur_idolized).replace('/cards/ur_pairs/', '/cards/ur_pairs/small_'))
         return _imageurl(str(card.card_idolized_image))
     else:
         if card.clean_ur:
-            return _imageurl(str(card.clean_ur))
+            return _imageurl(str(card.clean_ur).replace('/cards/ur_pairs/', '/cards/ur_pairs/small_'))
         return _imageurl(str(card.card_image))
 
 @register.simple_tag()

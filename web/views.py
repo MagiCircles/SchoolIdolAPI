@@ -501,6 +501,13 @@ def get_cards_form_filters(request, cardsinfo):
     }
 
 def cards(request, card=None, ajax=False):
+    """
+    SQL Queries:
+    - Context
+    - Cards (JOIN + idol + event + ur pair)
+    - Owned Cards
+    - Get accounts again
+    """
     if len(request.GET.getlist('page')) > 1:
         raise PermissionDenied()
 
@@ -529,7 +536,7 @@ def cards(request, card=None, ajax=False):
         cards = cards[(page * page_size):((page * page_size) + page_size)]
         context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
 
-    cards = cards.select_related('event', 'idol')
+    cards = cards.select_related('event', 'idol', 'ur_pair')
     if request.user.is_authenticated() and not request.user.is_anonymous():
         cards = cards.prefetch_related(Prefetch('ownedcards', queryset=models.OwnedCard.objects.filter(owner_account__owner=request.user).order_by('owner_account__language'), to_attr='owned_cards'))
 
@@ -2270,27 +2277,33 @@ def sharetrivia(request):
     raise PermissionDenied()
 
 def urpairs(request):
+    """
+    SQL Queries:
+    - Context
+    - Cards UR (JOIN + idol + ur_pair + ur_pair idol)
+    - Cards alone
+    """
     context = globalContext(request)
-    cards = models.Card.objects.filter(ur_pair__isnull=False).order_by('idol__name', 'ur_pair__idol__name')
-    idols = models.Idol.objects.filter(main_unit = 'μ\'s').order_by('name')
+    cards = models.Card.objects.filter(ur_pair__isnull=False).order_by('idol__name', 'ur_pair__idol__name').select_related('idol', 'ur_pair', 'ur_pair__idol')
+    idols = [name for (name, idol) in raw_information.items() if idol['main_unit'] != 'Aqours']
     data = OrderedDict()
     for card in cards:
         if card.idol.name not in data:
             show_idolized = False
             data[card.idol.name] = OrderedDict()
-            for idol in idols:
-                if card.idol.name == idol.name:
+            for idol_name in idols:
+                if card.idol.name == idol_name:
                     show_idolized = True
-                data[card.idol.name][idol.name] = [None, show_idolized]
+                data[card.idol.name][idol_name] = [None, show_idolized]
         data[card.idol.name][card.ur_pair.idol.name][0] = card
     alone_cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False, ur_pair__isnull=True).exclude(translated_collection='Initial')
     for c in alone_cards:
         for idol, card in data[c.idol.name].items():
             if card[0] is None and idol != c.idol.name:
                 data[c.idol.name][idol][0] = c
-        for idol in idols:
-            if data[idol.name][c.idol.name][0] is None and idol.name != c.idol.name:
-                data[idol.name][c.idol.name][0] = c
+        for idol_name in idols:
+            if data[idol_name][c.idol.name][0] is None and idol_name != c.idol.name:
+                data[idol_name][c.idol.name][0] = c
 
     context['total'] = int(len(cards) / 2)
     context['data'] = data

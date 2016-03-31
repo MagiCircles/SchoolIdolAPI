@@ -122,9 +122,9 @@
       <div class="panel-body">
 	<div class="padding20 padding-novertical">
 	  <div class="pull-right" style="padding: 20px 0 0 20px;">
-	    {% if account.center %}
-	    <a href="{% if is_me %}/editaccount/{{ account.pk }}/{% else %}/cards/{{ account.center.card.id }}{% endif %}" class="center">
-	      {% include 'ownedcard.html' with card=account.center owner_account=account nolink=True size=200 %}
+	    {% if account.center_id %}
+	    <a href="{% if is_me %}/editaccount/{{ account.pk }}/{% else %}/cards/{{ account.center_card_id }}{% endif %}" class="center">
+	      <img src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="200">
 	    </a>
 	    {% else %}
 	    {% if is_me %}<a href="/editaccount/{{ account.pk }}/">{% endif %}
@@ -205,15 +205,15 @@
 		</td>
 	      </tr>
 	      {% endif %}
-	      {% if account.starter %}
-	      {% if not account.center or account.center.card.id != account.starter.id %}
+	      {% if account.starter_id %}
+	      {% if not account.center_id or account.center_card_id != account.starter_id %}
 	      <tr>
 		<th>{% trans 'Starter' %}</th>
 		<td>
-		  <a href="/cards/{{ account.starter.id }}/" target="_blank">
-		    {{ account.starter.name }}
+		  <a href="/cards/{{ account.starter_id }}/" target="_blank">
+		    {{ account.starter_name }}
 		    <div class="pull-right">
-		      <img src="{% imageurl card=account.starter image='round_card_image' %}" alt="{{ account.starter }}" width="42">
+		      <img src="{{ account.starter_card_round_image|userimage }}" alt="{{ account.starter_name }}" height="42">
 		    </div>
 		  </a>
 		</td>

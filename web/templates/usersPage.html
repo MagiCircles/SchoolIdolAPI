@@ -39,8 +39,8 @@
 	  <div class="row">
 	    <div class="col-xs-8">
 	      <a href="/user/{{ user.username }}/#{{ account.pk }}" target="_blank">
-		{% if account.center %}
-		{% include 'ownedcard.html' with card=account.center nolink=True size=70 classes='pull-left margin10' no_details=True %}
+		{% if account.center_card_round_image %}
+		<img class="pull-left margin10 inline-block" src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="70">
 		{% endif %}
 	      </a>
 	      <div class="padding20 padding-novertical">

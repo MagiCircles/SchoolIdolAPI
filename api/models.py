@@ -559,6 +559,12 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     bought_loveca = models.PositiveIntegerField(_('Total love gems bought'), help_text=_('You can calculate that number in "Other" then "Purchase History". Leave it empty to stay F2P.'), null=True, blank=True)
     show_items = models.BooleanField('', default=True, help_text=_('Should your items be visible to other players?'))
     fake = models.BooleanField(_('Fake'), default=False)
+    # Cache
+    center_card_transparent_image = models.CharField(max_length=200, null=True, blank=True)
+    center_card_round_image = models.CharField(max_length=200, null=True, blank=True)
+    center_card_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
+    center_card_id = models.PositiveIntegerField(default=0)
+    center_alt_text = models.CharField(max_length=100, null=True, blank=True)
 
     @property
     def money_spent(self):

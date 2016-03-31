@@ -105,8 +105,8 @@
 	{% for account in accounts %}
 	<tr>
 	  <td>
-	    {% if account.center %}
-	    {% include 'ownedcard.html' with card=account.center nolink=True size=50 %}
+	    {% if account.center_id %}
+	    <img src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="50">
 	    {% endif %}
 	  </td>
 	  <td><h4>{{ account }}</h4></td>

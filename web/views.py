@@ -39,10 +39,8 @@ import json
 import collections
 import operator
 
-def contextAccounts(request, with_center=True):
+def contextAccounts(request):
     accounts = request.user.accounts_set.all().order_by('-rank')
-    if with_center:
-        accounts = accounts.select_related('center', 'center__card')
     return accounts
 
 def globalContext(request):
@@ -226,6 +224,13 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         models.Activity.objects.create(**defaults)
 
 def index(request):
+    """
+    SQL Queries:
+    - Context
+    - JP event
+    - EN event
+    - Random card
+    """
     context = globalContext(request)
 
     # Get current events
@@ -253,8 +258,8 @@ def index(request):
         context['character'] = 'special/april/' + random.choice(us) + '.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
-        if random_account.center:
-            context['character'] = random_account.center.card.transparent_idolized_image if random_account.center.idolized or random_account.center.card.is_special else random_account.center.card.transparent_image
+        if random_account.center_id:
+            context['character'] = random_account.center_card_transparent_image
     if not context['character']:
         card = models.Card.objects.filter(transparent_idolized_image__isnull=False).exclude(transparent_idolized_image='').order_by('?')
         if request.user.is_authenticated() and request.user.preferences.best_girl:
@@ -504,9 +509,9 @@ def cards(request, card=None, ajax=False):
     """
     SQL Queries:
     - Context
+     - Total cards
     - Cards (JOIN + idol + event + ur pair)
     - Owned Cards
-    - Get accounts again
     """
     if len(request.GET.getlist('page')) > 1:
         raise PermissionDenied()
@@ -703,7 +708,7 @@ def profile(request, username):
     - Request user
     - (if me) Preferences
     - (if not me) User (JOIN + preferences)
-    - Accounts (JOIN + center + center card + starter)
+    - Accounts
     - Deck stats (number of UR/SR in each account, raw SQL query)
     - Account queries (see ajaxaccounttab)
     - User links
@@ -747,7 +752,7 @@ def profile(request, username):
         deck_queryset = models.OwnedCard.objects.filter(Q(stored='Deck') | Q(stored='Album'))
     else:
         deck_queryset = models.OwnedCard.objects.filter(stored='Deck')
-    context['user_accounts'] = context['user_accounts'].select_related('center', 'center__card', 'starter')
+    context['user_accounts'] = context['user_accounts']
 
     if not context['preferences'].private or context['is_me']:
         # Get stats of cards
@@ -963,7 +968,7 @@ def ajaxaddcard(request):
     SQL Queries
     - Django session
     - Request user
-    - Account (JOIN + center + center card)
+    - Account
     - Card
     - Insert owned card
     - Preferences
@@ -1004,8 +1009,8 @@ def ajaxeditcard(request, ownedcard):
     - Save edited card:
     -- Django session
     -- Request user
-    -- Owned card (JOIN + account + card + account center + account center card)
-    -- (if account changed) Account (JOIN + center + center card)
+    -- Owned card (JOIN + account + card)
+    -- (if account changed) Account
     -- Update owned card
     -- User preferences
     -- Activity
@@ -1014,13 +1019,13 @@ def ajaxeditcard(request, ownedcard):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
     context = {
-        'accounts': contextAccounts(request, with_center=False),
+        'accounts': contextAccounts(request),
     }
     # Get existing owned card
     try:
         model_owned_card = models.OwnedCard.objects.select_related('card', 'owner_account')
         if request.method == 'POST':
-            model_owned_card = model_owned_card.select_related('owner_account__center', 'owner_account__center__card')
+            model_owned_card = model_owned_card
         owned_card = model_owned_card.get(pk=int(ownedcard), owner_account__owner=request.user)
     except ObjectDoesNotExist:
         raise PermissionDenied()
@@ -1041,7 +1046,7 @@ def ajaxeditcard(request, ownedcard):
             # Update account
             account_changed = False
             if 'owner_account' in request.POST and request.POST['owner_account'] and request.POST['owner_account'] != str(owned_card.owner_account.id):
-                account = get_object_or_404(models.Account.objects.select_related('center', 'center__card'), pk=request.POST['owner_account'], owner=request.user)
+                account = get_object_or_404(models.Account, pk=request.POST['owner_account'], owner=request.user)
                 owned_card.owner_account = account
                 account_changed = True
             # Set expiration date for present box storage
@@ -1550,8 +1555,6 @@ def users(request, ajax=False):
     - Accounts
     - Users
     - Preferences
-    - Center Owned Cards
-    - Center Cards
     """
     if len(request.GET.getlist('page')) > 1:
         raise PermissionDenied()
@@ -1642,7 +1645,7 @@ def users(request, ajax=False):
             queryset = queryset.filter(ownedcards__in=ownedcards)
 
     queryset = queryset.distinct()
-    queryset = queryset.prefetch_related('owner', 'owner__preferences', 'center', 'center__card')
+    queryset = queryset.prefetch_related('owner', 'owner__preferences')
 
     page = 0
     reverse = ('reverse_order' in request.GET and request.GET['reverse_order']) or not request.GET or len(request.GET) == 1
@@ -2267,7 +2270,7 @@ def sharetrivia(request):
     if request.method == 'POST' and 'score' in request.POST:
         if not request.user.is_authenticated():
             return redirect('/create/')
-        accounts = contextAccounts(request, with_center=True)
+        accounts = contextAccounts(request)
         try:
             activity = pushActivity('Trivia', account=accounts[0], account_owner=request.user, number=request.POST['score'], message_data=models.triviaScoreToSentence(int(request.POST['score'])))
             return redirect('/activities/' + str(activity.pk) + '/')

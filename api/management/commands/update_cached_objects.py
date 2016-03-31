@@ -9,3 +9,4 @@ class Command(BaseCommand):
 
         update_cards_owners({})
         update_cards_rankings({})
+        update_cards_join_cache({})

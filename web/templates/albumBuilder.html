@@ -7,8 +7,8 @@
       <h1 class="margin50">
 	{% trans 'Album Builder' %}
 	<br><small>
-	  {% if account.center %}
-	  {% include 'ownedcard.html' with card=account.center nolink=True size=30 classes='center circled' no_details=True %}
+	  {% if account.center_id %}
+	  <img class="center circled" src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="30">
 	  {% endif %}
 	  {{ account }}
 	  <span class="tiny"><a href="/user/{{ user.username }}/#{{ account.pk }}" target="_blank"><i class="flaticon-link"></i></a></span>

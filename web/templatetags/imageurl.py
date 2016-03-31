@@ -140,8 +140,8 @@ def chibiimage(context, idol, small=True):
 def accountattribute(account):
     if account.fake:
         return 'default'
-    if account.center:
-        return account.center.card.attribute
+    if account.center_id:
+        return account.center_card_attribute
     return 'All'
 
 register.filter('userimage', userimage)

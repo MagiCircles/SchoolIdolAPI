@@ -579,6 +579,22 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
         today = datetime.date.today()
         return (today - self.creation).days
 
+    def _get_starter_idol(self):
+        a =  (e for e in raw_information.items() if e[1]['starter'] == self.starter_id).next()
+        return a
+
+    @property
+    def starter_card_round_image(self):
+        if not self.starter_id:
+            return None
+        return 'cards/' + str(self.starter_id) + 'Round' + self._get_starter_idol()[0].split(' ')[-1] + '.png'
+
+    @property
+    def starter_name(self):
+        if not self.starter_id:
+            return None
+        return self._get_starter_idol()[0]
+
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)
 

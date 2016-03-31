@@ -9,7 +9,7 @@ raw_information['Kousaka Honoka'] = {
     'cv_nickname': 'Emitsun',
     'cv_twitter': 'Nitta_Emi',
     'cv_instagram': 'Nitta_Emi',
-    'image': 'http://i.schoolido.lu/cards/transparent/28Transparent.png',
+    'starter': 28,
     'color': '#f6ab29',
 }
 raw_information['Nishikino Maki'] = {
@@ -19,7 +19,7 @@ raw_information['Nishikino Maki'] = {
     'cv_nickname': 'Pile',
     'cv_twitter': 'pile_eric',
     'cv_instagram': 'pile_eric',
-    'image': 'http://i.schoolido.lu/cards/transparent/33Transparent.png',
+    'starter': 33,
     'color': '#ee7b78',
 }
 raw_information['Ayase Eli'] = {
@@ -29,7 +29,7 @@ raw_information['Ayase Eli'] = {
     'cv_nickname': 'Nanjolno',
     'cv_twitter': 'nanjolno',
     'cv_instagram': 'nanjolno',
-    'image': 'http://i.schoolido.lu/cards/transparent/29Transparent.png',
+    'starter': 29,
     'color': '#b1daef',
 }
 raw_information['Minami Kotori'] = {
@@ -39,7 +39,7 @@ raw_information['Minami Kotori'] = {
     'cv_nickname': 'Ucchi',
     'cv_twitter': 'aya_uchida',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/30Transparent.png',
+    'starter': 30,
     'color': '#c2b9bc',
 }
 raw_information['Hoshizora Rin'] = {
@@ -49,7 +49,7 @@ raw_information['Hoshizora Rin'] = {
     'cv_nickname': 'Rippi',
     'cv_twitter': 'rippialoha',
     'cv_instagram': 'rippialoha',
-    'image': 'http://i.schoolido.lu/cards/transparent/32Transparent.png',
+    'starter': 32,
     'color': '#98d3cc',
 }
 raw_information['Koizumi Hanayo'] = {
@@ -59,7 +59,7 @@ raw_information['Koizumi Hanayo'] = {
     'cv_nickname': 'Shikaco',
     'cv_twitter': 'shi_ka_co',
     'cv_instagram': 'shi_ka_co',
-    'image': 'http://i.schoolido.lu/cards/transparent/35Transparent.png',
+    'starter': 35,
     'color': '#89c370',
 }
 raw_information['Sonoda Umi'] = {
@@ -69,7 +69,7 @@ raw_information['Sonoda Umi'] = {
     'cv_nickname': 'Mimorin',
     'cv_twitter': 'mimori_suzuko',
     'cv_instagram': 'mimori_suzuko',
-    'image': 'http://i.schoolido.lu/cards/transparent/31Transparent.png',
+    'starter': 31,
     'color': '#288bcc',
 }
 raw_information['Toujou Nozomi'] = {
@@ -79,7 +79,7 @@ raw_information['Toujou Nozomi'] = {
     'cv_nickname': 'Kussun',
     'cv_twitter': 'kusudaaina',
     'cv_instagram': 'kusudaaina',
-    'image': 'http://i.schoolido.lu/cards/transparent/34Transparent.png',
+    'starter': 34,
     'color': '#8c70ad',
 }
 raw_information['Yazawa Nico'] = {
@@ -89,7 +89,7 @@ raw_information['Yazawa Nico'] = {
     'cv_nickname': 'Soramaru',
     'cv_twitter': 'tokui_sorangley',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/36Transparent.png',
+    'starter': 36,
     'color': '#f1a6c7',
 }
 raw_information['Takami Chika'] = {
@@ -99,7 +99,7 @@ raw_information['Takami Chika'] = {
     'cv_nickname': 'Inami Anju',
     'cv_twitter': 'anju_inami',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/786Transparent.png',
+    'starter': 786,
     'color': '#ff9646',
     'chibi': [
         ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
@@ -113,7 +113,7 @@ raw_information['Sakurauchi Riko'] = {
     'cv_nickname': 'Aida Rikako',
     'cv_twitter': 'Rikako_Aida',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/787Transparent.png',
+    'starter': 787,
     'color': '#ff7777',
     'chibi': [
         ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'umidah'),
@@ -128,7 +128,7 @@ raw_information['Matsuura Kanan'] = {
     'cv_nickname': 'Suwa Nanaka',
     'cv_twitter': 'suwananaka',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/788Transparent.png',
+    'starter': 788,
     'color': '#16d5a6',
     'chibi': [
         ('http://i.schoolido.lu/chibi/kirisakisun.png', 'kirisakisun'),
@@ -142,7 +142,7 @@ raw_information['Kurosawa Dia'] = {
     'cv_nickname': 'Komiya Arisa',
     'cv_twitter': 'arisakomiya',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/789Transparent.png',
+    'starter': 789,
     'color': '#ff4242',
     'chibi': [
         ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
@@ -156,7 +156,7 @@ raw_information['Watanabe You'] = {
     'cv_nickname': 'Saitou Shuka',
     'cv_twitter': 'Saito_Shuka',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/790Transparent.png',
+    'starter': 790,
     'color': '#49bbee',
     'chibi': [
         ('http://i.schoolido.lu/chibi/iriel.png', 'iriel'),
@@ -171,7 +171,7 @@ raw_information['Tsushima Yoshiko'] = {
     'cv_nickname': 'Aikakyan',
     'cv_twitter': 'Aikyan_',
     'cv_instagram': 'aikyan_',
-    'image': 'http://i.schoolido.lu/cards/transparent/791Transparent.png',
+    'starter': 791,
     'color': '#c3c3c3',
     'chibi': [
         ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'erana'),
@@ -186,7 +186,7 @@ raw_information['Kunikida Hanamaru'] = {
     'cv_nickname': 'Takatsuki Kanako',
     'cv_twitter': 'Kanako_tktk',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/792Transparent.png',
+    'starter': 792,
     'color': '#e7cf0b',
     'chibi': [
         ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
@@ -200,7 +200,7 @@ raw_information['Ohara Mari'] = {
     'cv_nickname': 'Suzuki Aina',
     'cv_twitter': 'aina_suzuki723',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/793Transparent.png',
+    'starter': 793,
     'color': '#c450ff',
     'chibi': [
         ('http://i.schoolido.lu/chibi/sorutan.png', 'sorutan'),
@@ -213,12 +213,15 @@ raw_information['Kurosawa Ruby'] = {
     'cv_nickname': 'Furihata Ai',
     'cv_twitter': 'furihata_ai',
     'cv_instagram': None,
-    'image': 'http://i.schoolido.lu/cards/transparent/794Transparent.png',
+    'starter': 794,
     'color': '#f273c4',
     'chibi': [
         ('http://i.schoolido.lu/chibi/amukagamine.png', 'amukagamine'),
     ],
 }
+
+for idol in raw_information.keys():
+    raw_information[idol]['image'] = 'http://i.schoolido.lu/cards/transparent/' + str(raw_information[idol]['starter']) + 'Transparent.png'
 
 raw_information_n = {
     'Saeki Reine': {

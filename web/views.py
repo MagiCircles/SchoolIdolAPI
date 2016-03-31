@@ -611,6 +611,11 @@ def _addaccount_savecenter(account):
     if account.starter:
         center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck')
         account.center = center
+        account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
+        account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
+        account.center_card_attribute = account.center.card.attribute
+        account.center_alt_text = unicode(account.center.card)
+        account.center_card_id = account.center.card.id
         account.save()
 
 def addaccount(request):
@@ -1510,10 +1515,17 @@ def editaccount(request, account):
                 context['verification'] = verification
         else:
             old_rank = owned_account.rank
+            old_center = owned_account.center_id
             form = formClass(request.POST, instance=owned_account)
             form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('rarity', '-idolized', 'attribute', 'card__id').select_related('card')
             if form.is_valid():
                 account = form.save(commit=False)
+                if old_center != account.center_id:
+                    account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
+                    account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
+                    account.center_card_attribute = account.center.card.attribute
+                    account.center_alt_text = unicode(account.center.card)
+                    account.center_card_id = account.center.card.id
                 if account.rank >= 200 and account.verified <= 0:
                     account.rank = 195
                     account.save()

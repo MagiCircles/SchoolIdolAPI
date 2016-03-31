@@ -160,40 +160,40 @@
 			  <th>{% trans 'Idol' %}</th>
 			  <td>
 			    <div class="pull-right">
-			      <a href="/idol/{{ card.idol.name }}/" target="_blank">
-				<img src="{% chibiimage idol=card.idol.name small=True %}" class="chibi" width="60">
+			      <a href="/idol/{{ card.name }}/" target="_blank">
+				<img src="{% chibiimage idol=card.name small=True %}" class="chibi" width="60">
 			      </a>
 			    </div>
-			    {% if card.idol.japanese_name %} {{ card.idol.japanese_name }}<br>{% endif %}
-			    <strong>{{ card.idol.name }}</strong>
-			    <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.idol.name }}">
+			    {% if card.japanese_name %} {{ card.japanese_name }}<br>{% endif %}
+			    <strong>{{ card.name }}</strong>
+			    <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.name }}">
 				<i class="flaticon-link"></i></a>
 			    </span><br>
-			    {% if idol.school %}
+			    {% if card.idol_school %}
 			    <small>
-			      {% trans 'School' %}: {{ card.idol.school }}
-			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_school={{ card.idol.school }}">
+			      {% trans 'School' %}: {{ card.idol_school }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_school={{ card.idol_school }}">
 				  <i class="flaticon-link"></i></a>
 			      </span>
 			    </small><br>
 			    {% endif %}
-			    {% if idol.year %}
+			    {% if card.idol_year %}
 			    <small>
-			      {% trans 'Year' %}: {{ card.idol.year }}
-			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_year={{ card.idol.year }}">
+			      {% trans 'Year' %}: {{ card.idol_year }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_year={{ card.idol_year }}">
 				  <i class="flaticon-link"></i></a>
 			      </span>
 			    </small><br>
 			    {% endif %}
-			    {% if card.idol.sub_unit %}
+			    {% if card.idol_sub_unit %}
 			    <small>
-			      {% trans 'Sub Unit' %}: {{ card.idol.sub_unit }}
-			      <span class="tiny"><a target="_blank" href="/cards/?search=&sub_unit={{ card.idol.sub_unit }}">
+			      {% trans 'Sub Unit' %}: {{ card.idol_sub_unit }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&sub_unit={{ card.idol_sub_unit }}">
 				  <i class="flaticon-link"></i></a>
 			      </span>
 			    </small><br>
 			    {% endif %}
-			    <a href="/idol/{{ card.idol.name }}/" target="_blank">{% trans 'Learn more' %}
+			    <a href="/idol/{{ card.name }}/" target="_blank">{% trans 'Learn more' %}
 			      <small><span class="tiny"><i class="flaticon-link"></i></span></small>
 			    </a>
 			  </td>
@@ -228,19 +228,19 @@
 			  </td>
 			</tr>
 			{% endif %}
-			{% if card.event %}
+			{% if card.event_id %}
 			<tr>
 			  <th>{% trans 'Event' %}</th>
 			  <td>
-			    <a href="/events/{{ card.event.japanese_name|urlencode }}/" target="_blank">
+			    <a href="/events/{{ card.event_japanese_name|urlencode }}/" target="_blank">
 			      <div class="pull-right">
-				{% if card.event.image %}
-				<img src="{% eventimageurl event=card.event %}" alt="{{ card.event.japanese_name }}" width="100">
+				{% if card.event_image %}
+				<img src="{{ card.event_image|userimage }}" alt="{{ card.event_japanese_name }}" width="100">
 				{% else %}
 				<i class="flaticon-event"></i>
 				{% endif %}
 			      </div>
-			      {{ card.event.japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event.english_name != card.event.japanese_name %}<br>{{ card.event.english_name }}{% endif %} 
+			      {{ card.event_japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event_english_name != card.event_japanese_name %}<br>{{ card.event_english_name }}{% endif %} 
 			    </a>
 			  </td>
 			</tr>
@@ -299,26 +299,26 @@
 			  </td>
 			</tr>
 			{% endif %}
-			{% if card.ur_pair %}
+			{% if card.ur_pair_id %}
 			<tr>
 			  <th>{% trans 'Paired With' %}</th>
 			  <td>
-                            <a href="/cards/{{ card.ur_pair.id }}/" target="_blank">
+                            <a href="/cards/{{ card.ur_pair_id }}/" target="_blank">
 			      <div class="pull-right">
 				{% if card.round_card_image %}
-				<img src="{% imageurl card=card.ur_pair image='round_card_image' %}" alt="{{ card.ur_pair }}" height="70">
+				<img src="{{ card.ur_pair_round_card_image|userimage }}" alt="{{ card.ur_pair_name }}" height="70">
 				{% else %}
 				<i class="flaticon-img"></i>
 				{% endif %}
 			      </div>
-                              #{{ card.ur_pair.id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
+                              #{{ card.ur_pair_id }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>
                             </a><br>
                             <small>
-			      {{ card.ur_pair.name }}
-			      <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.ur_pair.name }}">
+			      {{ card.ur_pair_name }}
+			      <span class="tiny"><a target="_blank" href="/cards/?search=&name={{ card.ur_pair_name }}">
                                   <i class="flaticon-link"></i></a></span><br>
-                              {{ card.ur_pair|getattribute:'japanese_attribute' }} {{ card.ur_pair.attribute }}
-                              <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.ur_pair.attribute }}">
+                              {{ card.ur_pair_japanese_attribute }} {{ card.ur_pair_attribute }}
+                              <span class="tiny"><a target="_blank" href="/cards/?search=&attribute={{ card.ur_pair_attribute }}">
                                   <i class="flaticon-link"></i></a></span>
                             </small>
 			    <br>
@@ -403,7 +403,7 @@
 			    {% else %}
 			    <b>#{{ card.ranking_special }}</b>
 			    {% endif %}
-			    {% if card.event %}
+			    {% if card.event_id %}
 			    {% with translatedattributerarity=card.rarity|transconcatspace:card.attribute %}
 			    {% with attribute='Event'|transconcatspace:translatedattributerarity %}
 			    {% blocktrans %}best {{ attribute }} card{% endblocktrans %}
@@ -515,8 +515,8 @@
 		{% if card.is_promo %}
 		<i class="flaticon-promo" title="{% trans 'Promo Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card comes with ' %}: {{ card.promo_item }}" data-trigger="hover"></i>
 		{% endif %}
-		{% if card.event %}
-		<i class="flaticon-event" title="{% trans 'Event Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card first appeared during the event' %}: {{ card.event.japanese_name }}" data-trigger="hover"></i>
+		{% if card.event_id %}
+		<i class="flaticon-event" title="{% trans 'Event Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card first appeared during the event' %}: {{ card.event_japanese_name }}" data-trigger="hover"></i>
 		{% endif %}
 		{% if card.is_special %}
 		<i class="flaticon-skill" title="{% trans 'Special Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card cannot be added in a team.' %} {% trans 'Skill' %}: « {% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% else %}{{ card.skill_details }}{% endif %} »" data-trigger="hover"></i>

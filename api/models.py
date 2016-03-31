@@ -439,7 +439,6 @@ admin.site.register(Idol)
 
 class Card(ExportModelOperationsMixin('Card'), models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
-    name = models.CharField(max_length=100, blank=True) # duplicate with idol, used only in __unicode__ because otherwise it makes another query everytime
     idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     english_collection = models.CharField(max_length=100, blank=True, null=True)
@@ -489,6 +488,18 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     ranking_attribute = models.PositiveIntegerField(null=True, blank=True)
     ranking_rarity = models.PositiveIntegerField(null=True, blank=True)
     ranking_special = models.PositiveIntegerField(null=True, blank=True)
+    name = models.CharField(max_length=100, blank=True)
+    japanese_name = models.CharField(max_length=100, blank=True, null=True)
+    idol_school = models.CharField(max_length=100, blank=True, null=True)
+    idol_year = models.CharField(max_length=10, blank=True, null=True)
+    idol_main_unit = models.CharField(max_length=20, blank=True, null=True)
+    idol_sub_unit = models.CharField(max_length=20, blank=True, null=True)
+    event_japanese_name = models.CharField(max_length=100, blank=True, null=True)
+    event_english_name = models.CharField(max_length=100, blank=True, null=True)
+    event_image = models.CharField(max_length=200, null=True, blank=True)
+    ur_pair_name = models.CharField(max_length=100, blank=True)
+    ur_pair_round_card_image = models.CharField(max_length=200, null=True, blank=True)
+    ur_pair_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
 
     def japanese_attribute(self):
         return japanese_attribute(self.attribute)
@@ -509,6 +520,10 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
             return CENTER_SKILL_SENTENCES[skill], [attribute]
         except (ValueError, AttributeError, KeyError):
             return None, None
+
+    @property
+    def ur_pair_japanese_attribute(self):
+        return japanese_attribute(self.ur_pair_attribute)
 
     @property
     def skill_up_cards(self):

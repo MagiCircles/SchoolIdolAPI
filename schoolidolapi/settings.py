@@ -164,6 +164,8 @@ AWS_SES_RETURN_PATH = 'test@schoolido.lu'
 
 GLOBAL_CONTEST_ID = 33
 
+LOVECA_PRICE = 0.568
+
 # Generated settings:
 CARDS_INFO = {'idols': []}
 

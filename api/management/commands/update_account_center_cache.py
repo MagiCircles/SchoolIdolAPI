@@ -4,7 +4,7 @@ from api import models
 
 def update_account_center_cache(opt={}):
     print '# Update account center'
-    accounts = models.Account.objects.filter(center__isnull=False).select_related('center', 'center__card')
+    accounts = models.Account.objects.filter(center__isnull=False, center_card_id__isnull=True).select_related('center', 'center__card')
     for account in accounts:
         account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
         account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image

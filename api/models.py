@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from api.models_languages import *
 from django.core import validators
 from django.utils import timezone
+from django.conf import settings
 from django_prometheus.models import ExportModelOperationsMixin
 from api.raw import raw_information
 from web.utils import randomString
@@ -548,7 +549,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     def money_spent(self):
         if not self.bought_loveca:
             return None
-        return int(round(self.bought_loveca * 0.6))
+        return int(round(self.bought_loveca * settings.LOVECA_PRICE))
 
     @property
     def days_played(self):
@@ -858,7 +859,7 @@ usicaltriofestival_entries = [
     (51, u'ʚ Little Wings ɞ', u'愛してるばんざーい!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/B9TgoBIRWps?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (52, u'lΛmidΛ', u'それは僕たちの奇跡', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/mPkdr7meRg8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (53, u'μ\'sketeers', u'ススメ→トゥモロウ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/MTJXpMzKqTQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (54, u'ミkμ', u'KiRa-KiRa Sensation!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/7RnX3bjLHiI?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (54, u'ミkμ', u'Mashup: KiRa-KiRa Sensation! + 君のこころは輝いてるかい?', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/7RnX3bjLHiI?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     #(55, u'μ\'sical', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (56, u'lilaq✿', u'なわとび', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/viRAIo7pfyg?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (57, u'Sock It 2 Me', u'勇気のReason', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/XeIEBUqLqQU?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),

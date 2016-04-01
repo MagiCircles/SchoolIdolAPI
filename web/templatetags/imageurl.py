@@ -18,8 +18,6 @@ def _imageurl(path):
 def imageurl(context, card, image):
     # April fool stuff
     dummy = 'force_dummy' in context
-    if not dummy:
-        dummy = bool(random.getrandbits(1))
     idols = [u'Kousaka Honoka', u'Nishikino Maki', u'Ayase Eli', u'Minami Kotori', u'Hoshizora Rin', u'Koizumi Hanayo', u'Sonoda Umi', u'Toujou Nozomi', u'Yazawa Nico']
     if dummy and (card.rarity == 'SR' or card.rarity == 'R') and (image == 'card_image' or image == 'card_idolized_image') and card.name in idols:
         return '{}{}'.format(settings.IMAGES_HOSTING_PATH, 'cards/dummy/' + card.rarity + card.attribute + card.name.replace(' ', '_').replace('\'', '-') + ('Idolized' if image == 'card_idolized_image' else '') + '.png')

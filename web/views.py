@@ -2334,6 +2334,9 @@ def albumbuilder(request):
     if not request.user.is_authenticated():
         return redirect('/create/?next=/cards/albumbuilder/')
     context = globalContext(request)
+    if settings.HIGH_TRAFFIC:
+        context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+        return render(request, 'cachealbumbuilder.html', context)
     if 'albumbuilder_account' in request.GET:
         account = findAccount(int(request.GET['albumbuilder_account']), context.get('accounts', []), forceGetAccount=False)
         if not account:

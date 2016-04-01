@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _, string_concat
 from api import raw as api_raw
 from api import models
@@ -187,4 +188,13 @@ discussions = [
     'color': api_raw.raw_information[idol]['color'],
     'link': '/idol/' + idol + '/',
         'big': True,
-} for idol in api_raw.raw_information]
+} for idol in api_raw.raw_information] + [
+    {
+        'code': 'usicforever',
+        'not_translate_name': True,
+        'name': 'μ\'sic forever',
+        'image': 'http://i.schoolido.lu/cards/transparent/846idolizedTransparent.png',
+        'color': '#4075c1',
+        'full_size': True,
+    },
+]

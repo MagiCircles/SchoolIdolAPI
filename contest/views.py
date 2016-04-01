@@ -75,9 +75,9 @@ def collection_view(request, contestid):
         if int(contestid) == settings.GLOBAL_CONTEST_ID:
             return redirect('/cards/')
     except ValueError: return redirect('/contest/results/')
+    context = globalContext(request)
     if settings.HIGH_TRAFFIC:
         return render(request, 'disabled.html', context)
-    context = globalContext(request)
     contest = get_object_or_404(contest_models.Contest, pk=contestid)
     is_current = is_current_contest(contest)
     if is_current or is_future_contest(contest):

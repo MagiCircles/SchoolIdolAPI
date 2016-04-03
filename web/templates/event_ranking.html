@@ -3,13 +3,13 @@
 {% load gravatar %}
 {% load events %}
       {% for participation in participations %}
-      {% ifchanged participation.account.language %}
+      {% ifchanged participation.account_language %}
       {% if forloop.counter0 != 0 %}
       </table>
       {% endif %}
-      <table class="table text-right" id="ranking{{ participation.account.language }}">
-	{% with participation.account.language|languageToString as lang %}
-	<caption class="text-center" data-language="{{ participation.account.language }}">{% trans 'School Idol Tomodachi' %} {{ lang }} {% trans 'Ranking' %}</caption>
+      <table class="table text-right" id="ranking{{ participation.account_language }}">
+	{% with participation.account_language|languageToString as lang %}
+	<caption class="text-center" data-language="{{ participation.account_language }}">{% trans 'School Idol Tomodachi' %} {{ lang }} {% trans 'Ranking' %}</caption>
 	{% endwith %}
 	{% endifchanged %}
 	{% with participation|tier:event as tier %}
@@ -18,16 +18,24 @@
 	    <i class="flaticon-star"></i>
 	    <span class="tier">{{ tier }}</span>
 	  </td>
-	  <td class="text-left"><a href="/user/{{ participation.account.owner.username }}/#{{ participation.account.pk }}">
-	      {% include 'include/avatar.html' with av_user=participation.account.owner av_fixed=True av_size=15 av_image_size=40 av_inline=True %}
-	      {{ participation.account.nickname }}</a></td>
+	  <td class="text-left">
+	    <a href="{{ participation.account_link }}"{% if participation.account_owner_status and participation.account_owner_status != 'THANKS' %} data-user-status="{{ participation.account_owner_status|userStatusToString }}"{% endif %}>
+	      <div class="inline-block avatar_wrapper">
+		<img src="{{ participation.account_picture }}" class="avatar" height="40" width="40">
+	      </div>
+	      {{ participation.account_owner }}
+	      {% if participation.account_owner_status and participation.account_owner_status != 'THANKS' %}
+	      <i class="flaticon-heart" style="color: {{ participation.account_owner_status|userStatusToColor }};"></i>
+	      {% endif %}
+	    </a>
+	  </td>
 	  {% if with_song %}
 	  <td class="text-right">{% if participation.song_ranking %}<small class="text-grey">{% trans 'Song Ranking' %} # {{ participation.song_ranking }}{% endif %} </small></td>
 	  {% endif %}
 	  <td class="text-right">{% if participation.points %}{{ participation.points }} {% trans 'Points' %}{% endif %}</td>
 	  <td class="text-right">{% if participation.ranking %}<strong># {{ participation.ranking }}</strong>{% endif %}</td>
 	  <td width="17">
-	    {% if participation.account.owner == user %}
+	    {% if participation.account_owner == user.username %}
 	    <a href="/events/{{ event.japanese_name|urlencode }}/participations/#edit{{ participation.id }}" class="event-edit" data-toggle="tooltip" data-placement="top" title="{% trans 'Edit' %}">
 	      <i class="flaticon-edit"></i>
 	    </a>

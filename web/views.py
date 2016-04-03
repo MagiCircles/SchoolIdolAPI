@@ -1754,6 +1754,15 @@ def events(request):
     return render(request, 'events.html', context)
 
 def event(request, event):
+    """
+    SQL Queries:
+    - Context
+    - Event
+    - Event cards
+    - Event ranking JP
+    - Event ranking EN
+    - Event ranking other
+    """
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
     context['show_english_banners'] = not onlyJP(context)
@@ -1767,10 +1776,10 @@ def event(request, event):
     # get rankings
     event.all_cards = event.cards.all()
     if context['did_happen_japan']:
-        event.japanese_participations = event.participations.filter(account__language='JP').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
+        event.japanese_participations = event.participations.filter(account_language='JP').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
         if context['did_happen_world']:
-            event.english_participations = event.participations.filter(account__language='EN').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
-            event.other_participations = event.participations.exclude(account__language='JP').exclude(account__language='EN').select_related('account', 'account__owner', 'account__owner__preferences').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account__language', 'ranking_is_null', 'ranking'])
+            event.english_participations = event.participations.filter(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
+            event.other_participations = event.participations.exclude(account_language='JP').exclude(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account_language', 'ranking_is_null', 'ranking'])
 
     context['event'] = event
     return render(request, 'event.html', context)
@@ -1780,6 +1789,18 @@ def _findparticipation(id, participations):
         if str(participation.id) == id:
             return participation
     return None
+
+def _cache_eventparticipation(participation, account=None, account_owner=None):
+    if not account:
+        account = participation.account
+    if not account_owner:
+        account_owner = account.owner
+    participation.account_language = account.language
+    participation.account_link = '/user/' + account_owner.username + '/#' + str(account.id)
+    participation.account_picture = account_owner.preferences.avatar(size=100)
+    participation.account_name = unicode(account)
+    participation.account_owner = account_owner.username
+    participation.account_owner_status = account_owner.preferences.status
 
 def eventparticipations(request, event):
     if not request.user.is_authenticated() or request.user.is_anonymous():
@@ -1803,7 +1824,9 @@ def eventparticipations(request, event):
                 else:
                     form = forms.EventParticipationNoAccountForm(request.POST, instance=participation)
                     if form.is_valid():
-                        form.save()
+                        eventparticipation = form.save(commit=False)
+                        _cache_eventparticipation(eventparticipation, account_owner=request.user)
+                        eventparticipation.save()
                         pushActivity('Ranked in event',
                                      eventparticipation=participation,
                                      # Prefetch:
@@ -1816,8 +1839,10 @@ def eventparticipations(request, event):
             if form.is_valid():
                 participation = form.save(commit=False)
                 # check if the user owns the account
-                if findAccount(participation.account_id, context['accounts']):
+                account = findAccount(participation.account_id, context['accounts'])
+                if account:
                     participation.event = event
+                    _cache_eventparticipation(participation, account=account, account_owner=request.user)
                     participation.save()
                     pushActivity('Ranked in event',
                                  eventparticipation=participation,

@@ -644,6 +644,13 @@ class EventParticipation(ExportModelOperationsMixin('EventParticipation'), model
     ranking = models.PositiveIntegerField(_('Ranking'), null=True, blank=True)
     song_ranking = models.PositiveIntegerField(_('Song Ranking'), null=True, blank=True)
     points = models.PositiveIntegerField(_('Points'), null=True, blank=True)
+    # cache
+    account_language = models.CharField(choices=LANGUAGE_CHOICES, default='JP', max_length=10)
+    account_link = models.CharField(max_length=200, null=True, blank=True)
+    account_picture = models.CharField(max_length=500, null=True, blank=True)
+    account_name = models.CharField(max_length=100, null=True, blank=True)
+    account_owner = models.CharField(max_length=100, null=True, blank=True)
+    account_owner_status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
 
     class Meta:
         unique_together = (('event', 'account'))

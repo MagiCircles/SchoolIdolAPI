@@ -378,6 +378,19 @@ raw_information_n = {
     },
 }
 
+all_graphic_designers = [
+    ('http://i.schoolido.lu/web/static/cards/ur_pairs/66NicoCleanUR.png', 'mahousho_'),
+]
+
+community_artists = []
+
+for idol in raw_information:
+    if 'chibi' in raw_information[idol]:
+        community_artists += raw_information[idol]['chibi']
+for idol in raw_information_n:
+    if 'chibi' in raw_information_n[idol]:
+        community_artists += raw_information_n[idol]['chibi']
+
 app_data = {
     'android': {
         'version': '1.0',

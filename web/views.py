@@ -28,7 +28,7 @@ from api import models, raw
 from contest import models as contest_models
 from web import forms, donations, transfer_code, raw as web_raw
 from web.links import links as links_list
-from web.templatetags.imageurl import ownedcardimageurl, eventimageurl
+from web.templatetags.imageurl import ownedcardimageurl, eventimageurl, _imageurl
 from utils import *
 from collections import OrderedDict
 import urllib, hashlib
@@ -1911,21 +1911,15 @@ def aboutview(request):
             context['donators_high'].append(user)
     context['total_donators'] = settings.TOTAL_DONATORS
     context['donations'] = donations.donations
-    context['artists'] = []
-    for idol in raw.raw_information:
-        if 'chibi' in raw.raw_information[idol]:
-            context['artists'] += raw.raw_information[idol]['chibi']
-    for idol in raw.raw_information_n:
-        if 'chibi' in raw.raw_information_n[idol]:
-            context['artists'] += raw.raw_information_n[idol]['chibi']
+    context['artists'] = raw.community_artists
 
     contests = contest_models.Contest.objects.filter(begin__lte=timezone.now()).filter(Q(image_by__isnull=False) | Q(result_image_by__isnull=False)).select_related('image_by', 'result_image_by')
-    context['graphic_designers'] = []
+    context['graphic_designers'] = raw.all_graphic_designers[:]
     for contest in contests:
         if contest.image_by and contest.image:
-            context['graphic_designers'].append((contest.image, contest.image_by))
+            context['graphic_designers'].append((_imageurl(contest.image), contest.image_by.username))
         if contest.result_image_by and contest.result_image:
-            context['graphic_designers'].append((contest.result_image, contest.result_image_by))
+            context['graphic_designers'].append((_imageurl(contest.result_image), contest.result_image_by.username))
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

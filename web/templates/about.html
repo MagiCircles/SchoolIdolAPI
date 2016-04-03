@@ -112,8 +112,8 @@
       {% for g in graphic_designers %}
       {% with image=g.0 by=g.1 %}
       <div class="col-md-3">
-	<a href="{{ image|userimage }}" target="_blank" class="graphic_designer" style="background-image: url('{{ image|userimage }}');"></a> {% trans 'by' %}
-	<a href="/user/{{ by.username }}/" target="_blank">{{ by.username }}</a>
+	<a href="{{ image }}" target="_blank" class="graphic_designer" style="background-image: url('{{ image }}');"></a> {% trans 'by' %}
+	<a href="/user/{{ by }}/" target="_blank">{{ by }}</a>
 	<br><br>
       </div>
       {% endwith %}

@@ -50,13 +50,11 @@ $(document).ready(function() {
     $('#activities-buttons .all').click(function() {
 	if ($('#activities').length == 0) {
 	    $('#myactivities').attr('id', 'activities');
-	    console.log('all');
 	    loadActivities();
 	}
     });
     $('#activities-buttons .following').click(function() {
 	if ($('#myactivities').length == 0) {
-	    console.log('following');
 	    $('#activities').attr('id', 'myactivities');
 	    loadActivities();
 	}

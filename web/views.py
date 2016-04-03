@@ -251,11 +251,6 @@ def index(request):
 
     # Get random character
     context['character'] = None
-    us = ["Kousaka Honoka","Nishikino Maki","Ayase Eli","Minami Kotori","Hoshizora Rin","Koizumi Hanayo","Sonoda Umi","Toujou Nozomi","Yazawa Nico"]
-    if request.user.is_authenticated() and request.user.preferences.best_girl and request.user.preferences.best_girl in us:
-        context['character'] = 'special/april/' + request.user.preferences.best_girl + '.png'
-    else:
-        context['character'] = 'special/april/' + random.choice(us) + '.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:

@@ -1,13 +1,11 @@
 from django import template
 from django.conf import settings
 from web.utils import chibiimage as _chibiimage
-from web.templatetags.getattribute import getattribute
 from api.models import LINK_URLS
 from api.raw import raw_information
 import os.path
 import string
 import re
-import random
 
 register = template.Library()
 
@@ -16,12 +14,6 @@ def _imageurl(path):
 
 @register.simple_tag(takes_context=True)
 def imageurl(context, card, image):
-    # April fool stuff
-    dummy = 'force_dummy' in context
-    idols = [u'Kousaka Honoka', u'Nishikino Maki', u'Ayase Eli', u'Minami Kotori', u'Hoshizora Rin', u'Koizumi Hanayo', u'Sonoda Umi', u'Toujou Nozomi', u'Yazawa Nico']
-    if dummy and (card.rarity == 'SR' or card.rarity == 'R') and (image == 'card_image' or image == 'card_idolized_image') and card.name in idols:
-        return '{}{}'.format(settings.IMAGES_HOSTING_PATH, 'cards/dummy/' + card.rarity + card.attribute + card.name.replace(' ', '_').replace('\'', '-') + ('Idolized' if image == 'card_idolized_image' else '') + '.png')
-    # / April fool stuff
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:

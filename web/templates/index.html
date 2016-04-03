@@ -25,7 +25,7 @@
 {% load colorStringToHex %}
 {% load mod %}
 
-<div class="talking-character hidden-sm hidden-xs" style="background-image: url('{% if character %}{{ character|userimage }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}'){# April fool stuff #}; width: 512px; height: 720px; background-position-y: initial; background-position-x: initial;"></div>
+<div class="talking-character hidden-sm hidden-xs" style="background-image: url('{% if character %}{{ character|userimage }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}');"></div>
 <div class="dialog hidden-sm hidden-xs">
   <div class="dialog-background">
     <div class="row">

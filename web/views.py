@@ -2468,17 +2468,22 @@ def usicaltriofestival(request):
     context = globalContext(request)
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
     context['entries'] = models.usicaltriofestival_entries[:]
-    if (request.method == 'POST'
+    end = datetime.datetime(2016, 04, 4, 5, 0, 0, 0, pytz.UTC)
+    now = timezone.now()
+    if (end > now
+        and request.method == 'POST'
         and 'cancel' in request.POST
         and request.user.is_authenticated()):
         models.UsicalVote.objects.filter(user=request.user).delete()
     context['your_vote'] = None
+    context['ended'] = end <= now
     context['is_fes_staff'] = False
     if request.user.is_authenticated():
         context['is_fes_staff'] = request.user.username in ['ainlina', 'schoolidolpanda', 'OceanSong', 'QUARTZ'] or request.user.is_staff
         try: context['your_vote'] = models.UsicalVote.objects.get(user=request.user)
         except ObjectDoesNotExist: pass
-    if (request.method == 'POST'
+    if (end > now
+        and request.method == 'POST'
         and 'entry' in request.POST
         and request.user.is_authenticated()
         and context['your_vote'] is None):
@@ -2492,7 +2497,7 @@ def usicaltriofestival(request):
                 context['error'] = 'Already voted'
         except ValueError:
             context['error'] = 'Invalid entry'
-    if request.user.is_authenticated() and context['is_fes_staff'] and 'view_ranking' in request.GET:
+    if (request.user.is_authenticated() and context['is_fes_staff'] and 'view_ranking' in request.GET) or end <= now:
         context['view_ranking'] = True
         context['total_votes'] = models.UsicalVote.objects.all().count()
         query = 'SELECT id, entry, COUNT(entry) AS votes FROM api_usicalvote GROUP BY entry ORDER BY votes DESC;'

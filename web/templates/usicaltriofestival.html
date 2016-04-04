@@ -9,6 +9,7 @@
 {% block shareimagetwitter %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
 
 {% block js %}
+{% if not ended %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script>
   var countdowndate = "April 3, 2016 21:00:00 -0800";
@@ -20,13 +21,14 @@
   render: countdownRender
   });
 </script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 <div id="contest-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
   <div class="container text-center">
     <h1 class="margin50">
-      {% if is_fes_staff %}
+      {% if is_fes_staff and not ended %}
       <small>Staff only: <a href="?{% if not view_ranking %}view_ranking{% endif %}">{% if view_ranking %}Hide{% else %}View{% endif %} ranking</a></small>
       {% endif %}
       <img src="/static/usicaltriofestival.png" class="img-responsive">
@@ -36,7 +38,7 @@
     <div class="text-right">
       <a href="https://docs.google.com/document/d/1xASQ8dRHXYAbAjz59NnvrUHjY295_4Qdsep9VQNXE9s/edit" target="_blank">{% trans 'Learn more' %}</a>
     </div>
-    <h2 id="countdown"></h2>
+    {% if ended %}<h2 id="countdown"></h2>{% endif %}
     {% if error %}
     <div class="alert alert-danger">
       {{ error }}
@@ -69,6 +71,9 @@
 	  <div class="panel-footer">
 	    {% if view_ranking %}
 	    #{{ forloop.counter }} with {{ entry.5 }} votes
+	    {% if your_vote and your_vote.entry == entry.0 %}
+	    <br>You voted for this group.
+	    {% endif %}
 	    {% else %}
 	    {% if not your_vote %}
 	    {% if user.is_authenticated %}

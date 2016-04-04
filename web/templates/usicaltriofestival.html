@@ -38,7 +38,7 @@
     <div class="text-right">
       <a href="https://docs.google.com/document/d/1xASQ8dRHXYAbAjz59NnvrUHjY295_4Qdsep9VQNXE9s/edit" target="_blank">{% trans 'Learn more' %}</a>
     </div>
-    {% if ended %}<h2 id="countdown"></h2>{% endif %}
+    {% if not ended %}<h2 id="countdown"></h2>{% endif %}
     {% if error %}
     <div class="alert alert-danger">
       {{ error }}

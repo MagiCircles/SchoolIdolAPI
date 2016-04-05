@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load imageurl %}
+{% load choicesToString %}
+{% load i18n %}
+{% load skillup %}
+{% load random_int %}
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/cards.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/cards.png{% endblock %}
+
+{% block title %}{% trans 'Level up the skill of your cards' %}{% endblock %}
+
+{% block js %}
+<script src="/static/js/skillup.js"></script>
+<script>
+  var message_skill_level = '{% trans 'Skill' %} {% trans 'Level' %}';
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="skillup-page" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+  <div class="container">
+  <h1 class="text-center margin50">{% trans 'Level up the skill of your cards' %}</h1>
+  <div class="alert alert-info fontx1-2">
+    <div class="pull-right text-right">
+      <i class="flaticon-about fontx4"></i>
+    </div>
+    <ol>
+      <li>{% trans 'Add all the cards you own in the game in your School Idol Tomodachi account.' %}</li>
+      <li>{% trans 'If you already have some cards in your deck with a skill higher than 1, click "Advanced" when you add it to specify the skill level. You can also edit the skill later when you edit the card.' %}</li>
+      <li>{% blocktrans %}Don't forget to add the cards you have in your present box!{% endblocktrans %}</li>
+      <li>{% trans 'Come back to this page to check out the cards you can practice together to level up their skills!' %}</li>
+      <li>{% trans 'While you go through this list to level up the skill of your cards, click the "+1" button to keep your cards updated and click X to delete the cards you practiced away.' %}</li>
+    </ol>
+  </div>
+  {% if not user.is_authenticated %}
+  <br><br>
+  <div class="row">
+    <div class="col-md-6">
+      <a href="/login/?next=/skillup/" class="btn btn-xl btn-block btn-{{ btnColor }}">{% trans 'Login' %}</a>
+    </div>
+    <div class="col-md-6">
+      <a href="/create/?next=/skillup/" class="btn btn-xl btn-block btn-{{ btnColor }}">{% trans 'Sign Up' %}</a>
+    </div>
+  </div>
+  {% elif not account %}
+  <form class="selectaccount text-right">
+    <select name="account">
+      <option value=""></option>
+      {% for account in accounts %}
+      <option value="{{ account.id }}">{{ account }}</option>
+      {% endfor %}
+    </select>
+    <input class="btn btn-{{ btnColor }}" type="submit" value="{% trans 'Go' %}">
+  </form>
+  {% else %}
+  <br><br>
+  <h2 class="margin30 text-center">
+    {% if account.center_id %}
+    <img class="center circled" src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="30">
+    {% endif %}
+    {{ account }}
+    <span class="tiny"><a href="/user/{{ user.username }}/#{{ account.pk }}" target="_blank"><i class="flaticon-link"></i></a></span>
+  </h2>
+  <div class="table-responsive">
+  <table class="table">
+    {% for ownedcard in ownedcards %}
+    {% ifchanged ownedcard.card.skill %}
+      </td>
+    </tr>
+    <tr>
+      <th width="20%">
+	<span class="fontx1-5">
+	  {{ ownedcard.card.skill }}
+	</span>
+	<p>
+	  {{ ownedcard.card.skill_details }}
+	</p>
+	<span class="fontx4">
+	  <i class="flaticon-{{ ownedcard.card.skill|skillToFlaticon }}"></i>
+	</span>
+      </th>
+      <td>
+      {% endifchanged %}
+      {% ifchanged ownedcard|ifchanged_skill_skill_level %}
+      </div>
+      <div class="skill-area" data-skill-level="{{ ownedcard.skill }}">
+	<h4 class="fontx1-5 text-center"><i class="flaticon-skill"></i> {% trans 'Skill' %} {% trans 'Level' %} <b>{{ ownedcard.skill }}</b></h4>
+      {% endifchanged %}
+      <figure data-ownedcard-id="{{ ownedcard.id }}">
+	<a href="/cards/{{ ownedcard.card.id }}/" target="_blank">
+	  {% if ownedcard.idolized %}
+	  <img src="{% imageurl card=ownedcard.card image='round_card_idolized_image' %}" alt="{{ ownedcard.card }}" width="100">
+	  {% else %}
+	  <img src="{% imageurl card=ownedcard.card image='round_card_image' %}" alt="{{ ownedcard.card }}" width="100">
+	  {% endif %}
+	</a>
+	<figcaption class="text-{{ ownedcard.card.attribute }}">
+	  {% if ownedcard.stored == 'Deck' %}
+	  <i class="flaticon-deck"></i> {% trans 'In deck' %}
+	  {% elif ownedcard.stored == 'Album' %}
+	  <i class="flaticon-album"></i> {% trans 'In album' %}
+	  {% elif ownedcard.stored == 'Box' %}
+	  <i class="flaticon-present"></i> {% trans 'In present box' %}
+	  {% endif %}
+	  <button type="submit" name="delete" class="btn btn-sm btn-link"><span class="text-danger"><i class="flaticon-delete"></i></span></button>
+	  {% if ownedcard.skill < 8 %}
+	  <button type="submit" name="skillup" class="btn btn-sm btn-{{ ownedcard.card.attribute }}">+1 <i class="flaticon-skill"></i></button>
+	  {% endif %}
+	</figcaption>
+      </figure>
+      {% endfor %}
+  </table>
+  </div>
+{% endif %}
+<br><br><br>
+  {% include 'disqus.html' %}
+</div>
+{% endblock %}

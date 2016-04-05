@@ -586,7 +586,7 @@ links = [
                     'language': 'world',
                 },
                 {
-                    'name': _('Youtube Channel μ\'s（ラブライブ！） by Lantis'),
+                    'name': 'Youtube Channel μ\'s（ラブライブ！） by Lantis',
                     'url': 'https://www.youtube.com/playlist?list=PLmgGL3shzkGM9akfMoobnVhE3XCP42lHb',
                     'type': 'info',
                     'language': 'japanese',

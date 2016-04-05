@@ -49,7 +49,7 @@ links = [
                 {
                     'name': _('APKs to play on rooted Android'),
                     'description': _('"Illegal access detected!"? Here is the solution.'),
-                    'url': 'http://www.reddit.com/r/SchoolIdolFestival/comments/33134h/patched_school_idol_festival_apks_for_rooted/',
+                    'url': 'https://llsif.kawaiii.link/',
                     'type': 'tutorial',
                     'language': 'world',
                     'size': 'small',

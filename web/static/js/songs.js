@@ -4,10 +4,6 @@ function collapseSongs() {
     $('.song a[data-target^="#collapseMore"]').click(function(event) {
 	event.preventDefault();
 	$($(this).attr('data-target')).collapse('toggle');
-	var song = $(this).closest('.song');
-	if (song.find('.itunes a').attr('href') == '') {
-	    loadiTunesData($(this).closest('.song'), function() {}, function() {});
-	}
 	return false;
     });
 }

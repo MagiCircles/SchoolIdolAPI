@@ -2456,7 +2456,7 @@ def ajax_albumbuilder_editcard(request, ownedcard_id):
     if not ownedcard.idolized:
         ownedcard.max_bond = False
         ownedcard.max_level = False
-    if ownedcard.stored == 'Album':
+    if ownedcard.stored != 'Deck':
         ownedcard.skill = 1
     ownedcard.save()
     # Push/update activity on card idolized

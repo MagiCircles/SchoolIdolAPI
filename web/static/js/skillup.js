@@ -58,6 +58,12 @@ $(document).ready(function() {
 		if (data['skill'] == 8) {
 		    ownedcard.find('[name="skillup"]').remove();
 		}
+		if (data['stored'] == 'Deck') {
+		    var flaticon_present = ownedcard.find('.flaticon-present');
+		    flaticon_present.removeClass();
+		    flaticon_present.addClass('flaticon-deck');
+		    ownedcard.find('.stored-in').text(message_in_deck);
+		}
 	    },
 	    error: genericAjaxError,
 	});

@@ -2453,6 +2453,8 @@ def ajax_albumbuilder_editcard(request, ownedcard_id):
             raise PermissionDenied()
     if int(ownedcard.skill) > 8:
         ownedcard.skill = 8
+    if ownedcard.skill and 'skill' in request.POST:
+        ownedcard.stored = 'Deck'
     if not ownedcard.idolized:
         ownedcard.max_bond = False
         ownedcard.max_level = False
@@ -2535,6 +2537,6 @@ def skillup(request):
         elif len(context['accounts']) == 1:
             account = context['accounts'][0]
         if account:
-            context['ownedcards'] = models.OwnedCard.objects.filter(owner_account=account, card__skill__in=_skillup_skills).exclude(stored='Favorite').order_by('card__skill', '-skill').select_related('card')
+            context['ownedcards'] = models.OwnedCard.objects.filter(owner_account=account, card__skill__in=_skillup_skills).exclude(stored='Favorite').exclude(stored='Album').order_by('card__skill', '-skill').select_related('card')
         context['account'] = account
     return render(request, 'skillup.html', context)

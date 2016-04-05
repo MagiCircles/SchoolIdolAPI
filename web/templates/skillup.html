@@ -11,9 +11,10 @@
 {% block title %}{% trans 'Level up the skill of your cards' %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/skillup.js"></script>
+<script src="/static/js/skillup.js?1"></script>
 <script>
   var message_skill_level = '{% trans 'Skill' %} {% trans 'Level' %}';
+  var message_in_deck = '{% trans 'In deck' %}';
 </script>
 {% endblock %}
 
@@ -97,11 +98,9 @@
 	</a>
 	<figcaption class="text-{{ ownedcard.card.attribute }}">
 	  {% if ownedcard.stored == 'Deck' %}
-	  <i class="flaticon-deck"></i> {% trans 'In deck' %}
-	  {% elif ownedcard.stored == 'Album' %}
-	  <i class="flaticon-album"></i> {% trans 'In album' %}
+	  <i class="flaticon-deck"></i> <span class="stored-in">{% trans 'In deck' %}</span>
 	  {% elif ownedcard.stored == 'Box' %}
-	  <i class="flaticon-present"></i> {% trans 'In present box' %}
+	  <i class="flaticon-present"></i> <span class="stored-in">{% trans 'In present box' %}</span>
 	  {% endif %}
 	  <button type="submit" name="delete" class="btn btn-sm btn-link"><span class="text-danger"><i class="flaticon-delete"></i></span></button>
 	  {% if ownedcard.skill < 8 %}

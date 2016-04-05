@@ -116,8 +116,8 @@ LANGUAGES = (
     ('fr', _('French')),
     ('pt', _('Portuguese')),
     ('pt-br', _('Brazilian Portuguese')),
-    ('zh-hans', _('Simplified Chinese')),
-    ('zh-hant', _('Traditional Chinese')),
+    ('zh-cn', _('Simplified Chinese')),
+    ('zh-tw', _('Traditional Chinese')),
     ('id', _('Indonesian')),
     ('tr', _('Turkish')),
 )

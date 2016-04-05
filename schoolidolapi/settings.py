@@ -115,7 +115,11 @@ LANGUAGES = (
     ('ru', _('Russian')),
     ('fr', _('French')),
     ('pt', _('Portuguese')),
-    ('zh', _('Chinese')),
+    ('pt-br', _('Brazilian Portuguese')),
+    ('zh-hans', _('Simplified Chinese')),
+    ('zh-hant', _('Traditional Chinese')),
+    ('id', _('Indonesian')),
+    ('tr', _('Turkish')),
 )
 
 TIME_ZONE = 'UTC'

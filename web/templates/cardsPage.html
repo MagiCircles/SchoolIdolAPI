@@ -510,7 +510,7 @@
 	      <a href="{% if user.is_authenticated %}{% if accounts %}#quickAddCard{% else %}/addaccount/{% endif %}{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 	      <div class="pull-right">
 		{% if card.skill %}
-		<i class="flaticon-{{ card.skill|skillToFlaticon}}" title="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill %}{{ card.japanese_skill }}{% else %}{{ card.skill }}{% endif %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% elif card.skill_details %}{{ card.skill_details }}{% endif %}" data-trigger="hover"></i>
+		<i class="flaticon-{{ card.skill|skillToFlaticon }}" title="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill %}{{ card.japanese_skill }}{% else %}{{ card.skill }}{% endif %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% elif card.skill_details %}{{ card.skill_details }}{% endif %}" data-trigger="hover"></i>
 		{% endif %}
 		{% if card.is_promo %}
 		<i class="flaticon-promo" title="{% trans 'Promo Card' %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'This card comes with ' %}: {{ card.promo_item }}" data-trigger="hover"></i>
@@ -537,6 +537,13 @@
       {% endfor %}
     </div> <!-- row -->
     </div>
+{% if cards_links %}
+<div class="bg-Rainbow-5 home-section">
+  <div class="container">
+    {% include 'include/links_link.html' with link=cards_links with_links_button=True card=cards_links_card do_not_show=1 %}
+  </div>
+</div>
+{% endif %}
     {% if single %}
     {% include "disqus.html" %}
     {% elif total_cards < 9 %}

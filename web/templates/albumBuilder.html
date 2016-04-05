@@ -6,6 +6,7 @@
     <div class="col-md-6">
       <h1 class="margin50">
 	{% trans 'Album Builder' %}
+	{% if account %}
 	<br><small>
 	  {% if account.center_id %}
 	  <img class="center circled" src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="30">
@@ -13,6 +14,7 @@
 	  {{ account }}
 	  <span class="tiny"><a href="/user/{{ user.username }}/#{{ account.pk }}" target="_blank"><i class="flaticon-link"></i></a></span>
 	</small>
+	{% endif %}
       </h1>
     </div>
     <div class="col-md-6">
@@ -23,6 +25,18 @@
       <br>
     </div>
   </div>
+  {% if not account %}
+  <br><br><br>
+  <form class="text-right fontx2" style="max-width: 300px; margin: auto;">
+    <select name="albumbuilder_account">
+      <option value=""></option>
+      {% for account in accounts %}
+      <option value="{{ account.id }}">{{ account }}</option>
+      {% endfor %}
+    </select>
+    <input class="btn btn-{{ btnColor }}" type="submit" value="{% trans 'Go' %}">
+  </form>
+  {% else %}
   <table class="table table-responsive" data-account-id="{{ account.id }}">
     <tr>
       <th colspan="2" width="350">{% trans 'Cards' %}</th>
@@ -64,4 +78,5 @@
     {% endfor %}
     {% endfor %}
   </table>
+  {% endif %}
 </div>

@@ -28,6 +28,7 @@ from api import models, raw
 from contest import models as contest_models
 from web import forms, donations, transfer_code, raw as web_raw
 from web.links import links as links_list
+from web.templatetags.choicesToString import skillsIcons
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl, _imageurl
 from utils import *
 from collections import OrderedDict
@@ -298,7 +299,7 @@ def password_reset_confirm(request, uidb64, token):
 
 def create(request):
     if request.user.is_authenticated() and not request.user.is_anonymous():
-        raise PermissionDenied()
+        return redirect('/user/' + request.user.username + '/')
     if request.method == "POST":
         form = forms.CreateUserForm(request.POST)
         if form.is_valid():
@@ -587,6 +588,9 @@ def cards(request, card=None, ajax=False):
     context['page'] = page + 1
     context['ajax'] = ajax
     if ajax:
+        if not (page % 5):
+            context['cards_links'] = (link for link in links_list if link['link'] == 'cards').next()
+            context['cards_links_card'] = models.Card.objects.filter(name=context['cards_links']['idol'], transparent_idolized_image__isnull=False).order_by('?')[0]
         return render(request, 'cardsPage.html', context)
     return render(request, 'cards.html', context)
 
@@ -2351,24 +2355,24 @@ def albumbuilder(request):
     if settings.HIGH_TRAFFIC:
         context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
         return render(request, 'cachealbumbuilder.html', context)
+    account = None
     if 'albumbuilder_account' in request.GET:
         account = findAccount(int(request.GET['albumbuilder_account']), context.get('accounts', []), forceGetAccount=False)
         if not account:
             raise Http404
-    else:
-        return redirect('/cards/')
-    context, cards = get_cards_queryset(request=request, context=context, card=None)
-    owned_queryset = models.OwnedCard.objects.filter(owner_account=account).order_by('-idolized', '-id')
-    owned_queryset = owned_queryset.filter(Q(stored='Deck') | Q(stored='Album'))
-    cards = cards.prefetch_related(Prefetch('ownedcards', queryset=owned_queryset, to_attr='owned_cards'))
-    if account.language != 'JP':
-        cards = cards.filter(japan_only=False)
+    if account:
+        context, cards = get_cards_queryset(request=request, context=context, card=None)
+        owned_queryset = models.OwnedCard.objects.filter(owner_account=account).order_by('-idolized', '-id')
+        owned_queryset = owned_queryset.filter(Q(stored='Deck') | Q(stored='Album'))
+        cards = cards.prefetch_related(Prefetch('ownedcards', queryset=owned_queryset, to_attr='owned_cards'))
+        if account.language != 'JP':
+            cards = cards.filter(japan_only=False)
+        context['account'] = account
+        context['albumbuilder_account'] = account
+        context['cards'] = cards
     cardsinfo = settings.CARDS_INFO
     context['filters'] = get_cards_form_filters(request, cardsinfo)
     context['show_filter_button'] = True
-    context['account'] = account
-    context['cards'] = cards
-    context['albumbuilder_account'] = account
     context['view'] = 'albumbuilder'
     return render(request, 'cards.html', context)
 
@@ -2447,6 +2451,8 @@ def ajax_albumbuilder_editcard(request, ownedcard_id):
             setattr(ownedcard, key, value)
         else:
             raise PermissionDenied()
+    if int(ownedcard.skill) > 8:
+        ownedcard.skill = 8
     if not ownedcard.idolized:
         ownedcard.max_bond = False
         ownedcard.max_level = False
@@ -2512,3 +2518,23 @@ def usicaltriofestival(request):
     else:
         random.shuffle(context['entries'])
     return render(request, 'usicaltriofestival.html', context)
+
+_skillup_skills = [skill for skill in skillsIcons.keys() if skill != 'Score Up' and skill != 'Healer' and skill != 'Perfect Lock']
+
+def skillup(request):
+    context = globalContext(request)
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    account = None
+    if request.user.is_authenticated():
+        if 'account' in request.GET:
+            account = findAccount(int(request.GET['account']), context.get('accounts', []), forceGetAccount=False)
+            if not account:
+                raise Http404
+        elif len(context['accounts']) == 0:
+            return redirect('/addaccount/?next=/skillup/')
+        elif len(context['accounts']) == 1:
+            account = context['accounts'][0]
+        if account:
+            context['ownedcards'] = models.OwnedCard.objects.filter(owner_account=account, card__skill__in=_skillup_skills).exclude(stored='Favorite').order_by('card__skill', '-skill').select_related('card')
+        context['account'] = account
+    return render(request, 'skillup.html', context)

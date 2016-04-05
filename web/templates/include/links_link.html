@@ -11,6 +11,7 @@
 
 	  <ul class="list-group">
 	    {% for url in link.links %}
+	    {% if forloop.counter != do_not_show %}
 	    <a href="{{ url.url }}" target="_blank" class="list-group-item"{% if url.type == 'tutorial' %}
 	       data-toggle="popover" data-placement="right" data-content="Tutorial" data-trigger="hover"
 	       {% elif url.type == 'info' %}
@@ -42,6 +43,7 @@
 		{% endif %}
 		{% if url.size == 'small' %}</small>{% endif %}
 	    </a>
+	    {% endif %}
 	    {% endfor %}
 	  </ul>
 	  {% if with_links_button %}

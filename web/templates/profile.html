@@ -313,6 +313,9 @@
 		  {% if account.verified == 0 and account.deck and account.friend_id and account.rank >= 80 %}
 		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a>
 		  {% endif %}
+		  <br>
+		  <a class="btn btn-link btn-sm" href="/cards/albumbuilder/?albumbuilder_account={{ account.id }}&ordering=id" target="_blank"><i class="flaticon-album"></i> {% trans 'Album Builder' %}</a>
+		  <a class="btn btn-link btn-sm" href="/skillup/?account={{ account.id }}" target="_blank"><i class="flaticon-skill"></i> {% trans 'Level up the skill of your cards' %}</a>
 		  <br><br>
 		  <a class="btn btn-{{ attribute }} btn-block btn-lg" href="#postActivity{{ account.pk }}" data-toggle="collapse">{% trans 'Post your own activity' %}</a>
 		  {% if posted_activity %}

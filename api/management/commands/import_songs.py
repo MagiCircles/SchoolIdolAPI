@@ -67,26 +67,34 @@ def import_songs(opt):
                 song['rank'] = rank
                 song, created = models.Song.objects.update_or_create(name=song['name'], defaults=song)
                 print 'Done.'
-                if not local and not noimages and (redownload or not song.image):
-                    print "  Import song image...",
+                if not local and (redownload or not song.image or not song.romaji_name):
+                    print "  Import song image and/or song name...",
                     url = 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(song.name.replace('Piano Mix', 'Piano mix').replace('ぶる~べりぃ', 'ぶる～べりぃ').encode('utf-8'))
-                    f_song = urllib2.urlopen(url)
-                    song_soup = BeautifulSoup(f_song.read())
-                    content = song_soup.find('div', { 'id': 'mw-content-text'})
-                    if content is not None:
-                        image = content.find('img')
-                        if image is not None:
-                            image = 'http://decaf.kouhi.me/' + image.get('src')
-                            song.image.save(song.name + '.jpg', downloadShrunkedImage(image))
-                        title_line = content.find_all('li')[0]
-                        if clean(title_line.find('b').extract().text) == 'Title (romaji):':
-                            song.romaji_name = clean(title_line.text)
-                        title_line = content.find_all('li')[1]
-                        if clean(title_line.find('b').extract().text) == 'Title (English):':
-                            song.translated_name = clean(title_line.text)
-                        print 'Done'
-                        song.save()
-                    f_song.close()
+                    try:
+                        f_song = urllib2.urlopen(url)
+                        song_soup = BeautifulSoup(f_song.read())
+                        content = song_soup.find('div', { 'id': 'mw-content-text'})
+                        if content is not None:
+                            image = content.find('img')
+                            if (not song.image or redownload) and image is not None and not noimages:
+                                image = 'http://decaf.kouhi.me/' + image.get('src')
+                                song.image.save(song.name + '.jpg', downloadShrunkedImage(image))
+                            title_line = content.find_all('li')[0]
+                            if clean(title_line.find('b').text) == 'Title (romaji/English):':
+                                title_line.find('b').extract()
+                                song.romaji_name = clean(title_line.text)
+                                song.translated_name = clean(title_line.text)
+                            else:
+                                if clean(title_line.find('b').extract().text) == 'Title (romaji):':
+                                    song.romaji_name = clean(title_line.text)
+                                title_line = content.find_all('li')[1]
+                                if clean(title_line.find('b').extract().text) == 'Title (English):':
+                                    song.translated_name = clean(title_line.text)
+                            print 'Done'
+                            song.save()
+                        f_song.close()
+                    except urllib2.HTTPError:
+                        print 'Decaf wiki page doesn\'t exist'
                 if redownload or song.itunes_id is None:
                     song_name = song.name.replace('&', ' ')
                     print '  Import itunes song id...'

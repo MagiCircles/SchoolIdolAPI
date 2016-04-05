@@ -41,11 +41,11 @@
 		    <tr>
 		      <th colspan="2" class="text-center text-nobold">
 			<h4 class="text-bold"><span class="song_name">{{ song.name }}</span>
-			  <a href="/songs/{{ song.name|urlencode }}" target="_blank"><small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
+			  <a href="/songs/{{ song.name|urlencode }}/" target="_blank"><small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
 			</h4>
 			{% if LANGUAGE_CODE != 'ja' %}
 			{% if song.romaji_name %}{{ song.romaji_name }}<br>{% endif %}
-			{% if song.translated_name %}<small><i>{{ song.translated_name }}</i></small>{% endif %}
+			{% if song.translated_name and song.translated_name != song.romaji_name %}<small><i>{{ song.translated_name }}</i></small>{% endif %}
 			{% endif %}
 		      </th>
 		    </tr>

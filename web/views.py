@@ -1713,7 +1713,7 @@ def events(request):
                 )
     if 'event_type' in request.GET and request.GET['event_type']:
         if request.GET['event_type'] == 'Token':
-            queryset = queryset.exclude(japanese_name__icontains='Score Match').exclude(japanese_name__icontains='Medley Festival')
+            queryset = queryset.exclude(japanese_name__icontains='Score Match').exclude(japanese_name__icontains='Medley Festival').exclude(japanese_name__contains='Challenge Festival')
         else:
             queryset = queryset.filter(japanese_name__icontains=request.GET['event_type'])
     if 'idol' in request.GET and request.GET['idol']:
@@ -1807,7 +1807,7 @@ def eventparticipations(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
     context['your_participations'] = event.participations.filter(account__owner=request.user).select_related('account')
-    if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name:
+    if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name or 'Challenge Festival' in event.japanese_name:
         context['with_song'] = False
     else:
         context['with_song'] = True

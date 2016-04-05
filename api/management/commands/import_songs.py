@@ -3,7 +3,7 @@ from api.management.commands.importbasics import *
 
 def import_songs(opt):
     local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
-    events = models.Event.objects.exclude(japanese_name__contains='Score Match').exclude(japanese_name__contains='Medley Festival').exclude(japanese_name__contains='again').order_by('beginning')
+    events = models.Event.objects.exclude(japanese_name__contains='Score Match').exclude(japanese_name__contains='Medley Festival').exclude(japanese_name__contains='Challenge Festival').exclude(japanese_name__contains='again').order_by('beginning')
     print '### Import songs'
     if local:
         f = open('songs.html', 'r')

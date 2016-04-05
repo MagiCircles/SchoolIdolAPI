@@ -2322,16 +2322,15 @@ msgstr "Versione Giapponese"
 
 #: web/links.py:141
 msgid "Japanese Bushimo Love Live! Festival Wiki"
-msgstr "Japanese Bushimo Love Live! Festival Wiki "
+msgstr "Japanese Bushimo Love Live! Festival Wiki"
 
 #: web/links.py:148
 msgid "Japanese Love Live! Festival Gamerch Wiki"
-msgstr "Japanese Love Live! Festival Gamerch Wiki \n"
-""
+msgstr "Japanese Love Live! Festival Gamerch Wiki"
 
 #: web/links.py:155
 msgid "Chinese MoeGirl Wiki"
-msgstr "Chinese MoeGirl Wiki "
+msgstr "Chinese MoeGirl Wiki"
 
 #: web/links.py:190
 msgid "Love Live Facebook Page"

@@ -16,42 +16,6 @@ function pauseAllSongs() {
     });
 }
 
-var alert_displayed = false;
-
-function loadiTunesData(song, successCallback, errorCallback) {
-    var itunes_id = song.find('[href="#play"]').data('itunes-id');
-    var errorCallback = typeof errorCallback == 'undefined' ? function() {} : errorCallback;
-    $.ajax({
-	"url": 'https://itunes.apple.com/lookup',
-	"dataType": "jsonp",
-	"data": {
-	    "id": itunes_id,
-	    "country": "JP",
-	},
-	"error": function (jqXHR, textStatus, message) {
-	    errorCallback();
-	    if (alert_displayed == false) {
-		alert('Oops! The song previews don\'t seem to be work anymore. Please contact us and we will fix this.');
-		alert_displayed = true;
-	    }
-	},
-	"success": function (data, textStatus, jqXHR) {
-	    if (data['results'].length == 0) {
-		errorCallback();
-		alert('Oops! This song preview (' + song.find('.song_name').text() + ') doesn\'t seem to be valid anymore. Please contact us and we will fix this.');
-	    } else {
-		data = data['results'][0];
-		song.find('.itunes').find('.album').prop('src', data['artworkUrl60']);
-		song.find('.itunes').find('a').prop('href', data['trackViewUrl'] + '&at=1001l8e6');
-		song.find('.itunes').show('slow');
-		song.find('audio source').prop('src', data['previewUrl'])
-		song.find('audio')[0].load();
-		successCallback(data);
-	    }
-	}
-    });
-}
-
 function playSongButtons() {
     $('audio').on('ended', function() {
 	pauseAllSongs();
@@ -65,6 +29,12 @@ function playSongButtons() {
 		button_i.removeClass();
 		button_i.addClass('flaticon-loading');
 		loadiTunesData(song, function(data) {
+		    data = data['results'][0];
+		    song.find('.itunes').find('.album').prop('src', data['artworkUrl60']);
+		    song.find('.itunes').find('a').prop('href', data['trackViewUrl'] + '&at=1001l8e6');
+		    song.find('.itunes').show('slow');
+		    song.find('audio source').prop('src', data['previewUrl'])
+		    song.find('audio')[0].load();
 		    button_i.removeClass();
 		    button_i.addClass('flaticon-play');
 		}, function() {

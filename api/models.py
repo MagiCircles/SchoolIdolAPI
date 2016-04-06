@@ -829,7 +829,7 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     BPM = models.PositiveIntegerField(null=True, blank=True)
     time = models.PositiveIntegerField(null=True, blank=True)
-    event = models.ForeignKey(Event, related_name='songs', null=True, blank=True, on_delete=models.SET_NULL)
+    event = models.OneToOneField(Event, related_name='song', null=True, blank=True, on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(null=True, blank=True)
     daily_rotation = models.CharField(max_length=2, null=True, blank=True)
     daily_rotation_position = models.PositiveIntegerField(blank=True, null=True)

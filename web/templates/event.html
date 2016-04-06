@@ -9,7 +9,7 @@
 
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="/static/js/event.js?2"></script>
+<script src="/static/js/event.js?3"></script>
 {% endblock %}
 {% block content %}
 {% load getattribute %}
@@ -26,35 +26,60 @@
   {% endif %}
   <br><br>
   <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <div class="row">
-	{% for card in event.all_cards %}
-	<div class="col-md-6">
-	  <a href="/cards/{{ card.id }}/" class="owned_card">
-	    {% if card.round_card_image %}
-	    <img src="{% imageurl card=card image='round_card_image' %}" height="150" />
-	    {% elif card.card_image %}
-	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
-		 style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
-	    {% endif %}
-	    {% if card.round_card_idolized_image %}
-	    <img src="{% imageurl card=card image='round_card_idolized_image' %}" height="150" />
-	    {% elif card.card_image %}
-	    <div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
-		 style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
-	    {% endif %}
+    {% if not event.song %}<div class="col-md-2"></div>{% endif %}
+    {% for card in event.all_cards %}
+    <div class="col-md-4">
+      <a href="/cards/{{ card.id }}/" class="owned_card a-nodifference">
+	{% if card.round_card_image %}
+	<img src="{% imageurl card=card image='round_card_image' %}" height="150" />
+	{% elif card.card_image %}
+	<div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
+	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
+	{% endif %}
+	{% if card.round_card_idolized_image %}
+	<img src="{% imageurl card=card image='round_card_idolized_image' %}" height="150" />
+	{% elif card.card_image %}
+	<div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
+	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
+	{% endif %}
+      </a>
+      <br>
+      <h4>{{ card }}</h4>
+      {% if card.skill %}
+      <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% if not event.song %}<div class="col-md-2"></div>
+    {% else %}
+    <div class="col-md-4">
+      <div class="text-{{ event.song.attribute }}">
+	<a href="/songs/{{ event.song.name|urlencode }}/" target="_blank" class="a-nodifference inline-block">
+	  <img src="{% songimageurl song=event.song %}" alt="{{ event.song.name }}" height="180" style="border-radius: 5px;" />
+	</a>
+	<div class="itunes-song inline-block text-center" style="vertical-align: middle; padding-left: 10px;">
+	  <a href="/songs/{{ event.song.name|urlencode }}/" target="_blank">
+	    <strong class="song_name">{{ event.song.name }}</strong><br>
+	    <img src="/static/{{ event.song.attribute }}.png" class="attribute" width="20px">
+	    {{ event.song.japanese_attribute }}
+	    {{ event.song.attribute }}
 	  </a>
-	  <br>
-	  <h4>{{ card }}</h4>
-	  {% if card.skill %}
-	  <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+	  {% if event.song.itunes_id %}
+	  <audio controls="" id="player" class="hidden">
+	    <source src="" type="audio/mp4">
+	      Your browser does not support the audio element.
+	  </audio>
+	  <br><br>
+	  <i class="flaticon-loading"></i>
+	  <a href="#play" data-itunes-id="{{ event.song.itunes_id }}" class="fontx4 a-nodifference" style="display: none;"><i class="flaticon-play"></i></a>
+	  <br><a href="" target="_blank" class="itunes-link" style="display: none;">
+	    <img src="/static/get_itunes.svg" alt="Get it on iTunes" height="31">
+	  </a>
 	  {% endif %}
 	</div>
-	{% endfor %}
       </div>
     </div>
-    <div class="col-md-2"></div>
+    {% endif %}
   </div>
   <br>
 

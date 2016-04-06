@@ -129,6 +129,36 @@ function formloaders() {
     });
 }
 
+var alert_displayed = false;
+
+function loadiTunesData(song, successCallback, errorCallback) {
+    var itunes_id = song.find('[href="#play"]').data('itunes-id');
+    var errorCallback = typeof errorCallback == 'undefined' ? function() {} : errorCallback;
+    $.ajax({
+	"url": 'https://itunes.apple.com/lookup',
+	"dataType": "jsonp",
+	"data": {
+	    "id": itunes_id,
+	    "country": "JP",
+	},
+	"error": function (jqXHR, textStatus, message) {
+	    errorCallback();
+	    if (alert_displayed == false) {
+		alert('Oops! The song previews don\'t seem to be work anymore. Please contact us and we will fix this.');
+		alert_displayed = true;
+	    }
+	},
+	"success": function (data, textStatus, jqXHR) {
+	    if (data['results'].length == 0) {
+		errorCallback();
+		alert('Oops! This song preview (' + song.find('.song_name').text() + ') doesn\'t seem to be valid anymore. Please contact us and we will fix this.');
+	    } else {
+		successCallback(data);
+	    }
+	}
+    });
+}
+
 $(document).ready(function() {
     var hash = window.location.hash.substring(1);
     if (hash.indexOf("Modal") >= 0) {

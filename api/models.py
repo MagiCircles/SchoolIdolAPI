@@ -435,6 +435,10 @@ class Idol(ExportModelOperationsMixin('Idol'), models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
+    def short_name(self):
+        return self.name.split(' ')[-1]
+
 admin.site.register(Idol)
 
 class Card(ExportModelOperationsMixin('Card'), models.Model):
@@ -500,6 +504,10 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     ur_pair_name = models.CharField(max_length=100, blank=True)
     ur_pair_round_card_image = models.CharField(max_length=200, null=True, blank=True)
     ur_pair_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
+
+    @property
+    def short_name(self):
+        return self.name.split(' ')[-1]
 
     def japanese_attribute(self):
         return japanese_attribute(self.attribute)

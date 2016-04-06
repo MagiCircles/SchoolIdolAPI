@@ -81,6 +81,9 @@
 	  <i class="flaticon-{{ ownedcard.card.skill|skillToFlaticon }}"></i>
 	</span>
 	<p>
+          <a href="/cards/{{ ownedcard.card.id }}/" target="_blank" class="padding5 inline-block">
+	    <img src="{% cardrawurl card_id=ownedcard.card.id idol_name=ownedcard.card.short_name image_type='round_card_image' %}" height="30" width="30"><img src="{% cardrawurl card_id=ownedcard.card.id idol_name=ownedcard.card.short_name image_type='round_card_idolized_image' %}" height="30" width="30">
+	  </a>
           {% for skill_up_card in ownedcard.card.skill_up_cards %}
           <a href="/cards/{{ skill_up_card.0 }}/" target="_blank" class="padding5 inline-block">
 	    <img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_image' %}" height="30" width="30"><img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_idolized_image' %}" height="30" width="30">

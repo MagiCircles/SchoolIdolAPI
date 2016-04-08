@@ -2596,7 +2596,7 @@ msgstr "migliori carte %(attribute)"
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
 msgstr[0] "Il %(counter)s dei giocatori possiede la carta %(owns_card_string)s"
-msgstr[1] "%(counter) giocatori possiedono la carta %(owns_card_string)"
+msgstr[1] "%(counter)s giocatori possiedono la carta %(owns_card_string)"
 
 #: web/templates/cardsPage.html:450
 msgid "Last update"
@@ -2628,7 +2628,7 @@ msgstr "Cos'è questo?"
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
 msgstr[0] "Il %(counter)s degli account che corrispondono alla tua ricerca:"
-msgstr[1] "%(counter) account corrispondono alla tua ricerca: "
+msgstr[1] "%(counter)s account corrispondono alla tua ricerca: "
 
 #: web/views.py:498 web/views.py:499
 msgid "Most popular"

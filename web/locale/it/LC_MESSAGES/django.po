@@ -2642,7 +2642,7 @@ msgstr "anni"
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
 msgstr[0] "Il %(counter)s dei giocatori possiede la carta %(owns_card_string)s nella propria lista dei desideri"
-msgstr[1] "%(counter) giocatori hanno la carta %(owns_card_string) nella loro lista dei desideri"
+msgstr[1] "%(counter)s giocatori hanno la carta %(owns_card_string)s nella loro lista dei desideri"
 
 #: web/templates/discussions.html:37 web/templates/modalsukutomo.html:104
 msgid "We"
@@ -2979,7 +2979,7 @@ msgstr "Moderatore"
 #. Context?
 #: api/models.py:115
 msgid "Decisive"
-msgstr "Decisivo"
+msgstr "Decisionale"
 
 #: api/models.py:116
 msgid "Community Manager"
@@ -3050,7 +3050,7 @@ msgstr "Clicca per cambiare Mazzo/Album"
 
 #: web/templates/cards.html:49
 msgid "You can only have one in your album."
-msgstr "Puoi averne solo uno nel tuo album."
+msgstr "Puoi averne solo una nel tuo album."
 
 #: web/templates/cards.html:51
 msgid "Are you sure you also want to add it in your album?"
@@ -3126,30 +3126,30 @@ msgstr "Coppie di UR"
 
 #: web/links.py:338
 msgid "Create your own profile"
-msgstr ""
+msgstr "Crea il tuo profilo"
 
 #: web/links.py:352 web/templates/profile.html:318
 #: web/templates/skillup.html:11 web/templates/skillup.html.py:23
 msgid "Level up the skill of your cards"
-msgstr ""
+msgstr "Livella le abilità delle tue carte"
 
 #: web/templates/skillup.html:29
 msgid "Add all the cards you own in the game in your School Idol Tomodachi account."
-msgstr ""
+msgstr "Aggiungi tutte le carte che hai nel gioco nel tuo account di School Idol Tomodachi."
 
 #: web/templates/skillup.html:30
 msgid "If you already have some cards in your deck with a skill higher than 1, click \"Advanced\" when you add it to specify the skill level. You can also edit the skill later when you edit the card."
-msgstr ""
+msgstr "Se hai già alcune carte nel mezzo con abilità superiore a 1, clicca \"Avanzate\" quando l'aggiungi per specificare il livello abilità. Puoi modificarlo anche successivamente modificando la carta."
 
 #: web/templates/skillup.html:31
 msgid "Don't forget to add the cards you have in your present box!"
-msgstr ""
+msgstr "Non dimenticare di aggiungere le carte nella present box!"
 
 #: web/templates/skillup.html:32
 msgid "Come back to this page to check out the cards you can practice together to level up their skills!"
-msgstr ""
+msgstr "Torna a questa pagina per controllare le carte che puoi unire per livellare le loro abilità!"
 
 #: web/templates/skillup.html:33
 msgid "While you go through this list to level up the skill of your cards, click the \"+1\" button to keep your cards updated and click X to delete the cards you practiced away."
-msgstr ""
+msgstr "Mentre utilizzi questa lista per livellare le abilità delle tue carte, clicca il bottone \"+1\" per tenere aggiornate le carte e clicca X per togliere quelle con cui è stata già fatta pratica."
 

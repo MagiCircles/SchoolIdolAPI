@@ -275,6 +275,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/ptMjxhp7.png', 'navacandi'),
             ('http://i.schoolido.lu/chibi/JMPkVuz.png', 'RinNyaDesu'),
+            ('http://i.schoolido.lu/chibi/SCv4gQgb.png', 'navacandi'),
         ],
     },
     'Ayanokouji Himeno': {
@@ -375,6 +376,26 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/UFYLg3My.png', 'KomaHina'),
         ],
+    },
+    'Nagayama Minami': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/6CSBLtaV.png', 'navacandi'),
+        ]
+    },
+    'Kujou Seira': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/1OzQWXer.png', 'navacandi'),
+        ]
+    },
+    'Fujishiro Yumi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/IX1CG0Z.png', 'navacandi'),
+        ]
+    },
+    'Sasahara Kyouko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/kyouko.png', 'yuki'),
+        ]
     },
 }
 

@@ -533,6 +533,12 @@ links = [
                     'type': 'tool',
                     'language': 'world',
                 },
+                {
+                    'name': _('Submit a chibi drawing of your favorite idol'),
+                    'url': 'https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Graphic-Designers-&-Community-Artists',
+                    'type': '',
+                    'language': 'world',
+                },
             ],
         },
         {

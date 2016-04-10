@@ -1750,6 +1750,8 @@ def events(request):
 
     context['events'] = queryset
     context['show_english_banners'] = not onlyJP(context)
+    context['events_links'] = (link for link in links_list if link['link'] == 'events').next()
+    context['events_links_card'] = models.Card.objects.filter(name=context['events_links']['idol'], transparent_idolized_image__isnull=False).order_by('?')[0]
     return render(request, 'events.html', context)
 
 def event(request, event):
@@ -1880,6 +1882,8 @@ def idols(request):
     context['main_idols'] = sorted(filter(lambda x: x.main == True and x.main_unit != 'Aqours', idols), key=operator.attrgetter('year'))
     context['aqours_idols'] = sorted(filter(lambda x: x.main == True and x.main_unit == 'Aqours', idols), key=operator.attrgetter('year'))
     context['n_idols'] = filter(lambda x: x.main == False, idols)
+    context['idols_links'] = (link for link in links_list if link['link'] == 'love').next()
+    context['idols_links_card'] = models.Card.objects.filter(name=context['idols_links']['idol'], transparent_idolized_image__isnull=False).order_by('?')[0]
     return render(request, 'idols.html', context)
 
 def android(request):

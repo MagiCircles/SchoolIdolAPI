@@ -11,7 +11,7 @@ class Command(BaseCommand):
 	opt = opt_parse(args)
 	local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
 
-	cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False)
+	cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False).exclude(translated_collection='')
 	collections = []
 	for card in cards:
 	    if card.translated_collection not in collections:

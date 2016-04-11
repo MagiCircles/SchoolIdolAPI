@@ -545,7 +545,9 @@
 </div>
 {% endif %}
     {% if single %}
-    {% include "disqus.html" %}
+    {% with cardsingleurl=single|singlecardurl %}
+    {% include "disqus.html" with disqus_url='http://schoolido.lu'|add:cardsingleurl %}
+    {% endwith %}
     {% elif total_cards < 9 %}
     {% else %}
     <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">

@@ -7,7 +7,7 @@
 {% load pagination %}
 {% if owns_card %}
 <h4 style="margin-bottom: 40px; margin-top: 0;">
-  <a href="/cards/{{ owns_card.id }}/"><img src="{% if owns_card_idolized == 'on' or owns_card.is_special or owns_card.is_promo %}{% imageurl card=owns_card image='round_card_idolized_image' %}{% else %}{% imageurl card=owns_card image='round_card_image' %}{% endif %}" alt="{{ owns_card_string }}" height="100"></a>
+  <a href="{{ owns_card|singlecardurl }}"><img src="{% if owns_card_idolized == 'on' or owns_card.is_special or owns_card.is_promo %}{% imageurl card=owns_card image='round_card_idolized_image' %}{% else %}{% imageurl card=owns_card image='round_card_image' %}{% endif %}" alt="{{ owns_card_string }}" height="100"></a>
   {% if wish %}
   {% blocktrans count counter=total_results %}{{ counter }} player has the card {{ owns_card_string }} in their wish list{% plural %}{{ counter }} players have the card {{ owns_card_string }} in their wish list{% endblocktrans %} <i class="flaticon-star"></i>
   {% else %}

@@ -278,6 +278,7 @@ $(document).ready(function() {
 	|| $('#id_max_level').val() != ''
 	|| $('#id_max_bond').val() != ''
 	|| $('#view_albumbuilder').is(':checked') != ''
+	|| $('#id_show_clean_ur').is(':checked') != ''
        ) {
 	$('#morefilters.collapse').collapse('show');
     }

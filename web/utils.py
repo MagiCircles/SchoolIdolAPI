@@ -11,6 +11,7 @@ from django.core.files.temp import NamedTemporaryFile
 from tinypng import shrink_file
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.utils.http import urlquote
 from tinypng.api import shrink_data
 from django.conf import settings
 from api.raw import raw_information, raw_information_n
@@ -96,3 +97,16 @@ def get_imgur_code(url):
 
 def get_parameters_to_string(request):
     return '?' + '&'.join([p[0] + '=' + p[1] for p in request.GET.items()])
+
+def tourldash(string):
+    return ''.join(e if e.isalnum() else '-' for e in string)
+
+def singlecardurl(card):
+    return urlquote(u'/cards/{}/{}-{}{}{}{}-{}/'.format(
+        card.id,
+        card.rarity,
+        tourldash(card.name),
+        '-' + tourldash(card.translated_collection) if card.translated_collection else '',
+        '-promo' if card.is_promo else '',
+        '-event' if card.event_id else '',
+        card.attribute))

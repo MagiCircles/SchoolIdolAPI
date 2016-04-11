@@ -2,6 +2,7 @@ from django import template
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import timezone
 from web.views import findAccount
+from web.utils import singlecardurl
 from django.forms.fields import NullBooleanField, BooleanField, DateTimeField
 from dateutil.relativedelta import relativedelta
 import random
@@ -91,6 +92,7 @@ def activity_is_mine(activity, accounts):
     return findAccount(activity.account_id, accounts)
 
 register.filter('mod', mod)
+register.filter('singlecardurl', singlecardurl)
 register.filter('trans', trans)
 register.filter('transconcat', transconcat)
 register.filter('transconcatspace', transconcatspace)

@@ -29,7 +29,7 @@
     {% if not event.song %}<div class="col-md-2"></div>{% endif %}
     {% for card in event.all_cards %}
     <div class="col-md-4">
-      <a href="/cards/{{ card.id }}/" class="owned_card a-nodifference">
+      <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
 	{% if card.round_card_image %}
 	<img src="{% imageurl card=card image='round_card_image' %}" height="150" />
 	{% elif card.card_image %}

@@ -18,6 +18,17 @@ class Command(BaseCommand):
                     models.Song.objects.filter(name=song['name']).update(image=song['image'].replace('http://i.schoolido.lu/', ''))
             return
 
+        if 'clean_ur' in args:
+            page_url = u'http://schoolido.lu/api/cards/?rarity=UR'
+            while page_url is not None:
+                response = urllib.urlopen(page_url)
+                data = json.loads(response.read())
+                page_url = data['next']
+                for card in data['results']:
+                    models.Card.objects.filter(id=card['id']).update(clean_ur=card['clean_ur'].replace('http://i.schoolido.lu/', ''),
+                                                                     clean_ur_idolized=card['clean_ur_idolized'].replace('http://i.schoolido.lu/', ''))
+            return
+
         cards = models.Card.objects.all()
         for card in cards:
             card.card_idolized_image = 'cards/' + str(card.id) + 'idolized' + card.name.split(' ')[-1] + '.png'

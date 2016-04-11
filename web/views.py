@@ -166,7 +166,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
             'message': message,
             'number': None,
             'message_data': concat_args(unicode(card), ownedcard.stored),
-            'right_picture_link': '/cards/' + str(card.id) + '/',
+            'right_picture_link': singlecardurl(card),
             'right_picture': ownedcardimageurl({}, ownedcard),
         }
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
@@ -411,6 +411,9 @@ def get_cards_queryset(request, context, card=None):
         if 'release_before' in request.GET and request.GET['release_before']:
             cards = cards.filter(release_date__lte=datetime.datetime.strptime(request.GET['release_before'] + '-01', "%Y-%m-%d"))
             request_get['release_before'] = request.GET['release_before']
+
+        if 'show_clean_ur' in request.GET and request.GET['show_clean_ur']:
+            request_get['show_clean_ur'] = True
 
         if 'account' in request.GET and request.GET['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
             account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)

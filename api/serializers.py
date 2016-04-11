@@ -7,7 +7,7 @@ from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
-from web.utils import chibiimage
+from web.utils import chibiimage, singlecardurl
 import urllib
 import datetime
 import pytz
@@ -228,7 +228,7 @@ class CardSerializer(serializers.ModelSerializer):
         return None
 
     def get_website_url(self, obj):
-        return 'http://schoolido.lu/cards/' + str(obj.id) + '/'
+        return 'http://schoolido.lu' + singlecardurl(obj)
 
     def get_non_idolized_max_level(self, obj):
         if obj.is_promo or obj.is_special: return 0

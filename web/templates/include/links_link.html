@@ -1,8 +1,9 @@
 {% load imageurl %}
 {% load i18n %}
+{% load mod %}
       <div class="row">
 	<div class="col-md-5">
-	  <a href="/cards/{{ card.id }}" target="_blank">
+	  <a href="{{ card|singlecardurl }}" target="_blank">
 	    <img src="{% imageurl card=card image='transparent_idolized_image' %}" alt="{{ card.name }} #{{ card.id }}">
 	  </a>
 	</div>

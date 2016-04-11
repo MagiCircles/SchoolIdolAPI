@@ -10,6 +10,7 @@ urlpatterns = patterns('',
 
     url(r'^cards[/]+$', views.cards, name='cards'),
     url(r'^card[s]?/(?P<card>\d+)[/]$', views.cards, name='cards'),
+    url(r'^cards[s]?/(?P<card>\d+)/[\w-]+[/]+$', views.cards, name='cards'),
 
     url(r'^songs[/]+$', views.songs, name='songs'),
     url(r'^song[s]?/(?P<song>[^/]+)[/]$', views.songs, name='songs'),

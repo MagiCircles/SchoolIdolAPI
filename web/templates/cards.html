@@ -254,6 +254,11 @@
           </div>
 	  <div id="user_filters"{% if view == 'albumbuilder' %} style="display: none"{% endif %}>
 	    <br>
+	    <div>
+	      <div class="pull-right"><input id="id_show_clean_ur" name="show_clean_ur" type="checkbox"{% if request_get.show_clean_ur %} checked{% endif %}></div>
+	      <label for="id_show_clean_ur"><i class="flaticon-idolized"></i> {% trans 'Show clean URs' %}</label>
+	    </div>
+	    <br>
 	    <label for="id_select_account">{% trans 'Account' %}</label>
 	    <select id="id_select_account" name="account">
 	      <option value=""></option>

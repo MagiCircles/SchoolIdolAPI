@@ -3,6 +3,7 @@ from django.db.models import Q
 from api import models
 from web.utils import concat_args
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl
+from web.utils import singlecardurl
 import sys
 
 def activity_cache_account(activity, account):
@@ -53,7 +54,7 @@ class Command(BaseCommand):
                 # Cache
                 activity = activity_cache_account(activity, account)
                 activity.message_data = concat_args(unicode(activity.ownedcard.card), activity.ownedcard.stored)
-                activity.right_picture_link = '/cards/' + str(activity.ownedcard.card.id) + '/'
+                activity.right_picture_link = singlecardurl(activity.ownedcard.card)
                 activity.right_picture = ownedcardimageurl({}, activity.ownedcard)
                 activity.save()
             print '.',

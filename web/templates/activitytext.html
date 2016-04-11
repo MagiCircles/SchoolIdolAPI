@@ -4,7 +4,7 @@
         {% if activity.message == 'Rank Up' %}
         {% elif activity.message == 'Added a card' or activity.message == 'Idolized a card' or activity.message == 'Max Leveled a card' or activity.message == 'Max Bonded a card' %}
 	<div>
-	  <a href="/cards/{{ activity.ownedcard.card.id }}/" class="owned_card">
+	  <a href="{{ activity.ownedcard.card|singlecardurl }}" class="owned_card">
 	    {% if small %}
 	    {% include 'ownedcard.html' with card=activity.ownedcard nolink=True size=20 classes='pull-right' %}
 	    </div>

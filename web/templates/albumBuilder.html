@@ -51,13 +51,13 @@
     {% for card in cards %}
     <tr class="tr_card text-{{ card.attribute }}" data-id="{{ card.id }}" data-rarity="{{ card.rarity }}" data-attribute="{{ card.attribute }}" data-is-special="{{ card.is_special }}" data-is-promo="{{ card.is_promo }}">
       <td rowspan="{{ card.owned_cards|length|add:1 }}" width="150">
-	<a href="/cards/{{ card.id }}/" target="_blank" class="images-link">
+	<a href="{{ card|singlecardurl }}" target="_blank" class="images-link">
 	  <img src="{% if card.is_promo or card.is_special %}/static/empty.png{% else %}{% imageurl card=card image='round_card_image' %}{% endif %}" alt="{{ card }}" height="60" width="60">
 	  <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="60" width="60">
 	</a>
       </td>
       <td rowspan="{{ card.owned_cards|length|add:1 }}" class="text-left" width="200">
-	<a href="/cards/{{ card.id }}/" target="_blank">{{ card }}</a>
+	<a href="{{ card|singlecardurl }}" target="_blank">{{ card }}</a>
       </td>
       <td rowspan="{{ card.owned_cards|length|add:1 }}">
 	<i class="flaticon-add"></i>

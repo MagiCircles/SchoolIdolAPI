@@ -182,11 +182,15 @@ class CardSerializer(serializers.ModelSerializer):
     idolized_max_level = serializers.SerializerMethodField()
     transparent_image = ImageField(required=False)
     transparent_idolized_image = ImageField(required=False)
+    clean_ur = ImageField(required=False)
+    clean_ur_idolized = ImageField(required=False)
     center_skill_details = serializers.SerializerMethodField()
     japanese_center_skill = serializers.SerializerMethodField()
     japanese_center_skill_details = serializers.SerializerMethodField()
 
     def get_japanese_name(self, obj):
+        if obj.japanese_name:
+            return obj.japanese_name
         if obj.idol:
             return obj.idol.japanese_name
         return None
@@ -278,7 +282,7 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards', 'transparent_image', 'transparent_idolized_image')
+        fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized')
 
 class SongSerializer(serializers.ModelSerializer):
     event = EventSerializer()

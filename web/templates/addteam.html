@@ -23,9 +23,9 @@
       {% if field_name == 'card0' %}
       <div class="row">
 	{% endif %}
-	<div class="{% if field_name == 'card0' %}col-md-offset-2 {% endif %}col-md-1 col-sm-2 col-xs-3">
+	<div class="{% if field_name == 'card0' %}col-md-offset-2 {% endif %}col-md-1 col-sm-4 col-xs-4">
 	  {{ field }}
-	  {% if field_name == 'card4' %}{% trans 'Center' %}{% endif %}
+	  {% if field_name == 'card4' %}{% trans 'Center' %}{% else %}<br><br>{% endif %}
 	</div>
 	{% if field_name == 'card8' %}
       </div>

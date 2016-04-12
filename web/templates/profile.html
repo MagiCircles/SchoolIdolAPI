@@ -26,6 +26,7 @@
 {% load mod %}
 {% load choicesToString %}
 <div id="fb-root"></div>
+<div style="padding: 0 15px;">
 <div class="row">
   <div class="col-lg-{% if not preferences.private %}8{% else %}12{% endif %} col-md-12 col-sm-12 col-xs-12">
     <div class="padding20 padding-novertical">
@@ -419,5 +420,6 @@
   </div>
 </div>
 {% endif %}
+</div>
 </div>
 {% endblock %}

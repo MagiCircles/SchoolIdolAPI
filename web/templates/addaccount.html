@@ -289,6 +289,16 @@
       </div>
 
     <hr>
+    <form>
+      <h2>{% trans 'More options' %}</h2>
+      <ul>
+	<li><a href="/addteam/{{ account.id }}/">{% trans 'Add Team' %}</a></li>
+	<li><a href="/cards/albumbuilder/?albumbuilder_account={{ account.id }}&ordering=id">{% trans 'Album Builder' %}</a></li>
+	<li><a href="/skillup/?account={{ account.id }}">{% trans 'Level up the skill of your cards' %}</a></li>
+      </ul>
+    </form>
+
+    <hr>
     <form method="post" action="">
       {% csrf_token %}
       <h2>{% trans 'Delete Account' %}</h2>

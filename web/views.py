@@ -651,6 +651,8 @@ def addteam(request, account):
     - Context
     - Owned cards (JOIN + card)
     """
+    if not request.user.is_authenticated():
+        return redirect('/create/?next=/edit/#editaccounts')
     context = globalContext(request)
     account = findAccount(account, context['accounts'])
     if not account:

@@ -657,7 +657,7 @@ def addteam(request, account):
     account = findAccount(account, context['accounts'])
     if not account:
         raise Http404
-    account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
+    account.deck = account.ownedcards.filter(stored='Deck').exclude(card__is_special=True).select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
     if request.method == 'POST':
         form = forms.TeamForm(request.POST, account=account)
         if form.is_valid():
@@ -681,7 +681,7 @@ def editteam(request, team):
     context = globalContext(request)
     team = get_object_or_404(models.Team.objects.filter(owner_account__owner=request.user).select_related('owner_account').prefetch_related(Prefetch('members', queryset=models.Member.objects.select_related('ownedcard', 'ownedcard__card').order_by('position'), to_attr='all_members')), pk=team)
     account = team.owner_account
-    account.deck = account.ownedcards.filter(stored='Deck').select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
+    account.deck = account.ownedcards.filter(stored='Deck').exclude(card__is_special=True).select_related('card').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
     context['form_delete'] = forms.ConfirmDelete(initial={'thing_to_delete': team.id})
     if request.method == 'POST':
         if 'thing_to_delete' in request.POST:

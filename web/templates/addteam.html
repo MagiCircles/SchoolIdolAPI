@@ -63,10 +63,10 @@
   {% if field_name != 'name' %}
   cuteform($('#id_{{ field_name }}'), {
     'modal': 'true',
-    'html': {
-      '': '<img src="/static/empty.png" alt="empty" height="100">',
+    'images': {
+      '': '/static/empty.png',
       {% for ownedcard in account.deck %}
-      '{{ ownedcard.id }}': '{% if ownedcard.card.is_special and ownedcard.card.round_card_idolized_image %}<img src="{% imageurl card=ownedcard.card image='round_card_idolized_image' %}" alt="{{ ownedcard.card }}" height="100" style="display: inline-block">{% elif not card.idolized and ownedcard.card.round_card_image %}<img src="{% imageurl card=ownedcard.card image='round_card_image' %}" alt="{{ ownedcard.card }}" height="100" style="display: inline-block">{% elif card.idolized and ownedcard.card.round_card_idolized_image %}<img src="{% imageurl card=ownedcard.card image='round_card_idolized_image' %}" alt="{{ ownedcard.card }}" style="display: inline-block">{% else %}<div class="circled_card_100 {{ ownedcard.card.attribute }} {{ ownedcard.card.rarity }} hover" style="background-image: url(\'{% if not card.idolized and ownedcard.card.card_image %}{% imageurl card=ownedcard.card image='card_image' %}{% else %}{% imageurl card=ownedcard.card image='card_idolized_image' %}{% endif %}\');"></div>{% endif %}',
+      '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
       {% endfor %}
     }
   });

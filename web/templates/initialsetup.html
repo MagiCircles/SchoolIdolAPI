@@ -9,7 +9,7 @@
 <script src="/static/js/links.js"></script>
 <script>
   var current_seen_cards = [{{ hidden_cards }}];
-  var bookmark_message = '{% trans 'Add this link to your bookmarks and come back to it whenever you want to finish entering the cards in your collection.' %}';
+  var bookmark_message = '{{ bookmark_message|addslashes }}';
   var btnColor = '{{ btnColor }}';
 </script>
 <script src="/static/js/initialsetup.js?1"></script>

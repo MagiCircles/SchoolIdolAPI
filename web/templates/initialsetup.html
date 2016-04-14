@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load imageurl %}
+
+{% block title %}{% trans 'Initial Setup' %}{% endblock %}
+
+{% block js %}
+<script src="/static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="/static/js/links.js"></script>
+<script>
+  var current_seen_cards = [{{ hidden_cards }}];
+  var bookmark_message = '{% trans 'Add this link to your bookmarks and come back to it whenever you want to finish entering the cards in your collection.' %}';
+  var btnColor = '{{ btnColor }}';
+</script>
+<script src="/static/js/initialsetup.js"></script>
+{% endblock %}
+
+{% block content %}
+{% if not user.is_authenticated %}
+<div class="container">
+  <h1 class="text-center margin50">{% trans 'Initial Setup' %}</h1>
+  <br><br>
+  <div class="row">
+    <div class="col-md-6">
+      <a href="/login/?next=/cards/initialsetup/" class="btn btn-xl btn-block btn-{{ btnColor }}">{% trans 'Login' %}</a>
+    </div>
+    <div class="col-md-6">
+      <a href="/create/?next=/cards/initialsetup/" class="btn btn-xl btn-block btn-{{ btnColor }}">{% trans 'Sign Up' %}</a>
+    </div>
+  </div>
+</div>
+{% elif not account %}
+<div class="container">
+  <h1 class="text-center margin50">{% trans 'Initial Setup' %}</h1>
+  <form class="selectaccount text-right">
+    <select name="account">
+      <option value=""></option>
+      {% for account in accounts %}
+      <option value="{{ account.id }}">{{ account }}</option>
+      {% endfor %}
+    </select>
+    <input class="btn btn-{{ btnColor }}" type="submit" value="{% trans 'Go' %}">
+  </form>
+</div>
+{% else %}
+<div id="initialsetup">
+  <div class="link-stars-side">
+    {% for collection_id, collection in collections_links.items %}
+    <div class="color-Rainbow-{{ collection.1 }}">
+      <a href="#{{ collection_id }}" class="page-scroll"><span class="name">{{ collection.0 }}</span><span class="btn btn-Rainbow-{{ collection.1 }}"><span>{% if 'flaticon' in collection.2 %}<i class="{{ collection.2 }} fontx2"></i>{% else %}<img src="{{ collection.2 }}">{% endif %}</span></span></a>
+    </div>
+    {% endfor %}
+    <div class="color-Rainbow-1">
+      <a href="#home-section-12" class="page-scroll"><span class="name"></span><span class="btn btn-Rainbow-9"><span><i class="flaticon-checked fontx2"></i></span></span></a>
+    </div>
+  </div>
+
+  <div class="next_buttons" data-next-message="{% trans 'Next' %}" data-dont="{% blocktrans %}I don't have any{% endblocktrans %}">
+    <a href="#" class="page-scroll white-box-shadow btn btn-xl" style="display: none;">{% trans 'Next' %}</a>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"></div>
+    </div>
+    <span><a href="#saveprogress" class="white-shadow"><b>{% trans 'Want to take a break and finish later?' %}</b></a></span>
+  </div>
+  <div class="home-section neutral">
+    <div class="container">
+      <h1 class="text-center margin50">{% if hidden_cards_total %}{% blocktrans %}Welcome back!{% endblocktrans %}{% elif starter %}{% trans 'Start sharing your beautiful collection!' %}{% else %}{% trans 'Initial Setup' %}{% endif %}<br>
+	<small id="initialsetup_account" data-id="{{ account.id }}">
+	  {% if hidden_cards_total %}
+	  {% blocktrans %}We hid {{ hidden_cards_total }} cards that you already saw last time.{% endblocktrans %} <a href="/cards/initialsetup/?account={{ account.id }}">{% trans 'Show all' %}</a><br>
+	  {% endif %}
+	  {% if account.center_id %}
+	  <img class="center circled" src="{{ account.center_card_round_image|userimage }}" alt="{{ account.center_alt_text }}" height="30">
+	  {% endif %}
+	  {{ account }}
+	</small>
+      </h1>
+      <br><br><br>
+      <div class="row">
+	<div class="col-md-6">
+	  <ol class="fontx2">
+	    <li>{% trans 'Open the game LoveLive! School Idol Festival, go to "Members" (部員) then "Member List" (部員リスト), order by "Rarity" (レアリティ)' %}<br><br></li>
+	    <li>{% trans 'Go through the list of cards below and click on the ones you own to add them on your School Idol Tomodachi account' %}<br><br></li>
+	  </ol>
+	  <a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Why-my-cards-are-not-automatically-imported%3F"><i class="flaticon-about"></i> {% trans 'Why my cards are not automatically imported?' %}</a>
+	</div>
+	<div class="col-md-6">
+	  <video width="100%" autoplay loop poster="http://i.schoolido.lu/static/OrderByRarity.png">
+	    <source src="http://i.schoolido.lu/static/OrderByRarity.mp4" type="video/mp4" />
+	    Your browser does not support the video tag.
+	  </video>
+	</div>
+      </div>
+      <div class="text-right">
+	<a href="#home-section-1" class="page-scroll btn btn-{{ btnColor }} btn-xl">
+	  {% trans 'Get Started' %}
+	</a>
+      </div>
+    </div>
+  </div>
+  {% for collection_id, collection in collections.items %}
+  {% with section_number=forloop.counter idolized=collection.3 %}
+  {% if idolized or collection_id != 'promo' %}
+  <div id="home-section-{{ section_number }}">
+    <div id="{{ collection_id }}" class="bg-Rainbow-{{ collection.1 }} home-section" data-rainbow="{{ collection.1 }}" data-next-section="#home-section-{{ section_number|add:1 }}">
+      <div class="container">
+	<h1>{{ collection.0 }} {% if collection_id == 'promo' %}<i class="flaticon-promo"></i>{% else %}<i class="flaticon-star"></i> {% if idolized %}{% trans 'Idolized' %}{% else %}{% trans 'Not Idolized' %}{% endif %}{% endif %}</h1>
+	<br>
+	{% if not collection.2 and hidden_cards_total %}
+	<h2 class="text-center">{% blocktrans %}We hid {{ hidden_cards_total }} cards that you already saw last time.{% endblocktrans %} <a href="/cards/initialsetup/?account={{ account.id }}">{% trans 'Show all' %}</a></h2>
+	{% endif %}
+	{% for card in collection.2 %}
+	{% if card.is_promo and collection_id != 'promo' %}
+	{% if forloop.counter0 == 0 %}
+	<table>
+	  <tr>
+	    <th class="text-right">
+	      {% if idolized %}
+	      <span class="fontx2">{% if card.rarity == 'SR' %}{% trans 'Event special prize' %}{% else %}<i class="flaticon-promo fontx2"></i> {% trans 'Login bonus' %}{% endif %}</span>
+	      {% endif %}
+	    </th>
+	    <td>
+	      {% endif %}
+	      {% else %}
+	{% if 'sr' in collection_id %}{% ifchanged card.translated_collection %}
+	{% if forloop.counter0 == 0 %}
+	<table>
+	  {% else %}
+	</td></tr>
+	{% endif %}
+	<tr>
+	  <th class="text-right">
+	  {% if card.event_id %}
+	  <a href="/events/{{ card.event_japanese_name|urlencode }}/" target="_blank">
+	    <div class="event_bg" style="background-image: url('{{ card.event_image|userimage }}')"></div>
+	  </a>
+	  {% else %}
+	  <span class="fontx2">{% if not card.translated_collection %}{% trans 'Unknown' %}{% else %}
+	    <a href="/cards/?translated_collection={{ card.translated_collection }}" target="_blank">{{ card.translated_collection }}</a>
+	    {% endif %}</span>
+	  {% endif %}
+	  </th>
+	<td>
+	  {% endifchanged %}
+	  {% else %}
+	  {% ifchanged card.attribute %}
+	  {% if forloop.counter0 == 0 %}
+	  <table>
+	    {% else %}
+	</td></tr>
+	{% endif %}
+	<tr>
+	  <th class="text-right">
+	    <span class="fontx2"><img src="/static/{{ card.attribute }}.png" height="60">{% trans card.attribute %}</span>
+	  </th>
+	<td>
+	  {% endifchanged %}
+	  {% endif %}
+	  {% endif %}
+	  {% if not idolized %}
+	  {% if not card.is_promo or card.is_special %}
+	  <div class="initial_setup_card" data-attribute="{{ card.attribute }}" data-card-id="{{ card.id }}">
+	    <img src="{% imageurl card=card image='round_card_image' %}" alt="{{ card }}" height="128" width="128" class="card {% if card.owned %}owned{% endif %}"{% if card.owned %} data-ownedcard-id="{{ card.owned }}"{% endif %} data-toggle="popover" data-container="#home-section-{{ section_number }}" data-content="<div class='text-center' style='width:200px'>{% trans 'Click to add this card to your collection!' %}</div><br><img src='{% imageurl card=card image='card_image' %}' width='200' height='281'>" data-html="true" data-placement="left" data-trigger="hover">
+	    <span class="loader" style="display: none"><i class="flaticon-loading"></i></span>
+	  </div>
+	  {% endif %}
+	  {% else %}
+	  <div class="initial_setup_card" data-attribute="{{ card.attribute }}" data-card-id="{{ card.id }}">
+	    <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="128" width="128" class="card {% if card.owned_idolized %}owned{% endif %} idolized"{% if card.owned_idolized %} data-ownedcard-id="{{ card.owned_idolized }}"{% endif %} data-toggle="popover" data-container="#home-section-{{ section_number }}" data-content="<div class='text-center' style='width:200px'>{% trans 'Click to add this card to your collection!' %}</div><br><img src='{% imageurl card=card image='card_idolized_image' %}' width='200' height='281'>" data-html="true" data-placement="left" data-trigger="hover">
+	    <span class="loader" style="display: none"><i class="flaticon-loading"></i></span>
+	  </div>
+	  {% endif %}
+	{% endfor %}
+	</tr></td></table>
+      </div>
+    </div>
+</div>
+{% endif %}
+  {% endwith %}
+  {% endfor %}
+  <div id="home-section-12">
+    <div class="home-section neutral">
+      <div class="container">
+	<h1 class="text-center margin50">{% blocktrans %}Now, every time you get a new card, don't forget to update School Idol Tomodachi!{% endblocktrans %}<br>
+	  <small>
+	    {% trans 'Simply click "+" to add cards to your account' %}
+	  </small>
+	</h1>
+	<video autoplay loop poster="http://i.schoolido.lu/static/AddCardHowTo.png" class="video80">
+	  <source src="http://i.schoolido.lu/static/AddCardHowTo.mp4" type="video/mp4" />
+	  Your browser does not support the video tag.
+	</video>
+	<div class="text-center">
+	  <a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-edit-a-card%3F"><i class="flaticon-about"></i> {% trans 'How to edit a card?' %}</a>
+	  <a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-delete-a-card%3F"><i class="flaticon-about"></i> {% trans 'How to delete a card?' %}</a>
+	</div>
+	<br><br><br>
+	<div class="fontx2">
+	  <p class="fontx1-5"><i class="flaticon-toggler"></i> <a href="/cards/" target="_blank"><i class="flaticon-album"></i> {% trans 'Browse Cards' %}</a></p>
+	  <p><i class="flaticon-toggler"></i> <a href="/user/{{ user.username }}/" target="_blank"><i class="flaticon-profile"></i> {% trans 'Check out your brand new beautiful profile' %}</a> {% trans 'and' %} <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-check-that-you-entered-all-your-cards%3F" target="_blank" class="tiny"><i class="flaticon-checked"></i> {% trans 'Check your cards' %}</a></p>
+	  <p><i class="flaticon-toggler"></i>  <a href="http://twitter.com/share?text=Check out my %23LLSIF cards on School Idol Tomodachi!&url=http://schoolido.lu/user/{{ user.username }}/&hashtags=LLSIF,LoveLive,スクフェス" target="_blank"><i class="flaticon-twitter {{ btnColor }}"></i> {% trans 'Tweet it' %}</a> {% trans 'or' %} <a href="http://www.facebook.com/sharer/sharer.php?u=http://schoolido.lu/user/{{ user.username }}/" target="_blank"><i class="flaticon-facebook {{ btnColor }}"></i> {% trans 'Share it on Facebook' %}</a></p>
+	  <p><i class="flaticon-toggler"></i> {% trans 'Set your' %} <small class="text-muted">{% trans 'Center' %}, {% trans 'Device' %}, {% trans 'Creation' %}, {% trans 'Love gems' %}, ...</small> <a target="_blank" href="/editaccount/{{ account.id }}/"><i class="flaticon-edit"></i> {% trans 'Edit Account' %}</a></p>
+	  <p><i class="flaticon-toggler"></i> {% trans 'You have another account?' %} <a target="_blank" href="/addaccount/"><i class="flaticon-add"></i> {% trans 'Add Account' %}</a></p>
+	  <p><i class="flaticon-toggler"></i> {% trans 'Set your' %} <small class="text-muted">{% trans 'Attribute' %}, {% trans 'Best Girl' %}, {% trans 'Location' %}, {% trans 'Description' %}, ...</small> <a target="_blank" href="/edit/"><i class="flaticon-settings"></i> {% trans 'Customize your own profile' %}</a></p>
+	  <p><i class="flaticon-toggler"></i> {% trans 'Help' %}? <a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/"><i class="flaticon-help"></i> {% trans 'Wiki' %}</a></p>
+	</div>
+	{% if notification and notification_type == 'ADDACCOUNTRANK200' %}
+	<br><br><br>
+	<div class="alert-danger fontx1-5 padding20">
+	  <div class='row'><div class='col-xs-3'>{{ notification.left_html|safe }}</div><div class='col-xs-9'>{{ notification.message }}<div class='text-right'><br><a href='{{ notification.link }}' target='_blank' class='btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}'>{{ notification.link_text }}</a></div></div></div>
+	</div>
+	{% endif %}
+	<br><br><br>
+	<div class="row">
+	  <div class="col-md-7">
+	    <h2 class="text-center margin50">{% blocktrans %}Want to keep track of the cards you max bonded or max leveled?{% endblocktrans %}<br>
+	      <small>
+		{% trans 'Keep track of your cards easily, try the' %}
+		<strong class="fontx1-2"><a href="/cards/albumbuilder/?albumbuilder_account={{ account.id }}&ordering=id" target="_blank"><i class="flaticon-max-bond"></i> {% trans 'Album Builder' %} <small class="tiny"><i class="tiny flaticon-link"></i></small></a></strong>
+	      </small>
+	    </h2>
+	    <div class="text-center">
+	      <br><a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/What%27s-the-difference-between-the-deck%2C-the-album-and-the-present-box%3F"><i class="flaticon-about"></i> {% blocktrans %}What's the difference between the deck, the album and the present box?{% endblocktrans %}</a>
+	    </div>
+	  </div>
+	  <div class="col-md-5">
+	    <iframe width="100%" height="300px" src="https://www.youtube.com/embed/BuYsz8-yQgI?rel=0&amp;showinfo=0&start=21" frameborder="0" allowfullscreen></iframe>
+	  </div>
+	</div>
+	<br><br><br>
+	{% if next %}
+	<div class="text-right">
+	  <a href="{{ next }}" target="_blank" class="btn btn-xl btn-{{ btnColor }}"><i class="flaticon-toggler"></i> {% trans 'Next' %}: {{ next }}</a>
+	</div>
+	<br><br><br>
+	{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

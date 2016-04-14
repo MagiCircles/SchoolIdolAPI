@@ -64,6 +64,7 @@ def globalContext(request):
             context['btnColor'] = request.user.preferences.color
     if 'notification' in request.GET:
         try:
+            context['notification_type'] = request.GET['notification']
             context['notification'] = web_raw.notifications[request.GET['notification']].copy()
             context['notification']['link'] = context['notification']['link'].format(*(request.GET['notification_link_variables'].split(',')))
         except KeyError: pass
@@ -627,15 +628,16 @@ def addaccount(request):
         form = forms.AccountForm(request.POST)
         if form.is_valid():
             account = form.save(commit=False)
+            next_url = lambda account: '/cards/initialsetup/?account=' + str(account.id) + ('&starter=' + str(account.center_id) if account.center_id else '&starter=0') + ('&next=' if 'next' in request.GET else '')
             account.owner = request.user
             if account.rank >= 200:
                 account.rank = 195
                 account.save()
                 _addaccount_savecenter(account)
-                return redirect((request.GET['next'] if 'next' in request.GET else '/cards/') + '?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
+                return redirect(next_url(account) + '&notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
             account.save()
             _addaccount_savecenter(account)
-            return redirect(request.GET['next'] if 'next' in request.GET else '/cards/#tutorialaddcardModal')
+            return redirect(next_url(account))
     else:
         form = forms.AccountForm(initial={
             'nickname': request.user.username
@@ -2423,6 +2425,8 @@ def ajax_albumbuilder_addcard(request, card_id):
                      card=card,
                      account=account,
                      account_owner=request.user)
+    if 'json' in request.POST:
+        return JsonResponse(model_to_dict(ownedcard))
     return render(request, 'albumBuilder_ownedCard.html', {
         'card': card,
         'ownedcard': ownedcard,
@@ -2480,6 +2484,70 @@ def ajax_albumbuilder_editcard(request, ownedcard_id):
                      # prefetch
                      account_owner=request.user)
     return JsonResponse(model_to_dict(ownedcard))
+
+def initialsetup(request):
+    context = globalContext(request)
+    account = None
+    if request.user.is_authenticated():
+        if 'account' in request.GET:
+            account = findAccount(int(request.GET['account']), context.get('accounts', []), forceGetAccount=False)
+            if not account:
+                raise Http404
+        elif len(context['accounts']) == 0:
+            return redirect('/addaccount/?next=/cards/initialsetup/')
+        elif len(context['accounts']) == 1:
+            account = context['accounts'][0]
+        if account:
+            cards = models.Card.objects.exclude(rarity='N').exclude(is_special=True).order_by('-is_promo', '-attribute', '-rarity', '-id')
+            if account.language != 'JP':
+                cards = cards.filter(japan_only=False)
+            if 'saveprogress' in request.GET:
+                ids = []
+                for id in request.GET['saveprogress'].split(','):
+                    try: ids.append(int(id))
+                    except ValueError: pass
+                cards = cards.exclude(pk__in=ids)
+                context['hidden_cards'] = ','.join([str(id) for id in ids])
+                context['hidden_cards_total'] = len(ids)
+            if 'starter' not in request.GET:
+                ownedcards = models.OwnedCard.objects.filter(owner_account=account, stored='Deck', card_id__in=[card.id for card in cards]).order_by('idolized')
+                for ownedcard in ownedcards:
+                    for card in cards:
+                        if card.id == ownedcard.card_id:
+                            if ownedcard.idolized:
+                                card.owned_idolized = ownedcard.id
+                            else:
+                                card.owned = ownedcard.id
+            else:
+                context['starter'] = True
+                if int(request.GET['starter']):
+                    card = (card for card in cards if card.id == account.starter_id).next()
+                    card.owned = context['starter']
+            collections = OrderedDict()
+            collections['ur_idolized'] = [string_concat(_('UR'), ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ur'] = [collections['ur_idolized'][0], 2, collections['ur_idolized'][2], False]
+            collections['sr_smile_idolized'] = [string_concat(_('SR'), ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['sr_pure_idolized'] = [string_concat(_('SR'), ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['sr_cool_idolized'] = [string_concat(_('SR'), ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['sr_smile'] = collections['sr_smile_idolized'][:-1] + [False]
+            collections['sr_pure'] = collections['sr_pure_idolized'][:-1] + [False]
+            collections['sr_cool'] = collections['sr_cool_idolized'][:-1] + [False]
+            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in card.promo_item and 'event prize' not in card.promo_item], True]
+            collections['r_idolized'] = [string_concat(_('R'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['r'] = [collections['r_idolized'][0], 9, collections['r_idolized'][2], False]
+            context['collections'] = collections
+
+            context['collections_links'] = OrderedDict()
+            context['collections_links']['ur_idolized'] = [string_concat(_('UR'), ' ', _('Cards'), ' - ', _('Idolized')), context['collections']['ur_idolized'][1], 'http://i.schoolido.lu/static/URSmile.png']
+            context['collections_links']['ur'] = [string_concat(_('UR'), ' ', _('Cards'), ' - ', _('Not Idolized')), context['collections']['ur'][1], 'http://i.schoolido.lu/static/URSmile.png']
+            context['collections_links']['sr_smile_idolized'] = [string_concat(_('SR'), ' ', _('Cards'), ' - ', _('Idolized')), 4, 'http://i.schoolido.lu/static/SRPure.png']
+            context['collections_links']['sr_smile'] = [string_concat(_('SR'), ' ', _('Cards'), ' - ', _('Not Idolized')), 5, 'http://i.schoolido.lu/static/SRCool.png']
+            context['collections_links']['promo'] = [context['collections']['promo'][0], context['collections']['promo'][1], 'flaticon-promo']
+            context['collections_links']['r_idolized'] = [context['collections']['r_idolized'][0], 8, 'http://i.schoolido.lu/static/RSmile.png']
+        context['account'] = account
+    if 'next' in request.GET:
+        context['next'] = request.GET['next']
+    return render(request, 'initialsetup.html', context)
 
 def usicaltriofestival(request):
     context = globalContext(request)

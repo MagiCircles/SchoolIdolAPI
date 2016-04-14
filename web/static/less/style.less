@@ -1,7 +1,7 @@
 
 @import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700);
 
-@import "../css/flaticon.css?1";
+@import "../css/flaticon.css?2";
 @import "../bower/css-hexagon/hexagon.less";
 
 @import "variables.less";
@@ -478,6 +478,9 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
     padding: 71px 0;
     color: #fff;
     overflow: hidden;
+    &.neutral {
+	color: inherit;
+    }
     h1 {
 	text-align: center;
 	margin: 0;
@@ -541,6 +544,91 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
     -webkit-transform:rotate(@deg);
 }
 
+#initialsetup {
+    table {
+	width: 100%;
+    }
+    table th {
+	vertical-align: top;
+	padding-top: 10px;
+	a {
+	    .a-nodifference();
+	}
+    }
+    .link-stars-side {
+	.btn {
+	    padding: 6px;
+	    span {
+		display: block;
+		width: 42px;
+		height: 42px;
+		line-height: 42px;
+	    }
+	    img {
+		display: inline-block;
+		width: 48px;
+		height: 48px;
+		margin: -10px;
+	    }
+	}
+    }
+    .initial_setup_card {
+	display: inline-block;
+	padding: 0 25px 50px 25px;
+	.loader {
+	    display: inline-block;
+	    width: 128px;
+	    height: 128px;
+	    font-size: 50px;
+	    line-height: 100px;
+	    text-align: center;
+	}
+	img.event {
+	    width: 164.734px;
+	    display: block;
+	}
+	img.card {
+	    cursor: pointer;
+	    opacity: 0.5;
+	    transition: opacity 0.2s ease;
+	    &.owned, &:hover, &:focus {
+		opacity: 1;
+		border-top-right-radius: 50%;
+		border-bottom-right-radius: 50%;
+	    }
+	    &.owned {
+		.white-box-shadow;
+	    }
+	}
+    }
+    .event_bg {
+	width: 100%;
+	height: 128px;
+	background-size: 160%;
+	background-position: center 40%;
+	border-radius: 10px;
+    }
+    video, iframe {
+	border-radius: 10px;
+    }
+    .video80 {
+	width: 60%;
+	margin: 20px 20%;
+    }
+    .next_buttons {
+	position: fixed;
+	z-index: 1031;
+	bottom: 30px;
+	right: 140px;
+	text-align: right;
+	.progress {
+	    .white-box-shadow;
+	    margin: 10px 0;
+	    width: 330px;
+	}
+    }
+}
+
 @media (max-width: 970px) {
     #users {
 	padding: 20px;
@@ -581,6 +669,49 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 	h1 {
 	    font-size: 3em;
 	    margin-bottom: 10%;
+	}
+    }
+    #initialsetup {
+	td, th {
+	    display: block;
+	    width: 100%;
+	}
+	th {
+	    text-align: left;
+	}
+	td {
+	    text-align: center;
+	}
+	.next_buttons {
+	    width: 100%;
+	    display: block;
+	    position: fixed;
+	    right: 0;
+	    left: 0;
+	    bottom: 0;
+	    .btn, .progress, span {
+		width: 100%;
+		border-radius: 0;
+		margin: 0;
+	    }
+	    .btn {
+		padding: 6px 12px;
+		font-size: 24px;
+	    }
+	    span {
+		background-color: white;
+		display: block;
+		text-align: center;
+		padding: 10px;
+		font-size: 0.8em;
+	    }
+	    span b {
+		font-weight: normal;
+	    }
+	}
+	.video80 {
+	    width: 100%;
+	    margin: 10px 0;
 	}
     }
 }
@@ -1794,6 +1925,7 @@ a.toplistbanner {
 }
 
 .flaticon-loading {
+    display: inline-block;
     .animate-pulse;
 }
 
@@ -1842,15 +1974,17 @@ a.toplistbanner {
     }
 }
 
+form.selectaccount {
+    max-width: 200px;
+    margin: auto;
+}
+
+
 #skillup-page {
     .alert {
 	.pull-right {
 	    min-width: 100px;
 	}
-    }
-    form.selectaccount {
-	max-width: 200px;
-	margin: auto;
     }
     .table h4 {
 	background-color: #f9f9f9;
@@ -1873,4 +2007,24 @@ a.toplistbanner {
 	    font-size: 0.8em;
 	}
     }
+}
+
+.fake-social-flaticon {
+    &.Smile { background-color: @SmileColor; }
+    &.Pure { background-color: @PureColor; }
+    &.Cool { background-color: @CoolColor; }
+    border-radius: 2px;
+    padding: 2px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+.flaticon-facebook {
+    .fake-social-flaticon();
+    background-image: url('/static/facebook.png');
+}
+.flaticon-twitter {
+    .fake-social-flaticon();
+    background-image: url('/static/twitter.png');
 }

@@ -292,6 +292,7 @@
     <form>
       <h2>{% trans 'More options' %}</h2>
       <ul>
+	<li><a href="/cards/initialsetup/?account={{ account.id }}">{% trans 'Initial Setup' %}</a></li>
 	<li><a href="/addteam/{{ account.id }}/">{% trans 'Add Team' %}</a></li>
 	<li><a href="/cards/albumbuilder/?albumbuilder_account={{ account.id }}&ordering=id">{% trans 'Album Builder' %}</a></li>
 	<li><a href="/skillup/?account={{ account.id }}">{% trans 'Level up the skill of your cards' %}</a></li>

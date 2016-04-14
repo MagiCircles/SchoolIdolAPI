@@ -96,7 +96,7 @@ $(document).ready(function() {
 	    var section = $(this);
 	    var rainbow = section.data('rainbow');
 	    if (typeof rainbow == 'undefined'
-		|| ((rainbow == '8' || rainbow == '9') && r_hidden)) {
+		|| ((section.prop('id') == 'r' || section.prop('id') == 'r_idolized') && r_hidden)) {
 		$('.next_buttons a').first().hide();
 		$('.next_buttons a').last().parent().removeClassPrefix('color-Rainbow-');
 		$('.next_buttons .progress-bar').removeClassPrefix('bg-Rainbow-');

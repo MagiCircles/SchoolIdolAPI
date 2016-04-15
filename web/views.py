@@ -336,7 +336,9 @@ def setaccountonlogin(request):
         return redirect('addaccount')
     return redirect('cards')
 
-def get_cards_queryset(request, context, card=None):
+def get_cards_queryset(request, context, card=None, extra_request_get={}):
+    request_get_copy = request.GET.copy()
+    request_get_copy.update(extra_request_get)
     # Set defaults
     request_get = {
         'ordering': 'id',
@@ -346,110 +348,110 @@ def get_cards_queryset(request, context, card=None):
     if card is None:
         # Apply filters
         cards = models.Card.objects.filter()
-        if 'search' in request.GET:
-            request_get['search'] = request.GET['search']
-            if request.GET['search']:
-                cards = cards.filter(Q(name__icontains=request.GET['search'])
-                                     | Q(idol__japanese_name__icontains=request.GET['search'])
-                                     | Q(skill__icontains=request.GET['search'])
-                                     | Q(japanese_skill__icontains=request.GET['search'])
-                                     | Q(skill_details__icontains=request.GET['search'])
-                                     | Q(japanese_skill_details__icontains=request.GET['search'])
-                                     | Q(center_skill__icontains=request.GET['search'])
-                                     | Q(japanese_collection__icontains=request.GET['search'])
-                                     | Q(translated_collection__icontains=request.GET['search'])
-                                     | Q(promo_item__icontains=request.GET['search'])
-                                     | Q(event__english_name__icontains=request.GET['search'])
-                                     | Q(event__japanese_name__icontains=request.GET['search'])
+        if 'search' in request_get_copy:
+            request_get['search'] = request_get_copy['search']
+            if request_get_copy['search']:
+                cards = cards.filter(Q(name__icontains=request_get_copy['search'])
+                                     | Q(idol__japanese_name__icontains=request_get_copy['search'])
+                                     | Q(skill__icontains=request_get_copy['search'])
+                                     | Q(japanese_skill__icontains=request_get_copy['search'])
+                                     | Q(skill_details__icontains=request_get_copy['search'])
+                                     | Q(japanese_skill_details__icontains=request_get_copy['search'])
+                                     | Q(center_skill__icontains=request_get_copy['search'])
+                                     | Q(japanese_collection__icontains=request_get_copy['search'])
+                                     | Q(translated_collection__icontains=request_get_copy['search'])
+                                     | Q(promo_item__icontains=request_get_copy['search'])
+                                     | Q(event__english_name__icontains=request_get_copy['search'])
+                                     | Q(event__japanese_name__icontains=request_get_copy['search'])
                 )
-        if 'name' in request.GET and request.GET['name']:
-            cards = cards.filter(name__exact=request.GET['name'])
-            request_get['name'] = request.GET['name']
-        if 'collection' in request.GET and request.GET['collection']:
-            cards = cards.filter(japanese_collection__exact=request.GET['collection'])
-            request_get['collection'] = request.GET['collection']
-        if 'translated_collection' in request.GET and request.GET['translated_collection']:
-            cards = cards.filter(translated_collection__exact=request.GET['translated_collection'])
-            request_get['translated_collection'] = request.GET['translated_collection']
-        if 'sub_unit' in request.GET and request.GET['sub_unit']:
-            cards = cards.filter(idol__sub_unit__exact=request.GET['sub_unit'])
-            request_get['sub_unit'] = request.GET['sub_unit']
-        if 'idol_year' in request.GET and request.GET['idol_year']:
-            cards = cards.filter(idol__year__exact=request.GET['idol_year'])
-            request_get['idol_year'] = request.GET['idol_year']
-        if 'idol_school' in request.GET and request.GET['idol_school']:
-            cards = cards.filter(idol__school__exact=request.GET['idol_school'])
-            request_get['idol_school'] = request.GET['idol_school']
-        if 'rarity' in request.GET and request.GET['rarity']:
-            cards = cards.filter(rarity__exact=request.GET['rarity'])
-            request_get['rarity'] = request.GET['rarity']
-        if 'attribute' in request.GET and request.GET['attribute']:
-            cards = cards.filter(attribute__exact=request.GET['attribute'])
-            request_get['attribute'] = request.GET['attribute']
-        if 'skill' in request.GET and request.GET['skill']:
-            cards = cards.filter(skill__exact=request.GET['skill'])
-            request_get['skill'] = request.GET['skill']
+        if 'name' in request_get_copy and request_get_copy['name']:
+            cards = cards.filter(name__exact=request_get_copy['name'])
+            request_get['name'] = request_get_copy['name']
+        if 'collection' in request_get_copy and request_get_copy['collection']:
+            cards = cards.filter(japanese_collection__exact=request_get_copy['collection'])
+            request_get['collection'] = request_get_copy['collection']
+        if 'translated_collection' in request_get_copy and request_get_copy['translated_collection']:
+            cards = cards.filter(translated_collection__exact=request_get_copy['translated_collection'])
+            request_get['translated_collection'] = request_get_copy['translated_collection']
+        if 'sub_unit' in request_get_copy and request_get_copy['sub_unit']:
+            cards = cards.filter(idol__sub_unit__exact=request_get_copy['sub_unit'])
+            request_get['sub_unit'] = request_get_copy['sub_unit']
+        if 'idol_year' in request_get_copy and request_get_copy['idol_year']:
+            cards = cards.filter(idol__year__exact=request_get_copy['idol_year'])
+            request_get['idol_year'] = request_get_copy['idol_year']
+        if 'idol_school' in request_get_copy and request_get_copy['idol_school']:
+            cards = cards.filter(idol__school__exact=request_get_copy['idol_school'])
+            request_get['idol_school'] = request_get_copy['idol_school']
+        if 'rarity' in request_get_copy and request_get_copy['rarity']:
+            cards = cards.filter(rarity__exact=request_get_copy['rarity'])
+            request_get['rarity'] = request_get_copy['rarity']
+        if 'attribute' in request_get_copy and request_get_copy['attribute']:
+            cards = cards.filter(attribute__exact=request_get_copy['attribute'])
+            request_get['attribute'] = request_get_copy['attribute']
+        if 'skill' in request_get_copy and request_get_copy['skill']:
+            cards = cards.filter(skill__exact=request_get_copy['skill'])
+            request_get['skill'] = request_get_copy['skill']
 
-        if 'ids' in request.GET and request.GET['ids']:
-            cards= cards.filter(pk__in=request.GET['ids'].split(','))
+        if 'ids' in request_get_copy and request_get_copy['ids']:
+            cards= cards.filter(pk__in=request_get_copy['ids'].split(','))
 
-        if 'is_event' in request.GET and request.GET['is_event'] == 'on':
+        if 'is_event' in request_get_copy and request_get_copy['is_event'] == 'on':
             cards = cards.filter(event__isnull=False)
             request_get['is_event'] = 'on'
-        elif 'is_event' in request.GET and request.GET['is_event'] == 'off':
+        elif 'is_event' in request_get_copy and request_get_copy['is_event'] == 'off':
             cards = cards.filter(event__isnull=True)
             request_get['is_event'] = 'off'
 
-        if 'is_special' in request.GET and request.GET['is_special'] == 'on':
+        if 'is_special' in request_get_copy and request_get_copy['is_special'] == 'on':
             cards = cards.filter(is_special__exact=True)
             request_get['is_special'] = 'on'
-        elif 'is_special' in request.GET and request.GET['is_special'] == 'off':
+        elif 'is_special' in request_get_copy and request_get_copy['is_special'] == 'off':
             cards = cards.filter(is_special__exact=False)
             request_get['is_special'] = 'off'
-        if 'release_after' in request.GET and request.GET['release_after']:
-            cards = cards.filter(release_date__gte=datetime.datetime.strptime(request.GET['release_after'] + '-01', "%Y-%m-%d"))
-            request_get['release_after'] = request.GET['release_after']
-        if 'release_before' in request.GET and request.GET['release_before']:
-            cards = cards.filter(release_date__lte=datetime.datetime.strptime(request.GET['release_before'] + '-01', "%Y-%m-%d"))
-            request_get['release_before'] = request.GET['release_before']
+        if 'release_after' in request_get_copy and request_get_copy['release_after']:
+            cards = cards.filter(release_date__gte=datetime.datetime.strptime(request_get_copy['release_after'] + '-01', "%Y-%m-%d"))
+            request_get['release_after'] = request_get_copy['release_after']
+        if 'release_before' in request_get_copy and request_get_copy['release_before']:
+            cards = cards.filter(release_date__lte=datetime.datetime.strptime(request_get_copy['release_before'] + '-01', "%Y-%m-%d"))
+            request_get['release_before'] = request_get_copy['release_before']
 
-        if 'show_clean_ur' in request.GET and request.GET['show_clean_ur']:
+        if 'show_clean_ur' in request_get_copy and request_get_copy['show_clean_ur']:
             request_get['show_clean_ur'] = True
 
-        if 'account' in request.GET and request.GET['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
-            account = findAccount(request.GET['account'], context['accounts'], forceGetAccount=request.user.is_staff)
+        if 'account' in request_get_copy and request_get_copy['account'] and request.user.is_authenticated() and not request.user.is_anonymous():
+            account = findAccount(request_get_copy['account'], context['accounts'], forceGetAccount=request.user.is_staff)
             if account:
                 request_get['account'] = account.id
-                if 'max_level' in request.GET and request.GET['max_level'] == '1':
+                if 'max_level' in request_get_copy and request_get_copy['max_level'] == '1':
                     cards = cards.filter(id__in=models.OwnedCard.objects.filter(owner_account=account, max_level=True).values('card'))
                     request_get['max_level'] = '1'
-                elif 'max_level' in request.GET and request.GET['max_level'] == '-1':
+                elif 'max_level' in request_get_copy and request_get_copy['max_level'] == '-1':
                     cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, max_level=True).values('card'))
                     request_get['max_level'] = '-1'
-                if 'max_bond' in request.GET and request.GET['max_bond'] == '1':
+                if 'max_bond' in request_get_copy and request_get_copy['max_bond'] == '1':
                     cards = cards.filter(id__in=models.OwnedCard.objects.filter(owner_account=account, max_bond=True).values('card'))
                     request_get['max_bond'] = '1'
-                elif 'max_bond' in request.GET and request.GET['max_bond'] == '-1':
+                elif 'max_bond' in request_get_copy and request_get_copy['max_bond'] == '-1':
                     cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, max_bond=True).values('card'))
                     request_get['max_bond'] = '-1'
-                if 'idolized' in request.GET and request.GET['idolized'] == '1':
+                if 'idolized' in request_get_copy and request_get_copy['idolized'] == '1':
                     cards = cards.filter(id__in=models.OwnedCard.objects.filter(owner_account=account, idolized=True).values('card'))
                     request_get['idolized'] = '1'
-                elif 'idolized' in request.GET and request.GET['idolized'] == '-1':
+                elif 'idolized' in request_get_copy and request_get_copy['idolized'] == '-1':
                     cards = cards.exclude(id__in=models.OwnedCard.objects.filter(owner_account=account, idolized=True).values('card'))
                     request_get['idolized'] = '-1'
 
-                if 'stored' in request.GET and request.GET['stored']:
-                    if request.GET['stored'] == 'Album':
+                if 'stored' in request_get_copy and request_get_copy['stored']:
+                    if request_get_copy['stored'] == 'Album':
                         cards = cards.filter(ownedcards__owner_account=account).filter(Q(ownedcards__stored='Deck') | Q(ownedcards__stored='Album'))
                     else:
-                        cards = cards.filter(ownedcards__owner_account=account, ownedcards__stored=request.GET['stored'])
+                        cards = cards.filter(ownedcards__owner_account=account, ownedcards__stored=request_get_copy['stored'])
                     cards = cards.distinct()
-                    request_get['stored'] = request.GET['stored']
+                    request_get['stored'] = request_get_copy['stored']
 
         if ('accounts' in context and not hasJP(context['accounts'])
-            and 'search' not in request.GET or 'is_world' in request.GET and request.GET['is_world']):
-            if 'is_world' in request.GET and request.GET['is_world'] == 'off':
+            and 'search' not in request_get_copy or 'is_world' in request_get_copy and request_get_copy['is_world']):
+            if 'is_world' in request_get_copy and request_get_copy['is_world'] == 'off':
                 cards = cards.filter(japan_only=True)
             else:
                 cards = cards.filter(japan_only=False)
@@ -457,17 +459,17 @@ def get_cards_queryset(request, context, card=None):
             request_get['is_world'] = True
 
         if ('accounts' in context and not hasJP(context['accounts'])
-            and 'search' not in request.GET or 'is_promo' in request.GET and request.GET['is_promo']):
-            if 'is_promo' not in request.GET or request.GET['is_promo'] == 'off':
+            and 'search' not in request_get_copy or 'is_promo' in request_get_copy and request_get_copy['is_promo']):
+            if 'is_promo' not in request_get_copy or request_get_copy['is_promo'] == 'off':
                 cards = cards.filter(is_promo=False)
                 request_get['is_promo'] = 'off'
             else:
                 cards = cards.filter(is_promo=True)
                 request_get['is_promo'] = 'on'
 
-        if 'ordering' in request.GET and request.GET['ordering']:
-            request_get['ordering'] = request.GET['ordering']
-            request_get['reverse_order'] = 'reverse_order' in request.GET and request.GET['reverse_order']
+        if 'ordering' in request_get_copy and request_get_copy['ordering']:
+            request_get['ordering'] = request_get_copy['ordering']
+            request_get['reverse_order'] = 'reverse_order' in request_get_copy and request_get_copy['reverse_order']
         prefix = '-' if request_get['reverse_order'] else ''
         cards = cards.order_by(prefix + request_get['ordering'], prefix +'id')
 
@@ -505,7 +507,7 @@ def get_cards_form_filters(request, cardsinfo):
         )
     }
 
-def cards(request, card=None, ajax=False):
+def cards(request, card=None, ajax=False, extra_request_get={}, extra_context={}):
     """
     SQL Queries:
     - Context
@@ -528,7 +530,7 @@ def cards(request, card=None, ajax=False):
     cardsinfo = settings.CARDS_INFO
     max_stats = cardsinfo['max_stats']
 
-    context, cards = get_cards_queryset(request=request, context=context, card=card)
+    context, cards = get_cards_queryset(request=request, context=context, card=card, extra_request_get=extra_request_get)
 
     if card is None:
         context['total_results'] = cards.count()
@@ -591,6 +593,7 @@ def cards(request, card=None, ajax=False):
         context['quickaddcard_form'] = forms.getOwnedCardForm(forms.QuickOwnedCardForm(), context['accounts'])
     context['page'] = page + 1
     context['ajax'] = ajax
+    context.update(extra_context)
     if ajax:
         if not (page % 5):
             context['cards_links'] = (link for link in links_list if link['link'] == 'cards').next()
@@ -2618,3 +2621,32 @@ def skillup(request):
             context['ownedcards'] = models.OwnedCard.objects.filter(owner_account=account, card__skill__in=_skillup_skills).exclude(stored='Favorite').exclude(stored='Album').order_by('card__skill', '-skill').select_related('card')
         context['account'] = account
     return render(request, 'skillup.html', context)
+
+def collections(request):
+    context = globalContext(request)
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    cards = models.Card.objects.filter(rarity='UR').filter(ur_pair_reverse=True)
+    is_jp = request.LANGUAGE_CODE == 'ja' or 'japanese' in request.GET
+    if is_jp:
+        cards = cards.exclude(japanese_collection='').exclude(japanese_collection__isnull=True)
+    else:
+        cards = cards.exclude(translated_collection='').exclude(translated_collection__isnull=True)
+    cards = cards.select_related('ur_pair').order_by('-id')
+    collections = OrderedDict()
+    for card in cards:
+        collection = card.japanese_collection if is_jp else card.translated_collection
+        if collection not in collections:
+            collections[collection] = (card, card.release_date)
+    context['collections'] = collections
+    context['is_jp'] = is_jp
+    return render(request, 'collections.html', context)
+
+def collection(request, collection):
+    is_jp = request.LANGUAGE_CODE == 'ja' or 'japanese' in request.GET
+    return cards(request, extra_request_get={
+        'japanese_collection': collection,
+    } if is_jp else {
+        'translated_collection': collection,
+    }, extra_context={
+        'get_parameters': '?' + ('japanese_collection' if is_jp else 'translated_collection') + '=' + collection,
+    })

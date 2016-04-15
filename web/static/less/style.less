@@ -84,6 +84,10 @@ dt, dd {
     display: inline-block;
 }
 
+.block {
+    display: block;
+}
+
 .followlist {
     .btn {
 	margin: 2px 0;
@@ -625,6 +629,17 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 	    .white-box-shadow;
 	    margin: 10px 0;
 	    width: 330px;
+	}
+    }
+}
+
+#collections {
+    .container {
+	padding: 10px!important;
+    }
+    .collection {
+	img {
+	    width: 50%;
 	}
     }
 }
@@ -1333,7 +1348,7 @@ h1#donators {
     }
 }
 
-#contest-page, #trivia-page, #skillup-page {
+#contest-page, #trivia-page, #skillup-page, #collections {
     background: url('../background.jpg') no-repeat top center;
     background-attachment: fixed;
     .container {

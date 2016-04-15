@@ -42,7 +42,10 @@
     }
   });
 </script>
-<script src="/static/js/cards.js?10"></script>
+<script>
+  var get_parameters = {% if get_parameters %}'{{ get_parameters }}'{% else %}location.search{% endif %};
+</script>
+<script src="/static/js/cards.js?11"></script>
 {% if view == 'albumbuilder' %}
 <script src="/static/js/albumbuilder.js"></script>
 <script>
@@ -104,7 +107,7 @@
 {% if show_filter_button %}
 <div id="wrapper" class="{% if show_filter_bar %}active{% endif %}">
   <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
-    <form method="GET">
+    <form method="GET" action="/cards/">
       <h4>{% trans 'Search' %}</h4>
       <div class="section search">
 	<input type="text" id="search" placeholder="{% trans 'Search' %}" name="search" data-container="body" data-toggle="popover" data-placement="left" data-content="{% trans 'Search' %}: {% trans 'Idol' %}, {% trans 'Skill' %}, {% trans 'Collection' %}, {% trans 'Promo Item' %}, {% trans 'Event' %}, ..." data-trigger="focus" value="{{ request_get.search }}">

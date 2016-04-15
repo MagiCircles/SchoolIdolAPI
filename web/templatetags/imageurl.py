@@ -21,14 +21,20 @@ def imageurl(context, card, image):
     return '/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)
-def cleanurl(context, card, idolized):
+def cleanurl(context, card, idolized, small=True):
     if idolized:
         if card.clean_ur_idolized:
-            return _imageurl(str(card.clean_ur_idolized).replace('/cards/ur_pairs/', '/cards/ur_pairs/small_'))
+            if small:
+                return _imageurl(str(card.clean_ur_idolized).replace('/cards/ur_pairs/', '/cards/ur_pairs/small_'))
+            else:
+                return _imageurl(str(card.clean_ur_idolized))
         return _imageurl(str(card.card_idolized_image))
     else:
         if card.clean_ur:
-            return _imageurl(str(card.clean_ur).replace('/cards/ur_pairs/', '/cards/ur_pairs/small_'))
+            if small:
+                return _imageurl(str(card.clean_ur).replace('/cards/ur_pairs/', '/cards/ur_pairs/small_'))
+            else:
+                return _imageurl(str(card.clean_ur))
         return _imageurl(str(card.card_image))
 
 @register.simple_tag()

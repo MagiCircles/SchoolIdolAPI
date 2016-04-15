@@ -139,7 +139,7 @@ function load_more_function() {
     var button = $("#load_more");
     button.html('<div class="loader">Loading...</div>');
     var next_page = button.attr('data-next-page');
-    $.get('/ajax/cards/' + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {
+    $.get('/ajax/cards/' + get_parameters + (get_parameters == '' ? '?' : '&') + 'page=' + next_page, function(data) {
 	button.replaceWith(data);
 	pagination();
 	addCardButtonHandler();

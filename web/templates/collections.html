@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load mod %}
+{% load i18n %}
+{% load imageurl %}
+{% load random_int %}
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/collections.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/collections.png{% endblock %}
+
+{% block title %}{% trans 'Collections' %}{% endblock %}
+{% block content %}
+<div id="collections" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+  <div class="container">
+    <h1 class="text-center margin50">{% trans 'Collections' %} <small>{{ collections|length }}</small></h1>
+    <div class="row">
+      {% for collection, card in collections.items %}
+	{% if forloop.counter0|mod:2 and forloop.counter0 != 0 %}
+      </div> <!-- row -->
+      <div class="row">
+	{% endif %}
+	<div class="col-md-6">
+	  <a href="/collection/{{ collection }}/{% if is_jp %}?japanese{% endif %}" class="panel panel-{{ btnColor }} collection block a-nodifference">
+	    <div class="panel-heading fontx2">
+	      <strong>{{ collection }}</strong><br>
+	      <small class="tiny">{{ card.1|date:"F Y" }}</small>
+	    </div>
+	    <div class="panel-body">
+
+	      {% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=False nolink=True small=False %}
+	    </div>
+	  </a>
+	</div>
+	{% endfor %}
+    </div> <!-- row -->
+    <br><br><br>
+    {% include 'disqus.html' %}
+  </div> <!-- container -->
+</div> <!-- collections -->
+{% endblock %}

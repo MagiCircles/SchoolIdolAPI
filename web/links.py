@@ -361,6 +361,12 @@ links = [
                     'type': 'info',
                     'language': 'japanese',
                 },
+                {
+                    'name': _('Collections'),
+                    'url': '/collections/',
+                    'type': 'info',
+                    'language': 'japanese',
+                },
                 {},
                 {
                     'name': _('Trade Accounts on Facebook'),

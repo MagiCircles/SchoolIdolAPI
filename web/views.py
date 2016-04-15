@@ -37,7 +37,6 @@ import datetime, time, pytz
 import random
 import re
 import json
-import collections
 import operator
 
 def contextAccounts(request):
@@ -2288,7 +2287,7 @@ def songs(request, song=None, ajax=False):
     max_stats = cardsinfo['songs_max_stats']
     for song in songs:
         song.length = time.strftime('%M:%S', time.gmtime(song.time))
-        song.percent_stats = collections.OrderedDict()
+        song.percent_stats = OrderedDict()
         song.percent_stats['easy'] = ((song.easy_notes if song.easy_notes else 0) / max_stats) * 100
         song.percent_stats['normal'] = ((song.normal_notes if song.normal_notes else 0) / max_stats) * 100
         song.percent_stats['hard'] = ((song.hard_notes if song.hard_notes else 0) / max_stats) * 100

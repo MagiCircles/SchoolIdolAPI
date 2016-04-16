@@ -113,9 +113,9 @@ def best_single_card_query(contest):
 
 def best_single_girl_query(contest):
     try:
-        girl = contest_models.Vote.objects.filter(contest=contest).values('card__name').annotate(count=Sum('counter')).order_by('-count').first()
-        return girl['card__name']
-    except (AttributeError, TypeError):
+        girl = best_girls_query(contest)[0]
+        return girl['name']
+    except (AttributeError, TypeError, IndexError):
         return None
 
 def best_single_cards(contest):

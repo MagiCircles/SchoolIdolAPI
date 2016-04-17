@@ -568,11 +568,16 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     show_items = models.BooleanField('', default=True, help_text=_('Should your items be visible to other players?'))
     fake = models.BooleanField(_('Fake'), default=False)
     # Cache
+    owner_username = models.CharField(max_length=32, null=True, blank=True)
     center_card_transparent_image = models.CharField(max_length=200, null=True, blank=True)
     center_card_round_image = models.CharField(max_length=200, null=True, blank=True)
     center_card_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
     center_card_id = models.PositiveIntegerField(default=0)
     center_alt_text = models.CharField(max_length=100, null=True, blank=True)
+
+    @property
+    def website_url(self):
+        return 'http://schoolido.lu/user/{}/#{}'.format(self.owner_username, self.id)
 
     @property
     def money_spent(self):
@@ -602,6 +607,18 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
         if not self.starter_id:
             return None
         return self._get_starter_idol()[0]
+
+    @property
+    def starter_attribute(self):
+        if not self.starter_id:
+            return None
+        return 'Smile'
+
+    @property
+    def starter_alt_text(self):
+        if not self.starter_id:
+            return None
+        return "#{} {} R".format(self.starter_id, self._get_starter_idol()[0])
 
     def __unicode__(self):
         return (unicode(self.owner.username) if self.nickname == '' else unicode(self.nickname)) + u' ' + unicode(self.language)

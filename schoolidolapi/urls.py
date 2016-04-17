@@ -7,15 +7,15 @@ from django.views.generic.base import RedirectView
 admin.autodiscover()
 
 router = routers.DefaultRouter()
-router.register(r'cards', api_views.CardViewSet)
+router.register(r'cards', api_views.CardViewSet, base_name='card')
 router.register(r'idols', api_views.IdolViewSet)
 router.register(r'cardids', api_views.CardIdViewSet)
 router.register(r'events', api_views.EventViewSet)
 router.register(r'songs', api_views.SongViewSet)
 
-router.register(r'users', api_views.UserViewSet)
+router.register(r'users', api_views.UserViewSet, base_name='user')
 router.register(r'ownedcards', api_views.OwnedCardViewSet, base_name='ownedcard')
-router.register(r'accounts', api_views.AccountViewSet)
+router.register(r'accounts', api_views.AccountViewSet, base_name='account')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.filters import BaseFilterBackend
 from api import permissions as api_permissions
 from api import serializers, models, raw
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Prefetch
 
 class RandomBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
@@ -28,7 +28,16 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all()
+    def get_queryset(self):
+        queryset = models.User.objects.all()
+        if 'expand_accounts' in self.request.query_params:
+            queryset = queryset.prefetch_related(Prefetch('accounts_set', queryset=models.Account.objects.order_by('-rank'), to_attr='all_accounts'))
+        if 'expand_links' in self.request.query_params:
+            queryset = queryset.prefetch_related(Prefetch('links', to_attr='all_links'))
+        if 'expand_preferences' in self.request.query_params:
+            queryset = queryset.select_related('preferences')
+        return queryset
+
     serializer_class = serializers.UserSerializer
     search_fields = ('username', 'preferences__description', 'preferences__location', 'links__value', 'accounts_set__nickname')
     filter_fields = ('email', 'preferences__private', 'preferences__status', 'preferences__color', 'preferences__best_girl', 'preferences__location')
@@ -67,7 +76,14 @@ class CardViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows cards to be viewed.
     """
-    queryset = models.Card.objects.all().select_related('event', 'idol')
+    def get_queryset(self):
+        queryset = models.Card.objects.all()
+        if 'expand_idol' in self.request.query_params:
+            queryset = queryset.select_related('idol')
+        if 'expand_event' in self.request.query_params:
+            queryset = queryset.select_related('event')
+        return queryset
+
     serializer_class = serializers.CardSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection', 'translated_collection', 'promo_item','event__english_name','event__japanese_name')
@@ -160,7 +176,12 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows accounts to be viewed or edited.
     """
-    queryset = models.Account.objects.all().select_related('owner', 'center')
+    def get_queryset(self):
+        queryset = models.Account.objects.all()
+        if 'expand_owner' in self.request.query_params:
+            queryset = queryset.select_related('owner')
+        return queryset
+
     serializer_class = serializers.AccountSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, AccountFilterBackend, RandomBackend)
     search_fields = ('owner__username', 'nickname', 'device')
@@ -182,12 +203,15 @@ class OwnedCardViewSet(viewsets.ModelViewSet):
     API endpoint that allows owned cards to be viewed or edited.
     """
     def get_queryset(self):
-        queryset = models.OwnedCard.objects.filter(Q(owner_account__owner__preferences__private=False) | Q(owner_account__owner__preferences__private=True, owner_account__pk__in=(self.request.user.accounts_set.all() if self.request.user.is_authenticated() else []))).select_related('center')
+        queryset = models.OwnedCard.objects.all()
+        if self.request.user.is_authenticated():
+            queryset = queryset.filter(Q(owner_account__owner__preferences__private=False) | Q(owner_account__owner__preferences__private=True, owner_account__pk__in=(self.request.user.accounts_set.all() if self.request.user.is_authenticated() else [])))
+        # else: TODO: too slow, extra query
+        #     queryset = queryset.filter(owner_account__owner__preferences__private=False)
         if 'expand_card' in self.request.query_params:
-            queryset = queryset.select_related('card', 'card__event', 'card__idol')
+            queryset = queryset.select_related('card')
         if 'expand_owner' in self.request.query_params:
             queryset = queryset.select_related('owner_account')
-        queryset = queryset.distinct()
         return queryset
 
     serializer_class = serializers.OwnedCardSerializer

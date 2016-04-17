@@ -621,6 +621,7 @@ def _addaccount_savecenter(account):
         account.center_card_attribute = account.center.card.attribute
         account.center_alt_text = unicode(account.center.card)
         account.center_card_id = account.center.card.id
+        account.owner_username = account.owner.username
         account.save()
 
 def addaccount(request):

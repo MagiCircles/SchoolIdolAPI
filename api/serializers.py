@@ -27,22 +27,47 @@ class UserPreferencesSerializer(serializers.ModelSerializer):
         model = models.UserPreferences
         fields = ('color', 'description', 'best_girl', 'location', 'latitude', 'longitude', 'private', 'status', 'avatar')
 
+class UserLinkSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
+    def get_url(self, obj):
+        return obj.url()
+    class Meta:
+        model = models.UserLink
+        fields = ('type', 'value', 'relevance', 'url')
+
 class UserSerializer(serializers.ModelSerializer):
     accounts = serializers.SerializerMethodField()
     links = serializers.SerializerMethodField()
-    preferences = UserPreferencesSerializer()
+    preferences = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
 
     def get_website_url(self, obj):
         return 'http://schoolido.lu/user/' + urllib.quote(obj.username) + '/'
 
     def get_accounts(self, obj):
-        accounts = models.Account.objects.filter(owner=obj)
-        serializer = AccountSerializer(accounts, many=True, context=self.context)
-        return serializer.data
+        if self.context['request'].resolver_match.url_name == 'user-list':
+            if 'expand_accounts' in self.context['request'].query_params:
+                serializer = AccountSerializer(obj.all_accounts, many=True, context=self.context)
+                return serializer.data
+            return note_to_expand("accounts", multiple=True)
+        return None
 
     def get_links(self, obj):
-        return [{'type': link.type, 'url': link.url(), 'relevance': link.relevance} for link in obj.links.all()]
+        if self.context['request'].resolver_match.url_name == 'user-list':
+            if 'expand_links' in self.context['request'].query_params:
+                serializer = UserLinkSerializer(obj.all_links, many=True, context=self.context)
+                return serializer.data
+            return note_to_expand("links", multiple=True)
+        return None
+
+    def get_preferences(self, obj):
+        if self.context['request'].resolver_match.url_name == 'user-list':
+            if 'expand_preferences' in self.context['request'].query_params:
+                serializer = UserPreferencesSerializer(obj.preferences, context=self.context)
+                return serializer.data
+            return note_to_expand('preferences')
+        return None
 
     class Meta:
         model = User
@@ -67,8 +92,6 @@ class EventSerializer(serializers.ModelSerializer):
     end = DateTimeJapanField()
     japan_current = serializers.SerializerMethodField()
     world_current = serializers.SerializerMethodField()
-    cards = serializers.SerializerMethodField()
-    song = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     english_image = serializers.SerializerMethodField()
 
@@ -84,19 +107,10 @@ class EventSerializer(serializers.ModelSerializer):
     def get_world_current(self, obj):
         return obj.is_world_current()
 
-    def get_cards(self, obj):
-        cards = models.Card.objects.filter(event=obj)
-        cards = [card.pk for card in cards]
-        return cards
-
-    def get_song(self, obj):
-        try: return obj.songs.all()[0].name
-        except: return None
-
     class Meta:
         model = models.Event
         lookup_field = 'japanese_name'
-        fields = ('japanese_name', 'romaji_name', 'english_name', 'image', 'english_image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'cards', 'song', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note')
+        fields = ('japanese_name', 'romaji_name', 'english_name', 'image', 'english_image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note')
 
 class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()
@@ -156,6 +170,9 @@ def _get_image(image):
         return u'%s%s' % (base_url, image)
     return None
 
+def note_to_expand(obj, multiple=False):
+    return 'To get the full {} object{}, use the parameter "expand_{}"'.format(obj, 's' if multiple else '', obj)
+
 class CardIdSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Card
@@ -168,14 +185,12 @@ class ImageField(serializers.ImageField):
         return None
 
 class CardSerializer(serializers.ModelSerializer):
-    event = EventSerializer(read_only=True)
-    idol = IdolSerializer(read_only=True)
-    japanese_name = serializers.SerializerMethodField() # left for backward compatibility
+    event = serializers.SerializerMethodField()
+    idol = serializers.SerializerMethodField()
     card_image = ImageField(required=False)
     card_idolized_image = ImageField(required=False)
     round_card_image = ImageField(required=False)
     round_card_idolized_image = ImageField(required=False)
-    owned_cards = serializers.SerializerMethodField()
     japanese_attribute = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
     non_idolized_max_level = serializers.SerializerMethodField()
@@ -188,12 +203,34 @@ class CardSerializer(serializers.ModelSerializer):
     japanese_center_skill = serializers.SerializerMethodField()
     japanese_center_skill_details = serializers.SerializerMethodField()
 
-    def get_japanese_name(self, obj):
-        if obj.japanese_name:
-            return obj.japanese_name
-        if obj.idol:
-            return obj.idol.japanese_name
-        return None
+    def get_event(self, obj):
+        if not obj.event_id:
+            return None
+        if self.context['request'].resolver_match.url_name == 'card-list':
+            if 'expand_event' in self.context['request'].query_params:
+                serializer = EventSerializer(obj.event, context=self.context)
+                return serializer.data
+        return {
+            'japanese_name': obj.event_japanese_name,
+            'english_name': obj.event_english_name,
+            'image': _get_image(obj.event_image),
+            'note': note_to_expand('event') if self.context['request'].resolver_match.url_name == 'card-list' else None,
+        }
+
+    def get_idol(self, obj):
+        if self.context['request'].resolver_match.url_name == 'card-list':
+            if 'expand_idol' in self.context['request'].query_params:
+                serializer = IdolSerializer(obj.idol, context=self.context)
+                return serializer.data
+        return {
+            'name': obj.name,
+            'japanese_name': obj.japanese_name,
+            'school': obj.idol_school,
+            'year': obj.idol_year,
+            'main_unit': obj.idol_main_unit,
+            'sub_unit': obj.idol_sub_unit,
+            'note': note_to_expand('idol') if self.context['request'].resolver_match.url_name == 'card-list' else None,
+        }
 
     def get_japanese_attribute(self, obj):
         return obj.japanese_attribute()
@@ -244,14 +281,6 @@ class CardSerializer(serializers.ModelSerializer):
         elif obj.rarity == 'SR': return 80
         elif obj.rarity == 'UR': return 100
 
-    def get_owned_cards(self, obj):
-        if (not self.context['request']
-            or not self.context['request'].query_params
-            or 'account' not in self.context['request'].query_params):
-            return None
-        account = int(self.context['request'].query_params['account'])
-        return OwnedCardWithoutCardSerializer(obj.get_owned_cards_for_account(account), many=True, context=self.context).data
-
     def _save_fk(self, card):
         changed = False
         event = self.context['request'].data.get('event', None)
@@ -282,11 +311,20 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'name', 'japanese_name', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'owned_cards', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized')
+        fields = ('id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized')
 
 class SongSerializer(serializers.ModelSerializer):
-    event = EventSerializer()
+    event = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+
+    def get_event(self, obj):
+        if not obj.event_id:
+            return None
+        if self.context['request'].resolver_match.url_name == 'song-list':
+            if 'expand_event' in self.context['request'].query_params:
+                serializer = EventSerializer(obj.event, context=self.context)
+                return serializer.data
+        return note_to_expand("event")
 
     def get_image(self, obj):
         return _get_image(obj.image)
@@ -296,26 +334,41 @@ class SongSerializer(serializers.ModelSerializer):
         fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available', 'itunes_id')
         lookup_field = 'name'
 
-class CenterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.OwnedCard
-        fields = ('id', 'card', 'idolized', 'max_level', 'max_bond', 'skill')
-
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
-    center = CenterSerializer()
+    center = serializers.SerializerMethodField()
+    starter = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
 
     def get_website_url(self, obj):
-        return 'http://schoolido.lu/user/' + urllib.quote(obj.owner.username) + '/#' + str(obj.id)
+        return obj.website_url
+
+    def get_center(self, obj):
+        return {
+            'id': obj.center_id,
+            'card': obj.center_card_id,
+            'round_image': _get_image(obj.center_card_round_image),
+            'attribute': obj.center_card_attribute,
+            'card_text': obj.center_alt_text,
+        }
+
+    def get_starter(self, obj):
+        return {
+            'id': obj.starter_id,
+            'round_image': _get_image(obj.starter_card_round_image),
+            'card_text': obj.starter_alt_text,
+            'attribute': obj.starter_attribute,
+        }
 
     def get_owner(self, obj):
-        return obj.owner.username
+        if self.context['request'].resolver_match.url_name == 'account-list':
+            if 'expand_owner' in self.context['request'].query_params:
+                serializer = UserSerializer(obj.owner, context=self.context)
+                return serializer.data
+        return obj.owner_username
 
     def get_nickname(self, obj):
-        if not obj.nickname:
-            return obj.owner.username
         return obj.nickname
 
     def create(self, data):
@@ -324,7 +377,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Account
-        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
+        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
 
 class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
     class Meta:
@@ -336,16 +389,18 @@ class OwnedCardSerializer(serializers.ModelSerializer):
     card = serializers.SerializerMethodField()
 
     def get_card(self, obj):
-        if 'expand_card' in self.context['request'].query_params:
-            serializer = CardSerializer(obj.card, context=self.context)
-            return serializer.data
-        return obj.card.id
+        if self.context['request'].resolver_match.url_name == 'ownedcard-list':
+            if 'expand_card' in self.context['request'].query_params:
+                serializer = CardSerializer(obj.card, context=self.context)
+                return serializer.data
+        return obj.card_id
 
     def get_owner_account(self, obj):
-        if 'expand_owner' in self.context['request'].query_params:
-            serializer = AccountSerializer(obj.owner_account, context=self.context)
-            return serializer.data
-        return obj.owner_account.id
+        if self.context['request'].resolver_match.url_name == 'ownedcard-list':
+            if 'expand_owner' in self.context['request'].query_params:
+                serializer = AccountSerializer(obj.owner_account, context=self.context)
+                return serializer.data
+        return obj.owner_account_id
 
     class Meta:
         model = models.OwnedCard

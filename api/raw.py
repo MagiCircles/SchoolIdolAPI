@@ -390,6 +390,7 @@ raw_information_n = {
     'Fujishiro Yumi': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/IX1CG0Z.png', 'navacandi'),
+            ('http://i.schoolido.lu/chibi/yumi.png', 'Enllyn'),
         ]
     },
     'Sasahara Kyouko': {
@@ -414,7 +415,12 @@ raw_information_n = {
     },
     'Shiga Hitomi': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/qAO4U_44.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/qAO4U_44.png', 'Glutamine'),
+        ]
+    },
+    'Kurobane Sakura': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/sakuraqueen.png', 'QueenofYlisse'),
         ]
     },
 }

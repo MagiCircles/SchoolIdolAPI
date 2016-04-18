@@ -397,6 +397,26 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/kyouko.png', 'yuki'),
         ]
     },
+    'Kirihara Yuuka': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/6Lu_lAuB.png', 'Lauranyan'),
+        ]
+    },
+    'Shitara Fumi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/D9L7wIGQ.png', 'Lauranyan'),
+        ]
+    },
+    'Hasekura Kasane': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/P_hhw9f2.png', 'celestacat'),
+        ]
+    },
+    'Shiga Hitomi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/qAO4U_44.png', 'anonymous'),
+        ]
+    },
 }
 
 all_graphic_designers = [

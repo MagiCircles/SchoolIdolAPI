@@ -158,7 +158,7 @@ IMGUR_REGEXP = '^https?:\/\/(\w+\.)?imgur.com\/(?P<imgur>[\w\d]+)(\.[a-zA-Z]{3})
 
 IMGUR_CLIENT_ID = '2e57c00bd3e1b6f'
 
-TOTAL_BACKGROUNDS = 12
+TOTAL_BACKGROUNDS = 84
 
 CONTEST_MAX_SESSIONS = 9
 

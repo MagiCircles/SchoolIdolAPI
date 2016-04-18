@@ -46,7 +46,7 @@
   </div>
 </div>
 
-<div id="home" class="text-center" style="background-image: url('/static/background{{ 0|random_int:total_backgrounds }}.jpg');">
+<div id="home" class="text-center" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message hidden-sm hidden-xs">
     <span></span>
   </div>
@@ -139,7 +139,7 @@
 	     style="background-image: url('{% eventimageurl event=current_en english=True %}');">
 	  </a>
 
-	  <a href="/events/{{ current_jp.japanese_name|urlencode }}" class="item event"
+	  <a href="/events/{{ current_jp.japanese_name|urlencode }}/" class="item event"
 	     style="background-image: url('{% eventimageurl current_jp %}');">
 	  </a>
 

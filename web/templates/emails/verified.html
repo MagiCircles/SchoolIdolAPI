@@ -78,5 +78,10 @@ http://schoolido.lu/user/{{ verification.account.owner.username }}/#{{ verificat
 {% block footersentence %}
 <div style="text-align: right">
   Verified by <a href="http://schoolido.lu/user/{{ verification.verified_by.username }}/">{{ verification.verified_by.username }}</a>
+  {% if verification.status == 3 %}
+  <br><br>
+  If you like the website, please consider <a href="http://schoolido.lu/about/#donate"><strong>donating</strong></a>.
+  <br><small><i>This will help us cover the costs of the servers and allow us to keep it running for free and without ads.</i></small>
+  {% endif %}
 </div>
 {% endblock %}

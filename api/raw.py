@@ -147,6 +147,7 @@ raw_information['Kurosawa Dia'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
         ('http://i.schoolido.lu/chibi/xcrybxbyx.png', 'xcrybxbyx'),
+        ('http://i.schoolido.lu/chibi/REpyO1v.png', 'Kayumi'),
     ],
 }
 raw_information['Watanabe You'] = {

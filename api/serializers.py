@@ -46,7 +46,7 @@ class UserSerializer(serializers.ModelSerializer):
         return 'http://schoolido.lu/user/' + urllib.quote(obj.username) + '/'
 
     def get_accounts(self, obj):
-        if self.context['request'].resolver_match.url_name == 'user-list':
+        if self.context['request'].resolver_match.url_name.startswith('user-'):
             if 'expand_accounts' in self.context['request'].query_params:
                 serializer = AccountSerializer(obj.all_accounts, many=True, context=self.context)
                 return serializer.data
@@ -54,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
         return None
 
     def get_links(self, obj):
-        if self.context['request'].resolver_match.url_name == 'user-list':
+        if self.context['request'].resolver_match.url_name.startswith('user-'):
             if 'expand_links' in self.context['request'].query_params:
                 serializer = UserLinkSerializer(obj.all_links, many=True, context=self.context)
                 return serializer.data
@@ -62,7 +62,7 @@ class UserSerializer(serializers.ModelSerializer):
         return None
 
     def get_preferences(self, obj):
-        if self.context['request'].resolver_match.url_name == 'user-list':
+        if self.context['request'].resolver_match.url_name.startswith('user-'):
             if 'expand_preferences' in self.context['request'].query_params:
                 serializer = UserPreferencesSerializer(obj.preferences, context=self.context)
                 return serializer.data
@@ -206,7 +206,7 @@ class CardSerializer(serializers.ModelSerializer):
     def get_event(self, obj):
         if not obj.event_id:
             return None
-        if self.context['request'].resolver_match.url_name == 'card-list':
+        if self.context['request'].resolver_match.url_name.startswith('card-'):
             if 'expand_event' in self.context['request'].query_params:
                 serializer = EventSerializer(obj.event, context=self.context)
                 return serializer.data
@@ -214,11 +214,11 @@ class CardSerializer(serializers.ModelSerializer):
             'japanese_name': obj.event_japanese_name,
             'english_name': obj.event_english_name,
             'image': _get_image(obj.event_image),
-            'note': note_to_expand('event') if self.context['request'].resolver_match.url_name == 'card-list' else None,
+            'note': note_to_expand('event') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
         }
 
     def get_idol(self, obj):
-        if self.context['request'].resolver_match.url_name == 'card-list':
+        if self.context['request'].resolver_match.url_name.startswith('card-'):
             if 'expand_idol' in self.context['request'].query_params:
                 serializer = IdolSerializer(obj.idol, context=self.context)
                 return serializer.data
@@ -229,7 +229,7 @@ class CardSerializer(serializers.ModelSerializer):
             'year': obj.idol_year,
             'main_unit': obj.idol_main_unit,
             'sub_unit': obj.idol_sub_unit,
-            'note': note_to_expand('idol') if self.context['request'].resolver_match.url_name == 'card-list' else None,
+            'note': note_to_expand('idol') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
         }
 
     def get_japanese_attribute(self, obj):
@@ -320,7 +320,7 @@ class SongSerializer(serializers.ModelSerializer):
     def get_event(self, obj):
         if not obj.event_id:
             return None
-        if self.context['request'].resolver_match.url_name == 'song-list':
+        if self.context['request'].resolver_match.url_name.startswith('song-'):
             if 'expand_event' in self.context['request'].query_params:
                 serializer = EventSerializer(obj.event, context=self.context)
                 return serializer.data
@@ -362,7 +362,7 @@ class AccountSerializer(serializers.ModelSerializer):
         }
 
     def get_owner(self, obj):
-        if self.context['request'].resolver_match.url_name == 'account-list':
+        if self.context['request'].resolver_match.url_name.startswith('account-'):
             if 'expand_owner' in self.context['request'].query_params:
                 serializer = UserSerializer(obj.owner, context=self.context)
                 return serializer.data
@@ -389,14 +389,14 @@ class OwnedCardSerializer(serializers.ModelSerializer):
     card = serializers.SerializerMethodField()
 
     def get_card(self, obj):
-        if self.context['request'].resolver_match.url_name == 'ownedcard-list':
+        if self.context['request'].resolver_match.url_name.startswith('ownedcard-'):
             if 'expand_card' in self.context['request'].query_params:
                 serializer = CardSerializer(obj.card, context=self.context)
                 return serializer.data
         return obj.card_id
 
     def get_owner_account(self, obj):
-        if self.context['request'].resolver_match.url_name == 'ownedcard-list':
+        if self.context['request'].resolver_match.url_name.startswith('ownedcard-'):
             if 'expand_owner' in self.context['request'].query_params:
                 serializer = AccountSerializer(obj.owner_account, context=self.context)
                 return serializer.data

@@ -86,6 +86,25 @@ PLAYWITH_ICONS = (
 )
 PLAYWITH_ICONS_DICT = dict(PLAYWITH_ICONS)
 
+ACTIVITY_TYPE_CUSTOM = 6
+
+ACTIVITY_MESSAGE_CHOICES_INT = (
+    (0, 'Added a card'),
+    (1, 'Idolized a card'),
+    (2, 'Rank Up'),
+    (3, 'Ranked in event'),
+    (4, 'Verified'),
+    (5, 'Trivia'),
+    (ACTIVITY_TYPE_CUSTOM, 'Custom'),
+)
+ACTIVITY_MESSAGE_DICT_INT = dict(ACTIVITY_MESSAGE_CHOICES_INT)
+
+def messageStringToInt(message):
+    for k, v in ACTIVITY_MESSAGE_DICT_INT.items():
+        if v == message:
+            return k
+    return 0
+
 ACTIVITY_MESSAGE_CHOICES = (
     ('Added a card', _('Added {} in {}')),
     ('Idolized a card', _('Idolized {} in {}')),
@@ -768,11 +787,12 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
       number
     """
     # Foreign keys
-    account = models.ForeignKey(Account, related_name='activities', null=True, blank=True)
+    account = models.ForeignKey(Account, related_name='activities', null=True, blank=True, db_index=True)
     ownedcard = models.ForeignKey(OwnedCard, null=True, blank=True)
     eventparticipation = models.ForeignKey(EventParticipation, null=True, blank=True)
     # Data
-    creation = models.DateTimeField(auto_now=True)
+    creation = models.DateTimeField(auto_now=True, db_index=True)
+    message_type = models.PositiveIntegerField(choices=ACTIVITY_MESSAGE_CHOICES_INT, db_index=True)
     message = models.CharField(max_length=300, choices=ACTIVITY_MESSAGE_CHOICES)
     number = models.PositiveIntegerField(null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_activities")

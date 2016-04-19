@@ -164,6 +164,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
             'account': account,
             'eventparticipation': None,
             'message': message,
+            'message_type': models.messageStringToInt(message),
             'number': None,
             'message_data': concat_args(unicode(card), ownedcard.stored),
             'right_picture_link': singlecardurl(card),
@@ -177,11 +178,13 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
                 del(defaults['message'])
             updated = models.Activity.objects.filter(ownedcard=ownedcard).update(**defaults)
             if not updated:
-                models.Activity.objects.create(ownedcard=ownedcard, message='Added a card', **defaults)
+                defaults.update({'message': 'Added a card'})
+                models.Activity.objects.create(ownedcard=ownedcard, **defaults)
     elif message == 'Rank Up' or message == 'Verified':
         defaults = {
             'account': account,
             'message': message,
+            'message_type': models.messageStringToInt(message),
             'message_data': concat_args(number) if message == 'Rank Up' else models.VERIFIED_DICT[number],
             'number': number,
         }
@@ -197,6 +200,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
             'ownedcard': None,
             'eventparticipation': eventparticipation,
             'message': message,
+            'message_type': models.messageStringToInt(message),
             'number': None,
             'message_data': concat_args(eventparticipation.ranking, unicode(event)),
             'right_picture': eventimageurl({}, event, english=(account.language != 'JP')),
@@ -208,6 +212,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         defaults = {
             'account': account,
             'message': message,
+            'message_type': models.messageStringToInt(message),
             'number': number,
             'message_data': concat_args(number, message_data),
         }
@@ -218,6 +223,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         defaults = {
             'account': account,
             'message': message,
+            'message_type': models.messageStringToInt(message),
             'message_data': message_data,
             'right_picture': right_picture,
         }
@@ -1185,7 +1191,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
-        activities = activities.filter(message='Custom')
+        activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     activities = activities.annotate(likers_count=Count('likes'))
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []

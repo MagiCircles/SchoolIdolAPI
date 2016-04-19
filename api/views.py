@@ -10,6 +10,16 @@ from api import permissions as api_permissions
 from api import serializers, models, raw
 from django.db.models import Count, Q, Prefetch
 
+class CommaSeparatedValueFilter(django_filters.CharFilter):
+    """Accept comma separated string as value and convert it to list.
+    It's useful for __in lookups.
+    """
+
+    def filter(self, qs, value):
+        if value:
+            value = value.split(',')
+        return super(CommaSeparatedValueFilter, self).filter(qs, value)
+
 class RandomBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         if 'ordering' in request.query_params and request.query_params['ordering'] == 'random':
@@ -57,6 +67,7 @@ class CardFilter(django_filters.FilterSet):
     is_event = django_filters.MethodFilter(action='filter_is_event')
     ids = django_filters.MethodFilter(action='filter_ids')
     for_trivia = django_filters.MethodFilter(action='filter_for_trivia')
+    rarity = CommaSeparatedValueFilter(name='rarity', lookup_type='in')
 
     def filter_for_trivia(self, queryset, value):
         return queryset.filter(Q(idol__hobbies__isnull=False) | Q(idol__favorite_food__isnull=False) | Q(idol__least_favorite_food__isnull=False))

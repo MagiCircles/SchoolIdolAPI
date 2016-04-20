@@ -1986,7 +1986,9 @@ def staff_verifications(request):
     if 'verification' in request.GET and int(request.GET['verification']) > 0:
         context['verifications'] = context['verifications'].filter(verification=request.GET['verification'])
     context['verifications'] = context['verifications'].filter(verification__in=request.user.preferences.allowed_verifications)
-    if 'status' in request.GET and request.GET['status'] and (request.GET['status'] == '0' or request.GET['status'] == '3'):
+    if 'ordering' in request.GET and request.GET['ordering']:
+        context['verifications'] = context['verifications'].order_by(request.GET['ordering'])
+    elif 'status' in request.GET and request.GET['status'] and (request.GET['status'] == '0' or request.GET['status'] == '3'):
         context['verifications'] = context['verifications'].order_by('-verification_date')
     else:
         context['verifications'] = context['verifications'].order_by('-status', '-account__rank', 'creation').select_related('account', 'account__owner')

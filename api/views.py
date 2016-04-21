@@ -2,6 +2,7 @@ import django_filters
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, Http404
+from django.core.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework import viewsets, filters, permissions, status
 from rest_framework.decorators import api_view
@@ -55,6 +56,16 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, UserFilterBackend, RandomBackend)
     permission_classes = (api_permissions.UserPermissions, )
     lookup_field = 'username'
+
+    def me(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            if 'expand_accounts' in request.GET:
+                request.user.all_accounts = request.user.accounts_set.all()
+            if 'expand_links' in request.GET:
+                request.user.all_links = request.user.links.all()
+            serializer = serializers.UserSerializer(request.user, context={'request':request})
+            return Response(serializer.data)
+        raise PermissionDenied()
 
 class GroupViewSet(viewsets.ModelViewSet):
     """

@@ -345,6 +345,8 @@ class AccountSerializer(serializers.ModelSerializer):
         return obj.website_url
 
     def get_center(self, obj):
+        if not obj.center_id:
+            return None
         return {
             'id': obj.center_id,
             'card': obj.center_card_id,

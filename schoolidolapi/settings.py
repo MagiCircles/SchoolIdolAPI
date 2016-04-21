@@ -166,6 +166,8 @@ CARDS_LIMIT = 81
 
 AWS_SES_RETURN_PATH = 'test@schoolido.lu'
 
+LOGIN_URL = '/login/'
+
 GLOBAL_CONTEST_ID = 33
 
 LOVECA_PRICE = 0.568

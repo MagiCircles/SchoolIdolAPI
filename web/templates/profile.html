@@ -337,6 +337,12 @@
 	      </h3>
 	      {% csrf_token %}
 	      {% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}
+	      <div class="col-sm-offset-4 col-sm-8">
+		<small><i>
+		    {% trans 'Only post official artworks, artworks you own, or fan artworks that are approved by the artist and credited.' %}
+		</i></small>
+	      </div>
+	      <br><br>
 	      <div class="text-right">
 		<input type="submit" value="{% trans 'Post your own activity' %}" class="btn btn-{{ attribute }}">
 	      </div>

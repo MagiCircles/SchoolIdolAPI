@@ -28,7 +28,7 @@
     'images': {
       '': '/static/empty.png',
       {% for sub_unit in filters.sub_units %}
-      '{{ sub_unit }}': '/static/{{ sub_unit }}.png',
+      '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
       {% endfor %}
     }
   });

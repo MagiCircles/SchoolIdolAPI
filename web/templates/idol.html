@@ -63,12 +63,22 @@
 	  <td>{{ idol.birthday|date:"M d" }}</td>
 	</tr>
 	{% endif %}
+	{% if idol.main_unit %}
+	<tr>
+	  <th>{% trans 'Main Unit' %}</th>
+	  <td>
+	    <div class="pull-right text-right">
+	      <img src="http://i.schoolido.lu/static/{{ idol.main_unit }}.png" alt="{{ idol.main_unit }}">
+	    </div>
+	    {{ idol.main_unit }}</td>
+	</tr>
+	{% endif %}
 	{% if idol.sub_unit %}
 	<tr>
 	  <th>{% trans 'Sub Unit' %}</th>
 	  <td>
 	    <div class="pull-right text-right">
-	      <img src="/static/{{ idol.sub_unit }}.png" alt="{{ idol.sub_unit }}">
+	      <img src="http://i.schoolido.lu/static/{{ idol.sub_unit }}.png" alt="{{ idol.sub_unit }}">
 	    </div>
 	    {{ idol.sub_unit }}</td>
 	</tr>
@@ -76,7 +86,12 @@
 	{% if idol.astrological_sign %}
 	<tr>
 	  <th>{% trans 'Astrological Sign' %}</th>
-	  <td>{{ idol.astrological_sign }}</td>
+	  <td>
+	    <div class="pull-right text-right">
+	      <img src="http://i.schoolido.lu/static/astrology/{{ idol.astrological_sign }}.png" alt="{{ idol.astrological_sign }}">
+	    </div>
+	    {{ idol.astrological_sign }}
+	  </td>
 	</tr>
 	{% endif %}
 	{% if idol.blood %}

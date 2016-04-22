@@ -95,7 +95,7 @@ raw_information['Yazawa Nico'] = {
 raw_information['Takami Chika'] = {
     'year': 'Second',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'CYaRon!',
     'cv_nickname': 'Inami Anju',
     'cv_twitter': 'anju_inami',
     'cv_instagram': None,
@@ -109,7 +109,7 @@ raw_information['Takami Chika'] = {
 raw_information['Sakurauchi Riko'] = {
     'year': 'Second',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'Guilty Kiss',
     'cv_nickname': 'Aida Rikako',
     'cv_twitter': 'Rikako_Aida',
     'cv_instagram': None,
@@ -124,7 +124,7 @@ raw_information['Sakurauchi Riko'] = {
 raw_information['Matsuura Kanan'] = {
     'year': 'Third',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'AZALEA',
     'cv_nickname': 'Suwa Nanaka',
     'cv_twitter': 'suwananaka',
     'cv_instagram': None,
@@ -138,7 +138,7 @@ raw_information['Matsuura Kanan'] = {
 raw_information['Kurosawa Dia'] = {
     'year': 'Third',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'AZALEA',
     'cv_nickname': 'Komiya Arisa',
     'cv_twitter': 'arisakomiya',
     'cv_instagram': None,
@@ -153,7 +153,7 @@ raw_information['Kurosawa Dia'] = {
 raw_information['Watanabe You'] = {
     'year': 'Second',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'CYaRon!',
     'cv_nickname': 'Saitou Shuka',
     'cv_twitter': 'Saito_Shuka',
     'cv_instagram': None,
@@ -168,7 +168,7 @@ raw_information['Watanabe You'] = {
 raw_information['Tsushima Yoshiko'] = {
     'year': 'First',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'Guilty Kiss',
     'cv_nickname': 'Aikakyan',
     'cv_twitter': 'Aikyan_',
     'cv_instagram': 'aikyan_',
@@ -183,7 +183,7 @@ raw_information['Tsushima Yoshiko'] = {
 raw_information['Kunikida Hanamaru'] = {
     'year': 'First',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'AZALEA',
     'cv_nickname': 'Takatsuki Kanako',
     'cv_twitter': 'Kanako_tktk',
     'cv_instagram': None,
@@ -197,7 +197,7 @@ raw_information['Kunikida Hanamaru'] = {
 raw_information['Ohara Mari'] = {
     'year': 'Third',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'Guilty Kiss',
     'cv_nickname': 'Suzuki Aina',
     'cv_twitter': 'aina_suzuki723',
     'cv_instagram': None,
@@ -210,7 +210,7 @@ raw_information['Ohara Mari'] = {
 raw_information['Kurosawa Ruby'] = {
     'year': 'First',
     'main_unit': 'Aqours',
-    'sub_unit': 'Aqours',
+    'sub_unit': 'CYaRon!',
     'cv_nickname': 'Furihata Ai',
     'cv_twitter': 'furihata_ai',
     'cv_instagram': None,

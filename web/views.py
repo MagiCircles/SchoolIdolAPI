@@ -350,6 +350,7 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
         'reverse_order': True,
     }
 
+    account = None
     if card is None:
         # Apply filters
         cards = models.Card.objects.filter()
@@ -476,7 +477,18 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
             request_get['ordering'] = request_get_copy['ordering']
             request_get['reverse_order'] = 'reverse_order' in request_get_copy and request_get_copy['reverse_order']
         prefix = '-' if request_get['reverse_order'] else ''
-        cards = cards.order_by(prefix + request_get['ordering'], prefix +'id')
+        if request_get['ordering'] == 'game_rarity':
+            if account:
+                cards = cards.order_by(prefix + 'rarity', prefix + 'ownedcards__idolized', prefix + 'attribute', prefix + 'id')
+            else:
+                cards = cards.order_by(prefix + 'rarity', prefix + 'attribute', prefix + 'id')
+        elif request_get['ordering'] == 'game_attribute':
+            if account:
+                cards = cards.order_by(prefix + 'attribute', prefix + 'rarity', prefix + 'ownedcards__idolized', prefix + 'id')
+            else:
+                cards = cards.order_by(prefix + 'attribute', prefix + 'rarity', prefix + 'id')
+        else:
+            cards = cards.order_by(prefix + request_get['ordering'], prefix +'id')
 
     else:
         context['total_results'] = 1
@@ -508,6 +520,8 @@ def get_cards_form_filters(request, cardsinfo):
             ('idolized_maximum_statistics_cool', _('Cool\'s statistics')),
             ('total_owners', string_concat(_('Most popular'), ' (', _('Deck'), ')')),
             ('total_wishlist', string_concat(_('Most popular'), ' (', _('Wish List'), ')')),
+            ('game_rarity', _('Rarity')),
+            ('game_attribute', _('Attribute')),
             ('hp', _('HP'))
         )
     }

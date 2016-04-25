@@ -17,7 +17,7 @@ deck_links = [
         'name': _('Search & Filter your cards'),
         'background': 'http://i.schoolido.lu/cards/transparent/72idolizedTransparent.png',
         'color': '#8f56cc',
-        'link': '',
+        'link': 'ordering=game_rarity&reverse_order=on',
     },
     {
         'name': _('Your Perfect Lock cards'),

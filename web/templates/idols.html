@@ -3,8 +3,8 @@
 {% load i18n %}
 {% load imageurl %}
 
-{% block shareimage %}http://schoolido.lu/static/screenshots/idols.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/idols.png{% endblock %}
+{% block shareimage %}http://i.schoolido.lu/static/screenshots/idols.png{% endblock %}
+{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/idols.png{% endblock %}
 
 {% block title %}{% trans 'Idols' %}{% endblock %}
 {% block content %}
@@ -21,7 +21,7 @@
 	  <img class="idol-img" src="{% standimage idol=idol number=1 %}" alt="{{ idol.name }}">
 	  <img class="idol-img hover" src="{% standimage idol=idol number=4 %}" alt="{{ idol.name }}">
 	  <br><div class="name">
-	    <img src="/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
+	    <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
 	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
 	</a>
 	<small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/idol/{{ idol.name|urlencode }}/#disqus_thread" data-disqus-identifier="{{ idol.name }}"><span class="tiny">{% trans 'Comments' %}</span></a></small>
@@ -41,7 +41,7 @@
 	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
 	  <img class="chibi" src="{% chibiimage idol=idol.name small=False %}" alt="{{ idol.name }}" style="width: 180%; margin: 0 -40%;">
 	  <br><div class="name">
-	    <img src="/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
+	    <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
 	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
 	</a>
 	<small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/idol/{{ idol.name|urlencode }}/#disqus_thread" data-disqus-identifier="{{ idol.name }}"><span class="tiny">{% trans 'Comments' %}</span></a></small>
@@ -67,7 +67,7 @@
       <div class="col-xs-4 {{ idol.attribute }}">
 	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
 	  <img src="{% chibiimage idol=idol.name small=False %}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}" style="width: 130%; margin: 0 -15%;"><br><br>
-	  <img src="/static/{{ idol.attribute }}.png" class="attribute" width="15" height="15">
+	  <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="15" height="15">
 	  {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
 	</a>
 	<small class="padding10 text-center" style="display: block;"><span class="tiny"><a href="http://schoolido.lu/idol/{{ idol.name|urlencode }}/#disqus_thread" data-disqus-identifier="{{ idol.name }}">{% trans 'Comments' %}</a></span></small>

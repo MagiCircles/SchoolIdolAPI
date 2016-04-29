@@ -133,6 +133,10 @@ def chibiimage(context, idol, small=True):
     return _chibiimage(idol, small)
 
 @register.filter
+def chibioriginal(link):
+    return link.replace('/chibi/', '/chibi/original-')
+
+@register.filter
 def accountattribute(account):
     if account.fake:
         return 'default'

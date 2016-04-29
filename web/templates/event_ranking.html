@@ -23,7 +23,7 @@
 	      <div class="inline-block avatar_wrapper">
 		<img src="{{ participation.account_picture }}" class="avatar" height="40" width="40">
 	      </div>
-	      {{ participation.account_owner }}
+	      {{ participation.account_name }}
 	      {% if participation.account_owner_status and participation.account_owner_status != 'THANKS' %}
 	      <i class="flaticon-heart" style="color: {{ participation.account_owner_status|userStatusToColor }};"></i>
 	      {% endif %}

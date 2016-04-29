@@ -80,7 +80,7 @@
 			{% if card|getattribute:valuenow %}
 			<div class="row">
 			  <div class="col-xs-1 text-right">
-			    <img src="/static/{{ attribute }}.png" class="attribute" width="20px">
+			    <img src="http://i.schoolido.lu/static/{{ attribute }}.png" class="attribute" width="20px">
 			  </div>
 			  <div class="col-xs-2 text-{{ attribute }}">
 			    {{ card|getattribute:valuenow }}
@@ -371,7 +371,7 @@
 			    {% with transattribute=card.attribute|trans %}
 			    {% if card.ranking_attribute %}
 			    {% if card.ranking_attribute <= 3 %}
-			    <img src="/static/medal{{ card.ranking_attribute }}.png" alt="{{ card.ranking_attribute }}" height="34">
+			    <img src="http://i.schoolido.lu/static/medal{{ card.ranking_attribute }}.png" alt="{{ card.ranking_attribute }}" height="34">
 			    {% else %}
 			    <b>#{{ card.ranking_attribute }}</b>
 			    {% endif %}
@@ -385,7 +385,7 @@
 			    {% if card.ranking_rarity %}
 			    <small>
 			    {% if card.ranking_rarity <= 3 %}
-			    <img src="/static/medal{{ card.ranking_rarity }}.png" alt="{{ card.ranking_rarity }}" height="24">
+			    <img src="http://i.schoolido.lu/static/medal{{ card.ranking_rarity }}.png" alt="{{ card.ranking_rarity }}" height="24">
 			    {% else %}
 			    <b>#{{ card.ranking_rarity }}</b>
 			    {% endif %}
@@ -400,7 +400,7 @@
 			    {% if card.ranking_special %}
 			    <small>
 			    {% if card.ranking_special <= 3 %}
-			    <img src="/static/medal{{ card.ranking_special }}.png" alt="{{ card.ranking_special }}" height="24">
+			    <img src="http://i.schoolido.lu/static/medal{{ card.ranking_special }}.png" alt="{{ card.ranking_special }}" height="24">
 			    {% else %}
 			    <b>#{{ card.ranking_special }}</b>
 			    {% endif %}

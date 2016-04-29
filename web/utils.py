@@ -84,10 +84,7 @@ def chibiimage(idol, small=True):
             if small:
                 return random.choice(raw_information_n[idol]['chibi'])[0].replace('chibi/', 'chibi/small_')
             return random.choice(raw_information_n[idol]['chibi'])[0]
-        filename = '/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
-        if os.path.isfile('web/' + filename):
-            return filename
-    return '/static/idols/chibi/' + prefix + 'Alpaca.png'
+    return 'http://i.schoolido.lu/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
 
 def randomString(length, choice=(string.ascii_letters + string.digits)):
     return ''.join(random.SystemRandom().choice(choice) for _ in range(length))

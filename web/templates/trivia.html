@@ -3,13 +3,13 @@
 {% load random_int %}
 {% block title %}{% trans 'Love Live! School Idol Trivia' %}{% endblock %}
 
-{% block shareimage %}http://schoolido.lu/static/screenshots/trivia.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/trivia.png{% endblock %}
+{% block shareimage %}http://i.schoolido.lu/static/screenshots/trivia.png{% endblock %}
+{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/trivia.png{% endblock %}
 
 {% block content %}
 <div id="trivia-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
 <div class="container text-center">
-  <h1 class="margin50"><img src="/static/lltrivia.png" alt="{% trans 'Love Live! School Idol Trivia' %}" style="max-width: 100%; width: 500px;"></h1>
+  <h1 class="margin50"><img src="http://i.schoolido.lu/static/lltrivia.png" alt="{% trans 'Love Live! School Idol Trivia' %}" style="max-width: 100%; width: 500px;"></h1>
   <div id="elm-trivia"></div>
   <p class="margin50">
     Trivia is temporarily disabled due to high traffic. Please try again tomorrow.<br>

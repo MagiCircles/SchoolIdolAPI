@@ -148,17 +148,11 @@ class IdolSerializer(serializers.ModelSerializer):
             'instagram': obj.cv_instagram,
         }
 
-    def _chibi_image(self, name, small):
-        image = chibiimage(name, small)
-        if settings.IMAGES_HOSTING_PATH in image:
-            return image
-        return 'http://schoolido.lu' + image
-
     def get_chibi(self, obj):
-        return self._chibi_image(obj.name, small=False)
+        return chibiimage(obj.name, small=False)
 
     def get_chibi_small(self, obj):
-        return self._chibi_image(obj.name, small=True)
+        return chibiimage(obj.name, small=True)
 
     class Meta:
         model = models.Idol
@@ -230,6 +224,8 @@ class CardSerializer(serializers.ModelSerializer):
             'main_unit': obj.idol_main_unit,
             'sub_unit': obj.idol_sub_unit,
             'note': note_to_expand('idol') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
+            'chibi': chibiimage(obj.name, small=False),
+            'chibi_small': chibiimage(obj.name, small=True),
         }
 
     def get_japanese_attribute(self, obj):

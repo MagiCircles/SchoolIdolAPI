@@ -10,23 +10,23 @@
 <script>
   cuteform($('#id_attribute'), {
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for i, attribute in filters.attribute_choices %}
-      '{{ i }}': '/static/{{ i }}.png',
+      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
       {% endfor %}
     }
   });
   cuteform($('#id_rarity'), {
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for rarity, _ in filters.rarity_choices %}
-      '{{ rarity }}': '/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
       {% endfor %}
     }
   });
   cuteform($('#id_sub_unit'), {
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for sub_unit in filters.sub_units %}
       '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
       {% endfor %}
@@ -37,7 +37,7 @@
     'modal-text': 'true',
     'images': {
       {% for idol, str in filters.idols %}
-      {% if idol == '' %}'': '/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
     }
   });
@@ -60,8 +60,8 @@
 {% endif %}
 {% endblock %}
 
-{% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
-{% block shareimagetwitter %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
+{% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://i.schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://i.schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
 
 {% block content %}
 {% if view != 'albumbuilder' %}

@@ -11,6 +11,15 @@ raw_information['Kousaka Honoka'] = {
     'cv_instagram': 'Nitta_Emi',
     'starter': 28,
     'color': '#f6ab29',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Kousaka_Honoka.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Kousaka_Honoka_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47028903.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Honoka_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Honoka_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Honoka_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Honoka_Fruit.png', 'klab'),
+    ],
 }
 raw_information['Nishikino Maki'] = {
     'year': 'First',
@@ -21,6 +30,14 @@ raw_information['Nishikino Maki'] = {
     'cv_instagram': 'pile_eric',
     'starter': 33,
     'color': '#ee7b78',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Nishikino_Maki.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nishikino_Maki_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47029025.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Maki_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Maki_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Maki_Cyber.png', 'klab'),
+    ],
 }
 raw_information['Ayase Eli'] = {
     'year': 'Third',
@@ -31,6 +48,15 @@ raw_information['Ayase Eli'] = {
     'cv_instagram': 'nanjolno',
     'starter': 29,
     'color': '#b1daef',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Ayase_Eli.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Ayase_Eli_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47029086.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Eli_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Eli_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Eli_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Eli_Fruit.png', 'klab'),
+    ],
 }
 raw_information['Minami Kotori'] = {
     'year': 'Second',
@@ -41,6 +67,14 @@ raw_information['Minami Kotori'] = {
     'cv_instagram': None,
     'starter': 30,
     'color': '#c2b9bc',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Minami_Kotori.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Minami_Kotori_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47028945.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Koori_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Kotori_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Kotori_China.png', 'klab'),
+    ],
 }
 raw_information['Hoshizora Rin'] = {
     'year': 'First',
@@ -51,6 +85,14 @@ raw_information['Hoshizora Rin'] = {
     'cv_instagram': 'rippialoha',
     'starter': 32,
     'color': '#98d3cc',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Hoshizora_Rin.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Hoshizora_Rin_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47029037.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Rin_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Rin_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Rin_Cyber.png', 'klab'),
+    ],
 }
 raw_information['Koizumi Hanayo'] = {
     'year': 'First',
@@ -61,6 +103,14 @@ raw_information['Koizumi Hanayo'] = {
     'cv_instagram': 'shi_ka_co',
     'starter': 35,
     'color': '#89c370',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Koizumi_Hanayo.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Koizumi_Hanayo_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47029032.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Hanayo_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Hanayo_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Hanayo_Cyber.png', 'klab'),
+    ],
 }
 raw_information['Sonoda Umi'] = {
     'year': 'Second',
@@ -71,6 +121,13 @@ raw_information['Sonoda Umi'] = {
     'cv_instagram': 'mimori_suzuko',
     'starter': 31,
     'color': '#288bcc',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Sonoda_Umi.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47028923.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Umi.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Umi_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Umi_Cyber.png', 'klab'),
+    ],
 }
 raw_information['Toujou Nozomi'] = {
     'year': 'Third',
@@ -81,6 +138,13 @@ raw_information['Toujou Nozomi'] = {
     'cv_instagram': 'kusudaaina',
     'starter': 34,
     'color': '#8c70ad',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Toujou_Nozomi.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47029091.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nozomi_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nozomi_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nozomi_Cyber.png', 'klab'),
+    ],
 }
 raw_information['Yazawa Nico'] = {
     'year': 'Third',
@@ -91,6 +155,14 @@ raw_information['Yazawa Nico'] = {
     'cv_instagram': None,
     'starter': 36,
     'color': '#f1a6c7',
+    'chibi': [
+        ('http://i.schoolido.lu/chibi/Yazawa_Nico.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Yazawa_Nico_-_variant.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/47029101.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nico_Cheer.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nico_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Nico_Cyber.png', 'klab'),
+    ],
 }
 raw_information['Takami Chika'] = {
     'year': 'Second',
@@ -104,6 +176,7 @@ raw_information['Takami Chika'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/mzZeOlyc.png', 'sayakax'),
+        ('http://i.schoolido.lu/chibi/chika.png', 'anonymous'),
     ],
 }
 raw_information['Sakurauchi Riko'] = {
@@ -133,6 +206,7 @@ raw_information['Matsuura Kanan'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/kirisakisun.png', 'kirisakisun'),
         ('http://i.schoolido.lu/chibi/KyYKeLBU.png', 'sayakax'),
+        ('http://i.schoolido.lu/chibi/kanan3.png', 'enjugrove'),
     ],
 }
 raw_information['Kurosawa Dia'] = {
@@ -192,6 +266,7 @@ raw_information['Kunikida Hanamaru'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
         ('http://i.schoolido.lu/chibi/michellecipher.png', 'michellecipher'),
+        ('http://i.schoolido.lu/chibi/hanamaruchib450.png', 'enjugrove'),
     ],
 }
 raw_information['Ohara Mari'] = {
@@ -244,7 +319,7 @@ raw_information_n = {
     'Shirase Koyuki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),
-            ('http://i.schoolido.lu/chibi/mSWSzdpL.png', 'wisterias'),
+            ('http://i.schoolido.lu/chibi/mSWSzdpL.png', 'wisterias'), # original not found
         ],
     },
     'Yazawa Cocoa': {
@@ -259,17 +334,17 @@ raw_information_n = {
     },
     'Fumiko': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/jFSIZc8Q.png', 'ro'),
+            ('http://i.schoolido.lu/chibi/jFSIZc8Q.png', 'ro'), # original not found
         ],
     },
     'Mika': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/rhmEJfsv.png', 'ro'),
+            ('http://i.schoolido.lu/chibi/rhmEJfsv.png', 'ro'), # original not found
         ],
     },
     'Hideko': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/gRO5xpq-.png', 'ro'),
+            ('http://i.schoolido.lu/chibi/gRO5xpq-.png', 'ro'), # original not found
         ],
     },
     'Tanaka Sachiko': {
@@ -423,6 +498,26 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/sakuraqueen.png', 'QueenofYlisse'),
         ]
+    },
+    'Ousaka Shizuku': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/FPTo00o.png', 'hyakuyass'),
+        ],
+    },
+    'Kotori\'s Mother': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/x_XHop6t.png', 'anonymous'),
+        ],
+    },
+    'Morishima Nanaka': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/QJ_2r35C.png', 'NightSky'),
+        ],
+    },
+    'Jennifer': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/jennifer.png', 'anonymous'),
+        ],
     },
 }
 

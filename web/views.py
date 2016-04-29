@@ -1969,7 +1969,7 @@ def aboutview(request):
             context['donators_high'].append(user)
     context['total_donators'] = settings.TOTAL_DONATORS
     context['donations'] = donations.donations
-    context['artists'] = raw.community_artists
+    context['artists'] = [artist for artist in raw.community_artists if artist[1] != 'klab']
 
     contests = contest_models.Contest.objects.filter(begin__lte=timezone.now()).filter(Q(image_by__isnull=False) | Q(result_image_by__isnull=False)).select_related('image_by', 'result_image_by')
     context['graphic_designers'] = raw.all_graphic_designers[:]

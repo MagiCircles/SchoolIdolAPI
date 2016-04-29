@@ -68,6 +68,10 @@ REST_FRAMEWORK = {
     ),
 }
 
+OAUTH2_PROVIDER = {
+    'ALLOWED_REDIRECT_URI_SCHEMES': ['http', 'https', 'sukutomo'],
+}
+
 MIDDLEWARE_CLASSES = (
     'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

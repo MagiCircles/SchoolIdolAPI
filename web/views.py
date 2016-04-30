@@ -456,8 +456,9 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
                     cards = cards.distinct()
                     request_get['stored'] = request_get_copy['stored']
 
-        if ('accounts' in context and not hasJP(context['accounts'])
-            and 'search' not in request_get_copy or 'is_world' in request_get_copy and request_get_copy['is_world']):
+        if not settings.HIGH_TRAFFIC and (('accounts' in context and not hasJP(context['accounts'])
+                                           and 'search' not in request_get_copy
+                                           or 'is_world' in request_get_copy and request_get_copy['is_world'])):
             if 'is_world' in request_get_copy and request_get_copy['is_world'] == 'off':
                 cards = cards.filter(japan_only=True)
             else:
@@ -465,8 +466,9 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
                 context['show_discover_banner'] = True
             request_get['is_world'] = True
 
-        if ('accounts' in context and not hasJP(context['accounts'])
-            and 'search' not in request_get_copy or 'is_promo' in request_get_copy and request_get_copy['is_promo']):
+        if not settings.HIGH_TRAFFIC and (('accounts' in context and not hasJP(context['accounts'])
+                                           and 'search' not in request_get_copy
+                                           or 'is_promo' in request_get_copy and request_get_copy['is_promo'])):
             if 'is_promo' not in request_get_copy or request_get_copy['is_promo'] == 'off':
                 cards = cards.filter(is_promo=False)
                 request_get['is_promo'] = 'off'
@@ -563,7 +565,7 @@ def cards(request, card=None, ajax=False, extra_request_get={}, extra_context={}
         cards = cards[(page * page_size):((page * page_size) + page_size)]
         context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
 
-    if request.user.is_authenticated() and not request.user.is_anonymous():
+    if not settings.HIGH_TRAFFIC and request.user.is_authenticated() and not request.user.is_anonymous():
         cards = cards.prefetch_related(Prefetch('ownedcards', queryset=models.OwnedCard.objects.filter(owner_account__owner=request.user).order_by('owner_account__language'), to_attr='owned_cards'))
 
     # Get statistics & other information to show in cards
@@ -609,7 +611,7 @@ def cards(request, card=None, ajax=False, extra_request_get={}, extra_context={}
     if 'search' not in context['request_get'] and 'name' in context['request_get']:
         context['show_filter_bar'] = False
     context['current'] = 'cards'
-    if request.user.is_authenticated() and not request.user.is_anonymous():
+    if not settings.HIGH_TRAFFIC and request.user.is_authenticated() and not request.user.is_anonymous():
         context['quickaddcard_form'] = forms.getOwnedCardForm(forms.QuickOwnedCardForm(), context['accounts'])
     context['page'] = page + 1
     context['ajax'] = ajax
@@ -752,6 +754,9 @@ def profile(request, username):
     - Count following
     """
     context = globalContext(request)
+    if settings.HIGH_TRAFFIC:
+        context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+        return render(request, 'cacheprofile.html', context)
     if request.user.is_authenticated() and not request.user.is_anonymous() and request.user.username == username:
         user = request.user
     else:
@@ -1955,30 +1960,31 @@ def avatar_facebook(request, username):
 
 def aboutview(request):
     context = globalContext(request)
-    users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
-    users = users.annotate(verifications_done=Count('verificationsdone'))
-
-    context['staff'] = []
-    context['donators_low'] = []
-    context['donators_high'] = []
-    for user in users:
-        if user.is_staff:
-            context['staff'].append(user)
-        if user.preferences.status == 'THANKS' or user.preferences.status == 'SUPPORTER' or user.preferences.status == 'LOVER' or user.preferences.status == 'AMBASSADOR':
-            context['donators_low'].append(user)
-        elif user.preferences.status == 'PRODUCER' or user.preferences.status == 'DEVOTEE':
-            context['donators_high'].append(user)
-    context['total_donators'] = settings.TOTAL_DONATORS
     context['donations'] = donations.donations
-    context['artists'] = [artist for artist in raw.community_artists if artist[1] != 'klab']
+    if not settings.HIGH_TRAFFIC:
+        users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
+        users = users.annotate(verifications_done=Count('verificationsdone'))
 
-    contests = contest_models.Contest.objects.filter(begin__lte=timezone.now()).filter(Q(image_by__isnull=False) | Q(result_image_by__isnull=False)).select_related('image_by', 'result_image_by')
-    context['graphic_designers'] = raw.all_graphic_designers[:]
-    for contest in contests:
-        if contest.image_by and contest.image:
-            context['graphic_designers'].append((_imageurl(contest.image), contest.image_by.username))
-        if contest.result_image_by and contest.result_image:
-            context['graphic_designers'].append((_imageurl(contest.result_image), contest.result_image_by.username))
+        context['staff'] = []
+        context['donators_low'] = []
+        context['donators_high'] = []
+        for user in users:
+            if user.is_staff:
+                context['staff'].append(user)
+            if user.preferences.status == 'THANKS' or user.preferences.status == 'SUPPORTER' or user.preferences.status == 'LOVER' or user.preferences.status == 'AMBASSADOR':
+                context['donators_low'].append(user)
+            elif user.preferences.status == 'PRODUCER' or user.preferences.status == 'DEVOTEE':
+                context['donators_high'].append(user)
+        context['total_donators'] = settings.TOTAL_DONATORS
+        context['artists'] = [artist for artist in raw.community_artists if artist[1] != 'klab']
+
+        contests = contest_models.Contest.objects.filter(begin__lte=timezone.now()).filter(Q(image_by__isnull=False) | Q(result_image_by__isnull=False)).select_related('image_by', 'result_image_by')
+        context['graphic_designers'] = raw.all_graphic_designers[:]
+        for contest in contests:
+            if contest.image_by and contest.image:
+                context['graphic_designers'].append((_imageurl(contest.image), contest.image_by.username))
+            if contest.result_image_by and contest.result_image:
+                context['graphic_designers'].append((_imageurl(contest.result_image), contest.result_image_by.username))
     return render(request, 'about.html', context)
 
 def staff_verifications(request):

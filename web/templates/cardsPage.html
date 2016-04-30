@@ -505,10 +505,14 @@
 	      {% endif %}
 	    </div> <!-- panel-body -->
 	    <div class="panel-footer clearfix">
+	      {% if not high_traffic %}
 	      {% for owned in card.owned_cards %}
 	      {% include "ownedCardOnBottomCard.html" with owned=owned owner_account=accounts|findModelId:owned.owner_account_id withcenter=True %}
 	      {% endfor %}
 	      <a href="{% if user.is_authenticated %}{% if accounts %}#quickAddCard{% else %}/addaccount/{% endif %}{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
+	      {% else %}
+	      <a href="#"><i class="flaticon-add" data-container="body" data-toggle="popover" data-placement="top" data-content="Cards collections are temporarily disabled due to high traffic. Please try again tomorrow.<br><i>Any help to get more powerful servers is greatly appreciated. <a href='/about/#donate'>Donate here!</a></i>" data-trigger="click" data-html="true"></i></a>
+	      {% endif %}
 	      <div class="pull-right">
 		{% if card.skill %}
 		<i class="flaticon-{{ card.skill|skillToFlaticon }}" title="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill %}{{ card.japanese_skill }}{% else %}{{ card.skill }}{% endif %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% elif card.skill_details %}{{ card.skill_details }}{% endif %}" data-trigger="hover"></i>

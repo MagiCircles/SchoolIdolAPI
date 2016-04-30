@@ -64,7 +64,7 @@
 {% block shareimagetwitter %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}http://i.schoolido.lu/static/screenshots/cards.png{% endif %}{% endblock %}
 
 {% block content %}
-{% if view != 'albumbuilder' %}
+{% if not high_traffic and view != 'albumbuilder' %}
 <div class="hidden" id="quickaddform">
   <form class="form-horizontal" method="post" role="form" action="/ajax/addcard/">
     <h3>{% trans 'Card added!' %}<br>
@@ -245,7 +245,7 @@
               <input type="radio" name="view" id="view_albumbuilder" autocomplete="off" value="albumbuilder"{% if view == 'albumbuilder' %} checked{% endif %}> {% trans 'Album Builder' %}
             </label>
           </div>
-	  {% if user.is_authenticated %}
+	  {% if not high_traffic and user.is_authenticated %}
           <div id="albumbuilder_extraform"{% if view != 'albumbuilder' %} style="display: none;"{% endif %}>
 	    <br>
 	    <label for="id_albumbuilder_account">{% trans 'Account' %}</label>

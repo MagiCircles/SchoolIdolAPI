@@ -5,18 +5,15 @@
 {% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}
 {% block back_button %}0{% endblock %}
 {% block js %}
+{% if not high_traffic %}
 <script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <!--<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>-->
 <script src="/static/js/loadactivities.js?1"></script>
 <script src="/static/js/index.js?8"></script>
 <script>
   var follow_sentence = "{% trans 'Start following players to see their activities!' %}";
-  $('#christmasplay').click(function(event) {
-  event.preventDefault();
-  $('#player')[0].play();
-  return false;
-  });
 </script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -71,7 +68,7 @@
       <div class="row buttons">
 	{% if user.is_authenticated %}
 	<div class="col-sm-8">
-	  <div class="panel panel-{% if user.preferences.color %}{{ user.preferences.color }}{% else %}Smile{% endif %}">
+	  <div class="panel panel-{{ btnColor }}">
 	    <div class="panel-heading">
 	      <h1 class="margin-novertical">{% trans 'School Idol Tomodachi' %}</h1>
 	    </div>
@@ -107,7 +104,7 @@
 	{% endif %}
 	<div class="col-sm-4 text-{% if user.is_authenticated %}center{% else %}right{% endif %}">
 	  <a href="/links/">
-	    <img src="/static/links.png" class="">
+	    <img src="http://i.schoolido.lu/static/links.png" class="">
 	  </a>
 	</div>
       </div>
@@ -120,9 +117,11 @@
 	  {% for contest in current_contests %}
 	  <li data-target="#carousel-index" data-slide-to="{{ forloop.counter0 }}"{% if forloop.counter0 == 0 %} class="active"{% endif %}></li>
 	  {% endfor %}
-	  <li data-target="#carousel-index" data-slide-to="{{ current_en_slide_position }}"></li>
-	  <li data-target="#carousel-index" data-slide-to="{{ current_jp_slide_position }}"></li>
+	  {% if current_en %}
+	  <li data-target="#carousel-index" data-slide-to="{{ current_en.slide_position }}"></li>
+	  <li data-target="#carousel-index" data-slide-to="{{ current_jp.slide_position }}"></li>
 	  <li data-target="#carousel-index" data-slide-to="{{ trivia_slide_position }}"></li>
+	  {% endif %}
 	</ol>
 
 	<!-- Wrapper for slides -->
@@ -135,17 +134,19 @@
 	  </a>
 	  {% endfor %}
 
+	  {% if current_en %}
 	  <a href="/events/{{ current_en.japanese_name|urlencode }}/" class="item event"
-	     style="background-image: url('{% eventimageurl event=current_en english=True %}');">
+	     style="background-image: url('{{ current_en.image }}');">
 	  </a>
 
 	  <a href="/events/{{ current_jp.japanese_name|urlencode }}/" class="item event"
-	     style="background-image: url('{% eventimageurl current_jp %}');">
+	     style="background-image: url('{{ current_jp.image }}');">
 	  </a>
 
 	  <a href="/trivia/" class="item"
-	     style="background-image: url('/static/lltriviabanner.png');">
+	     style="background-image: url('http://i.schoolido.lu/static/lltriviabanner.png');">
 	  </a>
+	  {% endif %}
 
 	</div> <!-- carousel-inner -->
 
@@ -160,6 +161,9 @@
 	</a>
       </div> <!-- carousel -->
 
+      {% if high_traffic %}
+      <div id="activities">{% include 'cacheactivities.html' %}</div>
+      {% else %}
       <div id="{% if user.is_authenticated and user.preferences.default_tab == 'following' %}my{% endif %}activities">
 	{% if user.is_authenticated %}
 	<div style="margin-bottom: 20px;" id="activities-buttons">
@@ -177,6 +181,7 @@
 	{% endif %}
 	<div class="activities"></div>
       </div>
+      {% endif %}
 
 
     </div>

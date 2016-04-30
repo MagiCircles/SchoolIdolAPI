@@ -18,7 +18,7 @@ def imageurl(context, card, image):
         card_image = getattr(card, image)
         if card_image:
             return _imageurl(unicode(card_image))
-    return '/static/default-' + card.attribute + '.png'
+    return 'http://i.schoolido.lu/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)
 def cleanurl(context, card, idolized, small=True):
@@ -47,7 +47,7 @@ def cardrawurl(card_id, idol_name, image_type):
         return _imageurl('cards/' + str(card_id) + idol_name + '.png')
     elif image_type == 'card_image':
         return _imageurl('cards/' + str(card_id) + 'idolized' + idol_name + '.png')
-    return '/static/empty.png'
+    return 'http://i.schoolido.lu/static/empty.png'
 
 @register.simple_tag()
 def cardidolizedimageurl(card, idolized):
@@ -58,17 +58,17 @@ def cardidolizedimageurl(card, idolized):
             return _imageurl(card.round_card_idolized_image)
         if card.card_idolized_image:
             return _imageurl(card.card_idolized_image)
-        return '/static/default-' + card.attribute + '.png'
+        return 'http://i.schoolido.lu/static/default-' + card.attribute + '.png'
     if card.round_card_image:
         return _imageurl(card.round_card_image)
     if card.card_image:
         return _imageurl(card.card_image)
-    return '/static/default-' + card.attribute + '.png'
+    return 'http://i.schoolido.lu/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)
 def ownedcardimageurl(context, ownedcard, card=None):
     if not ownedcard:
-        return '/static/default-All.png'
+        return 'http://i.schoolido.lu/static/default-All.png'
     if not card:
         card = ownedcard.card
     idolized = True if card.is_special or card.is_promo else ownedcard.idolized
@@ -80,7 +80,7 @@ def eventimageurl(context, event, english=False):
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.english_image))
     if event.image:
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(event.image))
-    return '/static/default_event.png'
+    return 'http://i.schoolido.lu/static/default_event.png'
 
 @register.simple_tag(takes_context=True)
 def songimageurl(context, song):
@@ -88,7 +88,7 @@ def songimageurl(context, song):
         if settings.DEBUG:
             song.image = unicode(song.image).replace('web/', '')
         return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(song.image))
-    return '/static/defaultsong.png'
+    return 'http://i.schoolido.lu/static/defaultsong.png'
 
 def userimage(image):
     return u'%s%s' % (settings.IMAGES_HOSTING_PATH, unicode(image))
@@ -111,15 +111,15 @@ def idolimage(context, name):
     return filename
 
 linkimages = {
-    'reddit': '/static/reddit.png',
-    'twitter': '/static/twitter.png',
-    'facebook': '/static/facebook.png',
-    'instagram': '/static/instagram.png',
-    'line': '/static/line.png',
-    'twitch': '/static/twitch.png',
-    'mal': '/static/mal.png',
-    'steam': '/static/steam.png',
-    'tumblr': '/static/tumblr.png',
+    'reddit': 'http://i.schoolido.lu/static/reddit.png',
+    'twitter': 'http://i.schoolido.lu/static/twitter.png',
+    'facebook': 'http://i.schoolido.lu/static/facebook.png',
+    'instagram': 'http://i.schoolido.lu/static/instagram.png',
+    'line': 'http://i.schoolido.lu/static/line.png',
+    'twitch': 'http://i.schoolido.lu/static/twitch.png',
+    'mal': 'http://i.schoolido.lu/static/mal.png',
+    'steam': 'http://i.schoolido.lu/static/steam.png',
+    'tumblr': 'http://i.schoolido.lu/static/tumblr.png',
 }
 
 def linkimage(link):

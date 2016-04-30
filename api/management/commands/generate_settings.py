@@ -35,6 +35,24 @@ def generate_settings(opt={}):
                 'name': current_contest.name,
             } for current_contest in current_contests]
 
+        print 'Check the current events'
+        try:
+            current_jp = models.Event.objects.order_by('-beginning')[0]
+            current_jp = {
+                'japanese_name': current_jp.japanese_name,
+                'slide_position': len(current_contests) + 1,
+                'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_jp.image),
+            }
+        except: pass
+        try:
+            current_en = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
+            current_en = {
+                'japanese_name': current_en.japanese_name,
+                'slide_position': len(current_contests),
+                'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_en.english_image if current_en.english_image else current_en.image),
+            }
+        except: pass
+
         print 'Get ages'
         ages = {}
         for i in range(10,30):
@@ -75,6 +93,8 @@ from collections import OrderedDict\n\
 import datetime\n\
 TOTAL_DONATORS = ' + total_donators + u'\n\
 CURRENT_CONTESTS = ' + unicode(current_contests) + u'\n\
+CURRENT_EVENT_JP = ' + unicode(current_jp) + u'\n\
+CURRENT_EVENT_EN = ' + unicode(current_en) + u'\n\
 USERS_AGES = ' + unicode(ages) + u'\n\
 USERS_TOTAL_AGES = ' + unicode(total_ages) + u'\n\
 GENERATED_DATE = datetime.datetime.fromtimestamp(' + unicode(time.time()) + u')\n\

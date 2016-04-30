@@ -58,7 +58,7 @@ def globalContext(request):
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
-        if request.user.preferences.color:
+        if not settings.HIGH_TRAFFIC and request.user.preferences.color:
             context['interfaceColor'] = request.user.preferences.color
             context['btnColor'] = request.user.preferences.color
     if 'notification' in request.GET:
@@ -112,7 +112,15 @@ def onlyJP(context):
             return False
     return True
 
+def nopreferencesAvatar(user, size):
+    default = 'http://schoolido.lu/static/kotori.jpg'
+    return ("http://www.gravatar.com/avatar/"
+            + hashlib.md5(user.email.lower()).hexdigest()
+            + "?" + urllib.urlencode({'d': default, 's': str(size)}))
+
 def getUserAvatar(user, size):
+    if settings.HIGH_TRAFFIC:
+        return nopreferencesAvatar(user, size)
     return user.preferences.avatar(size)
 
 def _pushActivity_cacheaccount(account, account_owner=None):
@@ -240,17 +248,8 @@ def index(request):
     """
     context = globalContext(request)
 
-    # Get current events
-    try:
-        context['current_jp'] = models.Event.objects.order_by('-beginning')[0]
-        context['current_jp'].is_current = context['current_jp'].is_japan_current()
-        context['current_jp'].slide_position = len(contest['current_contests']) + 1
-    except: pass
-    try:
-        context['current_en'] = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
-        context['current_en'].is_current = context['current_en'].is_world_current()
-        context['current_en'].slide_position = len(contest['current_contests'])
-    except: pass
+    context['current_jp'] = settings.CURRENT_EVENT_JP
+    context['current_en'] = settings.CURRENT_EVENT_EN
     context['trivia_slide_position'] = len(context['current_contests']) + 2
     context['total_donators'] = settings.TOTAL_DONATORS
 
@@ -258,6 +257,8 @@ def index(request):
 
     # Get random character
     context['character'] = None
+    if settings.HIGH_TRAFFIC:
+        context['character'] = 'cards/transparent/852idolizedTransparent.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:

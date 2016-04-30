@@ -18,6 +18,16 @@ class Command(BaseCommand):
                     models.Song.objects.filter(name=song['name']).update(image=song['image'].replace('http://i.schoolido.lu/', ''))
             return
 
+        if 'events' in args:
+            page_url = u'http://schoolido.lu/api/events/'
+            while page_url is not None:
+                response = urllib.urlopen(page_url)
+                data = json.loads(response.read())
+                page_url = data['next']
+                for event in data['results']:
+                    models.Event.objects.filter(japanese_name=event['japanese_name']).update(image=event['image'].replace('http://i.schoolido.lu/', ''), english_image=(event['english_image'].replace('http://i.schoolido.lu/', '') if event['english_image'] else None))
+            return
+
         if 'clean_ur' in args:
             page_url = u'http://schoolido.lu/api/cards/?rarity=UR'
             while page_url is not None:

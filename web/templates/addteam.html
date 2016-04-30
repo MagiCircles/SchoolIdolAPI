@@ -64,7 +64,7 @@
   cuteform($('#id_{{ field_name }}'), {
     'modal': 'true',
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for ownedcard in account.deck %}
       '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
       {% endfor %}

@@ -13,7 +13,7 @@
 <script>
   cuteform($('#id_starter'), {
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for card in form.starter.field.queryset %}
       '{{ card.id }}': '{% imageurl card=card image='round_card_image' %}',
       {% endfor %}
@@ -37,7 +37,7 @@
   cuteform($('#id_center'), {
     'modal': 'true',
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for ownedcard in form.center.field.queryset %}
       '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
       {% endfor %}
@@ -53,14 +53,14 @@
   cuteform($('#id_play_with'), {
     'html': {
       {% for play_with, string in form.play_with.field.choices %}
-      {% if play_with == '' %}'': '<img src="/static/empty.png" height="20">',{% else %}
+      {% if play_with == '' %}'': '<img src="http://i.schoolido.lu/static/empty.png" height="20">',{% else %}
       '{{ play_with }}': '<i class="flaticon-{{ play_with|playWithToIcon }}"></i> {{ string }}',
       {% endif %}{% endfor %}
     }
   });
   cuteform($('#id_accept_friend_requests'), {
     'html': {
-      '1': '<img src="/static/empty.png" height="20">',
+      '1': '<img src="http://i.schoolido.lu/static/empty.png" height="20">',
       '2': '{% trans 'Yes' %}',
       '3': '{% trans 'No' %}',
     }

@@ -10,10 +10,10 @@
 <script>
   cuteform($('#id_attribute'), {
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for i, attribute in filter_form.fields.attribute.choices %}
       {% if i != '' %}
-      '{{ i }}': '/static/{{ i }}.png',
+      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
       {% endif %}
       {% endfor %}
     }
@@ -58,8 +58,8 @@ function songs_stats_buttons() {
 <script src="/static/js/songs.js?4"></script>
 {% endblock %}
 
-{% block shareimage %}{% if single %}{% songimageurl song=single %}{% else %}http://schoolido.lu/static/screenshots/songs.png{% endif %}{% endblock %}
-{% block shareimagetwitter %}{% if single %}{% songimageurl song=single %}{% else %}http://schoolido.lu/static/screenshots/songs.png{% endif %}{% endblock %}
+{% block shareimage %}{% if single %}{% songimageurl song=single %}{% else %}http://i.schoolido.lu/static/screenshots/songs.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}{% songimageurl song=single %}{% else %}http://i.schoolido.lu/static/screenshots/songs.png{% endif %}{% endblock %}
 
 {% block content %}
 {% if not single %}

@@ -9,9 +9,9 @@
     <meta charset="UTF-8">
     <title>{% trans "School Idol Tomodachi" %} - {% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
-    <link rel="stylesheet" href="/static/bower/bootstrap/dist/css/bootstrap.min.css">
-    {% if debug %}
+    <link rel="shortcut icon" type="image/x-icon" href="http://i.schoolido.lu/static/favicon.ico" />
+    <link rel="stylesheet" href="http://i.schoolido.lu/static/bower/bootstrap/dist/css/bootstrap.min.css">
+    {% if debug and not high_traffic %}
     <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" />
     <script src="/static/bower/less/dist/less.min.js"></script>
     {% else %}
@@ -97,9 +97,8 @@
 		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>
 		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit/"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
 		<li role="presentation" class="divider"></li>
-		{% if accounts %}
+		{% if not high_traffic and accounts %}
 		<li role="presentation" class="dropdown-header">{% with accounts|length as length %}{% blocktrans count counter=length %}{{ length }} account:{% plural %}{{ length }} accounts:{% endblocktrans %}{% endwith %}</li>
-		{% endif %}
 		{% for account in accounts %}
 		<li><a href="/user/{{ user.username }}/#{{ account.pk }}" class="account">
 		    {% if account.center_id %}
@@ -111,6 +110,7 @@
 		    {% endif %}
 		    {{ account }}</a></li>
 		{% endfor %}
+		{% endif %}
 		<li class="{% if current == 'addaccount' %}active{% endif %}"><a href="/addaccount/"><i class="flaticon-add"></i> {% trans 'Add Account' %}</a></li>
 		<li><a href="/edit/#editaccounts"><i class="flaticon-edit"></i> {% trans 'Edit your accounts' %}</a></li>
 		<li role="presentation" class="divider"></li>
@@ -182,9 +182,9 @@
     var disqus_shortname = '{% if disqus_shortname %}{{ disqus_shortname }}{% else %}schoolidol{% endif %}';
     </script>
 
-    <script src="/static/bower/jQuery/dist/jquery.min.js"></script>
-    <script src="/static/js/jquery.form.min.js"></script>
-    <script src="/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="http://i.schoolido.lu/static/bower/jQuery/dist/jquery.min.js"></script>
+    <script src="http://i.schoolido.lu/static/js/jquery.form.min.js"></script>
+    <script src="http://i.schoolido.lu/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/static/js/main.js?8"></script>
     {% block js %}{% endblock %}
 

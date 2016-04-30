@@ -130,9 +130,9 @@
 <script>
   cuteform($('#id_color'), {
     'images': {
-      '': '/static/empty.png',
+      '': 'http://i.schoolido.lu/static/empty.png',
       {% for i, attribute in attribute_choices %}
-      '{{ i }}': '/static/{{ i }}.png',
+      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
       {% endfor %}
     }
   });
@@ -141,7 +141,7 @@
     'modal-text': 'true',
     'images': {
       {% for idol, str in form_preferences.best_girl.field.choices %}
-      {% if idol == '' %}'': '/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
     }
   });

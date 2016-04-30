@@ -24,6 +24,7 @@ def generate_settings(opt={}):
             current_contests = [{
                 'url': '/contest/',
                 'image': '/static/currentcontest_no.png',
+                'homepage_image': '/static/currentcontest_no.png',
                 'name': None,
             }]
         else:

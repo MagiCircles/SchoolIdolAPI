@@ -114,7 +114,7 @@ def onlyJP(context):
     return True
 
 def nopreferencesAvatar(user, size):
-    default = 'http://schoolido.lu/static/kotori.jpg'
+    default = 'https://i.schoolido.lu/static/kotori.jpg'
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))

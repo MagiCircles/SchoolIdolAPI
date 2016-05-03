@@ -16,6 +16,7 @@ from django.db.models import Prefetch
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.utils.http import urlquote
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _, string_concat
@@ -314,7 +315,7 @@ def create(request):
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             preferences = models.UserPreferences.objects.create(user=user)
             login(request, user)
-            return redirect('/addaccount/' + ('?next=' + request.GET['next'] if 'next' in request.GET else ''))
+            return redirect('/addaccount/' + ('?next=' + urlquote(request.GET['next']) if 'next' in request.GET else ''))
     else:
         form = forms.CreateUserForm()
     context = globalContext(request)
@@ -654,7 +655,7 @@ def addaccount(request):
         form = forms.AccountForm(request.POST)
         if form.is_valid():
             account = form.save(commit=False)
-            next_url = lambda account: '/cards/initialsetup/?account=' + str(account.id) + ('&starter=' + str(account.center_id) if account.center_id else '&starter=0') + ('&next=' if 'next' in request.GET else '')
+            next_url = lambda account: '/cards/initialsetup/?account=' + str(account.id) + ('&starter=' + str(account.center_id) if account.center_id else '&starter=0') + ('&next=' + urlquote(request.GET['next']) if 'next' in request.GET else '')
             account.owner = request.user
             if account.rank >= 200:
                 account.rank = 195

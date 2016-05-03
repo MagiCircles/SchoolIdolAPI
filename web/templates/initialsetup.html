@@ -230,7 +230,7 @@
 	<br><br><br>
 	{% if next %}
 	<div class="text-right">
-	  <a href="{{ next }}" target="_blank" class="btn btn-xl btn-{{ btnColor }}"><i class="flaticon-toggler"></i> {% trans 'Next' %}: {{ next }}</a>
+	  <a href="{{ next }}" target="_blank" class="btn btn-xl btn-{{ btnColor }}"><i class="flaticon-toggler"></i> {% if 'redirect_uri=sukutomo://' in next %}{% trans 'Back to mobile app' %}{% else %}{% trans 'Next' %}{% if next|length <= 10 %}: {{ next }}{% endif %}{% endif %}</a>
 	</div>
 	<br><br><br>
 	{% endif %}

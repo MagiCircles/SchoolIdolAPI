@@ -157,7 +157,7 @@
               {% else %}
 	      <tr>
 		<th>{% trans 'Friend ID' %}</th>
-		<td>{% if account.show_friend_id or is_me %}
+		<td>{% if account.show_friend_id or is_me or user.is_staff %}
 		  {% if account.friend_id %}
 		  {{ account.friend_id|padzeros:9 }}
 		  {% else %}

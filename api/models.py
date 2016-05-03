@@ -741,7 +741,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
 
     def avatar(self, size):
-        default = 'http://schoolido.lu/static/kotori.jpg'
+        default = 'https://i.schoolido.lu/static/kotori.jpg'
         if self.twitter:
             default = 'http://schoolido.lu/avatar/twitter/' + self.twitter
         return ("http://www.gravatar.com/avatar/"

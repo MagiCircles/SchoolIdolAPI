@@ -1,11 +1,11 @@
 import django_filters
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.core.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework import viewsets, filters, permissions, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, detail_route
 from rest_framework.filters import BaseFilterBackend
 from api import permissions as api_permissions
 from api import serializers, models, raw
@@ -47,6 +47,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.prefetch_related(Prefetch('links', to_attr='all_links'))
         if 'expand_preferences' in self.request.query_params:
             queryset = queryset.select_related('preferences')
+        if 'expand_is_following' and self.request.user.is_authenticated():
+            queryset = queryset.extra(select={'is_following': 'SELECT COUNT(*) FROM api_userpreferences_following WHERE userpreferences_id=(SELECT id FROM api_userpreferences WHERE user_id={}) AND user_id=auth_user.id'.format(self.request.user.id) })
         return queryset
 
     serializer_class = serializers.UserSerializer
@@ -66,6 +68,20 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             serializer = serializers.UserSerializer(request.user, context={'request':request})
             return Response(serializer.data)
         raise PermissionDenied()
+
+    @detail_route(methods=['POST', 'DELETE'])
+    def follow(self, request, username=None):
+        if not request.user.is_authenticated():
+            raise PermissionDenied()
+        user = get_object_or_404(User, username=username)
+        if request.method == 'POST':
+            request.user.preferences.following.add(user)
+            request.user.preferences.save()
+            return JsonResponse({'follow': 'followed'})
+        if request.method == 'DELETE':
+            request.user.preferences.following.remove(user)
+            request.user.preferences.save()
+            return JsonResponse({'follow': 'unfollowed'})
 
 class GroupViewSet(viewsets.ModelViewSet):
     """

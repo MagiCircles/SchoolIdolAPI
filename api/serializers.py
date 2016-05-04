@@ -41,6 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
     links = serializers.SerializerMethodField()
     preferences = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
 
     def get_website_url(self, obj):
         return 'http://schoolido.lu/user/' + urllib.quote(obj.username) + '/'
@@ -69,9 +70,16 @@ class UserSerializer(serializers.ModelSerializer):
             return note_to_expand('preferences')
         return None
 
+    def get_is_following(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('user-'):
+            if 'expand_is_following' in self.context['request'].query_params and hasattr(obj, 'is_following'):
+                return bool(obj.is_following)
+            return 'To know if the authenticated user follows this user or not, use the parameter \"expand_is_following\"'
+        return None
+
     class Meta:
         model = User
-        fields = ('username', 'date_joined', 'accounts', 'preferences', 'links', 'website_url')
+        fields = ('username', 'date_joined', 'accounts', 'preferences', 'links', 'website_url', 'is_following')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, data):

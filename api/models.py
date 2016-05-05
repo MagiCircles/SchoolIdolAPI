@@ -216,6 +216,18 @@ LINK_URLS = {
     'animeplanet': 'http://www.anime-planet.com/users/{}',
 }
 
+LINK_IMAGES = {
+    'reddit': 'http://i.schoolido.lu/static/reddit.png',
+    'twitter': 'http://i.schoolido.lu/static/twitter.png',
+    'facebook': 'http://i.schoolido.lu/static/facebook.png',
+    'instagram': 'http://i.schoolido.lu/static/instagram.png',
+    'line': 'http://i.schoolido.lu/static/line.png',
+    'twitch': 'http://i.schoolido.lu/static/twitch.png',
+    'mal': 'http://i.schoolido.lu/static/mal.png',
+    'steam': 'http://i.schoolido.lu/static/steam.png',
+    'tumblr': 'http://i.schoolido.lu/static/tumblr.png',
+}
+
 LINK_RELEVANCE_CHOICES = (
     (0, _('Never')),
     (1, _('Sometimes')),
@@ -710,6 +722,10 @@ class UserLink(ExportModelOperationsMixin('UserLink'), models.Model):
 
     def url(self):
         return LINK_URLS[self.type].format(self.value)
+
+    @property
+    def icon(self):
+        return LINK_IMAGES[self.type]
 
 admin.site.register(UserLink)
 

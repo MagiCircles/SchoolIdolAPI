@@ -34,7 +34,7 @@ class UserLinkSerializer(serializers.ModelSerializer):
         return obj.url()
     class Meta:
         model = models.UserLink
-        fields = ('type', 'value', 'relevance', 'url')
+        fields = ('type', 'value', 'relevance', 'icon', 'url')
 
 class UserSerializer(serializers.ModelSerializer):
     accounts = serializers.SerializerMethodField()

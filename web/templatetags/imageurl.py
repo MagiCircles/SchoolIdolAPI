@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 from web.utils import chibiimage as _chibiimage
-from api.models import LINK_URLS
+from api.models import LINK_IMAGES, LINK_URLS
 from api.raw import raw_information
 import os.path
 import string
@@ -110,20 +110,8 @@ def idolimage(context, name):
     filename = name.replace(' ', '_').replace('\'', '-')
     return filename
 
-linkimages = {
-    'reddit': 'http://i.schoolido.lu/static/reddit.png',
-    'twitter': 'http://i.schoolido.lu/static/twitter.png',
-    'facebook': 'http://i.schoolido.lu/static/facebook.png',
-    'instagram': 'http://i.schoolido.lu/static/instagram.png',
-    'line': 'http://i.schoolido.lu/static/line.png',
-    'twitch': 'http://i.schoolido.lu/static/twitch.png',
-    'mal': 'http://i.schoolido.lu/static/mal.png',
-    'steam': 'http://i.schoolido.lu/static/steam.png',
-    'tumblr': 'http://i.schoolido.lu/static/tumblr.png',
-}
-
 def linkimage(link):
-    return linkimages.get(link['type'], None)
+    return LINK_IMAGES.get(link['type'], None)
 
 def linkurl(link):
     return LINK_URLS[link['type']].format(link['value'])

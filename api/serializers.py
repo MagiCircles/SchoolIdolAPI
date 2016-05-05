@@ -32,6 +32,7 @@ class UserLinkSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return obj.url()
+
     class Meta:
         model = models.UserLink
         fields = ('type', 'value', 'relevance', 'icon', 'url')
@@ -340,13 +341,9 @@ class SongSerializer(serializers.ModelSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()
-    nickname = serializers.SerializerMethodField()
     center = serializers.SerializerMethodField()
     starter = serializers.SerializerMethodField()
-    website_url = serializers.SerializerMethodField()
-
-    def get_website_url(self, obj):
-        return obj.website_url
+    friend_id = serializers.SerializerMethodField()
 
     def get_center(self, obj):
         if not obj.center_id:
@@ -374,8 +371,10 @@ class AccountSerializer(serializers.ModelSerializer):
                 return serializer.data
         return obj.owner_username
 
-    def get_nickname(self, obj):
-        return obj.nickname
+    def get_friend_id(self, obj):
+        if obj.show_friend_id or self.context['request'].user.id == obj.owner_id:
+            return obj.friend_id
+        return None
 
     def create(self, data):
         data['owner'] = self.context['request'].user

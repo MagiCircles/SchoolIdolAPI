@@ -176,7 +176,7 @@ raw_information['Takami Chika'] = {
     'chibi': [
         ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/mzZeOlyc.png', 'sayakax'),
-        ('http://i.schoolido.lu/chibi/chika.png', 'anonymous'),
+        ('http://i.schoolido.lu/chibi/chika.png', 'Wondercorn'),
     ],
 }
 raw_information['Sakurauchi Riko'] = {
@@ -267,6 +267,7 @@ raw_information['Kunikida Hanamaru'] = {
         ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
         ('http://i.schoolido.lu/chibi/michellecipher.png', 'michellecipher'),
         ('http://i.schoolido.lu/chibi/hanamaruchib450.png', 'enjugrove'),
+        ('http://i.schoolido.lu/chibi/g39pnP7.png', 'Hinayo'),
     ],
 }
 raw_information['Ohara Mari'] = {
@@ -303,6 +304,7 @@ raw_information_n = {
     'Saeki Reine': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Arne.png', 'Arne'),
+            ('http://i.schoolido.lu/chibi/ZNeSmd0B.png', 'NightSky'),
         ],
     },
     'Aizawa Yuu': {
@@ -320,6 +322,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Dokisumi.png', 'Dokisumi'),
             ('http://i.schoolido.lu/chibi/mSWSzdpL.png', 'wisterias'), # original not found
+            ('http://i.schoolido.lu/chibi/KOWodSN.png', 'Hinayo'),
         ],
     },
     'Yazawa Cocoa': {
@@ -516,12 +519,32 @@ raw_information_n = {
     },
     'Jennifer': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/jennifer.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/jennifer.png', 'Wondercorn'),
         ],
     },
     'Tatara Ruu': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/PBqNHF0e.png', 'stalkeralker'),
+        ],
+    },
+    'Alpaca': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/z9VatL18.png', 'navacandi'),
+        ],
+    },
+    'Konoe Kanata': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/kanata.png', 'punpun'),
+        ],
+    },
+    'Christina': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/christina1.png', 'cerecalin'),
+        ],
+    },
+    'Fukuhara Mikoto': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/chib.png', 'anonymous'),
         ],
     },
 }

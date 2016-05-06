@@ -290,7 +290,7 @@ def links(request):
     context['cards'] = cards
     return render(request, 'links.html', context)
 
-def password_reset_confirm(request, uidb64, token):
+def password_reset_confirm(request, uidb64, token, template_name):
     try:
         uid = urlsafe_base64_decode(uidb64)
         user = User.objects.get(pk=uid)
@@ -300,7 +300,7 @@ def password_reset_confirm(request, uidb64, token):
     if user is not None:
         accounts_with_transfer_code = user.accounts_set.exclude(transfer_code__isnull=True).exclude(transfer_code__exact='').count()
 
-    response = password_reset_confirm_view(request, uidb64=uidb64, token=token, extra_context={'accounts_with_transfer_code': accounts_with_transfer_code})
+    response = password_reset_confirm_view(request, uidb64=uidb64, token=token, extra_context={'accounts_with_transfer_code': accounts_with_transfer_code}, template_name=template_name)
     if isinstance(response, HttpResponseRedirect) and user is not None:
         accounts_with_transfer_code = user.accounts_set.all().update(transfer_code='')
     return response

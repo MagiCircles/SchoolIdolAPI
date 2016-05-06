@@ -54,13 +54,20 @@ urlpatterns = patterns('',
     url(r'^urpairs[/]+$', views.urpairs, name='urpairs'),
     url(r'^.sicaltriofestival[/]+$', views.usicaltriofestival, name='usicaltriofestival'),
 
-    url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset',
-        {'html_email_template_name': 'registration/password_reset_email_html.html',
-         'from_email': settings.AWS_PASSWORD_EMAIL,
+    url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset', {
+        'template_name': 'password/password_reset_form.html',
+        'html_email_template_name': 'password/password_reset_email_html.html',
+        'from_email': settings.AWS_PASSWORD_EMAIL,
      }, name='password_reset'),
-    url(r'^password_reset/done[/]+$', 'django.contrib.auth.views.password_reset_done', name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.password_reset_confirm, name='password_reset_confirm'),
-    url(r'^reset/done[/]+$', 'django.contrib.auth.views.password_reset_complete', name='password_reset_complete'),
+    url(r'^password_reset/done[/]+$', 'django.contrib.auth.views.password_reset_done', {
+        'template_name': 'password/password_reset_done.html'
+    }, name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', views.password_reset_confirm, {
+        'template_name': 'password/password_reset_confirm.html'
+    }, name='password_reset_confirm'),
+    url(r'^reset/done[/]+$', 'django.contrib.auth.views.password_reset_complete', {
+        'template_name': 'password/password_reset_complete.html'
+    }, name='password_reset_complete'),
 
     url(r'^ajax/modal/(?P<hash>\w+)[/]+$', views.ajaxmodal, name='ajaxmodal'),
     url(r'^ajax/addcard[/]+$', views.ajaxaddcard, name='ajaxaddcard'),

@@ -11,7 +11,7 @@
 <div class="container text-center">
   <h1 class="margin50"><img src="http://i.schoolido.lu/static/lltrivia.png" alt="{% trans 'Love Live! School Idol Trivia' %}" style="max-width: 100%; width: 500px;"></h1>
   <div id="elm-trivia"></div>
-  <p class="margin50">
+  <p class="margin50 hidden">
     Trivia is temporarily disabled due to high traffic. Please try again tomorrow.<br>
     <i>Any help to get more powerful servers is greatly appreciated. <a href="/about/#donate">Donate here!</a></i>
   </p>
@@ -21,8 +21,8 @@
 </div>
 {% endblock %}
 {% block js %}
-<!--<script src="/static/bower/lltrivia/dist/trivia.js?1-2"></script>-->
+<script src="/static/bower/lltrivia/dist/trivia.js?3"></script>
 <script>
-  //Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}'});
+  Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}', cardTotal: {{ total_cards }}});
 </script>
 {% endblock %}

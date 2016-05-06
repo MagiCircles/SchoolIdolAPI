@@ -2338,6 +2338,7 @@ def ajaxsongs(request):
 def trivia(request):
     context = globalContext(request)
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    context['total_cards'] = settings.CARDS_INFO['total_cards']
     return render(request, 'trivia.html', context)
 
 @csrf_exempt

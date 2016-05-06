@@ -519,6 +519,11 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/jennifer.png', 'anonymous'),
         ],
     },
+    'Tatara Ruu': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/PBqNHF0e.png', 'stalkeralker'),
+        ],
+    },
 }
 
 all_graphic_designers = [

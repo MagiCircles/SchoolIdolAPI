@@ -1,7 +1,5 @@
 {% load i18n %}
-{% for activity in activities %}
 {% include 'activitysingle.html' %}
-{% endfor %}
 {% if activities|length >= page_size %}
 <div class="padding20 text-center" data-page="{{ page|add:1 }}"><a href="#loadMoreActivities">⟱</a></div>
 {% endif %}

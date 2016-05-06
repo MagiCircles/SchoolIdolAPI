@@ -12,11 +12,22 @@ function loadActivities() {
 	feed = undefined;
     }
     container.find('.activities').html('<div class="loader">Loading...</div>');
+    var followHTML = '<a href="/users/" target="_blank" class="fontx3 padding50" style="display: block">' + follow_sentence + '</a>';
     $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
 	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size, function(data) {
 	      container.find('.activities').html(data);
-	      if (container.find('.activities .alert-warning')) {
-		  container.find('.activities .alert-warning').replaceWith('<a href="/users/" target="_blank" class="fontx3 padding50" style="display: block">' + follow_sentence + '</a>');
+	      if (container.find('.activities .alert-warning').length > 0) {
+		  container.find('.activities .alert-warning').replaceWith(followHTML);
+	      } else if (logged_in) {
+		  var otherThandb0 = false;
+		  $('.activity .avatar').parent().each(function() {
+		      if ($(this).attr('href').indexOf('/user/db0/') != 0) {
+			  otherThandb0 = true;
+		      }
+		  });
+		  if (!otherThandb0) {
+		      container.find('.activities').prepend(followHTML);
+		  }
 	      }
 	      updateActivities();
 	      $(window).scroll(

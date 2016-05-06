@@ -4,6 +4,7 @@
 {% load choicesToString %}
 {% load mod %}
 {% load markdown_deux_tags %}
+{% for activity in activities %}
 <div class="activity">
   <div class="row">
     {% if avatar_size != 0 %}
@@ -71,3 +72,4 @@
     </div>
   </div>
 </div>
+{% endfor %}

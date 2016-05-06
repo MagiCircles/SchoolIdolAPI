@@ -1208,7 +1208,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
             follower = request.user
         else:
             follower = get_object_or_404(User.objects.select_related('preferences'), username=follower)
-        accounts_followed = models.Account.objects.filter(owner__in=follower.preferences.following.all())
+        accounts_followed = models.Account.objects.filter(Q(owner__in=follower.preferences.following.all()) | Q(owner_id=1))
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
@@ -1282,6 +1282,7 @@ def activity(request, activity):
                     context['activity'].save()
         context['form'] = form
     context['activity'].localized_message = _localized_message_activity(context['activity'])
+    context['activities'] = [context['activity']]
     return render(request, 'activity.html', context)
 
 def _contextfeed(request):

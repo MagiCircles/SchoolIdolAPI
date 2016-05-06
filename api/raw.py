@@ -506,7 +506,7 @@ raw_information_n = {
     },
     'Kotori\'s Mother': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/x_XHop6t.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/x_XHop6t.png', 'Clay'),
         ],
     },
     'Morishima Nanaka': {

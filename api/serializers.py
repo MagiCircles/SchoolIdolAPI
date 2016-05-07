@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
+from django.core.exceptions import ObjectDoesNotExist
 from web.utils import chibiimage, singlecardurl
 import urllib
 import datetime
@@ -300,7 +301,7 @@ class CardSerializer(serializers.ModelSerializer):
         if idol:
             idol = models.Idol.objects.get(name=idol)
             card.idol = idol
-            #card.name = idol.name
+            card.name = idol.name
             changed = True
         if changed:
             card.save()
@@ -384,11 +385,6 @@ class AccountSerializer(serializers.ModelSerializer):
         model = models.Account
         fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
 
-class OwnedCardWithoutCardSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.OwnedCard
-        fields = ('id', 'idolized', 'stored', 'expiration', 'max_level', 'max_bond', 'skill')
-
 class OwnedCardSerializer(serializers.ModelSerializer):
     owner_account = serializers.SerializerMethodField()
     card = serializers.SerializerMethodField()
@@ -406,6 +402,50 @@ class OwnedCardSerializer(serializers.ModelSerializer):
                 serializer = AccountSerializer(obj.owner_account, context=self.context)
                 return serializer.data
         return obj.owner_account_id
+
+    def validate(self, data):
+        errors = {}
+        request = self.context['request']
+        if request.method == 'POST':
+            try:
+                data['card'] = models.Card.objects.get(pk=request.POST['card'])
+            except (ObjectDoesNotExist, KeyError):
+                if 'card' not in request.POST:
+                    errors['card'] = 'This field is required'
+                else:
+                    errors['card'] = 'Invalid id'
+            try:
+                data['owner_account'] = models.Account.objects.get(pk=request.POST['owner_account'], owner=request.user)
+            except (ObjectDoesNotExist, KeyError):
+                if 'owner_account' not in request.POST:
+                    errors['owner_account'] = 'This field is required'
+                else:
+                    errors['owner_account'] = 'This account does\'t exist or isn\'t yours'
+        if errors:
+            raise serializers.ValidationError(errors)
+        return data
+
+    def save(self, **kwargs):
+        extra_kwargs = {}
+        if not self.instance:
+            card = self.validated_data['card']
+        else:
+            card = self.instance.card
+        if card.is_promo:
+            extra_kwargs['idolized'] = True
+        if card.is_special:
+            extra_kwargs['idolized'] = False
+        if ((self.instance and self.instance.idolized == False and 'idolized' not in self.validated_data and 'idolized' not in extra_kwargs)
+            or ('idolized' in self.validated_data and self.validated_data['idolized'] == False)
+            or ('idolized' in extra_kwargs and extra_kwargs['idolized'] == False)):
+            extra_kwargs['max_bond'] = False
+            extra_kwargs['max_level'] = False
+        if ((self.instance and self.instance.stored == 'Album' and 'stored' not in self.validated_data and 'stored' not in extra_kwargs)
+            or ('stored' in self.validated_data and self.validated_data['stored'] == 'Album')
+            or ('stored' in extra_kwargs and extra_kwargs['stored'] == 'Album')):
+            extra_kwargs['skill'] = 1
+        kwargs.update(extra_kwargs)
+        return super(OwnedCardSerializer, self).save(**kwargs)
 
     class Meta:
         model = models.OwnedCard

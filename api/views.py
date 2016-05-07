@@ -242,11 +242,9 @@ class OwnedCardViewSet(viewsets.ModelViewSet):
     """
     def get_queryset(self):
         queryset = models.OwnedCard.objects.all()
-        if self.request.user.is_authenticated():
-            queryset = queryset.filter(Q(owner_account__owner__preferences__private=False) | Q(owner_account__owner__preferences__private=True, owner_account__pk__in=(self.request.user.accounts_set.all() if self.request.user.is_authenticated() else [])))
-        # else: TODO: too slow, extra query
-        #     queryset = queryset.filter(owner_account__owner__preferences__private=False)
-        if 'expand_card' in self.request.query_params:
+        queryset = queryset.filter(Q(owner_account__owner__preferences__private=False) | Q(owner_account__owner__preferences__private=True, owner_account__pk__in=(self.request.user.accounts_set.all() if self.request.user.is_authenticated() else [])))
+        if ('expand_card' in self.request.query_params
+            or self.request.method == 'PATCH' or self.request.method == 'PUT'):
             queryset = queryset.select_related('card')
         if 'expand_owner' in self.request.query_params:
             queryset = queryset.select_related('owner_account')

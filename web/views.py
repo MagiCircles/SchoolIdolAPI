@@ -1633,6 +1633,8 @@ def users(request, ajax=False):
                                                | Q(owner__links__value__icontains=term)
                                                | Q(nickname__icontains=term)
                                            )
+        if 'id_search' in request.GET and request.GET['id_search']:
+            queryset = queryset.filter(friend_id__exact=int(request.GET['id_search']))
         if 'attribute' in request.GET and request.GET['attribute']:
             queryset = queryset.filter(owner__preferences__color=request.GET['attribute'])
         if 'best_girl' in request.GET and request.GET['best_girl']:

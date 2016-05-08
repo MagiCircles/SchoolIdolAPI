@@ -416,6 +416,7 @@ class FilterEventForm(ModelForm):
 
 class FilterUserForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))
+    id_search = forms.IntegerField(required=False, label=_('Friend ID'))
     ordering = forms.ChoiceField(choices=[
         ('rank', _('Leaderboard')),
         ('owner__date_joined', _('New players')),
@@ -451,7 +452,7 @@ class FilterUserForm(ModelForm):
 
     class Meta:
         model = models.Account
-        fields = ('search', 'attribute', 'best_girl', 'private', 'status', 'language', 'os', 'verified', 'center_attribute', 'center_rarity', 'with_friend_id', 'accept_friend_requests', 'play_with', 'ordering', 'reverse_order')
+        fields = ('search', 'attribute', 'best_girl', 'private', 'status', 'language', 'id_search', 'os', 'verified', 'center_attribute', 'center_rarity', 'with_friend_id', 'accept_friend_requests', 'play_with', 'ordering', 'reverse_order')
 
 class TeamForm(ModelForm):
     """

@@ -15,7 +15,7 @@
     "jquery-easing": "*",
     "jquery-visible": "1.2.0",
     "CuteForm": "~0.0.3",
-    "lltrivia": "git@github.com:SchoolIdolTomodachi/lltrivia.git#5",
+    "lltrivia": "git@github.com:SchoolIdolTomodachi/lltrivia.git#6",
     "jquery-timeago": "~1.5.2"
   }
 }

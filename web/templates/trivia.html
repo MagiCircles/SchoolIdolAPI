@@ -21,8 +21,8 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="/static/bower/lltrivia/dist/trivia.js?3"></script>
+<script src="/static/bower/lltrivia/dist/trivia.js?4"></script>
 <script>
-  Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}', cardTotal: {{ total_cards }}});
+  var elm = Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}', cardTotal: {{ total_cards }}, songInfo: {}});
 </script>
 {% endblock %}

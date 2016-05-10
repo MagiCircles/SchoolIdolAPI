@@ -236,6 +236,18 @@ class OwnedCardFilterBackend(filters.BaseFilterBackend):
             queryset = queryset.filter(card__event__isnull=(False if request.query_params['card__is_event'].title() == 'True' else True))
         return queryset
 
+class OwnedCardFilterSet(django_filters.FilterSet):
+    stored = django_filters.MethodFilter(action='filter_stored')
+
+    def filter_stored(self, queryset, value):
+        if value == 'Album':
+            return queryset.filter(Q(stored='Album') | Q(stored='Deck'))
+        return queryset.filter(stored=value)
+
+    class Meta:
+        model = models.OwnedCard
+        fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
+
 class OwnedCardViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows owned cards to be viewed or edited.
@@ -252,7 +264,7 @@ class OwnedCardViewSet(viewsets.ModelViewSet):
 
     serializer_class = serializers.OwnedCardSerializer
     filter_backends = (filters.DjangoFilterBackend, OwnedCardFilterBackend, filters.OrderingFilter, RandomBackend)
-    filter_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
+    filter_class = OwnedCardFilterSet
     ordering_fields = ('owner_account', 'card', 'idolized', 'stored', 'max_level', 'max_bond', 'skill', 'card__name', 'card__japanese_collection', 'card__rarity', 'card__attribute', 'card__is_promo', 'card__is_special', 'card__japan_only', 'card__hp', 'card__skill', 'card__center_skill')
     permission_classes = (api_permissions.IsStaffOrSelf, )
 

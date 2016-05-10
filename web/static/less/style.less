@@ -1297,7 +1297,7 @@ h1#donators {
         margin: -20%;
         margin-top: -60%;
     }
-    .image-question-detail {
+    .image-question-detail, .song-image-question-detail {
         width: 250px;
         height: 250px;
         background-size: 1000px;
@@ -1307,21 +1307,40 @@ h1#donators {
         overflow: hidden;
         border-radius: 50%;
     }
+    .song-image-question-detail {
+        background-size: 700px;
+        background-position: top center;
+    }
     .choice-image {
         width: 100px;
         padding: 20px;
     }
-    .trivia_idol {
+    .trivia_idol, .trivia_song {
         cursor: pointer;
         padding: 20px;
         display: inline-block;
         transition: opacity 0.2s ease;
         font-weight: normal;
+        vertical-align: top;
         figcaption {
             padding: 10px;
         }
         &:hover, &:focus {
             opacity: 0.5;
+        }
+    }
+    .trivia_song {
+        font-size: 1.5em;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.5);
+        img, figcaption {
+            max-width: 100px;
+            font-size: 0.7em;
+        }
+        a:hover, a:focus {
+            text-decoration: none!important;
         }
     }
     .final_result {

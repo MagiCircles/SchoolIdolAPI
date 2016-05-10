@@ -322,6 +322,7 @@ class CardSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.ModelSerializer):
     event = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+    itunes_id = serializers.SerializerMethodField()
 
     def get_event(self, obj):
         if not obj.event_id:
@@ -334,6 +335,11 @@ class SongSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         return _get_image(obj.image)
+
+    def get_itunes_id(self, obj):
+        if obj.itunes_id:
+            return obj.itunes_id
+        return None
 
     class Meta:
         model = models.Song

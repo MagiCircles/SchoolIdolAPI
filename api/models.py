@@ -912,27 +912,27 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
 
 admin.site.register(Song)
 
-class TradeOrGiveawayAccount(models.Model):
-    account = models.ForeignKey(Account, related_name='trade_or_giveaway', unique=True)
-    verification_request = models.ForeignKey(VerificationRequest, related_name='trade_account')
-    type = models.PositiveIntegerField(choices=TRADE_OR_GIVEAWAY_TYPE)
-    status = models.PositiveIntegerField(choices=TRADE_OR_GIVEAWAY_STATUS)
-    external_link = models.CharField(max_length=300, null=True)
-    message = models.TextField(_('Message'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
-    minimum_price = models.PositiveIntegerField(_('Minimum price'), validators=[validators.MaxValueValidator(5000)], null=True)
-    transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
+# class TradeOrGiveawayAccount(models.Model):
+#     account = models.ForeignKey(Account, related_name='trade_or_giveaway', unique=True)
+#     verification_request = models.ForeignKey(VerificationRequest, related_name='trade_account')
+#     type = models.PositiveIntegerField(choices=TRADE_OR_GIVEAWAY_TYPE)
+#     status = models.PositiveIntegerField(choices=TRADE_OR_GIVEAWAY_STATUS)
+#     external_link = models.CharField(max_length=300, null=True)
+#     message = models.TextField(_('Message'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
+#     minimum_price = models.PositiveIntegerField(_('Minimum price'), validators=[validators.MaxValueValidator(5000)], null=True)
+#     transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
 
-    def __unicode__(self):
-        return u'{} {}'.format(tradeOrGiveawayTypeToString(self.type), self.account)
+#     def __unicode__(self):
+#         return u'{} {}'.format(tradeOrGiveawayTypeToString(self.type), self.account)
 
-admin.site.register(TradeOrGiveawayAccount)
+# admin.site.register(TradeOrGiveawayAccount)
 
-class TradeOffer(models.Model):
-    trade_or_giveaway_account = models.ForeignKey(TradeOrGiveawayAccount, related_name='trade_offers')
-    account = models.ForeignKey(Account, related_name='trade_offer', unique=True)
-    accepted_date = models.DateTimeField(null=True)
-    verification_request = models.ForeignKey(VerificationRequest, related_name='trade_offer')
-    transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
+# class TradeOffer(models.Model):
+#     trade_or_giveaway_account = models.ForeignKey(TradeOrGiveawayAccount, related_name='trade_offers')
+#     account = models.ForeignKey(Account, related_name='trade_offer', unique=True)
+#     accepted_date = models.DateTimeField(null=True)
+#     verification_request = models.ForeignKey(VerificationRequest, related_name='trade_offer')
+#     transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
 
 usicaltriofestival_entries = [
     (7, u'ღ\'s ☪★♪', u'だってだって噫無情', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/zCvNz1K6Tvo?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),

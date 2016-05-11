@@ -949,7 +949,7 @@ usicaltriofestival_entries = [
     (57, u'Sock It 2 Me', u'同じ星が見たい', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/7VzhIsvFzKQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (59, u'茶茶茶', u'あ・の・ね・が・ん・ば・れ!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/geB0BmK75ao?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (61, u'AKB0033', u'孤独なHeaven', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/j2mO0oboM1c?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (62, u'Undefined Red', u'るてしキスキしてる', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/JSSBe6PrlBQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (62, u'Undefined Red', u'るてしキスキしてる', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/JSSBe6PrlBQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
     (67, u'Midnight✿Blossoms', u'Silent tonight', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/hWZ3KVgsaKY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
 ]
 

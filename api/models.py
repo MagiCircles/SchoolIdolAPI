@@ -912,73 +912,45 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
 
 admin.site.register(Song)
 
+class TradeOrGiveawayAccount(models.Model):
+    account = models.ForeignKey(Account, related_name='trade_or_giveaway', unique=True)
+    verification_request = models.ForeignKey(VerificationRequest, related_name='trade_account')
+    type = models.PositiveIntegerField(choices=TRADE_OR_GIVEAWAY_TYPE)
+    status = models.PositiveIntegerField(choices=TRADE_OR_GIVEAWAY_STATUS)
+    external_link = models.CharField(max_length=300, null=True)
+    message = models.TextField(_('Message'), null=True, help_text=_('Write whatever you want. You can add formatting and links using Markdown.'), blank=True)
+    minimum_price = models.PositiveIntegerField(_('Minimum price'), validators=[validators.MaxValueValidator(5000)], null=True)
+    transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
+
+    def __unicode__(self):
+        return u'{} {}'.format(tradeOrGiveawayTypeToString(self.type), self.account)
+
+admin.site.register(TradeOrGiveawayAccount)
+
+class TradeOffer(models.Model):
+    trade_or_giveaway_account = models.ForeignKey(TradeOrGiveawayAccount, related_name='trade_offers')
+    account = models.ForeignKey(Account, related_name='trade_offer', unique=True)
+    accepted_date = models.DateTimeField(null=True)
+    verification_request = models.ForeignKey(VerificationRequest, related_name='trade_offer')
+    transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
+
 usicaltriofestival_entries = [
-    #(1, u'komo✩rebi', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (2, u'「т н έ а ☆」', u'KiRa-KiRa Sensation!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/B44bDlO0y2A?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(4, u'3UselessTrash', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (5, u'CELESTIC☀SMILE', u'タカラモノズ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/cRo0SGOoc7Y?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(6, u'Memetemps', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (7, u'ღ\'s ☪★♪', u'Future Style', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/MnzVPnJGHL8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(8, u'Yume Paredo', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (9, u'Ð-SEND', u'No Exit Orion', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/w2iJcScnABA?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (10, u'a i r i ♫~', u'これからのSomeday', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/6vXgkuISb5I?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (11, u'βN\'s', u'Love wing bell', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/MESn9SP-n5s?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(12, u'VΞRSE', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (13, u'FURious Alpaca', u'あ・の・ね・が・ん・ば・れ!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/_XIGDAs9On0?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (14, u'wAr-RICE', u'Psychic Fire', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/YxTFX5REr44?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(15, u'Pretty Girltune', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (16, u'Fruits✩Idols', u'START:DASH!!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/Wy9mkLK_ly8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (17, u'夢見る10子', u'No brand girls', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/75vsE_Id_x0?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (18, u'✧Sweet PaniQ✧', u'Future Style!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/Shea-U-XgFQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (19, u'µnit', u'No Exit Orion', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/AVOU3OYFszU?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (20, u'Apaisè', u'Future Style!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/SUVXvEkQ1z0?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (21, u'Crystal❖Lilies', u'ススメ→トゥモロウ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/WKY2eeveGTs?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (22, u'Procrastinate → Tomorrow', u'きっと青春が聞こえる', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/xorg6sly_00?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (23, u'Petit ƸӜƷ Papillon', u'ミはμ\'sicのミ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/wOcxys10_b0?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (24, u'『 NeoN ☆ MIDNIGHT』', u'それは僕たちの奇跡', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/_NHWb4cqgGI?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(25, u'Kofuku', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (27, u'WonderDash~♪', u'Love wing bell', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/NfM3mdxw1Xc?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (28, u'「 花 ✿ T r a s h 」', u'Happy maker!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/zS2BgoN9R9o?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (29, u'MuseX', u'KiRa-KiRa Sensation!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/ysKv5VsUHNY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (30, u'three oppais ❤', u'私たちは未来の花', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/c25fK5Um-PA?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (31, u'Kuma Harmony', u'KiRa-KiRa Sensation!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/s-QQuntXPtg?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (32, u'Apple π', u'これからのSomeday', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/jcxAEwpmTQk?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(33, u'Boku no Trapo', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(34, u'fuwu♡berry', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (35, u'Puresmile', u'Music S.T.A.R.T!!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/nXiIUhotahs?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(36, u'Pastel Princesses', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(37, u'Stargazer', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (38, u'✿Ƈнσcσℓαт Ƒση∂αηт✿', u'愛してるばんざーい!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/Y9ReI-xZ1XA?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (39, u'First Live!', u'ユメノトビラ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/jl3Jtw5pReI?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (40, u'NYAvigators', u'SUNNY DAY SONG', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/Iv0LDYHtVKo?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (41, u'Snow Bells', u'Dreamin’ Go Go!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/SXTx_Sg1djE?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (42, u'άλτοs', u'私たちは未来の花', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/wIb51kA9pHk?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(43, u'Afterschool☆Navigators', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(44, u'avɘen ♠ thrice', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (45, u'SweeTea ƸӜƷ', u'Dreamin’ Go Go!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/ssTAfGZfYt4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (46, u'Paper♡Heart', u'Dreamin’ Go Go!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/b1MgH357uEQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(47, u'Osangos', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (48, u'red✮velveteers', u'Super LOVE=Super LIVE!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/-KAwIFTEO00?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (49, u'❆Neαpolitαn❆', u'KiRa-KiRa Sensation!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/L9rMxMzlSN4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (50, u'Soldier Gay', u'soldier game', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/XopAwOiXz44?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (51, u'ʚ Little Wings ɞ', u'愛してるばんざーい!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/B9TgoBIRWps?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (52, u'lΛmidΛ', u'それは僕たちの奇跡', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/mPkdr7meRg8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (53, u'μ\'sketeers', u'ススメ→トゥモロウ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/MTJXpMzKqTQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (54, u'ミkμ', u'Mashup: KiRa-KiRa Sensation! + 君のこころは輝いてるかい?', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/7RnX3bjLHiI?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(55, u'μ\'sical', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (56, u'lilaq✿', u'なわとび', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/viRAIo7pfyg?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (57, u'Sock It 2 Me', u'勇気のReason', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/XeIEBUqLqQU?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(58, u'Twilight Dream', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (59, u'茶茶茶', u'嵐のなかの恋だから', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/V6oFz9s42r4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(60, u'unidentified', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (61, u'AKB0033', u'Dreamin’ Go Go!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/oG9Wlnvvz9M?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (62, u'Undefined Red', u'Listen to my heart!!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/1w4iFi1Ya-g?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (63, u'This Mystery', u'あ・の・ね・が・ん・ば・れ!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/9Q23o3tPZcw?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (64, u'No μ\'s No life', u'Dreamin’ Go Go!', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/bs8nHpgUy1E?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (65, u'nebula⍣express', u'ユメノトビラ', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/PSpPYjDDAoU?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(66, u'ωαιғυ⇔ℓαιғυ', u'', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (67, u'Midnight✿Blossoms', u'Hello, Hoshi o Kazoete', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/nTSg7pjwwKo?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    #(, u'', u'', '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (7, u'ღ\'s ☪★♪', u'だってだって噫無情', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/zCvNz1K6Tvo?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (11, u'βN\'s', u'UNBALANCED LOVE', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/C_GWBT4hkAY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (13, u'FURious Alpaca', u'after school NAVIGATORS', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/3X7I50_7LfQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (14, u'wAr-RICE', u'同じ星が見たい', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/-dbIC1ei0ZM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (21, u'Crystal❖Lilies', u'錯覚CROSSROADS', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/XFf3FjQPq5c?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (22, u'Procrastinate → Tomorrow', u'UNBALANCED LOVE', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/cPJFupdJVEM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (23, u'Petit ƸӜƷ Papillon', u'思い出以上になりたくて', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/3RkNI-pbpW8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (38, u'✿Ƈнσcσℓαт Ƒση∂αηт✿', u'冬がくれた予感', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/xmqS66cNzrQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (40, u'NYAvigators', u'春情ロマンティック', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/MZNKw06GMGE?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (54, u'ミkμ', u'Mermaid festa vol.2 ~Passionate~', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/-gG8BSbVplM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (56, u'lilaq✿', u'UNBALANCED life marginal (Mashup: UNBALANCED LOVE, Someday of my life, LOVE marginal)', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/8QBcFAEISpM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (57, u'Sock It 2 Me', u'同じ星が見たい', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/7VzhIsvFzKQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (59, u'茶茶茶', u'あ・の・ね・が・ん・ば・れ!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/geB0BmK75ao?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (61, u'AKB0033', u'孤独なHeaven', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/j2mO0oboM1c?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (62, u'Undefined Red', u'るてしキスキしてる', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/JSSBe6PrlBQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (67, u'Midnight✿Blossoms', u'Silent tonight', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/hWZ3KVgsaKY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
 ]
 
 usicaltriofestival_entries_db = [(i[0], i[1]) for i in usicaltriofestival_entries]

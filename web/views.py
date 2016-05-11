@@ -2591,7 +2591,7 @@ def usicaltriofestival(request):
     context = globalContext(request)
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
     context['entries'] = models.usicaltriofestival_entries[:]
-    end = datetime.datetime(2016, 04, 4, 5, 0, 0, 0, pytz.UTC)
+    end = datetime.datetime(2016, 05, 14, 5, 0, 0, 0, pytz.UTC)
     now = timezone.now()
     if (end > now
         and request.method == 'POST'
@@ -2634,6 +2634,7 @@ def usicaltriofestival(request):
         context['entries'] = sorted(context['entries'], key=lambda x: x[5], reverse=True)
     else:
         random.shuffle(context['entries'])
+    context['end'] = end
     return render(request, 'usicaltriofestival.html', context)
 
 _skillup_skills = [skill for skill in skillsIcons.keys() if skill != 'Score Up' and skill != 'Healer' and skill != 'Perfect Lock']

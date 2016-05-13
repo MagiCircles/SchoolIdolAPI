@@ -75,6 +75,7 @@ raw_information['Minami Kotori'] = {
         ('http://i.schoolido.lu/chibi/Koori_Cyber.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Kotori_Cheer.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Kotori_China.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/7bfXn5eD.png', 'SushiYeo'),
     ],
 }
 raw_information['Hoshizora Rin'] = {
@@ -111,6 +112,7 @@ raw_information['Koizumi Hanayo'] = {
         ('http://i.schoolido.lu/chibi/Hanayo_Cheer.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Hanayo_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Hanayo_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/TxB1kzU2.png', 'SushiYeo'),
     ],
 }
 raw_information['Sonoda Umi'] = {
@@ -521,6 +523,7 @@ raw_information_n = {
     'Jennifer': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/jennifer.png', 'Wondercorn'),
+            ('http://i.schoolido.lu/chibi/jennifer_chibi_final.png', 'nakisa'),
         ],
     },
     'Tatara Ruu': {
@@ -536,6 +539,11 @@ raw_information_n = {
     'Konoe Kanata': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/kanata.png', 'punpun'),
+        ],
+    },
+    'Konoe Haruka': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/zpssd9utuxr.png', 'a-chan'),
         ],
     },
     'Christina': {

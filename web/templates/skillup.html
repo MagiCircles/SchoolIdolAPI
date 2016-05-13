@@ -22,22 +22,7 @@
 <div id="skillup-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container">
   <h1 class="text-center margin50">{% trans 'Level up the skill of your cards' %}</h1>
-  <video width="100%" autoplay loop poster="http://i.schoolido.lu/static/SkillUp.png">
-    <source src="http://i.schoolido.lu/static/SkillUp.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-  <div class="alert alert-info fontx1-2">
-    <div class="pull-right text-right">
-      <i class="flaticon-about fontx4"></i>
-    </div>
-    <ol>
-      <li>{% trans 'Add all the cards you own in the game in your School Idol Tomodachi account.' %}</li>
-      <li>{% trans 'If you already have some cards in your deck with a skill higher than 1, click "Advanced" when you add it to specify the skill level. You can also edit the skill later when you edit the card.' %}</li>
-      <li>{% blocktrans %}Don't forget to add the cards you have in your present box!{% endblocktrans %}</li>
-      <li>{% trans 'Come back to this page to check out the cards you can practice together to level up their skills!' %}</li>
-      <li>{% trans 'While you go through this list to level up the skill of your cards, click the "+1" button to keep your cards updated and click X to delete the cards you practiced away.' %}</li>
-    </ol>
-  </div>
+  <iframe width="100%" height="550px" src="https://www.youtube.com/embed/oT_Cxxy4pWw?rel=0&amp;showinfo=0&start=122&aaautoplay=1" frameborder="0" volume="0" allowfullscreen></iframe>
   {% if not user.is_authenticated %}
   <br><br>
   <div class="row">
@@ -49,7 +34,7 @@
     </div>
   </div>
   {% elif not account %}
-  <form class="selectaccount text-right">
+  <form class="selectaccount text-right fontx2">
     <select name="account">
       <option value=""></option>
       {% for account in accounts %}

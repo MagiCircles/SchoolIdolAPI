@@ -53,6 +53,26 @@
   </div>
   <br><br>
   <hr>
+  <h2 id="updates" class="padding20"><span class="fontx1-5">{% trans 'Updates' %}</span></h2>
+
+  <table class="table text-left table-bordered table-xl">
+    {% for update in android.updates %}
+    <tr>
+      <th>
+        <a href="{{ update.download_link }}" target="_blank" class="fontx2">
+          {{ update.version }}
+        </a>
+      </th>
+      <td>
+        <span class="text-muted">{{ update.date }}</span><br>
+        {{ update.content }}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <br><br>
+  <hr>
   <h2 id="faq" class="padding20"><span class="fontx1-5">{% trans 'F.A.Q.' %}</span></h2>
 
   <dl class="text-left fontx1-5">

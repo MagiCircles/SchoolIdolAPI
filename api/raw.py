@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from collections import OrderedDict
+import datetime
 
 raw_information = OrderedDict()
 raw_information['Kousaka Honoka'] = {
@@ -564,8 +565,8 @@ for idol in raw_information_n:
 
 app_data = {
     'android': {
-        'version': '1.0',
-        'download_link': 'http://i.schoolido.lu/android/sukutomo1_0.apk',
+        'version': '1.1',
+        'download_link': 'http://i.schoolido.lu/android/sukutomo1_1.apk',
         'sources': 'https://github.com/SchoolIdolTomodachi/Sukutomo-Android',
         'website_url': 'http://schoolido.lu/android/',
         'icon': 'http://i.schoolido.lu/android/icon.png',
@@ -574,5 +575,19 @@ app_data = {
             'website_url': 'http://schoolido.lu/user/Arukantara/',
             'contact': 'arukantara@schoolido.lu',
         },
+        'updates': [
+            {
+                'date': datetime.datetime(2016, 5, 13),
+                'version': '1.1',
+                'content': 'Bug fixes, Added support for app updates from the main menu, Added Events section (partially)',
+                'download_link': 'http://i.schoolido.lu/android/sukutomo1_1.apk',
+            },
+            {
+                'date': datetime.datetime(2015, 9, 27),
+                'version': '1.0',
+                'content': 'School Idol Tomodachi makes its Android debut! Download the app to browse all the cards from the game School Idol Festival directly from your pocket.',
+                'download_link': 'http://i.schoolido.lu/android/sukutomo1_0.apk',
+            },
+        ],
     },
 }

@@ -225,6 +225,7 @@ raw_information['Kurosawa Dia'] = {
         ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
         ('http://i.schoolido.lu/chibi/xcrybxbyx.png', 'xcrybxbyx'),
         ('http://i.schoolido.lu/chibi/REpyO1v.png', 'Kayumi'),
+        ('http://i.schoolido.lu/chibi/WMZU1me.png', 'kyoukokirigiri'),
     ],
 }
 raw_information['Watanabe You'] = {

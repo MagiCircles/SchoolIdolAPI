@@ -165,6 +165,7 @@ raw_information['Yazawa Nico'] = {
         ('http://i.schoolido.lu/chibi/Nico_Cheer.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Nico_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Nico_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/NikoNikoNii.png', 'Dokisumi'),
     ],
 }
 raw_information['Takami Chika'] = {
@@ -555,6 +556,16 @@ raw_information_n = {
     'Fukuhara Mikoto': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/chib.png', 'anonymous'),
+        ],
+    },
+    'Nishimura Fumie': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Pcd4qx3b.png', 'MomokaChan'),
+        ],
+    },
+    'Saotome Yukari': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/k3J2pBfK.png', 'sakicchi'),
         ],
     },
 }

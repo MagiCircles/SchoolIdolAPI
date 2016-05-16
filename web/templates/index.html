@@ -45,8 +45,9 @@
 </div>
 
 <div id="home" class="text-center" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
-  <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message hidden-sm hidden-xs">
-    <span></span>
+  <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message">
+    <span>
+    </span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>
@@ -110,17 +111,7 @@
 	</div>
       </div>
 
-      <div class="special-message" style="margin: 0; padding: 0; max-width: none; font-size: 1.5em;">
-        <img src="http://emojione.com/wp-content/uploads/assets/emojis/1f1fa-1f1f2.svg" alt="united states minor outlying islands" style="font-size: 0.625em; width: 50px;">
-        <span id="countdown" class="special-message" style="font-size: 1.3em; display: inline-block; padding: 10px; margin-top: 0; max-width: none;">
-          <script>
-            var countdowndate = "May 16, 2016 01:30:00 +0000";
-            function countdownRender(data) {
-            $(this.el).text('Update starts in ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' seconds');
-            }
-          </script>
-        </span>
-      </div>
+      <br>
 
       <div id="carousel-index" class="carousel slide" data-ride="carousel" data-interval="3000">
 	<!-- Indicators -->

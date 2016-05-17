@@ -6,10 +6,10 @@
 {% block back_button %}0{% endblock %}
 {% block js %}
 {% if not high_traffic %}
-<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
-<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="/static/js/loadactivities.js?1"></script>
-<script src="/static/js/index.js?9"></script>
+<script src="http://i.schoolido.lu/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="http://i.schoolido.lu/static/js/loadactivities.js?1"></script>
+<script src="http://i.schoolido.lu/static/js/index.js?9"></script>
 <script>
   var follow_sentence = "{% trans 'Start following players to see their activities!' %}";
   var logged_in = {% if user.is_authenticated %}true{% else %}false{% endif %};
@@ -61,9 +61,9 @@
       <br>
       {% else %}
       {% if LANGUAGE_CODE == 'ja' %}
-      <img src="/static/roburaibu_shadow.png" class="logo" alt="Logo">
+      <img src="http://i.schoolido.lu/static/roburaibu_shadow.png" class="logo" alt="Logo">
       {% else %}
-      <img src="/static/logo_shadow.png" class="logo" alt="Logo">
+      <img src="http://i.schoolido.lu/static/logo_shadow.png" class="logo" alt="Logo">
       {% endif %}
       {% endif %}
 
@@ -95,12 +95,12 @@
 	{% else %}
 	<div class="col-sm-4 text-left">
 	  <a href="#aboutllsifModal" data-toggle="ajaxmodal" data-modal-size="lg">
-	    <img src="/static/about.png" class="">
+	    <img src="http://i.schoolido.lu/static/about.png" class="">
 	  </a>
 	</div>
 	<div class="col-sm-4 text-center">
 	  <a href="#aboutsukutomoModal" data-toggle="ajaxmodal" data-modal-size="lg">
-	    <img src="/static/aboutschoolidoltomodachi.png" class="">
+	    <img src="http://i.schoolido.lu/static/aboutschoolidoltomodachi.png" class="">
 	  </a>
 	</div>
 	{% endif %}

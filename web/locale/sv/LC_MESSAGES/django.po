@@ -567,8 +567,8 @@ msgstr "Om din profil är privat, så kan man bara se din center."
 #: web/templates/cardsPage.html:24
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
-msgstr[0] "Plural: %(counter)s resultat matchar din sökning:"
-msgstr[1] "Singular: %(counter)s resultat matchar din sökning:"
+msgstr[0] "%(counter)s resultat matchar din sökning:"
+msgstr[1] "%(counter)s resultat matchar din sökning:"
 
 #: web/templates/activities.html:9 web/templates/box.html:35
 #: web/templates/cardsPage.html:569
@@ -626,8 +626,8 @@ msgstr "Nej"
 #: web/templates/profile.html:104
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
-msgstr[0] "Plural: %(length)s konton:"
-msgstr[1] "Singular: %(length)s konto:"
+msgstr[0] "%(length)s konto:"
+msgstr[1] "%(length)s konton:"
 
 #: api/models.py:618 web/templates/albumBuilder.html:48
 #: web/templates/cards.html:292 web/templates/cards.html.py:295
@@ -1558,8 +1558,8 @@ msgstr "Ändra ditt lösenord"
 #: web/templates/include/alert_transfer_code.html:3
 msgid "You have a transfer code saved in School Idol Tomodachi. If you reset your password, you will not be able to retrieve it anymore."
 msgid_plural "You have %(counter)s transfer codes saved. If you reset your password, you will not be able to retrieve them anymore."
-msgstr[0] "Plural: Du har %(counter)s överförningskoder. Om du ersätter ditt lösenord, så kommer du inte kunna återfå dem mer."
-msgstr[1] "Singular: Du har %(counter)s överförningskod. Om du ersätter ditt lösenord, så kommer du inte kunna återfå den mer."
+msgstr[0] "Du har %(counter)s överförningskod. Om du ersätter ditt lösenord, så kommer du inte kunna återfå den mer."
+msgstr[1] "Du har %(counter)s överförningskoder. Om du ersätter ditt lösenord, så kommer du inte kunna återfå dem mer."
 
 #: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1387
 #: web/views.py:1472 web/views.py:1486
@@ -2156,8 +2156,8 @@ msgstr "LoveLive! gemenskapen"
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
-msgstr[0] "Plural: %(counter)s låtar matchar din sökning."
-msgstr[1] "Plural: %(counter)s låt matchar din sökning."
+msgstr[0] "%(counter)s låt matchar din sökning."
+msgstr[1] "%(counter)s låtar matchar din sökning."
 
 #: web/templates/songsPage.html:73
 msgid "Notes"
@@ -2497,7 +2497,7 @@ msgstr "Bara verifierade konton kan ha en rank över 200."
 
 #: web/raw.py:17
 msgid "Search & Filter your cards"
-msgstr "Sök & Filtera dina kort"
+msgstr "Sök & Filtrera dina kort"
 
 #: web/raw.py:23
 msgid "Your Perfect Lock cards"
@@ -2525,7 +2525,7 @@ msgstr "Dina top Cool kort"
 
 #: web/raw.py:58
 msgid "Cards you should max bond (kizuna)"
-msgstr "Kort du borde max bond:a (kizuna)"
+msgstr "Kort du borde max bonda (kizuna)"
 
 #: web/raw.py:101 web/raw.py:107 web/raw.py:113 web/raw.py:119
 msgid "LoveLive! School Idol Festival"
@@ -2602,8 +2602,8 @@ msgstr "bästa %(attribute)s kort"
 #: web/templates/cardsPage.html:437 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
-msgstr[0] "Plural: %(counter)s spelare äger kortet %(owns_card_string)s "
-msgstr[1] "Singular: %(counter)s spelare äger kortet %(owns_card_string)s "
+msgstr[0] "%(counter)s spelare äger kortet %(owns_card_string)s "
+msgstr[1] "%(counter)s spelare äger kortet %(owns_card_string)s "
 
 #: web/templates/cardsPage.html:450
 msgid "Last update"
@@ -2633,8 +2633,8 @@ msgstr "Vad är detta?"
 #: web/templates/usersPage.html:20
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
-msgstr[0] "Plural: %(counter)s konton matchar din sökning:"
-msgstr[1] "Singular: %(counter)s konto matchar din sökning:"
+msgstr[0] "%(counter)s konto matchar din sökning:"
+msgstr[1] "%(counter)s konton matchar din sökning:"
 
 #: web/views.py:502 web/views.py:503
 msgid "Most popular"
@@ -2647,8 +2647,8 @@ msgstr "år gammal"
 #: web/templates/cardsPage.html:444 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
-msgstr[0] "Plural: %(counter)s spelare har kortet %(owns_card_string)s i deras önskelista"
-msgstr[1] "Singular: %(counter)s spelare har kortet %(owns_card_string)s i deras önskelista"
+msgstr[0] "%(counter)s spelare har kortet %(owns_card_string)s i deras önskelista"
+msgstr[1] "%(counter)s spelare har kortet %(owns_card_string)s i deras önskelista"
 
 #: web/templates/discussions.html:37 web/templates/modalsukutomo.html:104
 msgid "We"
@@ -2688,15 +2688,15 @@ msgstr "Lag"
 
 #: api/models.py:235
 msgid "{} increases slightly (+3%)"
-msgstr "{} ökar lite (+3%) "
+msgstr "{} ökar lite (+3%)"
 
 #: api/models.py:236
 msgid "{} increases (+6%)"
-msgstr "{} ökar (+6%) "
+msgstr "{} ökar (+6%)"
 
 #: api/models.py:237
 msgid "{} increases drastically (+9%)"
-msgstr "{} ökar dramatiskt (+9%) "
+msgstr "{} ökar dramatiskt (+9%)"
 
 #. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:238
@@ -3031,7 +3031,7 @@ msgstr "Challenge Festival"
 
 #: web/raw.py:71
 msgid "Cards you should max bond"
-msgstr "Kort du borde max bond:a"
+msgstr "Kort du borde max bonda"
 
 #: web/templates/about.html:109
 msgid "Graphic Designers"

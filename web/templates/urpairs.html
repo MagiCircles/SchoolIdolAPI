@@ -32,22 +32,22 @@
 	{% if card.0.ur_pair %}
 	{% if card.1 %}
 	{% if card.0.ur_pair_idolized_reverse %}
-	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=True %}
+	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=True small=True %}
 	{% else %}
-	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=True %}
+	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=True small=True %}
 	{% endif %}
 	{% else %}
 	{% if card.0.ur_pair_reverse %}
-	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=False %}
+	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=False small=True %}
 	{% else %}
-	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=False %}
+	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=False small=True %}
 	{% endif %}
 	{% endif %}
 	{% else %}
 	{% if card.1 %}
-	{% include 'include/urpair.html' with left=card.0 right=None idolized=True %}
+	{% include 'include/urpair.html' with left=card.0 right=None idolized=True small=True %}
 	{% else %}
-	{% include 'include/urpair.html' with left=card.0 right=None idolized=False %}
+	{% include 'include/urpair.html' with left=card.0 right=None idolized=False small=True %}
 	{% endif %}
 	{% endif %}
 	{% endif %}

@@ -35,8 +35,8 @@ class Command(BaseCommand):
                 data = json.loads(response.read())
                 page_url = data['next']
                 for card in data['results']:
-                    models.Card.objects.filter(id=card['id']).update(clean_ur=card['clean_ur'].replace('http://i.schoolido.lu/', ''),
-                                                                     clean_ur_idolized=card['clean_ur_idolized'].replace('http://i.schoolido.lu/', ''))
+                    models.Card.objects.filter(id=card['id']).update(clean_ur=(card['clean_ur'].replace('http://i.schoolido.lu/', '') if card['clean_ur'] else None),
+                                                                     clean_ur_idolized=(card['clean_ur_idolized'].replace('http://i.schoolido.lu/', '') if card['clean_ur_idolized'] else None))
             return
 
         cards = models.Card.objects.all()

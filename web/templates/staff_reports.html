@@ -29,7 +29,7 @@
       <th style="max-width: 250px;">Moderate</th>
     </tr>
     {% for report in reports %}
-    <tr class="{% if report.status == 0 %}success{% elif report.status == 3 %}danger{% elif report.status == 2 %}warning{% else %}info{% endif %}" data-fake-thing="{% if report.fake_account %}account{{ report.fake_account.id }}{% elif report.fake_eventparticipation %}eventparticipation{{ report.fake_eventparticipation.id }}{% endif %}">
+    <tr class="{% if report.status == 0 %}success{% elif report.status == 3 %}danger{% elif report.status == 2 %}warning{% else %}info{% endif %}" data-fake-thing="{% if report.fake_account %}account{{ report.fake_account.id }}{% elif report.fake_eventparticipation %}eventparticipation{{ report.fake_eventparticipation.id }}{% elif report.fake_user %}user{{ report.fake_user_id }}{% elif report.fake_activity %}activity{{ report.fake_activity_id }}{% endif %}">
       <td>
         {% if report.fake_account %}
         <h4>Fake account</h4>
@@ -50,6 +50,24 @@
         Event Points: {{ report.fake_eventparticipation.points }}<br>
         Event Song Rank: {{ report.fake_eventparticipation.song_ranking }}<br>
         {% endif %}
+	{% if report.fake_activity %}
+        <h4>Problem with activity</h4>
+	{% load markdown_deux_tags %}
+	{% with activity=report.fake_activity %}
+	<a href="{{ activity.account_link }}" target="_blank">
+	  <img src="{{ activity.account_picture }}" alt="Avatar" width="50" class="avatar">
+	  {{ activity.account_name }}
+	</a><br>
+	<div style="max-width: 160px">
+	  {% if activity.message == 'Custom' %}{{ activity.message_data|markdown }}{% else %}{{ activity.message }} {{ activity.message_data }}{% endif %}
+	</div>
+	<a href="/activities/{{ activity.id }}/" target="_blank">Open activity</a>
+	{% endwith %}
+	{% endif %}
+	{% if report.fake_user %}
+        <h4>Problem with user</h4>
+	{% include 'include/avatar.html' with av_user=report.fake_user av_size=20 av_image_size=100 av_link=True av_external=True av_username=True %}
+	{% endif %}
       </td>
       <td>
         Reported by:<br>
@@ -63,6 +81,8 @@
       </td>
       <td>
         <dl>
+          <dt>Report ID:</dt>
+          <dd>{{ report.id }}</dd>
           <dt>Reporter message:</dt>
           <dd>
             {% if report.comment %}<p class="well">{{ report.comment }}</p>{% else %}No message{% endif %}
@@ -102,21 +122,25 @@
         {% if report.status != 3 and report.status != 0 %}
         {% if report.reported_by == user %}
         You can't moderate your own reports.<br>
-        This is to ensure that at least 2 moderators check that the {% if report.fake_account %}account{% else %}event participation{% endif %} is fake or not.
+        This is to ensure that at least 2 moderators check that the {% if report.fake_account %}account is fake{% elif report.fake_eventparticipation %}event participation is fake{% elif report.fake_user %}user has done something wrong{% elif report.fake_activity %}activity has a problem{% endif %} or not.
         {% else %}
         <ul>
-          <li><strong>Never accept or reject a report without checking first using your own game or screenshots.</strong>{% if report.fake_account %}
+          <li><strong>Never accept or reject a report without checking first {% if report.fake_account or report.fake_eventparticipation %}using your own game{% else %}by opening the profile/activity, comments, etc{% endif %} or screenshots.</strong>{% if report.fake_account %}
             <ul>
               <li><i>Enter the friend ID in your game to check the rank</i></li>
               <li><i>Look at the bonded members</i></li>
+            </ul>{% endif %}{% if report.fake_user %}
+            <ul>
+              <li><i>ALWAYS write an explanation of the reason why they got reported before accepting</i></li>
+              <li><i>If an avatar, a profile description, a profile link or a comment needs to be deleted or edited, contact the administrators before accepting this report.</i></li>
             </ul>{% endif %}
           </li>
-          <li>If you can't say for sure that it's fake or not, leave it and someone else will take care of it.</li>
+          <li>If you can't say for sure that it's {% if report.fake_account or report.fake_eventparticipation %}fake{% else %}a problem{% endif %} or not, leave it and someone else will take care of it.</li>
           <li>You may also ask the other staff members if you're not sure.</li>
         </ul>
-        <textarea class="form-control" placeholder="Your message to the owner of the reported {% if report.fake_account %}account{% else %}event participation{% endif %} (optional)"></textarea><br>
+        <textarea class="form-control" placeholder="Your message to the owner of the reported {% if report.fake_account %}account{% elif report.fake_eventparticipation %}event participation{% elif report.fake_user %}user{% elif report.fake_activity %}activity{% endif %}{% if not report.fake_user %} (optional){% else %} (REQUIRED){% endif %}"></textarea><br>
         <p class="textarea-check" style="display: none">Be friendly and check your grammar and spelling.</p>
-        <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will {% if report.fake_account %}mark this account as fake,<br>notify the reporter<br>and suggest the owner to get verified{% else %} delete this event participation<br>and notify the owner by email{% endif %}</small></button>
+        <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will {% if report.fake_account %}mark this account as fake,<br>notify the reporter<br>and suggest the owner to get verified{% elif report.fake_eventparticipation %} delete this event participation<br>and notify the owner by email{% elif report.fake_user %}send a warning to the user<br>(NOT delete it - if it has to be deleted<br>talk to an admin){% elif report.fake_activity %}delete this activity and all its comments/likes<br>and notify the owner by email{% endif %}</small></button>
         <button data-href="/ajax/staff/report/{{ report.id }}/reject/" class="btn btn-block btn-success reject-report">Reject this report<br><small>Will reject this report,<br>nobody gets notified</small></button>
         {% endif %}
         {% endif %}

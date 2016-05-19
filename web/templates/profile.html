@@ -76,6 +76,11 @@
 	    {% if user.is_staff and not show_staff %}<div><a href="?staff"><i class="flaticon-edit"></i> Staff Interface</a></div>{% endif %}
 	    <br>
 	    <div class="description">{{ preferences.description|markdown }}</div>
+	    {% if preferences.description and not is_me %}
+            <a href="/reportuser/{{ profile_user.username }}/" target="_blank" style="opacity: 0.5">
+	      <i class="flaticon-warning"></i> {% trans 'Report' %}
+	    </a>
+	    {% endif %}
 	  </div>
 	</div>
       </div>

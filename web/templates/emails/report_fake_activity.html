@@ -1,0 +1,33 @@
+{% extends 'emails/base.html' %}
+{% load markdown_deux_tags %}
+
+{% block subject %}Activity deleted{% endblock %}
+{% block headersubject %}Activity deleted{% endblock %}
+
+{% block content %}
+Hi {{ report.fake_activity.account.owner.username }},
+<br><br>
+
+<p>
+  Your activity has been reported, and a moderator confirmed it should be deleted.
+</p>
+{% if report.moderation_comment %}
+<p>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+
+<ul>
+  <li>Account: {{ report.fake_activity.account }}</li>
+  <li>Content:<br>
+    {{ report.fake_activity.message_data|markdown }}
+  </li>
+</ul>
+
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

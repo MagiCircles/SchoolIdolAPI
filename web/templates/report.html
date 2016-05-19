@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load imageurl %}
+{% if activity %}
+{% load markdown_deux_tags %}
+{% endif %}
 
 {% block title %}{% trans 'Report' %}{% endblock %}
 
@@ -13,9 +16,13 @@
     <h2 class="text-center">
       {% if account %}
       {{ account }}
-      {% else %}
+      {% elif eventparticipation %}
       <img src="{% eventimageurl event=eventparticipation.event %}" width="100">
       <small>{{ eventparticipation.event.japanese_name }}</small> {{ eventparticipation.account }} #{{ eventparticipation.ranking }}
+      {% elif fake_user %}
+      <a href="/users/{{ fake_user.username }}" target="_blank">{{ fake_user.username }}</a>
+      {% elif activity %}
+      {{ activity.account_name }} <span class="message">{% if activity.message == 'Custom' %}{{ activity.localized_message|markdown }}{% else %}{{ activity.localized_message }}{% endif %}</span><br>
       {% endif %}
     </h2>
     <br>
@@ -23,7 +30,7 @@
       {% if reported %}
       <div class="fontx2">{% trans 'Thank you' %}</div>
       <div class="text-right">
-	{% if user.is_authenticated %}<a href="{% if account %}/reportaccount/{{ account.id }}/{% else %}/reporteventparticipation/{{ eventparticipation.pk }}/{% endif %}" class="btn btn-lg btn-Cool">{% trans 'Edit' %}</a>{% endif %}
+	{% if user.is_authenticated %}<a href="{% if account %}/reportaccount/{{ account.id }}/{% elif eventparticipation %}/reporteventparticipation/{{ eventparticipation.pk }}/{% elif fake_user %}/reportuser/{{ fake_user.username }}/{% elif activity %}/reportactivity/{{ activity.pk }}/{% endif %}" class="btn btn-lg btn-Cool">{% trans 'Edit' %}</a>{% endif %}
 	<a href="/" class="btn btn-lg btn-Cool">{% trans 'Back to homepage' %}</a>
       </div>
       {% else %}
@@ -31,8 +38,12 @@
         <p>
           {% if account %}
           {% trans 'If your report is accepted, the account will be marked as fake and will never appear in leaderboards.'%}
-          {% else %}
+          {% elif eventparticipation %}
           {% trans 'If your report is accepted, the event participation will be deleted and will not appear in the event ranking anymore.'%}
+	  {% elif fake_user %}
+	  {% blocktrans %}This will report the entire user profile. There are different buttons to report a single fake account or a problem with an activity.{% endblocktrans %}
+	  {% elif activity %}
+          {% trans 'If your report is accepted, the activity and all its comments will be deleted.'%}
           {% endif %}
         </p>
         <p>

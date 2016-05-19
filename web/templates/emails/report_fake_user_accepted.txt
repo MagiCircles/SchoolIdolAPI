@@ -1,0 +1,11 @@
+Hi {{ reported_by.username }},
+
+Your report has been reviewed by a moderator and the owner of this profile has been warned. Thank you so much for your help!
+{% if report.moderation_comment %}
+Moderator comment:
+{{ report.moderation_comment }}
+{% endif %}
+
+{{ report.fake_user.username }}: http://schoolido.lu/user/{{ report.fake_user.username }}/
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/))

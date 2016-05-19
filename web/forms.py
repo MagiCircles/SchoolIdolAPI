@@ -328,6 +328,8 @@ class ModerationReportForm(ModelForm):
         self.request = kwargs.pop('request', None)
         self.account = kwargs.pop('account', None)
         self.eventparticipation = kwargs.pop('eventparticipation', None)
+        self.user = kwargs.pop('user', None)
+        self.activity = kwargs.pop('activity', None)
         super(ModerationReportForm, self).__init__(*args, **kwargs)
 
     def save(self):
@@ -339,6 +341,10 @@ class ModerationReportForm(ModelForm):
             instance.fake_account = self.account
         elif self.eventparticipation is not None:
             instance.fake_eventparticipation = self.eventparticipation
+        elif self.user is not None:
+            instance.fake_user = self.user
+        elif self.activity is not None:
+            instance.fake_activity = self.activity
         instance.save()
         for image in self.cleaned_data['images']:
             imageObject = models.UserImage.objects.create()

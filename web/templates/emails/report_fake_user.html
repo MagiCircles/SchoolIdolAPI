@@ -1,0 +1,38 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Profile reported: {{ report.fake_user.username}}{% endblock %}
+{% block headersubject %}Profile reported: {{ report.fake_user.username}}{% endblock %}
+
+{% block content %}
+Hi {{ report.fake_user.username }},
+<br><br>
+
+<p>
+  Your profile has been reported and a moderator decided to contact you. This is just a warning, but if it gets reported again, your profile might get deleted.
+</p>
+{% if report.moderation_comment %}
+<p>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+<p>
+  If this is a misunderstanding, please don't blame us: we're humans, we make mistakes. Reply to this email and the administrators will be able to help you.
+</p>
+{% endblock %}
+
+{% block actionbuttontitle %}
+Your profile
+{% endblock %}
+{% block actionbuttonalt %}
+Your profile
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu/user/{{ report.fake_user.username }}/
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

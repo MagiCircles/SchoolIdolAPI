@@ -63,6 +63,11 @@
                 {% endif %}
 		{% endif %}
 	      </a>
+	      {% elif activity.message == 'Custom' %}
+	      <a href="/reportactivity/{{ activity.id }}/" target="_blank" class="btn btn-link btn-sm" style="opacity: 0.5">
+		<i class="flaticon-warning"></i>
+		{% trans 'Report' %}
+	      </a>
 	      {% endif %}
 	    </div>
 	    {% endif %}

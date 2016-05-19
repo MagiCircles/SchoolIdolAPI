@@ -1,0 +1,10 @@
+Hi {{ report.fake_activity.account.owner.username }},
+
+Your activity has been reported, and a moderator confirmed it should be deleted.
+
+{% if report.moderation_comment %}{{ report.moderation_comment }}{% endif %}
+
+- Account: {{ report.fake_activity.account }}
+- Content: {{ report.fake_activity.message_data }}
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/)

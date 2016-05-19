@@ -1,0 +1,38 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Thank you for reporting this profile!{% endblock %}
+{% block headersubject %}Thank you for reporting this profile!{% endblock %}
+{% block content %}
+Hi {{ reported_by.username }},
+<br><br>
+
+<p>
+  Your report has been reviewed by a moderator and the owner of this profile has been warned. Thank you so much for your help!
+</p>
+{% if report.moderation_comment %}
+<p>
+  Moderator comment:<br>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+{% endblock %}
+
+{% block actionbuttontitle %}
+{{ report.fake_user.username }}
+{% endblock %}
+{% block actionbuttonalt %}
+{{ report.fake_user.username }}
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu/user/{{ report.fake_user.username }}/
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+  <br><br>
+  If you like the website, please consider <a href="http://schoolido.lu/about/#donate"><strong>donating</strong></a>.
+  <br><small><i>This will help us cover the costs of the servers and allow us to keep it running for free and without ads.</i></small>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+Hi {{ report.fake_user.username }},
+
+Your profile has been reported and a moderator decided to contact you. This is just a warning, but if it gets reported again, your profile might get deleted.
+{% if report.moderation_comment %}
+{{ report.moderation_comment }}
+{% endif %}
+
+If this is a misunderstanding, please don't blame us: we're humans, we make mistakes. Reply to this email and the administrators will be able to help you.
+
+Your profile: http://schoolido.lu/user/{{ report.fake_user.username }}/
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/))

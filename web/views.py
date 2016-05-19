@@ -1437,26 +1437,36 @@ def edit(request):
     context['current'] = 'edit'
     return render(request, 'edit.html', context)
 
-def report(request, account=None, eventparticipation=None):
+def report(request, account=None, eventparticipation=None, user=None, activity=None):
     context = globalContext(request)
+    context['report'] = None
+    context['account'] = None
+    context['eventparticipation'] = None
+    context['fake_user'] = None
+    context['activity'] = None
     if account:
         context['account'] = findAccount(int(account), context.get('accounts', []), forceGetAccount=True)
         if not context['account']: raise Http404
-        context['eventparticipation'] = None
-    else:
+    elif user:
+        context['fake_user'] = get_object_or_404(models.User, username=user)
+    elif activity:
+        context['activity'] = get_object_or_404(models.Activity, pk=activity)
+        if context['activity'].message == 'Custom':
+            context['activity'].message_data = context['activity'].message_data[:100]
+        context['activity'].localized_message = _localized_message_activity(context['activity'])
+    elif eventparticipation:
         context['eventparticipation'] = get_object_or_404(models.EventParticipation.objects.select_related('event', 'account', 'account__owner'), pk=eventparticipation)
-        context['account'] = None
-    context['report'] = None
+
     if request.user.is_authenticated():
-        try: context['report'] = models.ModerationReport.objects.get(reported_by=request.user, fake_account=context['account'], fake_eventparticipation=context['eventparticipation'])
+        try: context['report'] = models.ModerationReport.objects.get(reported_by=request.user, fake_account=context['account'], fake_eventparticipation=context['eventparticipation'], fake_user=context['fake_user'], fake_activity=context['activity'])
         except ObjectDoesNotExist: pass
     if request.method == 'POST':
-        context['form'] = forms.ModerationReportForm(request.POST, request.FILES, instance=context['report'], request=request, account=context['account'], eventparticipation=context['eventparticipation'])
+        context['form'] = forms.ModerationReportForm(request.POST, request.FILES, instance=context['report'], request=request, account=context['account'], eventparticipation=context['eventparticipation'], user=context['fake_user'], activity=context['activity'])
         if context['form'].is_valid():
             context['report'] = context['form'].save()
             context['reported'] = True
     else:
-        context['form'] = forms.ModerationReportForm(instance=context['report'], request=request, account=context['account'], eventparticipation=context['eventparticipation'])
+        context['form'] = forms.ModerationReportForm(instance=context['report'], request=request, account=context['account'], eventparticipation=context['eventparticipation'], user=context['fake_user'], activity=context['activity'])
     if context['report']:
         context['report_images'] = context['report'].images.all()
     return render(request, 'report.html', context)
@@ -2171,7 +2181,7 @@ def staff_reports(request):
         context['reports'] = context['reports'].order_by('-moderation_date')
     else:
         context['reports'] = context['reports'].order_by('-status', '-fake_account__rank', 'fake_eventparticipation__ranking', '-fake_eventparticipation__points', 'creation')
-    context['reports'] = context['reports'].select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner', 'reported_by', 'moderated_by')
+    context['reports'] = context['reports'].select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner', 'fake_user', 'fake_user__preferences', 'fake_activity', 'reported_by', 'moderated_by')
     page = 0
     page_size = 10
     if 'page' in request.GET and request.GET['page']:
@@ -2189,7 +2199,7 @@ def staff_reports(request):
 def ajaxreport(request, report_id, status):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or request.method != 'POST':
         raise PermissionDenied()
-    report = get_object_or_404(models.ModerationReport.objects.select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner'), pk=report_id)
+    report = get_object_or_404(models.ModerationReport.objects.select_related('fake_account', 'fake_account__owner', 'fake_eventparticipation', 'fake_eventparticipation__event', 'fake_eventparticipation__account', 'fake_eventparticipation__account__owner', 'fake_activity', 'fake_activity__account', 'fake_activity__account__owner', 'fake_user', 'fake_user__preferences'), pk=report_id)
     if report.reported_by_id == request.user.id:
         raise PermissionDenied()
     report.moderated_by = request.user
@@ -2235,6 +2245,40 @@ def ajaxreport(request, report_id, status):
                                context=context,
                            )
             moderation_comment = (u'' if not moderation_comment else unicode(moderation_comment)) + u'------ Event "{}" + Account owner {} #{} + Ranking #{} + Song Ranking #{} + Points {}'.format(report.fake_eventparticipation.event.japanese_name, report.fake_eventparticipation.account.owner.username, report.fake_eventparticipation.account.id, report.fake_eventparticipation.ranking, report.fake_eventparticipation.song_ranking, report.fake_eventparticipation.points)
+        elif report.fake_user:
+            if report.fake_user.email:
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Your profile has been reported'),
+                           template_name='report_fake_user',
+                           to=[report.fake_user.email, 'contact@schoolido.lu'],
+                           context=context,
+                       )
+            all_reports = models.ModerationReport.objects.filter(fake_user=report.fake_user).select_related('reported_by')
+            for _report in all_reports:
+                if _report.reported_by and _report.reported_by.email:
+                    context['reported_by'] = _report.reported_by
+                    send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this user! '),
+                               template_name='report_fake_user_accepted',
+                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               context=context,
+                           )
+        elif report.fake_activity:
+            if report.fake_activity.account.owner.email:
+                send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Your activity has been reported and deleted'),
+                           template_name='report_fake_activity',
+                           to=[report.fake_activity.account.owner.email, 'contact@schoolido.lu'],
+                           context=context,
+                       )
+            all_reports = models.ModerationReport.objects.filter(fake_activity=report.fake_activity).select_related('reported_by')
+            for _report in all_reports:
+                if _report.reported_by and _report.reported_by.email:
+                    context['reported_by'] = _report.reported_by
+                    send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this activity! '),
+                               template_name='report_fake_activity_accepted',
+                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               context=context,
+                           )
+            moderation_comment = (u'' if not moderation_comment else unicode(moderation_comment)) + u'------ Activity: message data {} account id {} account owner id {} username {}'.format(report.fake_activity.message_data, report.fake_activity.account_id, report.fake_activity.account.owner.id, report.fake_activity.account.owner.username)
+                    
         all_reports.update(status=3, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
         if report.fake_eventparticipation:
             report.fake_eventparticipation.delete()

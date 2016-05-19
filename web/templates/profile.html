@@ -282,6 +282,23 @@
 		  </h3>
 		</td>
 	      </tr>
+	      {% if account.ranking %}
+	      <tr>
+		<th>{% trans 'Ranking' %}</th>
+		<td>
+		  <a href="/users/?language={{ account.language }}&verified=3&reverse_order=on">
+		    <h3 style="margin-top: 0">
+		      {% if account.ranking < 4 %}
+		       <img src="/static/medal{{ account.ranking }}.png" alt="{{ account.ranking }}" height="60">
+		       {% else %}
+		       # {{ account.ranking }}
+		       {% endif %}
+		    </h3>
+		    <i class="flaticon-{{ account.language }}"></i> {% trans 'Leaderboard' %}
+		  </a>
+		</td>
+	      </tr>
+	      {% endif %}
 	      {% if account.verified > 0 and account.verified < 3 %}
 	      <tr>
 		<th>{% trans 'Verified' %}</th>

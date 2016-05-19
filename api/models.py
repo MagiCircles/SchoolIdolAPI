@@ -605,6 +605,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     center_card_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
     center_card_id = models.PositiveIntegerField(default=0)
     center_alt_text = models.CharField(max_length=100, null=True, blank=True)
+    ranking = models.PositiveIntegerField(null=True, blank=True)
 
     @property
     def website_url(self):

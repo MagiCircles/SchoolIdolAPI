@@ -389,7 +389,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Account
-        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
+        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'ranking', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
     owner_account = serializers.SerializerMethodField()

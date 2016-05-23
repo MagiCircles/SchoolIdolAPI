@@ -147,6 +147,7 @@ raw_information['Toujou Nozomi'] = {
         ('http://i.schoolido.lu/chibi/Nozomi_Cheer.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Nozomi_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Nozomi_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/marinenozooochibi.png', 'enjugrove'),
     ],
 }
 raw_information['Yazawa Nico'] = {
@@ -178,6 +179,7 @@ raw_information['Takami Chika'] = {
     'starter': 786,
     'color': '#ff9646',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Takami_Chika.png', 'klab'),
         ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/mzZeOlyc.png', 'sayakax'),
         ('http://i.schoolido.lu/chibi/chika.png', 'Wondercorn'),
@@ -193,6 +195,7 @@ raw_information['Sakurauchi Riko'] = {
     'starter': 787,
     'color': '#ff7777',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Sakurauchi_Riko.png', 'klab'),
         ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/rikofinished.png', 'Cava'),
         ('http://i.schoolido.lu/chibi/rVpndCvn.png', 'Yukimochi'),
@@ -208,6 +211,7 @@ raw_information['Matsuura Kanan'] = {
     'starter': 788,
     'color': '#16d5a6',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Matsuura_Kanan.png', 'klab'),
         ('http://i.schoolido.lu/chibi/kirisakisun.png', 'kirisakisun'),
         ('http://i.schoolido.lu/chibi/KyYKeLBU.png', 'sayakax'),
         ('http://i.schoolido.lu/chibi/kanan3.png', 'enjugrove'),
@@ -223,6 +227,7 @@ raw_information['Kurosawa Dia'] = {
     'starter': 789,
     'color': '#ff4242',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Kurosawa_Dia.png', 'klab'),
         ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
         ('http://i.schoolido.lu/chibi/xcrybxbyx.png', 'xcrybxbyx'),
         ('http://i.schoolido.lu/chibi/REpyO1v.png', 'Kayumi'),
@@ -239,6 +244,7 @@ raw_information['Watanabe You'] = {
     'starter': 790,
     'color': '#49bbee',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Watanabe_You.png', 'klab'),
         ('http://i.schoolido.lu/chibi/iriel.png', 'iriel'),
         ('http://i.schoolido.lu/chibi/Mochaqt.png', 'Mochaqt'),
         ('http://i.schoolido.lu/chibi/sanjista.png', 'sanjista'),
@@ -254,6 +260,7 @@ raw_information['Tsushima Yoshiko'] = {
     'starter': 791,
     'color': '#c3c3c3',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Tsushima_Yoshiko.png', 'klab'),
         ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'erana'),
         ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
         ('http://i.schoolido.lu/chibi/hatsunemimu.png', 'hatsunemimu'),
@@ -269,6 +276,7 @@ raw_information['Kunikida Hanamaru'] = {
     'starter': 792,
     'color': '#e7cf0b',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Kunikida_Hanamaru.png', 'klab'),
         ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
         ('http://i.schoolido.lu/chibi/michellecipher.png', 'michellecipher'),
         ('http://i.schoolido.lu/chibi/hanamaruchib450.png', 'enjugrove'),
@@ -285,6 +293,7 @@ raw_information['Ohara Mari'] = {
     'starter': 793,
     'color': '#c450ff',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Ohara_Mari.png', 'klab'),
         ('http://i.schoolido.lu/chibi/sorutan.png', 'sorutan'),
     ],
 }
@@ -298,6 +307,7 @@ raw_information['Kurosawa Ruby'] = {
     'starter': 794,
     'color': '#f273c4',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Kurosawa_Ruby.png', 'klab'),
         ('http://i.schoolido.lu/chibi/amukagamine.png', 'amukagamine'),
     ],
 }
@@ -566,6 +576,17 @@ raw_information_n = {
     'Saotome Yukari': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/k3J2pBfK.png', 'sakicchi'),
+        ],
+    },
+    'Shidou Misaki': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/qGjv8Mdx.png', 'averageghost'),
+        ],
+    },
+    'Kadota Tsurugi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/7b2PwFH.png', 'shsl-nope'),
+            ('http://i.schoolido.lu/chibi/tsun2_by_yuukanii-da3i3ng.png', 'kouki'),
         ],
     },
 }

@@ -125,6 +125,7 @@ LANGUAGES = (
     ('zh-tw', _('Traditional Chinese')),
     ('id', _('Indonesian')),
     ('tr', _('Turkish')),
+    ('ro', _('Romanian')),
 )
 
 TIME_ZONE = 'UTC'

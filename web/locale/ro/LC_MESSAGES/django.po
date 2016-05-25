@@ -1,0 +1,3267 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: School Idol Tomodachi\n"
+"Language: ro\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);\n"
+
+#: api/models.py:20 web/views.py:2529
+msgid "Smile"
+msgstr "Smile"
+
+#: api/models.py:21 web/views.py:2530
+msgid "Pure"
+msgstr "Pure"
+
+#: api/models.py:22 web/views.py:2531
+msgid "Cool"
+msgstr "Cool"
+
+#: api/models.py:23 api/models.py:220 web/templates/cards.html:160
+#: web/templates/cards.html.py:168 web/templates/cards.html:176
+#: web/templates/cards.html.py:216 web/templates/cards.html:224
+#: web/templates/cardsPage.html:438 web/templates/cardsPage.html.py:445
+#: web/templates/events.html:76 web/templates/events.html.py:95
+#: web/templates/index.html:173 web/templates/songs.html:23
+#: web/templates/songs.html.py:30 web/templates/songs.html:37
+#: web/templates/users.html:53 web/templates/users.html.py:60
+#: web/templates/users.html:71 web/templates/users.html.py:82
+#: web/templates/users.html:88 web/templates/users.html.py:98
+#: web/templates/users.html:110 web/templates/users.html.py:117
+msgid "All"
+msgstr "Toate"
+
+#: api/models.py:28 web/templatetags/choicesToString.py:39
+msgid "Normal"
+msgstr "Normal"
+
+#: api/models.py:29
+msgid "Rare"
+msgstr "Rare"
+
+#: api/models.py:30 web/forms.py:396 web/forms.py:400
+msgid "Super Rare"
+msgstr "Super Rare"
+
+#: api/models.py:31
+msgid "Ultra Rare"
+msgstr "Ultra Rare"
+
+#: web/templates/ownedCardOnBottomCard.html:10 web/templates/skillup.html:17
+#: web/templates/skillup.html.py:117
+msgid "In deck"
+msgstr "În pachet"
+
+#: web/templates/ownedCardOnBottomCard.html:12
+msgid "In album"
+msgstr "În album"
+
+#: web/templates/ownedCardOnBottomCard.html:14 web/templates/skillup.html:119
+msgid "In present box"
+msgstr "În cutia de cadouri\n"
+""
+
+#: api/models.py:44 api/models.py:52 api/models.py:213 tmp/profile.html:257
+#: web/templates/include/account_tab_wishlist.html:7
+#: web/templates/ownedCardOnBottomCard.html:16 web/views.py:503
+msgid "Wish List"
+msgstr "Lista de dorințe"
+
+#: api/models.py:546 tmp/forms.py:143 tmp/profile.html:120
+#: web/templates/profile.html:141
+msgid "Nickname"
+msgstr "Poreclă"
+
+#: api/models.py:547 tmp/profile.html:124 web/forms.py:430
+#: web/templates/profile.html:159
+msgid "Friend ID"
+msgstr "Friend ID"
+
+#: api/models.py:547
+msgid "You can find your friend id by going to the \"Friends\" section from the home, then \"ID Search\". Players will be able to send you friend requests or messages using this number."
+msgstr "Îți poți găsi \"Friend ID\" uitându-te la secțiunea \"Friends\" din ecranul principal, apoi \"ID Search\". Jucătorii/utilizatorii vor putea să îți trimită cereri sau mesaje folosind acest număr."
+
+#: api/models.py:550
+msgid "Transfer Code"
+msgstr "Codul de Transfer"
+
+#: api/models.py:550
+msgid "It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab."
+msgstr "Este important să ai mereu un cod de transfer activ, fiind posibil să îți recapeți contul în caz că îți pierzi telefonul. Îl poți adăuga pentru tine aici: doar tu îl poți vedea. Pentru a-l genera, du-te în setări si folosește primul buton sub cel cu care îți schimbi numele în primul tab."
+
+#: api/models.py:553
+msgid "Language"
+msgstr "Limbă"
+
+#: api/models.py:553
+msgid "This is the version of the game you play."
+msgstr "Aceasta este versiunea jocului pe care o joci."
+
+#: api/models.py:554 tmp/profile.html:142 web/templates/profile.html:194
+#: web/templates/staff_verifications.html:27
+msgid "Operating System"
+msgstr "Sistem de Operare"
+
+#: api/models.py:555 web/forms.py:98 web/forms.py:431 web/forms.py:432
+#: web/templates/addteam.html:28 web/templates/initialsetup.html:202
+msgid "Center"
+msgstr "Centru"
+
+#: api/models.py:555
+msgid "The character that talks to you on your home screen."
+msgstr "Personajul care vorbește cu tine pe ecranul principal."
+
+#: api/models.py:556 tmp/profile.html:170 web/templates/event.html:137
+#: web/templates/event.html.py:149 web/templates/event.html:202
+#: web/templates/event.html.py:214 web/templates/profile.html:277
+#: web/templates/songsPage.html:126 web/templates/staff_verifications.html:28
+msgid "Rank"
+msgstr "Rangul"
+
+#: api/models.py:614 web/templates/albumBuilder.html:45
+#: web/templates/cards.html:270
+msgid "Stored"
+msgstr "Stocat"
+
+#: api/models.py:615 web/templates/addCardForm.html:10
+#: web/templates/ownedCardOnBottomCard.html:14
+msgid "Expiration"
+msgstr "Expirare"
+
+#: api/models.py:616 contest/templates/contest_collection.html:36
+#: contest/templates/contest_result.html:132
+#: web/templates/albumBuilder.html:46 web/templates/cards.html:278
+#: web/templates/cards.html.py:281 web/templates/cardsPage.html:352
+#: web/templates/cardsPage.html.py:358 web/templates/cardsPage.html:440
+#: web/templates/cardsPage.html.py:447 web/templates/initialsetup.html:107
+#: web/templates/ownedCardOnBottomCard.html:19 web/templates/usersPage.html:16
+#: web/views.py:2541 web/views.py:2543
+msgid "Idolized"
+msgstr "Idolizat"
+
+#: web/templates/403.html:3 web/templates/403.html.py:4
+msgid "Forbidden"
+msgstr "Interzis"
+
+#: web/templates/403.html:5
+msgid "You are not supposed to do this, so we blocked you. Sorry!"
+msgstr "Nu ar trebui să faci asta, așa că te-am blocat. Scuze!"
+
+#: web/templates/500.html:3 web/templates/500.html.py:4
+msgid "Unexpected Error"
+msgstr "Eroare neașteptată."
+
+#: web/templates/addCardForm.html:13 web/templates/addaccount.html:208
+#: web/templates/event.html:91 web/templates/event.html.py:100
+#: web/templates/profile.html:240 web/templates/usicaltriofestival.html:17
+msgid "days"
+msgstr "zile"
+
+#: tmp/profile.html:26 tmp/profile.html.py:204 web/templates/activity.html:35
+#: web/templates/addCardForm.html:18 web/templates/addaccount.html:90
+#: web/templates/addteam.html:40 web/templates/cards.html:98
+#: web/templates/edit.html:21 web/templates/edit.html.py:80
+#: web/templates/edit.html:95 web/templates/event_participations.html:44
+#: web/templates/profile.html:43 web/templates/profile.html.py:355
+msgid "Apply Changes"
+msgstr "Aplică modificările"
+
+#: web/templates/addCardForm.html:35 web/templates/addaccount.html:306
+#: web/templates/addteam.html:49
+msgid "You can't cancel this action afterwards."
+msgstr "Nu vei mai putea anula această acțiune."
+
+#: web/templates/addCardForm.html:40
+msgid "Delete this card"
+msgstr "Șterge această carte."
+
+#: web/templates/addaccount.html:88 web/templates/addteam.html:39
+#: web/templates/edit.html:20 web/templates/edit.html.py:53
+#: web/templates/edit.html:79 web/templates/edit.html.py:94
+#: web/templates/edit.html:118
+msgid "Back to my profile"
+msgstr "Înapoi la profil"
+
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:80
+#: web/templates/addaccount.html:90 web/templates/base.html:115
+#: web/templates/edit.html:119 web/templates/initialsetup.html:203
+msgid "Add Account"
+msgstr "Adaugă cont"
+
+#: web/templates/addaccount.html:307
+msgid "Note that we can transfer your account to another user."
+msgstr "Îți putem transfera contul către un alt utilizator."
+
+#: api/management/commands/email_no_transfer_code.py:21 web/links.py:272
+#: web/raw.py:85 web/raw.py:94 web/templates/about.html:72
+#: web/templates/base.html:10 web/templates/base.html.py:47
+#: web/templates/cardsPage.html:494 web/templates/cardsPage.html.py:495
+#: web/templates/cardsPage.html:496 web/templates/cardsPage.html.py:497
+#: web/templates/cardsPage.html:498 web/templates/emails/base.html:9
+#: web/templates/emails/base.html.py:412 web/templates/emails/base.html:508
+#: web/templates/event_ranking.html:12 web/templates/index.html:56
+#: web/templates/index.html.py:76 web/templates/modalsukutomo.html:4
+#: web/templates/songsPage.html:219 web/templates/songsPage.html.py:220
+#: web/templates/songsPage.html:221 web/templates/songsPage.html.py:222
+#: web/templates/songsPage.html:223
+msgid "School Idol Tomodachi"
+msgstr "School Idol Tomodachi"
+
+#: web/templates/base.html:24
+msgid "Browse & track your cards. Vote for the best girl."
+msgstr "Caută și ține evidența cărților tale. Votează pentru fata preferată."
+
+#: contest/templates/contest_result.html:95 tmp/profile.html:227
+#: web/raw.py:166 web/templates/albumBuilder.html:43
+#: web/templates/base.html:51 web/templates/box.html:50
+#: web/templates/cards.html:239 web/templates/include/idol_tabs.html:4
+#: web/views.py:2527 web/views.py:2529 web/views.py:2530 web/views.py:2531
+#: web/views.py:2536 web/views.py:2541 web/views.py:2542 web/views.py:2543
+#: web/views.py:2544
+msgid "Cards"
+msgstr "Cărți"
+
+#: tmp/profile.html:58 web/templates/addaccount.html:281
+#: web/templates/addaccount.html.py:284 web/templates/base.html:99
+#: web/templates/edit.html:5 web/templates/edit.html.py:71
+#: web/templates/profile.html:75
+msgid "Your Settings"
+msgstr "Setările tale"
+
+#: web/templates/base.html:118
+msgid "Logout"
+msgstr "Delogare"
+
+#: web/templates/base.html:116 web/templates/edit.html:101
+msgid "Edit your accounts"
+msgstr "Editează-ți conturile"
+
+#: web/templates/base.html:122 web/templates/create.html:18
+#: web/templates/initialsetup.html:25 web/templates/login.html:4
+#: web/templates/login.html.py:12 web/templates/login.html:21
+#: web/templates/skillup.html:45
+msgid "Login"
+msgstr "Logare"
+
+#: web/templates/base.html:123 web/templates/create.html:4
+#: web/templates/create.html.py:11 web/templates/create.html:19
+#: web/templates/initialsetup.html:28 web/templates/login.html:19
+#: web/templates/skillup.html:48
+msgid "Sign Up"
+msgstr "Înscriere"
+
+#: web/templates/about.html:8 web/templates/modalsukutomo.html:4
+msgid "About"
+msgstr "Despre"
+
+#: web/templates/about.html:69
+msgid "LoveLive! Franchise"
+msgstr "Franciza LoveLive!"
+
+#: web/templates/about.html:72
+msgid "is not a representative and is not associated with LoveLive!. LoveLive!, School Idol Project, School Idol Festival, their logos and cards images are Trademarks of ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad and KLab."
+msgstr "nu este reprezentativă și nu este asociată cu LoveLive!, LoveLive!, School Idol Project, logourile lor și cărțile sunt marcă înregistrată ASCII Media Works, Dengeki G's Magazine, Sunrise Studio, Bushiroad și KLab."
+
+#: web/templates/about.html:125
+msgid "Icon Credits"
+msgstr "Credite pentru Iconiță"
+
+#: web/templates/albumBuilder.html:38 web/templates/albumBuilder.html.py:76
+#: web/templates/albumBuilder_ownedCard.html:10 web/templates/base.html:168
+#: web/templates/cards.html:52 web/templates/cards.html.py:317
+#: web/templates/include/filterbar.html:56 web/templates/initialsetup.html:42
+#: web/templates/skillup.html:59 web/templates/staff_verification.html:130
+msgid "Go"
+msgstr "Caută"
+
+#: web/templates/500.html:5 web/templates/addaccount.html:308
+#: web/templates/baseMenu.html:20 web/templates/modalcontact.html:4
+msgid "Contact Us"
+msgstr "Contactează-ne"
+
+#: web/templates/about.html:51 web/templates/about.html.py:64
+#: web/templates/modalcontact.html:8 web/templates/modalcontact.html.py:22
+msgid "Send Email"
+msgstr "Trimite Email"
+
+#: web/templates/baseError.html:4 web/templates/baseError.html.py:10
+msgid "Page not found"
+msgstr "Pagina nu a fost găsită."
+
+#: web/templates/baseError.html:11
+msgid "404. This is not the page you are looking for."
+msgstr "404. Aceasta nu este pagina pe care o cauți."
+
+#: web/templates/baseError.html:12 web/templates/report.html:27
+msgid "Back to homepage"
+msgstr "Înapoi la pagina principală."
+
+#: web/templates/base.html:74 web/templates/cardsPage.html:429
+#: web/templates/include/filterbar.html:25 web/templates/users.html:6
+msgid "Players"
+msgstr "Jucători"
+
+#: web/templates/baseMenu.html:22
+msgid "Developers"
+msgstr "Dezvoltatori"
+
+#: web/templates/baseMenu.html:24
+msgid "Switch language:"
+msgstr "Schimbă limba:"
+
+#: web/templates/cards.html:7
+msgid "Cards Album"
+msgstr "Album Cărți"
+
+#: tmp/forms.py:138 web/forms.py:360 web/forms.py:386 web/forms.py:418
+#: web/templates/cards.html:108 web/templates/cards.html.py:110
+#: web/templates/include/filterbar.html:8
+#: web/templates/staff_verifications.html:18
+msgid "Search"
+msgstr "Caută"
+
+#: web/templates/cards.html:112 web/templates/include/filterbar.html:25
+#: web/templates/include/filterbar.html:31
+msgid "Filter"
+msgstr "Filtrează"
+
+#: tmp/views.py:333 web/forms.py:395 web/templates/cards.html:110
+#: web/templates/cards.html.py:114 web/templates/cardsPage.html:160
+#: web/templates/idol.html:5 web/templates/idol.html.py:39
+#: web/templates/include/idol_tabs.html:3 web/views.py:498
+msgid "Idol"
+msgstr "Idol"
+
+#: web/forms.py:432 web/templates/cards.html:127
+msgid "Rarity"
+msgstr "Raritate"
+
+#: api/models.py:683 web/forms.py:396 web/forms.py:425 web/forms.py:431
+#: web/templates/cards.html:135 web/templates/idol.html:51
+#: web/templates/initialsetup.html:204 web/templates/songsPage.html:108
+msgid "Attribute"
+msgstr "Atribut"
+
+#: api/models.py:619 web/forms.py:400 web/templates/albumBuilder.html:49
+#: web/templates/box.html:23 web/templates/cards.html:110
+#: web/templates/cards.html.py:182 web/templates/cardsPage.html:266
+#: web/templates/cardsPage.html.py:522 web/templates/event.html:49
+#: web/templates/ownedCardOnBottomCard.html:28 web/templates/skillup.html:16
+#: web/templates/skillup.html.py:105
+msgid "Skill"
+msgstr "Abilitate"
+
+#: contest/templates/contest.html:84
+#: contest/templates/contest_collection.html:12
+#: contest/templates/contest_collection.html:22
+#: contest/templates/contest_result.html:152 web/templates/cards.html:110
+#: web/templates/cards.html.py:190 web/templates/cards.html:198
+#: web/templates/cardsPage.html:250
+msgid "Collection"
+msgstr "Colecție"
+
+#: web/templates/cards.html:303 web/templates/include/filterbar.html:13
+msgid "Order"
+msgstr "Ordine"
+
+#: web/forms.py:371 web/forms.py:423 web/templates/cards.html:313
+msgid "Reverse order"
+msgstr "Ordonare inversă"
+
+#: api/models.py:617 web/templates/albumBuilder.html:47
+#: web/templates/cards.html:285 web/templates/cards.html.py:288
+#: web/templates/ownedCardOnBottomCard.html:22
+msgid "Max Leveled"
+msgstr "Nivel maxim"
+
+#: web/templates/cards.html:289
+msgid "Not Max Leveled"
+msgstr "Nu are nivel maxim"
+
+#: web/templates/cards.html:296
+msgid "Not Max Bonded"
+msgstr "Nu are bond maxim"
+
+#: web/templates/cards.html:282 web/templates/cardsPage.html:349
+#: web/templates/cardsPage.html.py:355 web/templates/cardsPage.html:439
+#: web/templates/cardsPage.html.py:446 web/templates/initialsetup.html:107
+#: web/templates/usersPage.html:16 web/views.py:2542 web/views.py:2544
+msgid "Not Idolized"
+msgstr "Nu e idolizată"
+
+#: api/models.py:619 web/templates/cardsPage.html:53
+#: web/templates/cardsPage.html.py:58 web/templates/cardsPage.html:67
+#: web/templates/ownedCardOnBottomCard.html:28 web/templates/skillup.html:16
+#: web/templates/skillup.html.py:105 web/templates/songsPage.html:94
+msgid "Level"
+msgstr "Nivel"
+
+#: tmp/views.py:332 web/templates/cards.html:230
+#: web/templates/cards.html.py:232 web/templates/cardsPage.html:203
+#: web/templates/events.html:43 web/views.py:497
+msgid "Release date"
+msgstr "Data lansării"
+
+#: web/forms.py:373 web/templates/cards.html:110
+#: web/templates/cardsPage.html:233 web/templates/songsPage.html:150
+msgid "Event"
+msgstr "Eveniment"
+
+#: tmp/views.py:337 web/templates/cardsPage.html:112 web/views.py:504
+msgid "HP"
+msgstr "HP"
+
+#: web/templates/cardsPage.html:288
+msgid "Center Skill"
+msgstr "Abilitatea centrului"
+
+#: web/templates/activitysingle.html:53 web/templates/cardsPage.html:470
+#: web/templates/idols.html:27 web/templates/idols.html.py:47
+#: web/templates/idols.html:73 web/templates/include/idol_tabs.html:8
+#: web/templates/songsPage.html:195 web/templates/usersPage.html:56
+msgid "Comments"
+msgstr "Comentarii"
+
+#: tmp/profile.html:214 web/templates/addCardForm.html:18
+#: web/templates/albumBuilder.html:44 web/templates/profile.html:365
+msgid "Add this card"
+msgstr "Adaugă această carte"
+
+#: web/templates/cardsPage.html:510
+msgid "Create an account to add this card to your collection"
+msgstr "Crează-ți un cont pentru a adăuga această carte în colecția ta"
+
+#: web/templates/cardsPage.html:214 web/templates/cardsPage.html.py:516
+msgid "Promo Card"
+msgstr "Carte Promoțională"
+
+#: web/templates/cardsPage.html:217 web/templates/cardsPage.html.py:516
+msgid "This card comes with "
+msgstr "Această carte vine cu:"
+
+#: web/templates/cardsPage.html:519
+msgid "Event Card"
+msgstr "Carte Eveniment"
+
+#: web/templates/cardsPage.html:519
+msgid "This card first appeared during the event"
+msgstr "Această carte a apărut prima dată în timpul evenimentului"
+
+#: web/templates/cardsPage.html:522
+msgid "Special Card"
+msgstr "Carte specială"
+
+#: web/templates/cardsPage.html:522
+msgid "This card cannot be added in a team."
+msgstr "Această carte nu poate fi adaugată în echipă."
+
+#: web/templates/cardsPage.html:525
+msgid "This card is only available in the Japanese version of the game."
+msgstr "Această carte este disponibilă doar în varianta japoneză a jocului."
+
+#: web/templates/cardsPage.html:527
+msgid "This card is available on all the versions of the game in the world."
+msgstr "Această carte este disponibilă în toate variantele jocului."
+
+#: web/templates/base.html:10 web/templates/base.html.py:24
+#: web/templates/index.html:5 web/templates/links.html:5
+#: web/templates/modalsukutomo.html:7
+msgid "The Ultimate Resource For LoveLive! School Idol Festival players"
+msgstr "Cea mai bună resursă pentru jucătorii LoveLive! School Idol Festival"
+
+#: web/links.py:330 web/templates/initialsetup.html:199
+msgid "Browse Cards"
+msgstr "Caută cărți"
+
+#: web/templates/ownedcards.html:14
+msgid "Browse cards"
+msgstr "Caută cărți"
+
+#: web/templates/ownedcards.html:19
+msgid "No cards registered yet."
+msgstr "Nicio carte înregistrată deocamdată"
+
+#: tmp/profile.html:84 web/templates/profile.html:102
+msgid "No account."
+msgstr "Niciun cont."
+
+#: tmp/profile.html:112 web/templates/profile.html:133
+msgid "No Center Specified"
+msgstr "Niciun Centru Specificat"
+
+#: tmp/profile.html:134 web/templates/profile.html:185
+msgid "Game Version"
+msgstr "Versiunea jocului"
+
+#: tmp/profile.html:166 web/templates/profile.html:272
+msgid "Significant Cards"
+msgstr "Cărți importante"
+
+#: tmp/profile.html:167 web/templates/about.html:193
+#: web/templates/index.html:86 web/templates/initialsetup.html:200
+#: web/templates/profile.html:273
+msgid "and"
+msgstr "și"
+
+#: api/models.py:41 api/models.py:49 api/models.py:209 tmp/profile.html:240
+#: web/views.py:502
+msgid "Deck"
+msgstr "Pachet"
+
+#: api/models.py:42 api/models.py:50 api/models.py:210 tmp/profile.html:245
+#: web/templates/include/account_tab_album.html:22
+msgid "Album"
+msgstr "Album"
+
+#: api/models.py:43 api/models.py:51 api/models.py:214 tmp/profile.html:251
+#: web/templates/include/account_tab_presentbox.html:7
+msgid "Present Box"
+msgstr "Cutia de cadou"
+
+#: tmp/views.py:331 web/templates/cardsPage.html:126 web/views.py:496
+msgid "Card #ID"
+msgstr "#ID Carte"
+
+#: tmp/views.py:334 web/views.py:499
+msgid "Smile's statistics"
+msgstr "Statisticile Smile"
+
+#: tmp/views.py:335 web/views.py:500
+msgid "Pure's statistics"
+msgstr "Statisticile Pure"
+
+#: tmp/views.py:336 web/views.py:501
+msgid "Cool's statistics"
+msgstr "Statisticile Cool"
+
+#: api/models.py:684 web/templates/initialsetup.html:204
+msgid "Description"
+msgstr "Descriere"
+
+#: api/models.py:684 web/forms.py:273
+msgid "Write whatever you want. You can add formatting and links using Markdown."
+msgstr "Scrie ce vrei. Poți adăuga formatare și linkuri folosind Markdown."
+
+#: api/models.py:686 web/templates/initialsetup.html:204
+msgid "Location"
+msgstr "Locație"
+
+#: api/models.py:686
+msgid "The city you live in."
+msgstr "Orașul în care trăiești"
+
+#: api/models.py:549 tmp/profile.html:129 web/templates/profile.html:178
+msgid "Accept friend requests"
+msgstr "Acceptă cereri de prietenie"
+
+#: api/models.py:698 web/forms.py:428
+msgid "Private Profile"
+msgstr "Profil privat"
+
+#: api/models.py:698
+msgid "If your profile is private, people will only see your center."
+msgstr "Dacă profilul este privat, oamenii vor vedea doar centrul tău."
+
+#: web/templates/cardsPage.html:24
+msgid "%(counter)s card matches your search:"
+msgid_plural "%(counter)s cards match your search:"
+msgstr[0] "O carte se potrivește cu căutarea."
+msgstr[1] "%(counter) cărți se potrivesc cu căutarea."
+msgstr[2] "%(counter) cărți se potrivesc cu căutarea."
+
+#: web/templates/activities.html:9 web/templates/box.html:35
+#: web/templates/cardsPage.html:569
+#: web/templates/include/account_tab_events.html:40
+#: web/templates/include/account_tab_teams.html:25
+#: web/templates/songsPage.html:275 web/templates/staff_verifications.html:67
+msgid "No results."
+msgstr "Fără rezultate"
+
+#: web/templates/cardsPage.html:570 web/templates/songsPage.html:276
+msgid "No idols match your search."
+msgstr "Niciun idol nu se potrivește căutărilor tale."
+
+#: web/templates/cardsPage.html:572 web/templates/songsPage.html:278
+msgid "Change filters"
+msgstr "Schimbă filtrele"
+
+#: web/templates/edit.html:13
+msgid "Customize"
+msgstr "Particularizează"
+
+#: web/templates/edit.html:60
+msgid "Avatar"
+msgstr "Avatar"
+
+#: web/templates/edit.html:63
+msgid "To change your avatar, use Gravatar with the same email address."
+msgstr "Pentru a-ți schimba avatarul, folosește Gravatar cu aceeași adresă de email."
+
+#: web/templates/edit.html:65
+msgid "Change Avatar"
+msgstr "Schimbă avatarul"
+
+#: api/models.py:685 tmp/forms.py:41 web/forms.py:57 web/forms.py:426
+#: web/templates/initialsetup.html:204
+msgid "Best Girl"
+msgstr "Fata preferată"
+
+#: tmp/profile.html:130 web/templates/addaccount.html:64
+#: web/templates/cardsPage.html:220 web/templates/events.html:96
+#: web/templates/profile.html:179 web/templates/songs.html:38
+#: web/templates/songsPage.html:182 web/templates/users.html:111
+#: web/templates/users.html.py:118
+msgid "Yes"
+msgstr "Da"
+
+#: tmp/profile.html:130 web/templates/addaccount.html:65
+#: web/templates/events.html:97 web/templates/profile.html:179
+#: web/templates/songs.html:39 web/templates/songsPage.html:182
+#: web/templates/users.html:112 web/templates/users.html.py:119
+msgid "No"
+msgstr "Nu"
+
+#: tmp/profile.html:86 web/templates/base.html:102
+#: web/templates/profile.html:104
+msgid "%(length)s account:"
+msgid_plural "%(length)s accounts:"
+msgstr[0] "%(un) cont"
+msgstr[1] "%(length) conturi"
+msgstr[2] "%(length) conturi"
+
+#: api/models.py:618 web/templates/albumBuilder.html:48
+#: web/templates/cards.html:292 web/templates/cards.html.py:295
+#: web/templates/ownedCardOnBottomCard.html:25
+msgid "Max Bonded (Kizuna)"
+msgstr "Bond Maxim (Kizuna)"
+
+#: web/templates/500.html:5
+msgid "Something weird happened, and it looks like it's our server's fault. If the error persists, please contact us."
+msgstr "Ceva ciudat se întâmplă, și se pare că este vina serverului nostru. Dacă eroarea persistă, te rugăm să ne contactezi."
+
+#: web/templates/addaccount.html:4 web/templates/addaccount.html.py:79
+#: web/templates/addaccount.html:278 web/templates/edit.html:113
+#: web/templates/initialsetup.html:202 web/templates/profile.html:307
+#: web/templates/profile.html.py:309
+msgid "Edit Account"
+msgstr "Editează contul"
+
+#: web/templates/addaccount.html:305 web/templates/addaccount.html.py:312
+msgid "Delete Account"
+msgstr "Șterge contul"
+
+#: web/templates/index.html:132
+msgid "Contest"
+msgstr "Concurs"
+
+#: tmp/profile.html:4 web/templates/about.html:154
+#: web/templates/about.html.py:337 web/templates/about.html:379
+#: web/templates/base.html:98 web/templates/idol.html:129
+#: web/templates/profile.html:4
+msgid "Profile"
+msgstr "Profil"
+
+#: web/templates/cards.html:110
+msgid "Promo Item"
+msgstr "Obiect Promoțional"
+
+#: tmp/profile.html:44 web/templates/profile.html:61
+msgid "Unfollow"
+msgstr "Nu mai urmări"
+
+#: tmp/profile.html:44 web/templates/profile.html:61
+msgid "Follow"
+msgstr "Urmărește"
+
+#: tmp/profile.html:50 web/templates/profile.html:67
+msgid "Followers"
+msgstr "Urmăritori"
+
+#: api/models.py:219 tmp/profile.html:53 web/templates/index.html:169
+#: web/templates/profile.html:70
+msgid "Following"
+msgstr "Urmărești"
+
+#: tmp/profile.html:264
+msgid "To search through your cards, order them, edit them or add some new, go to the cards page and use the filters."
+msgstr "Pentru a căuta prin cărțile tale, a le ordona, edita sau a adăuga ceva nou, du-te la pagina cu cărți si folosește filtrele."
+
+#: api/models.py:652 contest/templates/contest.html:91
+#: contest/templates/contest_collection.html:49
+#: contest/templates/contest_result.html:11 tmp/forms.py:140
+#: web/templates/cardsPage.html:365 web/templates/event_ranking.html:12
+msgid "Ranking"
+msgstr "Rang"
+
+#: api/models.py:653 web/templates/event_ranking.html:33
+#: web/templates/include/account_tab_events.html:22
+msgid "Song Ranking"
+msgstr "Rang melodie"
+
+#: api/models.py:654 web/templates/event.html:131
+#: web/templates/event.html.py:143 web/templates/event.html:196
+#: web/templates/event.html.py:208 web/templates/event_ranking.html:35
+#: web/templates/include/account_tab_events.html:28
+msgid "Points"
+msgstr "Puncte"
+
+#: api/models.py:212 tmp/profile.html:229 web/raw.py:180
+#: web/templates/base.html:54 web/templates/events.html:3
+#: web/templates/events.html.py:29
+msgid "Events"
+msgstr "Evenimente"
+
+#: web/templates/event.html:125 web/templates/event.html.py:189
+msgid "Dates"
+msgstr "Date"
+
+#: web/templates/event.html:155
+msgid "Note"
+msgstr "Notă"
+
+#: web/templates/cardsPage.html:463 web/templates/event.html:160
+#: web/templates/idol.html:148 web/templates/initialsetup.html:205
+msgid "Wiki"
+msgstr "Wiki"
+
+#: web/templates/event.html:248 web/templates/event_participations.html:13
+#: web/templates/event_participations.html:27
+msgid "Share your ranking"
+msgstr "Distribuie rangul"
+
+#: web/templates/activity.html:42 web/templates/addteam.html:51
+#: web/templates/albumBuilder.html:50
+#: web/templates/event_participations.html:42
+msgid "Delete"
+msgstr "Șterge"
+
+#: tmp/profile.html:228
+msgid "Activities"
+msgstr "Activități"
+
+#: api/models.py:672 api/models.py:691 api/models.py:692 api/models.py:693
+#: api/models.py:694 api/models.py:696 api/models.py:697
+msgid "Write your username only, no URL."
+msgstr "Scrie doar username-ul, fără URL"
+
+#: web/templates/about.html:36 web/templates/about.html.py:207
+#: web/templates/about.html:211
+msgid "Donate"
+msgstr "Donează"
+
+#: web/templates/about.html:210
+msgid "If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads."
+msgstr "Dacă îți place site-ul, te rugăm să iei în seamă donația. Acest lucru ne ajută să acoperim costurile serverelor și ne permite să funcționăm pe gratis și fără reclame."
+
+#: web/templates/modalthanks.html:4 web/templates/modalthanks.html.py:8
+#: web/templates/report.html:24
+msgid "Thank you"
+msgstr "Vă mulțumim."
+
+#: tmp/forms.py:142 web/forms.py:421
+msgid "New players"
+msgstr "Jucători noi."
+
+#: web/templates/base.html:52 web/templates/idols.html:9
+msgid "Idols"
+msgstr "Idoli"
+
+#: web/templates/idol.html:56
+msgid "Age"
+msgstr "Vârstă"
+
+#: web/templates/idol.html:62
+msgid "Birthday"
+msgstr "Zi de naștere"
+
+#: web/templates/idol.html:78
+msgid "Astrological Sign"
+msgstr "Zodie"
+
+#: web/templates/idol.html:84
+msgid "Blood Type"
+msgstr "Grupa sanguină"
+
+#: web/templates/idol.html:90
+msgid "Height"
+msgstr "Înălțime"
+
+#: web/templates/idol.html:96
+msgid "Measurements"
+msgstr "Mărimi"
+
+#: web/templates/idol.html:102
+msgid "Favorite Food"
+msgstr "Mâncare preferată"
+
+#: web/templates/idol.html:108
+msgid "Least Favorite Food"
+msgstr "Mâncarea cea mai puțin preferată"
+
+#: web/templates/idol.html:114
+msgid "Hobbies"
+msgstr "Hobby-uri"
+
+#: web/templates/cards.html:222 web/templates/cardsPage.html:182
+#: web/templates/idol.html:120
+msgid "Year"
+msgstr "An"
+
+#: web/templates/idol.html:126
+msgid "CV"
+msgstr "CV"
+
+#: web/templates/idol.html:141
+msgid "Summary"
+msgstr "Rezumat"
+
+#: web/templates/map.html:21
+msgid "Edit your location"
+msgstr "Editează-ți locația"
+
+#: web/templates/map.html:23
+msgid "Add your location"
+msgstr "Adaugă-ți locația"
+
+#: web/forms.py:429 web/templates/about.html:212
+#: web/templates/about.html.py:314
+msgid "Donators"
+msgstr "Donatori"
+
+#: web/templates/about.html:78 web/templates/cardsPage.html:455
+#: web/templates/idol.html:146 web/templates/songsPage.html:186
+msgid "Sources"
+msgstr "Surse"
+
+#: web/templates/base.html:80 web/templates/map.html:14
+msgid "Map"
+msgstr "Hartă"
+
+#: web/templates/index.html:13
+msgid "Start following players to see their activities!"
+msgstr "Urmărește ceilalți jucători pentru a putea vedea activitațile lor!"
+
+#: web/templates/modalsukutomo.html:17
+msgid "Check out all the cards available in the game and get statistics, skills, and more!"
+msgstr "Verifică toate cărțile valabile din joc și descoperă statisticile, abilitățile, și multe altele!"
+
+#: web/templates/modalsukutomo.html:98
+msgid "Vote for the best idol"
+msgstr "Votează pentru cel mai bun idol "
+
+#: web/templates/modalsukutomo.html:99
+msgid "Infinite Facemash: Pick the cutest between two random cards and help your favorite idol reach the top of the ranking!"
+msgstr "Facemash Infinit : Alege cea mai draguță idol dintre două cărți la întâmplare și ajută-ți idolul preferat să ajungă în topul rangului!"
+
+#: index.html:145
+msgid "Chat"
+msgstr "Chat"
+
+#: web/templates/about.html:54 web/templates/modalcontact.html:11
+msgid "You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user."
+msgstr "Ne poți contacta dacă întâmpini anumite probleme cu contul tău, dacă îți pierzi parola, sau dacă dorești să transferi un cont către un alt utilizator."
+
+#: tmp/profile.html:222 web/templates/profile.html:373
+msgid "This profile is private, so it is not possible to see the cards, activities and events participations."
+msgstr "Acest profil este privat, deci nu este posibil să vizionezi cărțile, activitatea și participarea la evenimente."
+
+#: api/models.py:57 api/models.py:111 web/forms.py:289 web/forms.py:291
+msgid "Silver Verified"
+msgstr "Argint Verificat"
+
+#: api/models.py:58 api/models.py:112 web/forms.py:291
+msgid "Gold Verified"
+msgstr "Aur Verificat"
+
+#: api/models.py:72
+msgid "Thumbs"
+msgstr "Degetele Mari"
+
+#: api/models.py:73
+msgid "All fingers"
+msgstr "Toate degetele"
+
+#: api/models.py:75
+msgid "One hand"
+msgstr "O singură mână"
+
+#: api/models.py:76
+msgid "Other"
+msgstr "Altele"
+
+#: api/models.py:60
+msgid "Added a card"
+msgstr "Carte adăugată"
+
+#: api/models.py:61
+msgid "Idolized a card"
+msgstr "Idolizează o carte"
+
+#: api/models.py:62
+msgid "Max Leveled a card"
+msgstr "A ajuns la nivelul maxim al carții"
+
+#: api/models.py:63
+msgid "Max Bonded a card"
+msgstr "A ajuns la nivelul maxim de Bond (Kizuna)"
+
+#: api/models.py:64
+msgid "Rank Up"
+msgstr "Avansare în rang"
+
+#: api/models.py:65
+msgid "Ranked in event"
+msgstr "Plasat in rangurile evenimentului"
+
+#: api/models.py:551 tmp/profile.html:151 web/templates/initialsetup.html:202
+#: web/templates/profile.html:204
+msgid "Device"
+msgstr "Dispozitiv"
+
+#: api/models.py:551
+msgid "The modele of your device. Example: Nexus 5, iPhone 4, iPad 2, ..."
+msgstr "Modelul dispozitivului tău. Exemplu: Nexus 5, iPhone 4, iPad 2, ..."
+
+#: api/models.py:552 tmp/profile.html:157 web/templates/profile.html:226
+msgid "Play with"
+msgstr "Joacă cu"
+
+#: api/models.py:612 api/models.py:631 api/models.py:651
+#: web/templates/cards.html:248 web/templates/cards.html.py:262
+#: web/templates/staff_verifications.html:26
+msgid "Account"
+msgstr "Cont"
+
+#: api/models.py:126 api/models.py:134 api/models.py:557 tmp/forms.py:141
+#: tmp/profile.html:175 tmp/profile.html.py:184 web/templates/profile.html:287
+#: web/templates/profile.html.py:296
+msgid "Verified"
+msgstr "Verificat"
+
+#: web/links.py:31
+msgid "How to install Japanese apps?"
+msgstr "Cum să instalez aplicații japoneze?"
+
+#: web/links.py:37
+msgid "APKs and Links"
+msgstr "APK-uri și Link-uri"
+
+#: web/links.py:38
+msgid "If none of the Android links worked, that's what you're searching for."
+msgstr "Dacă niciunul dintre link-urile de Android nu au funcționat, atunci asta căutați."
+
+#: web/links.py:44
+msgid "Other Android APKs mirror"
+msgstr "Alte APK-uri și mirror-uri pentru Android"
+
+#: web/links.py:58
+msgid "Play on a rooted Android"
+msgstr "Joacă pe un Android rootat."
+
+#: web/links.py:51
+msgid "\"Illegal access detected!\"? Here is the solution."
+msgstr "\"Acces ilegal detectat!\"? Aici este soluția."
+
+#: web/links.py:66
+msgid "Play on a PC"
+msgstr "Joacă pe PC"
+
+#: web/links.py:80 web/templates/about.html:198
+#: web/templates/initialsetup.html:96 web/templates/modalabout.html:22
+#: web/templates/modaltutorialaddcard.html:25
+msgid "Get Started"
+msgstr "Începe"
+
+#: web/links.py:85
+msgid "Beginner's guide"
+msgstr "Ghidul începătorului"
+
+#: web/links.py:99
+msgid "Menu's Translation"
+msgstr "Traducere meniu"
+
+#: web/links.py:100
+msgid "Useful if you play on the Japanese version."
+msgstr "Folositor dacă joci versiunea japoneză."
+
+#: web/links.py:106
+msgid "GamePlay"
+msgstr "Gameplay"
+
+#: web/links.py:112 web/links.py:119
+msgid "Frequently Asked Questions"
+msgstr "Întrebări frecvente"
+
+#: web/links.py:126
+msgid "List of Items"
+msgstr "Listă de obiecte"
+
+#: web/links.py:127
+msgid "In game points and virtual money."
+msgstr "Puncte în joc și bani virtuali"
+
+#: web/links.py:133
+msgid "Save your Transfer Code"
+msgstr "Salvează codul tău de transfer"
+
+#: web/links.py:134
+msgid "First thing to do! In case you lose your device, it will allow you to retrieve your precious account."
+msgstr "Primul lucru care trebuie făcut! În cazul în care vă pierdeți dispozitivul, acesta vă permite să vă recuperați prețiosul cont."
+
+#: web/links.py:162
+msgid "Points required to rank up"
+msgstr "Puncte necesare pentru avansarea in rang"
+
+#: web/links.py:169
+msgid "Edit your \"about me\" section in the game"
+msgstr "Editează secțiunea \"despre mine\" din joc."
+
+#: web/links.py:178
+msgid "News & Updates"
+msgstr "Ştiri și Noutăți"
+
+#: web/links.py:183
+msgid "Game Facebook Page"
+msgstr "Pagina de Facebook a jocului"
+
+#: web/links.py:185
+msgid "Official page with news about the game."
+msgstr "Pagina oficială cu știrile despre joc."
+
+#: web/links.py:218
+msgid "Updates about the cards and the community (this website!)."
+msgstr "Noutăți despre cărți și despre comunitate (acest website!)."
+
+#: web/links.py:226
+msgid "Funny quotes from frustrated players."
+msgstr "Citate amuzante de la jucători frustrați"
+
+#: web/links.py:231
+msgid "English In Game Updates"
+msgstr "Noutăți despre joc în engleză"
+
+#: web/links.py:237
+msgid "Japanese In Game Updates"
+msgstr "Noutăți despre joc în japoneză"
+
+#: web/links.py:238
+msgid "Translated in English."
+msgstr "Tradus în engleză."
+
+#: web/links.py:244
+msgid "Official News about LoveLive! Franchise"
+msgstr "Știri Oficiale despre Franciza LoveLive!"
+
+#: web/links.py:252
+msgid "Communities"
+msgstr "Comunități"
+
+#: web/links.py:266
+msgid "Mainly casual gamers but very active community."
+msgstr "În mare parte jucători ocazionali dar o comunitate foarte activă."
+
+#: web/links.py:273
+msgid "Discuss with players using comments on their pages or on the cards."
+msgstr "Discută cu jucătorii prin intermediul comentariilor de pe paginile lor sau de pe cărți."
+
+#: web/links.py:325
+msgid "Collect Cards"
+msgstr "Colecționează cărți"
+
+#: web/links.py:331
+msgid "Search for cards using smart filters and ordering."
+msgstr "Caută cărți folosind ordonarea si filtrele inteligente."
+
+#: web/links.py:338
+msgid "Track your Cards"
+msgstr "Ține evidența cărților."
+
+#: web/links.py:340
+msgid "Helps you fill your album in the game - and brag about your cards ;)"
+msgstr "Te ajută să îți completezi albumul în joc - și să te lauzi cu cărțile tale ;)"
+
+#: web/links.py:345
+msgid "Recruitment Simulator"
+msgstr "Simulator de recrutare"
+
+#: web/links.py:351
+msgid "Cards you can get from songs"
+msgstr "Cărți care le poți primi de la melodii"
+
+#: web/links.py:353
+msgid "Sometimes you can get an R at the end of some songs."
+msgstr "Uneori poți primi un R la sfârșitul unor melodii."
+
+#: web/links.py:366
+msgid "Trade Accounts on Facebook"
+msgstr "Fă schimb de conturi pe Facebook"
+
+#: web/links.py:372
+msgid "Trade Accounts on Reddit"
+msgstr "Fă schimb de conturi pe Reddit"
+
+#: web/links.py:385
+msgid "Starter Accounts Giveaways with UR on Facebook"
+msgstr "Giveaway-uri de conturi începătoare cu UR pe Facebook"
+
+#: web/links.py:385
+msgid "Experience required to level up a card"
+msgstr "Experiență necesară pentru a crește cartea în nivel"
+
+#: web/links.py:394
+msgid "Play Songs & Watch Stories"
+msgstr "Joacă melodii și Urmărește Povești"
+
+#: web/links.py:399
+msgid "Scoring Guide"
+msgstr "Ghid pentru Scor"
+
+#: web/links.py:405
+msgid "List of songs"
+msgstr "Lista de melodii"
+
+#: web/links.py:412
+msgid "Train your fingers without wasting your LPs!"
+msgstr "Antrenează-ți degetele fără să consumi LP!"
+
+#: web/links.py:418
+msgid "Assist Guides for each songs"
+msgstr "Ghiduri de asistare pentru fiecare melodie"
+
+#: web/links.py:420
+msgid "Songs are slowed down, showed with and without hands, with a beatmania-like representation and good sound feedback.)"
+msgstr "Melodiile sunt încetinite, arătate cu și fără mâini, cu o reprezentare de tip beatmania și cu răspuns audio bun."
+
+#: web/links.py:425
+msgid "Advanced Scoring Guide"
+msgstr "Ghid avansat pentru scor"
+
+#: web/links.py:432
+msgid "Watch all the English Side Stories"
+msgstr "Urmărește toate poveștile secundare în engleză"
+
+#: web/links.py:434
+msgid "Click on a card, scroll down and play the video!"
+msgstr "Dă click pe un card, dă scroll în jos și urmărește videoul!"
+
+#: web/links.py:440
+msgid "Watch all the main story"
+msgstr "Urmărește toate poveștile principale"
+
+#: web/links.py:446
+msgid "Main Story Translation"
+msgstr "Traducere pentru Povestea Principală"
+
+#: web/links.py:452
+msgid "All Characters Stories Translation"
+msgstr "Traducere pentru toate poveștile personajelor"
+
+#: web/links.py:454
+msgid "Go to each characters page from the list on the left."
+msgstr "Mergi la pagina fiecărui caracter din lista din stânga."
+
+#: web/links.py:462
+msgid "Join Events"
+msgstr "Participă la evenimente"
+
+#: web/links.py:467
+msgid "Types of Events & How to Play"
+msgstr "Tipuri de evenimente & Cum să joci "
+
+#: web/links.py:475
+msgid "A tool to calculate the required loveca and time you will need to get a certain position in the global ranking."
+msgstr "O unealtă pentru a calcula loveca și timpul necesar de care vei avea nevoie pentru a ajunge pe o anumită poziție din rangul global."
+
+#: web/links.py:481
+msgid "Japanese Events Tier 2 Cutoff Predictor"
+msgstr "Prezicerea departajării treptei 2 a evenimentelor japoneze"
+
+#: web/links.py:493
+msgid "List of all events"
+msgstr "Lista cu toate evenimentele"
+
+#: web/links.py:496
+msgid "Events information + Hall of fame of all scores of the players from the School Idol Tomodachi community."
+msgstr "Informații evenimente + Hala Faimei pentru toate scorurile jucătorilor din comunitatea School Idol Tomodachi"
+
+#: web/links.py:501 web/templates/cards.html:174
+msgid "Event Cards"
+msgstr "Cărți din evenimente"
+
+#: web/links.py:509
+msgid "Fall in love with idols"
+msgstr "Îndrăgostește-te de idoli."
+
+#: web/links.py:514
+msgid "All the characters in the game"
+msgstr "Toate personajele din joc"
+
+#: web/links.py:516
+msgid "Get all the facts about your favorite idols, as well as their cards."
+msgstr "Află toate informațiile despre idolii tăi preferați și despre cărțile lor."
+
+#: web/links.py:522
+msgid "Vote for the BEST GIRL"
+msgstr "Votează pentru CEA MAI BUNĂ FATĂ"
+
+#: web/links.py:524
+msgid "Vote for your favorite cards on School Idol Contest, the Facemash."
+msgstr "Votează pentru cărțile tale preferate în School Idol Contest, Facemash-ul.\n"
+""
+
+#: web/links.py:530
+msgid "Personal Idols Ranking Generator"
+msgstr "Generator de rang personal pentru idoli."
+
+#: web/links.py:532
+msgid "Check \"Love Live!\" and press \"Music Start!\"."
+msgstr "Verifică \"Love Live!\" și apasă \"Music Start!\"."
+
+#: web/links.py:558
+msgid "Official Website"
+msgstr "Site-ul oficial"
+
+#: web/links.py:564
+msgid "Information about the anime"
+msgstr "Informații despre anime"
+
+#: web/links.py:576
+msgid "LoveLive! Discography"
+msgstr "Discografia LoveLive!"
+
+#: web/links.py:582
+msgid "LoveLive! The Manga"
+msgstr "Manga-ul LoveLive!"
+
+#: web/links.py:607
+msgid "Love Live music on videos"
+msgstr "Melodiile Love Live în videouri."
+
+#: web/links.py:608
+msgid "by the Reddit /r/LoveLive community"
+msgstr "făcut de comunitatea Reddit /r/LoveLive"
+
+#: web/templates/baseMenu.html:21 web/templates/initialsetup.html:205
+msgid "Help"
+msgstr "Ajutor"
+
+#: web/templates/event.html:127 web/templates/event.html.py:191
+msgid "time"
+msgstr "timp"
+
+#: tmp/profile.html:178 tmp/profile.html.py:189 web/raw.py:9
+#: web/templates/addaccount.html:149 web/templates/addaccount.html.py:256
+#: web/templates/edit.html:101 web/templates/edit.html.py:113
+#: web/templates/profile.html:152 web/templates/profile.html.py:290
+#: web/templates/profile.html:301 web/templates/profile.html.py:315
+#: web/templates/staff_verifications.html:30
+msgid "Get verified"
+msgstr "Fii verificat"
+
+#: tmp/views.py:386 tmp/views.py:853
+msgid "Only verified accounts can have a rank above 200. Contact us to get verified!"
+msgstr "Numai conturile verificate pot avea un rang peste 200. Contactează-ne pentru a putea fi verificat!"
+
+#: web/links.py:32
+msgid "Follow this tutorial to play the Japanese version of the game. You'll be able to download it directly from the App Store or Play Store!"
+msgstr "Urmărește acest tutorial pentru a putea juca versiunea japoneză a jocului. Îl poți descărca direct de pe App Store sau Play Store!"
+
+#: web/links.py:601
+msgid "Buy music on iTunes"
+msgstr "Cumpără muzică de pe iTunes"
+
+#: web/links.py:6 web/templates/android.html:32
+#: web/templates/cardsPage.html:343 web/templates/modalabout.html:21
+msgid "Download"
+msgstr "Descarcă"
+
+#: api/models.py:102
+msgid "Idol Supporter"
+msgstr "Susținător Idoli"
+
+#: api/models.py:103
+msgid "Idol Lover"
+msgstr "Iubitor de Idoli"
+
+#: api/models.py:104
+msgid "Idol Ambassador"
+msgstr "Ambasador Idol"
+
+#: api/models.py:105
+msgid "Idol Producer"
+msgstr "Producător Idol"
+
+#: api/models.py:106
+msgid "Ultimate Idol Devotee"
+msgstr "Cel mai devotat idolilor"
+
+#: api/models.py:322
+msgid "blue"
+msgstr "albastru"
+
+#: api/models.py:323
+msgid "pink"
+msgstr "roz"
+
+#: api/models.py:324
+msgid "shiny Silver"
+msgstr "Argintiu strălucitor"
+
+#: api/models.py:325 api/models.py:326
+msgid "shiny Gold"
+msgstr "Auriu strălucitor"
+
+#: web/links.py:50
+msgid "APKs to play on rooted Android"
+msgstr "APK-uri pe care le poți juca pe un Android rootat"
+
+#: web/links.py:59
+msgid "If the APKs above didn't work, here is a backup solution"
+msgstr "Dacă niciun APK de mai sus nu a mers, aici ai o altă soluție"
+
+#: web/links.py:92
+msgid "Video tutorials"
+msgstr "Tutoriale video"
+
+#: web/links.py:94
+msgid "Easy tutorials for beginners and advanced players by Eryn"
+msgstr "Tutoriale ușoare pentru jucători începători și avansați făcute de Eryn"
+
+#: web/links.py:411
+msgid "Android Training App"
+msgstr "Aplicație Android pentru antrenament"
+
+#: web/links.py:473
+msgid "Events Points Calculator"
+msgstr "Calculator pentru puncte evenimente"
+
+#: web/links.py:487
+msgid "English Events Tiers Cutoff Predictor"
+msgstr "Prezicerea departajării treptelor pentru evenimentele engleze"
+
+#: web/links.py:550
+msgid "LoveLive! Wikia"
+msgstr "LoveLive! Wikia"
+
+#: web/templates/activitysingle.html:52
+msgid "Write Comment"
+msgstr "Scrie un comentariu"
+
+#: web/templates/addteam.html:6 web/templates/addteam.html.py:13
+#: web/templates/include/account_tab_teams.html:8
+msgid "Update Team"
+msgstr "Update echipă"
+
+#: web/templates/addaccount.html:296 web/templates/addteam.html:6
+#: web/templates/addteam.html.py:13 web/templates/addteam.html:40
+#: web/templates/include/account_tab_teams.html:32
+msgid "Add Team"
+msgstr "Adaugă echipă"
+
+#: web/templates/addteam.html:48
+msgid "Delete Team"
+msgstr "Șterge echipă"
+
+#: web/templates/box.html:5
+msgid "Box"
+msgstr "Cutie"
+
+#: web/templates/box.html:55
+msgid "Back to boxes"
+msgstr "Inapoi la cutii"
+
+#: web/templates/boxes.html:4 web/templates/boxes.html.py:7
+msgid "Boxes"
+msgstr "Cutii"
+
+#: web/templates/cards.html:206 web/templates/cardsPage.html:190
+#: web/templates/idol.html:68
+msgid "Sub Unit"
+msgstr "Sub Unitate"
+
+#: web/templates/cards.html:158 web/views.py:2535
+msgid "Promo Cards"
+msgstr "Cărți promoționale"
+
+#: web/forms.py:442 web/forms.py:449 web/templates/cards.html:161
+#: web/templates/cards.html.py:169 web/templates/cards.html:177
+#: web/templates/songs.html:24 web/templates/songs.html.py:31
+#: web/templates/users.html:54 web/templates/users.html.py:61
+#: web/templates/users.html:100
+msgid "Only"
+msgstr "Doar"
+
+#: web/templates/cards.html:162 web/templates/cards.html.py:170
+#: web/templates/cards.html:178 web/templates/songs.html:25
+#: web/templates/songs.html.py:32 web/templates/users.html:55
+#: web/templates/users.html.py:99
+msgid "None"
+msgstr "Nimic"
+
+#: web/templates/cards.html:166
+msgid "Special Cards"
+msgstr "Cărți speciale"
+
+#: web/templates/about.html:240
+msgid "Donation"
+msgstr "Donație"
+
+#: web/templates/about.html:258
+msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!"
+msgstr "Numele tău, poza ta de profil, un link către profilul tău, și un link în care poți publica ce vrei tu (Twitter, Tumblr, Twitch sau oricare alt site!) vor fi adăugate pe PAGINA PRINCIPALĂ School Idol Tomodachi!"
+
+#: web/templates/about.html:261
+msgid "Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page."
+msgstr "Numele tău, poza ta de profil, un link către profilul tău, și un link în care poți publica ce vrei tu (Twitter, Tumblr, Twitch sau oricare alt site!) vor fi adăugate pe această pagină."
+
+#: web/templates/about.html:264
+msgid "Your name and a link to your profile will be added to this page."
+msgstr "Numele tău și un link către profilul tău vor fi adăugate pe această pagină."
+
+#: web/templates/about.html:304
+msgid "You decide who will be the idol from μ's shown by default on top of the homepage."
+msgstr "Tu decizi ce idol din μ's va fi afișată în susul paginii principale."
+
+#: web/templates/about.html:275
+msgid "With this special status, a lovely %(color)s heart will be displayed next to your profile picture on your profile and everywhere it appears on the website."
+msgstr "Cu acest statut special, o drăguță %(culoare) inimă va fi afișată lângă poza ta de profil si oriunde pe site."
+
+#: web/templates/about.html:288
+msgid "We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!"
+msgstr "Iți vom trimite o cutie foarte drăguță făcută de mână cu plicuri 10+1 care vor conține cărți aleatorii din joc!"
+
+#: web/templates/about.html:294
+msgid "We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!"
+msgstr "Vom discuta apoi vom implementa o trăsătură care ți-ar place să o vezi pe website. Tu decizi ce vrei, iar noi vom face posibil!"
+
+#: web/templates/about.html:295
+msgid "Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^"
+msgstr "Atenție la faptul că trebuie sa fie în limita posibilităților noastre și conform spiritului acestui website ^_^"
+
+#: web/templates/include/idol_tabs.html:6
+msgid "Pictures"
+msgstr "Poze"
+
+#: web/templates/login.html:20
+msgid "Forgot password?"
+msgstr "Ai uitat parola?"
+
+#: tmp/profile.html:187 web/templates/profile.html:299
+msgid "You are Bronze Verified. Only you can see it."
+msgstr "Esti verificat Bronz. Doar tu poți vedea."
+
+#: tmp/profile.html:189 web/templates/profile.html:301
+msgid "Silver"
+msgstr "Argintiu"
+
+#: tmp/profile.html:189 web/templates/profile.html:301
+msgid "Gold"
+msgstr "Auriu"
+
+#: api/models.py:201
+msgid "Never"
+msgstr "Niciodată"
+
+#: api/models.py:202
+msgid "Sometimes"
+msgstr "Câteodată"
+
+#: api/models.py:203
+msgid "Often"
+msgstr "Adesea"
+
+#: api/models.py:204
+msgid "Every single day"
+msgstr "În fiecare zi"
+
+#: api/models.py:671
+msgid "Platform"
+msgstr "Platformă"
+
+#: api/models.py:672
+msgid "Username/ID"
+msgstr "Nume de utilizator/ID"
+
+#: api/models.py:673
+msgid "How often do you tweet/stream/post about Love Live?"
+msgstr "Cât de des postezi despre LoveLive?"
+
+#: tmp/forms.py:26 web/forms.py:43
+msgid "Old Password"
+msgstr "Vechea parolă"
+
+#: tmp/forms.py:27 web/forms.py:44
+msgid "New Password"
+msgstr "Noua parolă"
+
+#: tmp/forms.py:28 web/forms.py:45
+msgid "New Password Again"
+msgstr "Noua parolă din nou"
+
+#: tmp/forms.py:34 web/forms.py:51
+msgid "The two password fields did not match."
+msgstr "Câmpurile celor două parole nu se potrivesc."
+
+#: tmp/forms.py:69 tmp/forms.py:72 web/forms.py:116 web/forms.py:123
+msgid "Password"
+msgstr "Parolă"
+
+#: web/links.py:73
+msgid "Taiwanese version APK"
+msgstr "APK pentru versiunea taivaneză "
+
+#: web/links.py:378
+msgid "Accounts Giveaways"
+msgstr "Giveaway-uri pentru conturi"
+
+#: web/templates/addaccount.html:99
+msgid "Your transfer code has been deleted."
+msgstr "Codul tău de transfer a fost șters."
+
+#: web/templates/addaccount.html:104 web/templates/addaccount.html.py:122
+#: web/templates/profile.html:311
+msgid "Get your saved transfer code"
+msgstr "Recuperează-ți codul de transfer salvat"
+
+#: web/templates/addaccount.html:114
+msgid "Delete your transfer code"
+msgstr "Şterge codul tău de transfer"
+
+#: web/templates/addaccount.html:131 web/templates/addaccount.html.py:143
+#: web/templates/profile.html:313
+msgid "Save your transfer code"
+msgstr "Salvează codul tău de transfer"
+
+#: web/templates/addaccount.html:135
+msgid "Your transfer code has been securely saved."
+msgstr "Codul tău de transfer a fost securizat și salvat."
+
+#: web/templates/edit.html:29
+msgid "Links"
+msgstr "Link-uri"
+
+#: web/templates/edit.html:39
+msgid "Delete Link"
+msgstr "Şterge link"
+
+#: web/templates/edit.html:46 web/templates/edit.html.py:54
+msgid "Add Link"
+msgstr "Adaugă link"
+
+#: web/templates/edit.html:74
+msgid "If you change your username, all the external links to your profile will not work anymore. All your comments will be deleted. If you wish to transfer your comments, contact us."
+msgstr "Dacă iți schimbi numele de utilizator, toate link-urile de la profilul tău nu vor mai funcționa. Toate comentariile tale vor fi șterse. Dacă dorești să iți transferăm comentariile, contactează-ne."
+
+#: web/templates/edit.html:87
+msgid "Change your password"
+msgstr "Schimbă-ți parola"
+
+#: web/templates/include/alert_transfer_code.html:3
+msgid "You have a transfer code saved in School Idol Tomodachi. If you reset your password, you will not be able to retrieve it anymore."
+msgid_plural "You have %(counter)s transfer codes saved. If you reset your password, you will not be able to retrieve them anymore."
+msgstr[0] "Aveți un cod de transfer salvat pe School Idol Tomodachi. Dacă vă resetați parola, nu veți mai putea să îl recuperați."
+msgstr[1] "Aveți unele coduri de transfer salvate pe School Idol Tomodachi. Dacă vă resetați parola, nu veți mai putea să le recuperați."
+msgstr[2] "Aveți unele coduri de transfer salvate pe School Idol Tomodachi. Dacă vă resetați parola, nu veți mai putea să le recuperați."
+
+#: tmp/views.py:782 tmp/views.py:829 tmp/views.py:841 web/views.py:1387
+#: web/views.py:1472 web/views.py:1486
+msgid "Wrong password."
+msgstr "Parolă greșită."
+
+#: api/models.py:686
+msgid "It might take up to 24 hours to update your location on the map."
+msgstr "S-ar putea să dureze până la 24 de ore pentru a actualiza locația de pe hartă."
+
+#. Android App
+#: 
+msgid "app_name"
+msgstr "app_nume"
+
+#. Android App
+#: 
+msgid "welcome"
+msgstr "bun venit"
+
+#. Android App
+#: 
+msgid "action_settings"
+msgstr "acțiune_setări"
+
+#. Android App
+#: 
+msgid "title_activity_card"
+msgstr "titlu_activitate_carte"
+
+#. Android App
+#: 
+msgid "title_activity_card_info1"
+msgstr "titlu_activitate_carte_info1"
+
+#. Android App
+#: 
+msgid "skill"
+msgstr "abilitate"
+
+#. Android App
+#: 
+msgid "center_skill"
+msgstr "centru_abilitate"
+
+#. Android App
+#: 
+msgid "release_date"
+msgstr "data_apariției"
+
+#. Android App
+#: 
+msgid "stats"
+msgstr "statistici"
+
+#. Android App
+#: 
+msgid "level_1"
+msgstr "nivelul_1"
+
+#. Android App
+#: 
+msgid "level_30"
+msgstr "nivelul_30"
+
+#. Android App
+#: 
+msgid "level_40"
+msgstr "nivelul_40"
+
+#. Android App
+#: 
+msgid "level_60"
+msgstr "nivelul_60"
+
+#. Android App
+#: 
+msgid "level_80"
+msgstr "nivelul_80"
+
+#. Android App
+#: 
+msgid "level_100"
+msgstr "nivelul_100"
+
+#. Android App
+#: 
+msgid "unknown"
+msgstr "necunoscut"
+
+#. Android App
+#: 
+msgid "none"
+msgstr "nimic"
+
+#. Android App
+#: 
+msgid "title_activity_menu"
+msgstr "titlu_activitate_meniu"
+
+#. Android App
+#: 
+msgid "title_activity_idols"
+msgstr "titlu_activitate_idoli"
+
+#. Android App
+#: 
+msgid "search_idols"
+msgstr "caută_idoli"
+
+#. Android App
+#: 
+msgid "search_idols_hint"
+msgstr "caută_idoli_sugestie"
+
+#. Android App
+#: 
+msgid "title_activity_web"
+msgstr "titlu_activitate_web"
+
+#. Android App
+#: 
+msgid "only_japan"
+msgstr "doar_japonia"
+
+#. Android App
+#: 
+msgid "worldwide"
+msgstr "la nivel mondial"
+
+#: web/templates/index.html:34 web/templates/index.html.py:38
+msgid "Follow School Idol Tomodachi on Twitter"
+msgstr "Urmărește School Idol Tomodachi pe Twitter"
+
+#: api/models.py:59 api/models.py:113
+msgid "Bronze Verified"
+msgstr "Verificat Bronz"
+
+#: api/models.py:74
+msgid "Index fingers"
+msgstr "Degetele arătătoare"
+
+#: api/models.py:801 web/templates/staff_verifications.html:25
+msgid "Verification"
+msgstr "Verificare"
+
+#: api/models.py:801
+msgid "What kind of verification would you like?"
+msgstr "Ce fel de verificare ți-ar plăcea?"
+
+#: api/models.py:803 api/models.py:806 api/models.py:819 api/models.py:821
+msgid "Comment"
+msgstr "Comentează"
+
+#: api/models.py:803
+msgid "If you have anything to say to the person who is going to verify your account, feel free to write it here!"
+msgstr "Dacă ai ceva de spus persoanei care iți va verifica contul, simte-te liber să scrii aici!"
+
+#: api/models.py:807
+msgid "Allow us to verify your account during events"
+msgstr "Permite-ne să iți verificăm contul în timpul evenimentelor"
+
+#: api/models.py:807
+msgid "Check this only if you don't care about the current event. You'll get verified faster."
+msgstr "Selectează asta doar daca nu-ți pasă de evenimentul curent. Vei primi verificarea mai repede."
+
+#: web/templates/android.html:25
+msgid "School Idol Tomodachi makes its Android debut!"
+msgstr "School Idol Tomodachi iși face debutul pe Android!"
+
+#: index.html:32
+msgid "Download the app"
+msgstr "Descarcă aplicație"
+
+#: web/forms.py:280
+msgid "If your files are too large, send them one by one. First upload one image, then edit your request with the second one, and so on. If even one image doesn't work, please resize your images."
+msgstr "În cazul în care fișierele sunt prea mari, trimite-le unul câte unul. Întâi încarcă o imagine, apoi modifică solicitarea ta cu cea de-a doua, și așa mai departe. În cazul în care chiar și o singură imagine nu funcționează, te rugăm să redimensionezi imaginile."
+
+#: web/forms.py:363
+msgid "Latest unlocked songs"
+msgstr "Cele mai recente melodii deblocate"
+
+#: web/forms.py:364
+msgid "Song name"
+msgstr "Numele melodiei"
+
+#: web/forms.py:365 web/templates/songsPage.html:131
+msgid "Beats per minute"
+msgstr "Bătăi pe minut"
+
+#: web/forms.py:366
+msgid "Song length"
+msgstr "Durata melodiei"
+
+#: web/forms.py:367
+msgid "Rank to unlock song"
+msgstr "Rangul necesar să deblochezi melodia"
+
+#: web/forms.py:368
+msgid "Notes in Hard song"
+msgstr "Notele în melodiile Hard"
+
+#: web/forms.py:369
+msgid "Notes in Expert song"
+msgstr "Notele în melodiile Expert"
+
+#: web/forms.py:370 web/forms.py:422
+msgid "Ordering"
+msgstr "Ordonare"
+
+#: web/forms.py:372 web/templates/songsPage.html:167
+msgid "Daily rotation"
+msgstr "Rotația zilnică"
+
+#: web/forms.py:374
+msgid "Available"
+msgstr "Valabilitate"
+
+#: web/links.py:570
+msgid "Susume Love Live! Fansite"
+msgstr "Fansite-ul Susume Love Live!"
+
+#: web/templates/about.html:22 web/templates/about.html.py:212
+#: web/templates/baseMenu.html:19
+msgid "About us"
+msgstr "Despre noi"
+
+#: web/templates/about.html:35 web/templates/about.html.py:48
+#: web/templates/android.html:71 web/templates/android.html.py:80
+#: web/templates/android.html:84
+msgid "Contact us"
+msgstr "Contactează-ne"
+
+#: web/templates/about.html:130
+msgid "Staff members"
+msgstr "Membrii echipei"
+
+#: web/templates/about.html:142
+msgid "Owner"
+msgstr "Proprietarul"
+
+#: web/templates/about.html:144
+msgid "Staff"
+msgstr "Personal"
+
+#: api/models.py:111 api/models.py:112 api/models.py:113
+#: web/templates/about.html:165
+msgid "Takes care of verifications:"
+msgstr "Are grijă de verificări:"
+
+#: web/templates/about.html:189 web/templates/android.html:83
+msgid "Contribute"
+msgstr "Contribuie"
+
+#: web/templates/about.html:189
+msgid "Dev"
+msgstr "Dezvoltator"
+
+#: web/templates/about.html:282
+msgid "We will send you a cute postcard signed by the 2 developers :)"
+msgstr "Îți vom trimite o carte poștală drăguță semnată de cei 2 dezvoltatori :)"
+
+#: web/templates/addaccount.html:154
+msgid "Generate a transfer code on the game."
+msgstr "Generează un cod de transfer în joc"
+
+#: web/templates/addaccount.html:154
+msgid "How to generate a transfer code?"
+msgstr "Cum generezi un cod de transfer?"
+
+#: web/templates/addaccount.html:155
+msgid "Upload the screenshot or write it down below."
+msgstr "Încarcă screenshoturile sau scrie mai jos."
+
+#: web/templates/addaccount.html:159
+msgid "If you don't play during an event or you don't care, we can also verify you during events, which makes the process much faster for us. Check the box below."
+msgstr "Dacă nu joci în timpul unui eveniment sau nu îți pasă, noi te putem verifica și în timpul unui eveniment, ceea ce face procesul mai rapid pentru noi. Selectează căsuța de mai jos."
+
+#: web/templates/addaccount.html:160
+msgid "If you still play between events, we can notify you before we start the process. Ask for it in your message."
+msgstr "Dacă mai joci între eventuri, te putem anunța înainte de a începe procesul. Cere asta în mesajul tău."
+
+#: web/templates/addaccount.html:162
+msgid "We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else"
+msgstr "Vom introduce codul de transfer într-unul dintre dispozitivele noastre și vom verifica informațiile. Nu vom face nimic cu LP-ul, loveca-urile și cărțile tale, sau orice altceva."
+
+#: web/templates/addaccount.html:163
+msgid "You will then receive an email with your new transfer code."
+msgstr "Atunci o să primești un mail cu noul tău cod de transfer."
+
+#: web/templates/addaccount.html:164
+msgid "Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!"
+msgstr "Notă: Dispozitivul utilizat pentru verificare nu va fi folosit pentru nimic altceva până când nu va veți lua contul înapoi, pentru a vă asigura că nu aveți probleme. În considerare pentru alte persoane care doresc să fie verificate, vă rugăm să-l luați înapoi cât mai curând posibil!"
+
+#: web/templates/addaccount.html:170
+msgid "Open the game you want to get verified"
+msgstr "Deschide jocul care vrei să fie verificat."
+
+#: web/templates/addaccount.html:171
+msgid "Take screenshots and upload them below."
+msgstr "Faceți screenshot-uri și încărcați-le mai jos."
+
+#: web/templates/addaccount.html:171
+msgid "How to take screenshots?"
+msgstr "Cum să faci screenshots? "
+
+#: web/templates/addaccount.html:173
+msgid "Go to \"Members\" (部員) then \"Member List\" (部員リスト), order by \"Rarity\" (レアリティ) and take screenshots of all the pages that have URs or SRs"
+msgstr "Du-te la \"Members\" (部 員), apoi în \"Member List\" (部 員 リ ス ト), selectează \"Rarity\" (レ ア リ テ ィ) și fă screenshots la toate paginile care au UR-uri sau SR-uri"
+
+#: web/templates/addaccount.html:175
+msgid "If you have SR/UR cards in your album (you used to have them but you sold them or used them in training), also take a screenshot of said cards in your album."
+msgstr "Dacă ai cărți UR/SR în albumul tău (le-ai avut înainte, dar le-ai vândut sau le-ai folosit în antrenare), fă screenshot-uri și acestora."
+
+#: web/templates/addaccount.html:176
+msgid "If you have SR/UR cards in your present box, also take a screenshot of the cards in your present box."
+msgstr "Dacă ai cărți SR/UR în cutia de cadouri, fă screenshot-uri și acestora."
+
+#: web/templates/addaccount.html:179
+msgid "Go to \"Other\" (その他) then \"Profile\" (プロフィール) and take a screenshot"
+msgstr "Duceți-vă la \"Other\" (そ の 他), apoi \"Profile\" (プ ロ フ ィ ー ル) și faceți un screenshot"
+
+#: web/templates/addaccount.html:182
+msgid "No need to refresh your profile, you will receive an email when you're verified!"
+msgstr "Nu este nevoie să actualizezi profilul tău, o să primești un email atunci când ai fost verificat!"
+
+#: web/templates/addaccount.html:186
+msgid "This verification only lets you change your rank above 200. It does not give you a visible sign of verification on the website, since we did not verify your cards. The only reason you would want this verification is if your rank is above 200 and you do not wish to go through Gold/Silver verification."
+msgstr "Această verificare iți permite să modifici doar rangul tău mai sus 200. Nu iți dă un semn vizibil de verificare pe site, din moment ce nu ți-am verificat cărțile. Singurul motiv pentru care a-i dori această verificare este dacă rangul tău este mai mare de 200 și nu dorești să treci prin verificarea de Aur/ Argint."
+
+#: web/templates/addaccount.html:188
+msgid "We will enter your friend ID in the game and check your rank."
+msgstr "Îți vom introduce Friend ID în joc și vom verifica rangul."
+
+#: web/templates/addaccount.html:189
+msgid "You will receive an email when your account has been set as verified and you'll be able to set your rank above 200."
+msgstr "Vei primi un email când contul tău a fost setat ca verificat și vei putea să îți setezi rangul peste 200."
+
+#: web/templates/addaccount.html:199 web/templates/usicaltriofestival.html:100
+msgid "Cancel"
+msgstr "Anulare"
+
+#: web/templates/addaccount.html:206
+msgid "Your position in the verification queue"
+msgstr "Poziția ta în coada de verificare"
+
+#: web/templates/addaccount.html:208
+msgid "day"
+msgstr "zi"
+
+#: web/templates/addaccount.html:247 web/templates/initialsetup.html:200
+msgid "Check your cards"
+msgstr "Verifică-ți cărțile"
+
+#: web/templates/addaccount.html:267
+msgid "read our FAQ"
+msgstr "Citiți FAQ-ul nostru"
+
+#: web/templates/addaccount.html:275
+msgid "Your rank must be over 80."
+msgstr "Rangul tău trebuie să fie peste 80"
+
+#: web/templates/addaccount.html:278
+msgid "You must specify your friend ID in your account."
+msgstr "Trebuie să specifici Friend ID-ul în contul tău"
+
+#: web/templates/addaccount.html:281
+msgid "You must provide a valid email address in your settings."
+msgstr "Trebuie să dai o adresă de email validă în setările tale."
+
+#: web/templates/addaccount.html:284
+msgid "Your profile must not be private."
+msgstr "Profilul tău nu trebuie să fie privat."
+
+#: web/templates/android.html:7
+msgid "Download the School Idol Tomodachi app on Google Play"
+msgstr "Descarcă aplicația School Idol Tomodachi pe Google Play"
+
+#: web/templates/android.html:21
+msgid "Sukutomo"
+msgstr "Sukutomo"
+
+#: web/templates/about.html:103 web/templates/about.html.py:115
+#: web/templates/android.html:21 web/templates/urpairs.html:9
+#: web/templates/usersPage.html:52
+msgid "by"
+msgstr "de către"
+
+#: web/templates/android.html:28
+msgid "If you're searching for the game itself, you can"
+msgstr "Dacă vreți să descarci jocul în sine, se poate"
+
+#: web/templates/android.html:28
+msgid "download it here"
+msgstr "descarcă-l aici"
+
+#: web/raw.py:94 web/raw.py:101 web/raw.py:107 web/raw.py:113 web/raw.py:119
+#: web/templates/android.html:56
+msgid "F.A.Q."
+msgstr "Întrbări frecvente"
+
+#: web/templates/android.html:59
+msgid "I get this message when I try to install the apk: \"Install blocked. For security, your phone is set to block installation of apps obtained from unknown sources.\""
+msgstr "Primesc acest mesaj când încerc să instalez apk-ul: „Instalare blocata. Pentru securitate, telefonul tău este setat să blocheze instalarea aplicațiilor luate din surse necunoscute.”"
+
+#: web/templates/android.html:69
+msgid "What should I do if I find a bug or want to make a suggestion?"
+msgstr "Ce ar trebui să fac dacă găsesc o problemă sau vreau să fac o sugestie?"
+
+#: web/templates/android.html:72
+msgid "We're more than happy to help you and discuss with you."
+msgstr "Suntem mai mult decât bucuroși să te ajutăm sau să discutăm cu tine."
+
+#: web/templates/android.html:76
+msgid "I can't find the app on Google Play."
+msgstr "Nu găsesc aplicația pe Google Play"
+
+#: web/templates/android.html:77
+msgid "The app is not available on Google Play, you have to download it on your phone from this page using the download button above then open it to install it."
+msgstr "Aplicația nu este disponibilă pe Google Play, trebuie să o downloadezi în telefon de pe această pagină folosind butonul de descărcare de mai sus iar apoi deschide-o pentru instalare."
+
+#: web/templates/android.html:79
+msgid "I sometimes get this message: \"Unfortunately, Sukutomo has stopped\"."
+msgstr "Uneori primesc acest mesaj: „Din păcate, Sukutomo s-a oprit”"
+
+#: web/templates/android.html:80
+msgid "It might happen for different reasons, but it always means there is a bug in the app."
+msgstr "Se poate întâmpla din diferite motive, dar mereu înseamnă că este o problemă în aplicație."
+
+#: web/templates/android.html:80
+msgid "Write as much information as you can (What exactly were you doing when it happened? What kind of phone do you have?) and we will do our best to fix it."
+msgstr "Scrie cât mai multe informații posibile (Ce făceai mai exact când s-a întâmplat? Ce fel de telefon ai?) și noi vom face tot ce se poate pentru a repara problema."
+
+#: web/templates/android.html:82
+msgid "I'm a developer and I would like to help you."
+msgstr "Sunt un dezvoltator și mi-ar place să vă ajut."
+
+#: web/templates/android.html:83
+msgid "Awesome! We gladly accept contributions. The app is open-source, so go ahead and fork it, have fun with the code and send us pull requests when you have something ready."
+msgstr "Minunat! Acceptăm cu drag contribuitori. Aplicația este open-source, deci ia-o, distrează-te cu codul si trimite-ne solicitări când ai ceva terminat."
+
+#: web/templates/android.html:84
+msgid "If you have no idea what we're talking about, don't panic. We can help you get started."
+msgstr "Dacă nu ai nicio idee despre ce vorbim, nu te panica. Te putem ajuta să începi."
+
+#: web/raw.py:173 web/templates/base.html:53 web/templates/songs.html:6
+msgid "Songs"
+msgstr "Melodii"
+
+#: web/templates/box.html:9
+msgid "Promo Up"
+msgstr "Promoție"
+
+#: web/templates/box.html:10
+msgid "Level up the skill of your promo cards using R cards that have the same skill"
+msgstr "Crește nivelul abilității cărții promoționale folosind cărți R care au aceeași abilitate"
+
+#: web/templates/cards.html:97
+msgid "Advanced"
+msgstr "Avansat"
+
+#: web/templates/cards.html:357
+msgid "Edit card"
+msgstr "Editează cartea"
+
+#: web/templates/cardsPage.html:349 web/templates/cardsPage.html.py:352
+msgid "Transparent"
+msgstr "Transparent"
+
+#: web/templates/cardsPage.html:313 web/templates/cardsPage.html.py:316
+msgid "UR Pair"
+msgstr "Pereche UR"
+
+#: web/templates/emails/base.html:527
+msgid "Thanks for using our site!"
+msgstr "Vă mulțumim pentru utilizarea site-ului nostru!"
+
+#: web/templates/emails/transfercoderemovedb.html:8
+msgid "Hi"
+msgstr "Bună"
+
+#: web/templates/event_participations.html:16
+#: web/templates/event_participations.html:58
+msgid "Back to event"
+msgstr "Înapoi la event"
+
+#: web/templates/event_participations.html:52
+msgid "None of your accounts are allowed to add an event participation. It might be because the event is not finished yet."
+msgstr "Niciunul dintre conturile tale nu are voie să adauge o participare la eveniment. Poate pentru că evenimentul nu a luat încă sfârșit."
+
+#: web/templates/event_ranking.html:53
+msgid "Load more..."
+msgstr "Încarcă mai mult..."
+
+#: web/templates/index.html:81
+msgid "is crowdfunded by our Idol Producer"
+msgstr "este finanțat de către Producătorul nostru de Idoli"
+
+#: web/templates/cardsPage.html:196 web/templates/index.html:84
+#: web/templates/modaltutorialaddcard.html:11
+#: web/templates/usicaltriofestival.html:39
+msgid "Learn more"
+msgstr "Învață mai multe"
+
+#: web/templates/index.html:86
+msgid "donators"
+msgstr "donatori"
+
+#: web/templates/modalabout.html:4
+msgid "About the game LoveLive! School Idol Festival"
+msgstr "Despre jocul LoveLive! School Idol Festival"
+
+#: web/templates/modalsukutomo.html:9
+msgid "LoveLive! School Idol Festival Game Database"
+msgstr "Baza de date LoveLive! School Idol Festival"
+
+#: web/templates/modalsukutomo.html:16
+msgid "All the Cards"
+msgstr "Toate Cărțile"
+
+#: web/templates/modalsukutomo.html:24
+msgid "All the Events"
+msgstr "Toate Evenimentele"
+
+#: web/templates/modalsukutomo.html:25
+msgid "Get ready for your favorite idol: check the list of events in advance to see what's next!"
+msgstr "Pregătește-te pentru idolul tău preferat: verifică listele de evenimente în avans pentru a știi ce urmeaza!"
+
+#: web/templates/modalsukutomo.html:32
+msgid "All the Songs"
+msgstr "Toate Melodiile"
+
+#: web/templates/modalsukutomo.html:33
+msgid "Search for your favorite songs, find the shortest, longest, hardest, and more!"
+msgstr "Caută-ți melodiile preferate, găsește cele mai scurte, lungi, grele, și multe altele!"
+
+#: web/templates/modalsukutomo.html:40
+msgid "All the Idols"
+msgstr "Toți idolii"
+
+#: web/templates/modalsukutomo.html:41
+msgid "Did you know that Rin hates fish but loves ramen? All you need to know about the idols!"
+msgstr "Știați că Rin urăște peștele dar iubește ramenul? Tot ce trebuie să știți despre idoli!"
+
+#: web/templates/modalsukutomo.html:46
+msgid "Track your progress"
+msgstr "Urmărește-ți progresul"
+
+#: web/templates/initialsetup.html:204 web/templates/modalsukutomo.html:53
+msgid "Customize your own profile"
+msgstr "Personalizează-ți profilul"
+
+#: web/templates/modalsukutomo.html:54
+msgid "Create your account and join the community!"
+msgstr "Creează-ți propriul cont și alăture-te comunității!"
+
+#: web/templates/modalsukutomo.html:61
+msgid "Showcase your collection of cards"
+msgstr "Expune-ți colecția de cărți"
+
+#: web/templates/modalsukutomo.html:62
+msgid "Keep track of the cards you idolized, max leveled or max bonded!"
+msgstr "Ține evidența cărților idolizate, cu nivelul și bondul maximizat"
+
+#: web/templates/modalsukutomo.html:69
+msgid "Save your scores in events"
+msgstr "Salvează-ți scorurile în evenimente"
+
+#: web/templates/modalsukutomo.html:70
+msgid "Tier 1, tier 2, final score & ranking position!"
+msgstr "Treapta 1, treapta 2, scorul final și poziția în rang!"
+
+#: web/templates/modalsukutomo.html:75
+msgid "Meet new friends, and more!"
+msgstr "Întâlnește prieteni noi și mai mult!"
+
+#: web/forms.py:420 web/templates/base.html:77 web/templates/base.html.py:78
+#: web/templates/modalsukutomo.html:82
+msgid "Leaderboard"
+msgstr "Topul"
+
+#: web/templates/modalsukutomo.html:83
+msgid "Do you think you can beat all the top players and become the highest ranked player in the world?"
+msgstr "Crezi că poți întrece toți jucătorii de top și să devii jucătorul de cel mai înalt rang din lume?"
+
+#: web/templates/modalsukutomo.html:90
+msgid "Find players near you"
+msgstr "Găsește jucători din apropierea ta"
+
+#: web/templates/discussions.html:37 web/templates/modalsukutomo.html:104
+msgid "the LoveLive! community"
+msgstr "comunitatea LoveLive!"
+
+#: web/templates/songsPage.html:13
+msgid "%(counter)s song matches your search:"
+msgid_plural "%(counter)s songs match your search:"
+msgstr[0] "O melodie se potrivește cu căutarea."
+msgstr[1] "%(counter)s melodii se potrivesc cu căutarea."
+msgstr[2] "%(counter)s melodii se potrivesc cu căutarea."
+
+#: web/templates/songsPage.html:73
+msgid "Notes"
+msgstr "Note"
+
+#: web/templates/songsPage.html:121
+msgid "Unlock"
+msgstr "Deblochează"
+
+#: web/templates/songsPage.html:140
+msgid "Length"
+msgstr "Durată"
+
+#: web/templates/songsPage.html:177
+msgid "Currently available"
+msgstr "Disponibil acum"
+
+#: web/templates/staff_verifications.html:29
+msgid "Status"
+msgstr "Status"
+
+#: web/templatetags/choicesToString.py:38
+msgid "Easy"
+msgstr "Ușor"
+
+#: web/templatetags/choicesToString.py:40
+msgid "Hard"
+msgstr "Greu"
+
+#: web/templatetags/choicesToString.py:41
+msgid "Expert"
+msgstr "Expert"
+
+#: web/templatetags/choicesToString.py:42
+msgid "Random"
+msgstr "Aleatoriu"
+
+#: web/templatetags/mod.py:75
+msgid "lovely"
+msgstr "drăguț"
+
+#: web/templatetags/mod.py:76
+msgid "awesome"
+msgstr "minunat"
+
+#: web/templatetags/mod.py:77
+msgid "incredible"
+msgstr "incredibil"
+
+#: web/templatetags/mod.py:78
+msgid "adorable"
+msgstr "adorabil"
+
+#: web/templatetags/mod.py:79
+msgid "generous"
+msgstr "generos"
+
+#: web/templatetags/mod.py:80
+msgid "idols-addicted"
+msgstr "dependent de idoli"
+
+#: web/templatetags/mod.py:81
+msgid "friendly"
+msgstr "prietenos"
+
+#: web/templatetags/mod.py:82
+msgid "kind"
+msgstr "amabil"
+
+#: web/templatetags/mod.py:83
+msgid "warmhearted"
+msgstr "bun la suflet"
+
+#: web/templatetags/mod.py:84
+msgid "nice"
+msgstr "frumos"
+
+#: web/templates/about.html:26
+msgid "We are two developers and relatively casual players of the game. It's the first project we made together."
+msgstr "Suntem doi dezvoltatori și jucatori (relativ) ocazional. Este primul proiect pe care l-am făcut împreună."
+
+#: web/templates/about.html:28
+msgid "any donation"
+msgstr "orice donație"
+
+#: web/templates/about.html:28
+msgid "helps a lot and is greatly appreciated."
+msgstr "ajută foarte mult și este apreciată enorm."
+
+#: web/templates/about.html:30
+msgid "The heartwarming support from the community keeps motivating us to do more! We love helping the community by providing as much information as we can about the game, while keeping the website easy to use, pink and cute ^_^"
+msgstr "Suportul înduioșător din comunitate continuă să ne motiveze să facem mai mult! Ne place să ajutăm comunitatea prin furnizarea unui număr cât mai mare de informații despre de joc, păstrând în același timp site-ul ușor de utilizat, roz și drăguț ^_^"
+
+#: web/templates/about.html:32
+msgid "We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you."
+msgstr "Nu știm cât de departe vom ajunge, dar un lucru pe care îl știm sigur este că ne distrăm făcând asta și împărtășind această nebunatică aventură cu idoli cu voi."
+
+#: web/templates/about.html:80
+msgid "School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them."
+msgstr "School Idol Tomodachi se bazează pe mai multe servicii externe oferite de către comunitatea LoveLive! pentru a aduna date din joc. Vă recomandăm sa îi vizitați."
+
+#: web/templates/about.html:191
+msgid "Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!"
+msgstr "Proiectul nostru este open-source și liber pentru contribuții, Suntem mai mult decât bucuroși să primim sugestii pe GitHub!"
+
+#: web/templates/about.html:193
+msgid "The website has been made using"
+msgstr "Acest website a fost creat folosind"
+
+#: web/templates/about.html:193
+msgid "so in Python 2. We also use"
+msgstr "so în Python 2. Folosim și"
+
+#: web/templates/about.html:193
+msgid "for the front-end of the website."
+msgstr "pentru meniul principal al website-ului."
+
+#: web/templates/about.html:195
+msgid "We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level."
+msgstr "Acceptăm orice fel de contribuții, de la instrumente pentru a ajuta jucătorii, pagini de statistici, mini-jocuri, sau chiar mici schimbări CSS. Nu fii timid! În caz că ai nevoie de ajutor pentru a începe, trebuie doar să ne contactezi și ne vom lua cu bucurie timp pentru a te învăța elementele de bază, indiferent de ce nivel ești."
+
+#: web/templates/addaccount.html:245
+msgid "Before sending your request, we highly recommend you to check that you entered all your cards."
+msgstr "Înainte de a trimite solicitarea, recomandăm să verifici dacă ai introdus toate cărțile."
+
+#: web/templates/addaccount.html:266
+msgid "If you have any question regarding verifications,"
+msgstr "Dacă aveți orice întrebare legată de verificație,"
+
+#: web/templates/android.html:26
+msgid "Download the app to browse all the cards from the game School Idol Festival directly from your pocket."
+msgstr "Descarcă aplicația pentru a naviga prin toate cărțile de joc School Idol Festival direct din buzunar."
+
+#: web/templates/android.html:62
+msgid "<li>Go to Settings</li>\n"
+"\t<li>Go to Security</li>\n"
+"\t<li>Scroll down and check “Unknown sources” box</li>\n"
+"\t<li>Tap ‘OK” when it show the warning</li>"
+msgstr "<Li> Mergi la Setări </ li>\n"
+"<Li> Du-te la Securitate </ li>\n"
+"<Li> Derulează în jos și bifează caseta \"Surse necunoscute\" </ li>\n"
+"<Li> Apăsă \"OK\", atunci când se va afișa avertismentul </ li>"
+
+#: web/templates/modalsukutomo.html:113
+msgid "So don't forget to check out the guides, tutorials, tools, discussion boards, and much more from our fellow LoveLivers friends:"
+msgstr "Deci, nu uita să verifici ghidurile, tutorialele, instrumentele, forumurile de discuții și multe altele de la prietenii noștri LoveLivers:"
+
+#: web/templates/addaccount.html:157
+msgid "No matter when you send your request, your account will be verified anytime when there is no event going on."
+msgstr "Nu contează când ai trimis solicitarea, contul tău va fi verificat în orice moment, atunci când nu există nici un eveniment în desfășurare."
+
+#: web/templates/modalsukutomo.html:91
+msgid "Share your location with the community and travel around the world map to meet new friends!"
+msgstr "Permite accesul locației tale comunității și călătorește în jurul hărții lumii pentru a întâlni prieteni noi!"
+
+#: web/templates/about.html:28
+msgid "We're both 23 years old and we live in San Francisco, California. We come from the same computer science university and both work as software engineers in the same company we founded:"
+msgstr "Avem amândoi 23 de ani și trăim în San Francisco, California. Venim de la aceeași universitate de informatică și lucrăm ca ingineri software în aceeași companie pe care am fondat-o:"
+
+#: web/templates/about.html:28
+msgid "Though we love our job, we don't pay ourselves and don't have any income, so"
+msgstr "Deși ne iubim meseria, nu ne plătim singuri și nici nu avem vreun venit, așa că:"
+
+#: web/links.py:11 web/links.py:16
+msgid "English Version"
+msgstr "Versiunea în engleză"
+
+#: web/links.py:21 web/links.py:26
+msgid "Japanese Version"
+msgstr "Versiunea în japoneză"
+
+#: web/links.py:141
+msgid "Japanese Bushimo Love Live! Festival Wiki"
+msgstr "Japanese Bushimo Love Live! Festival Wiki "
+
+#: web/links.py:148
+msgid "Japanese Love Live! Festival Gamerch Wiki"
+msgstr "Japanese Love Live! Festival Gamerch Wiki "
+
+#: web/links.py:155
+msgid "Chinese MoeGirl Wiki"
+msgstr "Chinese MoeGirl Wiki"
+
+#: web/links.py:190
+msgid "Love Live Facebook Page"
+msgstr "Pagina de Facebook LoveLive!"
+
+#: web/links.py:203 web/links.py:209
+msgid "Official"
+msgstr "Oficial"
+
+#: web/links.py:264
+msgid "Facebook Group"
+msgstr "Grup Facebook"
+
+#: web/links.py:302
+msgid "Player.me Community"
+msgstr "Comunitatea Player.me"
+
+#: web/links.py:589
+msgid "Youtube Channel μ's（ラブライブ！） by Lantis"
+msgstr "Canalul de Youtube μ's（ラブライブ！） de Lantis"
+
+#: web/templates/event.html:91 web/templates/event.html.py:100
+#: web/templates/usicaltriofestival.html:17
+msgid "hours"
+msgstr "ore"
+
+#: web/templates/event.html:91 web/templates/event.html.py:100
+#: web/templates/usicaltriofestival.html:17
+msgid "minutes"
+msgstr "minute"
+
+#: web/templates/event.html:91 web/templates/usicaltriofestival.html:17
+msgid "seconds left"
+msgstr "secunde rămase"
+
+#: web/templates/event.html:100
+msgid "Starts in"
+msgstr "Începe în"
+
+#: web/templates/event.html:100
+msgid "seconds"
+msgstr "secunde"
+
+#: api/models.py:123 api/models.py:131
+msgid "Rejected"
+msgstr "Respins"
+
+#: api/models.py:124 api/models.py:132
+msgid "Pending"
+msgstr "În așteptare"
+
+#: api/models.py:125 api/models.py:133
+msgid "In Progress"
+msgstr "În progres"
+
+#: web/templates/about.html:57
+msgid "For suggestions or bug reports, we recommend you to:"
+msgstr "Pentru sugestii sau raportări de erori, vă recomandăm:"
+
+#: web/templates/about.html:60
+msgid "Browse the upcoming features on"
+msgstr "Navighează prin caracteristicile viitoare"
+
+#: web/templates/about.html:60
+msgid "our Tasks manager"
+msgstr "prin Task manager"
+
+#: web/templates/about.html:61
+msgid "Create a new issue"
+msgstr "Creați o nou punct de vedere"
+
+#: web/templates/about.html:61
+msgid "with the details about what you would like us to implement"
+msgstr "cu detalii la ceea ce ai dori să punem în aplicare"
+
+#: web/templates/about.html:212
+msgid "Budget"
+msgstr "Buget"
+
+#: web/templates/about.html:272 web/templates/about.html.py:302
+msgid "You're an"
+msgstr "Ești un"
+
+#. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
+#. For example: Added #155 Minami Kotori UR in Favorite
+#: api/models.py:90
+msgid "Added {} in {}"
+msgstr "Adăugat {} în {}"
+
+#. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
+#. For example: Idolized #155 Minami Kotori UR in Deck
+#: api/models.py:91
+msgid "Idolized {} in {}"
+msgstr "Idolizat {} în {}"
+
+#. Keep the {} in the translation. It will be replaced with the value.
+#. For example: Rank Up 102
+#: api/models.py:92
+msgid "Rank Up {}"
+msgstr "Avansare în rang {}"
+
+#. Keep the same number of {} in the translation + they have to be in the same order. It will be replaced with the values.
+#. For example: Ranked #253 in event Score Match Round 17
+#: api/models.py:93
+msgid "Ranked {} in event {}"
+msgstr "Rangul {} în eveniment {}"
+
+#: web/forms.py:119
+msgid "Confirm that you want to delete it."
+msgstr "Confirmă că dorești să ștergi."
+
+#: web/forms.py:124
+msgid "Delete previously saved transfer code"
+msgstr "Șterge codul de transfer salvat anterior"
+
+#: web/templates/about.html:172
+msgid "Total"
+msgstr "Total"
+
+#: api/models.py:41
+msgid "You have it"
+msgstr "O ai"
+
+#: api/models.py:42
+msgid "You don't have it anymore"
+msgstr "Nu o mai ai"
+
+#: api/models.py:94
+msgid "Just got verified: {}"
+msgstr "Tocmai ce ai primit verificarea: {}"
+
+#: api/models.py:704
+msgid "Birthdate"
+msgstr "Zi de naștere"
+
+#: web/forms.py:248
+msgid "Use a valid imgur URL such as http://i.imgur.com/6oHYT4B.png"
+msgstr "Folosește un imgur URL valid cum ar fi http://i.imgur.com/6oHYT4B.png "
+
+#: web/forms.py:249
+msgid "Picture"
+msgstr "Poză"
+
+#: web/forms.py:272
+msgid "Message"
+msgstr "Mesaj"
+
+#: web/forms.py:430
+msgid "specified"
+msgstr "specificate"
+
+#: web/raw.py:10
+msgid "Only verified accounts can have a rank above 200."
+msgstr "Doar conturile verificate pot avea un rang peste 200"
+
+#: web/raw.py:17
+msgid "Search & Filter your cards"
+msgstr "Caută & Filtrează cărțile tale"
+
+#: web/raw.py:23
+msgid "Your Perfect Lock cards"
+msgstr "Cărțile tale Perfect Lock"
+
+#: web/raw.py:29
+msgid "Your Healer cards"
+msgstr "Cărțile tale Healer"
+
+#: web/raw.py:61
+msgid "Cards you should max level"
+msgstr "Cărțile care au nevoie de nivel maxim"
+
+#: web/raw.py:36
+msgid "Your top Smile cards"
+msgstr "Cele mai bune cărți Smile ale tale"
+
+#: web/raw.py:44
+msgid "Your top Pure cards"
+msgstr "Cele mai bune cărți Pure ale tale"
+
+#: web/raw.py:52
+msgid "Your top Cool cards"
+msgstr "Cele mai bune cărți Cool ale tale"
+
+#: web/raw.py:58
+msgid "Cards you should max bond (kizuna)"
+msgstr "Cărțile care au nevoie de bond maxim (kizuna)"
+
+#: web/raw.py:101 web/raw.py:107 web/raw.py:113 web/raw.py:119
+msgid "LoveLive! School Idol Festival"
+msgstr "LoveLive! School Idol Festival"
+
+#: web/raw.py:125 web/raw.py:131 web/raw.py:138
+msgid "LoveLive!"
+msgstr "LoveLive!"
+
+#: web/raw.py:125
+msgid "Drawings & fan-arts"
+msgstr "Desene si fan art-uri"
+
+#: web/raw.py:131
+msgid "Cosplay"
+msgstr "Cosplay"
+
+#: web/raw.py:138
+msgid "MEMES & comedy"
+msgstr "MEMES & comedie"
+
+#: web/raw.py:145
+msgid "Your best SOLO YOLOs"
+msgstr "Cel mai bun SOLO YOLO al tău"
+
+#: web/raw.py:152
+msgid "Your best 10+1 pulls"
+msgstr "Cea mai bună 10+1 extragere a ta"
+
+#: web/raw.py:159
+msgid "Your best scores"
+msgstr "Cel mai bun scor al tău"
+
+#: web/raw.py:166 web/raw.py:173 web/raw.py:180
+msgid "Discuss"
+msgstr "Discută"
+
+#: web/templates/activitysingle.html:58 web/templates/event_ranking.html:39
+#: web/templates/report.html:26 web/views.py:1228
+msgid "Edit"
+msgstr "Editează"
+
+#: web/templates/activitysingle.html:61 web/views.py:1231
+msgid "Upload your own screenshot"
+msgstr "Încarcă propriul tău screenshot"
+
+#: web/templates/base.html:59
+msgid "Global Contest"
+msgstr "Concurs internațional"
+
+#: web/templates/base.html:81 web/templates/discussion.html:3
+#: web/templates/discussions.html:6 web/templates/discussions.html.py:13
+msgid "Discussions"
+msgstr "Discuții"
+
+#: web/templates/cards.html:67
+msgid "Card added!"
+msgstr "Carte adăugată!"
+
+#: web/templates/cards.html:68
+msgid "You may edit it below:"
+msgstr "O poți edita mai jos:"
+
+#: web/templates/cards.html:214 web/templates/cardsPage.html:174
+#: web/templates/idol.html:46
+msgid "School"
+msgstr "Școală"
+
+#: web/templates/cardsPage.html:378 web/templates/cardsPage.html.py:392
+#: web/templates/cardsPage.html:409 web/templates/cardsPage.html.py:415
+msgid "best %(attribute)s card"
+msgstr "Cea mai bună %(attribute) carte"
+
+#: web/templates/cardsPage.html:437 web/templates/usersPage.html:14
+msgid "%(counter)s player owns the card %(owns_card_string)s"
+msgid_plural "%(counter)s players own the card %(owns_card_string)s"
+msgstr[0] "%(un) jucător are cartea %(owns_card_string) "
+msgstr[1] "%(counter) jucători au cartea %(owns_card_string)"
+msgstr[2] "%(counter) jucători au cartea %(owns_card_string)"
+
+#: web/templates/cardsPage.html:450
+msgid "Last update"
+msgstr "Ultimul update"
+
+#: web/templates/include/filterbar.html:31
+msgid "Accounts"
+msgstr "Conturi"
+
+#: web/templates/index.html:51
+msgid "Merry Christmas!"
+msgstr "Crăciun Fericit!"
+
+#: web/templates/map.html:26
+msgid "Ages"
+msgstr "Vârste"
+
+#: web/templates/profile.html:321 web/templates/profile.html.py:335
+#: web/templates/profile.html:341
+msgid "Post your own activity"
+msgstr "Postează activitatea ta"
+
+#: web/templates/profile.html:336
+msgid "What is this?"
+msgstr "Ce este asta?"
+
+#: web/templates/usersPage.html:20
+msgid "%(counter)s account matches your search:"
+msgid_plural "%(counter)s accounts match your search:"
+msgstr[0] "Un cont se potriveste cu căutarea."
+msgstr[1] "%(counter)s conturi se potrivesc cu căutarea."
+msgstr[2] "%(counter)s conturi se potrivesc cu căutarea."
+
+#: web/views.py:502 web/views.py:503
+msgid "Most popular"
+msgstr "Cel mai popular"
+
+#: web/views.py:836
+msgid "years old"
+msgstr "ani"
+
+#: web/templates/cardsPage.html:444 web/templates/usersPage.html:12
+msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
+msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
+msgstr[0] "%(un) jucător are cartea %(owns_card_string) în lista de dorințe. "
+msgstr[1] "%(counter) jucători au cartea %(owns_card_string) în lista de dorințe"
+msgstr[2] "%(counter) jucători au cartea %(owns_card_string) în lista de dorințe"
+
+#: web/templates/discussions.html:37 web/templates/modalsukutomo.html:104
+msgid "We"
+msgstr "Noi"
+
+#: web/templates/discussions.html:41
+msgid "So don't forget to check out the discussion boards, communities and much more from our fellow LoveLivers friends:"
+msgstr "Deci nu uita să verifici"
+
+#: web/forms.py:388 web/templates/cards.html:147
+msgid "Worldwide only"
+msgstr "Numai la nivel mondial"
+
+#: web/forms.py:389
+msgid "Type"
+msgstr "Tip"
+
+#: web/forms.py:390
+msgid "Token/Diary"
+msgstr "Jeton/Jurnal"
+
+#: web/forms.py:401
+msgid "I participated"
+msgstr "Am participat"
+
+#: web/templates/events.html:24
+msgid "Discover the upcoming events before everybody else!"
+msgstr "Descoperă evenimentele viitoare înaintea celorlalți!"
+
+#: web/templates/events.html:43
+msgid "expected"
+msgstr "de așteptat"
+
+#: api/models.py:211
+msgid "Teams"
+msgstr "Echipe"
+
+#: api/models.py:235
+msgid "{} increases slightly (+3%)"
+msgstr "{} crește puțin (+ 3%)"
+
+#: api/models.py:236
+msgid "{} increases (+6%)"
+msgstr "{} crește (+6%)"
+
+#: api/models.py:237
+msgid "{} increases drastically (+9%)"
+msgstr "{} crește drastic (+9%)"
+
+#. Center skill details, for example: "Pure increases based on Cool"
+#: api/models.py:238
+msgid "{} increases based on {}"
+msgstr " {} crește bazat pe {}"
+
+#: api/models.py:558 api/models.py:705
+msgid "Default tab"
+msgstr "Filă implicită"
+
+#: api/models.py:558
+msgid "What people see first when they take a look at your account."
+msgstr "Ce văd oamenii prima dată atunci când se uită la contul tău."
+
+#: api/models.py:632
+msgid "Name"
+msgstr "Nume"
+
+#: web/forms.py:488
+msgid "The same card can't appear twice in the same team."
+msgstr "Aceeași carte nu poate apărea de două ori în aceeași echipă."
+
+#: web/templates/include/_account_tab_ownedcardsload.html:7
+msgid "Load remaining cards"
+msgstr "Încarcă cărțile rămase"
+
+#: api/models.py:247
+msgid "Princess"
+msgstr "Prințesă"
+
+#: api/models.py:247
+msgid "Angel"
+msgstr "Înger"
+
+#: api/models.py:247
+msgid "Empress"
+msgstr "Împărăteasă"
+
+#: api/models.py:247
+msgid "Power"
+msgstr "Putere"
+
+#: api/models.py:247
+msgid "Heart"
+msgstr "Inimă"
+
+#: contest/templates/contest.html:11 contest/templates/disabled.html:8
+msgid "The ultimate battle between School Idols"
+msgstr "Bătălia finală dintre School Idols"
+
+#: contest/templates/contest.html:55 contest/templates/contest.html.py:67
+msgid "is BEST"
+msgstr "e CEA MAI BUNĂ"
+
+#: contest/templates/contest.html:58 contest/templates/contest.html.py:70
+msgid "About this card"
+msgstr "Despre această carte"
+
+#: contest/templates/contest_result.html:72
+msgid "BEST Girls"
+msgstr "CELE MAI BUNE Fete"
+
+#: contest/templates/contest_result.html:113
+msgid "BEST Cards"
+msgstr "CELE MAI BUNE Cărți"
+
+#: contest/templates/contest_collection.html:57
+#: contest/templates/contest_result.html:160
+#: web/templates/usicaltriofestival.html:85
+#: web/templates/usicaltriofestival.html:92
+msgid "Vote"
+msgstr "Votează"
+
+#: contest/templates/contest_result_index.html:11
+#: contest/templates/contest_result_index.html:16 web/templates/base.html:65
+msgid "Past Contests"
+msgstr "Concursuri anterioare"
+
+#: contest/templates/contest_result_index.html:65
+msgid "Suggest a special contest"
+msgstr "Sugerează un concurs special"
+
+#: web/forms.py:362
+msgid "Date added"
+msgstr "Dată adăugată"
+
+#: api/models.py:95
+msgid "{}/10 on School Idol Trivia! {}"
+msgstr "{}/10 pe School Idol Trivia! {} "
+
+#: api/models.py:250
+msgid "Ouch!"
+msgstr "Au!"
+
+#: api/models.py:251 api/models.py:252 api/models.py:253
+msgid "Oh no..."
+msgstr "O nu..."
+
+#: api/models.py:254 api/models.py:255
+msgid "Meh."
+msgstr "Meh."
+
+#: api/models.py:256 api/models.py:257
+msgid "Not bad!"
+msgstr "Nu-i rău!"
+
+#: api/models.py:258
+msgid "Yay~"
+msgstr "Iei~"
+
+#: api/models.py:259
+msgid "Awesome!"
+msgstr "Super!"
+
+#: api/models.py:260
+msgid "Woohoo!"
+msgstr "Iupii!"
+
+#: api/models.py:548
+msgid "Should your friend ID be visible to other players?"
+msgstr "Ar trebui ca ID-ul tău de prieten să fi vizibil și pentru ceilalți jucători?"
+
+#: api/models.py:559 web/templates/profile.html:212
+msgid "Starter"
+msgstr "Începător"
+
+#: api/models.py:559
+msgid "The character that you selected when you started playing."
+msgstr "Personajul pe care l-ai selectat când ai început să joci."
+
+#: api/models.py:560 web/templates/initialsetup.html:202
+#: web/templates/profile.html:237
+msgid "Creation"
+msgstr "Creație"
+
+#: api/models.py:560
+msgid "When you started playing with this account."
+msgstr "Când ai început să joci cu acest cont."
+
+#: api/models.py:561
+msgid "Should this date be visible to other players?"
+msgstr "Ar trebui ca această dată să fie vizibilă și pentru alți jucători?"
+
+#: api/models.py:705
+msgid "The activities you see by default on the homepage."
+msgstr "Activitățile pe care le vezi în mod implicit pe pagina principală."
+
+#: web/forms.py:80
+msgid "The game didn't even existed at that time."
+msgstr "Jocul nici nu exista în acea perioadă."
+
+#: web/forms.py:82
+msgid "This date cannot be in the future."
+msgstr "Data nu poate fi în viitor."
+
+#: web/templates/about.html:99
+msgid "Community Artists"
+msgstr "Comunitatea Artiștilor"
+
+#: web/templates/base.html:57
+msgid "Fun"
+msgstr "Distracție"
+
+#: web/templates/initialsetup.html:67
+#: web/templates/modaltutorialaddcard.html:4
+msgid "Start sharing your beautiful collection!"
+msgstr "Începe să împărtășești frumoasa ta colecție!"
+
+#: web/templates/initialsetup.html:186
+msgid "Simply click \"+\" to add cards to your account"
+msgstr "Pur și simplu apasă \"+\" pentru a adăuga cărțile în contul tău"
+
+#: web/templates/modaltutorialaddcard.html:11
+msgid "If you idolized a card or if you want to add it to another account, use the bubble."
+msgstr "Dacă ai idolizat o carte sau dacă dorești să o adaugi într-un alt cont, utilizează bula."
+
+#: web/templates/modaltutorialaddcard.html:12
+msgid "Click \"Advanced\" for more options: max bonded (kizuna), max leveled, skill level, where you have it (deck, album, present box)."
+msgstr "Dă-i click pe \"Avansat\" pentru mai multe opțiuni: bond maxim (Kizuna), nivel maxim, nivel abilitate, oriunde s-ar afla cartea (pachet, album, cutie cadouri)."
+
+#: web/templates/modaltutorialaddcard.html:13
+msgid "To search for specific cards, use the filters bar on the right (idol, rarity, attribute)."
+msgstr "Pentru a căuta anumite cărți, utilizați bara de filtre din partea dreaptă (idol, raritate, atribut)."
+
+#: web/templates/initialsetup.html:194
+msgid "How to edit a card?"
+msgstr "Cum să editezi o carte?"
+
+#: web/templates/initialsetup.html:195
+msgid "How to delete a card?"
+msgstr "Cum să ștergi o carte?"
+
+#: web/templates/modaltutorialaddcard.html:21
+msgid "How to add an account to your profile?"
+msgstr "Cum să adaug un cont pe profilul meu?"
+
+#: web/templates/initialsetup.html:223
+msgid "What's the difference between the deck, the album and the present box?"
+msgstr "Care este diferența între pachet, album și cutia cu cadouri?"
+
+#: web/templates/initialsetup.html:85
+msgid "Why my cards are not automatically imported?"
+msgstr "De ce nu sunt cărțile mele importate automat?"
+
+#: web/templates/initialsetup.html:138 web/templates/profile.html:164
+#: web/templates/profile.html.py:280
+msgid "Unknown"
+msgstr "Necunoscut"
+
+#: web/templates/profile.html:167 web/templates/profile.html.py:242
+#: web/templates/profile.html:264
+msgid "Only you can see it."
+msgstr "Doar tu poți vedea"
+
+#: web/templates/profile.html:170
+msgid "Private"
+msgstr "Privat"
+
+#: web/templates/profile.html:324
+msgid "Activity posted! Take a look at your activities on the side of your profile to see it."
+msgstr "Activitate postată! Aruncă o privire la activitățile tale."
+
+#: web/templates/trivia.html:4 web/templates/trivia.html.py:12
+msgid "Love Live! School Idol Trivia"
+msgstr "Love Live! School Idol Trivia"
+
+#: api/models.py:562 web/templates/initialsetup.html:202
+msgid "Love gems"
+msgstr "Loveca"
+
+#: api/models.py:562 api/models.py:563 api/models.py:564 api/models.py:565
+#: api/models.py:566
+msgid "Number of {} you currently have in your account."
+msgstr "Numărul de {} pe care le ai în prezent în contul tău."
+
+#: api/models.py:562 api/models.py:563 api/models.py:564 api/models.py:565
+#: api/models.py:566
+msgid "This field is completely optional, it's here to help you manage your accounts."
+msgstr "Acest câmp este total opțional, este aici pentru a te ajuta să gestionezi conturile."
+
+#: api/models.py:563
+msgid "Friend Points"
+msgstr "Puncte de prietenie"
+
+#: api/models.py:567 web/templates/profile.html:260
+msgid "Total love gems bought"
+msgstr "Totalul de loveca cumpărate"
+
+#: api/models.py:567
+msgid "You can calculate that number in \"Other\" then \"Purchase History\". Leave it empty to stay F2P."
+msgstr "Poți calcula acel număr în „Other” apoi „Purchase History”. Lasă spațiu ca să rămâi jucător gratis."
+
+#: api/models.py:103
+msgid "Accepted"
+msgstr "Acceptat"
+
+#: api/models.py:568
+msgid "Should your items be visible to other players?"
+msgstr "Să fie lucrurile tale vizibile altor jucători?"
+
+#: contest/templates/contest_result.html:93
+#: contest/templates/contest_result.html:94
+#: contest/templates/contest_result.html:97
+#: contest/templates/contest_result_index.html:41
+msgid "votes"
+msgstr "voturi"
+
+#: web/templates/cardsPage.html:223 web/templates/cardsPage.html.py:530
+msgid "Buy it!"
+msgstr "Cumpără!"
+
+#: web/templates/profile.html:251
+msgid "Items"
+msgstr "Lucruri"
+
+#: web/templates/profile.html:261
+msgid "spent"
+msgstr "cheltuiți"
+
+#: api/models.py:114
+msgid "Active"
+msgstr "Activ"
+
+#: api/models.py:114 api/models.py:115
+msgid "Moderator"
+msgstr "Moderator"
+
+#: api/models.py:115
+msgid "Decisive"
+msgstr "Decisiv"
+
+#: api/models.py:116
+msgid "Community Manager"
+msgstr "Manager Comunitate"
+
+#: api/models.py:117
+msgid "Database Maintainer"
+msgstr "Susținător bază de date"
+
+#: api/models.py:118
+msgid "Developer"
+msgstr "Dezvoltator"
+
+#: api/models.py:569 web/templates/profile.html:148
+msgid "Fake"
+msgstr "Fals"
+
+#: contest/templates/contest.html:44
+msgid "You can only skip %(contest_max_sessions)s times. Vote now to get more options."
+msgstr "Poți sări doar de %(sesiune_max_concurs) ori. Votează acum pentru a obține mai multe opțiuni."
+
+#: contest/templates/contest_result.html:35
+#: contest/templates/contest_result_index.html:30
+#: contest/templates/contest_schedule.html:29
+msgid "Suggested by"
+msgstr "Sugerat de"
+
+#: contest/templates/contest_result.html:38
+#: contest/templates/contest_result.html:61
+#: contest/templates/contest_result_index.html:33
+#: contest/templates/contest_schedule.html:32
+msgid "Image by"
+msgstr "Imagine de către"
+
+#: contest/templates/contest_result.html:92
+msgid "Score"
+msgstr "Scor"
+
+#: web/forms.py:392
+msgid "Challenge Festival"
+msgstr "Challenge Festival"
+
+#: web/raw.py:71
+msgid "Cards you should max bond"
+msgstr "Cărțile care au nevoie de bond maxim"
+
+#: web/templates/about.html:109
+msgid "Graphic Designers"
+msgstr "Designeri Graficieni"
+
+#: web/links.py:345 web/links.py:347 web/templates/addaccount.html:297
+#: web/templates/albumBuilder.html:9 web/templates/cachealbumbuilder.html:8
+#: web/templates/cachealbumbuilder.html:13 web/templates/cards.html:7
+#: web/templates/cards.html.py:242
+#: web/templates/include/account_tab_album.html:14
+#: web/templates/initialsetup.html:219 web/templates/profile.html:318
+msgid "Album Builder"
+msgstr "Creator de album"
+
+#: web/templates/albumBuilder.html:25 web/templates/cards.html:51
+msgid "The cards in your deck automatically appear in your album."
+msgstr "Cărțile din pachet apar automat în albumul tău."
+
+#: web/templates/albumBuilder.html:72
+#: web/templates/albumBuilder_ownedCard.html:6 web/templates/cards.html:50
+msgid "Click to switch Deck/Album"
+msgstr "Click pentru a face schimbul Pachet/Album"
+
+#: web/templates/cards.html:49
+msgid "You can only have one in your album."
+msgstr "Poți să ai doar una în album."
+
+#: web/templates/cards.html:51
+msgid "Are you sure you also want to add it in your album?"
+msgstr "Ești sigur că vrei să-l adaugi în albumul tău?"
+
+#: web/templates/addaccount.html:293 web/templates/cards.html:152
+msgid "More options"
+msgstr "Mai multe opțiuni"
+
+#: web/templates/cards.html:230
+msgid "after"
+msgstr "după"
+
+#: web/templates/cards.html:232
+msgid "before"
+msgstr "înainte"
+
+#: web/templates/cards.html:235
+msgid "View"
+msgstr "Vezi"
+
+#: web/templates/cards.html:338
+msgid "Click this banner to discover the upcoming cards in EN!"
+msgstr "Fă click pe acest banner pentru a descoperi cărțile viitoare din EN!"
+
+#: web/templates/cardsPage.html:304
+msgid "Paired With"
+msgstr "Pereche cu"
+
+#: web/templates/cardsPage.html:325
+msgid "See all UR Pairs"
+msgstr "Vezi toate perechile de UR"
+
+#: web/templates/cardsPage.html:331
+msgid "Level up her skill with"
+msgstr "Crește nivelul abilității cu"
+
+#: web/templates/cardsPage.html:355 web/templates/cardsPage.html.py:358
+msgid "Clean UR"
+msgstr "Link-ul pentru a descărca imaginea UR curată (fără raritate, nume, bare albe, etc)"
+
+#: web/templates/event_ranking.html:43 web/templates/profile.html:117
+#: web/templates/report.html:5 web/templates/report.html.py:12
+#: web/templates/report.html:46
+msgid "Report"
+msgstr "Raportează"
+
+#: web/links.py:347 web/templates/include/account_tab_album.html:13
+#: web/templates/initialsetup.html:218
+msgid "Keep track of your cards easily, try the"
+msgstr "Ține evidența cărților tale cu ușurință, încercă"
+
+#: web/templates/profile.html:150
+msgid "Reported as a fake account"
+msgstr "Raportat ca și cont fals"
+
+#: web/templates/report.html:33
+msgid "If your report is accepted, the account will be marked as fake and will never appear in leaderboards."
+msgstr "Dacă raportul este acceptat, contul va fi marcat ca fiind fals și nu va mai apărea niciodată în banner."
+
+#: web/templates/report.html:35
+msgid "If your report is accepted, the event participation will be deleted and will not appear in the event ranking anymore."
+msgstr "Dacă raportul este acceptat, participarea la eveniment va fi ștearsă și nu va mai apărea în clasament."
+
+#: web/templates/report.html:39
+msgid "If you can, provide proofs below. Only moderators will be able to read your messages and see your pictures, not the owner."
+msgstr "Dacă poți, furnizează dovezile mai jos. Numai moderatorii vor putea citi mesajele și să vadă imaginile, nu proprietarul."
+
+#: web/links.py:359 web/templates/urpairs.html:6
+#: web/templates/urpairs.html.py:9
+msgid "UR Pairs"
+msgstr "Perechi UR"
+
+#: web/links.py:338
+msgid "Create your own profile"
+msgstr "Creează-ți propriul profil"
+
+#: web/links.py:352 web/templates/addaccount.html:298
+#: web/templates/profile.html:319 web/templates/skillup.html:11
+#: web/templates/skillup.html.py:24
+msgid "Level up the skill of your cards"
+msgstr "Crește nivelul abilității cărților tale"
+
+#: web/templates/skillup.html:34
+msgid "Add all the cards you own in the game in your School Idol Tomodachi account."
+msgstr "Adaugă toate cărțile pe care le deții în joc în contul tău School Idol Tomodachi."
+
+#: web/templates/skillup.html:35
+msgid "If you already have some cards in your deck with a skill higher than 1, click \"Advanced\" when you add it to specify the skill level. You can also edit the skill later when you edit the card."
+msgstr "Dacă ai deja unele cărți în pachet cu o abilitate mai mare de 1, dă clic pe \"Avansat\" atunci când o adaugi pentru a specifica nivelul. De asemenea, poți să modifici abilitatea mai târziu, atunci când editezi cartea."
+
+#: web/templates/skillup.html:36
+msgid "Don't forget to add the cards you have in your present box!"
+msgstr "Nu uita să adaugi cărțile pe care le ai în cutia de cadouri!"
+
+#: web/templates/skillup.html:37
+msgid "Come back to this page to check out the cards you can practice together to level up their skills!"
+msgstr "Întoarce-te la această pagină pentru a verifica cărțile pe care le poți practica împreuna pentru a crește nivelul abilităților lor!"
+
+#: web/templates/skillup.html:38
+msgid "While you go through this list to level up the skill of your cards, click the \"+1\" button to keep your cards updated and click X to delete the cards you practiced away."
+msgstr "În timp ce treci prin această listă pentru a crește nivelul de abilitate a cărților tale, dă click pe butonul \"+1\" pentru a-ți păstra cardurile actualizate sau dă click pe X pentru a șterge cărțile pe care le-ai dat în practică."
+
+#: web/links.py:537
+msgid "Submit a chibi drawing of your favorite idol"
+msgstr "Încarcă un desen chibi cu idolul tău preferat"
+
+#: web/templates/addaccount.html:295 web/templates/initialsetup.html:5
+#: web/templates/initialsetup.html.py:21 web/templates/initialsetup.html:34
+#: web/templates/initialsetup.html.py:67
+msgid "Initial Setup"
+msgstr "Setări Inițiale"
+
+#: web/templates/cards.html:259
+msgid "Show clean URs"
+msgstr "Arată UR curat (fără raritate, nume, atribut, etc)"
+
+#: web/templates/initialsetup.html:12
+msgid "Add this link to your bookmarks and come back to it whenever you want to finish entering the cards in your collection."
+msgstr "Adaugă acest link la marcajele tale și revino la el ori de câte ori dorești să termini de introdus cărțile în colecția ta."
+
+#: web/templates/initialsetup.html:58 web/templates/initialsetup.html.py:59
+#: web/templates/initialsetup.html:233
+msgid "Next"
+msgstr "Următoarea"
+
+#: web/templates/initialsetup.html:58
+msgid "I don't have any"
+msgstr "Nu am nicio carte"
+
+#: web/templates/initialsetup.html:63
+msgid "Want to take a break and finish later?"
+msgstr "Vrei să iei o pauză și să termini mai târziu?"
+
+#: web/templates/initialsetup.html:67
+msgid "Welcome back!"
+msgstr "Bine ai revenit!"
+
+#: web/templates/initialsetup.html:70 web/templates/initialsetup.html:110
+msgid "We hid %(hidden_cards_total)s cards that you already saw last time."
+msgstr "Am ascuns %(ascunse_cărți_total)de cărți pe care le-ai văzut deja ultima oară."
+
+#: web/templates/initialsetup.html:70 web/templates/initialsetup.html:110
+msgid "Show all"
+msgstr "Arată tot "
+
+#: web/templates/initialsetup.html:82
+msgid "Open the game LoveLive! School Idol Festival, go to \"Members\" (部員) then \"Member List\" (部員リスト), order by \"Rarity\" (レアリティ)"
+msgstr "Deschide jocul LoveLive! School Idol Festival, du-te la \"Members\" (部 員), apoi la  \"Member List\" (部 員 リ ス ト), ordonează-le prin \"Rarity\" (レ ア リ テ ィ)"
+
+#: web/templates/initialsetup.html:83
+msgid "Go through the list of cards below and click on the ones you own to add them on your School Idol Tomodachi account"
+msgstr "Du-te prin lista de cărți de mai jos și apasă-le pe cele care le deții pentru a le adăuga pe contul School Idol Tomodachi"
+
+#: web/templates/initialsetup.html:119
+msgid "Event special prize"
+msgstr "Premiu special eveniment"
+
+#: web/templates/initialsetup.html:119
+msgid "Login bonus"
+msgstr "Bonus logare"
+
+#: web/templates/initialsetup.html:163 web/templates/initialsetup.html:169
+msgid "Click to add this card to your collection!"
+msgstr "Dă-i click pentru a adăuga această carte în colecția ta!"
+
+#: web/templates/initialsetup.html:184
+msgid "Now, every time you get a new card, don't forget to update School Idol Tomodachi!"
+msgstr "Acum, de fiecare dată când iei o carte nouă, nu uita să actualizezi School Idol Tomodachi!"
+
+#: web/templates/initialsetup.html:200
+msgid "Check out your brand new beautiful profile"
+msgstr "Privește noul și frumosul tău profil"
+
+#: web/templates/initialsetup.html:201
+msgid "Tweet it"
+msgstr "Dă-i Tweet"
+
+#: web/templates/initialsetup.html:201
+msgid "or"
+msgstr "sau "
+
+#: web/templates/initialsetup.html:201
+msgid "Share it on Facebook"
+msgstr "Dă-i share pe Facebook"
+
+#: web/templates/initialsetup.html:202 web/templates/initialsetup.html:204
+msgid "Set your"
+msgstr "Setează-ți"
+
+#: web/templates/initialsetup.html:203
+msgid "You have another account?"
+msgstr "Ai un alt cont?"
+
+#: web/templates/initialsetup.html:216
+msgid "Want to keep track of the cards you max bonded or max leveled?"
+msgstr "Vrei să păstrezi evidența cărților cu bond maxim sau cu nivel maxim?"
+

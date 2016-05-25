@@ -568,9 +568,9 @@ msgstr "Dacă profilul este privat, oamenii vor vedea doar centrul tău."
 #: web/templates/cardsPage.html:24
 msgid "%(counter)s card matches your search:"
 msgid_plural "%(counter)s cards match your search:"
-msgstr[0] "O carte se potrivește cu căutarea."
-msgstr[1] "%(counter) cărți se potrivesc cu căutarea."
-msgstr[2] "%(counter) cărți se potrivesc cu căutarea."
+msgstr[0] "%(counter)s carte se potrivește cu căutarea."
+msgstr[1] "%(counter)s cărți se potrivesc cu căutarea."
+msgstr[2] "%(counter)s cărți se potrivesc cu căutarea."
 
 #: web/templates/activities.html:9 web/templates/box.html:35
 #: web/templates/cardsPage.html:569
@@ -628,9 +628,9 @@ msgstr "Nu"
 #: web/templates/profile.html:104
 msgid "%(length)s account:"
 msgid_plural "%(length)s accounts:"
-msgstr[0] "%(un) cont"
-msgstr[1] "%(length) conturi"
-msgstr[2] "%(length) conturi"
+msgstr[0] "%(length)s cont"
+msgstr[1] "%(length)s conturi"
+msgstr[2] "%(length)s conturi"
 
 #: api/models.py:618 web/templates/albumBuilder.html:48
 #: web/templates/cards.html:292 web/templates/cards.html.py:295
@@ -2161,7 +2161,7 @@ msgstr "comunitatea LoveLive!"
 #: web/templates/songsPage.html:13
 msgid "%(counter)s song matches your search:"
 msgid_plural "%(counter)s songs match your search:"
-msgstr[0] "O melodie se potrivește cu căutarea."
+msgstr[0] "%(counter)s melodie se potrivește cu căutarea."
 msgstr[1] "%(counter)s melodii se potrivesc cu căutarea."
 msgstr[2] "%(counter)s melodii se potrivesc cu căutarea."
 
@@ -2603,14 +2603,14 @@ msgstr "Școală"
 #: web/templates/cardsPage.html:378 web/templates/cardsPage.html.py:392
 #: web/templates/cardsPage.html:409 web/templates/cardsPage.html.py:415
 msgid "best %(attribute)s card"
-msgstr "Cea mai bună %(attribute) carte"
+msgstr "Cea mai bună %(attribute)s carte"
 
 #: web/templates/cardsPage.html:437 web/templates/usersPage.html:14
 msgid "%(counter)s player owns the card %(owns_card_string)s"
 msgid_plural "%(counter)s players own the card %(owns_card_string)s"
-msgstr[0] "%(un) jucător are cartea %(owns_card_string) "
-msgstr[1] "%(counter) jucători au cartea %(owns_card_string)"
-msgstr[2] "%(counter) jucători au cartea %(owns_card_string)"
+msgstr[0] "%(counter)s jucător are cartea %(owns_card_string)s"
+msgstr[1] "%(counter)s jucători au cartea %(owns_card_string)s"
+msgstr[2] "%(counter)s jucători au cartea %(owns_card_string)s"
 
 #: web/templates/cardsPage.html:450
 msgid "Last update"
@@ -2640,7 +2640,7 @@ msgstr "Ce este asta?"
 #: web/templates/usersPage.html:20
 msgid "%(counter)s account matches your search:"
 msgid_plural "%(counter)s accounts match your search:"
-msgstr[0] "Un cont se potriveste cu căutarea."
+msgstr[0] "%(counter)s cont se potriveste cu căutarea."
 msgstr[1] "%(counter)s conturi se potrivesc cu căutarea."
 msgstr[2] "%(counter)s conturi se potrivesc cu căutarea."
 
@@ -2655,9 +2655,9 @@ msgstr "ani"
 #: web/templates/cardsPage.html:444 web/templates/usersPage.html:12
 msgid "%(counter)s player has the card %(owns_card_string)s in their wish list"
 msgid_plural "%(counter)s players have the card %(owns_card_string)s in their wish list"
-msgstr[0] "%(un) jucător are cartea %(owns_card_string) în lista de dorințe. "
-msgstr[1] "%(counter) jucători au cartea %(owns_card_string) în lista de dorințe"
-msgstr[2] "%(counter) jucători au cartea %(owns_card_string) în lista de dorințe"
+msgstr[0] "%(counter)s jucător are cartea %(owns_card_string)s în lista de dorințe. "
+msgstr[1] "%(counter)s jucători au cartea %(owns_card_string)s în lista de dorințe"
+msgstr[2] "%(counter)s jucători au cartea %(owns_card_string)s în lista de dorințe"
 
 #: web/templates/discussions.html:37 web/templates/modalsukutomo.html:104
 msgid "We"
@@ -2710,7 +2710,7 @@ msgstr "{} crește drastic (+9%)"
 #. Center skill details, for example: "Pure increases based on Cool"
 #: api/models.py:238
 msgid "{} increases based on {}"
-msgstr " {} crește bazat pe {}"
+msgstr "{} crește bazat pe {}"
 
 #: api/models.py:558 api/models.py:705
 msgid "Default tab"
@@ -2794,7 +2794,7 @@ msgstr "Dată adăugată"
 
 #: api/models.py:95
 msgid "{}/10 on School Idol Trivia! {}"
-msgstr "{}/10 pe School Idol Trivia! {} "
+msgstr "{}/10 pe School Idol Trivia! {}"
 
 #: api/models.py:250
 msgid "Ouch!"
@@ -3015,7 +3015,7 @@ msgstr "Fals"
 
 #: contest/templates/contest.html:44
 msgid "You can only skip %(contest_max_sessions)s times. Vote now to get more options."
-msgstr "Poți sări doar de %(sesiune_max_concurs) ori. Votează acum pentru a obține mai multe opțiuni."
+msgstr "Poți sări doar de %(contest_max_sessions)s ori. Votează acum pentru a obține mai multe opțiuni."
 
 #: contest/templates/contest_result.html:35
 #: contest/templates/contest_result_index.html:30
@@ -3207,7 +3207,7 @@ msgstr "Bine ai revenit!"
 
 #: web/templates/initialsetup.html:70 web/templates/initialsetup.html:110
 msgid "We hid %(hidden_cards_total)s cards that you already saw last time."
-msgstr "Am ascuns %(ascunse_cărți_total)de cărți pe care le-ai văzut deja ultima oară."
+msgstr "Am ascuns %(hidden_cards_total)s de cărți pe care le-ai văzut deja ultima oară."
 
 #: web/templates/initialsetup.html:70 web/templates/initialsetup.html:110
 msgid "Show all"

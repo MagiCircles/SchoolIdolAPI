@@ -61,8 +61,7 @@ msgstr "În album"
 
 #: web/templates/ownedCardOnBottomCard.html:14 web/templates/skillup.html:119
 msgid "In present box"
-msgstr "În cutia de cadouri\n"
-""
+msgstr "În cutia de cadouri"
 
 #: api/models.py:44 api/models.py:52 api/models.py:213 tmp/profile.html:257
 #: web/templates/include/account_tab_wishlist.html:7
@@ -1209,8 +1208,7 @@ msgstr "Votează pentru CEA MAI BUNĂ FATĂ"
 
 #: web/links.py:524
 msgid "Vote for your favorite cards on School Idol Contest, the Facemash."
-msgstr "Votează pentru cărțile tale preferate în School Idol Contest, Facemash-ul.\n"
-""
+msgstr "Votează pentru cărțile tale preferate în School Idol Contest, Facemash-ul."
 
 #: web/links.py:530
 msgid "Personal Idols Ranking Generator"

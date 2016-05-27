@@ -31,13 +31,16 @@ class Command(BaseCommand):
         things += [song['translated_name'] for song in songs.filter(translated_name__isnull=False).values('translated_name').distinct()]
         print '## Event notes'
         things += [event['note'] for event in events.filter(note__isnull=False).values('note').distinct()]
+        print '## Event names'
+        things += [event['english_name'] for event in events.exclude(english_name__icontains='Score Match').exclude(english_name__icontains='Medley Festival').exclude(english_name__contains='Challenge Festival').values('english_name').distinct()]
         print '## Contest names'
-        things += [contest['name'] for contest in contests.filter(begin__lte=datetime.datetime.now()).values('name').distinct()]
+        things += [contest['name'] for contest in contests.values('name').distinct()]
 
         print 'Save translated terms in file to generate terms'
         s = ''
         for thing in things:
-            s += u'{% blocktrans %}' + thing + u'{% endblocktrans %}\n'
+            if thing:
+                s += u'{% blocktrans %}' + thing + u'{% endblocktrans %}\n'
         f = open('database_translations.html', 'w')
         print >> f, s
         f.close()

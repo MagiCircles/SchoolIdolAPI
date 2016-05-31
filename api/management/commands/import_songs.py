@@ -59,7 +59,7 @@ def import_songs(opt):
                 song['hard_notes'] = int(clean(tds[9].text))
                 song['expert_difficulty'] = None if clean(tds[10].text) == '-' else int(clean(tds[10].text))
                 song['expert_random_difficulty'] = None if clean(tds[11].text) == '-' else int(clean(tds[11].text))
-                song['expert_notes'] = None if clean(tds[12].text) == '-' else int(clean(tds[12].text))
+                song['expert_notes'] = None if not clean(tds[12].text) or clean(tds[12].text) == '-' else int(clean(tds[12].text))
                 song['event'] = None
                 if event:
                     song['event'] = events[event_index]

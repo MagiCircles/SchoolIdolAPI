@@ -3,6 +3,7 @@ from api import models
 from contest import models as contest_models
 from api.management.commands.importbasics import *
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -29,6 +30,7 @@ class Command(BaseCommand):
         things += [card['translated_collection'] for card in cards.filter(translated_collection__isnull=False).exclude(translated_collection='').values('translated_collection').distinct()]
         print '## Translated song names'
         things += [song['translated_name'] for song in songs.filter(translated_name__isnull=False).values('translated_name').distinct()]
+        things += [song['name'] for song in songs.filter(Q(translated_name__isnull=True) | Q(translated_name='')).filter(Q(romaji_name__isnull=True) | Q(romaji_name='')).values('name').distinct()]
         print '## Event notes'
         things += [event['note'] for event in events.filter(note__isnull=False).values('note').distinct()]
         print '## Event names'

@@ -136,7 +136,7 @@
 	  </a>
 	  {% else %}
 	  <span class="fontx2">{% if not card.translated_collection %}{% trans 'Unknown' %}{% else %}
-	    <a href="/cards/?translated_collection={{ card.translated_collection }}" target="_blank">{{ card.translated_collection }}</a>
+	    <a href="/cards/?translated_collection={{ card.translated_collection }}" target="_blank">{% trans card.translated_collection %}</a>
 	    {% endif %}</span>
 	  {% endif %}
 	  </th>

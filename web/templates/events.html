@@ -37,7 +37,7 @@
 	    <span class="hidden">{{ event }}</span>
 	  </a>
 	  {{ event.japanese_name }}<br>
-	  {% if event.english_name and event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}
+	  {% if event.english_name and event.english_name != event.japanese_name %} {% trans event.english_name %}{% endif %}
 	  <br>
 	  {% if show_approximate_dates %}
 	  <i class="flaticon-EN"></i> <strong>{% trans 'Release date' %} ({% trans 'expected' %}): {{ event.beginning|plusmonths:12|date:'F d, Y' }}</strong><br><br><br>

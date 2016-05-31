@@ -45,7 +45,8 @@
 			</h4>
 			{% if LANGUAGE_CODE != 'ja' %}
 			{% if song.romaji_name %}{{ song.romaji_name }}<br>{% endif %}
-			{% if song.translated_name and song.translated_name != song.romaji_name %}<small><i>{{ song.translated_name }}</i></small>{% endif %}
+			{% if song.translated_name and song.translated_name != song.romaji_name %}<small><i>{% trans song.translated_name %}</i></small>{% endif %}
+			{% if LANGUAGE_CODE != 'en' and not song.translated_name and not song.romaji_name %}<small><i>{% trans song.name %}</i></small>{% endif %}
 			{% endif %}
 		      </th>
 		    </tr>

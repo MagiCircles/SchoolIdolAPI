@@ -8,12 +8,23 @@
 {% block shareimage %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
 {% block shareimagetwitter %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
 
-{% block title %}{% trans 'Ranking' %} - {{ contest.name }}{% endblock %}
+{% block title %}{% trans 'Ranking' %} - {% trans contest.name %}{% endblock %}
 
 {% block js %}
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id and is_current %}
-<script src="/static/js/contest_countdown.js"></script>
+<script>
+  $(function() {
+    if ($('#countdown').length > 0) {
+	$('#countdown').countdown({
+	    date: countdowndate,
+	    render: function(data) {
+                $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
+	    }
+	});
+    }
+});
+</script>
 {% endif %}
 {% if contest.result_image %}
 <script src="/static/bower/jquery-easing/jquery.easing.min.js"></script>
@@ -26,8 +37,11 @@
     <h1 class="text-{{ btnColor }}">
       {% if contest.homepage_image and not contest.result_image %}
       <img src="{{ contest.homepage_image|userimage }}" style="max-width: 100%; border-radius: 10px;" alt="{{ contest.name }}" />
+      {% if LANGUAGE_CODE != 'en' %}
+      <small><i>{% trans contest.name %}</i></small>
+      {% endif %}
       {% else %}
-      {{ contest.name }}
+      {% trans contest.name %}
       {% endif %}
       {% if contest.suggested_by or contest.image_by %}
       <small class="credit_people{% if contest.homepage_image and not contest.result_image %} text-right{% endif %}">
@@ -42,7 +56,7 @@
       </small>
       {% endif %}
       {% if contest.begin %}<small>
-	{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
+	{% with month=contest.begin|formattime:'%B' %}{% trans month %}{% endwith %} {{ contest.begin|formattime:'%d' }} - {% with month=contest.end|formattime:'%B' %}{% trans month %}{% endwith %} {{ contest.end|formattime:'%d' }}
 	{% if is_current %}
 	<br><a href="/contest/{{ contest.id }}/{{ contest.name|tourldash }}/">
 	  <span id="countdown" style="display: block; font-size: 0.6em">

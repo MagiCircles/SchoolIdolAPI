@@ -179,7 +179,7 @@
 			    {% endif %}
 			    {% if card.idol_year %}
 			    <small>
-			      {% trans 'Year' %}: {{ card.idol_year }}
+			      {% trans 'Year' %}: {% trans card.idol_year %}
 			      <span class="tiny"><a target="_blank" href="/cards/?search=&idol_year={{ card.idol_year }}">
 				  <i class="flaticon-link"></i></a>
 			      </span>
@@ -240,7 +240,7 @@
 				<i class="flaticon-event"></i>
 				{% endif %}
 			      </div>
-			      {{ card.event_japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event_english_name != card.event_japanese_name %}<br>{{ card.event_english_name }}{% endif %} 
+			      {{ card.event_japanese_name }} <small><span class="tiny"><i class="flaticon-link"></i></span></small>{% if card.event_english_name != card.event_japanese_name and card.event_english_name %}<br>{% trans card.event_english_name %}{% endif %}
 			    </a>
 			  </td>
 			</tr>
@@ -253,10 +253,10 @@
 			      <i class="flaticon-album"></i>
 			    </div>
 			    {% if card.translated_collection %}
-			    <a href="/cards/?search=&translated_collection={{ card.translated_collection }}" target="_blank">{{ card.translated_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a><br>
+			    <a href="/collection/{{ card.translated_collection }}/" target="_blank">{% trans card.translated_collection %} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a><br>
 			    {% endif %}
 			    {% if card.japanese_collection %}
-			    <a href="/cards/?search=&collection={{ card.japanese_collection }}" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a>
+			    <a href="/collection/{{ card.japanese_collection }}/?japanese" target="_blank">{{ card.japanese_collection }} <small><span class="tiny"><i class="flaticon-link"></i></span></small></a><br>
 			    {% endif %}
 			    <small><a href="/collections/" target="_blank">{% trans "See all collections" %} <span class="tiny"><i class="flaticon-link"></i></span></a></small>
 			  </td>

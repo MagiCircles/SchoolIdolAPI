@@ -60,6 +60,11 @@
 	<div class="itunes-song inline-block text-center" style="vertical-align: middle; padding-left: 10px;">
 	  <a href="/songs/{{ event.song.name|urlencode }}/" target="_blank">
 	    <strong class="song_name">{{ event.song.name }}</strong><br>
+	    {% if LANGUAGE_CODE != 'ja' %}
+	    {% if event.song.romaji_name %}{{ event.song.romaji_name }}<br>{% endif %}
+	    {% if event.song.translated_name and event.song.translated_name != event.song.romaji_name %}<small><i>{% trans event.song.translated_name %}</i></small><br>{% endif %}
+	    {% if LANGUAGE_CODE != 'en' and not event.song.translated_name and not event.song.romaji_name %}<small><i>{% trans event.song.name %}</i></small><br>{% endif %}
+	    {% endif %}
 	    <img src="/static/{{ event.song.attribute }}.png" class="attribute" width="20px">
 	    {{ event.song.japanese_attribute }}
 	    {{ event.song.attribute }}
@@ -153,7 +158,7 @@
 	{% if event.note %}
 	<tr>
 	  <th>{% trans 'Note' %}</th>
-	  <td class="text-right">{{ event.note }}</td>
+	  <td class="text-right">{% trans event.note %}</td>
 	</tr>
 	{% endif %}
 	<tr>
@@ -169,7 +174,7 @@
     </div>
     {% if soon_happen_world or did_happen_world or is_world_current %}
     <div class="col-lg-6">
-      <h1>{% if event.english_name %}{{ event.english_name }}{% else %}{{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
+      <h1>{% if event.english_name %}{{ event.english_name }}{% if LANGUAGE_CODE != 'en' %} <br><small>{% trans event.english_name %}</small>{% endif %}{% else %}{{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
       <br>
       <table class="table">
 	{% with 'EN'|languageToString as lang %}

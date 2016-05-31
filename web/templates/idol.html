@@ -115,25 +115,25 @@
 	{% if idol.favorite_food %}
 	<tr>
 	  <th>{% trans 'Favorite Food' %}</th>
-	  <td>{{ idol.favorite_food }}</td>
+	  <td>{% trans idol.favorite_food %}</td>
 	</tr>
 	{% endif %}
 	{% if idol.least_favorite_food %}
 	<tr>
 	  <th>{% trans 'Least Favorite Food' %}</th>
-	  <td>{{ idol.least_favorite_food }}</td>
+	  <td>{% trans idol.least_favorite_food %}</td>
 	</tr>
 	{% endif %}
 	{% if idol.hobbies %}
 	<tr>
 	  <th>{% trans 'Hobbies' %}</th>
-	  <td>{{ idol.hobbies }}</td>
+	  <td>{% trans idol.hobbies %}</td>
 	</tr>
 	{% endif %}
 	{% if idol.year %}
 	<tr>
 	  <th>{% trans 'Year' %}</th>
-	  <td>{{ idol.year }}</td>
+	  <td>{% trans idol.year %}</td>
 	</tr>
 	{% endif %}
 	{% if idol.cv %}
@@ -154,7 +154,7 @@
 	{% if idol.summary %}
 	<tr>
 	  <th>{% trans 'Summary' %}</th>
-	  <td>{{ idol.summary }}</td>
+	  <td>{% trans idol.summary %}</td>
 	</tr>
 	{% endif %}
 	<tr>

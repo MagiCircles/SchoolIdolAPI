@@ -8,13 +8,24 @@
 {% block shareimage %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
 {% block shareimagetwitter %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
 
-{% block title %}{% if contest.id != global_contest_id %}{{ contest.name }}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
+{% block title %}{% if contest.id != global_contest_id %}{% trans contest.name %}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
 
 {% block js %}
 <script src="/static/js/contest_vote.js?1"></script>
 <script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id %}
-<script src="/static/js/contest_countdown.js"></script>
+<script>
+  $(function() {
+    if ($('#countdown').length > 0) {
+	$('#countdown').countdown({
+	    date: countdowndate,
+	    render: function(data) {
+                $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
+	    }
+	});
+    }
+});
+</script>
 {% endif %}
 {% endblock %}
 
@@ -23,10 +34,10 @@
 <div id="contest-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container">
     <h1 class="text-{{ btnColor }}">
-      {{ contest.name }}
+      {% trans contest.name %}
       <br>
       {% if contest.begin %}<small>
-	{{ contest.begin|formattime:'%B %d' }} - {{ contest.end|formattime:'%B %d' }}
+	{% with month=contest.begin|formattime:'%B' %}{% trans month %}{% endwith %} {{ contest.begin|formattime:'%d' }} - {% with month=contest.end|formattime:'%B' %}{% trans month %}{% endwith %} {{ contest.end|formattime:'%d' }}
 	{% if contest.id != global_contest_id %}
 	<br>
 	<span id="countdown" style="display: block; font-size: 0.6em">

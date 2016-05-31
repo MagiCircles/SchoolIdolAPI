@@ -21,7 +21,7 @@
 	<div class="col-md-6">
 	  <a href="/collection/{{ collection }}/{% if is_jp %}?japanese{% endif %}" class="panel panel-{{ btnColor }} collection block a-nodifference">
 	    <div class="panel-heading fontx2">
-	      <strong>{{ collection }}</strong><br>
+	      <strong>{% trans collection %}</strong><br>
 	      <small class="tiny">{{ card.1|date:"F Y" }}</small>
 	    </div>
 	    <div class="panel-body">

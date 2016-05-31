@@ -5,7 +5,6 @@ from api.management.commands.import_jp_events import import_jp_events
 from api.management.commands.import_en_events import import_en_events
 from api.management.commands.import_wikia import import_wikia
 from api.management.commands.importcards_japanese import importcards_japanese
-from api.management.commands.import_transparent_images import import_transparent_images
 from api.management.commands.import_video_stories import import_video_stories
 from api.management.commands.import_idols import import_idols
 from api.management.commands.import_songs import import_songs

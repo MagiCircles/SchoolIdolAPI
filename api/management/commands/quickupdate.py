@@ -15,7 +15,7 @@ class Command(BaseCommand):
                 data = json.loads(response.read())
                 page_url = data['next']
                 for song in data['results']:
-                    models.Song.objects.filter(name=song['name']).update(image=song['image'].replace('http://i.schoolido.lu/', ''))
+                    models.Song.objects.filter(name=song['name']).update(image=song['image'].replace('http://i.schoolido.lu/', ''), translated_name=song['translated_name'], romaji_name=song['romaji_name'])
             return
 
         if 'events' in args:

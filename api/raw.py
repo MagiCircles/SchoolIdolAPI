@@ -589,6 +589,16 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/tsun2_by_yuukanii-da3i3ng.png', 'kouki'),
         ],
     },
+    'Kikkawa Mizuki': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/dotpict_20160325_215011.png', 'YurikaT'),
+        ],
+    },
+    'Torii Ayumi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/CjjlDaTWEAElYS_.png', 'nozoboobie'),
+        ],
+    },
 }
 
 all_graphic_designers = [

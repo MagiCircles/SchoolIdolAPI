@@ -404,6 +404,7 @@ raw_information_n = {
         'sub_unit': 'A-RISE',
         'chibi': [
             ('http://i.schoolido.lu/chibi/anju.png', 'db0'),
+            ('http://i.schoolido.lu/chibi/EQKSma9H.png', 'gabbi_slayz'),
         ],
     },
     'Kira Tsubasa': {
@@ -565,7 +566,7 @@ raw_information_n = {
     },
     'Fukuhara Mikoto': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/chib.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/chib.png', 'piyochin'),
         ],
     },
     'Nishimura Fumie': {

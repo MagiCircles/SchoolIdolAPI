@@ -180,6 +180,7 @@ raw_information['Takami Chika'] = {
     'color': '#ff9646',
     'chibi': [
         ('http://i.schoolido.lu/chibi/Takami_Chika.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Takami_Chika.png', 'klab'),
         ('http://i.schoolido.lu/chibi/B2A4v7nh.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/mzZeOlyc.png', 'sayakax'),
         ('http://i.schoolido.lu/chibi/chika.png', 'Wondercorn'),
@@ -195,6 +196,7 @@ raw_information['Sakurauchi Riko'] = {
     'starter': 787,
     'color': '#ff7777',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Sakurauchi_Riko.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Sakurauchi_Riko.png', 'klab'),
         ('http://i.schoolido.lu/chibi/d2XP46rt.png', 'umidah'),
         ('http://i.schoolido.lu/chibi/rikofinished.png', 'Cava'),
@@ -212,6 +214,7 @@ raw_information['Matsuura Kanan'] = {
     'color': '#16d5a6',
     'chibi': [
         ('http://i.schoolido.lu/chibi/Matsuura_Kanan.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Matsuura_Kanan.png', 'klab'),
         ('http://i.schoolido.lu/chibi/kirisakisun.png', 'kirisakisun'),
         ('http://i.schoolido.lu/chibi/KyYKeLBU.png', 'sayakax'),
         ('http://i.schoolido.lu/chibi/kanan3.png', 'enjugrove'),
@@ -227,6 +230,7 @@ raw_information['Kurosawa Dia'] = {
     'starter': 789,
     'color': '#ff4242',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Kurosawa_Dia.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Kurosawa_Dia.png', 'klab'),
         ('http://i.schoolido.lu/chibi/dia.png', 'db0'),
         ('http://i.schoolido.lu/chibi/xcrybxbyx.png', 'xcrybxbyx'),
@@ -245,6 +249,7 @@ raw_information['Watanabe You'] = {
     'color': '#49bbee',
     'chibi': [
         ('http://i.schoolido.lu/chibi/Watanabe_You.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Watanabe_You.png', 'klab'),
         ('http://i.schoolido.lu/chibi/iriel.png', 'iriel'),
         ('http://i.schoolido.lu/chibi/Mochaqt.png', 'Mochaqt'),
         ('http://i.schoolido.lu/chibi/sanjista.png', 'sanjista'),
@@ -261,6 +266,7 @@ raw_information['Tsushima Yoshiko'] = {
     'color': '#c3c3c3',
     'chibi': [
         ('http://i.schoolido.lu/chibi/Tsushima_Yoshiko.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Tsushima_Yoshiko.png', 'klab'),
         ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'erana'),
         ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
         ('http://i.schoolido.lu/chibi/hatsunemimu.png', 'hatsunemimu'),
@@ -276,6 +282,7 @@ raw_information['Kunikida Hanamaru'] = {
     'starter': 792,
     'color': '#e7cf0b',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Kunikida_Hanamaru.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Kunikida_Hanamaru.png', 'klab'),
         ('http://i.schoolido.lu/chibi/dTTgaSi.png', 'Eine'),
         ('http://i.schoolido.lu/chibi/michellecipher.png', 'michellecipher'),
@@ -294,6 +301,7 @@ raw_information['Ohara Mari'] = {
     'color': '#c450ff',
     'chibi': [
         ('http://i.schoolido.lu/chibi/Ohara_Mari.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/Ohara_Mari.png', 'klab'),
         ('http://i.schoolido.lu/chibi/sorutan.png', 'sorutan'),
     ],
 }
@@ -307,6 +315,7 @@ raw_information['Kurosawa Ruby'] = {
     'starter': 794,
     'color': '#f273c4',
     'chibi': [
+        ('http://i.schoolido.lu/chibi/Kurosawa_Ruby.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Kurosawa_Ruby.png', 'klab'),
         ('http://i.schoolido.lu/chibi/amukagamine.png', 'amukagamine'),
     ],
@@ -405,6 +414,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/anju.png', 'db0'),
             ('http://i.schoolido.lu/chibi/EQKSma9H.png', 'gabbi_slayz'),
+            ('http://i.schoolido.lu/chibi/Cj9dIZ5UYAALSyO.png', 'ribianey'),
         ],
     },
     'Kira Tsubasa': {
@@ -440,6 +450,7 @@ raw_information_n = {
     'Emma': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/chibi-emma.png', 'shellshark'),
+            ('http://i.schoolido.lu/chibi/fM2PY9qF.png', 'hatsunemimu'),
         ],
     },
     'Shinomiya Akiru': {
@@ -598,6 +609,11 @@ raw_information_n = {
     'Torii Ayumi': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/CjjlDaTWEAElYS_.png', 'nozoboobie'),
+        ],
+    },
+    'Rakshata': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Cj9kIPLWkAEYUw6.png', 'ribianey'),
         ],
     },
 }

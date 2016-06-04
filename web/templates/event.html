@@ -256,4 +256,10 @@
 
   {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
 </div>
+<br><br><br>
+<div class="bg-Rainbow-7 home-section">
+  <div class="container">
+    {% include 'include/links_link.html' with link=event_links with_links_button=True card=event_links_card %}
+  </div>
+</div>
 {% endblock %}

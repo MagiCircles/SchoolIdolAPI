@@ -3,8 +3,8 @@
 {% load mod %}
       <div class="row">
 	<div class="col-md-5">
-	  <a href="{{ card|singlecardurl }}" target="_blank">
-	    <img src="{% imageurl card=card image='transparent_idolized_image' %}" alt="{{ card.name }} #{{ card.id }}">
+	  <a href="{% if card.raw_url %}{{ card.raw_url }}{% else %}{{ card|singlecardurl }}{% endif %}" target="_blank">
+	    <img src="{% if card.raw_url %}{{ card.transparent_idolized_image }}{% else %}{% imageurl card=card image='transparent_idolized_image' %}" alt="{{ card.name }} #{{ card.id }}{% endif %}">
 	  </a>
 	</div>
 	<div class="col-md-7">

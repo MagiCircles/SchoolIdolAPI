@@ -1833,6 +1833,15 @@ def event(request, event):
             event.other_participations = event.participations.exclude(account_language='JP').exclude(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account_language', 'ranking_is_null', 'ranking'])
 
     context['event'] = event
+    context['event_links'] = (link for link in links_list if link['link'] == 'events').next()
+    list_cards = list(event.all_cards)
+    if len(list_cards):
+        context['event_links_card'] = list_cards[-1]
+    else:
+        context['event_links_card'] = {
+            'transparent_idolized_image': 'http://i.schoolido.lu/cards/transparent/886idolizedTransparent.png',
+            'raw_url': '/cards/886/SR-Minami-Kotori-Idol-Outfit-Smile/',
+        }
     return render(request, 'event.html', context)
 
 def _findparticipation(id, participations):

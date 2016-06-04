@@ -7,7 +7,8 @@
 
 {% block title %}{% trans 'About' %}{% endblock %}
 {% block js %}
-<script src="/static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="http://i.schoolido.lu/static/js/links.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -16,6 +17,72 @@
 {% load imageurl %}
 
 <div class="container" id="about-page">
+  <div class="link-stars-side">
+    <div class="color-Rainbow-1">
+      <a href="#about" class="page-scroll">
+	<span class="name">{% trans 'About us' %}</span>
+	<span class="btn btn-Rainbow-1"><span>
+	    <i class="flaticon-about fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-2">
+      <a href="#contact" class="page-scroll">
+	<span class="name">{% trans 'Contact us' %}</span>
+	<span class="btn btn-Rainbow-2"><span>
+	    <i class="flaticon-edit fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-3">
+      <a href="#lovelivefranchise" class="page-scroll">
+	<span class="name">{% trans 'LoveLive! Franchise' %}</span>
+	<span class="btn btn-Rainbow-3"><span>
+	    <i class="flaticon-id fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-4">
+      <a href="#sources" class="page-scroll">
+	<span class="name">{% trans 'Sources' %}</span>
+	<span class="btn btn-Rainbow-4"><span>
+	    <i class="flaticon-link fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-5">
+      <a href="#communityartists" class="page-scroll">
+	<span class="name">{% trans 'Community Artists' %}</span>
+	<span class="btn btn-Rainbow-5"><span>
+	    <i class="flaticon-users fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-6">
+      <a href="#staff" class="page-scroll">
+	<span class="name">{% trans 'Staff' %}</span>
+	<span class="btn btn-Rainbow-6"><span>
+	    <i class="flaticon-promo fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-7">
+      <a href="#contribute" class="page-scroll">
+	<span class="name">{% trans 'Contribute' %}</span>
+	<span class="btn btn-Rainbow-7"><span>
+	    <i class="flaticon-developer fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+    <div class="color-Rainbow-8">
+      <a href="#donate" class="page-scroll">
+	<span class="name">{% trans 'Donate' %}</span>
+	<span class="btn btn-Rainbow-8"><span>
+	    <i class="flaticon-heart fontx2"></i>
+	</span></span>
+      </a>
+    </div>
+  </div>
   <div class="margin50">
     <div id="about"></div>
     <br>
@@ -32,7 +99,7 @@
 	  {% blocktrans %}We don't know how far we will go with this, but one thing we know for sure is that we are having a lot of fun doing it and sharing this crazy idol adventure with you.{% endblocktrans %}
 	</p>
 	<p class="text-right">
-	  <a class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-lg page-scroll" href="#contact">{% trans 'Contact us' %}</a>
+	  <a class="btn btn-{{ btnColor }} btn-lg page-scroll" href="#contact">{% trans 'Contact us' %}</a>
 	  <a class="btn btn-link btn-lg page-scroll" href="#donate">{% trans 'Donate' %}</a>
 	</p>
       </div>
@@ -47,25 +114,57 @@
     <br>
     <h1 class="margin50">{% trans 'Contact us' %}</h1>
 
-    <p>
-      {% trans 'Send Email' %}: <a href="mailto:contact@schoolido.lu">contact@schoolido.lu</a>.
-    </p>
-    <p>
-      {% trans 'You may contact us if you have troubles with your account, such as if you lost your password, or if you wish to transfer an account to another user.' %}
-    </p>
-    <p>
-      {% trans 'For suggestions or bug reports, we recommend you to:' %}
-    </p>
-    <ol>
-      <li>{% trans 'Browse the upcoming features on' %} <a href="https://waffle.io/schoolidoltomodachi/schoolidolapi">{% trans 'our Tasks manager' %}</a></li>
-      <li><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/issues/new">{% trans 'Create a new issue' %}</a> {% trans 'with the details about what you would like us to implement' %}</li>
-    </ol>
-    <div class="text-right">
-      <a class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}" href="mailto:contact@schoolido.lu">{% trans 'Send Email' %}</a>
+    <div class="row">
+      <div class="col-md-6 text-center">
+	<p class="margin50 fontx1-2">
+	  {% trans 'We reply faster if you send us an direct message on Twitter:' %}
+	</p>
+	<a href="https://twitter.com/schoolidolu" class="btn btn-Cool btn-xl">
+	  <img src="http://i.schoolido.lu/static/twitter.png" alt="twitter" />
+	  Twitter
+	</a>
+      </div>
+      <div class="col-md-6 text-center">
+	<p class="margin50">
+	  {% trans 'You can also contact us by email, especially if you need help with something sensitive, such as transferring your account to another user.' %}
+	</p>
+	<a href="mailto:contact@schoolido.lu" class="btn btn-{{ btnColor }} btn-xl">
+	  <i class="flaticon-edit"></i>
+	  {% trans 'Send Email' %}
+	</a>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-6 text-center">
+	<p class="margin50">
+	  {% trans 'You can also contact us with a private message on:' %}
+	</p>
+	<a href="https://www.reddit.com/user/db0company" class="btn btn-{{ btnColor }} btn-lg">
+	  <img src="http://i.schoolido.lu/static/reddit.png" alt="reddit" />
+	  Reddit
+	</a>
+	<a href="https://www.facebook.com/db0company" class="btn btn-{{ btnColor }} btn-lg">
+	  <img src="http://i.schoolido.lu/static/facebook.png" alt="facebook" />
+	  Facebook
+	</a>
+      </div>
+      <div class="col-md-6">
+	<p class="margin50 fontx1-2">
+	<p>
+	  {% trans 'For suggestions or bug reports, we recommend you to:' %}
+	</p>
+	<ol>
+	  <li>{% trans 'Browse the upcoming features on' %} <a href="https://waffle.io/schoolidoltomodachi/schoolidolapi">{% trans 'our Tasks manager' %}</a></li>
+	  <li><a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/issues/new">{% trans 'Create a new issue' %}</a> {% trans 'with the details about what you would like us to implement' %}</li>
+	</ol>
+      </div>
     </div>
 
     <hr class="margin50">
 
+    <div id="lovelivefranchise"></div>
+    <br>
     <h1 class="margin50">{% trans 'LoveLive! Franchise' %}</h1>
     <div class="alert alert-warning text-center">
       <p style="max-width: 600px; margin: auto;">
@@ -75,6 +174,8 @@
 
     <hr class="margin50">
 
+    <div id="sources"></div>
+    <br>
     <h1 class="margin50">{% trans 'Sources' %}</h1>
     <p>
       {% blocktrans %}School Idol Tomodachi relies on multiple external services provided by the LoveLive! community to collect the game data. We highly recommend you to visit them.{% endblocktrans %}
@@ -96,7 +197,10 @@
 	</ul>
       </div>
     </div>
-    <h4>{% trans 'Community Artists' %}</h4>
+    <hr class="margin50">
+    <div id="communityartists"></div>
+    <br>
+    <h1 class="margin50">{% trans 'Community Artists' %}</h1>
     <div class="row">
       {% for artist in artists %}
       <div class="col-md-3">
@@ -122,11 +226,15 @@
 
     <hr class="margin50">
 
+    <div id="iconscredits"></div>
+    <br>
     <h1 class="margin50">{% trans 'Icon Credits' %}</h1>
     <div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, <a href="http://www.flaticon.com/authors/yannick" title="Yannick">Yannick</a>, <a href="http://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a>, <a href="http://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a>, <a href="http://www.flaticon.com/authors/icons8" title="Icons8">Icons8</a>, <a href="http://www.flaticon.com/authors/catalin-fertu" title="Catalin Fertu">Catalin Fertu</a>, <a href="http://www.flaticon.com/authors/google" title="Google">Google</a>, <a href="http://www.flaticon.com/authors/sergiu-bagrin" title="Sergiu Bagrin">Sergiu Bagrin</a>, <a href="http://www.flaticon.com/authors/bogdan-rosu" title="Bogdan Rosu">Bogdan Rosu</a>, <a href="http://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 
     <hr class="margin50">
 
+    <div id="staff"></div>
+    <br>
     <h1 class="margin50">{% trans 'Staff members' %}</h1>
 
     <div class="row">
@@ -186,19 +294,34 @@
 
     <div id="contribute"></div>
     <br><br>
-    <h1 class="text-main">{% trans 'Contribute' %} <small><i class="flaticon-developer"></i> {% trans 'Dev' %}</small></h1>
-    <p class="margin50">
-      {% blocktrans %}Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!{% endblocktrans %}
-      <br><br>
-      {% blocktrans %}The website has been made using{% endblocktrans %} <a href="https://docs.djangoproject.com/">Django</a>, {% trans 'so in Python 2. We also use' %} <a href="http://lesscss.org/">LESS CSS</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jquery.com/">JQuery</a> {% trans 'and' %} <a href="http://bower.io/">Bower</a> {% trans 'for the front-end of the website.' %}
-      <br><br>
-      {% blocktrans %}We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level.{% endblocktrans %}
-      <div class="text-right">
-	<a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-lg">
-	  {% trans 'Get Started' %}
-	</a>
+    <div class="row">
+      <div class="col-md-8">
+	<h1 class="text-main">{% trans 'Contribute' %} <small><i class="flaticon-developer"></i> {% trans 'Dev' %}</small></h1>
+	<p class="margin50">
+	  {% blocktrans %}Our project is open-source and open for contributions. We are more than happy to accept pull-requests on GitHub!{% endblocktrans %}
+	  <br><br>
+	  {% blocktrans %}The website has been made using{% endblocktrans %} <a href="https://docs.djangoproject.com/">Django</a>, {% trans 'so in Python 2. We also use' %} <a href="http://lesscss.org/">LESS CSS</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jquery.com/">JQuery</a> {% trans 'and' %} <a href="http://bower.io/">Bower</a> {% trans 'for the front-end of the website.' %}
+	  <br><br>
+	  {% blocktrans %}We accept all kind of contributions, from tools to help players, statistics pages, mini-games, or even little CSS changes. Don't be shy! If you need help getting started, just contact us and we will happily take the time to teach you the basics, no matter your level.{% endblocktrans %}
+	  <div class="text-right">
+	    <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Contribute" class="btn btn-{{ btnColor }} btn-lg" target="_blank">
+	      {% trans 'Get Started' %}
+	    </a>
+	  </div>
+	</p>
       </div>
-    </p>
+      <div class="col-md-4">
+	<h1 class="text-main">API <small><i class="flaticon-developer"></i> {% trans 'Dev' %}</small></h1>
+	<p class="margin50">
+	  {% blocktrans %}If you're a developer and you would like to get the cards of the game in a convenient format, we provide a public REST API to get the cards, events, idols, and more!{% endblocktrans %}
+	  <div class="text-right">
+	    <a href="http://schoolido.lu/api/" class="btn btn-{{ btnColor }} btn-lg" target="_blank">
+	      {% trans 'Get Started' %}
+	    </a>
+	  </div>
+	</p>
+      </div>
+    </div>
 
     <hr class="margin50">
 
@@ -207,8 +330,8 @@
     <h1 class="text-main">{% trans 'Donate' %} <small><i class="flaticon-heart"></i></h1>
     <div class="row text-center">
       <div class="col-md-9">
-	<p style="font-size: 30px;" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
-	<br><br><a href="#donations" class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %} btn-xl page-scroll">{% trans 'Donate' %}</a><br>
+	<p style="font-size: 30px;" class="text-{{ btnColor }}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
+	<br><br><a href="#donations" class="btn btn-{{ btnColor }} btn-xl page-scroll">{% trans 'Donate' %}</a><br>
 	<a href="#donators" class="btn btn-link btn-lg page-scroll">{% trans 'Donators' %}</a> - <a href="#about" class="page-scroll btn btn-link btn-lg">{% trans 'About us' %}</a> - <a class="btn btn-link btn-lg" target="_blank" href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/pubhtml?gid=753111293&single=true">{% trans 'Budget' %}</a>
       </div>
       <div class="col-md-3">

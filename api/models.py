@@ -838,6 +838,17 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
             return [r for r in reader]
         return []
 
+    @property
+    def localized_message_activity(self):
+        activity = self
+        if activity.message == 'Custom':
+            return activity.message_data
+        message_string = activityMessageToString(activity.message)
+        data = [_(STORED_DICT_FOR_ACTIVITIES[d]) if d in STORED_DICT_FOR_ACTIVITIES else _(d) for d in activity.split_message_data()]
+        if len(data) == message_string.count('{}'):
+            return _(message_string).format(*data)
+        return 'Invalid message data'
+
     def __unicode__(self):
         return u'%s %s' % (self.account, self.message)
 

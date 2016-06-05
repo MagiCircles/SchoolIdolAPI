@@ -2297,8 +2297,22 @@ def ajaxreport(request, report_id, status):
             all_reports = models.ModerationReport.objects.filter(fake_account=report.fake_account)
         elif report.fake_eventparticipation:
             all_reports = models.ModerationReport.objects.filter(fake_eventparticipation=report.fake_eventparticipation)
+        elif report.fake_user:
+            all_reports = models.ModerationReport.objects.filter(fake_user=report.fake_user)
+        elif report.fake_activity:
+            all_reports = models.ModerationReport.objects.filter(fake_activity=report.fake_activity)
+        defaults = {
+            'status': 0,
+            'moderated_by': request.user,
+            'moderation_date': timezone.now(),
+            'moderation_comment': moderation_comment,
+        }
         if all_reports is not None:
-            all_reports.update(status=0, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
+            all_reports.update(**defaults)
+        else:
+            for k, v in defaults.items():
+                setattr(report, k, v)
+            report.save()
     return HttpResponse(status)
 
 def songs(request, song=None, ajax=False):

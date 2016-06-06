@@ -616,6 +616,16 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/Cj9kIPLWkAEYUw6.png', 'ribianey'),
         ],
     },
+    'Sakamaki Chizuko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/9cnj87wv.png', 'astar'),
+        ],
+    },
+    'Kurobane Sakuya': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/M_ukFKhB.png', 'math'),
+        ],
+    },
 }
 
 all_graphic_designers = [

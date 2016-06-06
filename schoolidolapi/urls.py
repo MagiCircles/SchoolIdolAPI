@@ -16,6 +16,7 @@ router.register(r'songs', api_views.SongViewSet)
 router.register(r'users', api_views.UserViewSet, base_name='user')
 router.register(r'ownedcards', api_views.OwnedCardViewSet, base_name='ownedcard')
 router.register(r'accounts', api_views.AccountViewSet, base_name='account')
+router.register(r'activities', api_views.ActivityViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/app/(?P<app>[\w.-]+)[/]+$', api_views.app),
+    url(r'^api/cacheddata[/]+$', api_views.cacheddata),
     url(r'^admin/', include(admin.site.urls)),
     url('', include('django_prometheus.urls')),
 ]

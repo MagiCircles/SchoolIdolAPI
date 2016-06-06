@@ -1174,13 +1174,7 @@ def ajaxfollowing(request, username):
                                                 })
 
 def _localized_message_activity(activity):
-    if activity.message == 'Custom':
-        return activity.message_data
-    message_string = models.activityMessageToString(activity.message)
-    data = [_(models.STORED_DICT_FOR_ACTIVITIES[d]) if d in models.STORED_DICT_FOR_ACTIVITIES else _(d) for d in activity.split_message_data()]
-    if len(data) == message_string.count('{}'):
-        return _(message_string).format(*data)
-    return 'Invalid message data'
+    return activity.localized_message_activity
 
 def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None):
     """

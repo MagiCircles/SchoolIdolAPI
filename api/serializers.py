@@ -11,22 +11,32 @@ from django.core.exceptions import ObjectDoesNotExist
 from web.utils import chibiimage, singlecardurl
 import urllib
 import datetime
+import markdown_deux
 import pytz
+import re
 
 class DateTimeJapanField(serializers.DateTimeField):
     def to_representation(self, value):
         value = value.astimezone(pytz.timezone('Asia/Tokyo'))
         return super(DateTimeJapanField, self).to_representation(value)
 
+class LocalizedField(serializers.CharField):
+    def to_representation(self, value):
+        return _(value) if value else None
+
 class UserPreferencesSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
+    html_description = serializers.SerializerMethodField()
 
     def get_avatar(self, obj):
         return obj.avatar(200)
 
+    def get_html_description(self, obj):
+        return markdown_deux.markdown(obj.description)
+
     class Meta:
         model = models.UserPreferences
-        fields = ('color', 'description', 'best_girl', 'location', 'latitude', 'longitude', 'private', 'status', 'avatar')
+        fields = ('color', 'description', 'html_description', 'best_girl', 'location', 'latitude', 'longitude', 'private', 'status', 'avatar', 'birthdate', 'default_tab')
 
 class UserLinkSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
@@ -38,15 +48,35 @@ class UserLinkSerializer(serializers.ModelSerializer):
         model = models.UserLink
         fields = ('type', 'value', 'relevance', 'icon', 'url')
 
-class UserSerializer(serializers.ModelSerializer):
-    accounts = serializers.SerializerMethodField()
-    links = serializers.SerializerMethodField()
-    preferences = serializers.SerializerMethodField()
+class UserNotExpandableSerializer(serializers.ModelSerializer):
     website_url = serializers.SerializerMethodField()
-    is_following = serializers.SerializerMethodField()
 
     def get_website_url(self, obj):
         return 'http://schoolido.lu/user/' + urllib.quote(obj.username) + '/'
+
+    class Meta:
+        model = User
+        fields = ('username', 'date_joined', 'website_url')
+
+class UserWithPreferencesSerializer(UserNotExpandableSerializer):
+    preferences = serializers.SerializerMethodField()
+
+    def get_preferences(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('user-') or self.context['request'].resolver_match.url_name.startswith('account-'):
+            if 'expand_preferences' in self.context['request'].query_params:
+                serializer = UserPreferencesSerializer(obj.preferences, context=self.context)
+                return serializer.data
+            return note_to_expand('preferences')
+        return None
+
+    class Meta:
+        model = User
+        fields = ('username', 'date_joined', 'website_url', 'preferences')
+
+class UserSerializer(UserWithPreferencesSerializer):
+    accounts = serializers.SerializerMethodField()
+    links = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
 
     def get_accounts(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('user-'):
@@ -62,14 +92,6 @@ class UserSerializer(serializers.ModelSerializer):
                 serializer = UserLinkSerializer(obj.all_links, many=True, context=self.context)
                 return serializer.data
             return note_to_expand("links", multiple=True)
-        return None
-
-    def get_preferences(self, obj):
-        if self.context['request'].resolver_match.url_name.startswith('user-'):
-            if 'expand_preferences' in self.context['request'].query_params:
-                serializer = UserPreferencesSerializer(obj.preferences, context=self.context)
-                return serializer.data
-            return note_to_expand('preferences')
         return None
 
     def get_is_following(self, obj):
@@ -98,12 +120,20 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('url', 'name')
 
 class EventSerializer(serializers.ModelSerializer):
+    translated_name = serializers.SerializerMethodField()
     beginning = DateTimeJapanField()
     end = DateTimeJapanField()
     japan_current = serializers.SerializerMethodField()
     world_current = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     english_image = serializers.SerializerMethodField()
+    website_url = serializers.SerializerMethodField()
+    note = LocalizedField()
+
+    def get_translated_name(self, obj):
+        if self.context['request'].LANGUAGE_CODE != 'en':
+            return _(obj.english_name) if obj.english_name else None
+        return None
 
     def get_image(self, obj):
         return _get_image(obj.image)
@@ -117,13 +147,21 @@ class EventSerializer(serializers.ModelSerializer):
     def get_world_current(self, obj):
         return obj.is_world_current()
 
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/events/' + urllib.quote(obj.japanese_name.encode('utf8')) + '/'
+
     class Meta:
         model = models.Event
         lookup_field = 'japanese_name'
-        fields = ('japanese_name', 'romaji_name', 'english_name', 'image', 'english_image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note')
+        fields = ('japanese_name', 'romaji_name', 'english_name', 'translated_name', 'image', 'english_image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note', 'website_url')
 
 class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()
+    favorite_food = LocalizedField()
+    least_favorite_food = LocalizedField()
+    summary = LocalizedField()
+    year = LocalizedField()
+    hobbies = LocalizedField()
     website_url = serializers.SerializerMethodField()
     wiki_url = serializers.SerializerMethodField()
     wikia_url = serializers.SerializerMethodField()
@@ -195,6 +233,7 @@ class CardSerializer(serializers.ModelSerializer):
     card_idolized_image = ImageField(required=False)
     round_card_image = ImageField(required=False)
     round_card_idolized_image = ImageField(required=False)
+    translated_collection = LocalizedField()
     japanese_attribute = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
     non_idolized_max_level = serializers.SerializerMethodField()
@@ -206,6 +245,8 @@ class CardSerializer(serializers.ModelSerializer):
     center_skill_details = serializers.SerializerMethodField()
     japanese_center_skill = serializers.SerializerMethodField()
     japanese_center_skill_details = serializers.SerializerMethodField()
+    ur_pair = serializers.SerializerMethodField()
+    skill_up_cards = serializers.SerializerMethodField()
 
     def get_event(self, obj):
         if not obj.event_id:
@@ -217,23 +258,25 @@ class CardSerializer(serializers.ModelSerializer):
         return {
             'japanese_name': obj.event_japanese_name,
             'english_name': obj.event_english_name,
+            'translated_name': _(obj.event_english_name) if obj.event_english_name and self.context['request'].LANGUAGE_CODE != 'en' else None,
             'image': _get_image(obj.event_image),
             'note': note_to_expand('event') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
         }
 
     def get_idol(self, obj):
-        if self.context['request'].resolver_match.url_name.startswith('card-'):
-            if 'expand_idol' in self.context['request'].query_params:
-                serializer = IdolSerializer(obj.idol, context=self.context)
-                return serializer.data
+        expandable = (self.context['request'].resolver_match.url_name.startswith('card-')
+                      and 'in_ur_pair_{}'.format(obj.ur_pair_id) not in self.context)
+        if expandable and 'expand_idol' in self.context['request'].query_params:
+            serializer = IdolSerializer(obj.idol, context=self.context)
+            return serializer.data
         return {
             'name': obj.name,
             'japanese_name': obj.japanese_name,
             'school': obj.idol_school,
-            'year': obj.idol_year,
+            'year': _(obj.idol_year),
             'main_unit': obj.idol_main_unit,
             'sub_unit': obj.idol_sub_unit,
-            'note': note_to_expand('idol') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
+            'note': note_to_expand('idol') if expandable else None,
             'chibi': chibiimage(obj.name, small=False),
             'chibi_small': chibiimage(obj.name, small=True),
         }
@@ -244,11 +287,7 @@ class CardSerializer(serializers.ModelSerializer):
     def get_center_skill_details(self, obj):
         sentence, data = obj.get_center_skill_details()
         if sentence and data:
-            old_lang = translation.get_language()
-            translation.activate("en")
-            sentence = _(sentence).format(*data)
-            translation.activate(old_lang)
-            return sentence
+            return _(sentence).format(*data)
         return None
 
     def get_japanese_center_skill(self, obj):
@@ -257,6 +296,7 @@ class CardSerializer(serializers.ModelSerializer):
         old_lang = translation.get_language()
         translation.activate("ja")
         sentence = string_concat(_(obj.center_skill.split(' ')[0]), ' ', _(obj.center_skill.split(' ')[1]))
+        sentence = unicode(sentence)
         translation.activate(old_lang)
         return sentence
 
@@ -286,6 +326,35 @@ class CardSerializer(serializers.ModelSerializer):
         elif obj.rarity == 'R': return 60
         elif obj.rarity == 'SR': return 80
         elif obj.rarity == 'UR': return 100
+
+    def get_ur_pair(self, obj):
+        if not obj.ur_pair_id or 'in_ur_pair_{}'.format(obj.ur_pair_id) in self.context:
+            return None
+        expandable = (self.context['request'].resolver_match.url_name.startswith('card-')
+                      and 'in_ur_pair_{}'.format(obj.ur_pair_id) not in self.context)
+        if expandable and 'expand_ur_pair' in self.context['request'].query_params:
+            self.context['in_ur_pair_{}'.format(obj.id)] = True
+            serializer = CardSerializer(obj.ur_pair, context=self.context)
+            card = serializer.data
+        else:
+            card = {
+                'id': obj.ur_pair_id,
+                'name': obj.ur_pair_name,
+                'round_card_image': _get_image(obj.ur_pair_round_card_image),
+                'attribute': obj.ur_pair_attribute,
+                'note': note_to_expand('ur_pair'),
+            }
+        return {
+            'card': card,
+            'reverse_display': obj.ur_pair_reverse,
+            'reverse_display_idolized': obj.ur_pair_idolized_reverse,
+        }
+
+    def get_skill_up_cards(self, obj):
+        return [{
+            'id': card[0],
+            'round_card_image': _get_image('cards/' + str(card[0]) + 'Round' + card[1] + '.png'),
+        } for card in obj.skill_up_cards]
 
     def _save_fk(self, card):
         changed = False
@@ -317,12 +386,14 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized')
+        fields = ('id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized', 'skill_up_cards', 'ur_pair', 'total_owners', 'total_wishlist', 'ranking_attribute', 'ranking_rarity', 'ranking_special')
 
 class SongSerializer(serializers.ModelSerializer):
     event = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     itunes_id = serializers.SerializerMethodField()
+    translated_name = serializers.SerializerMethodField()
+    website_url = serializers.SerializerMethodField()
 
     def get_event(self, obj):
         if not obj.event_id:
@@ -331,7 +402,8 @@ class SongSerializer(serializers.ModelSerializer):
             if 'expand_event' in self.context['request'].query_params:
                 serializer = EventSerializer(obj.event, context=self.context)
                 return serializer.data
-        return note_to_expand("event")
+            return note_to_expand("event")
+        return None
 
     def get_image(self, obj):
         return _get_image(obj.image)
@@ -341,9 +413,17 @@ class SongSerializer(serializers.ModelSerializer):
             return obj.itunes_id
         return None
 
+    def get_translated_name(self, obj):
+        if not obj.translated_name and not obj.romaji_name and self.context['request'].LANGUAGE_CODE != 'en':
+            return _(obj.name)
+        return _(obj.translated_name) if obj.translated_name else None
+
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/songs/' + urllib.quote(obj.name.encode('utf8')) + '/'
+
     class Meta:
         model = models.Song
-        fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available', 'itunes_id')
+        fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available', 'itunes_id', 'website_url')
         lookup_field = 'name'
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -351,6 +431,8 @@ class AccountSerializer(serializers.ModelSerializer):
     center = serializers.SerializerMethodField()
     starter = serializers.SerializerMethodField()
     friend_id = serializers.SerializerMethodField()
+    creation = serializers.SerializerMethodField()
+    items = serializers.SerializerMethodField()
 
     def get_center(self, obj):
         if not obj.center_id:
@@ -374,7 +456,7 @@ class AccountSerializer(serializers.ModelSerializer):
     def get_owner(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('account-'):
             if 'expand_owner' in self.context['request'].query_params:
-                serializer = UserSerializer(obj.owner, context=self.context)
+                serializer = UserWithPreferencesSerializer(obj.owner, context=self.context)
                 return serializer.data
         return obj.owner_username
 
@@ -383,13 +465,31 @@ class AccountSerializer(serializers.ModelSerializer):
             return obj.friend_id
         return None
 
+    def get_creation(self, obj):
+        if obj.show_creation or self.context['request'].user.id == obj.owner_id:
+            return obj.creation
+        return None
+
+    def get_items(self, obj):
+        if obj.show_items or self.context['request'].user.id == obj.owner_id:
+            return {
+                'loveca': obj.loveca,
+                'friend_points': obj.friend_points,
+                'g': obj.g,
+                'tickets': obj.tickets,
+                'vouchers': obj.vouchers,
+                'bought_loveca': obj.bought_loveca,
+                'money_spent': obj.money_spent,
+            }
+        return None
+
     def create(self, data):
         data['owner'] = self.context['request'].user
         return super(AccountSerializer, self).create(data)
 
     class Meta:
         model = models.Account
-        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'ranking', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url')
+        fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'ranking', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url', 'creation', 'ranking', 'default_tab', 'items', 'fake')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
     owner_account = serializers.SerializerMethodField()
@@ -456,3 +556,122 @@ class OwnedCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.OwnedCard
         fields = ('id', 'owner_account', 'card', 'stored', 'idolized', 'max_level', 'max_bond', 'expiration', 'skill')
+
+class ActivitySerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+    account = serializers.SerializerMethodField()
+    last_update = serializers.SerializerMethodField()
+    message = serializers.SerializerMethodField()
+    html_message = serializers.SerializerMethodField()
+    message_type = serializers.SerializerMethodField()
+    figure = serializers.SerializerMethodField()
+    total_likes = serializers.SerializerMethodField()
+    liked_by = serializers.SerializerMethodField()
+    liked = serializers.SerializerMethodField()
+    website_url = serializers.SerializerMethodField()
+
+    def get_avatar(self, obj):
+        return obj.account_picture
+
+    def get_account(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('activity-'):
+            if 'expand_account' in self.context['request'].query_params:
+                serializer = AccountSerializer(obj.account, context=self.context)
+                return serializer.data
+        return {
+            'id': obj.account_id,
+            'website_url': obj.account_link if 'http' in obj.account_link else 'http://schoolido.lu' + obj.account_link,
+            'text': obj.account_name,
+            'note': note_to_expand('account'),
+        }
+
+    def get_last_update(self, obj):
+        return obj.creation
+
+    def get_message(self, obj):
+        return obj.localized_message_activity
+
+    def get_html_message(self, obj):
+        return markdown_deux.markdown(obj.localized_message_activity)
+
+    def get_message_type(self, obj):
+        return obj.message
+
+    def get_figure(self, obj):
+        picture = obj.right_picture
+        link = obj.right_picture_link
+        link_type = None
+        link_data = None
+        if not picture:
+            if obj.message == 'Rank Up':
+                picture = 'http://i.schoolido.lu/static/activity/rankup.png'
+            elif obj.message == 'Verified':
+                picture = 'http://i.schoolido.lu/static/activity/verified{}.png'.format(obj.number)
+            elif obj.message == 'Trivia':
+                picture = 'http://i.schoolido.lu/static/activity/trivia.png'
+                link = 'http://schoolido.lu/trivia/'
+        if picture == "" or picture is None:
+            return None
+        if '/' not in picture: # imgur
+            return {
+                'picture': 'http://i.imgur.com/{}t.png'.format(picture),
+                'link': 'http://i.imgur.com/{}.png'.format(picture),
+                'link_type': 'imgur',
+                'link_data': picture,
+            }
+        if link and 'http' not in link:
+            link = 'http://schoolido.lu' + obj.right_picture_link
+        if link and '/cards/' in link:
+            link_type = 'cards'
+            m = re.search('\/cards\/(\d+)\/', link)
+            if m:
+                link_data = int(m.group(1))
+        if link and '/events/' in link:
+            link_type = 'events'
+            m = re.search('\/events\/([^/]+)\/', link)
+            if m:
+                link_data = m.group(1)
+        return {
+            'picture': picture,
+            'link': link,
+            'link_type': link_type,
+            'link_data': link_data,
+        }
+
+    def get_liked_by(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('activity-'):
+            if 'expand_liked_by' in self.context['request'].query_params:
+                serializer = UserNotExpandableSerializer(obj.liked_by, many=True, context=self.context)
+                return serializer.data
+            return note_to_expand('liked_by', multiple=True)
+        return None
+
+    def get_total_likes(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('activity-'):
+            if 'expand_total_likes' in self.context['request'].query_params:
+                if 'expand_liked_by' in self.context['request'].query_params:
+                    return len(obj.liked_by)
+                else:
+                    return obj.total_likes
+            return 'To get the full total number of likes, use the parameter "expand_total_likes"'
+        return None
+
+    def get_liked(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('activity-'):
+            if 'expand_liked' in self.context['request'].query_params:
+                if hasattr(obj, 'liked'):
+                    return bool(obj.liked)
+                if 'expand_liked_by' in self.context['request'].query_params:
+                    for user in obj.liked_by:
+                        if user.id == self.context['request'].user.id:
+                            return True
+                    return False
+            return 'To know if the authenticated user liked this activity or not, use the parameter \"expand_liked\"'
+        return None
+
+    def get_website_url(self, obj):
+        return 'http://schoolido.lu/activities/{}/'.format(obj.id)
+
+    class Meta:
+        model = models.Activity
+        fields = ('id', 'avatar', 'account', 'last_update', 'message', 'html_message', 'message_type', 'figure', 'liked_by', 'total_likes', 'liked', 'website_url')

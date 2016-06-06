@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, Http404, JsonResponse
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import viewsets, filters, permissions, status
 from rest_framework.decorators import api_view, detail_route
@@ -33,6 +34,8 @@ class UserFilterBackend(filters.BaseFilterBackend):
             return queryset.filter(pk__in=(models.User.objects.get(username=request.query_params['following']).followers.all()))
         if 'followed_by' in request.query_params:
             return queryset.filter(pk__in=(models.User.objects.get(username=request.query_params['followed_by']).preferences.following.all()))
+        if 'liked_activity' in request.query_params:
+            return queryset.filter(pk__in=(models.Activity.objects.get(pk=request.query_params['liked_activity']).likes.all()))
         return queryset.distinct()
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -47,7 +50,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.prefetch_related(Prefetch('links', to_attr='all_links'))
         if 'expand_preferences' in self.request.query_params:
             queryset = queryset.select_related('preferences')
-        if 'expand_is_following' and self.request.user.is_authenticated():
+        if 'expand_is_following' in self.request.query_params and self.request.user.is_authenticated():
             queryset = queryset.extra(select={'is_following': 'SELECT COUNT(*) FROM api_userpreferences_following WHERE userpreferences_id=(SELECT id FROM api_userpreferences WHERE user_id={}) AND user_id=auth_user.id'.format(self.request.user.id) })
         return queryset
 
@@ -108,7 +111,7 @@ class CardFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Card
-        fields = ('name', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event', 'ids')
+        fields = ('name', 'japanese_name', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'is_special', 'japan_only', 'hp', 'skill', 'center_skill', 'is_event', 'ids', 'idol_year', 'idol_main_unit', 'idol_sub_unit', 'idol_school', 'event_japanese_name', 'event_english_name', 'ur_pair_name')
 
 class CardViewSet(viewsets.ModelViewSet):
     """
@@ -120,11 +123,13 @@ class CardViewSet(viewsets.ModelViewSet):
             queryset = queryset.select_related('idol')
         if 'expand_event' in self.request.query_params:
             queryset = queryset.select_related('event')
+        if 'expand_ur_pair' in self.request.query_params:
+            queryset = queryset.select_related('ur_pair')
         return queryset
 
     serializer_class = serializers.CardSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
-    search_fields = ('name', 'idol__japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection', 'translated_collection', 'promo_item','event__english_name','event__japanese_name')
+    search_fields = ('name', 'japanese_name', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'japanese_collection', 'translated_collection', 'promo_item','event_english_name','event_japanese_name')
     filter_class = CardFilter
     permission_classes = (api_permissions.IsStaffOrReadOnly, )
     ordering_fields = '__all__'
@@ -146,7 +151,7 @@ class SongFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Song
-        filter_fields = ('attribute', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'available')
+        filter_fields = ('romaji_name', 'attribute', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'available')
 
 class SongViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -169,7 +174,7 @@ class IdolFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Idol
-        fields = ('name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special', 'for_trivia')
+        fields = ('japanese_name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special', 'for_trivia')
 
 class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -184,6 +189,20 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     ordering = ('-main', 'name')
     lookup_field = 'name'
 
+class EventFilter(django_filters.FilterSet):
+    idol = django_filters.CharFilter('cards__name')
+    main_unit = django_filters.CharFilter('cards__idol_main_unit')
+    skill = django_filters.CharFilter('cards__skill')
+    attribute = django_filters.CharFilter('cards__attribute')
+    is_english = django_filters.MethodFilter(action='filter_is_english')
+
+    def filter_is_english(self, queryset, value):
+        return queryset.filter(english_beginning__isnull=(False if value.title() == 'True' else True))
+
+    class Meta:
+        model = models.Event
+        fields = ('idol', 'is_english', 'main_unit', 'skill', 'attribute')
+
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows events to be viewed.
@@ -192,7 +211,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.EventSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
     search_fields = ('japanese_name', 'english_name')
-    filter_fields = ('cards__idol__name',)
+    filter_class = EventFilter
     ordering_fields = '__all__'
     ordering = ('beginning',)
     lookup_field = 'japanese_name'
@@ -208,6 +227,11 @@ class AccountFilterBackend(filters.BaseFilterBackend):
                 queryset = queryset.filter(Q(verified=1) | Q(verified=2))
             elif request.query_params['is_verified'].title() == 'False':
                 queryset = queryset.exclude(Q(verified=1) | Q(verified=2))
+        if 'has_friend_id' in request.query_params:
+            if request.query_params['has_friend_id'].title() == 'True':
+                queryset = queryset.filter(friend_id__isnull=False).exclude(friend_id=0)
+            else:
+                queryset = queryset.filter(Q(friend_id__isnull=True) | Q(friend_id=0))
         return queryset
 
 class AccountViewSet(viewsets.ReadOnlyModelViewSet):
@@ -223,7 +247,7 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.AccountSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, AccountFilterBackend, RandomBackend)
     search_fields = ('owner__username', 'nickname', 'device')
-    filter_fields = ('owner__username', 'nickname', 'language', 'center', 'friend_id', 'language', 'os', 'center', 'rank', 'device', 'play_with', 'accept_friend_requests', 'verified')
+    filter_fields = ('owner__username', 'nickname', 'language', 'center__card_id', 'friend_id', 'os', 'rank', 'device', 'play_with', 'accept_friend_requests', 'verified', 'owner__preferences__best_girl', 'owner__preferences__private', 'owner__preferences__status', 'center_card_attribute', 'center__card__rarity', 'owner__preferences__color')
     ordering_fields = '__all__'
 
 class OwnedCardFilterBackend(filters.BaseFilterBackend):
@@ -238,6 +262,8 @@ class OwnedCardFilterBackend(filters.BaseFilterBackend):
 
 class OwnedCardFilterSet(django_filters.FilterSet):
     stored = django_filters.MethodFilter(action='filter_stored')
+    owner_account = CommaSeparatedValueFilter(name='owner_account', lookup_type='in')
+    card__rarity = CommaSeparatedValueFilter(name='card__rarity', lookup_type='in')
 
     def filter_stored(self, queryset, value):
         if value == 'Album':
@@ -281,9 +307,72 @@ class CardIdViewSet(CardViewSet):
         r.data = [card['id'] for card in r.data]
         return r
 
+class ActivityFilter(django_filters.FilterSet):
+    message_type = django_filters.MethodFilter(action='filter_message_type')
+    account = CommaSeparatedValueFilter(name='account', lookup_type='in')
+    card = django_filters.NumberFilter('ownedcard__card')
+    followed_by = django_filters.MethodFilter(action='filter_followed_by')
+
+    def filter_message_type(self, queryset, value):
+        return queryset.filter(message_type=models.messageStringToInt(value))
+
+    def filter_followed_by(self, queryset, value):
+        return queryset.filter(Q(account__owner__in=(models.UserPreferences.objects.get(user__username=value).following.all())) | Q(account_id=1, message_type=models.ACTIVITY_TYPE_CUSTOM))
+
+    class Meta:
+        model = models.Activity
+        fields = ('message_type', 'account', 'card', 'followed_by')
+
+class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
+    def get_queryset(self):
+        queryset = models.Activity.objects.all()
+        if 'expand_account' in self.request.query_params:
+            queryset = queryset.select_related('account')
+        if 'expand_liked_by' in self.request.query_params:
+            queryset = queryset.prefetch_related(Prefetch('likes', to_attr='liked_by'))
+            queryset = queryset.select_related('account', 'account__owner')
+        ordering = self.request.query_params.get('ordering', '')
+        if ('expand_total_likes' in self.request.query_params and 'expand_liked_by' not in self.request.query_params) or 'total_likes' in ordering:
+            queryset = queryset.annotate(total_likes=Count('likes'))
+        if ('expand_liked' in self.request.query_params and self.request.user.is_authenticated()
+            and 'expand_liked_by' not in self.request.query_params):
+            queryset = queryset.extra(select={'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id=api_activity.id AND user_id={}'.format(self.request.user.id) })
+        return queryset
+
+    queryset = models.Activity.objects.all()
+    serializer_class = serializers.ActivitySerializer
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    search_fields = ('message_data',)
+    filter_class = ActivityFilter
+    ordering_fields = ('creation', 'total_likes')
+    ordering = ('-creation',)
+
+    @detail_route(methods=['POST', 'DELETE'])
+    def like(self, request, pk=None):
+        if not request.user.is_authenticated():
+            raise PermissionDenied()
+        activity = get_object_or_404(models.Activity, pk=pk)
+        if request.method == 'POST':
+            activity.likes.add(request.user)
+            request.user.preferences.save()
+            return JsonResponse({'like': 'liked'})
+        if request.method == 'DELETE':
+            activity.likes.remove(request.user)
+            request.user.preferences.save()
+            return JsonResponse({'like': 'unliked'})
+
 @api_view(['GET'])
 def app(request, app):
     app = raw.app_data.get(app, None)
     if app is None:
         raise Http404
     return Response(app, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def cacheddata(request):
+    return Response({
+        'current_contests': settings.CURRENT_CONTESTS,
+        'current_event_jp': settings.CURRENT_EVENT_JP,
+        'current_event_en': settings.CURRENT_EVENT_EN,
+        'cards_info': settings.CARDS_INFO,
+    }, status=status.HTTP_200_OK)

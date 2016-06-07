@@ -1818,8 +1818,14 @@ def event(request, event):
     context['is_world_current'] = event.is_world_current()
     context['is_japan_current'] = event.is_japan_current()
 
-    # get rankings
+    # get cards
     event.all_cards = event.cards.all()
+    event.all_other_cards = []
+    context['too_old_to_en'] = event.beginning <= timezone.now() - relativedelta(months=15)
+    if event.english_beginning or context['too_old_to_en']:
+        event.all_other_cards = event.other_cards.all()
+
+    # get rankings
     if context['did_happen_japan']:
         event.japanese_participations = event.participations.filter(account_language='JP').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
         if context['did_happen_world']:
@@ -1836,6 +1842,16 @@ def event(request, event):
             'transparent_idolized_image': 'http://i.schoolido.lu/cards/transparent/886idolizedTransparent.png',
             'raw_url': '/cards/886/SR-Minami-Kotori-Idol-Outfit-Smile/',
         }
+    total_elements = 0
+    for _ in event.all_cards:
+        total_elements += 1
+    for _ in event.all_other_cards:
+        total_elements += 1
+    if hasattr(event, 'song'):
+        total_elements += 1
+    context['col_size'] = int(12 / total_elements) if total_elements else total_elements
+    context['card_size'] = 150 if total_elements <= 3 else (100 if total_elements < 5 else 70)
+
     return render(request, 'event.html', context)
 
 def _findparticipation(id, participations):
@@ -2748,3 +2764,57 @@ def collection(request, collection):
     }, extra_context={
         'get_parameters': '?' + ('japanese_collection' if is_jp else 'translated_collection') + '=' + collection,
     })
+
+def english_future(request):
+    context = globalContext(request)
+    future_events = models.Event.objects.filter(english_beginning=None).order_by('beginning')
+    # remove too old events (not gonna happen)
+    future_events = future_events.exclude(beginning__lte=timezone.now() - relativedelta(months=15))
+    # add cards
+    future_events = future_events.prefetch_related(Prefetch('cards', to_attr='all_cards'), Prefetch('other_cards', to_attr='all_other_cards'))
+    # remove events with the card already in another event
+    new_events = []
+    for eventA in future_events:
+        def do_both_event_share_cards(eventB):
+            for card in eventA.all_cards:
+                for other_card in eventB.all_other_cards:
+                    if card.id == other_card.id:
+                        return True
+            return False
+        def eventA_has_cards_elsewhere():
+            for eventB in future_events:
+                if eventA.id == eventB.id:
+                    continue
+                if do_both_event_share_cards(eventB):
+                    return True
+            return False
+        if not eventA_has_cards_elsewhere():
+            new_events.append(eventA)
+    # get next event period
+    def get_next_dates(date):
+        if date.day <= 4:
+            next_begin = datetime.date(date.year, date.month, 5)
+            next_end = datetime.date(date.year, date.month, 15)
+        elif date.day >= 20:
+            next_month = date.month + 1
+            next_year = date.year
+            if next_month > 12:
+                next_month = 1
+                next_year = date.year + 1
+            next_begin = datetime.date(next_year, next_month, 5)
+            next_end = datetime.date(next_year, next_month, 15)
+        else:
+            next_begin = datetime.date(date.year, date.month, 20)
+            next_end = datetime.date(date.year, date.month, 30 if date.month != 2 else 28)
+        return (next_begin, next_end)
+
+    now = timezone.now()
+    next_begin, next_end = get_next_dates(now)
+    # estimated dates
+    for event in new_events:
+        event.estimated_begin = next_begin
+        event.estimated_end = next_end
+        next_begin, next_end = get_next_dates(next_end)
+
+    context['future_events'] = new_events
+    return render(request, 'english_future.html', context)

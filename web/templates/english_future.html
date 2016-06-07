@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load imageurl %}
+{% load mod %}
+
+{% block title %}{% trans 'The Future of English version' %}{% endblock %}
+
+{% block shareimage %}http://schoolido.lu/static/screenshots/future_english.png{% endblock %}
+{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/future_english.png{% endblock %}
+
+{% block content %}
+<div class="container text-center" id="discussions">
+  <h1 class="margin50">{% trans 'The Future of English version' %}</h1>
+
+  <div class="alert alert-warning">
+    <i class="flaticon-warning fontx1-5 pull-right"></i>
+    <p>
+      This page contains <b>speculations</b> about the future of the English version. None of it is guaranteed to happen.
+    </p>
+  </div>
+
+  <div class="table-responsive">
+  <table>
+    {% for event in future_events %}
+    <tr>
+      <td>
+	<a href="/events/{{ event.japanese_name|urlencode }}/" target="_blank">
+	  <img src="{% eventimageurl event=event english=True %}" alt="{{ event.japanese_name }}" class="img-responsive" style="max-width: 400px;">
+	</a>
+	<br>
+      </td>
+      <td style="min-width: 200px;">
+	{% trans 'Release date' %} ({% trans 'expected' %}):
+	<h4>{{ event.estimated_begin }} - {{ event.estimated_end }}</h4>
+	<small class="text-muted">
+	  {% trans 'Instead of' %} {{ event.beginning|plusmonths:12|date:'F d, Y' }}
+	</small>
+      </td>
+      <td style="min-width: 220px;" class="text-left">
+	{% for card in event.all_cards %}
+	<a href="{{ card|singlecardurl }}" target="_blank" class="a-nodifference">
+	  <img src="{% imageurl card=card image='round_card_image' %}" height="100" />
+	</a>
+	{% endfor %}
+	{% for card in event.all_other_cards %}
+	<a href="{{ card|singlecardurl }}" target="_blank" class="a-nodifference">
+	  <img src="{% imageurl card=card image='round_card_image' %}" height="100" />
+	</a>
+	{% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+  <br><br><br>
+  <div class="container">
+    {% include 'disqus.html' %}
+  </div>
+</div>
+{% endblock %}

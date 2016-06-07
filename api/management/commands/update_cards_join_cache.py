@@ -5,7 +5,7 @@ import sys
 
 def update_cards_join_cache(opt={}):
     print '# Update cache of join objects in cards'
-    cards = models.Card.objects.all().select_related('event', 'idol', 'ur_pair', 'ur_pair__idol')
+    cards = models.Card.objects.all().select_related('event', 'other_event', 'idol', 'ur_pair', 'ur_pair__idol')
     for card in cards:
         print '#' + str(card.id) + ' ',
         sys.stdout.flush()
@@ -19,6 +19,10 @@ def update_cards_join_cache(opt={}):
             card.event_japanese_name = card.event.japanese_name
             card.event_english_name = card.event.english_name
             card.event_image = unicode(card.event.image)
+        if card.other_event:
+            card.other_event_japanese_name = card.other_event.japanese_name
+            card.other_event_english_name = card.other_event.english_name
+            card.other_event_image = unicode(card.other_event.image)
         if card.ur_pair:
             card.ur_pair_name = card.ur_pair.idol.name
             card.ur_pair_round_card_image = unicode(card.ur_pair.round_card_image)

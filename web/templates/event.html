@@ -26,20 +26,19 @@
   {% endif %}
   <br><br>
   <div class="row">
-    {% if not event.song %}<div class="col-md-2"></div>{% endif %}
     {% for card in event.all_cards %}
-    <div class="col-md-4">
+    <div class="col-md-{{ col_size }}">
       <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
 	{% if card.round_card_image %}
-	<img src="{% imageurl card=card image='round_card_image' %}" height="150" />
+	<img src="{% imageurl card=card image='round_card_image' %}" height="{{ card_size }}" />
 	{% elif card.card_image %}
-	<div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
+	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
 	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
 	{% endif %}
 	{% if card.round_card_idolized_image %}
-	<img src="{% imageurl card=card image='round_card_idolized_image' %}" height="150" />
+	<img src="{% imageurl card=card image='round_card_idolized_image' %}" height="{{ card_size }}" />
 	{% elif card.card_image %}
-	<div class="circled_card_150 {{ card.attribute }} {{ card.rarity }} hover"
+	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
 	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
 	{% endif %}
       </a>
@@ -50,9 +49,37 @@
       {% endif %}
     </div>
     {% endfor %}
-    {% if not event.song %}<div class="col-md-2"></div>
-    {% else %}
-    <div class="col-md-4">
+
+    {% for card in event.all_other_cards %}
+    <div class="col-md-{{ col_size }}">
+      <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
+	{% if card.round_card_image %}
+	<img src="{% imageurl card=card image='round_card_image' %}" height="{{ card_size }}" />
+	{% elif card.card_image %}
+	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
+	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
+	{% endif %}
+	{% if card.round_card_idolized_image %}
+	<img src="{% imageurl card=card image='round_card_idolized_image' %}" height="{{ card_size }}" />
+	{% elif card.card_image %}
+	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
+	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
+	{% endif %}
+      </a>
+      {% if not too_old_to_en %}
+      <br>
+      {% trans 'English Version' %} {% trans 'Only' %}
+      {% endif %}
+      <br>
+      <h4>{{ card }}</h4>
+      {% if card.skill %}
+      <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    {% if event.song %}
+    <div class="col-md-{{ col_size }}">
       <div class="text-{{ event.song.attribute }}">
 	<a href="/songs/{{ event.song.name|urlencode }}/" target="_blank" class="a-nodifference inline-block">
 	  <img src="{% songimageurl song=event.song %}" alt="{{ event.song.name }}" height="180" style="border-radius: 5px;" />

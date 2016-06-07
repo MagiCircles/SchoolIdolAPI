@@ -55,6 +55,7 @@ urlpatterns = patterns('',
     url(r'^staff/database[/]$', views.staff_database, name='staff_database'),
     url(r'^staff/database/(?P<script>[\w -_]+)[/]$', views.staff_database_script, name='staff_database_script'),
     url(r'^urpairs[/]+$', views.urpairs, name='urpairs'),
+    url(r'^english_future[/]+$', views.english_future, name='english_future'),
     url(r'^.sicaltriofestival[/]+$', views.usicaltriofestival, name='usicaltriofestival'),
 
     url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset', {

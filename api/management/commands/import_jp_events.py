@@ -9,6 +9,9 @@ def import_jp_events(opt):
     else:
         f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit')
 
+    t2_rank = None
+    t1_rank = None
+    t3_rank = None
     for line in f.readlines():
         line = h.unescape(line)
         data = str(line).split('||')
@@ -17,18 +20,28 @@ def import_jp_events(opt):
             dates = data[0].replace('|', '').split(' - ')
             beginning = eventDateFromString(clean(dates[0]) + ' 4pm', timezone=japantz)
             end = eventDateFromString(str(beginning.year) + '/' + clean(dates[1]) + (' 2pm' if name == 'Medley Festival Round 11' else ' 3pm'), timezone=japantz)
-            t1_points = optInt(clean(data[3]))
-            i = 4
-            if 'rowspan' in data[i] or len(data) == 7 or len(data) == 8:
+            i = 2
+            if 'colspan' not in data[i]:
+                i += 1
+            i += 1
+            t1_points = optInt(clean(data[i]))
+            i += 1
+            if len(data) > i and 'rowspan' in data[i]:
                 t1_new_rank = optInt(clean(data[i].split('|')[-1]))
                 if t1_new_rank: t1_rank = t1_new_rank
-                i = i + 1
+                i += 1
             t2_points = optInt(data[i])
-            i = i + 1
-            if len(data) > i and ('rowspan' in data[i] or len(data) == 7 or len(data) == 8):
+            i += 1
+            if len(data) > i and 'rowspan' in data[i]:
                 t2_new_rank = optInt(clean(data[i].split('|')[-1]))
                 if t2_new_rank: t2_rank = t2_new_rank
-                i = i + 1
+                i += 1
+            t3_points = optInt(data[i])
+            i += 1
+            if len(data) > i and 'rowspan' in data[i]:
+                t3_new_rank = optInt(clean(data[i].split('|')[-1]))
+                if t3_new_rank: t3_rank = t3_new_rank
+                i += 1
             note = None
             if len(data) > i:
                 note = optString(clean(data[i].split('|')[-1]))
@@ -50,7 +63,7 @@ def import_jp_events(opt):
                 try:
                     url = 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(name.encode('utf-8'))
                     f_event = urllib2.urlopen(url)
-                    
+
                     event_soup = BeautifulSoup(f_event.read())
                     content = event_soup.find('div', { 'id': 'mw-content-text'})
                     if content is not None:

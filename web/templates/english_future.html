@@ -53,6 +53,37 @@
   </table>
   </div>
   <br><br><br>
+  <hr>
+  <h1 class="margin50" id="cards">{% trans 'Cards' %}</h1>
+  <div class="table-responsive">
+  <table>
+    {% for card in future_cards %}
+    {% ifchanged card.translated_collection %}
+        <br>
+      </td>
+    </tr>
+    <tr>
+      <td>
+	{% if card.translated_collection %}
+	<h3>
+	  <a href="/collections/{{ card.translated_collection }}/" target="_blank">
+	    {% trans card.translated_collection %}
+	  </a>
+	</h3>
+	{% trans 'Release date' %} ({% trans 'expected' %}):
+	<h4>{{ card.estimated_release_date }}</h4>
+	<small class="text-muted">
+	  {% trans 'Instead of' %} {{ card.release_date|plusmonths:12|date:'F d, Y' }}
+	</small>
+	{% endif %}
+      </td>
+      <td class="text-left">
+    {% endifchanged %}
+    <a href="{{ card|singlecardurl }}" target="_blank" class="a-nodifference">
+      <img src="{% imageurl card=card image='round_card_image' %}" height="100" />
+    </a>
+    {% endfor %}
+  </table>
   <div class="container">
     {% include 'disqus.html' %}
   </div>

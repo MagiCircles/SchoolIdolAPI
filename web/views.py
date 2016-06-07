@@ -2817,4 +2817,31 @@ def english_future(request):
         next_begin, next_end = get_next_dates(next_end)
 
     context['future_events'] = new_events
+
+    # get next cards
+    future_cards = models.Card.objects.filter(japan_only=True, is_promo=False, is_special=False, event__isnull=True, rarity__in=['SR', 'UR']).order_by('id')
+
+    def get_next_dates(date):
+        if date.day < 15:
+            return datetime.date(date.year, date.month, 15)
+        elif date.day < 30:
+            return datetime.date(date.year, date.month, 30)
+        next_month = date.month + 1
+        next_year = date.year
+        if next_month > 12:
+            next_month = 1
+            next_year = date.year + 1
+        return datetime.date(next_year, next_month, 15)
+
+    previous_collection = None
+    next_date = get_next_dates(now)
+    for card in future_cards:
+        if card.translated_collection != previous_collection:
+            card.estimated_release_date = next_date
+            next_date = get_next_dates(next_date)
+            previous_collection = card.translated_collection
+
+
+    context['future_cards'] = future_cards
+
     return render(request, 'english_future.html', context)

@@ -50,7 +50,7 @@ def import_jp_events(opt):
                 'beginning': beginning,
                 'end': end,
                 'japanese_t1_points': t1_points,
-                'japanese_t1_rank': (None if not t1_points else t1_rank),
+                'japanese_t1_rank': t1_rank,
                 'japanese_t2_points': t2_points,
                 'japanese_t2_rank': t2_rank,
                 'note': note,

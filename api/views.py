@@ -98,10 +98,17 @@ class CardFilter(django_filters.FilterSet):
     ids = django_filters.MethodFilter(action='filter_ids')
     for_trivia = django_filters.MethodFilter(action='filter_for_trivia')
     rarity = CommaSeparatedValueFilter(name='rarity', lookup_type='in')
+    event_english_name = django_filters.MethodFilter(action='filter_event_english')
+    event_japanese_name = django_filters.MethodFilter(action='filter_event_japanese')
 
     def filter_for_trivia(self, queryset, value):
         return queryset.filter(Q(idol__hobbies__isnull=False) | Q(idol__favorite_food__isnull=False) | Q(idol__least_favorite_food__isnull=False))
 
+    def filter_event_english(self, queryset, value):
+        return queryset.filter(Q(event_english_name=value) | Q(other_event_english_name=value))
+
+    def filter_event_japanese(self, queryset, value):
+        return queryset.filter(Q(event_japanese_name=value) | Q(other_event_japanese_name=value))
 
     def filter_is_event(self, queryset, value):
         return queryset.filter(event__isnull=(False if value.title() == 'True' else True))

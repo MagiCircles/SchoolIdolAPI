@@ -273,7 +273,7 @@ class CardSerializer(serializers.ModelSerializer):
             'name': obj.name,
             'japanese_name': obj.japanese_name,
             'school': obj.idol_school,
-            'year': _(obj.idol_year),
+            'year': _(obj.idol_year) if obj.idol_year else None,
             'main_unit': obj.idol_main_unit,
             'sub_unit': obj.idol_sub_unit,
             'note': note_to_expand('idol') if expandable else None,
@@ -285,9 +285,10 @@ class CardSerializer(serializers.ModelSerializer):
         return obj.japanese_attribute()
 
     def get_center_skill_details(self, obj):
-        sentence, data = obj.get_center_skill_details()
-        if sentence and data:
-            return _(sentence).format(*data)
+        if obj.center_skill:
+            sentence, data = obj.get_center_skill_details()
+            if sentence and data:
+                return _(sentence).format(*data)
         return None
 
     def get_japanese_center_skill(self, obj):
@@ -301,6 +302,8 @@ class CardSerializer(serializers.ModelSerializer):
         return sentence
 
     def get_japanese_center_skill_details(self, obj):
+        if not obj.center_skill:
+            return None
         sentence, data = obj.get_center_skill_details()
         if sentence and data:
             old_lang = translation.get_language()
@@ -423,7 +426,7 @@ class SongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Song
-        fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available', 'itunes_id', 'website_url')
+        fields = ('id', 'name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available', 'itunes_id', 'website_url')
         lookup_field = 'name'
 
 class AccountSerializer(serializers.ModelSerializer):

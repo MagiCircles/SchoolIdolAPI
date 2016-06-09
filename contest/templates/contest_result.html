@@ -5,13 +5,13 @@
 {% load i18n %}
 {% load mod %}
 
-{% block shareimage %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimage %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
 
 {% block title %}{% trans 'Ranking' %} - {% trans contest.name %}{% endblock %}
 
 {% block js %}
-<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id and is_current %}
 <script>
   $(function() {
@@ -27,7 +27,7 @@
 </script>
 {% endif %}
 {% if contest.result_image %}
-<script src="/static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
 {% endif %}
 {% endblock %}
 

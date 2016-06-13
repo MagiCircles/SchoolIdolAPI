@@ -2297,10 +2297,12 @@ def ajaxreport(request, report_id, status):
                                context=context,
                            )
             moderation_comment = (u'' if not moderation_comment else unicode(moderation_comment)) + u'------ Activity: message data {} account id {} account owner id {} username {}'.format(report.fake_activity.message_data, report.fake_activity.account_id, report.fake_activity.account.owner.id, report.fake_activity.account.owner.username)
-                    
+
         all_reports.update(status=3, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
         if report.fake_eventparticipation:
             report.fake_eventparticipation.delete()
+        if report.fake_activity:
+            report.fake_activity.delete()
     elif status == 'reject':
         all_reports = None
         if report.fake_account:

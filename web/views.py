@@ -2767,9 +2767,97 @@ def collection(request, collection):
         'get_parameters': '?' + ('japanese_collection' if is_jp else 'translated_collection') + '=' + collection,
     })
 
+def trades_or_giveaways(request, type):
+    context = globalContext(request)
+    tradeAccounts = models.TradeOrGiveawayAccount.objects.filter(
+        verification_request__status=3, # verified
+        type=models.tradeOrGiveawayFromString(type),
+        status=models.TRADE_OR_GIVEAWAY_STATUS_OPEN,
+    ).select_related('account')
+    context['tradeAccounts'] = tradeAccounts
+    if type == 'giveaways':
+        context['type_title'] = _('Giveaways')
+    elif type == 'trades':
+        context['type_title'] = _('Trades')
+    elif type == 'sales':
+        context['type_title'] = _('Sales')
+    context['type'] = type
+    return render(request, 'trades_or_giveaways.html', context)
+
+def trades_or_giveaways_unique(request, type, pk):
+    context = globalContext(request)
+    tradeAccount = get_object_or_404(models.TradeOrGiveawayAccount, pk=pk)
+    if not request.user.is_staff:
+        tradeAccount = models.TradeOrGiveawayAccount.objectsg.filter(
+            verification_request__status=3, # verified
+            type=models.tradeOrGiveawayFromString(type),
+            status=models.TRADE_OR_GIVEAWAY_STATUS_OPEN,
+        ).select_related('account')
+    context['tradeAccount'] = tradeAccount
+    if type == 'giveaways':
+        context['type_title'] = _('Giveaways')
+    elif type == 'trades':
+        context['type_title'] = _('Trades')
+    elif type == 'sales':
+        context['type_title'] = _('Sales')
+    context['type'] = type
+    return render(request, 'trades_or_giveaways_unique.html', context)
+
+def trades_or_giveaways_submit(request, type, account):
+    context = globalContext(request)
+    account = findAccount(int(account), context.get('accounts', []), forceGetAccount=False)
+    if not account.fake:
+        try:
+            current_trade = models.TradeOrGiveawayAccount.objects.get(account=account)
+            return redirect('/' + type + '/' + str(current_trade.id))
+        except ObjectDoesNotExist: pass
+        context['has_trade_offer'] = models.TradeOffer.objects.filter(account=account).count()
+        if not context['has_trade_offer']:
+            if type == 'giveaways':
+                context['type_title'] = _('Give away your account')
+            elif type == 'trades':
+                context['type_title'] = _('Trade your account')
+            elif type == 'sales':
+                context['type_title'] = _('Sell your account')
+            if request.method == 'POST':
+                context['form'] = forms.TradeOrGiveawayForm(request.POST, request.FILES)
+                if context['form'].is_valid():
+                    tradeAccount = context['form'].save(commit=False)
+                    verificationRequest, created = models.VerificationRequest.objects.update_or_create(
+                        account=account,
+                        defaults={
+                            'verification':2, # gold
+                            'status':1,
+                            'comment':context['form'].cleaned_data['transfer_code_text'],
+                        })
+                    if context['form'].cleaned_data['transfer_code_image']:
+                        imageObject = models.UserImage.objects.create()
+                        imageObject.image.save(randomString(64), context['form'].cleaned_data['transfer_code_image'])
+                        verificationRequest.images.add(image)
+                    tradeAccount.account = account
+                    tradeAccount.verification_request = verificationRequest
+                    tradeAccount.type = models.tradeOrGiveawayFromString(type)
+                    tradeAccount.status = models.TRADE_OR_GIVEAWAY_STATUS_OPEN
+                    tradeAccount.save()
+                    return redirect('/' + type + '/' + str(tradeAccount.id))
+            else:
+                context['form'] = forms.TradeOrGiveawayForm()
+
+    # if type == models.TRADE_OR_GIVEAWAY_TYPE_GIVEAWAY:
+    #     context['type_title'] = _('Give away your account')
+    # elif type == models.TRADE_OR_GIVEAWAY_TYPE_TRADE:
+    #     context['type_title'] = _('Trade your account')
+    # elif type == models.TRADE_OR_GIVEAWAY_TYPE_SALE:
+    #     context['type_title'] = _('Sell your account')
+
+    context['type'] = type
+    context['account'] = account
+    return render(request, 'trades_or_giveaways_submit.html', context)
+
+
 def english_future(request):
     context = globalContext(request)
-    future_events = models.Event.objects.filter(english_beginning=None).order_by('beginning')
+    future_events = models.Event.objects.filter(Q(english_beginning=None) | Q(english_end__gte=timezone.now())).order_by('beginning')
     # remove too old events (not gonna happen)
     future_events = future_events.exclude(beginning__lte=timezone.now() - relativedelta(months=15))
     # add cards

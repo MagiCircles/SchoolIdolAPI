@@ -31,12 +31,12 @@
       </td>
       <td style="min-width: 200px;">
 	{% trans 'Release date' %} ({% trans 'expected' %}):
-	<h4>{{ event.estimated_begin }} - {{ event.estimated_end }}</h4>
+	<h4>{{ event.estimated_begin|date:'F d, Y' }} - {{ event.estimated_end|date:'F d, Y' }}</h4>
 	<small class="text-muted">
 	  {% trans 'Instead of' %} {{ event.beginning|plusmonths:12|date:'F d, Y' }}
 	</small>
       </td>
-      <td style="min-width: 220px;" class="text-left">
+      <td style="min-width: 420px;" class="text-left">
 	{% for card in event.all_cards %}
 	<a href="{{ card|singlecardurl }}" target="_blank" class="a-nodifference">
 	  <img src="{% imageurl card=card image='round_card_image' %}" height="100" />

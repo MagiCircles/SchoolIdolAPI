@@ -2902,6 +2902,8 @@ def english_future(request):
     next_begin, next_end = get_next_dates(now)
     # estimated dates
     for event in new_events:
+        if event.english_beginning is not None:
+            next_begin, next_end = event.english_beginning, event.english_end
         event.estimated_begin = next_begin
         event.estimated_end = next_end
         next_begin, next_end = get_next_dates(next_end)

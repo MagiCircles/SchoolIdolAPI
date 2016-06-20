@@ -1,4 +1,6 @@
 import django_filters
+import json
+import codecs
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponse, Http404, JsonResponse
@@ -293,6 +295,8 @@ class OwnedCardViewSet(viewsets.ModelViewSet):
             queryset = queryset.select_related('card')
         if 'expand_owner' in self.request.query_params:
             queryset = queryset.select_related('owner_account')
+        if api_permissions.shouldSelectOwner(self.request):
+            queryset = queryset.select_related('owner_account', 'owner_account__owner')
         return queryset
 
     serializer_class = serializers.OwnedCardSerializer
@@ -368,6 +372,48 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
             request.user.preferences.save()
             return JsonResponse({'like': 'unliked'})
 
+class EventParticipationFilter(django_filters.FilterSet):
+    account = CommaSeparatedValueFilter(name='account', lookup_type='in')
+    with_ranking = django_filters.MethodFilter(action='filter_with_ranking')
+    with_song_ranking = django_filters.MethodFilter(action='filter_with_song_ranking')
+    with_points = django_filters.MethodFilter(action='filter_with_points')
+    event = django_filters.CharFilter('event__japanese_name')
+    language = django_filters.CharFilter('account__language')
+
+    def filter_with_ranking(self, queryset, value):
+        return queryset.filter(ranking__isnull=(False if value.title() == 'True' else True))
+
+    def filter_with_song_ranking(self, queryset, value):
+        return queryset.filter(song_ranking__isnull=(False if value.title() == 'True' else True))
+
+    def filter_with_points(self, queryset, value):
+        return queryset.filter(points__isnull=(False if value.title() == 'True' else True))
+
+    class Meta:
+        model = models.EventParticipation
+        fields = ('account', 'event', 'language', 'with_ranking', 'with_song_ranking', 'with_points')
+
+class EventParticipationViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        queryset = models.EventParticipation.objects.all()
+        # do not allow fake account participations
+        if 'account' not in self.request.query_params:
+            queryset = queryset.filter(account__fake=False)
+        if 'expand_account' in self.request.query_params:
+            queryset = queryset.select_related('account')
+        if 'expand_event' in self.request.query_params:
+            queryset = queryset.select_related('event')
+        if api_permissions.shouldSelectOwner(self.request):
+            queryset = queryset.select_related('account', 'account__owner')
+        return queryset
+
+    queryset = models.EventParticipation.objects.all()
+    serializer_class = serializers.EventParticipationSerializer
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    filter_class = EventParticipationFilter
+    ordering_fields = '__all__'
+    permission_classes = (api_permissions.IsStaffOrSelf, )
+
 @api_view(['GET'])
 def app(request, app):
     app = raw.app_data.get(app, None)
@@ -383,3 +429,8 @@ def cacheddata(request):
         'current_event_en': settings.CURRENT_EVENT_EN,
         'cards_info': settings.CARDS_INFO,
     }, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def map(request):
+    with codecs.open("map.json", "r", encoding='utf-8') as f:
+        return HttpResponse(u'[{}]'.format(f.read().replace('new google.maps.LatLng(', '[').replace(') }', ']}').replace('\'', '"').replace('\\', '\\\\').replace('\n', '')).replace(',]', ']'), content_type="application/json")

@@ -713,6 +713,10 @@ class EventParticipation(ExportModelOperationsMixin('EventParticipation'), model
     account_owner = models.CharField(max_length=100, null=True, blank=True)
     account_owner_status = models.CharField(choices=STATUS_CHOICES, max_length=12, null=True)
 
+    @property
+    def owner(self):
+        return self.account.owner
+
     class Meta:
         unique_together = (('event', 'account'))
 

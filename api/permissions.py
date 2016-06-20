@@ -1,5 +1,10 @@
 from rest_framework import permissions
 
+def shouldSelectOwner(request):
+    return (request.resolver_match.url_name.endswith('-detail')
+            and request.method not in permissions.SAFE_METHODS
+            and not request.user.is_staff)
+
 class IsStaffOrSelf(permissions.BasePermission):
 
     def has_permission(self, request, view):

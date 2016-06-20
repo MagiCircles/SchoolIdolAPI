@@ -125,6 +125,8 @@ class EventSerializer(serializers.ModelSerializer):
     end = DateTimeJapanField()
     japan_current = serializers.SerializerMethodField()
     world_current = serializers.SerializerMethodField()
+    japan_status = serializers.SerializerMethodField()
+    english_status = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     english_image = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
@@ -147,13 +149,31 @@ class EventSerializer(serializers.ModelSerializer):
     def get_world_current(self, obj):
         return obj.is_world_current()
 
+    def get_japan_status(self, obj):
+        if obj.is_japan_current():
+            return 'ongoing'
+        elif obj.did_happen_japan():
+            return 'finished'
+        elif obj.soon_happen_japan():
+            return 'announced'
+        return 'unknown'
+
+    def get_english_status(self, obj):
+        if obj.is_world_current():
+            return 'ongoing'
+        elif obj.did_happen_world():
+            return 'finished'
+        elif obj.soon_happen_world():
+            return 'announced'
+        return 'unknown'
+
     def get_website_url(self, obj):
         return 'http://schoolido.lu/events/' + urllib.quote(obj.japanese_name.encode('utf8')) + '/'
 
     class Meta:
         model = models.Event
         lookup_field = 'japanese_name'
-        fields = ('japanese_name', 'romaji_name', 'english_name', 'translated_name', 'image', 'english_image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note', 'website_url')
+        fields = ('japanese_name', 'romaji_name', 'english_name', 'translated_name', 'image', 'english_image', 'beginning', 'end', 'english_beginning', 'english_end', 'japan_current', 'world_current', 'english_status', 'japan_status', 'japanese_t1_points', 'japanese_t1_rank', 'japanese_t2_points', 'japanese_t2_rank', 'english_t1_points', 'english_t1_rank', 'english_t2_points', 'english_t2_rank', 'note', 'website_url')
 
 class IdolSerializer(serializers.ModelSerializer):
     birthday = serializers.SerializerMethodField()
@@ -678,3 +698,92 @@ class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Activity
         fields = ('id', 'avatar', 'account', 'last_update', 'message', 'html_message', 'message_type', 'figure', 'liked_by', 'total_likes', 'liked', 'website_url')
+
+class EventParticipationSerializer(serializers.ModelSerializer):
+    account = serializers.SerializerMethodField()
+    event = serializers.SerializerMethodField()
+
+    def get_account(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('eventparticipation-'):
+            if 'expand_account' in self.context['request'].query_params:
+                serializer = AccountSerializer(obj.account, context=self.context)
+                data = dict(serializer.data)
+                data.update({
+                    'owner_avatar': obj.account_picture,
+                    'owner_status': obj.account_owner_status,
+                })
+                return data
+        return {
+            'id': obj.account_id,
+            'text': obj.account_name,
+            'language': obj.account_language,
+            'website_url': 'http://schoolido.lu' + obj.account_link,
+            'owner_avatar': obj.account_picture,
+            'owner': obj.account_owner,
+            'owner_status': obj.account_owner_status,
+            'note': note_to_expand('account'),
+        }
+
+    def get_event(self, obj):
+        if self.context['request'].resolver_match.url_name.startswith('eventparticipation-'):
+            if 'expand_event' in self.context['request'].query_params:
+                serializer = EventSerializer(obj.event, context=self.context)
+                return serializer.data
+            return note_to_expand("event")
+        return None
+
+    def validate(self, data):
+        errors = {}
+        request = self.context['request']
+        if request.method == 'POST':
+            try:
+                data['event'] = models.Event.objects.get(japanese_name=request.POST['event'])
+            except (ObjectDoesNotExist, KeyError):
+                if 'event' not in request.POST:
+                    errors['event'] = 'This field is required'
+                else:
+                    errors['event'] = 'Invalid event name'
+            try:
+                data['account'] = models.Account.objects.get(pk=request.POST['account'], owner=request.user)
+            except (ObjectDoesNotExist, KeyError):
+                if 'account' not in request.POST:
+                    errors['account'] = 'This field is required'
+                else:
+                    errors['account'] = 'This account does\'t exist or isn\'t yours'
+            if not errors:
+                if ((data['account'].language == 'JP' and not data['event'].did_happen_japan())
+                    or (data['account'].language != 'JP' and not data['event'].did_happen_world())):
+                    errors['event'] = 'This event is not finished yet'
+        if errors:
+            raise serializers.ValidationError(errors)
+        return data
+
+    def save(self, **kwargs):
+        request = self.context['request']
+        if not self.instance:
+            account = self.validated_data['account']
+        else:
+            account = self.instance.account
+        if not self.instance:
+            event = self.validated_data['event']
+        else:
+            event = self.instance.event
+
+        if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name or 'Challenge Festival' in event.japanese_name:
+            kwargs['song_ranking'] = None
+        if 'ranking' in self.validated_data and self.validated_data['ranking'] == 0: kwargs['ranking'] = None
+        if 'points' in self.validated_data and self.validated_data['points'] == 0: kwargs['points'] = None
+        if 'song_ranking' in self.validated_data and self.validated_data['song_ranking'] == 0: kwargs['song_ranking'] = None
+        kwargs.update({
+            'account_language': account.language,
+            'account_link': '/user/' + request.user.username + '/#' + str(account.id),
+            'account_picture': request.user.preferences.avatar(size=100),
+            'account_name': unicode(account),
+            'account_owner': request.user.username,
+            'account_owner_status': request.user.preferences.status,
+        })
+        result = super(EventParticipationSerializer, self).save(**kwargs)
+
+    class Meta:
+        model = models.EventParticipation
+        fields = ('id', 'event', 'account', 'ranking', 'song_ranking', 'points')

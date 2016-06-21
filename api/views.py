@@ -409,10 +409,60 @@ class EventParticipationViewSet(viewsets.ModelViewSet):
 
     queryset = models.EventParticipation.objects.all()
     serializer_class = serializers.EventParticipationSerializer
-    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter)
     filter_class = EventParticipationFilter
     ordering_fields = '__all__'
     permission_classes = (api_permissions.IsStaffOrSelf, )
+
+class TeamViewSet(viewsets.ModelViewSet):
+    def get_members_queryset(self):
+        members_queryset = models.Member.objects.select_related('ownedcard')
+        if 'expand_card' in self.request.query_params:
+            members_queryset = members_queryset.select_related('ownedcard__card')
+        return members_queryset
+
+    def get_queryset(self):
+        queryset = models.Team.objects.all().prefetch_related(Prefetch('members', queryset=self.get_members_queryset(), to_attr='all_members'))
+        if api_permissions.shouldSelectOwner(self.request):
+            queryset = queryset.select_related('owner_account', 'owner_account__owner')
+        return queryset
+
+    queryset = models.Team.objects.all()
+    serializer_class = serializers.TeamSerializer
+    filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter)
+    filter_fields = ('owner_account',)
+    search_fields = ('name',)
+    ordering_fields = ('name', 'id', 'owner_account')
+    permission_classes = (api_permissions.IsStaffOrSelf, )
+
+    def _serialize_member(self, request, member):
+        serializer = serializers.OwnedCardSerializer(member.ownedcard, context={'request': request})
+        return Response(serializer.data)
+
+    def _member_permissions(self, request, team):
+        if not request.user.is_authenticated():
+            raise PermissionDenied()
+        team_owner = models.Team.objects.filter(pk=team).values('owner_account__owner')
+        print team_owner
+        if request.user.id != team_owner['owner_account__owner']:
+            raise PermissionDenied()
+
+    def get_member(self, request, team, position):
+        member = get_object_or_404(self.get_members_queryset(), team_id=team, position=(int(position) + 1))
+        return self._serialize_member(request, member)
+
+    def edit_member(self, request, team, position):
+        self._member_permissions(request, team)
+        #ownedcard = get_object_or_404(models.OwnedCard.annotate(owner_id='owner_account__owner_id'), pk=request.POST.get('ownedcard'))
+        #if ownedcard.
+        # todo create on duplicate key update
+        member = get_object_or_404(self.get_members_queryset(), team_id=team, position=(int(position) + 1))
+        return self._serialize_member(request, member)
+
+    def delete_member(self, request, team, position):
+        self._member_permissions(request, team)
+        models.Member.objects.filter(team_id=team, position=(int(position) + 1))
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
 def app(request, app):

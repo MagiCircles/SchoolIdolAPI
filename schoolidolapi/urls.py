@@ -29,9 +29,9 @@ urlpatterns = [
     url(r'^api/users/me/$', api_views.UserViewSet.as_view({'get': 'me'}), name='user-me'),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/app/(?P<app>[\w.-]+)[/]+$', api_views.app),
-    url(r'^api/cacheddata[/]+$', api_views.cacheddata),
-    url(r'^api/map[/]+$', api_views.map),
+    url(r'^api/app/(?P<app>[\w.-]+)/$', api_views.app),
+    url(r'^api/cacheddata/$', api_views.cacheddata),
+    url(r'^api/map/$', api_views.map),
     url(r'^admin/', include(admin.site.urls)),
     url('', include('django_prometheus.urls')),
 ]

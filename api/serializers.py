@@ -783,6 +783,7 @@ class EventParticipationSerializer(serializers.ModelSerializer):
             'account_owner_status': request.user.preferences.status,
         })
         result = super(EventParticipationSerializer, self).save(**kwargs)
+        return result
 
     class Meta:
         model = models.EventParticipation

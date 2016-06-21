@@ -379,7 +379,7 @@ def event_EN_upload_to(instance, filename):
     return 'events/EN/' + (instance.english_name if instance.english_name else instance.japanese_name) + randomString(16) + extension
 
 class Event(ExportModelOperationsMixin('Event'), models.Model):
-    japanese_name = models.CharField(max_length=100, unique=True)
+    japanese_name = models.CharField(max_length=100, unique=True, db_index=True)
     romaji_name = models.CharField(max_length=100, blank=True, null=True)
     english_name = models.CharField(max_length=100, blank=True, null=True)
     beginning = models.DateTimeField(blank=True, null=True)
@@ -888,8 +888,8 @@ class ModerationReport(models.Model):
     moderation_date = models.DateTimeField(null=True)
     fake_account = models.ForeignKey(Account, related_name='moderationreport', null=True)
     fake_eventparticipation = models.ForeignKey(EventParticipation, related_name='moderationreport', null=True, on_delete=models.SET_NULL)
-    fake_user = models.ForeignKey(User, related_name='moderationreport', null=True)
-    fake_activity = models.ForeignKey(Activity, related_name='moderationreport', null=True)
+    fake_user = models.ForeignKey(User, related_name='moderationreport', null=True, on_delete=models.SET_NULL)
+    fake_activity = models.ForeignKey(Activity, related_name='moderationreport', null=True, on_delete=models.SET_NULL)
     status = models.PositiveIntegerField(default=1, choices=MODERATION_REPORT_STATUS_CHOICES)
     comment = models.TextField(_('Comment'), null=True, blank=True)
     images = models.ManyToManyField(UserImage, related_name="report")

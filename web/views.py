@@ -891,7 +891,6 @@ def profile(request, username):
         context['following'] = isFollowing(user, request)
     context['total_following'] = context['preferences'].following.count()
     context['total_followers'] = user.followers.count()
-    context['imgurClientID'] = settings.IMGUR_CLIENT_ID
     context['cards_limit'] = settings.CARDS_LIMIT
     if context['is_me']:
         context['deck_links'] = web_raw.deck_links
@@ -1242,7 +1241,6 @@ def activity(request, activity):
     context['avatar_size'] = 2
     context['content_size'] = 10
     context['card_size'] = 150
-    context['imgurClientID'] = settings.IMGUR_CLIENT_ID
     context['is_mine'] = findAccount(context['activity'].account_id, context['accounts']) if 'accounts' in context else False
     context['single_activity'] = True
     if context['is_mine']:
@@ -1267,7 +1265,9 @@ def activity(request, activity):
                 form = formClass(request.POST, instance=context['activity'])
                 if 'account_id' in form.fields:
                     del(form.fields['account_id'])
+                previous_picture = context['activity'].right_picture
                 if form.is_valid():
+                    context['activity'].right_picture = previous_picture
                     if 'message_data' in form.cleaned_data and form.cleaned_data['message_data']:
                         context['activity'].message_data = form.cleaned_data['message_data']
                     if form.cleaned_data['right_picture'] and get_imgur_code(form.cleaned_data['right_picture']) != context['activity'].right_picture:

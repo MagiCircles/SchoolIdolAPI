@@ -691,7 +691,7 @@ admin.site.register(Team)
 
 class Member(models.Model):
     team = models.ForeignKey(Team, related_name='members')
-    ownedcard = models.ForeignKey(OwnedCard)
+    ownedcard = models.ForeignKey(OwnedCard, related_name='members')
     position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
 
     class Meta:
@@ -957,22 +957,12 @@ admin.site.register(Song)
 #     transfer_code = models.ImageField(upload_to='trades_and_giveaways/', null=True, blank=True)
 
 usicaltriofestival_entries = [
-    (7, u'ღ\'s ☪★♪', u'だってだって噫無情', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/zCvNz1K6Tvo?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (11, u'βN\'s', u'UNBALANCED LOVE', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/C_GWBT4hkAY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (13, u'FURious Alpaca', u'after school NAVIGATORS', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/3X7I50_7LfQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (14, u'wAr-RICE', u'同じ星が見たい', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/-dbIC1ei0ZM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (21, u'Crystal❖Lilies', u'錯覚CROSSROADS', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/XFf3FjQPq5c?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (22, u'Procrastinate → Tomorrow', u'UNBALANCED LOVE', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/cPJFupdJVEM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (23, u'Petit ƸӜƷ Papillon', u'思い出以上になりたくて', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/3RkNI-pbpW8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (38, u'✿Ƈнσcσℓαт Ƒση∂αηт✿', u'冬がくれた予感', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/xmqS66cNzrQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (40, u'NYAvigators', u'春情ロマンティック', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/MZNKw06GMGE?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (54, u'ミkμ', u'Mermaid festa vol.2 ~Passionate~', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/-gG8BSbVplM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (56, u'lilaq✿', u'UNBALANCED life marginal (Mashup: UNBALANCED LOVE, Someday of my life, LOVE marginal)', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/8QBcFAEISpM?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (57, u'Sock It 2 Me', u'同じ星が見たい', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/7VzhIsvFzKQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (59, u'茶茶茶', u'あ・の・ね・が・ん・ば・れ!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/geB0BmK75ao?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (61, u'AKB0033', u'孤独なHeaven', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/j2mO0oboM1c?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (62, u'Undefined Red', u'るてしキスキしてる', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/JSSBe6PrlBQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
-    (67, u'Midnight✿Blossoms', u'Silent tonight', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/hWZ3KVgsaKY?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (7, u'ღ\'s ☪★♪', u'?←HEARTBEAT', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/mbtlObi5dvQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (13, u'FURious Alpaca', u'ありふれた悲しみの果て', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/KHzv5Ffl0C4?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (14, u'wAr-RICE', u'夏色えがおで1,2,Jump!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/gPC_nRi9o-Q?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (54, u'ミkμ', u'恋になりたいAQUARIUM', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/aRO7JGc-_cs?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (56, u'lilaq✿', u'Korekara Bokura no BANZAI (Mashup: 愛してるばんざーい!, 僕らのLIVE 君とのLIFE, これからのSomeday)', False, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/sATFJ7wOu1A?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
+    (59, u'茶茶茶', u'もぎゅっと"love"で接近中!', True, '<iframe style="width: 100%" height="172" src="http://www.youtube.com/embed/rbaQu-3MYeI?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>'),
 ]
 
 usicaltriofestival_entries_db = [(i[0], i[1]) for i in usicaltriofestival_entries]

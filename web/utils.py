@@ -73,17 +73,16 @@ def is_positive_integer(string):
 def concat_args(*args):
     return u'\"' + u'","'.join([unicode(value).replace('"','\"') for value in args]) + u'\"'
 
-def chibiimage(idol, small=True):
+def chibiimage(idol, small=True, force_first=False):
     prefix = 'small_' if small else ''
+    image = None
     if idol is not None:
         if idol in raw_information and 'chibi' in raw_information[idol]:
-            if small:
-                return random.choice(raw_information[idol]['chibi'])[0].replace('chibi/', 'chibi/small_')
-            return random.choice(raw_information[idol]['chibi'])[0]
-        if idol in raw_information_n and 'chibi' in raw_information_n[idol]:
-            if small:
-                return random.choice(raw_information_n[idol]['chibi'])[0].replace('chibi/', 'chibi/small_')
-            return random.choice(raw_information_n[idol]['chibi'])[0]
+            image = random.choice(raw_information[idol]['chibi'])[0] if not force_first else raw_information[idol]['chibi'][0][0]
+        elif idol in raw_information_n and 'chibi' in raw_information_n[idol]:
+            image = random.choice(raw_information_n[idol]['chibi'])[0] if not force_first else raw_information_n[idol]['chibi'][0][0]
+    if image:
+        return (image if not small else image.replace('chibi/', 'chibi/small_'))
     return 'http://i.schoolido.lu/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
 
 def randomString(length, choice=(string.ascii_letters + string.digits)):

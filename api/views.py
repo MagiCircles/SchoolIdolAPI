@@ -183,7 +183,7 @@ class IdolFilter(django_filters.FilterSet):
 
     class Meta:
         model = models.Idol
-        fields = ('japanese_name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special', 'for_trivia')
+        fields = ('japanese_name', 'main', 'age', 'astrological_sign', 'blood', 'attribute', 'year', 'cards__is_special', 'for_trivia', 'school')
 
 class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     """

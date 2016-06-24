@@ -192,7 +192,7 @@ class IdolViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Idol.objects.all().distinct()
     serializer_class = serializers.IdolSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, RandomBackend)
-    search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'cv_nickname', 'cv_twitter', 'cv_instagram', 'summary')
+    search_fields = ('name', 'japanese_name', 'birthday', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'cv', 'cv_nickname', 'cv_twitter', 'cv_instagram', 'summary', 'school')
     filter_class = IdolFilter
     ordering_fields = '__all__'
     ordering = ('-main', 'name')

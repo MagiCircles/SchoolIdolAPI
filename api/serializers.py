@@ -224,7 +224,7 @@ class IdolSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Idol
-        fields = ('name', 'japanese_name', 'main', 'age', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'main_unit', 'sub_unit', 'cv', 'summary', 'website_url', 'wiki_url', 'wikia_url', 'official_url', 'chibi', 'chibi_small')
+        fields = ('name', 'japanese_name', 'main', 'age', 'school', 'birthday', 'astrological_sign', 'blood', 'height', 'measurements', 'favorite_food', 'least_favorite_food', 'hobbies', 'attribute', 'year', 'main_unit', 'sub_unit', 'cv', 'summary', 'website_url', 'wiki_url', 'wikia_url', 'official_url', 'chibi', 'chibi_small')
 
 def _get_image(image):
     if image:

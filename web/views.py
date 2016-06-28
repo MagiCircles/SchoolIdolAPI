@@ -850,8 +850,11 @@ def profile(request, username):
                 account.staff_form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=account, stored='Deck').order_by('card__id').select_related('card')
                 if request.method == 'POST' and ('editAccount' + str(account.id)) in request.POST:
                     account.staff_form = staffFormClass(request.POST, instance=account)
+                    old_center = account.center_id
                     if account.staff_form.is_valid():
                         account = account.staff_form.save(commit=False)
+                        if old_center != account.center_id:
+                            account = _editaccount_savecenter(account)
                         if request.user.is_superuser and 'owner_id' in account.staff_form.cleaned_data and account.staff_form.cleaned_data['owner_id']:
                             account_new_user = models.User.objects.get(pk=account.staff_form.cleaned_data['owner_id'])
                             account.owner = account_new_user
@@ -1465,6 +1468,14 @@ def report(request, account=None, eventparticipation=None, user=None, activity=N
         context['report_images'] = context['report'].images.all()
     return render(request, 'report.html', context)
 
+def _editaccount_savecenter(account):
+    account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
+    account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
+    account.center_card_attribute = account.center.card.attribute
+    account.center_alt_text = unicode(account.center.card)
+    account.center_card_id = account.center.card.id
+    return account
+
 def editaccount(request, account):
     if not request.user.is_authenticated() or request.user.is_anonymous():
         raise PermissionDenied()
@@ -1562,11 +1573,7 @@ def editaccount(request, account):
             if form.is_valid():
                 account = form.save(commit=False)
                 if old_center != account.center_id:
-                    account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
-                    account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
-                    account.center_card_attribute = account.center.card.attribute
-                    account.center_alt_text = unicode(account.center.card)
-                    account.center_card_id = account.center.card.id
+                    account = _editaccount_savecenter(account)
                 if account.rank >= 200 and account.verified <= 0:
                     account.rank = 195
                     account.save()

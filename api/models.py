@@ -877,7 +877,7 @@ class VerificationRequest(ExportModelOperationsMixin('VerificationRequest'), mod
     verified_by = models.ForeignKey(User, related_name='verificationsdone', null=True)
     images = models.ManyToManyField(UserImage, related_name="request")
     verification_comment = models.TextField(_('Comment'), null=True, blank=True)
-    allow_during_events = models.BooleanField(_('Allow us to verify your account during events'), default=False, help_text=_('Check this only if you don\'t care about the current event. You\'ll get verified faster.'))
+    allow_during_events = models.BooleanField(_('Allow us to verify your account during events'), default=False, help_text=_('Check this only if you accept to get verified anytime during any event. You\'ll get verified faster. If you don\'t care for most events but you plan to play seriously some events, feel free to specify a list of exceptions in the comment box above.'))
 
 admin.site.register(VerificationRequest)
 

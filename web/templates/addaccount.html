@@ -151,6 +151,8 @@
 	<div id="verification-2" style="display: none">
 	  <img src="http://i.schoolido.lu/static/verifications/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
 	  <ul>
+	    <li>{% trans 'Open the game you want to get verified' %}<br><br></li>
+	    <li>{% trans 'Go to "Other" (その他) then "Profile" (プロフィール), tap "Change" (変更する) and add a link to your profile on School Idol Tomodachi to support the community' %}: <span class="text-muted">schoolido.lu/user/{{ user.username }}/</span> ({% trans 'Optional' %})<br><br></li>
 	    <li>{% trans 'Generate a transfer code on the game.' %} <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-generate-a-transfer-code%3F" target="_blank">{% trans 'How to generate a transfer code?' %}</a></li>
 	    <li>{% trans 'Upload the screenshot or write it down below.' %}<br><br></li>
 	    <li>
@@ -161,13 +163,13 @@
 	      </ul><br></li>
 	    <li>{% blocktrans %}We will enter the transfer code in one of our devices and check the info. We're not going to do anything with your LPs, lovecas, cards, or anything else{% endblocktrans %} :)</li>
 	    <li>{% trans 'You will then receive an email with your new transfer code.' %}<br><br></li>
-	    <li>{% blocktrans %}Note: The device used to verify will not be used for anything else until you take your account back, to make sure you don't have any trouble. In consideration to others that want to be verified, please take it back as soon as possible!{% endblocktrans %}</li>
 	  </ul>
 	</div>
 	<div id="verification-1" style="display: none">
 	  <img src="http://i.schoolido.lu/static/verifications/mA3mh0G.png" alt="Silver" class="img-responsive img-rounded" /><br>
 	  <ul>
-	    <li>{% trans 'Open the game you want to get verified' %}</li>
+	    <li>{% trans 'Open the game you want to get verified' %}<br><br></li>
+	    <li>{% trans 'Go to "Other" (その他) then "Profile" (プロフィール), tap "Change" (変更する) and add a link to your profile on School Idol Tomodachi to support the community' %}: <span class="text-muted">schoolido.lu/user/{{ user.username }}/</span> ({% trans 'Optional' %})<br><br></li>
 	    <li><strong>{% trans 'Take screenshots and upload them below.' %}</strong> <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-take-screenshots%3F" target="_blank">{% trans 'How to take screenshots?' %}</a>
 	      <ol>
 		<li>{% trans 'Go to "Members" (部員) then "Member List" (部員リスト), order by "Rarity" (レアリティ) and take screenshots of all the pages that have URs or SRs' %}

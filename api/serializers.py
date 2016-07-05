@@ -254,7 +254,7 @@ class CardSerializer(serializers.ModelSerializer):
     card_idolized_image = ImageField(required=False)
     round_card_image = ImageField(required=False)
     round_card_idolized_image = ImageField(required=False)
-    translated_collection = LocalizedField()
+    translated_collection = LocalizedField(required=False)
     japanese_attribute = serializers.SerializerMethodField()
     website_url = serializers.SerializerMethodField()
     non_idolized_max_level = serializers.SerializerMethodField()

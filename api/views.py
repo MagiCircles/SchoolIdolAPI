@@ -397,7 +397,7 @@ class EventParticipationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = models.EventParticipation.objects.all()
         # do not allow fake account participations
-        if 'account' not in self.request.query_params:
+        if self.request.method == 'GET' and 'account' not in self.request.query_params and self.request.resolver_match.url_name.endswith('-list'):
             queryset = queryset.filter(account__fake=False)
         if 'expand_account' in self.request.query_params:
             queryset = queryset.select_related('account')

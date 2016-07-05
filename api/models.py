@@ -684,6 +684,11 @@ class Team(models.Model):
     owner_account = models.ForeignKey(Account, verbose_name=_('Account'), related_name='teams')
     name = models.CharField(max_length=100, verbose_name=_('Name'))
 
+
+    @property
+    def owner(self):
+        return self.owner_account.owner
+
     def __unicode__(self):
         return self.name
 
@@ -693,6 +698,9 @@ class Member(models.Model):
     team = models.ForeignKey(Team, related_name='members')
     ownedcard = models.ForeignKey(OwnedCard, related_name='members')
     position = models.PositiveIntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(8)])
+
+    def __unicode__(self):
+        return '({}) {}'.format(self.position, self.ownedcard_id)
 
     class Meta:
         unique_together = (('team', 'position'), ('team', 'ownedcard'))

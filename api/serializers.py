@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from web.utils import chibiimage, singlecardurl
 import urllib
 import datetime
@@ -519,7 +520,8 @@ class OwnedCardSerializer(serializers.ModelSerializer):
     card = serializers.SerializerMethodField()
 
     def get_card(self, obj):
-        if self.context['request'].resolver_match.url_name.startswith('ownedcard-'):
+        if (self.context['request'].resolver_match.url_name.startswith('ownedcard-')
+            or self.context['request'].resolver_match.url_name.startswith('team-')):
             if 'expand_card' in self.context['request'].query_params:
                 serializer = CardSerializer(obj.card, context=self.context)
                 return serializer.data
@@ -788,3 +790,84 @@ class EventParticipationSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EventParticipation
         fields = ('id', 'event', 'account', 'ranking', 'song_ranking', 'points')
+
+class TeamSerializer(serializers.ModelSerializer):
+    members = serializers.SerializerMethodField()
+
+    def get_members(self, obj):
+        members = [None] * 9
+        for member in obj.all_members:
+            if member:
+                members[member.position] = member.ownedcard
+        serializer = OwnedCardSerializer(members, context=self.context, many=True)
+        return [member if member['id'] is not None else None for member in serializer.data]
+
+    def validate(self, data):
+        errors = {}
+        request = self.context['request']
+        if request.method == 'POST' or request.method == 'PATCH' or request.method == 'PUT':
+            # Get the members to update
+            members_to_update = []
+            for position in range(1, 9):
+                memberposition = 'member{}'.format(position)
+                ownedcard = self.initial_data.get(memberposition, None)
+                if ownedcard is not None:
+                    if ownedcard == 'null':
+                        members_to_update.append((position, memberposition, None))
+                    else:
+                        try:
+                            members_to_update.append((position, memberposition, int(ownedcard)))
+                        except ValueError:
+                            errors[memberposition] = 'A valid integer is required.'
+            # Check if members appear twice in parameters
+            for member_to_update in members_to_update:
+                similar_members = [m[1] for m in members_to_update if m[2] is not None and m[2] == member_to_update[2]]
+                if len(similar_members) > 1:
+                    for similar_member in similar_members:
+                        errors[similar_member] = 'You can\'t have the same owned card twice in the same team.'
+            # get the owned card objects
+            self.members_to_update = []
+            if not errors:
+                ownedcards = models.OwnedCard.objects.filter(pk__in=[m[2] for m in members_to_update if m[2]], owner_account__owner=request.user)
+                for (position, memberposition, ownedcard) in members_to_update:
+                    if ownedcard:
+                        try:
+                            self.members_to_update.append((position - 1, memberposition, (o for o in ownedcards if o.id == ownedcard).next()))
+                        except StopIteration:
+                            errors[memberposition] = 'This owned card does\'t exist or isn\'t yours'
+                    else:
+                        self.members_to_update.append((position - 1, memberposition, None))
+        if errors:
+            raise serializers.ValidationError(errors)
+        return data
+
+    def save(self, **kwargs):
+        result = super(TeamSerializer, self).save(**kwargs)
+        request = self.context['request']
+        if not hasattr(self.instance, 'all_members'):
+            self.instance.all_members = []
+        for (position, memberposition, ownedcard) in self.members_to_update:
+            if ownedcard is None:
+                models.Member.objects.filter(team=self.instance, position=position).delete()
+                new_member = None
+            else:
+                existing_member = models.Member.objects.filter(team=self.instance, position=position)
+                try:
+                    updated = existing_member.update(ownedcard=ownedcard)
+                    if updated:
+                        new_member = existing_member[0]
+                    else:
+                        new_member = models.Member.objects.create(team=self.instance, ownedcard=ownedcard, position=position)
+                        self.instance.all_members.append(new_member)
+                        self.instance.all_members.sort(key=lambda m: m.position)
+                except IntegrityError:
+                    raise serializers.ValidationError({
+                        memberposition: 'You can\'t have the same owned card twice in the same team.',
+                    })
+            self.instance.all_members = [member if member.position != position else new_member for member in self.instance.all_members]
+        self.data['members'] = self.get_members(self.instance)
+        return result
+
+    class Meta:
+        model = models.Team
+        fields = ('id', 'name', 'owner_account', 'members')

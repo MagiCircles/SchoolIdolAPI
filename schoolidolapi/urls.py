@@ -18,6 +18,7 @@ router.register(r'ownedcards', api_views.OwnedCardViewSet, base_name='ownedcard'
 router.register(r'accounts', api_views.AccountViewSet, base_name='account')
 router.register(r'activities', api_views.ActivityViewSet)
 router.register(r'eventparticipations', api_views.EventParticipationViewSet)
+router.register(r'teams', api_views.TeamViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

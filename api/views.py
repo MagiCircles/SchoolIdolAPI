@@ -447,23 +447,6 @@ class TeamViewSet(viewsets.ModelViewSet):
         if request.user.id != team_owner['owner_account__owner']:
             raise PermissionDenied()
 
-    def get_member(self, request, team, position):
-        member = get_object_or_404(self.get_members_queryset(), team_id=team, position=(int(position) + 1))
-        return self._serialize_member(request, member)
-
-    def edit_member(self, request, team, position):
-        self._member_permissions(request, team)
-        #ownedcard = get_object_or_404(models.OwnedCard.annotate(owner_id='owner_account__owner_id'), pk=request.POST.get('ownedcard'))
-        #if ownedcard.
-        # todo create on duplicate key update
-        member = get_object_or_404(self.get_members_queryset(), team_id=team, position=(int(position) + 1))
-        return self._serialize_member(request, member)
-
-    def delete_member(self, request, team, position):
-        self._member_permissions(request, team)
-        models.Member.objects.filter(team_id=team, position=(int(position) + 1))
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 @api_view(['GET'])
 def app(request, app):
     app = raw.app_data.get(app, None)

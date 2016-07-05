@@ -609,13 +609,6 @@ links = [
                     'type': 'info',
                     'language': 'japanese',
                 },
-                 {
-                    'name': _('Love Live music on videos'),
-                     'description': _('by the Reddit /r/LoveLive community'),
-                     'url': 'https://vimeo.com/lovelivereddit',
-                     'type': 'info',
-                     'language': 'world',
-                 },
             ],
         },
     ]

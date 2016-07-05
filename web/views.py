@@ -2865,6 +2865,8 @@ def trades_or_giveaways_submit(request, type, account):
 def english_future(request):
     context = globalContext(request)
     future_events = models.Event.objects.filter(Q(english_beginning=None) | Q(english_end__gte=timezone.now())).order_by('beginning')
+    # remove events already paired
+    future_events = future_events.exclude(pk__in=[53])
     # remove too old events (not gonna happen)
     future_events = future_events.exclude(beginning__lte=timezone.now() - relativedelta(months=15))
     # add cards

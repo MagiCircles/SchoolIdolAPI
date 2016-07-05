@@ -225,7 +225,7 @@ raw_information['Kurosawa Dia'] = {
     'main_unit': 'Aqours',
     'sub_unit': 'AZALEA',
     'cv_nickname': 'Komiya Arisa',
-    'cv_twitter': 'arisakomiya',
+    'cv_twitter': 'box_komiyaarisa',
     'cv_instagram': None,
     'starter': 789,
     'color': '#ff4242',
@@ -278,7 +278,7 @@ raw_information['Kunikida Hanamaru'] = {
     'sub_unit': 'AZALEA',
     'cv_nickname': 'Takatsuki Kanako',
     'cv_twitter': 'Kanako_tktk',
-    'cv_instagram': None,
+    'cv_instagram': 'kanako.tktk',
     'starter': 792,
     'color': '#e7cf0b',
     'chibi': [

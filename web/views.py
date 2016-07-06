@@ -384,6 +384,9 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
         if 'sub_unit' in request_get_copy and request_get_copy['sub_unit']:
             cards = cards.filter(idol__sub_unit__exact=request_get_copy['sub_unit'])
             request_get['sub_unit'] = request_get_copy['sub_unit']
+        if 'main_unit' in request_get_copy and request_get_copy['main_unit']:
+            cards = cards.filter(idol__main_unit__exact=request_get_copy['main_unit'])
+            request_get['main_unit'] = request_get_copy['main_unit']
         if 'idol_year' in request_get_copy and request_get_copy['idol_year']:
             cards = cards.filter(idol__year__exact=request_get_copy['idol_year'])
             request_get['idol_year'] = request_get_copy['idol_year']
@@ -509,6 +512,7 @@ def get_cards_form_filters(request, cardsinfo):
         'collections': cardsinfo['collections'],
         'translated_collections': cardsinfo['translated_collections'],
         'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
+        'main_units': ['Aqours', 'μ\'s'],
         'skills': cardsinfo['skills'],
         'rarity_choices': models.RARITY_CHOICES,
         'attribute_choices': models.ATTRIBUTE_CHOICES,

@@ -32,6 +32,14 @@
       {% endfor %}
     }
   });
+  cuteform($('#id_main_unit'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for main_unit in filters.main_units %}
+      '{{ main_unit }}': 'http://i.schoolido.lu/static/{{ main_unit }}.png',
+      {% endfor %}
+    }
+  });
   cuteform($('#id_name'), {
     'modal': 'true',
     'modal-text': 'true',
@@ -205,6 +213,15 @@
 	    <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
 	    {% endfor %}
 	  </select>
+	  <div id="main_unit_wrapper">
+	    <label for="id_main_unit">{% trans 'Main Unit' %}</label>
+	    <select id="id_main_unit" name="main_unit">
+	      <option value=""></option>
+	      {% for main_unit in filters.main_units %}
+	      <option value="{{ main_unit }}"{% if request_get.main_unit == main_unit %} selected{% endif %}>{{ main_unit }}</option>
+	      {% endfor %}
+	    </select>
+	  </div>
 	  <div id="sub_unit_wrapper">
 	    <label for="id_sub_unit">{% trans 'Sub Unit' %}</label>
 	    <select id="id_sub_unit" name="sub_unit">

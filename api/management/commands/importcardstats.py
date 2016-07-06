@@ -102,11 +102,10 @@ def importcardstats(opt):
                 'idolized_maximum_statistics_pure': maxStats[1],
                 'idolized_maximum_statistics_cool': maxStats[2],
                 'skill': skill,
-                'skill_details': (note if note else None),
                 'center_skill': center,
             }
-            if promo:
-                defaults['release_date'] = None
+            if note:
+                defaults['skill_details'] = note
             if release_date is not None:
                 defaults['release_date'] = release_date
             if event is not None:
@@ -126,4 +125,3 @@ class Command(BaseCommand):
 
         importcardstats(opt)
         import_raw_db()
-

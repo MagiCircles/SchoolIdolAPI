@@ -36,7 +36,7 @@
     'images': {
       '': 'http://i.schoolido.lu/static/empty.png',
       {% for main_unit in filters.main_units %}
-      '{{ main_unit }}': 'http://i.schoolido.lu/static/{{ main_unit }}.png',
+      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
       {% endfor %}
     }
   });

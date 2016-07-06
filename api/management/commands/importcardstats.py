@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
+from django.db import transaction
 
+@transaction.atomic
 def importcardstats(opt):
     local = opt['local']
     print '### Import card ids & stats from decaf wiki'
@@ -72,6 +74,7 @@ def importcardstats(opt):
                     else:
                         if 'Added on' in soupspan.text:
                             release_date_str = soupspan.text.split('Added on ')[1]
+                            release_date_str = release_date_str.replace(' (Seal Shop)', '')
                             release_date = datetime.datetime.fromtimestamp(time.mktime(time.strptime(release_date_str, '%B %d, %Y')))
                         elif 'event prize' in soupspan.text:
                             event_name = soupspan.text.split(' event prize')[0].replace(']]', '').replace('[[', '')

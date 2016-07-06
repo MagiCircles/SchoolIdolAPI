@@ -28,6 +28,7 @@ RARITY_CHOICES = (
     ('N', _('Normal')),
     ('R', _('Rare')),
     ('SR', _('Super Rare')),
+    ('SSR', _('Super Super Rare')),
     ('UR', _('Ultra Rare')),
 )
 RARITY_DICT = dict(RARITY_CHOICES)

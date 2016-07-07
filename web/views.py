@@ -2357,6 +2357,8 @@ def songs(request, song=None, ajax=False):
                                      )
         if 'attribute' in request.GET and request.GET['attribute']:
             songs = songs.filter(attribute__exact=request.GET['attribute'])
+        if 'main_unit' in request.GET and request.GET['main_unit']:
+            songs = songs.filter(main_unit__exact=request.GET['main_unit'])
         if 'is_daily_rotation' in request.GET and request.GET['is_daily_rotation']:
             if request.GET['is_daily_rotation'] == '2':
                 songs = songs.filter(daily_rotation__isnull=False)
@@ -2419,6 +2421,7 @@ def songs(request, song=None, ajax=False):
         song.percent_stats['hard'] = ((song.hard_notes if song.hard_notes else 0) / max_stats) * 100
         song.percent_stats['expert'] = ((song.expert_notes if song.expert_notes else 0) / max_stats) * 100
         song.percent_stats['expert_random'] = ((song.expert_notes if song.expert_notes else 0) / max_stats) * 100
+        song.percent_stats['master'] = ((song.master_notes if song.master_notes else 0) / max_stats) * 100
     context['max_stats'] = max_stats
 
     context['ajax'] = ajax

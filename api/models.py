@@ -913,6 +913,7 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
     attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6)
     BPM = models.PositiveIntegerField(null=True, blank=True)
     time = models.PositiveIntegerField(null=True, blank=True)
+    main_unit = models.CharField(max_length=20, default='μ\'s')
     event = models.OneToOneField(Event, related_name='song', null=True, blank=True, on_delete=models.SET_NULL)
     rank = models.PositiveIntegerField(null=True, blank=True)
     daily_rotation = models.CharField(max_length=2, null=True, blank=True)
@@ -927,6 +928,8 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
     expert_difficulty = models.PositiveIntegerField(null=True, blank=True)
     expert_random_difficulty = models.PositiveIntegerField(null=True, blank=True)
     expert_notes = models.PositiveIntegerField(null=True, blank=True)
+    master_difficulty = models.PositiveIntegerField(null=True, blank=True)
+    master_notes = models.PositiveIntegerField(null=True, blank=True)
     available = models.BooleanField(default=True)
     itunes_id = models.PositiveIntegerField(null=True, blank=True)
 

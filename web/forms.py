@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 from django.shortcuts import get_object_or_404
 from django import forms
@@ -373,10 +374,16 @@ class FilterSongForm(ModelForm):
         ('rank', _('Rank to unlock song')),
         ('hard_notes', _('Notes in Hard song')),
         ('expert_notes', _('Notes in Expert song')),
+        ('master_notes', _('Notes in Master song')),
     ], initial='id', required=False, label=_('Ordering'))
     reverse_order = forms.BooleanField(initial=True, required=False, label=_('Reverse order'))
     is_daily_rotation = forms.NullBooleanField(required=False, label=_('Daily rotation'))
     is_event = forms.NullBooleanField(required=False, label=_('Event'))
+    main_unit = forms.ChoiceField(choices=[
+        ('', ''),
+        ('μ\'s', 'μ\'s'),
+        ('Aqours', 'Aqours'),
+    ], required=False, label=_('Main Unit'))
     available = forms.NullBooleanField(required=False, label=_('Available'))
 
     def __init__(self, *args, **kwargs):

@@ -25,6 +25,16 @@
       '3': '{% trans 'None' %}',
     }
   });
+  cuteform($('#id_main_unit'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for main_unit, _ in filter_form.fields.main_unit.choices %}
+      {% if main_unit != '' %}
+      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
+      {% endif %}
+      {% endfor %}
+    }
+  });
   cuteform($('#id_is_event'), {
     'html': {
       '1': '{% trans 'All' %}',

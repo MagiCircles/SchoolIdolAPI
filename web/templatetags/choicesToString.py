@@ -40,6 +40,7 @@ difficultyStrings = {
     'hard': _('Hard'),
     'expert': _('Expert'),
     'expert_random': _('Random'),
+    'master': _('Master'),
 }
 
 def difficultyToString(difficulty):

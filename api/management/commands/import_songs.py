@@ -13,22 +13,27 @@ def import_songs(opt):
     soup = BeautifulSoup(f.read())
     content = soup.find('div', { 'id': 'wikibody'})
     songs = []
-    section = 0
     event_index = 0
+    main_unit = 'μ\'s'
     if content is not None:
         table = content.find_all('table')[1]
         rank = 0
         for tr in table.find('tbody').find_all('tr'):
             tds = tr.find_all('td')
             if len(tds) == 1:
-                if section != 0:
+                section_title = tds[0].text.strip()
+                if section_title == 'Aqours':
+                    main_unit = section_title
+                if section_title != 'ストーリー解禁曲':
                     rank = None
-                event = section == 1
-                daily_rotation = section == 4
-                available = section != 2
-                section += 1
-            if len(tds) == 13 or len(tds) == 12:
-                song = { 'available': available }
+                event = section_title == 'イベント課題曲'
+                daily_rotation = section_title == '日替わりライブ曲'
+                available = section_title != '課題解禁曲' and section_title != '期間限定楽曲'
+            if len(tds) == 15 or len(tds) == 16:
+                song = {
+                    'available': available,
+                    'main_unit': main_unit,
+                }
                 if len(tds) == 12:
                     tds.insert(0, '')
                 else:
@@ -39,7 +44,7 @@ def import_songs(opt):
                         except ValueError:
                             if daily_rotation:
                                 song['daily_rotation'], song['daily_rotation_position'] = clean(tds[0].text).split('-')
-                song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡').replace('！', '!')
+                song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡').replace('！', '!').replace('‼︎', '!!')
                 print 'Import {}...'.format(song['name']),
                 song['attribute'] = attribute_jphexcolors[tds[1]['style'].replace(';', '').split(':')[-1]]
                 try:
@@ -60,6 +65,8 @@ def import_songs(opt):
                 song['expert_difficulty'] = None if clean(tds[10].text) == '-' else int(clean(tds[10].text))
                 song['expert_random_difficulty'] = None if clean(tds[11].text) == '-' else int(clean(tds[11].text))
                 song['expert_notes'] = None if not clean(tds[12].text) or clean(tds[12].text) == '-' else int(clean(tds[12].text))
+                song['master_difficulty'] = None if clean(tds[13].text) == '-' else int(clean(tds[13].text))
+                song['master_notes'] = None if clean(tds[14].text) == '-' else int(clean(tds[14].text))
                 song['event'] = None
                 if event:
                     song['event'] = events[event_index]

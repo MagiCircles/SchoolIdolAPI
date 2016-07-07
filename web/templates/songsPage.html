@@ -57,9 +57,11 @@
 			    {% for difficulty, stat in song.percent_stats.items %}
 			    {% if difficulty != 'expert_random' or song.expert_random_difficulty %}
 			    {% if difficulty != 'expert' or song.expert_difficulty %}
+			    {% if difficulty != 'master' or song.master_difficulty %}
 			    <label class="btn btn-{{ song.attribute }} {{ difficulty }}{% if difficulty == 'hard' %} active{% endif %}">
 			      <input type="radio" name="options" autocomplete="off"{% if difficulty == 'hard' %} selected{% endif %}> {% trans difficulty|difficultyToString %}
 			    </label>
+			    {% endif %}
 			    {% endif %}
 			    {% endif %}
 			    {% endfor %}

@@ -38,6 +38,7 @@
     <input class="btn btn-{{ btnColor }}" type="submit" value="{% trans 'Go' %}">
   </form>
   {% else %}
+  {% with is_world=account|account_is_world %}
   <table class="table table-responsive" data-account-id="{{ account.id }}">
     <tr>
       <th colspan="2" width="350">{% trans 'Cards' %}</th>
@@ -53,8 +54,8 @@
     <tr class="tr_card text-{{ card.attribute }}" data-id="{{ card.id }}" data-rarity="{{ card.rarity }}" data-attribute="{{ card.attribute }}" data-is-special="{{ card.is_special }}" data-is-promo="{{ card.is_promo }}">
       <td rowspan="{{ card.owned_cards|length|add:1 }}" width="150">
 	<a href="{{ card|singlecardurl }}" target="_blank" class="images-link">
-	  <img src="{% if card.is_promo or card.is_special %}http://i.schoolido.lu/static/empty.png{% else %}{% imageurl card=card image='round_card_image' %}{% endif %}" alt="{{ card }}" height="60" width="60">
-	  <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="60" width="60">
+	  <img src="{% if card.is_promo or card.is_special %}http://i.schoolido.lu/static/empty.png{% else %}{% imageurl card=card image='round_card_image' english_version=is_world %}{% endif %}" alt="{{ card }}" height="60" width="60">
+	  <img src="{% imageurl card=card image='round_card_idolized_image' english_version=is_world %}" alt="{{ card }}" height="60" width="60">
 	</a>
       </td>
       <td rowspan="{{ card.owned_cards|length|add:1 }}" class="text-left" width="200">
@@ -79,5 +80,6 @@
     {% endfor %}
     {% endfor %}
   </table>
+  {% endwith %}
   {% endif %}
 </div>

@@ -13,12 +13,18 @@ def _imageurl(path):
     return '%s%s' % (settings.IMAGES_HOSTING_PATH, path)
 
 @register.simple_tag(takes_context=True)
-def imageurl(context, card, image):
+def imageurl(context, card, image, english_version=False):
+    if english_version:
+        image = 'english_' + image
     if hasattr(card, image):
         card_image = getattr(card, image)
         if card_image:
             return _imageurl(unicode(card_image))
     return 'http://i.schoolido.lu/static/default-' + card.attribute + '.png'
+
+@register.filter
+def account_is_world(account):
+    return account.language != 'JP'
 
 @register.simple_tag(takes_context=True)
 def cleanurl(context, card, idolized, small=True):
@@ -38,41 +44,45 @@ def cleanurl(context, card, idolized, small=True):
         return _imageurl(str(card.card_image))
 
 @register.simple_tag()
-def cardrawurl(card_id, idol_name, image_type):
+def cardrawurl(card_id, idol_name, image_type, english_version=False):
+    prefix = 'c/'
+    if english_version:
+        prefix = 'cards/'
     if image_type == 'round_card_image':
-        return _imageurl('cards/' + str(card_id) + 'Round' + idol_name + '.png')
+        return _imageurl(prefix + str(card_id) + 'Round' + idol_name + '.png')
     elif image_type == 'round_card_idolized_image':
-        return _imageurl('cards/' + str(card_id) + 'RoundIdolized' + idol_name + '.png')
+        return _imageurl(prefix + str(card_id) + 'RoundIdolized' + idol_name + '.png')
     elif image_type == 'card_image':
-        return _imageurl('cards/' + str(card_id) + idol_name + '.png')
+        return _imageurl(prefix + str(card_id) + idol_name + '.png')
     elif image_type == 'card_image':
-        return _imageurl('cards/' + str(card_id) + 'idolized' + idol_name + '.png')
+        return _imageurl(prefix + str(card_id) + 'idolized' + idol_name + '.png')
     return 'http://i.schoolido.lu/static/empty.png'
 
 @register.simple_tag()
-def cardidolizedimageurl(card, idolized):
+def cardidolizedimageurl(card, idolized, english_version=False):
+    prefix = 'english_' if english_version else ''
     if card.is_special or card.is_promo:
         idolized = True
     if idolized:
-        if card.round_card_idolized_image:
-            return _imageurl(card.round_card_idolized_image)
-        if card.card_idolized_image:
-            return _imageurl(card.card_idolized_image)
+        if getattr(card, prefix + 'round_card_idolized_image'):
+            return _imageurl(getattr(card, prefix + 'round_card_idolized_image'))
+        if getattr(card, prefix + 'card_idolized_image'):
+            return _imageurl(getattr(card, prefix + 'card_idolized_image'))
         return 'http://i.schoolido.lu/static/default-' + card.attribute + '.png'
-    if card.round_card_image:
-        return _imageurl(card.round_card_image)
-    if card.card_image:
-        return _imageurl(card.card_image)
+    if getattr(card, prefix + 'round_card_image'):
+        return _imageurl(getattr(card, prefix + 'round_card_image'))
+    if getattr(card, prefix + 'card_image'):
+        return _imageurl(getattr(card, prefix + 'card_image'))
     return 'http://i.schoolido.lu/static/default-' + card.attribute + '.png'
 
 @register.simple_tag(takes_context=True)
-def ownedcardimageurl(context, ownedcard, card=None):
+def ownedcardimageurl(context, ownedcard, card=None, english_version=False):
     if not ownedcard:
         return 'http://i.schoolido.lu/static/default-All.png'
     if not card:
         card = ownedcard.card
     idolized = True if card.is_special or card.is_promo else ownedcard.idolized
-    return cardidolizedimageurl(card, idolized)
+    return cardidolizedimageurl(card, idolized, english_version=english_version)
 
 @register.simple_tag(takes_context=True)
 def eventimageurl(context, event, english=False):

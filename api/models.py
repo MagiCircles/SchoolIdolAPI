@@ -475,6 +475,7 @@ admin.site.register(Idol)
 
 class Card(ExportModelOperationsMixin('Card'), models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
+    game_id = models.PositiveIntegerField(unique=True, null=True)
     idol = models.ForeignKey(Idol, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     japanese_collection = models.CharField(max_length=100, blank=True, null=True)
     english_collection = models.CharField(max_length=100, blank=True, null=True)
@@ -507,10 +508,14 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     center_skill = models.TextField(null=True, blank=True)
     transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
-    card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    round_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
-    round_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
+    card_image = models.ImageField(upload_to='c/', null=True, blank=True)
+    card_idolized_image = models.ImageField(upload_to='c/', null=True, blank=True)
+    english_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
+    english_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
+    round_card_image = models.ImageField(upload_to='c/', null=True, blank=True)
+    round_card_idolized_image = models.ImageField(upload_to='c/', null=True, blank=True)
+    english_round_card_image = models.ImageField(upload_to='cards/', null=True, blank=True)
+    english_round_card_idolized_image = models.ImageField(upload_to='cards/', null=True, blank=True)
     video_story = models.CharField(max_length=300, blank=True, null=True)
     japanese_video_story = models.CharField(max_length=300, blank=True, null=True)
     _skill_up_cards = models.CharField(max_length=300, blank=True, null=True)
@@ -637,7 +642,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     def starter_card_round_image(self):
         if not self.starter_id:
             return None
-        return 'cards/' + str(self.starter_id) + 'Round' + self._get_starter_idol()[0].split(' ')[-1] + '.png'
+        return ('c/' if self.language == 'JP' else 'cards/') + str(self.starter_id) + 'Round' + self._get_starter_idol()[0].split(' ')[-1] + '.png'
 
     @property
     def starter_name(self):

@@ -1,4 +1,5 @@
 {% load mod %}
+{% load imageurl %}
 {% load i18n %}
 {% with size=100 %}
 <div class="teams-wrapper">
@@ -16,7 +17,9 @@
   {% if member.virtual %}
   <img src="http://i.schoolido.lu/static/empty.png" height="100" alt="empty">
   {% else %}
+  {% with is_world=team.owner_account|account_is_world %}
   {% include 'ownedcard.html' with card=member.ownedcard owner_account=team.owner_account %}
+  {% endwith %}
   {% endif %}
 </div>{% endfor %}
 <br><br>

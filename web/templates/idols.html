@@ -7,19 +7,32 @@
 {% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/idols.png{% endblock %}
 
 {% block title %}{% trans 'Idols' %}{% endblock %}
+
 {% block content %}
 <div id="idols" class="text-center">
+  {% for section_name, idols in idols_sections.items %}
+  <h1 class="margin50">
+    {% if idols.0.main_unit %}
+    <img src="http://i.schoolido.lu/static/{{ idols.0.main_unit }}.png" alt="{{ idols.0.main_unit }}" style="padding-right: 30px">
+    {% endif %}
+    {% if idols.0.school %}{{ idols.0.school }}{% else %}{% trans 'Other' %}{% endif %}
+  </h1>
   <div class="row">
-    <div class="col-sm-4">
-      {% for idol in main_idols %}
+    <div class="{% if idols.0.main_unit == 'A-RISE' %}col-sm-offset-4 {% endif %}col-sm-4">
+      <div class="row">
+	{% if idols.0.sub_unit %}<img src="http://i.schoolido.lu/static/{{ idols.0.sub_unit }}.png" alt="{{ idols.0.sub_unit }}"><br><br>{% endif %}
+      </div>
+      {% for idol in idols %}
       {% if forloop.counter0|mod:3 and forloop.counter0 != 0 %}
     </div>
     <div class="col-sm-4">
+      <div class="row">
+	{% if idol.sub_unit %}<img src="http://i.schoolido.lu/static/{{ idol.sub_unit }}.png" alt="{{ idol.sub_unit }}"><br><br>{% endif %}
+      </div>
       {% endif %}
       <div class="col-xs-4 {{ idol.attribute }}">
-	<a class="idol" href="/idol/{{ idol.name|urlencode }}/">
-	  <img class="idol-img" src="{% standimage idol=idol number=1 %}" alt="{{ idol.name }}">
-	  <img class="idol-img hover" src="{% standimage idol=idol number=4 %}" alt="{{ idol.name }}">
+	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
+	  <img class="chibi" src="{% chibiimage idol=idol.name small=False force_first=idol.main %}" alt="{{ idol.name }}" style="{% if idol.main %}width: 180%; margin: 0 -40%;{% else %}width: 130%; margin: 0 -15%;{% endif %}">
 	  <br><div class="name">
 	    <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
 	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
@@ -30,51 +43,7 @@
     </div>
   </div>
   <br>
-  <div class="row">
-    <div class="col-sm-4">
-      {% for idol in aqours_idols %}
-      {% if forloop.counter0|mod:3 and forloop.counter0 != 0 %}
-    </div>
-    <div class="col-sm-4">
-      {% endif %}
-      <div class="col-xs-4 {{ idol.attribute }}">
-	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
-	  <img class="chibi" src="{% chibiimage idol=idol.name small=False %}" alt="{{ idol.name }}" style="width: 180%; margin: 0 -40%;">
-	  <br><div class="name">
-	    <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
-	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>
-	</a>
-	<small class="padding10 text-center" style="display: block;"><a href="http://schoolido.lu/idol/{{ idol.name|urlencode }}/#disqus_thread" data-disqus-identifier="{{ idol.name }}"><span class="tiny">{% trans 'Comments' %}</span></a></small>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-  <br><br><br>
-  <div class="row">
-    <div class="col-sm-4">
-      {% for idol in n_idols %}
-      {% if forloop.counter0|mod:3 and forloop.counter0 != 0 %}
-    </div>
-    <div class="col-sm-4">
-      {% endif %}
-      {% if forloop.counter0|mod:9 and forloop.counter0 != 0 %}
-    </div>
-  </div>
-  <br>
-  <div class="row">
-    <div class="col-sm-4">
-      {% endif %}
-      <div class="col-xs-4 {{ idol.attribute }}">
-	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
-	  <img src="{% chibiimage idol=idol.name small=False %}" class="chibi {% if idol.main %}main{% else %}notmain{% endif %}" style="width: 130%; margin: 0 -15%;"><br><br>
-	  <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="15" height="15">
-	  {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}
-	</a>
-	<small class="padding10 text-center" style="display: block;"><span class="tiny"><a href="http://schoolido.lu/idol/{{ idol.name|urlencode }}/#disqus_thread" data-disqus-identifier="{{ idol.name }}">{% trans 'Comments' %}</a></span></small>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
+  {% endfor %}
   <br><br><br>
   <div class="bg-Rainbow-8 home-section">
     <div class="container">

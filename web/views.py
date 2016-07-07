@@ -1966,10 +1966,13 @@ def eventparticipations(request, event):
 def idols(request):
     context = globalContext(request)
     context['current'] = 'idols'
-    idols = models.Idol.objects.all().order_by('main', 'main_unit', 'name')
-    context['main_idols'] = sorted(filter(lambda x: x.main == True and x.main_unit != 'Aqours', idols), key=operator.attrgetter('year'))
-    context['aqours_idols'] = sorted(filter(lambda x: x.main == True and x.main_unit == 'Aqours', idols), key=operator.attrgetter('year'))
-    context['n_idols'] = filter(lambda x: x.main == False, idols)
+    idols = models.Idol.objects.all().order_by('-main', 'main_unit', '-sub_unit', '-school', 'year', 'name')
+    context['idols_sections'] = OrderedDict()
+    for idol in idols:
+        if idol.school not in context['idols_sections']:
+            context['idols_sections'][idol.school] = [idol]
+        else:
+            context['idols_sections'][idol.school].append(idol)
     context['idols_links'] = (link for link in links_list if link['link'] == 'love').next()
     context['idols_links_card'] = models.Card.objects.filter(name=context['idols_links']['idol'], transparent_idolized_image__isnull=False).order_by('?')[0]
     return render(request, 'idols.html', context)

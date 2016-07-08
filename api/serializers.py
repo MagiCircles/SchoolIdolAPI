@@ -809,7 +809,9 @@ class TeamSerializer(serializers.ModelSerializer):
     def validate(self, data):
         errors = {}
         request = self.context['request']
-        if data['owner_account'].owner_id != request.user.id:
+        if request.method != 'POST' and 'owner_account' in data:
+            del(data['owner_account'])
+        if 'owner_account' in data and data['owner_account'].owner_id != request.user.id:
             errors['owner_account'] = 'This account isn\'t yours'
         if request.method == 'POST' or request.method == 'PATCH' or request.method == 'PUT':
             # Get the members to update
@@ -834,7 +836,7 @@ class TeamSerializer(serializers.ModelSerializer):
             # get the owned card objects
             self.members_to_update = []
             if not errors:
-                ownedcards = models.OwnedCard.objects.filter(pk__in=[m[2] for m in members_to_update if m[2]], owner_account=data['owner_account'])
+                ownedcards = models.OwnedCard.objects.filter(pk__in=[m[2] for m in members_to_update if m[2]], owner_account=(data['owner_account'] if request.method == 'POST' else self.instance.owner_account))
                 for (position, memberposition, ownedcard) in members_to_update:
                     if ownedcard:
                         try:

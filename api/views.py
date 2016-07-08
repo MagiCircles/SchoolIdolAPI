@@ -435,18 +435,6 @@ class TeamViewSet(viewsets.ModelViewSet):
     ordering_fields = ('name', 'id', 'owner_account')
     permission_classes = (api_permissions.IsStaffOrSelf, )
 
-    def _serialize_member(self, request, member):
-        serializer = serializers.OwnedCardSerializer(member.ownedcard, context={'request': request})
-        return Response(serializer.data)
-
-    def _member_permissions(self, request, team):
-        if not request.user.is_authenticated():
-            raise PermissionDenied()
-        team_owner = models.Team.objects.filter(pk=team).values('owner_account__owner')
-        print team_owner
-        if request.user.id != team_owner['owner_account__owner']:
-            raise PermissionDenied()
-
 @api_view(['GET'])
 def app(request, app):
     app = raw.app_data.get(app, None)

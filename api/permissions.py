@@ -8,14 +8,17 @@ def shouldSelectOwner(request):
 class IsStaffOrSelf(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return True
+        return (
+            request.method in permissions.SAFE_METHODS
+            or request.user.is_authenticated()
+        )
 
     def has_object_permission(self, request, view, obj=None):
         return (
             request.method in permissions.SAFE_METHODS
             or obj is None
-            or request.user.is_staff
-            or obj.owner == request.user
+            or (request.user.is_authenticated() and request.user.is_staff)
+            or (request.user.is_authenticated() and obj.owner == request.user)
         )
 
 class IsStaffOrReadOnly(permissions.BasePermission):
@@ -23,10 +26,14 @@ class IsStaffOrReadOnly(permissions.BasePermission):
      def has_permission(self, request, view):
          return (
              request.method in permissions.SAFE_METHODS
-             or (request.user
-                 and request.user.is_authenticated()
-                 and request.user.is_staff
-         ))
+             or (request.user.is_authenticated() and request.user.is_staff)
+         )
+
+     def has_object_permission(self, request, view, obj=None):
+        return (
+            request.method in permissions.SAFE_METHODS
+            or (request.user.is_authenticated() and request.user.is_staff)
+        )
 
 class UserPermissions(permissions.BasePermission):
 

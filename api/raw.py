@@ -131,6 +131,8 @@ raw_information['Sonoda Umi'] = {
         ('http://i.schoolido.lu/chibi/Umi.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Umi_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Umi_Cyber.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/enjugrovemarineumi.png', 'enjugrove'),
+        ('http://i.schoolido.lu/chibi/4uNcZ6zs.png', 'anonymous'),
     ],
 }
 raw_information['Toujou Nozomi'] = {
@@ -265,6 +267,7 @@ raw_information['Tsushima Yoshiko'] = {
         ('http://i.schoolido.lu/chibi/p6Bb6Wyb.png', 'erana'),
         ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
         ('http://i.schoolido.lu/chibi/hatsunemimu.png', 'hatsunemimu'),
+        ('http://i.schoolido.lu/chibi/yL4zOjDW.png', 'syv'),
     ],
 }
 raw_information['Kunikida Hanamaru'] = {
@@ -313,6 +316,8 @@ raw_information['Kurosawa Ruby'] = {
         ('http://i.schoolido.lu/chibi/amukagamine.png', 'amukagamine'),
     ],
 }
+
+STARTERS = [idol['starter'] for idol in raw_information.values()]
 
 for idol in raw_information.keys():
     raw_information[idol]['image'] = 'http://i.schoolido.lu/cards/transparent/' + str(raw_information[idol]['starter']) + 'Transparent.png'
@@ -401,6 +406,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/erena.png', 'db0'),
             ('http://i.schoolido.lu/chibi/pgirlerena.png', 'P-Girl'),
+            ('http://i.schoolido.lu/chibi/enjugroveerena.png', 'enjugrove'),
         ],
     },
     'Yuuki Anju': {
@@ -427,6 +433,7 @@ raw_information_n = {
     'Hyoudou Sayuri': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/BqO0ND0.png', 'RinNyaDesu'),
+            ('http://i.schoolido.lu/chibi/SayuriChibi.png', 'InkyWonder'),
         ],
     },
     'Rebecca': {
@@ -592,6 +599,7 @@ raw_information_n = {
     'Shidou Misaki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/qGjv8Mdx.png', 'averageghost'),
+            ('http://i.schoolido.lu/chibi/8k8bsU9I.png', 'LunarAlpaca'),
         ],
     },
     'Kadota Tsurugi': {
@@ -624,6 +632,26 @@ raw_information_n = {
     'Kurobane Sakuya': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/M_ukFKhB.png', 'math'),
+        ],
+    },
+    'Ichinose Marika': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/w2WT0K3x.png', 'pluviomancy'),
+        ],
+    },
+    'Yazawa Cocoro': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/cocoroGwennethThe1st.png', 'GwennethThe1st'),
+        ],
+    },
+    'Maria': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/idolumaria.png', 'olivinearc'),
+        ],
+    },
+    'Kikuchi Akemi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/idoluakemi.png', 'olivinearc'),
         ],
     },
 }

@@ -282,6 +282,12 @@ links = [
                     'language': 'world',
                 },
                 {
+                    'name': 'Anime Amino - Idols',
+                    'url': 'http://aminoapps.com/popular/idol/',
+                    'type': '',
+                    'language': 'world',
+                },
+                {
                     'name': 'MyAnimeList Club',
                     'url': 'http://myanimelist.net/clubs.php?cid=66375',
                     'language': 'world',

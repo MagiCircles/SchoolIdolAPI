@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse as django_reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from web.utils import chibiimage, singlecardurl
+from api.raw import STARTERS
 import urllib
 import datetime
 import markdown_deux
@@ -106,14 +107,6 @@ class UserSerializer(UserWithPreferencesSerializer):
         model = User
         fields = ('username', 'date_joined', 'accounts', 'preferences', 'links', 'website_url', 'is_following')
         extra_kwargs = {'password': {'write_only': True}}
-
-    def create(self, data):
-        if 'password' not in self.context['request'].data:
-            raise serializers.ValidationError(detail={'password': ['This field is required.']})
-        user = super(UserSerializer, self).create(data)
-        user.set_password(self.context['request'].data['password'])
-        user.save()
-        return user
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -511,13 +504,51 @@ class AccountSerializer(serializers.ModelSerializer):
             }
         return None
 
-    def create(self, data):
-        data['owner'] = self.context['request'].user
-        return super(AccountSerializer, self).create(data)
-
     class Meta:
         model = models.Account
         fields = ('id', 'owner', 'nickname', 'friend_id', 'language', 'center', 'starter', 'rank', 'ranking', 'os', 'device', 'play_with', 'accept_friend_requests', 'verified', 'website_url', 'creation', 'ranking', 'default_tab', 'items', 'fake')
+
+class EditableAccountSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        serializer = AccountSerializer(instance, context=self.context)
+        return serializer.data
+
+    def validate(self, data):
+        errors = {}
+        if hasattr(self, 'instance'):
+            if self.instance.verified:
+                for read_only_field in ['friend_id', 'language']:
+                    if read_only_field in data:
+                        errors[read_only_field] = 'You can\'t edit this field because your account is verified.'
+            if 'center' in data and data['center'].owner_account_id != self.instance.id:
+                errors['center'] = 'This owned card is not yours.'
+            if 'rank' in data and data['rank'] >= 200 and not self.instance.verified:
+                errors['rank'] = 'Only verified accounts can have a rank above 200.'
+            if 'starter' in data and data['starter'].id not in STARTERS:
+                errors['starter'] = 'Invalid starter id. Valid ids are: {}'.format(','.join([str(id) for id in STARTERS]))
+        if errors:
+            raise serializers.ValidationError(errors)
+        return data
+
+    def save(self, **kwargs):
+        extra_kwargs = {}
+        if 'center' in self.validated_data:
+            center = self.validated_data['center']
+            card = center.card
+            extra_kwargs['center_card_transparent_image'] = card.transparent_idolized_image if center.idolized or card.is_special else card.transparent_image
+            if self.instance.language == 'JP':
+                extra_kwargs['center_card_round_image'] = card.round_card_idolized_image if center.idolized or card.is_special else card.round_card_image
+            else:
+                extra_kwargs['center_card_round_image'] = card.english_round_card_idolized_image if center.idolized or card.is_special else card.english_round_card_image
+            extra_kwargs['center_card_attribute'] = card.attribute
+            extra_kwargs['center_alt_text'] = unicode(card)
+            extra_kwargs['center_card_id'] = card.id
+        kwargs.update(extra_kwargs)
+        return super(EditableAccountSerializer, self).save(**kwargs)
+
+    class Meta:
+        model = models.Account
+        fields = ('nickname', 'friend_id', 'accept_friend_requests', 'device', 'play_with', 'language', 'os', 'center', 'rank', 'starter', 'loveca', 'friend_points', 'g', 'tickets', 'vouchers', 'bought_loveca')
 
 class OwnedCardSerializer(serializers.ModelSerializer):
     owner_account = serializers.SerializerMethodField()
@@ -850,8 +881,8 @@ class TeamSerializer(serializers.ModelSerializer):
         return data
 
     def save(self, **kwargs):
-        result = super(TeamSerializer, self).save(**kwargs)
         request = self.context['request']
+        result = super(TeamSerializer, self).save(**kwargs)
         if not hasattr(self.instance, 'all_members'):
             self.instance.all_members = []
         for (position, memberposition, ownedcard) in self.members_to_update:

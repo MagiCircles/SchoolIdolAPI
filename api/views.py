@@ -7,7 +7,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from rest_framework.response import Response
-from rest_framework import viewsets, filters, permissions, status
+from rest_framework import viewsets, filters, permissions, status, mixins
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.filters import BaseFilterBackend
 from api import permissions as api_permissions
@@ -243,7 +243,10 @@ class AccountFilterBackend(filters.BaseFilterBackend):
                 queryset = queryset.filter(Q(friend_id__isnull=True) | Q(friend_id=0))
         return queryset
 
-class AccountViewSet(viewsets.ReadOnlyModelViewSet):
+class AccountViewSet(mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin,
+                     mixins.ListModelMixin,
+                     viewsets.GenericViewSet):
     """
     API endpoint that allows accounts to be viewed or edited.
     """
@@ -253,11 +256,17 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.select_related('owner')
         return queryset
 
+    def get_serializer_class(self, *args, **kwargs):
+        if self.request.method in ['PATCH', 'PUT']:
+            return serializers.EditableAccountSerializer
+        return serializers.AccountSerializer
+
     serializer_class = serializers.AccountSerializer
     filter_backends = (filters.SearchFilter, filters.DjangoFilterBackend, filters.OrderingFilter, AccountFilterBackend, RandomBackend)
     search_fields = ('owner__username', 'nickname', 'device')
     filter_fields = ('owner__username', 'nickname', 'language', 'center__card_id', 'friend_id', 'os', 'rank', 'device', 'play_with', 'accept_friend_requests', 'verified', 'owner__preferences__best_girl', 'owner__preferences__private', 'owner__preferences__status', 'center_card_attribute', 'center__card__rarity', 'owner__preferences__color')
     ordering_fields = '__all__'
+    permission_classes = (api_permissions.IsStaffOrSelf, )
 
 class OwnedCardFilterBackend(filters.BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):

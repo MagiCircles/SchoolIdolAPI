@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
 from django.conf import settings
+from api.raw import STARTERS
 from web.utils import randomString
 from multiupload.fields import MultiFileField
 from api import models
@@ -70,7 +71,7 @@ class UserPreferencesForm(ModelForm):
 class _AccountForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(_AccountForm, self).__init__(*args, **kwargs)
-        self.fields['starter'].queryset = models.Card.objects.filter(rarity='R', pk__lte=36)
+        self.fields['starter'].queryset = models.Card.objects.filter(pk__in=STARTERS)
         if 'creation' in self.fields:
             self.fields['creation'] = date_input(self.fields['creation'])
 

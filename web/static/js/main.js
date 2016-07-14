@@ -197,7 +197,7 @@ function loadNotifications(callbackOnLoaded) {
 
 function notificationsHandler() {
     var usernamebutton = $('[href="#navbarusername"]');
-    $('[href="#notifications"').click(function(e) {
+    $('[href="#notifications"]').click(function(e) {
 	e.preventDefault();
 	var button = $(this);
 	button.html('<i class="flaticon-loading"></i>');

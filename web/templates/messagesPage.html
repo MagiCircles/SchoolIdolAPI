@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load pagination %}
+{% load times %}
+  <div class="messages">
+    {% for message in messages %}
+    <div class="message {% if message.from_user_id == user.id %}right{% else %}left{% endif %} {% if message.from_user_id == user.id %}{{ user.preferences.color|default_if_none:"grey" }}{% else %}{{ receiver.preferences.color|default_if_none:"grey" }}{% endif %}">
+      <div class="row">
+	<div class="col-xs-1 col-sm-2">
+	  <br>
+	  {% if message.from_user_id != user.id %}
+	  {% include 'include/avatar.html' with av_user=receiver av_size=40 av_image_size=150 %}
+	  {% endif %}
+	</div>
+	<div class="col-xs-10 col-sm-8">
+	  <h4>
+	    {% if message.from_user_id == user.id %}
+	    {{ user.username }}
+	    {% else %}
+	    {{ receiver.username }}
+	    {% endif %}
+	    <small>
+	      {{ message.creation }}
+	    </small>
+	  </h4>
+	  <p>
+	    {{ message.message }}
+	  </p>
+	</div>
+	<div class="col-xs-1 col-sm-2">
+	  <br>
+	  {% if message.from_user_id == user.id %}
+	  {% include 'include/avatar.html' with av_user=user av_size=40 av_image_size=150 %}
+	  {% endif %}
+	</div>
+      </div>
+    </div>
+    {% endfor %}
+    {% if messages %}
+    <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">
+      <nav>
+	<ul class="pagination pagination-sm">
+	  <li class="{% if page == 1 %}disabled{% endif %}"><a href="{{ current_url|previouspage:page }}">&laquo;</a></li>
+	  {% for i in total_pages|times %}
+	  <li class="{% if page == i|add:1 %}active{% endif %}"><a href="{{ current_url|nextpage:i }}">{{ i|add:1 }}</a></li>
+	  {% endfor %}
+	  <li class="{% if page == total_pages %}disabled{% endif %}"><a href="{{ current_url|nextpage:page }}">&raquo;</a></li>
+	</ul>
+      </nav>
+    </div>
+    {% elif not ajax %}
+    <div class="alert alert-warning">
+      {% trans 'No results.' %}
+    </div>
+{% endif %}

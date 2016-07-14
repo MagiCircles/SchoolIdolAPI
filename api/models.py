@@ -117,6 +117,35 @@ ACTIVITY_MESSAGE_CHOICES = (
 )
 ACTIVITY_MESSAGE_DICT = dict(ACTIVITY_MESSAGE_CHOICES)
 
+NOTIFICATION_PM = 0
+NOTIFICATION_LIKE = 1
+NOTIFICATION_FOLLOW = 2
+
+NOTIFICATION_MESSAGE_CHOICES = (
+    (NOTIFICATION_PM, _('You have a new private message from {}.')),
+    (NOTIFICATION_LIKE, _('{} liked your activity.')),
+    (NOTIFICATION_FOLLOW, _('{} just followed you.')),
+)
+NOTIFICATION_MESSAGE_DICT = dict(NOTIFICATION_MESSAGE_CHOICES)
+
+NOTIFICATION_URLS = {
+    NOTIFICATION_PM: '/user/{}/messages/',
+    NOTIFICATION_LIKE: '/activities/{}/',
+    NOTIFICATION_FOLLOW: '/user/{}/',
+}
+
+NOTIFICATION_ICONS = {
+    NOTIFICATION_PM: 'comments',
+    NOTIFICATION_LIKE: 'heart',
+    NOTIFICATION_FOLLOW: 'users',
+}
+
+NOTIFICATION_STRINGS = {
+    NOTIFICATION_PM: 'PM',
+    NOTIFICATION_LIKE: 'LIKE',
+    NOTIFICATION_FOLLOW: 'FOLLOW',
+}
+
 STATUS_CHOICES = (
     ('THANKS', 'Thanks'),
     ('SUPPORTER', _('Idol Supporter')),
@@ -778,6 +807,8 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     _staff_permissions = models.CharField(max_length=200, null=True, blank=True)
     birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
+    email_notifications_turned_off = models.CharField(max_length=15, null=True)
+    unread_notifications = models.PositiveIntegerField(default=0)
 
     def avatar(self, size):
         default = 'https://i.schoolido.lu/static/kotori.jpg'
@@ -786,6 +817,18 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
         return ("http://www.gravatar.com/avatar/"
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))
+
+    @property
+    def email_notifications_turned_off_list(self):
+        if not self.email_notifications_turned_off:
+            return []
+        return [int(t) for t in self.email_notifications_turned_off.split(',')]
+
+    def is_notification_email_allowed(self, notification_type):
+        for type in self.email_notifications_turned_off_list:
+            if type == notification_type:
+                return False
+        return True
 
     @property
     def staff_permissions(self):
@@ -950,6 +993,60 @@ class Song(ExportModelOperationsMixin('Song'), models.Model):
         return self.name
 
 admin.site.register(Song)
+
+class Notification(models.Model):
+    owner = models.ForeignKey(User, related_name='notifications', db_index=True)
+    message = models.PositiveIntegerField(choices=NOTIFICATION_MESSAGE_CHOICES)
+    message_data = models.TextField(blank=True, null=True)
+    url_data = models.TextField(blank=True, null=True)
+    email_sent = models.BooleanField(default=False)
+
+    def utf_8_encoder(self, unicode_csv_data):
+        for line in unicode_csv_data:
+            yield line.encode('utf-8')
+
+    def unicode_csv_reader(self, unicode_csv_data, **kwargs):
+        csv_reader = csv.reader(self.utf_8_encoder(unicode_csv_data), **kwargs)
+        for row in csv_reader:
+            yield [unicode(cell, 'utf-8') for cell in row]
+
+    def split_data(self, data):
+        if not data:
+            return []
+        reader = self.unicode_csv_reader([data])
+        for reader in reader:
+            return [r for r in reader]
+        return []
+
+    @property
+    def localized_message(self):
+        data = self.split_data(self.message_data)
+        return _(NOTIFICATION_MESSAGE_DICT[self.message]).format(*data)
+
+    @property
+    def english_message(self):
+        data = self.split_data(self.message_data)
+        return NOTIFICATION_MESSAGE_DICT[self.message].format(*data)
+
+    @property
+    def website_url(self):
+        data = self.split_data(self.url_data if self.url_data else self.message_data)
+        return NOTIFICATION_URLS[self.message].format(*data)
+
+    @property
+    def icon(self):
+        return NOTIFICATION_ICONS[self.message]
+
+    def __unicode__(self):
+        return self.localized_message
+
+admin.site.register(Notification)
+
+class PrivateMessage(models.Model):
+    creation = models.DateTimeField(auto_now_add=True)
+    from_user = models.ForeignKey(User, related_name='messages_sent', null=True, on_delete=models.SET_NULL, db_index=True)
+    to_user = models.ForeignKey(User, related_name='messages_received', null=True, on_delete=models.SET_NULL, db_index=True)
+    message = models.CharField(max_length=300, null=False, blank=False)
 
 # class TradeOrGiveawayAccount(models.Model):
 #     account = models.ForeignKey(Account, related_name='trade_or_giveaway', unique=True)

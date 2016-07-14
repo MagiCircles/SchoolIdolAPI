@@ -1,0 +1,32 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Notification: {{ notification.english_message }}{% endblock %}
+{% block headersubject %}Notification: {{ notification.english_message }}{% endblock %}
+{% block content %}
+Hi {{ user.username }},
+<br><br>
+
+<p>
+  {{ notification.english_message }}
+</p>
+{% endblock %}
+
+{% block actionbuttontitle %}
+Open
+{% endblock %}
+{% block actionbuttonalt %}
+Open
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu{{ notification.website_url }}
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  If you like the website, please consider <a href="http://schoolido.lu/about/#donate"><strong>donating</strong></a>.
+  <br><small><i>This will help us cover the costs of the servers and allow us to keep it running for free and without ads.</i></small>
+  <br><br>
+  <small style="color: #cccccc;"><a href="http://schoolido.lu/edit/#emails">Click here</a> to turn off email notifications.</small>
+</div>
+{% endblock %}

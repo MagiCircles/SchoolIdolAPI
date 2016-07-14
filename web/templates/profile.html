@@ -58,13 +58,16 @@
 		<input type="submit" class="btn btn-lg btn-{{ preferences.color }}" value="{% if following %}{% trans 'Unfollow' %}{% else %}{% trans 'Follow' %}{% endif %}" data-reverse="{% if following %}{% trans 'Follow' %}{% else %}{% trans 'Unfollow' %}{% endif %}">
 	      </form>
 	      {% elif not user.is_authenticated %}
-	      <a href="/create/" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">Follow</a><br>
+	      <a href="/create/" class="btn btn-lg btn-{% if preferences.color %}{{ preferences.color }}{% else %}default{% endif %}">{% trans 'Follow' %}</a><br>
 	      {% endif %}
 	      {% if total_followers %}
 	      <br><a href="#followers"><strong>{{ total_followers }}</strong> {% trans 'Followers' %}</a></td>
 	      {% endif %}
 	      {% if total_following %}
 	      <br><a href="#following"><strong>{{ total_following }}</strong> {% trans 'Following' %}</a></td>
+	      {% endif %}
+	      {% if not is_me and not preferences.private %}
+	      <br><br><a href="/user/{{ profile_user.username }}/messages/" class="btn btn-sm btn-{{ preferences.color|default_if_none:'default' }}">{% trans 'Send Message' %}</a>
 	      {% endif %}
 	    </div>
 	    <h1 id="username">{{ profile_user.username }}</h1>

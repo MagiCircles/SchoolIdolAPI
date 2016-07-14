@@ -506,3 +506,12 @@ class TeamForm(ModelForm):
     class Meta:
         model = models.Team
         fields = ('name', 'card0', 'card1', 'card2', 'card3', 'card4', 'card5', 'card6', 'card7', 'card8')
+
+class PrivateMessageForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PrivateMessageForm, self).__init__(*args, **kwargs)
+        self.fields['message'].label = _('New Message')
+
+    class Meta:
+        model = models.PrivateMessage
+        fields = ('message',)

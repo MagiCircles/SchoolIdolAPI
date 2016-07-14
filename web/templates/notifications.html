@@ -1,0 +1,27 @@
+{% load i18n %}
+<table class="table" style="margin: -9px -14px; max-width: none; width: auto;">
+  {% for notification in notifications %}
+  <tr>
+    <td>
+      <a href="{{ notification.website_url }}" target="_blank" class="a-nodifference">
+	<i class="flaticon-{{ notification.icon }} fontx4"></i>
+      </a>
+    </td>
+    <td>
+      <p class="padding5">
+	{{ notification.localized_message }}
+	</p>
+      <div class="text-right">
+	<a href="{{ notification.website_url }}" target="_blank" class="btn btn-Cool">
+	  {% trans 'Open' %}
+	</a>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% if remaining %}
+<div class="text-center">
+  <a href="#loadmorenotifications"><small class="text-muted">{% trans 'Load more...' %}</small></a>
+</div>
+{% endif %}

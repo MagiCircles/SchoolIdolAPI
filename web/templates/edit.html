@@ -84,6 +84,26 @@
 
     <hr>
 
+    <h1 id="emails">{% trans 'Emails' %}</h1>
+    <br>
+    <form method="post">
+      {% csrf_token %}
+      {% for email in emails %}
+      {% with type=email.0 sentence=email.1 value=email.2 %}
+      <label>
+	<input type="checkbox" name="email{{ type }}"{% if value %} checked{% endif %}> {{ sentence }}
+      </label><br>
+      {% endwith %}
+      {% endfor %}
+      <br><br>
+      <div class="text-right">
+	<a href="/user/{{ user.username }}/" class="btn btn-lg btn-link">{% trans 'Back to my profile' %}</a>
+	<button type="submit" name="changeEmails" class="btn btn-lg btn-Cool" data-form-loader="true">{% trans 'Apply Changes' %}</button>
+      </div>
+    </form>
+
+    <hr>
+
     <h1 id="changepassword">{% trans 'Change your password' %}</h1>
     <br>
     <form method="post" action="">

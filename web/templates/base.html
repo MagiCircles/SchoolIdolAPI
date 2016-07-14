@@ -82,7 +82,7 @@
 	    </li>
 	    {% if user.is_authenticated %}
 	    <li class="dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	      <a href="#navbarusername" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 	      {% if notification %}
 	      <span id="notifications" data-toggle="popover" data-content="<div class='row'><div class='col-xs-3'>{{ notification.left_html|safe }}</div><div class='col-xs-9'>{{ notification.message }}<div class='text-right'><br><a href='{{ notification.link }}' target='_blank' class='btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}'>{{ notification.link_text }}</a></div></div></div>" data-trigger="manual" data-placement="bottom" data-html="true" data-container="body">
 		{% endif %}
@@ -117,6 +117,11 @@
 		<li><a href="/logout/"><i class="flaticon-logout"></i> {% trans 'Logout' %}</a></li>
 	      </ul>
 	    </li>
+	    {% if user.preferences.unread_notifications %}
+	    <li>
+	      <a href="#notifications"><span class="badge progress-bar-info">{{ user.preferences.unread_notifications }}</span></a>
+	    </li>
+	    {% endif %}
 	    {% else %}
 	    <li class="{% block loginviewactive %}{% endblock %}"><a href="/login/">{% trans 'Login' %}</a></li>
 	    <li class="{% if current == 'create' %}active{% endif %}"><a href="/create/">{% trans 'Sign Up' %}</a></li>
@@ -185,7 +190,7 @@
     <script src="http://i.schoolido.lu/static/bower/jquery/dist/jquery.min.js"></script>
     <script src="http://i.schoolido.lu/static/js/jquery.form.min.js"></script>
     <script src="http://i.schoolido.lu/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="http://i.schoolido.lu/static/js/main.js?9"></script>
+    <script src="http://i.schoolido.lu/static/js/main.js?10"></script>
     {% block js %}{% endblock %}
 
     <script>

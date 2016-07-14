@@ -1,0 +1,5 @@
+Hi {{ user.username }},
+
+{{ notification.english_message }}
+
+Open: http://schoolido.lu{{ notification.website_url }}

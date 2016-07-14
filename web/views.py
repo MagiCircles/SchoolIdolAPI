@@ -124,6 +124,28 @@ def getUserAvatar(user, size):
         return nopreferencesAvatar(user, size)
     return user.preferences.avatar(size)
 
+def pushNotification(user, notification_type, values, url_values=None, preferences=None):
+    """
+    If preferences is not specified, it will use the preferences in user
+    """
+    notification = models.Notification.objects.create(owner=user,
+                                                      message=notification_type,
+                                                      message_data=concat_args(*values),
+                                                      url_data=(concat_args(*url_values) if url_values else None))
+    if not preferences:
+        preferences = user.preferences
+    models.UserPreferences.objects.filter(pk=preferences.pk).update(unread_notifications=F('unread_notifications') + 1)
+    return notification
+
+def pushNotification_PM(user, sender, preferences=None):
+    return pushNotification(user, models.NOTIFICATION_PM, [sender.username], preferences=preferences)
+
+def pushNotification_LIKE(user, liker, activity, preferences=None):
+    return pushNotification(user, models.NOTIFICATION_LIKE, [liker.username], [activity.id], preferences=preferences)
+
+def pushNotification_FOLLOW(user, follower, preferences=None):
+    return pushNotification(user, models.NOTIFICATION_FOLLOW, [follower.username], preferences=preferences)
+
 def _pushActivity_cacheaccount(account, account_owner=None):
     if not account_owner:
         account_owner = account.owner
@@ -901,8 +923,8 @@ def profile(request, username):
     context['current'] = 'profile'
     if not context['is_me']:
         context['following'] = isFollowing(user, request)
-    context['total_following'] = context['preferences'].following.count()
-    context['total_followers'] = user.followers.count()
+    context['total_following'] = context['preferences'].following.count() if not preferences.private else 0
+    context['total_followers'] = user.followers.count() if not preferences.private else 0
     context['cards_limit'] = settings.CARDS_LIMIT
     if context['is_me']:
         context['deck_links'] = web_raw.deck_links
@@ -1314,12 +1336,13 @@ def ajaxlikeactivity(request, activity):
     context = globalContext(request)
     if not request.user.is_authenticated() or request.user.is_anonymous() or request.method != 'POST':
         raise PermissionDenied()
-    activity_obj = get_object_or_404(models.Activity, id=activity)
+    activity_obj = get_object_or_404(models.Activity.objects.select_related('account', 'account__owner', 'account__owner__preferences'), id=activity)
     if activity_obj.account.owner.id != request.user.id:
         if 'like' in request.POST:
             if not isLiking(request, activity_obj):
                 activity_obj.likes.add(request.user)
                 activity_obj.save()
+                pushNotification_LIKE(activity_obj.account.owner, request.user, activity_obj)
             return HttpResponse('liked')
         if 'unlike' in request.POST:
             if isLiking(request, activity_obj):
@@ -1334,10 +1357,11 @@ def ajaxfollow(request, username):
     if (not request.user.is_authenticated() or request.user.is_anonymous()
         or request.method != 'POST' or request.user.username == username):
         raise PermissionDenied()
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(models.User.objects.select_related('preferences'), username=username)
     if 'follow' in request.POST and not isFollowing(user, request):
         request.user.preferences.following.add(user)
         request.user.preferences.save()
+        pushNotification_FOLLOW(user, request.user)
         return HttpResponse('followed')
     if 'unfollow' in request.POST and isFollowing(user, request):
         request.user.preferences.following.remove(user)
@@ -1383,10 +1407,11 @@ def ajaxmodal(request, hash):
 
 def edit(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():
-        raise PermissionDenied()
+        return redirect('/login/?next=/edit/')
     context = globalContext(request)
     context['preferences'] = request.user.preferences
     context['show_verified_info'] = 'verification' in request.GET
+
     form = forms.UserForm(instance=request.user)
     form_preferences = forms.UserPreferencesForm(instance=context['preferences'], request=request)
     form_addlink = forms.AddLinkForm()
@@ -1429,11 +1454,28 @@ def edit(request):
                 link.owner = request.user
                 link.save()
                 return redirect('/edit/#link' + str(link.id))
+        elif 'changeEmails' in request.POST:
+            new_emails_settings = []
+            for type in models.NOTIFICATION_MESSAGE_DICT.keys():
+                if 'email{}'.format(type) not in request.POST:
+                    new_emails_settings.append(type)
+            context['preferences'].email_notifications_turned_off = ','.join([str(i) for i in new_emails_settings])
+            context['preferences'].save()
         else:
             form = forms.UserForm(request.POST, instance=request.user)
             if form.is_valid():
                 form.save()
                 return redirect('/user/' + request.user.username)
+
+    # Get emails settings
+    turned_off = context['preferences'].email_notifications_turned_off_list
+    context['emails'] = []
+    for (type, sentence) in models.NOTIFICATION_MESSAGE_DICT.items():
+        value = True
+        if type in turned_off:
+            value = False
+        context['emails'].append((type, sentence.format(_('Someone')), value))
+
     context['form'] = form
     context['attribute_choices'] = models.ATTRIBUTE_CHOICES
     context['form_addlink'] = form_addlink
@@ -2964,3 +3006,52 @@ def english_future(request):
     context['future_cards'] = future_cards
 
     return render(request, 'english_future.html', context)
+
+def messages(request, username, ajax=False):
+    if not request.user.is_authenticated():
+        return redirect('/create/?next=/user/{}/messages/'.format(username))
+    if request.user.username == username:
+        raise PermissionDenied()
+    context = globalContext(request)
+    receiver = get_object_or_404(models.User.objects.select_related('preferences'), username=username)
+    if not ajax and not receiver.preferences.private:
+        if request.method == 'POST':
+            context['form'] = forms.PrivateMessageForm(request.POST)
+            if context['form'].is_valid():
+                message = context['form'].save(commit=False)
+                message.from_user = request.user
+                message.to_user = receiver
+                message.save()
+                pushNotification_PM(receiver, request.user)
+                context['form'] = forms.PrivateMessageForm()
+        else:
+            context['form'] = forms.PrivateMessageForm()
+    context['receiver'] = receiver
+    context['messages'] = models.PrivateMessage.objects.filter(Q(from_user=receiver, to_user=request.user)
+                                                               | Q(from_user=request.user, to_user=receiver)).order_by('-creation')
+    page_size = 10
+    page = 0
+    context['total_results'] = context['messages'].count()
+    context['total_pages'] = int(math.ceil(context['total_results'] / page_size))
+    if 'page' in request.GET and request.GET['page']:
+        page = int(request.GET['page']) - 1
+        if page < 0:
+            page = 0
+    context['messages'] = context['messages'][(page * page_size):((page * page_size) + page_size)]
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    context['page'] = page + 1
+    context['ajax'] = ajax
+    return render(request, 'messages.html' if not ajax else 'messagesPage.html', context)
+
+def ajaxnotifications(request):
+    context = {}
+    context['notifications'] = models.Notification.objects.filter(owner=request.user)[:5]
+    total = len(context['notifications'])
+    request.user.preferences.unread_notifications -= total
+    if request.user.preferences.unread_notifications < 0:
+        request.user.preferences.unread_notifications = 0
+    request.user.preferences.save()
+    context['remaining'] = request.user.preferences.unread_notifications
+    result = render(request, 'notifications.html', context)
+    models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
+    return result

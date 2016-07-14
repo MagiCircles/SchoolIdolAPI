@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load random_int %}
+{% block title %}{{ profile_user.username }}: {% trans 'Private Messages' %}{% endblock %}
+
+{% block content %}
+<div id="private-messages" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div class="container text-center">
+  <h1 class="margin50">
+    {% trans 'Private Messages' %}:
+    <a href="/user/{{ receiver.username }}/">{{ receiver.username }}</a>
+    <small>{{ total_results }}</small>
+  </h1>
+  {% if form %}
+  <form method="POST">
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form wrap=0 %}
+    <div class="text-right">
+      <input type="submit" value="{% trans 'Send Message' %}" class="btn btn-Cool">
+    </div>
+  </form>
+  {% endif %}
+  <br>
+  {% include 'messagesPage.html' %}
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+  var receiver_username = '{{ receiver.username }}';
+</script>
+<script src="/static/js/messages.js"></script>
+{% endblock %}

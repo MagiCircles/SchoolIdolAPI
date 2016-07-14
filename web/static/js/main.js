@@ -169,6 +169,51 @@ function loadiTunesData(song, successCallback, errorCallback) {
     });
 }
 
+function loadNotifications(callbackOnLoaded) {
+    var usernamebutton = $('[href="#navbarusername"]');
+    $.get('/ajax/notifications/', function(data) {
+	usernamebutton.popover({
+	    container: $('nav.navbar ul.navbar-right'),
+	    html: true,
+	    placement: 'bottom',
+	    content: data,
+	    trigger: 'manual',
+	});
+	usernamebutton.on('shown.bs.popover', function () {
+	    $('a[href="#loadmorenotifications"]').unbind('click');
+	    $('a[href="#loadmorenotifications"]').click(function(e) {
+		e.preventDefault();
+		usernamebutton.popover('destroy');
+		loadNotifications();
+		return false;
+	    });
+	});
+	usernamebutton.popover('show');
+	if (typeof callbackOnLoaded != 'undefined') {
+	    callbackOnLoaded();
+	}
+    });
+}
+
+function notificationsHandler() {
+    var usernamebutton = $('[href="#navbarusername"]');
+    $('[href="#notifications"').click(function(e) {
+	e.preventDefault();
+	var button = $(this);
+	button.html('<i class="flaticon-loading"></i>');
+	loadNotifications(function() {
+	    button.closest('li').remove();
+	});
+	return false;
+    });
+    $('body').on('click', function (e) {
+	if ($(e.target).data('toggle') !== 'popover'
+	    && $(e.target).parents('.popover.in').length === 0) {
+	    usernamebutton.popover('hide');
+	}
+    });
+}
+
 $(document).ready(function() {
     var hash = window.location.hash.substring(1);
     if (hash.indexOf("Modal") >= 0) {
@@ -196,6 +241,8 @@ $(document).ready(function() {
 
     updateActivities();
     avatarStatus();
+
+    notificationsHandler();
 
     formloaders();
 });

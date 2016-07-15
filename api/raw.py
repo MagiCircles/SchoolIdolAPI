@@ -654,6 +654,11 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/idoluakemi.png', 'olivinearc'),
         ],
     },
+    'Tsukishima Yuuka': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/ZB5End33.png', 'KoolFish420'),
+        ],
+    },
 }
 
 all_graphic_designers = [

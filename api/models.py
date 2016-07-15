@@ -1048,6 +1048,11 @@ class PrivateMessage(models.Model):
     to_user = models.ForeignKey(User, related_name='messages_received', null=True, on_delete=models.SET_NULL, db_index=True)
     message = models.CharField(max_length=300, null=False, blank=False)
 
+    def __unicode__(self):
+        return self.message
+
+admin.site.register(PrivateMessage)
+
 # class TradeOrGiveawayAccount(models.Model):
 #     account = models.ForeignKey(Account, related_name='trade_or_giveaway', unique=True)
 #     verification_request = models.ForeignKey(VerificationRequest, related_name='trade_account')

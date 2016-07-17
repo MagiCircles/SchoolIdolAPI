@@ -2711,6 +2711,8 @@ def initialsetup(request):
             collections = OrderedDict()
             collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
             collections['ur'] = [collections['ur_idolized'][0], 2, collections['ur_idolized'][2], False]
+            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ssr'] = [collections['ssr_idolized'][0], 2, collections['ssr_idolized'][2], False]
             collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
             collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
             collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
@@ -2723,8 +2725,8 @@ def initialsetup(request):
             context['collections'] = collections
 
             context['collections_links'] = OrderedDict()
-            context['collections_links']['ur_idolized'] = [string_concat('UR', ' ', _('Cards'), ' - ', _('Idolized')), context['collections']['ur_idolized'][1], 'http://i.schoolido.lu/static/URSmile.png']
-            context['collections_links']['ur'] = [string_concat('UR', ' ', _('Cards'), ' - ', _('Not Idolized')), context['collections']['ur'][1], 'http://i.schoolido.lu/static/URSmile.png']
+            context['collections_links']['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), context['collections']['ur_idolized'][1], 'http://i.schoolido.lu/static/URSmile.png']
+            context['collections_links']['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), context['collections']['ssr'][1], 'http://i.schoolido.lu/static/SSRSmile.png']
             context['collections_links']['sr_smile_idolized'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Idolized')), 4, 'http://i.schoolido.lu/static/SRPure.png']
             context['collections_links']['sr_smile'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Not Idolized')), 5, 'http://i.schoolido.lu/static/SRCool.png']
             context['collections_links']['promo'] = [context['collections']['promo'][0], context['collections']['promo'][1], 'flaticon-promo']
@@ -2980,7 +2982,7 @@ def english_future(request):
     context['future_events'] = new_events
 
     # get next cards
-    future_cards = models.Card.objects.filter(japan_only=True, is_promo=False, is_special=False, event__isnull=True, rarity__in=['SR', 'UR']).order_by('id')
+    future_cards = models.Card.objects.filter(japan_only=True, is_promo=False, is_special=False, event__isnull=True, rarity__in=['SR', 'UR']).exclude(translated_collection='Initial').order_by('id')
 
     def get_next_dates(date):
         if date.day < 15:

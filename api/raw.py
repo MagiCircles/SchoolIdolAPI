@@ -664,6 +664,7 @@ raw_information_n = {
 
 all_graphic_designers = [
     ('http://i.schoolido.lu/web/static/cards/ur_pairs/66NicoCleanUR.png', 'mahousho_'),
+    ('http://i.schoolido.lu/contest/4wngim7_1.png', 'yoshioka'),
 ]
 
 community_artists = []

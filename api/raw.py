@@ -58,6 +58,7 @@ raw_information['Ayase Eli'] = {
         ('http://i.schoolido.lu/chibi/Eli_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Eli_Cyber.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Eli_Fruit.png', 'klab'),
+        ('http://i.schoolido.lu/chibi/elinyiadae.png', 'nyiadae'),
     ],
 }
 raw_information['Minami Kotori'] = {

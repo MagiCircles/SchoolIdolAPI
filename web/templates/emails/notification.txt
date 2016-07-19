@@ -3,3 +3,5 @@ Hi {{ user.username }},
 {{ notification.english_message }}
 
 Open: http://schoolido.lu{{ notification.website_url }}
+
+Turn off email notifications: http://schoolido.lu/edit/#emails

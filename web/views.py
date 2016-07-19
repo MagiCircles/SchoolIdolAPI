@@ -2137,7 +2137,7 @@ def staff_verification(request, verification):
         if form.is_valid():
             sendverificationemail = lambda: send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + models.verifiedUntranslatedToString(context['verification'].verification) + u': ' + models.verificationUntranslatedStatusToString(context['verification'].status)),
                template_name='verified',
-               to=[context['verification'].account.owner.email, 'contact@schoolido.lu'],
+               to=[context['verification'].account.owner.email],
                context=context,
            )
             verification = form.save(commit=False)
@@ -2169,7 +2169,7 @@ def staff_verification(request, verification):
         context['verification'].verified_by = request.user
         send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + models.verifiedUntranslatedToString(context['verification'].verification) + u': ' + unicode(request.POST['notification_minutes']) + u' minutes notification before we verify your account'),
                    template_name='verification_notification',
-                   to=[context['verification'].account.owner.email, 'contact@schoolido.lu'],
+                   to=[context['verification'].account.owner.email],
                    context=context,
                    )
         context['verification'].save()
@@ -2299,7 +2299,7 @@ def ajaxreport(request, report_id, status):
             if report.fake_account.owner.email:
                 send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Account marked as "fake": ' + unicode(report.fake_account)),
                            template_name='report_fake_account',
-                           to=[report.fake_account.owner.email, 'contact@schoolido.lu'],
+                           to=[report.fake_account.owner.email],
                            context=context,
                        )
             all_reports = models.ModerationReport.objects.filter(fake_account=report.fake_account).select_related('reported_by')
@@ -2308,14 +2308,14 @@ def ajaxreport(request, report_id, status):
                     context['reported_by'] = _report.reported_by
                     send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake account! ' + unicode(report.fake_account)),
                                template_name='report_fake_account_accepted',
-                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               to=[_report.reported_by.email],
                                context=context,
                            )
         elif report.fake_eventparticipation:
             if report.fake_eventparticipation.account.owner.email:
                 send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Event participation deleted: ' + (report.fake_eventparticipation.event.english_name if report.fake_eventparticipation.account.language == 'EN' and report.fake_eventparticipation.event.english_name else report.fake_eventparticipation.event.japanese_name)),
                            template_name='report_fake_eventparticipation',
-                           to=[report.fake_eventparticipation.account.owner.email, 'contact@schoolido.lu'],
+                           to=[report.fake_eventparticipation.account.owner.email],
                            context=context,
                        )
             all_reports = models.ModerationReport.objects.filter(fake_eventparticipation=report.fake_eventparticipation).select_related('reported_by')
@@ -2324,7 +2324,7 @@ def ajaxreport(request, report_id, status):
                     context['reported_by'] = _report.reported_by
                     send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this fake event participation! ' + unicode(report.fake_eventparticipation.event.japanese_name)),
                                template_name='report_fake_eventparticipation_accepted',
-                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               to=[_report.reported_by.email],
                                context=context,
                            )
             moderation_comment = (u'' if not moderation_comment else unicode(moderation_comment)) + u'------ Event "{}" + Account owner {} #{} + Ranking #{} + Song Ranking #{} + Points {}'.format(report.fake_eventparticipation.event.japanese_name, report.fake_eventparticipation.account.owner.username, report.fake_eventparticipation.account.id, report.fake_eventparticipation.ranking, report.fake_eventparticipation.song_ranking, report.fake_eventparticipation.points)
@@ -2332,7 +2332,7 @@ def ajaxreport(request, report_id, status):
             if report.fake_user.email:
                 send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Your profile has been reported'),
                            template_name='report_fake_user',
-                           to=[report.fake_user.email, 'contact@schoolido.lu'],
+                           to=[report.fake_user.email],
                            context=context,
                        )
             all_reports = models.ModerationReport.objects.filter(fake_user=report.fake_user).select_related('reported_by')
@@ -2341,14 +2341,14 @@ def ajaxreport(request, report_id, status):
                     context['reported_by'] = _report.reported_by
                     send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this user! '),
                                template_name='report_fake_user_accepted',
-                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               to=[_report.reported_by.email],
                                context=context,
                            )
         elif report.fake_activity:
             if report.fake_activity.account.owner.email:
                 send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Your activity has been reported and deleted'),
                            template_name='report_fake_activity',
-                           to=[report.fake_activity.account.owner.email, 'contact@schoolido.lu'],
+                           to=[report.fake_activity.account.owner.email],
                            context=context,
                        )
             all_reports = models.ModerationReport.objects.filter(fake_activity=report.fake_activity).select_related('reported_by')
@@ -2357,7 +2357,7 @@ def ajaxreport(request, report_id, status):
                     context['reported_by'] = _report.reported_by
                     send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this activity! '),
                                template_name='report_fake_activity_accepted',
-                               to=[_report.reported_by.email, 'contact@schoolido.lu'],
+                               to=[_report.reported_by.email],
                                context=context,
                            )
             moderation_comment = (u'' if not moderation_comment else unicode(moderation_comment)) + u'------ Activity: message data {} account id {} account owner id {} username {}'.format(report.fake_activity.message_data, report.fake_activity.account_id, report.fake_activity.account.owner.id, report.fake_activity.account.owner.username)

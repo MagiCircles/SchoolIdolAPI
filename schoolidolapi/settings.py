@@ -154,6 +154,8 @@ CORS_URLS_REGEX = r'^/api/.*$'
 TINYPNG_API_KEY = ''
 
 AWS_PASSWORD_EMAIL = 'password@schoolido.lu'
+LOG_EMAIL = 'emails-log@schoolido.lu'
+
 DISQUS_STAFF = 'sukutomostaff'
 
 RANDOM_ORDERING_DATABASE = 'RANDOM'

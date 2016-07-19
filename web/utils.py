@@ -51,6 +51,8 @@ def shrunkImage(picture, filename):
     return ImageFile(img_shrunked)
 
 def send_email(subject, template_name, to=[], context={}, from_email=settings.AWS_SES_RETURN_PATH):
+    if 'template_name' != 'notification':
+        to.append(settings.LOG_EMAIL)
     context = Context(context)
     plaintext = get_template('emails/' + template_name + '.txt').render(context)
     htmly = get_template('emails/' + template_name + '.html').render(context)

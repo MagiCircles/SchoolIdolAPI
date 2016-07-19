@@ -16,7 +16,7 @@ class Command(BaseCommand):
                     send_email(
                         subject=(u'School Idol Tomodachi' + u'✨ ' + u' Notification: ' + notification.english_message),
                         template_name = 'notification',
-                        to=[notification.owner.email, 'contact@schoolido.lu'],
+                        to=[notification.owner.email],
                         context={
                             'notification': notification,
                             'user': notification.owner,

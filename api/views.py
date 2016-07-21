@@ -97,11 +97,14 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class CardFilter(django_filters.FilterSet):
     is_event = django_filters.MethodFilter(action='filter_is_event')
+    is_main = django_filters.MethodFilter(action='filter_is_main')
     ids = django_filters.MethodFilter(action='filter_ids')
     for_trivia = django_filters.MethodFilter(action='filter_for_trivia')
     rarity = CommaSeparatedValueFilter(name='rarity', lookup_type='in')
     event_english_name = django_filters.MethodFilter(action='filter_event_english')
     event_japanese_name = django_filters.MethodFilter(action='filter_event_japanese')
+    name = CommaSeparatedValueFilter(name='name', lookup_type='in')
+    idol_main_unit = CommaSeparatedValueFilter(name='idol_main_unit', lookup_type='in')
 
     def filter_for_trivia(self, queryset, value):
         return queryset.filter(Q(idol__hobbies__isnull=False) | Q(idol__favorite_food__isnull=False) | Q(idol__least_favorite_food__isnull=False))
@@ -111,6 +114,11 @@ class CardFilter(django_filters.FilterSet):
 
     def filter_event_japanese(self, queryset, value):
         return queryset.filter(Q(event_japanese_name=value) | Q(other_event_japanese_name=value))
+
+    def filter_is_main(self, queryset, value):
+        if value.title() == 'True':
+            return queryset.filter(name__in=raw.raw_information.keys())
+        return queryset.exclude(name__in=raw.raw_information.keys())
 
     def filter_is_event(self, queryset, value):
         return queryset.filter(event__isnull=(False if value.title() == 'True' else True))

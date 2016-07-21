@@ -357,6 +357,7 @@
 			    {% if card.clean_ur_idolized %}
 			    <a href="{{ card.clean_ur_idolized|userimage }}" target="_blank">{% trans 'Clean UR'%}: {% trans 'Idolized' %}</a><br>
 			    {% endif %}
+			    {% if card.id < 910 %}
 			    {% if not request_get.is_world %}
 			    {% if card.english_card_image %}
 			    <a href="{% imageurl card=card image='card_image' english_version=True %}" target="_blank">{% trans 'English Version' %}: {% trans 'Not Idolized' %}</a><br>
@@ -367,6 +368,7 @@
 			    {% else %}
 			    <a href="{% imageurl card=card image='card_image' english_version=False %}" target="_blank">{% trans 'Japanese Version' %}: {% trans 'Not Idolized' %}</a><br>
 			    <a href="{% imageurl card=card image='card_idolized_image' english_version=False %}" target="_blank">{% trans 'Japanese Version' %}: {% trans 'Idolized' %}</a><br>
+			    {% endif %}
 			    {% endif %}
 			  </td>
 			</tr>

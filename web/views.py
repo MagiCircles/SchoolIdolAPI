@@ -2810,7 +2810,7 @@ def skillup(request):
 def collections(request):
     context = globalContext(request)
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
-    cards = models.Card.objects.filter(rarity='UR').filter(ur_pair_reverse=True)
+    cards = models.Card.objects.filter(rarity='UR').filter(clean_ur__isnull=False, ur_pair__isnull=False)
     is_jp = request.LANGUAGE_CODE == 'ja' or 'japanese' in request.GET
     if is_jp:
         cards = cards.exclude(japanese_collection='').exclude(japanese_collection__isnull=True)

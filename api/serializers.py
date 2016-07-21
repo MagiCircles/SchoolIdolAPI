@@ -242,6 +242,7 @@ class ImageField(serializers.ImageField):
 
 class CardSerializer(serializers.ModelSerializer):
     event = serializers.SerializerMethodField()
+    other_event = serializers.SerializerMethodField()
     idol = serializers.SerializerMethodField()
     card_image = ImageField(required=False)
     card_idolized_image = ImageField(required=False)
@@ -278,6 +279,21 @@ class CardSerializer(serializers.ModelSerializer):
             'english_name': obj.event_english_name,
             'translated_name': _(obj.event_english_name) if obj.event_english_name and self.context['request'].LANGUAGE_CODE != 'en' else None,
             'image': _get_image(obj.event_image),
+            'note': note_to_expand('event') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
+        }
+
+    def get_other_event(self, obj):
+        if not obj.other_event_id:
+            return None
+        if self.context['request'].resolver_match.url_name.startswith('card-'):
+            if 'expand_event' in self.context['request'].query_params:
+                serializer = EventSerializer(obj.other_event, context=self.context)
+                return serializer.data
+        return {
+            'japanese_name': obj.other_event_japanese_name,
+            'english_name': obj.other_event_english_name,
+            'translated_name': _(obj.other_event_english_name) if obj.other_event_english_name and self.context['request'].LANGUAGE_CODE != 'en' else None,
+            'image': _get_image(obj.other_event_image),
             'note': note_to_expand('event') if self.context['request'].resolver_match.url_name.startswith('card-') else None,
         }
 
@@ -407,7 +423,7 @@ class CardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'game_id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized', 'skill_up_cards', 'ur_pair', 'total_owners', 'total_wishlist', 'ranking_attribute', 'ranking_rarity', 'ranking_special')
+        fields = ('id', 'game_id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'japanese_attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'japan_only', 'event', 'other_event', 'is_special', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'center_skill_details', 'japanese_center_skill', 'japanese_center_skill_details', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'video_story', 'japanese_video_story', 'website_url', 'non_idolized_max_level', 'idolized_max_level', 'transparent_image', 'transparent_idolized_image', 'clean_ur', 'clean_ur_idolized', 'skill_up_cards', 'ur_pair', 'total_owners', 'total_wishlist', 'ranking_attribute', 'ranking_rarity', 'ranking_special')
 
 class SongSerializer(serializers.ModelSerializer):
     event = serializers.SerializerMethodField()

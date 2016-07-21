@@ -139,7 +139,7 @@ class CardViewSet(viewsets.ModelViewSet):
         if 'expand_idol' in self.request.query_params:
             queryset = queryset.select_related('idol')
         if 'expand_event' in self.request.query_params:
-            queryset = queryset.select_related('event')
+            queryset = queryset.select_related('event', 'other_event')
         if 'expand_ur_pair' in self.request.query_params:
             queryset = queryset.select_related('ur_pair')
         return queryset

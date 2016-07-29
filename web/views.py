@@ -435,6 +435,27 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
             cards = cards.filter(event__isnull=True)
             request_get['is_event'] = 'off'
 
+        if 'with_side_story' in request_get_copy and request_get_copy['with_side_story'] == 'on':
+            cards = cards.filter(Q(video_story__isnull=False) | Q(japanese_video_story__isnull=False))
+            request_get['with_side_story'] = 'on'
+        elif 'with_side_story' in request_get_copy and request_get_copy['with_side_story'] == 'off':
+            cards = cards.filter(video_story__isnull=True, japanese_video_story__isnull=True)
+            request_get['with_side_story'] = 'off'
+
+        if 'with_english_side_story' in request_get_copy and request_get_copy['with_english_side_story'] == 'on':
+            cards = cards.filter(video_story__isnull=False)
+            request_get['with_english_side_story'] = 'on'
+        elif 'with_english_side_story' in request_get_copy and request_get_copy['with_english_side_story'] == 'off':
+            cards = cards.filter(video_story__isnull=True)
+            request_get['with_english_side_story'] = 'off'
+
+        if 'with_japanese_side_story' in request_get_copy and request_get_copy['with_japanese_side_story'] == 'on':
+            cards = cards.filter(japanese_video_story__isnull=False)
+            request_get['with_japanese_side_story'] = 'on'
+        elif 'with_japanese_side_story' in request_get_copy and request_get_copy['with_japanese_side_story'] == 'off':
+            cards = cards.filter(japanese_video_story__isnull=True)
+            request_get['with_japanese_side_story'] = 'off'
+
         if 'is_special' in request_get_copy and request_get_copy['is_special'] == 'on':
             cards = cards.filter(is_special__exact=True)
             request_get['is_special'] = 'on'

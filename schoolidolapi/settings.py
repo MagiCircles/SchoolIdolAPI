@@ -181,6 +181,8 @@ LOVECA_PRICE = 0.568
 # Generated settings:
 CARDS_INFO = {'idols': []}
 
+IMAGES_HOSTING_PATH = 'http://i.schoolido.lu/'
+
 try:
     from generated_settings import *
 except ImportError, e:

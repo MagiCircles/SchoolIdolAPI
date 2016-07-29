@@ -460,7 +460,7 @@ class SongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Song
-        fields = ('id', 'name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'available', 'itunes_id', 'website_url')
+        fields = ('id', 'name', 'romaji_name', 'translated_name', 'attribute', 'main_unit', 'BPM', 'time', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'master_difficulty', 'master_notes', 'available', 'itunes_id', 'website_url')
         lookup_field = 'name'
 
 class AccountSerializer(serializers.ModelSerializer):

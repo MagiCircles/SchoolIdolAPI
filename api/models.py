@@ -295,6 +295,7 @@ ACCOUNT_TAB_ICONS_DICT = dict(ACCOUNT_TAB_ICONS)
 CENTER_SKILL_SENTENCES = {
     'Power': _('{} increases slightly (+3%)'),
     'Heart': _('{} increases (+6%)'),
+    'Star': _('{} increases (+7%)'),
     'UR': _('{} increases drastically (+9%)'),
     'differentUR':  _('{} increases based on {}'),
 }
@@ -305,7 +306,7 @@ CENTER_SKILL_UR = {
     'Empress': 'Cool',
 }
 
-CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart')
+CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart'), _('Star')
 
 TRIVIA_SCORE_SENTENCES = [
     _('Ouch!'),

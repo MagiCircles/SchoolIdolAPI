@@ -355,6 +355,7 @@ class CardSerializer(serializers.ModelSerializer):
         if obj.rarity == 'N': return 30
         elif obj.rarity == 'R': return 40
         elif obj.rarity == 'SR': return 60
+        elif obj.rarity == 'SSR': return 70
         elif obj.rarity == 'UR': return 80
 
     def get_idolized_max_level(self, obj):
@@ -362,6 +363,7 @@ class CardSerializer(serializers.ModelSerializer):
         if obj.rarity == 'N': return 40
         elif obj.rarity == 'R': return 60
         elif obj.rarity == 'SR': return 80
+        elif obj.rarity == 'SSR': return 90
         elif obj.rarity == 'UR': return 100
 
     def get_ur_pair(self, obj):

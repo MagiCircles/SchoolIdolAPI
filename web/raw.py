@@ -195,6 +195,13 @@ discussions = [
         'name': 'μ\'sic forever',
         'image': 'http://i.schoolido.lu/cards/transparent/846idolizedTransparent.png',
         'color': '#4075c1',
-        'full_size': True,
+        'big': True,
+    },
+    {
+        'code': 'squadpics',
+        'name': 'Squad Pics',
+        'image': 'http://i.schoolido.lu/cards/transparent/973Transparent.png',
+        'color': '#0850ad',
+        'big': True,
     },
 ]

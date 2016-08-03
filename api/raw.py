@@ -171,6 +171,7 @@ raw_information['Yazawa Nico'] = {
         ('http://i.schoolido.lu/chibi/Nico_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Nico_Cyber.png', 'klab'),
         ('http://i.schoolido.lu/chibi/NikoNikoNii.png', 'Dokisumi'),
+        ('http://i.schoolido.lu/chibi/OrXAbSsu.png', 'ayu'),
     ],
 }
 raw_information['Takami Chika'] = {
@@ -269,6 +270,7 @@ raw_information['Tsushima Yoshiko'] = {
         ('http://i.schoolido.lu/chibi/yohanechibi.png', 'ankira'),
         ('http://i.schoolido.lu/chibi/hatsunemimu.png', 'hatsunemimu'),
         ('http://i.schoolido.lu/chibi/yL4zOjDW.png', 'syv'),
+        ('http://i.schoolido.lu/chibi/imnotcaitlynyohane.png', 'imnotcaitlyn'),
     ],
 }
 raw_information['Kunikida Hanamaru'] = {
@@ -356,6 +358,7 @@ raw_information_n = {
     'Suda Iruka': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/ILC1ICdf.png', 'Floripendulaa'),
+            ('http://i.schoolido.lu/chibi/JqB9Trx.png', 'NightSky'),
         ],
     },
     'Fumiko': {
@@ -660,6 +663,16 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/ZB5End33.png', 'KoolFish420'),
         ],
     },
+    'Shiraki Nagi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/ShirakiNagiChibi.png', 'xoxNicoNicoxox'),
+        ],
+    },
+    # '': {
+    #     'chibi': [
+    #         ('', ''),
+    #     ],
+    # },
 }
 
 all_graphic_designers = [

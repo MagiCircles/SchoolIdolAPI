@@ -1483,9 +1483,13 @@ def edit(request):
             context['preferences'].email_notifications_turned_off = ','.join([str(i) for i in new_emails_settings])
             context['preferences'].save()
         else:
+            old_email = request.user.email
             form = forms.UserForm(request.POST, instance=request.user)
             if form.is_valid():
                 form.save()
+                if old_email != request.user.email and request.user.preferences.invalid_email:
+                    request.user.preferences.invalid_email = False
+                    request.user.preferences.save()
                 return redirect('/user/' + request.user.username)
 
     # Get emails settings

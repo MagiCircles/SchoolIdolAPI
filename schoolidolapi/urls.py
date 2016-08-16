@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'^api/cacheddata/$', api_views.cacheddata),
     url(r'^api/map/$', api_views.map),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^bouncy/', include('django_bouncy.urls', app_name='django_bouncy')),
     url('', include('django_prometheus.urls')),
 ]

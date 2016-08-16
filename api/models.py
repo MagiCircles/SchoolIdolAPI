@@ -322,6 +322,24 @@ TRIVIA_SCORE_SENTENCES = [
     _('Woohoo!'),
 ]
 
+OWNEDCARD_ORIGIN_10 = 0
+OWNEDCARD_ORIGIN_SOLO = 1
+OWNEDCARD_ORIGIN_VOUCHER = 2
+OWNEDCARD_ORIGIN_EVENT = 3
+OWNEDCARD_ORIGIN_SHOP = 4
+OWNEDCARD_ORIGIN_TICKET = 5
+OWNEDCARD_ORIGIN_LIVE = 6
+
+OWNEDCARD_ORIGIN_CHOICES = (
+    (OWNEDCARD_ORIGIN_10, _('Honor Scouting (10+1, 50 love gems)')),
+    (OWNEDCARD_ORIGIN_SOLO, _('Solo Yolo (5 love gems)')),
+    (OWNEDCARD_ORIGIN_TICKET, _('Scouting Ticket')),
+    (OWNEDCARD_ORIGIN_VOUCHER, _('Vouchers (blue tickets)')),
+    (OWNEDCARD_ORIGIN_EVENT, _('Event Reward')),
+    (OWNEDCARD_ORIGIN_SHOP, _('Sticker Shop')),
+    (OWNEDCARD_ORIGIN_LIVE, _('At the end of a live')),
+)
+
 def triviaScoreToSentence(score):
     return TRIVIA_SCORE_SENTENCES[score]
 
@@ -706,6 +724,7 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
     max_level = models.BooleanField(_("Max Leveled"), default=False)
     max_bond = models.BooleanField(_("Max Bonded (Kizuna)"), default=False)
     skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
+    origin = models.PositiveIntegerField(choices=OWNEDCARD_ORIGIN_CHOICES, null=True)
 
     @property
     def owner(self):
@@ -810,6 +829,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
     email_notifications_turned_off = models.CharField(max_length=15, null=True)
     unread_notifications = models.PositiveIntegerField(default=0)
+    invalid_email = models.BooleanField(default=False)
 
     def avatar(self, size):
         default = 'https://i.schoolido.lu/static/kotori.jpg'
@@ -826,6 +846,8 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
         return [int(t) for t in self.email_notifications_turned_off.split(',')]
 
     def is_notification_email_allowed(self, notification_type):
+        if self.invalid_email:
+            return False
         for type in self.email_notifications_turned_off_list:
             if type == notification_type:
                 return False

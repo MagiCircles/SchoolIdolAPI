@@ -29,7 +29,7 @@ raw_information['Nishikino Maki'] = {
     'sub_unit': 'Bibi',
     'cv_nickname': 'Pile',
     'cv_twitter': 'pile_eric',
-    'cv_instagram': 'pile_eric',
+    'cv_instagram': 'pi_channnn52',
     'starter': 33,
     'color': '#ee7b78',
     'chibi': [

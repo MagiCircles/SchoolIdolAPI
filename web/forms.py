@@ -5,7 +5,9 @@ from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
-from django.utils.translation import ugettext_lazy as _, string_concat
+from dateutil.relativedelta import relativedelta
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _, string_concat, ungettext_lazy
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
 from django.conf import settings
@@ -284,11 +286,17 @@ class CustomActivity(_Activity):
     account_id = forms.IntegerField()
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(CustomActivity, self).__init__(*args, **kwargs)
         self.fields['account_id'].widget = forms.HiddenInput()
         self.fields['message_data'].required = True
         self.fields['message_data'].label = _('Message')
         self.fields['message_data'].help_text = _('Write whatever you want. You can add formatting and links using Markdown.')
+
+    def clean(self):
+        if self.request and self.request.user.is_authenticated() and self.request.user.date_joined < (timezone.now() - relativedelta(days=5)):
+            return self.cleaned_data
+        raise forms.ValidationError(_("You need more reputation to post activities."))
 
     class Meta:
         model = models.Activity

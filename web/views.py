@@ -881,7 +881,7 @@ def profile(request, username):
             if context['is_me']:
                 # Form to post custom activity
                 if request.method == 'POST' and 'account_id' in request.POST and request.POST['account_id'] == str(account.id):
-                    account.form_custom_activity = forms.CustomActivity(request.POST)
+                    account.form_custom_activity = forms.CustomActivity(request.POST, request=request)
                     if account.form_custom_activity.is_valid():
                         imgur = None
                         if account.form_custom_activity.cleaned_data['right_picture']:

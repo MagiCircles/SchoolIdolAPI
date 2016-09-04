@@ -123,7 +123,7 @@ class Command(BaseCommand):
             return
 
         if 'cards' in args:
-            page_url = u'http://schoolido.lu/api/cards/?page_size=50'
+            page_url = u'http://schoolido.lu/api/cards/?page_size=50&ordering=-id'
             while page_url is not None:
                 response = urllib.urlopen(page_url)
                 data = json.loads(response.read())

@@ -343,7 +343,7 @@
 		  <a class="btn btn-{{ attribute }} btn-block btn-lg" href="#postActivity{{ account.pk }}" data-toggle="collapse">{% trans 'Post your own activity' %}</a>
 		  {% if posted_activity %}
 		  <div class="alert alert-info">
-		    {% trans 'Activity posted! Take a look at your activities on the side of your profile to see it.' %}
+		    {% trans 'Activity posted!' %} <a href="/activities/{{ posted_activity.id }}/">{% trans 'Open' %}</a>
 		  </div>
 		  {% endif %}
 		</td>

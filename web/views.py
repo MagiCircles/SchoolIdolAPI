@@ -259,7 +259,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
             'right_picture': right_picture,
         }
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
-        models.Activity.objects.create(**defaults)
+        return models.Activity.objects.create(**defaults)
 
 def index(request):
     """
@@ -885,12 +885,12 @@ def profile(request, username):
                         imgur = None
                         if account.form_custom_activity.cleaned_data['right_picture']:
                             imgur = get_imgur_code(account.form_custom_activity.cleaned_data['right_picture'])
-                        pushActivity('Custom', account=account,
-                                     message_data=account.form_custom_activity.cleaned_data['message_data'],
-                                     right_picture=imgur,
-                                     # prefetch:
-                                     account_owner=request.user)
-                        context['posted_activity'] = True
+                        activity = pushActivity('Custom', account=account,
+                                                message_data=account.form_custom_activity.cleaned_data['message_data'],
+                                                right_picture=imgur,
+                                                # prefetch:
+                                                account_owner=request.user)
+                        context['posted_activity'] = activity
                         account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
                 else:
                     account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})

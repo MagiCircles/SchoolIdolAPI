@@ -261,6 +261,7 @@ class _Activity(ModelForm):
         return self.cleaned_data['message_data']
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         initial = kwargs.get('initial', {})
         initial['right_picture'] = ''
         kwargs['initial'] = initial
@@ -286,7 +287,6 @@ class CustomActivity(_Activity):
     account_id = forms.IntegerField()
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
         super(CustomActivity, self).__init__(*args, **kwargs)
         self.fields['account_id'].widget = forms.HiddenInput()
         self.fields['message_data'].required = True

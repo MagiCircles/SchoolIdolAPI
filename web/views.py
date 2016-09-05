@@ -892,9 +892,9 @@ def profile(request, username):
                                                 # prefetch:
                                                 account_owner=request.user)
                         context['posted_activity'] = activity
-                        account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
+                        account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id}, request=request)
                 else:
-                    account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id})
+                    account.form_custom_activity = forms.CustomActivity(initial={'account_id': account.id}, request=request)
             # Staff form to edit account
             if request.user.is_staff and (request.user.is_superuser or request.user.preferences.has_verification_permissions):
                 staffFormClass = forms.AccountAdminForm if request.user.is_superuser else forms.AccountStaffForm
@@ -1307,7 +1307,7 @@ def activity(request, activity):
         else:
             formClass = forms.EditActivityPicture
             context['form_title'] = _('Upload your own screenshot')
-        form = formClass(instance=context['activity'])
+        form = formClass(instance=context['activity'], request=request)
         context['form_delete'] = forms.ConfirmDelete(initial={
             'thing_to_delete': context['activity'].id,
         })
@@ -1318,7 +1318,7 @@ def activity(request, activity):
                     context['activity'].delete()
                     return redirect('/')
             else:
-                form = formClass(request.POST, instance=context['activity'])
+                form = formClass(request.POST, instance=context['activity'], request=request)
                 if 'account_id' in form.fields:
                     del(form.fields['account_id'])
                 previous_picture = context['activity'].right_picture

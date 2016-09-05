@@ -1231,7 +1231,7 @@ def ajaxfollowing(request, username):
 def _localized_message_activity(activity):
     return activity.localized_message_activity
 
-def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None, all=False):
+def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None, all=False, new=False):
     """
     SQL Queries
     - Django session
@@ -1266,7 +1266,9 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
-        if not all:
+        if new:
+            activities = activities.filter(hot=False)
+        elif not all:
             activities = activities.filter(hot=True)
         activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
     activities = activities[(page * page_size):((page * page_size) + page_size)]
@@ -1294,7 +1296,8 @@ def ajaxactivities(request):
     follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
     avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
     all = 'all' in request.GET
-    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size, user=user, all=all))
+    new = 'new' in request.GET
+    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size, user=user, all=all, new=new))
 
 def activity(request, activity):
     context = globalContext(request)

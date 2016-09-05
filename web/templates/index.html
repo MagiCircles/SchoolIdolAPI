@@ -9,7 +9,7 @@
 <script src="http://i.schoolido.lu/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script src="http://i.schoolido.lu/static/js/loadactivities.js?1"></script>
-<script src="http://i.schoolido.lu/static/js/index.js?11"></script>
+<script src="http://i.schoolido.lu/static/js/index.js?12"></script>
 <script>
   var follow_sentence = "{% trans 'Start following players to see their activities!' %}";
   var logged_in = {% if user.is_authenticated %}true{% else %}false{% endif %};
@@ -193,6 +193,10 @@
 	    <label class="btn btn-{{ btnColor }} hot{% if user.preferences.default_tab == 'hot' %} active{% endif %}">
 	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'Hot' %}
+	    </label>
+	    <label class="btn btn-{{ btnColor }} new{% if user.preferences.default_tab == 'new' %} active{% endif %}">
+	      <input type="radio" name="options" autocomplete="off">
+	      {% trans 'New' %}
 	    </label>
 	    <label class="btn btn-{{ btnColor }} all{% if user.preferences.default_tab == 'all' %} active{% endif %}">
 	      <input type="radio" name="options" autocomplete="off">

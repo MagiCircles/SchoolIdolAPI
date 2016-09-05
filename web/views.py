@@ -1267,7 +1267,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
         if not all:
-            activities = activities.filter(likers_count__gte=10)
+            activities = activities.filter(hot=True)
         activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []
@@ -1360,25 +1360,34 @@ def isLiking(request, activity_obj):
                 return True
     return False
 
-@csrf_exempt
 def ajaxlikeactivity(request, activity):
-    context = globalContext(request)
-    if not request.user.is_authenticated() or request.user.is_anonymous() or request.method != 'POST':
+    if not request.user.is_authenticated() or request.method != 'POST':
         raise PermissionDenied()
-    activity_obj = get_object_or_404(models.Activity.objects.select_related('account', 'account__owner', 'account__owner__preferences'), id=activity)
-    if activity_obj.account.owner.id != request.user.id:
-        if 'like' in request.POST:
-            if not isLiking(request, activity_obj):
-                activity_obj.likes.add(request.user)
-                activity_obj.save()
-                pushNotification_LIKE(activity_obj.account.owner, request.user, activity_obj)
-            return HttpResponse('liked')
-        if 'unlike' in request.POST:
-            if isLiking(request, activity_obj):
-                activity_obj.likes.remove(request.user)
-                activity_obj.save()
-            return HttpResponse('unliked')
-    raise PermissionDenied()
+    activity = get_object_or_404(models.Activity.objects.extra(select={
+        'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id = api_activity.id AND user_id = {}'.format(request.user.id),
+    }).annotate(total_likes=Count('likes')).select_related('account', 'account__owner', 'account__owner__preferences'), pk=activity)
+    if activity.account.owner.id == request.user.id:
+        raise PermissionDenied()
+    if 'like' in request.POST and not activity.liked:
+        activity.likes.add(request.user)
+        if activity.total_likes + 2 >= 20:
+            activity.hot = True
+        activity.save()
+        pushNotification_LIKE(activity.account.owner, request.user, activity)
+        return JsonResponse({
+            'total_likes': activity.total_likes + 2,
+            'result': 'liked',
+        })
+    if 'unlike' in request.POST and activity.liked:
+        activity.likes.remove(request.user)
+        activity.save()
+        return JsonResponse({
+            'total_likes': activity.total_likes,
+            'result': 'unliked',
+        })
+    return JsonResponse({
+        'total_likes': activity.total_likes + 1,
+    })
 
 @csrf_exempt
 def ajaxfollow(request, username):

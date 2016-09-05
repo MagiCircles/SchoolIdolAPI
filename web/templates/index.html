@@ -9,7 +9,7 @@
 <script src="http://i.schoolido.lu/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 <script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script src="http://i.schoolido.lu/static/js/loadactivities.js?1"></script>
-<script src="http://i.schoolido.lu/static/js/index.js?9"></script>
+<script src="http://i.schoolido.lu/static/js/index.js?11"></script>
 <script>
   var follow_sentence = "{% trans 'Start following players to see their activities!' %}";
   var logged_in = {% if user.is_authenticated %}true{% else %}false{% endif %};
@@ -182,13 +182,17 @@
       {% if high_traffic %}
       <div id="activities">{% include 'cacheactivities.html' %}</div>
       {% else %}
-      <div id="{% if user.is_authenticated and user.preferences.default_tab == 'following' %}my{% endif %}activities">
+      <div id="{% if user.is_authenticated %}{% if user.preferences.default_tab == 'hot' %}hot{% elif user.preferences.default_tab == 'following' %}my{% endif %}{% else %}hot{% endif %}activities" class="activities-wrapper">
 	{% if user.is_authenticated %}
 	<div style="margin-bottom: 20px;" id="activities-buttons">
 	  <div class="btn-group btn-group-justified" data-toggle="buttons">
 	    <label class="btn btn-{{ btnColor }} following{% if user.preferences.default_tab == 'following' %} active{% endif %}">
 	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'Following' %}
+	    </label>
+	    <label class="btn btn-{{ btnColor }} hot{% if user.preferences.default_tab == 'hot' %} active{% endif %}">
+	      <input type="radio" name="options" autocomplete="off">
+	      {% trans 'Hot' %}
 	    </label>
 	    <label class="btn btn-{{ btnColor }} all{% if user.preferences.default_tab == 'all' %} active{% endif %}">
 	      <input type="radio" name="options" autocomplete="off">

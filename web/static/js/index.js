@@ -4,17 +4,22 @@ var card_size = 133;
 
 function loadActivities() {
     var container, feed;
-    if ($('#myactivities').length > 0) {
+    var all = false;
+    if ($('#hotactivities').length > 0) {
+	container = $('#hotactivities');
+	feed = undefined;
+    } else if ($('#myactivities').length > 0) {
 	container = $('#myactivities');
 	feed = true;
     } else {
 	container = $('#activities');
 	feed = undefined;
+	all = true;
     }
     container.find('.activities').html('<div class="loader">Loading...</div>');
     var followHTML = '<a href="/users/" target="_blank" class="fontx3 padding50" style="display: block">' + follow_sentence + '</a>';
     $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
-	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size, function(data) {
+	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size + (all ? '&all' : ''), function(data) {
 	      container.find('.activities').html(data);
 	      if (container.find('.activities .alert-warning').length > 0) {
 		  container.find('.activities .alert-warning').replaceWith(followHTML);
@@ -59,15 +64,15 @@ $(document).ready(function() {
     loadActivities();
 
     $('#activities-buttons .all').click(function() {
-	if ($('#activities').length == 0) {
-	    $('#myactivities').attr('id', 'activities');
-	    loadActivities();
-	}
+	$('.activities-wrapper').attr('id', 'activities');
+	loadActivities();
+    });
+    $('#activities-buttons .hot').click(function() {
+	$('.activities-wrapper').attr('id', 'hotactivities');
+	loadActivities();
     });
     $('#activities-buttons .following').click(function() {
-	if ($('#myactivities').length == 0) {
-	    $('#activities').attr('id', 'myactivities');
-	    loadActivities();
-	}
+	$('.activities-wrapper').attr('id', 'myactivities');
+	loadActivities();
     });
 });

@@ -279,6 +279,7 @@ ACCOUNT_TAB_DICT = dict(ACCOUNT_TAB_CHOICES)
 HOME_TAB_CHOICES = (
     ('following', _('Following')),
     ('all', _('All')),
+    ('hot', _('Hot')),
 )
 ACCOUNT_TAB_DICT = dict(ACCOUNT_TAB_CHOICES)
 
@@ -826,7 +827,7 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     donation_link_title = models.CharField(max_length=100, null=True, blank=True)
     _staff_permissions = models.CharField(max_length=200, null=True, blank=True)
     birthdate = models.DateField(_('Birthdate'), blank=True, null=True)
-    default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='following')
+    default_tab = models.CharField(_('Default tab'), max_length=30, choices=HOME_TAB_CHOICES, help_text=_('The activities you see by default on the homepage.'), default='hot')
     email_notifications_turned_off = models.CharField(max_length=15, null=True)
     unread_notifications = models.PositiveIntegerField(default=0)
     invalid_email = models.BooleanField(default=False)

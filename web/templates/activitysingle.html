@@ -35,13 +35,13 @@
 	<div class="socialbar">
 	  <form method="POST" class="form-inline likeactivity" action="/ajax/likeactivity/{{ activity.id }}/">
 	    {% csrf_token %}
-	    <input type="hidden" name="{% if user in activity.likers %}unlike{% else %}like{% endif %}">
+	    <input type="hidden" name="{% if activity.liked %}unlike{% else %}like{% endif %}">
 	    <div class="btn-group">
 	      {% if user.is_authenticated %}
 	      {% if activity|activity_is_mine:accounts %}
 	      <button class="btn btn-link btn-sm" disabled><i class="flaticon-heart"></i> Liked</button>
 	      {% else %}
-	      <button type="submit" class="btn btn-link btn-sm" data-reverse="{% if user in activity.likers %}<i class='flaticon-heart-empty'></i> Like{% else %}<i class='flaticon-heart'></i> Liked{% endif %}">{% if user in activity.likers %}<i class='flaticon-heart'></i> Liked{% else %}<i class='flaticon-heart-empty'></i> Like{% endif %}</button>
+	      <button type="submit" class="btn btn-link btn-sm" data-reverse="{% if activity.liked %}<i class='flaticon-heart-empty'></i> Like{% else %}<i class='flaticon-heart'></i> Liked{% endif %}">{% if activity.liked %}<i class='flaticon-heart'></i> Liked{% else %}<i class='flaticon-heart-empty'></i> Like{% endif %}</button>
 	      {% endif %}
 	      {% else %}
 	      <a href="/create/" class="btn btn-link btn-sm"><i class="flaticon-heart"></i> Like</a>

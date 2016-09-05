@@ -1231,7 +1231,7 @@ def ajaxfollowing(request, username):
 def _localized_message_activity(activity):
     return activity.localized_message_activity
 
-def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None):
+def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None, all=False):
     """
     SQL Queries
     - Django session
@@ -1248,6 +1248,11 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         if page < 0:
             page = 0
     activities = models.Activity.objects.all().order_by('-creation')
+    activities = activities.annotate(likers_count=Count('likes'))
+    if request.user.is_authenticated():
+        activities = activities.extra(select={
+            'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id = api_activity.id AND user_id = {}'.format(request.user.id),
+        })
     if account is not None:
         activities = activities.filter(account=account)
     if user is not None:
@@ -1261,9 +1266,10 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
+        if not all:
+            activities = activities.filter(likers_count__gte=10)
         activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
     activities = activities[(page * page_size):((page * page_size) + page_size)]
-    activities = activities.annotate(likers_count=Count('likes'))
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []
     for activity in activities:
         activity.localized_message = _localized_message_activity(activity)
@@ -1287,7 +1293,8 @@ def ajaxactivities(request):
     user = request.GET['user'] if 'user' in request.GET and request.GET['user'] else None
     follower = request.GET['follower'] if 'follower' in request.GET and request.GET['follower'] else None
     avatar_size = int(request.GET['avatar_size']) if 'avatar_size' in request.GET and request.GET['avatar_size'] and request.GET['avatar_size'].isdigit() else 3
-    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size, user=user))
+    all = 'all' in request.GET
+    return render(request, 'activities.html', _activities(request, account=account, follower=follower, avatar_size=avatar_size, user=user, all=all))
 
 def activity(request, activity):
     context = globalContext(request)

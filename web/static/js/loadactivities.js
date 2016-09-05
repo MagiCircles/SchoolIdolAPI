@@ -3,7 +3,7 @@ function getButton(parent) {
     return parent.find('a[href="#loadMoreActivities"]');
 }
 
-function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, card_size, user) {
+function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, card_size, user, new_, all) {
     var div = button.parent();
     var page = div.attr('data-page');
     div.html('<span class="loader">Loading...</span>');
@@ -13,7 +13,7 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, c
 	  + (typeof user == 'undefined' ? '' : ('&user=' + user))
 	  + (typeof avatar_size == 'undefined' ? '' : ('&avatar_size=' + avatar_size))
 	  + (typeof card_size == 'undefined' ? '' : ('&card_size=' + card_size))
-	  ,
+	  + (all ? '&all' : '') + (new_ ? '&new' : ''),
 	  function(data) {
 	      div.replaceWith(data);
 	      loadMoreActivities(parent, account, feed, avatar_size);

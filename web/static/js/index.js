@@ -47,8 +47,24 @@ function loadActivities() {
 			  && button.find('.loader').length == 0
 			  && ($(window).scrollTop() + $(window).height())
 			  >= ($(document).height() - button.height())) {
-			  feed = $('#myactivities').length > 0 ? true : undefined;
-			  loadMoreActivitiesOnClick(button, container, undefined, feed, avatar_size, card_size);
+			  new_ = false;
+			  all = false;
+			  if ($('#hotactivities').length > 0) {
+			      container = $('#hotactivities');
+			      feed = undefined;
+			  } else if ($('#myactivities').length > 0) {
+			      container = $('#myactivities');
+			      feed = true;
+			  } else if ($('#newactivities').length > 0) {
+			      container = $('#newactivities');
+			      feed = undefined;
+			      new_ = true;
+			  } else {
+			      container = $('#activities');
+			      feed = undefined;
+			      all = true;
+			  }
+			  loadMoreActivitiesOnClick(button, container, undefined, feed, avatar_size, card_size, undefined, new_, all);
 		      }
 		  });
 	  });

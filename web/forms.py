@@ -248,16 +248,14 @@ class MultiImageField(MultiFileField, forms.ImageField):
 class _Activity(ModelForm):
     def clean_message_data(self):
         if 'message_data' in self.cleaned_data:
-            if len(self.cleaned_data['message_data']) > 1000:
+            if len(self.cleaned_data['message_data']) > 8000:
                 raise forms.ValidationError(
                     message=_('Ensure this value has at most %(max)d characters (it has %(length)d).'),
                     code='max',
                     params={
-                        'max': 1000,
+                        'max': 8000,
                         'length': len(self.cleaned_data['message_data']),
                     })
-            if '![' in self.cleaned_data['message_data']:
-                raise forms.ValidationError('Pictures inside the core of your message are not allowed. Please use the picture field below.')
         return self.cleaned_data['message_data']
 
     def __init__(self, *args, **kwargs):
@@ -292,11 +290,6 @@ class CustomActivity(_Activity):
         self.fields['message_data'].required = True
         self.fields['message_data'].label = _('Message')
         self.fields['message_data'].help_text = _('Write whatever you want. You can add formatting and links using Markdown.')
-
-    def clean(self):
-        if self.request and self.request.user.is_authenticated() and self.request.user.date_joined < (timezone.now() - relativedelta(days=5)):
-            return self.cleaned_data
-        raise forms.ValidationError(_("You need more reputation to post activities."))
 
     class Meta:
         model = models.Activity

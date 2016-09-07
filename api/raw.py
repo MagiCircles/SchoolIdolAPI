@@ -115,6 +115,7 @@ raw_information['Koizumi Hanayo'] = {
         ('http://i.schoolido.lu/chibi/Hanayo_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Hanayo_Cyber.png', 'klab'),
         ('http://i.schoolido.lu/chibi/TxB1kzU2.png', 'SushiYeo'),
+        ('http://i.schoolido.lu/chibi/kunoichipanaaaaa.png', 'enjugrove'),
     ],
 }
 raw_information['Sonoda Umi'] = {
@@ -172,6 +173,7 @@ raw_information['Yazawa Nico'] = {
         ('http://i.schoolido.lu/chibi/Nico_Cyber.png', 'klab'),
         ('http://i.schoolido.lu/chibi/NikoNikoNii.png', 'Dokisumi'),
         ('http://i.schoolido.lu/chibi/OrXAbSsu.png', 'ayu'),
+        ('http://i.schoolido.lu/chibi/kunoichinicooo.png', 'enjugrove'),
     ],
 }
 raw_information['Takami Chika'] = {
@@ -381,6 +383,7 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/ptMjxhp7.png', 'navacandi'),
             ('http://i.schoolido.lu/chibi/JMPkVuz.png', 'RinNyaDesu'),
             ('http://i.schoolido.lu/chibi/SCv4gQgb.png', 'navacandi'),
+            ('http://i.schoolido.lu/chibi/sachiko_darklines.png', 'yatsugare'),
         ],
     },
     'Ayanokouji Himeno': {
@@ -411,6 +414,7 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/erena.png', 'db0'),
             ('http://i.schoolido.lu/chibi/pgirlerena.png', 'P-Girl'),
             ('http://i.schoolido.lu/chibi/enjugroveerena.png', 'enjugrove'),
+            ('http://i.schoolido.lu/chibi/artflow_201606221314.png', 'anonymous'),
         ],
     },
     'Yuuki Anju': {
@@ -454,6 +458,7 @@ raw_information_n = {
     'Isabella': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/zknSMul.png', 'RinNyaDesu'),
+            ('http://i.schoolido.lu/chibi/artflow_201606221448.png', 'anonymous'),
         ],
     },
     'Emma': {
@@ -470,6 +475,7 @@ raw_information_n = {
     'Miyashita Coco': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/coco.png', 'Akiza15'),
+            ('http://i.schoolido.lu/chibi/OHKAzzxV.png', 'Glutamine'),
         ],
     },
     'Ranpha': {
@@ -546,6 +552,11 @@ raw_information_n = {
     'Kotori\'s Mother': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/x_XHop6t.png', 'Clay'),
+        ],
+    },
+    'Maki\'s Mother': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/vUjxvCBd.png', 'Marina-chan'),
         ],
     },
     'Morishima Nanaka': {
@@ -656,6 +667,7 @@ raw_information_n = {
     'Kikuchi Akemi': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/idoluakemi.png', 'olivinearc'),
+            ('http://i.schoolido.lu/chibi/artflow_201608201147.png', 'anonymous'),
         ],
     },
     'Tsukishima Yuuka': {

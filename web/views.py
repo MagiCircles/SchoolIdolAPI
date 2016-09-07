@@ -1249,10 +1249,10 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
             page = 0
     activities = models.Activity.objects.all().order_by('-creation')
     activities = activities.annotate(likers_count=Count('likes'))
-    if request.user.is_authenticated():
-        activities = activities.extra(select={
-            'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id = api_activity.id AND user_id = {}'.format(request.user.id),
-        })
+    # if request.user.is_authenticated():
+    #     activities = activities.extra(select={
+    #         'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id = api_activity.id AND user_id = {}'.format(request.user.id),
+    #     })
     if account is not None:
         activities = activities.filter(account=account)
     if user is not None:

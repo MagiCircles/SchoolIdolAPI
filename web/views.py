@@ -1373,7 +1373,7 @@ def ajaxlikeactivity(request, activity):
         raise PermissionDenied()
     if 'like' in request.POST and not activity.liked:
         activity.likes.add(request.user)
-        if activity.total_likes + 2 >= 20:
+        if activity.total_likes + 2 >= 30:
             activity.hot = True
         activity.save()
         pushNotification_LIKE(activity.account.owner, request.user, activity)
@@ -3102,3 +3102,42 @@ def ajaxnotifications(request):
     result = render(request, 'notifications.html', context)
     models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
     return result
+
+@csrf_exempt
+def markhot(request):
+    activity = request.POST.get('activity', None)
+    if request.method != 'POST' or not request.user.is_staff or not activity:
+        raise PermissionDenied()
+    activity = get_object_or_404(models.Activity, pk=activity)
+    activity.hot = True
+    activity.save()
+    return HttpResponse('')
+
+@csrf_exempt
+def removehot(request):
+    activity = request.POST.get('activity', None)
+    if request.method != 'POST' or not request.user.is_staff or not activity:
+        raise PermissionDenied()
+    activity = get_object_or_404(models.Activity, pk=activity)
+    activity.hot = False
+    activity.save()
+    return HttpResponse('')
+
+@csrf_exempt
+def bump(request):
+    activity = request.POST.get('activity', None)
+    if request.method != 'POST' or not request.user.is_staff or not activity:
+        raise PermissionDenied()
+    activity = get_object_or_404(models.Activity, pk=activity)
+    activity.creation = timezone.now()
+    activity.save()
+    return HttpResponse('')
+
+@csrf_exempt
+def drown(request):
+    activity = request.POST.get('activity', None)
+    if request.method != 'POST' or not request.user.is_staff or not activity:
+        raise PermissionDenied()
+    activity = get_object_or_404(models.Activity, pk=activity)
+    models.Activity.objects.filter(pk=activity.pk).update(creation=activity.creation - relativedelta(days=1))
+    return HttpResponse('')

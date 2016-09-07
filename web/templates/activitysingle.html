@@ -33,7 +33,7 @@
 	<strong class="account">{{ activity.account_name }}</strong><br>
 	<span class="message{% if activity.message == 'Custom' %} need-to-autolink{% endif %}">{% if activity.message == 'Custom' %}{{ activity.localized_message|markdown }}{% else %}{{ activity.localized_message }}{% endif %}</span><br>
 	<div class="socialbar">
-	  <form method="POST" class="form-inline likeactivity" action="/ajax/likeactivity/{{ activity.id }}/">
+	  <form method="POST" class="form-inline likeactivity" action="/ajax/likeactivity/{{ activity.id }}/" data-activity-id="{{ activity.id }}">
 	    {% csrf_token %}
 	    <input type="hidden" name="{% if activity.liked %}unlike{% else %}like{% endif %}">
 	    <div class="btn-group">
@@ -70,6 +70,17 @@
 	      </a>
 	      {% endif %}
 	    </div>
+	    {% endif %}
+	    {% if user.is_staff %}
+	    {% if not activity.hot %}
+	    <a href="#markhot" class="btn btn-link btn-sm">Mark as Hot</a>
+	    {% else %}
+	    <a href="#removehot" class="btn btn-link btn-sm">Remove from Hot</a>
+	    {% endif %}
+	    {% if user.is_superuser %}
+	    <a href="#bump" class="btn btn-link btn-sm">Bump</a>
+	    <a href="#drown" class="btn btn-link btn-sm">Drown</a>
+	    {% endif %}
 	    {% endif %}
 	  </form>
 	</div>

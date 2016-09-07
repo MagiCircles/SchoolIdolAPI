@@ -101,6 +101,10 @@ urlpatterns = patterns('',
     url(r'^ajax/staff/report/(?P<report_id>\d+)/accept/$', views.ajaxreport, {'status': 'accept'}, name='ajaxreport'),
     url(r'^ajax/staff/report/(?P<report_id>\d+)/reject/$', views.ajaxreport, {'status': 'reject'}, name='ajaxreport'),
     url(r'^ajax/trivia/share/', views.sharetrivia, name='sharetrivia'),
+    url(r'^ajax/markhot/', views.markhot, name='markhot'),
+    url(r'^ajax/removehot/', views.removehot, name='removehot'),
+    url(r'^ajax/bump/', views.bump, name='bump'),
+    url(r'^ajax/drown/', views.drown, name='drown'),
 
     url(r'^autocomplete/user/', autocomplete_views.UserAutocomplete.as_view(), name='autocomplete-user'),
 

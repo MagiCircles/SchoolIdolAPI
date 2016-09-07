@@ -100,6 +100,25 @@ function updateActivities() {
 	    }
 	});
     });
+    $.each(['markhot', 'removehot', 'bump', 'drown'], function(_, btn) {
+	$('a[href="#' + btn + '"]').unbind('click');
+	$('a[href="#' + btn + '"]').click(function(e) {
+	    e.preventDefault();
+	    var button = $(this);
+	    $.ajax({
+		type: 'POST',
+		url: '/ajax/' + btn + '/',
+		data: {
+		    'activity': button.closest('form').data('activity-id'),
+		},
+		success: function(data) {
+		    button.text('OK');
+		},
+		error: genericAjaxError,
+	    });
+	    return false;
+	});
+    });
 }
 
 function genericAjaxError() {

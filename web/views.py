@@ -3027,7 +3027,7 @@ def english_future(request):
     context['future_events'] = new_events
 
     # get next cards
-    future_cards = models.Card.objects.filter(japan_only=True, is_promo=False, is_special=False, event__isnull=True, rarity__in=['SR', 'UR']).exclude(translated_collection='Initial').order_by('id')
+    future_cards = models.Card.objects.filter(japan_only=True, is_promo=False, is_special=False, event__isnull=True, rarity__in=['SR', 'SSR', 'UR']).exclude(translated_collection='Initial').order_by('id')
 
     def get_next_dates(date):
         if date.day < 15:

@@ -200,7 +200,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
             'number': None,
             'message_data': concat_args(unicode(card), ownedcard.stored),
             'right_picture_link': singlecardurl(card),
-            'right_picture': ownedcardimageurl({}, ownedcard, card=card, english_version=(account.language != 'JP')),
+            'right_picture': ownedcardimageurl({}, ownedcard, card=card),
         }
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
         if message == 'Added a card':
@@ -691,10 +691,7 @@ def _addaccount_savecenter(account):
         center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck')
         account.center = center
         account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
-        if account.language == 'JP':
-            account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
-        else:
-            account.center_card_round_image = account.center.card.english_round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.english_round_card_image
+        account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
         account.center_card_attribute = account.center.card.attribute
         account.center_alt_text = unicode(account.center.card)
         account.center_card_id = account.center.card.id
@@ -1566,10 +1563,7 @@ def report(request, account=None, eventparticipation=None, user=None, activity=N
 
 def _editaccount_savecenter(account):
     account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
-    if account.language == 'JP':
-        account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
-    else:
-        account.center_card_round_image = account.center.card.english_round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.english_round_card_image
+    account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
     account.center_card_attribute = account.center.card.attribute
     account.center_alt_text = unicode(account.center.card)
     account.center_card_id = account.center.card.id

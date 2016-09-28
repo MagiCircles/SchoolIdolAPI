@@ -65,9 +65,9 @@
     'modal': 'true',
     'images': {
       '': 'http://i.schoolido.lu/static/empty.png',
-      {% with is_world=account|account_is_world %}{% for ownedcard in account.deck %}
-      '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard english_version=is_world %}',
-      {% endfor %}{% endwith %}
+      {% for ownedcard in account.deck %}
+      '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
+      {% endfor %}
     }
   });
   {% endif %}

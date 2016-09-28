@@ -39,7 +39,7 @@
 		  {% endif %}
 		  <div class="text-center card_images">
 		    {% if total_results > 1 %}
-		    <a href="{{ card|singlecardurl }}" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}{% if not card.is_special and not card.is_promo %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' english_version=request_get.is_world %}" target="_blank">{% endif %}<img src="{% if request_get.show_clean_ur and card.clean_ur %}{{ card.clean_ur|userimage }}{% else %}{% imageurl card=card image='card_image' english_version=request_get.is_world %}{% endif %}" class="non_idolized" width="50%" alt="{{ card }}">{% if total_results == 1 %}</a>{% endif %}{% endif %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}" target="_blank">{% endif %}<img src="{% if request_get.show_clean_ur and card.clean_ur_idolized %}{{ card.clean_ur_idolized|userimage }}{% else %}{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}{% endif %}" class="idolized" width="{% if card.is_special or card.is_promo %}{% if total_results == 1 %}100%{% else %}50%{% endif %}{% else %}50%{% endif %}" alt="{{ card }} idolized">{% if total_results == 1 %}</a>{% endif %}{% if total_results > 1 %}</a>{% endif %}</div>
+		    <a href="{{ card|singlecardurl }}" aria-expanded="false" aria-controls="collapseMore{{ card.id }}" data-target="#collapseMore{{ card.id }}">{% endif %}{% if not card.is_special and not card.is_promo %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_image' %}" target="_blank">{% endif %}<img src="{% if request_get.show_clean_ur and card.clean_ur %}{{ card.clean_ur|userimage }}{% else %}{% imageurl card=card image='card_image' %}{% endif %}" class="non_idolized" width="50%" alt="{{ card }}">{% if total_results == 1 %}</a>{% endif %}{% endif %}{% if total_results == 1 %}<a href="{% imageurl card=card image='card_idolized_image' %}" target="_blank">{% endif %}<img src="{% if request_get.show_clean_ur and card.clean_ur_idolized %}{{ card.clean_ur_idolized|userimage }}{% else %}{% imageurl card=card image='card_idolized_image' %}{% endif %}" class="idolized" width="{% if card.is_special or card.is_promo %}{% if total_results == 1 %}100%{% else %}50%{% endif %}{% else %}50%{% endif %}" alt="{{ card }} idolized">{% if total_results == 1 %}</a>{% endif %}{% if total_results > 1 %}</a>{% endif %}</div>
 		  {% if total_results == 1 %}
 		</div>
 		<div class="col-md-6">
@@ -132,7 +132,7 @@
 				{% if not card.is_promo and not card.is_special %}
 				<div class="round-normal">
 				  {% if card.round_card_image %}
-				  <img src="{% imageurl card=card image='round_card_image' english_version=request_get.is_world %}" alt="{{ card }}" height="70">
+				  <img src="{% imageurl card=card image='round_card_image' %}" alt="{{ card }}" height="70">
 				  {% else %}
 				  <i class="flaticon-id"></i>
 				  {% endif %}
@@ -140,7 +140,7 @@
 				{% endif %}
 				<div {% if card.is_special or card.is_promo %}class="round-idolized-only"{% else %}class="round-idolized" style="display: none"{% endif %}>
 				  {% if card.round_card_idolized_image %}
-				  <img src="{% imageurl card=card image='round_card_idolized_image' english_version=request_get.is_world %}" alt="{{ card }}" height="70">
+				  <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="70">
 				  {% else %}
 				  <i class="flaticon-id"></i>
 				  {% endif %}
@@ -335,7 +335,7 @@
 			  <td>
                             {% for skill_up_card in card.skill_up_cards %}
                             <a href="/cards/{{ skill_up_card.0 }}/" target="_blank" class="padding5 inline-block">
-			      <img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_image' english_version=request_get.is_world %}" height="40" width="40"><img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_idolized_image' english_version=request_get.is_world %}" height="40" width="40">
+			      <img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_image' %}" height="40" width="40"><img src="{% cardrawurl card_id=skill_up_card.0 idol_name=skill_up_card.1 image_type='round_card_idolized_image' %}" height="40" width="40">
 			    </a>
                             {% endfor %}
 			  </td>
@@ -360,16 +360,17 @@
 			    <a href="{{ card.clean_ur_idolized|userimage }}" target="_blank">{% trans 'Clean UR'%}: {% trans 'Idolized' %}</a><br>
 			    {% endif %}
 			    {% if card.id < 910 %}
-			    {% if not request_get.is_world %}
 			    {% if card.english_card_image %}
-			    <a href="{% imageurl card=card image='card_image' english_version=True %}" target="_blank">{% trans 'English Version' %}: {% trans 'Not Idolized' %}</a><br>
+			    <a href="{% imageurl card=card image='card_image' english_version=True %}" target="_blank">{% trans 'Old Version' %}: {% trans 'Not Idolized' %}</a><br>
 			    {% endif %}
 			    {% if card.english_card_idolized_image %}
-			    <a href="{% imageurl card=card image='card_idolized_image' english_version=True %}" target="_blank">{% trans 'English Version' %}: {% trans 'Idolized' %}</a><br>
+			    <a href="{% imageurl card=card image='card_idolized_image' english_version=True %}" target="_blank">{% trans 'Old Version' %}: {% trans 'Idolized' %}</a><br>
 			    {% endif %}
-			    {% else %}
-			    <a href="{% imageurl card=card image='card_image' english_version=False %}" target="_blank">{% trans 'Japanese Version' %}: {% trans 'Not Idolized' %}</a><br>
-			    <a href="{% imageurl card=card image='card_idolized_image' english_version=False %}" target="_blank">{% trans 'Japanese Version' %}: {% trans 'Idolized' %}</a><br>
+			    {% if card.english_round_card_image %}
+			    <a href="{% imageurl card=card image='round_card_image' english_version=True %}" target="_blank">{% trans 'Icon' %} - {% trans 'Old Version' %}: {% trans 'Not Idolized' %}</a><br>
+			    {% endif %}
+			    {% if card.english_round_card_idolized_image %}
+			    <a href="{% imageurl card=card image='round_card_idolized_image' english_version=True %}" target="_blank">{% trans 'Icon' %} - {% trans 'Old Version' %}: {% trans 'Idolized' %}</a><br>
 			    {% endif %}
 			    {% endif %}
 			  </td>
@@ -505,11 +506,11 @@
 		    {% endif %}
 		    {% endif %}
 		    <div class="share text-center padding20">
-		      <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		      <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		      <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		      <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
-		      <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' english_version=request_get.is_world %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_facebook_large" displayText="Facebook" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_twitter_large" st_via="schoolidolu" displayText="Tweet" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_reddit_large" displayText="Reddit" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_tumblr_large" displayText="Tumblr" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
+		      <span class="st_pinterest_large" displayText="Pinterest" st_url="http://schoolido.lu{{ card|singlecardurl }}" st_image="{% imageurl card=card image='card_idolized_image' %}" st_title="{% trans 'School Idol Tomodachi' %} - {{ card }}"></span>
 		    </div>
 		  </div> <!-- more -->
 		  {% if total_results == 1 %}

@@ -691,7 +691,7 @@ class Account(ExportModelOperationsMixin('Account'), models.Model):
     def starter_card_round_image(self):
         if not self.starter_id:
             return None
-        return ('c/' if self.language == 'JP' else 'cards/') + str(self.starter_id) + 'Round' + self._get_starter_idol()[0].split(' ')[-1] + '.png'
+        return 'c/' + str(self.starter_id) + 'Round' + self._get_starter_idol()[0].split(' ')[-1] + '.png'
 
     @property
     def starter_name(self):

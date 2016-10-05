@@ -2264,6 +2264,12 @@ def staff_database(request):
             context['uploaded_event'] = event
     else:
         context['english_event_form'] = forms.StaffEnglishBannerForm()
+    if 'add_card' in request.POST:
+        context['form_card'] = forms.StaffCard(request.POST, request.FILES)
+        if context['form_card'].is_valid():
+            context['added_card'] = context['form_card'].save()
+    else:
+        context['form_card'] = forms.StaffCard()
     return render(request, 'staff_database.html', context)
 
 def staff_database_script(request, script):

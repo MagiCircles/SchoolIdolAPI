@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load imageurl %}
+{% load mod %}
 
 {% block title %}Staff - Database Maintenance{% endblock %}
 
@@ -259,6 +260,20 @@
       <input name="englishEvent" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Upload English event banner" />
     </div>
   </form>
+
+  <h4>Add Card</h4>
+  <form class="form-horizontal" method="post" enctype="multipart/form-data">
+    {% if added_card %}
+    Card added:
+    <a href="{{ added_card|singlecardurl }}" target="_blank">{{ added_card }}</a>
+    {% endif %}
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_card wrap=0 %}
+    <div class="text-right">
+      <input name="add_card" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Card" />
+    </div>
+  </form>
+
 
   {% include 'disqus.html' with disqus_identifier='staff-database' %}
 </div>

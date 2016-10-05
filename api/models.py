@@ -307,7 +307,7 @@ CENTER_SKILL_UR = {
     'Empress': 'Cool',
 }
 
-CENTER_SKILL_TRANSLATE = _('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart'), _('Star')
+CENTER_SKILL_TRANSLATE = [_('Princess'), _('Angel'), _('Empress'), _('Power'), _('Heart'), _('Star')]
 
 TRIVIA_SCORE_SENTENCES = [
     _('Ouch!'),

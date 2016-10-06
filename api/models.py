@@ -153,6 +153,8 @@ STATUS_CHOICES = (
     ('AMBASSADOR', _('Idol Ambassador')),
     ('PRODUCER', _('Idol Producer')),
     ('DEVOTEE', _('Ultimate Idol Devotee')),
+    ('STAFF', _('Staff')),
+    ('DATABASE', _('Database Maintainer')),
 )
 STATUS_DICT = dict(STATUS_CHOICES)
 
@@ -397,6 +399,8 @@ def statusToColor(status):
     elif status == 'AMBASSADOR': return '#a8a8a8'
     elif status == 'PRODUCER': return '#c98910'
     elif status == 'DEVOTEE': return '#c98910'
+    elif status == 'STAFF': return 'rgb(246, 221, 83)'
+    elif status == 'DATABASE': return 'green'
     return ''
 
 def statusToColorString(status):

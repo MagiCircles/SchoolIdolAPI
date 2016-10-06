@@ -78,6 +78,19 @@ dt, dd {
 	display: block;
 	font-family: Flaticon;
     }
+    &[data-user-raw-status="STAFF"] {
+	&:after {
+	    content: "\f12f";
+	}
+    }
+    &[data-user-raw-status="DATABASE"] {
+	&:after {
+	    content: url('/static/zombie.png');
+	    width: 30px;
+	    height: 30px;
+	    bottom: 5px;
+	}
+    }
 }
 
 .inline-block {

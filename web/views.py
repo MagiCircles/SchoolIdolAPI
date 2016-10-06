@@ -2965,7 +2965,7 @@ def trades_or_giveaways_submit(request, type, account):
 
 def english_future(request):
     context = globalContext(request)
-    future_events = models.Event.objects.filter(Q(english_beginning=None) | Q(english_end__gte=timezone.now())).order_by('-english_beginning', 'beginning')
+    future_events = models.Event.objects.filter(Q(english_beginning=None) | Q(english_end__gte=timezone.now())).extra(select={'english_is_null': 'english_beginning IS NULL'}).order_by('english_is_null', 'english_beginning', 'beginning')
     # remove events already paired
     future_events = future_events.exclude(pk__in=[53,58,63,61])
     # remove too old events (not gonna happen)

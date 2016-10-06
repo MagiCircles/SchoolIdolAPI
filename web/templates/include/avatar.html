@@ -4,7 +4,7 @@
 
 {% load choicesToString %}
 {% load gravatar %}
-<{% if av_link %}a href="/user/{{ av_user.username }}/{% if av_account_id %}#{{ av_account_id }}{% endif %}"{% if av_external %} target="_blank"{% endif %}{% else %}div{% endif %} class="{% if av_inline %}inline-block {% endif %}avatar_wrapper {% if av_button %} btn btn-{% if not high_traffic and av_user.preferences.color %}{{ av_user.preferences.color }}{% else %}default{% endif %}{% endif %} {{ av_class }}" {% if not high_traffic and av_user.preferences.status and av_user.preferences.status != 'THANKS' %}data-user-status="{{ av_user.preferences.status|userStatusToString }}" style="color: {{ av_user.preferences.status|userStatusToColor }}; font-size: {{ av_size }}px;"{% endif %}>
+<{% if av_link %}a href="/user/{{ av_user.username }}/{% if av_account_id %}#{{ av_account_id }}{% endif %}"{% if av_external %} target="_blank"{% endif %}{% else %}div{% endif %} class="{% if av_inline %}inline-block {% endif %}avatar_wrapper {% if av_button %} btn btn-{% if not high_traffic and av_user.preferences.color %}{{ av_user.preferences.color }}{% else %}default{% endif %}{% endif %} {{ av_class }}" {% if not high_traffic and av_user.preferences.status and av_user.preferences.status != 'THANKS' %}data-user-status="{{ av_user.preferences.status|userStatusToString }}" data-user-raw-status="{{ av_user.preferences.status }}" style="color: {{ av_user.preferences.status|userStatusToColor }}; font-size: {{ av_size }}px;"{% endif %}>
   <img src="{{ av_user|gravatar:av_image_size }}" class="avatar"{% if av_fixed %} height="{{ av_image_size }}" width="{{ av_image_size }}"{% endif %} >
   {% if av_username %}<h4>{{ av_user.username }}</h4>{% endif %}
 </{% if av_link %}a{% else %}div{% endif %}>

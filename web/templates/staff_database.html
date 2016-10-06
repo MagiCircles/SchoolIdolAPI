@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load imageurl %}
+{% load mod %}
 
 {% block title %}Staff - Database Maintenance{% endblock %}
 
@@ -260,6 +261,44 @@
     </div>
   </form>
 
+  <h4>Add Card</h4>
+  <form class="form-horizontal" method="post" enctype="multipart/form-data">
+    {% if added_card %}
+    Card added:
+    <a href="{{ added_card|singlecardurl }}" target="_blank">{{ added_card }}</a>
+    {% endif %}
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_card wrap=0 %}
+    <div class="text-right">
+      <input name="add_card" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Card" />
+    </div>
+  </form>
+
+  <h4>Add Event</h4>
+  <form class="form-horizontal" method="post" enctype="multipart/form-data">
+    {% if added_event %}
+    Event added:
+    <a href="/events/{{ added_event.japanese_name|urlencode }}/" target="_blank">{{ added_event }}</a>
+    {% endif %}
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_event wrap=0 %}
+    <div class="text-right">
+      <input name="add_event" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Event" />
+    </div>
+  </form>
+
+  <h4>Add Song</h4>
+  <form class="form-horizontal" method="post" enctype="multipart/form-data">
+    {% if added_song %}
+    Song added:
+    <a href="/songs/{{ added_song.name|urlencode }}/" target="_blank">{{ added_song }}</a>
+    {% endif %}
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_song wrap=0 %}
+    <div class="text-right">
+      <input name="add_song" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Song" />
+    </div>
+  </form>
   {% include 'disqus.html' with disqus_identifier='staff-database' %}
 </div>
 {% endblock %}

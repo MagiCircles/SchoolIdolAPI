@@ -2264,6 +2264,24 @@ def staff_database(request):
             context['uploaded_event'] = event
     else:
         context['english_event_form'] = forms.StaffEnglishBannerForm()
+    if 'add_card' in request.POST:
+        context['form_card'] = forms.StaffCard(request.POST, request.FILES)
+        if context['form_card'].is_valid():
+            context['added_card'] = context['form_card'].save()
+    else:
+        context['form_card'] = forms.StaffCard()
+    if 'add_event' in request.POST:
+        context['form_event'] = forms.StaffEvent(request.POST, request.FILES)
+        if context['form_event'].is_valid():
+            context['added_event'] = context['form_event'].save()
+    else:
+        context['form_event'] = forms.StaffEvent()
+    if 'add_song' in request.POST:
+        context['form_song'] = forms.StaffSong(request.POST, request.FILES)
+        if context['form_song'].is_valid():
+            context['added_song'] = context['form_song'].save()
+    else:
+        context['form_song'] = forms.StaffSong()
     return render(request, 'staff_database.html', context)
 
 def staff_database_script(request, script):

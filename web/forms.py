@@ -12,6 +12,7 @@ from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
 from django.conf import settings
 from api.raw import STARTERS
+from web.templatetags.choicesToString import skillsIcons
 from web.utils import randomString
 from multiupload.fields import MultiFileField
 from api import models
@@ -532,3 +533,82 @@ class PrivateMessageForm(ModelForm):
     class Meta:
         model = models.PrivateMessage
         fields = ('message',)
+
+skill_choices = [(name, name) for (name, icon) in skillsIcons.items()] + [('Special', 'Special')]
+attributes = [name for (name, localized) in models.ATTRIBUTE_CHOICES if name != 'All']
+effects = [unicode(name) for name in models.CENTER_SKILL_TRANSLATE]
+center_skill_choices = []
+for attribute in attributes:
+    for effect in effects:
+        center_skill_choices.append((attribute + ' ' +  effect))
+center_skill_choices = [(skill, skill) for skill in center_skill_choices]
+
+class StaffCard(ModelForm):
+    skill = ChoiceField(label=_('Skill'), choices=BLANK_CHOICE_DASH + skill_choices, required=False)
+    center_skill = ChoiceField(label=_('Center Skill'), choices=BLANK_CHOICE_DASH + center_skill_choices, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(StaffCard, self).__init__(*args, **kwargs)
+        self.fields['japanese_skill'].help_text = _(u'Name of the skill in Japanese. Also corresponds to the name of the card. Example: "和太鼓名人"')
+        self.fields['skill_details'].help_text = _(u'Use the formatted string details available here: https://goo.gl/CsYVa3 and replace "N" with the corresponding value.')
+        self.fields['video_story'].help_text = _(u'Link to a YouTube video. Make sure it uses the following format: http://www.youtube.com/watch?v=Mcz9C67Pd1c')
+        self.fields['japanese_video_story'].help_text = _(u'Link to a YouTube video. Make sure it uses the following format: http://www.youtube.com/watch?v=Mcz9C67Pd1c')
+        for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
+            self.fields[field].required=False
+
+    def save(self, commit=True):
+        instance = super(StaffCard, self).save(commit=False)
+        for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
+            if not getattr(instance, field):
+                setattr(instance, field, 0)
+        if instance.rarity == 'N' or instance.is_promo:
+            for field in ['non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool']:
+                setattr(instance, field, 0)
+        for field in ['japanese_collection', 'english_collection', 'translated_collection', 'promo_item', 'promo_link', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'video_story', 'japanese_video_story']:
+            if not getattr(instance, field):
+                setattr(instance, field, None)
+        if commit:
+            instance.save()
+        return instance
+
+    class Meta:
+        model = models.Card
+        fields = ('id', 'game_id', 'idol', 'japanese_collection', 'english_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'event', 'other_event', 'is_special', 'japan_only', 'seal_shop', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'transparent_image', 'transparent_idolized_image', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'clean_ur', 'clean_ur_idolized', 'video_story', 'japanese_video_story', 'ur_pair', 'ur_pair_reverse', 'ur_pair_idolized_reverse')
+
+class StaffEvent(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(StaffEvent, self).__init__(*args, **kwargs)
+#        for field in ['beginning', 'end']:
+#            self.fields[field].required=True
+
+    def save(self, commit=True):
+        instance = super(StaffEvent, self).save(commit=False)
+        for field in ['romaji_name', 'english_name']:
+            if not getattr(instance, field):
+                setattr(instance, field, None)
+
+    class Meta:
+        model = models.Event
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'end', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_end', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
+
+
+class StaffSong(ModelForm):
+    main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [
+        ('μ\'s', 'μ\'s'),
+        ('Aqours', 'Aqours'),
+    ], required=False)
+    daily_rotation = ChoiceField(label=_('Daily Rotation'), choices=BLANK_CHOICE_DASH + [('A', 'A'), ('B', 'B'), ('C', 'C',)], required=False)
+    daily_rotation_position = ChoiceField(label=_('Daily Rotation Position'), choices=BLANK_CHOICE_DASH + [(i, i) for i in range(1, 11)], required=False)
+    def __init__(self, *args, **kwargs):
+        super(StaffSong, self).__init__(*args, **kwargs)
+        self.fields['itunes_id'].help_text = _(u'Leave this empty if you don\'t know what this is!')
+
+    def save(self, commit=True):
+        instance = super(StaffSong, self).save(commit=False)
+        for field in ['romaji_name', 'translated_name']:
+            if not getattr(instance, field):
+                setattr(instance, field, None)
+
+    class Meta:
+        model = models.Song
+        fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'main_unit', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'master_difficulty', 'master_notes', 'available', 'itunes_id')

@@ -125,12 +125,16 @@ function genericAjaxError() {
     alert('Oops! Something bad happened. Try again.');
 }
 
+function isStaffFromStatus(status) {
+    return status == 'STAFF' || status == 'DATABASE';
+}
+
 function avatarStatus() {
     $('.avatar_wrapper').each(function() {
 	if (typeof $(this).attr('data-user-status') != 'undefined') {
 	    $(this).popover({
 		title: '<span style="color: ' + $(this).css('color') + '">' + $(this).attr('data-user-status') + '</span>',
-		content: '<small style="color: #333">School Idol Tomodachi Donator</small>',
+		content: '<small style="color: #333">School Idol Tomodachi ' + (isStaffFromStatus($(this).attr('data-user-raw-status')) ? 'Staff' : 'Donator') + '</small>',
 		html: true,
 		placement: 'bottom',
 		trigger: 'hover',

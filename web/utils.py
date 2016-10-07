@@ -35,7 +35,7 @@ def dataToImageFile(data):
     image.flush()
     return ImageFile(image)
 
-def shrinkImageFromData(data, filename):
+def shrinkImageFromData(data, filename='lol.png'):
     _, extension = os.path.splitext(filename)
     extension = extension.lower()
     api_key = settings.TINYPNG_API_KEY

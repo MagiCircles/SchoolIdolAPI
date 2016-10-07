@@ -5,6 +5,7 @@ from contest.utils import get_current_contests
 from collections import OrderedDict
 from web.templatetags.mod import tourldash
 from django.db.models import Count
+from django.utils import timezone
 from django.conf import settings
 import sys
 import urllib2, json
@@ -37,21 +38,29 @@ def generate_settings(opt={}):
 
         print 'Check the current events'
         try:
-            current_jp = models.Event.objects.order_by('-beginning')[0]
+            try:
+                current_jp = models.Event.objects.filter(end__lte=timezone.now()).order_by('-beginning')[0]
+            except IndexError:
+                current_jp = models.Event.objects.order_by('-beginning')[0]
             current_jp = {
                 'japanese_name': current_jp.japanese_name,
                 'slide_position': len(current_contests) + 1,
                 'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_jp.image),
             }
-        except: pass
+        except:
+            current_jp = None
         try:
-            current_en = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
+            try:
+                current_en = models.Event.objects.filter(english_beginning__isnull=False).filter(end__lte=timezone.now()).order_by('-english_beginning')[0]
+            except IndexError:
+                current_en = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
             current_en = {
                 'japanese_name': current_en.japanese_name,
                 'slide_position': len(current_contests),
                 'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_en.english_image if current_en.english_image else current_en.image),
             }
-        except: pass
+        except:
+            current_en = None
 
         print 'Get ages'
         ages = {}

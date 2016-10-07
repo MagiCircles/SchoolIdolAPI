@@ -27,6 +27,8 @@ from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from web import bouncy
 from api import models, raw
+from api.management.commands.update_cards_rankings import update_cards_rankings
+from api.management.commands.update_cards_join_cache import update_cards_join_cache
 from contest import models as contest_models
 from web import forms, donations, transfer_code, raw as web_raw
 from web.links import links as links_list
@@ -2253,33 +2255,30 @@ def staff_database(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
         raise PermissionDenied()
     context = globalContext(request)
-    if 'englishEvent' in request.POST:
-        context['english_event_form'] = forms.StaffEnglishBannerForm(request.POST, request.FILES)
-        if context['english_event_form'].is_valid():
-            event = context['english_event_form'].cleaned_data['event']
-            image = context['english_event_form'].cleaned_data['english_image']
-            filename = image.name
-            image = shrinkImageFromData(image.read())
-            event.english_image.save(models.event_EN_upload_to(event, filename), image)
-            context['uploaded_event'] = event
-    else:
-        context['english_event_form'] = forms.StaffEnglishBannerForm()
     if 'add_card' in request.POST:
         context['form_card'] = forms.StaffCard(request.POST, request.FILES)
         if context['form_card'].is_valid():
             context['added_card'] = context['form_card'].save()
+            update_cards_rankings({})
+            update_cards_join_cache(card_ids=[context['added_card'].id])
+        else:
+            context['card_has_error'] = True
     else:
         context['form_card'] = forms.StaffCard()
     if 'add_event' in request.POST:
         context['form_event'] = forms.StaffEvent(request.POST, request.FILES)
         if context['form_event'].is_valid():
             context['added_event'] = context['form_event'].save()
+        else:
+            context['event_has_error'] = True
     else:
         context['form_event'] = forms.StaffEvent()
     if 'add_song' in request.POST:
         context['form_song'] = forms.StaffSong(request.POST, request.FILES)
         if context['form_song'].is_valid():
             context['added_song'] = context['form_song'].save()
+        else:
+            context['song_has_error'] = True
     else:
         context['form_song'] = forms.StaffSong()
     return render(request, 'staff_database.html', context)
@@ -2447,6 +2446,53 @@ def ajaxreport(request, report_id, status):
                 setattr(report, k, v)
             report.save()
     return HttpResponse(status)
+
+def staff_editcard(request, id):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    card = get_object_or_404(models.Card, id=id)
+    if 'editcard' in request.POST:
+        context['form'] = forms.StaffCard(request.POST, request.FILES, instance=card)
+        if context['form'].is_valid():
+            card = context['form'].save()
+            update_cards_rankings({})
+            update_cards_join_cache(card_ids=[card.id])
+            return redirect(singlecardurl(card))
+    else:
+        context['form'] = forms.StaffCard(instance=card)
+    context['card'] = card
+    return render(request, 'staff_editcard.html', context)
+
+def staff_editevent(request, id):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    event = get_object_or_404(models.Event, id=id)
+    if 'editevent' in request.POST:
+        context['form'] = forms.StaffEvent(request.POST, request.FILES, instance=event)
+        if context['form'].is_valid():
+            event = context['form'].save()
+            return redirect(u'/events/{}/'.format(event.japanese_name))
+    else:
+        context['form'] = forms.StaffEvent(instance=event)
+    context['event'] = event
+    return render(request, 'staff_editevent.html', context)
+
+def staff_editsong(request, id):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    song = get_object_or_404(models.Song, id=id)
+    if 'editsong' in request.POST:
+        context['form'] = forms.StaffSong(request.POST, request.FILES, instance=song)
+        if context['form'].is_valid():
+            song = context['form'].save()
+            return redirect(u'/songs/{}/'.format(song.name))
+    else:
+        context['form'] = forms.StaffSong(instance=song)
+    context['song'] = song
+    return render(request, 'staff_editsong.html', context)
 
 def songs(request, song=None, ajax=False):
     page = 0

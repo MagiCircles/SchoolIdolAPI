@@ -3,9 +3,11 @@ from django.db.models import F, Q
 from api import models
 import sys
 
-def update_cards_join_cache(opt={}):
+def update_cards_join_cache(opt={}, card_ids=[]):
     print '# Update cache of join objects in cards'
     cards = models.Card.objects.all().select_related('event', 'other_event', 'idol', 'ur_pair', 'ur_pair__idol')
+    if card_ids:
+        cards = cards.filter(id__in=card_ids)
     for card in cards:
         print '#' + str(card.id) + ' ',
         sys.stdout.flush()
@@ -34,4 +36,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         update_cards_join_cache({})
-

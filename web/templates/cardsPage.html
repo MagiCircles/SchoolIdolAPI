@@ -519,6 +519,9 @@
 	      {% endif %}
 	    </div> <!-- panel-body -->
 	    <div class="panel-footer clearfix">
+	      {% if user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+	      <a href="/staff/editcard/{{ card.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit card" data-trigger="hover"><i class="flaticon-edit"></i></a>
+	      {% endif %}
 	      {% if not high_traffic %}
 	      {% for owned in card.owned_cards %}
 	      {% include "ownedCardOnBottomCard.html" with owned=owned owner_account=accounts|findModelId:owned.owner_account_id withcenter=True %}

@@ -10,6 +10,154 @@
   <br><br>
   <h1 class="text-center">Database Maintenance</h1>
   <br>
+
+  <div class="well">
+    <h1 class="fontx2 text-center">Manual uploads</h1>
+  </div>
+
+  <br><hr><br>
+  <div class="clearfix">
+    <img src="/static/screenshots/collection.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
+    <a class="btn btn-xl btn-block btn-{{ btnColor }}" href="#addCard" data-toggle="collapse">Add Card</a>
+  </div>
+  {% if added_card %}
+  <div class="alert alert-info">
+    Card added:
+    <a href="{{ added_card|singlecardurl }}" target="_blank">{{ added_card }}</a>
+  </div>
+  {% endif %}
+  <form class="form-horizontal {% if not card_has_error %}collapse{% endif %}" method="post" enctype="multipart/form-data" id="addCard">
+    <br>
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_card wrap=0 %}
+    <div class="text-right">
+      <input name="add_card" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Card" />
+    </div>
+  </form>
+  <br><hr><br>
+  <div class="clearfix">
+    <img src="/static/screenshots/events.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
+    <a class="btn btn-xl btn-block btn-{{ btnColor }}" href="#addEvent" data-toggle="collapse">Add Event</a>
+  </div>
+  {% if added_event %}
+  <div class="alert alert-info">
+    Event added:
+    <a href="/events/{{ added_event.japanese_name|urlencode }}/" target="_blank">{{ added_event }}</a>
+  </div>
+  {% endif %}
+  <form class="form-horizontal {% if not event_has_error %}collapse{% endif %}" method="post" enctype="multipart/form-data" id="addEvent">
+    <br>
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_event wrap=0 %}
+    <div class="text-right">
+      <input name="add_event" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Event" />
+    </div>
+  </form>
+  <br><hr><br>
+  <div class="clearfix">
+    <img src="/static/screenshots/songs.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
+    <a class="btn btn-xl btn-block btn-{{ btnColor }}" href="#addSong" data-toggle="collapse">Add Song</a>
+  </div>
+  {% if added_song %}
+  <div class="alert alert-info">
+    Song added:
+    <a href="/songs/{{ added_song.name|urlencode }}/" target="_blank">{{ added_song }}</a>
+  </div>
+  {% endif %}
+  <form class="form-horizontal {% if not song_has_error %}collapse{% endif %}" method="post" enctype="multipart/form-data" id="addSong">
+    <br>
+    {% csrf_token %}
+    {% include "bootstrap_form_horizontal.html" with form=form_song wrap=0 %}
+    <div class="text-right">
+      <input name="add_song" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Song" />
+    </div>
+  </form>
+  <br><hr><br>
+
+
+  <div class="well">
+    <h1 class="fontx2 text-center">Internal Updates Scripts</h1>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/map.png" width="200" class="pull-left margin20">
+    <h4>Update locations</h4>
+    <ul>
+      <li>Update missing locations on <a href="/map/" target="_blank">the map</a>.</li>
+      <li>Note: This script runs automatically every 24 hours.</li>
+    </ul>
+    <form action="/staff/database/latlong/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update locations</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/collection.png" width="200" class="pull-left margin20">
+    <h4>Update total owners of cards and total wishlist for each card</h4>
+    <ul>
+      <li>Store a cache to easily find the most popular or most wished cards</li>
+      <li>Note: This script runs automatically every 24 hours.</li>
+    </ul>
+    <form action="/staff/database/update_cards_owners/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update total owners of cards and total wishlist for each card</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/contest.png" width="200" class="pull-left margin20">
+    <h4>Update generated settings</h4>
+    <ul>
+      <li>Update current contests and events (banners in homepage)</li>
+      <li>Update total donators</li>
+      <li>Update ages statistics</li>
+      <li>Update various cards statistics used in cards % bars and forms to filter</li>
+    </ul>
+    <form action="/staff/database/generate_settings/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update generated settings</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
+    <h4>Generate release dates</h4>
+    <ul>
+      <li>Promo cards don't have a release date in the wiki, so this script fills the missing release date by assuming it's the same than the previous card that has a release date.</li>
+    </ul>
+    <form action="/staff/database/generate_release_dates/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Generate release dates</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/medal1.png" width="200" class="pull-left margin20">
+    <h4>Generate Cards rankings</h4>
+    <ul>
+      <li>Generate the ranking position compared to the other cards with:
+        <ul>
+          <li>the same attribute</li>
+          <li>the same attribute and same rarity</li>
+          <li>the same attribute event cards</li>
+          <li>the same attribute promo cards</li>
+	  <li>Note: This script runs automatically every time you add a card with this form, update a card with the edit form or add/update a card with the API.</li>
+        </ul>
+      </li>
+    </ul>
+    <form action="/staff/database/update_cards_rankings/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Generate Cards rankings</button></form>
+  </div>
+
+  <hr>
+  <br>
+  <div class="well">
+    <h1 class="fontx2 text-center">External Import Scripts</h1>
+  </div>
+
   <p>
     We rely on external services for our database. So to make it fair, instead of just updating our database when we see something wrong or missing, we update the external services then update ours based on them.
   </p>
@@ -18,6 +166,9 @@
   </p>
   <p>
     <b>Be patient</b> after clicking the button. It can take a lot of time to execute the update scripts.
+  </p>
+  <p class="alert alert-info">
+    When a button is disabled, it means the script is currently not working as intended, because the pages we rely on changed. If needed, ask someone from the staff to update the scripts.
   </p>
   <i>
     <p>
@@ -29,72 +180,6 @@
       <strong>Note regarding cards:</strong> New cards are uploaded in the website using a script that downloads the files from a rooted Android device. Transparents and round images can't be uploaded in the site a different way. However, cards statistics, skills and basic images can be updated using the scripts below. So if the admins are not available when new cards come out, use the scrips below, but don't bother with the transparents and round images.
     </i>
   </p>
-
-  <div class="well">
-    <h1 class="fontx2 text-center">Cards, Idols, Songs, Events</h1>
-  </div>
-
-  <hr>
-  <div class="clearfix">
-    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
-    <h4>Update Cards Stats</h4>
-    <ul>
-      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=List_of_Cards&action=edit" target="_blank">Decaf wiki list of cards</a></li>
-      <li>Will create or edit cards with their ids, rarity, attribute, is_promo, promo_item, is_special, hp, all statistics (smile, pure, cool for minimum, non-idolized maximum (set to 0 for N and promos) and idolized maximum), skill, skill_details (special cards only), center_skill, idol, event</li>
-      <li>Will create events objects if they don't exist, with just the English + Japanese name</li>
-      <li>Will create idols objects if they don't exist, with just the name of the idol</li>
-    </ul>
-    <form action="/staff/database/importcardstats/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update Cards Stats</button>
-    </form>
-  </div>
-
-  <hr>
-  <div class="clearfix">
-    <img src="/static/screenshots/events.png" width="200" class="pull-left margin20">
-    <h4>Import Japanese events information</h4>
-    <ul>
-      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit" target="_blank">Decaf wiki list of events</a></li>
-      <li>Will create or edit events with their beginning, end, t1 points + rank, t2 points + rank, note, Japanese image</li>
-    </ul>
-    <form action="/staff/database/import_jp_events/" class="text-right" method="POST">
-      {% csrf_token %}
-      <input type="checkbox" name="noimages" checked> No images (will never download images, even when the banner is missing)<br>
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Import Japanese events information</button></form>
-  </div>
-
-  <hr>
-  <div class="clearfix">
-    <img src="/static/screenshots/events.png" width="200" class="pull-left margin20">
-    <h4>Import English events information + Cards worldwide available</h4>
-    <ul>
-      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info&action=edit" target="_blank">Decaf English version information</a></li>
-      <li>Will set cards as worldwide available if they appear in the list of cards</li>
-      <li>Will import English events with their beginning, end, t1 points + rank, t2 points + rank</li>
-      <li><strong>Note:</strong> English banners currently can't be imported from any known website and are uploaded manually in production</li>
-      <li><strong>Note:</strong> English and Japanese events info are stored in the same event object</li>
-    </ul>
-    <form action="/staff/database/import_en_events/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Import English events information + Cards worldwide available</button></form>
-  </div>
-
-  <hr>
-  <div class="clearfix">
-    <img src="/static/screenshots/idols.png" width="200" class="pull-left margin20">
-    <h4>Import idols trivia + collections in cards</h4>
-    <ul>
-      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=Category:Other_Characters" target="_blank">Each different page for each character</a></li>
-      <li>Will update the idols objects with the raw information specified in raw_information in <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/blob/master/api/raw.py" target="_blank">api/raw.py</a></li>
-      <li>Will import idols trivia info (see list of trivia info in <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/blob/master/api/models.py#L380" target="_blank">api/models.py</a>)
-      <li>Will save the <strong>translated collection</strong> in cards for each idol.</li>
-    </ul>
-    <form action="/staff/database/import_idols/" class="text-right" method="POST">
-      {% csrf_token %}
-      <input type="checkbox" name="redownload" checked> Re-download (will update the collections and trivia for each idols, even when they are aleady in the database)<br>
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Import idols trivia + collections in cards</button></form>
-  </div>
 
   <hr>
   <div class="clearfix">
@@ -130,6 +215,68 @@
   <hr>
   <div class="clearfix">
     <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
+    <h4>Update Cards Stats</h4>
+    <ul>
+      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=List_of_Cards&action=edit" target="_blank">Decaf wiki list of cards</a></li>
+      <li>Will create or edit cards with their ids, rarity, attribute, is_promo, promo_item, is_special, hp, all statistics (smile, pure, cool for minimum, non-idolized maximum (set to 0 for N and promos) and idolized maximum), skill, skill_details (special cards only), center_skill, idol, event</li>
+      <li>Will create events objects if they don't exist, with just the English + Japanese name</li>
+      <li>Will create idols objects if they don't exist, with just the name of the idol</li>
+    </ul>
+    <form action="/staff/database/importcardstats/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true" disabled>Update Cards Stats</button>
+    </form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/events.png" width="200" class="pull-left margin20">
+    <h4>Import Japanese events information</h4>
+    <ul>
+      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit" target="_blank">Decaf wiki list of events</a></li>
+      <li>Will create or edit events with their beginning, end, t1 points + rank, t2 points + rank, note, Japanese image</li>
+    </ul>
+    <form action="/staff/database/import_jp_events/" class="text-right" method="POST">
+      {% csrf_token %}
+      <input type="checkbox" name="noimages" checked> No images (will never download images, even when the banner is missing)<br>
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true" disabled>Import Japanese events information</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/events.png" width="200" class="pull-left margin20">
+    <h4>Import English events information + Cards worldwide available</h4>
+    <ul>
+      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info&action=edit" target="_blank">Decaf English version information</a></li>
+      <li>Will set cards as worldwide available if they appear in the list of cards</li>
+      <li>Will import English events with their beginning, end, t1 points + rank, t2 points + rank</li>
+      <li><strong>Note:</strong> English banners currently can't be imported from any known website and are uploaded manually in production</li>
+      <li><strong>Note:</strong> English and Japanese events info are stored in the same event object</li>
+    </ul>
+    <form action="/staff/database/import_en_events/" class="text-right" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true" disabled>Import English events information + Cards worldwide available</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/idols.png" width="200" class="pull-left margin20">
+    <h4>Import idols trivia + collections in cards</h4>
+    <ul>
+      <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=Category:Other_Characters" target="_blank">Each different page for each character</a></li>
+      <li>Will update the idols objects with the raw information specified in raw_information in <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/blob/master/api/raw.py" target="_blank">api/raw.py</a></li>
+      <li>Will import idols trivia info (see list of trivia info in <a href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/blob/master/api/models.py#L380" target="_blank">api/models.py</a>)
+      <li>Will save the <strong>translated collection</strong> in cards for each idol.</li>
+    </ul>
+    <form action="/staff/database/import_idols/" class="text-right" method="POST">
+      {% csrf_token %}
+      <input type="checkbox" name="redownload" checked> Re-download (will update the collections and trivia for each idols, even when they are aleady in the database)<br>
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Import idols trivia + collections in cards</button></form>
+  </div>
+
+  <hr>
+  <div class="clearfix">
+    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
     <h4>Import skill details from Wikia</h4>
     <ul>
       <li>External service source to edit: <a href="http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List" target="_blank">Wikia list of cards</a></li>
@@ -138,7 +285,7 @@
     <form action="/staff/database/import_wikia/" class="text-right" method="POST">
       {% csrf_token %}
       <input type="checkbox" name="noimages" checked> No images (Will not download the images even when they're missing)<br>
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Import skill details from Wikia</button></form>
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true" disabled>Import skill details from Wikia</button></form>
   </div>
 
   <hr>
@@ -151,78 +298,7 @@
     </ul>
     <form action="/staff/database/importcards_japanese/" class="text-right" method="POST">
       {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Import Japanese skill details and collections</button></form>
-  </div>
-
-  <hr>
-  <div class="clearfix">
-    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
-    <h4>Generate release dates</h4>
-    <ul>
-      <li>Promo cards don't have a release date in the wiki, so this script fills the missing release date by assuming it's the same than the previous card that has a release date.</li>
-    </ul>
-    <form action="/staff/database/generate_release_dates/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Generate release dates</button></form>
-  </div>
-
-  <hr>
-  <div class="clearfix">
-    <img src="/static/medal1.png" width="200" class="pull-left margin20">
-    <h4>Generate Cards rankings</h4>
-    <ul>
-      <li>Generate the ranking position compared to the other cards with:
-        <ul>
-          <li>the same attribute</li>
-          <li>the same attribute and same rarity</li>
-          <li>the same attribute event cards</li>
-          <li>the same attribute promo cards</li>
-        </ul>
-      </li>
-    </ul>
-    <form action="/staff/database/update_cards_rankings/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Generate Cards rankings</button></form>
-  </div>
-
-  <div class="well">
-    <h1 class="fontx2 text-center">Players</h1>
-  </div>
-
-  <div class="clearfix">
-    <img src="/static/screenshots/map.png" width="200" class="pull-left margin20">
-    <h4>Update locations</h4>
-    <ul>
-      <li>Update missing locations on <a href="/map/" target="_blank">the map</a>.</li>
-    </ul>
-    <form action="/staff/database/latlong/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update locations</button></form>
-  </div>
-
-  <div class="clearfix">
-    <img src="/static/screenshots/collection.png" width="200" class="pull-left margin20">
-    <h4>Update total owners of cards and total wishlist for each card</h4>
-    <ul>
-      <li>Store a cache to easily find the most popular or most wished cards</li>
-    </ul>
-    <form action="/staff/database/update_cards_owners/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update total owners of cards and total wishlist for each card</button></form>
-  </div>
-
-  <div class="clearfix">
-    <img src="/static/screenshots/contest.png" width="200" class="pull-left margin20">
-    <h4>Update generated settings</h4>
-    <ul>
-      <li>Update current contests (banner in homepage)</li>
-      <li>Update total donators</li>
-      <li>Update ages statistics</li>
-      <li>Update various cards statistics</li>
-    </ul>
-    <form action="/staff/database/generate_settings/" class="text-right" method="POST">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">Update generated settings</button></form>
+      <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true" disabled>Import Japanese skill details and collections</button></form>
   </div>
 
   <!-- <hr> -->
@@ -239,66 +315,6 @@
   <!--     <input type="checkbox" name="noimages" checked> No images<br> -->
   <!--     <button type="submit" class="btn btn-{{ btnColor }}" data-form-loader="true">ABC</button></form> -->
   <!-- </div> -->
-
-
-  <div class="well">
-    <h1 class="fontx2 text-center">Manual uploads</h1>
-  </div>
-
-  <h4>Upload English event banner</h4>
-  <form class="form-horizontal" method="post" enctype="multipart/form-data">
-    {% if uploaded_event %}
-    <div class="alert alert-info">
-      <a href="/event/{{ uploaded_event.japanese_name|urlencode }}/" target="_blank">
-        <img src="{% eventimageurl event=uploaded_event english=True %}" style="max-width: 80%">
-      </a>
-    </div>
-    {% endif %}
-    {% csrf_token %}
-    {% include "bootstrap_form_horizontal.html" with form=english_event_form wrap=0 %}
-    <div class="text-right">
-      <input name="englishEvent" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Upload English event banner" />
-    </div>
-  </form>
-
-  <h4>Add Card</h4>
-  <form class="form-horizontal" method="post" enctype="multipart/form-data">
-    {% if added_card %}
-    Card added:
-    <a href="{{ added_card|singlecardurl }}" target="_blank">{{ added_card }}</a>
-    {% endif %}
-    {% csrf_token %}
-    {% include "bootstrap_form_horizontal.html" with form=form_card wrap=0 %}
-    <div class="text-right">
-      <input name="add_card" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Card" />
-    </div>
-  </form>
-
-  <h4>Add Event</h4>
-  <form class="form-horizontal" method="post" enctype="multipart/form-data">
-    {% if added_event %}
-    Event added:
-    <a href="/events/{{ added_event.japanese_name|urlencode }}/" target="_blank">{{ added_event }}</a>
-    {% endif %}
-    {% csrf_token %}
-    {% include "bootstrap_form_horizontal.html" with form=form_event wrap=0 %}
-    <div class="text-right">
-      <input name="add_event" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Event" />
-    </div>
-  </form>
-
-  <h4>Add Song</h4>
-  <form class="form-horizontal" method="post" enctype="multipart/form-data">
-    {% if added_song %}
-    Song added:
-    <a href="/songs/{{ added_song.name|urlencode }}/" target="_blank">{{ added_song }}</a>
-    {% endif %}
-    {% csrf_token %}
-    {% include "bootstrap_form_horizontal.html" with form=form_song wrap=0 %}
-    <div class="text-right">
-      <input name="add_song" type="submit" class="btn btn-lg btn-{{ btnColor }}" value="Add Song" />
-    </div>
-  </form>
   {% include 'disqus.html' with disqus_identifier='staff-database' %}
 </div>
 {% endblock %}

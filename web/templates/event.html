@@ -25,6 +25,9 @@
   <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
   {% endif %}
   <br><br>
+  {% if user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+  <a href="/staff/editevent/{{ event.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit event" data-trigger="hover"><i class="flaticon-edit"></i> Staff: Edit event</a>
+  {% endif %}
   <div class="row">
     {% for card in event.all_cards %}
     <div class="col-md-{{ col_size }}">

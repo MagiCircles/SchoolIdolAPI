@@ -29,13 +29,20 @@ class Capturing(list):
         self.extend(self._stringio.getvalue().splitlines())
         sys.stdout = self._stdout
 
-def shrinkImageFromData(data):
+def dataToImageFile(data):
+    image = NamedTemporaryFile(delete=False)
+    image.write(data)
+    image.flush()
+    return ImageFile(image)
+
+def shrinkImageFromData(data, filename='lol.png'):
+    _, extension = os.path.splitext(filename)
+    extension = extension.lower()
     api_key = settings.TINYPNG_API_KEY
+    if not api_key or extension not in ['.png', '.jpg', '.jpeg']:
+        return dataToImageFile(data)
     info, new_data = shrink_data(data, api_key)
-    img_shrunked = NamedTemporaryFile(delete=False)
-    img_shrunked.write(new_data)
-    img_shrunked.flush()
-    return ImageFile(img_shrunked)
+    return dataToImageFile(new_data)
 
 def shrunkImage(picture, filename):
     api_key = settings.TINYPNG_API_KEY

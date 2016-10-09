@@ -7,13 +7,14 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from dateutil.relativedelta import relativedelta
 from django.utils import timezone
+from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 from django.utils.translation import ugettext_lazy as _, string_concat, ungettext_lazy
 from django.db.models.fields import BLANK_CHOICE_DASH
 from django.core.validators import RegexValidator
 from django.conf import settings
 from api.raw import STARTERS
 from web.templatetags.choicesToString import skillsIcons
-from web.utils import randomString
+from web.utils import randomString, shrinkImageFromData
 from multiupload.fields import MultiFileField
 from api import models
 
@@ -27,6 +28,22 @@ def date_input(field):
         'data-role': 'data',
     })
     return field
+
+class TinyPngForm(ModelForm):
+    def save(self, commit=True):
+        instance = super(TinyPngForm, self).save(commit=False)
+        for field in self.fields.keys():
+            if (hasattr(instance, field)
+                and field in dir(self.Meta.model)
+                and type(self.Meta.model._meta.get_field(field)) == models.models.ImageField):
+                image = self.cleaned_data[field]
+                if image and (isinstance(image, InMemoryUploadedFile) or isinstance(image, TemporaryUploadedFile)):
+                    filename = image.name
+                    image = shrinkImageFromData(image.read(), filename)
+                    setattr(instance, field, image)
+        if commit:
+            instance.save()
+        return instance
 
 class CreateUserForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -376,12 +393,6 @@ class ModerationReportForm(ModelForm):
         model = models.ModerationReport
         fields = ('comment', 'images')
 
-class StaffEnglishBannerForm(ModelForm):
-    event = forms.ModelChoiceField(queryset=models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning'))
-    class Meta:
-        model = models.Event
-        fields = ('event', 'english_image',)
-
 class FilterSongForm(ModelForm):
     search = forms.CharField(required=False, label=_('Search'))
     ordering = forms.ChoiceField(choices=[
@@ -543,18 +554,28 @@ for attribute in attributes:
         center_skill_choices.append((attribute + ' ' +  effect))
 center_skill_choices = [(skill, skill) for skill in center_skill_choices]
 
-class StaffCard(ModelForm):
+class StaffCard(TinyPngForm):
     skill = ChoiceField(label=_('Skill'), choices=BLANK_CHOICE_DASH + skill_choices, required=False)
     center_skill = ChoiceField(label=_('Center Skill'), choices=BLANK_CHOICE_DASH + center_skill_choices, required=False)
 
     def __init__(self, *args, **kwargs):
         super(StaffCard, self).__init__(*args, **kwargs)
-        self.fields['japanese_skill'].help_text = _(u'Name of the skill in Japanese. Also corresponds to the name of the card. Example: "和太鼓名人"')
-        self.fields['skill_details'].help_text = _(u'Use the formatted string details available here: https://goo.gl/CsYVa3 and replace "N" with the corresponding value.')
-        self.fields['video_story'].help_text = _(u'Link to a YouTube video. Make sure it uses the following format: http://www.youtube.com/watch?v=Mcz9C67Pd1c')
-        self.fields['japanese_video_story'].help_text = _(u'Link to a YouTube video. Make sure it uses the following format: http://www.youtube.com/watch?v=Mcz9C67Pd1c')
+        self.is_creating = not hasattr(self, 'instance') or not self.instance.pk
+        if not self.is_creating:
+            del(self.fields['id'])
+        self.fields['game_id'].help_text = 'ID of the card in the game\'s database.'
+        self.fields['japanese_skill'].help_text = u'Name of the skill in Japanese. Also corresponds to the name of the card. Example: "和太鼓名人"'
+        self.fields['skill_details'].help_text = 'Use the formatted string details available here: https://goo.gl/CsYVa3 and replace "N" with the corresponding value.'
+        self.fields['video_story'].help_text = 'Link to a YouTube video. Make sure it uses the following format: http://www.youtube.com/watch?v=Mcz9C67Pd1c'
+        self.fields['japanese_video_story'].help_text = u'Link to a YouTube video. Make sure it uses the following format: http://www.youtube.com/watch?v=Mcz9C67Pd1c'
+        self.fields['promo_item'].help_text = '[PROMO CARDS ONLY] --- "Special login bonus" or the name of the thing you have to buy to get this card. Example: "limited ed. S2 BD vol. 2"'
+        self.fields['promo_link'].help_text = '[PROMO CARDS ONLY] --- Go to CDJapan, find the product. In this field, the URL should look like "http://www.cdjapan.co.jp/aff/click.cgi/PytJTGW7Lok/5590/A364348/product%2F{product code}" but replace "{product code}" with the code you can see on the CDJapan URL. Example: "BCXA-840"'
+        self.fields['other_event'].help_text = 'If a card was in a certain event in JP, but has been merge in another event in EN, use this field to specify the event in which it has been merged.'
+        self.fields['japan_only'].help_text = 'Uncheck this box if the card is available in English version.'
         for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
-            self.fields[field].required=False
+            self.fields[field].required = False
+        for field in ['idol']:
+            self.fields[field].required = True
 
     def save(self, commit=True):
         instance = super(StaffCard, self).save(commit=False)
@@ -564,7 +585,7 @@ class StaffCard(ModelForm):
         if instance.rarity == 'N' or instance.is_promo:
             for field in ['non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool']:
                 setattr(instance, field, 0)
-        for field in ['japanese_collection', 'english_collection', 'translated_collection', 'promo_item', 'promo_link', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'video_story', 'japanese_video_story']:
+        for field in ['japanese_collection', 'translated_collection', 'promo_item', 'promo_link', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'video_story', 'japanese_video_story']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
         if commit:
@@ -573,26 +594,37 @@ class StaffCard(ModelForm):
 
     class Meta:
         model = models.Card
-        fields = ('id', 'game_id', 'idol', 'japanese_collection', 'english_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'event', 'other_event', 'is_special', 'japan_only', 'seal_shop', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'transparent_image', 'transparent_idolized_image', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'clean_ur', 'clean_ur_idolized', 'video_story', 'japanese_video_story', 'ur_pair', 'ur_pair_reverse', 'ur_pair_idolized_reverse')
+        fields = ('id', 'game_id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'event', 'other_event', 'is_special', 'japan_only', 'seal_shop', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'transparent_image', 'transparent_idolized_image', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'clean_ur', 'clean_ur_idolized', 'video_story', 'japanese_video_story', 'ur_pair', 'ur_pair_reverse', 'ur_pair_idolized_reverse')
 
-class StaffEvent(ModelForm):
+class StaffEvent(TinyPngForm):
+    beginning = forms.DateField(label=_('Beginning'), required=True)
+    end = forms.DateField(label=_('End'), required=True)
+    english_beginning = forms.DateField(label=('English version Beginning'), required=False)
+    english_end = forms.DateField(label=('English version end'), required=False)
+
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
-#        for field in ['beginning', 'end']:
-#            self.fields[field].required=True
+        for field in ['beginning', 'end', 'english_beginning', 'english_end']:
+            self.fields[field] = date_input(self.fields[field])
+        self.fields['image'].required = True
 
     def save(self, commit=True):
         instance = super(StaffEvent, self).save(commit=False)
+        instance.beginning = instance.beginning.replace(hour=5, minute=59)
+        instance.end = instance.end.replace(hour=11, minute=59)
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
+        if commit:
+            instance.save()
+        return instance
 
     class Meta:
         model = models.Event
         fields = ('japanese_name', 'romaji_name', 'beginning', 'end', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_end', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
 
 
-class StaffSong(ModelForm):
+class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [
         ('μ\'s', 'μ\'s'),
         ('Aqours', 'Aqours'),
@@ -601,13 +633,21 @@ class StaffSong(ModelForm):
     daily_rotation_position = ChoiceField(label=_('Daily Rotation Position'), choices=BLANK_CHOICE_DASH + [(i, i) for i in range(1, 11)], required=False)
     def __init__(self, *args, **kwargs):
         super(StaffSong, self).__init__(*args, **kwargs)
-        self.fields['itunes_id'].help_text = _(u'Leave this empty if you don\'t know what this is!')
+        self.fields['itunes_id'].help_text = u'Preview on iTunes. Leave this empty if you don\'t know how to get it.'
+        self.fields['time'].help_text = 'In seconds'
+        self.fields['rank'].help_text = 'Rank when you unlock it (leave empty for B-side or special)'
+        self.fields['main_unit'].required = True
 
     def save(self, commit=True):
         instance = super(StaffSong, self).save(commit=False)
+        if not instance.daily_rotation_position:
+            instance.daily_rotation_position = None
         for field in ['romaji_name', 'translated_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
+        if commit:
+            instance.save()
+        return instance
 
     class Meta:
         model = models.Song

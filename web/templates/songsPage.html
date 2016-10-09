@@ -139,6 +139,7 @@
 			{{ song.BPM }}
 		      </td>
 		    </tr>
+		    {% if song.time %}
 		    <tr>
 		      <th>{% trans 'Length' %}</th>
 		      <td>
@@ -148,6 +149,7 @@
 			{{ song.length }}
 		      </td>
 		    </tr>
+		    {% endif %}
 		    {% if song.event %}
 		    <tr>
 		      <th>{% trans 'Event' %}</th>
@@ -243,6 +245,9 @@
 		<br>
 		{% endif %}
 	      </div>
+	      {% if user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+	      <a href="/staff/editsong/{{ song.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit song" data-trigger="hover"><i class="flaticon-edit"></i></a>
+	      {% endif %}
 	      <div style="display: none" class="itunes">
 		<img src="" alt="{{ song.name }}" class="album img-rounded" height="31">
 		<a href="" target="_blank">

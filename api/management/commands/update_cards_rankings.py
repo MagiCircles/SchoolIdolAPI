@@ -43,4 +43,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         update_cards_rankings({})
-

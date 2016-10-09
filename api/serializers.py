@@ -11,6 +11,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from web.utils import chibiimage, singlecardurl
 from api.raw import STARTERS
+from api.management.commands.update_cards_rankings import update_cards_rankings
+from api.management.commands.update_cards_join_cache import update_cards_join_cache
 import urllib
 import datetime
 import markdown_deux
@@ -413,7 +415,16 @@ class CardSerializer(serializers.ModelSerializer):
             changed = True
         if changed:
             card.save()
+        update_cards_join_cache(cards=[card])
+        update_cards_rankings({})
         return card
+
+    def validate(self, data):
+        if self.context['request'].method == 'POST' and 'idol' not in self.context['request'].data:
+            raise serializers.ValidationError({
+                'idol': ['This field is required.'],
+            })
+        return data
 
     def create(self, validated_data):
         card = super(CardSerializer, self).create(validated_data)

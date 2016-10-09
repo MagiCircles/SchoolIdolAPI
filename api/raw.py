@@ -680,6 +680,17 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/ShirakiNagiChibi.png', 'xoxNicoNicoxox'),
         ],
     },
+    'Yazawa Cotarou': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/g85PVF2c.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/A9rruIv3.png', 'nishiqueeno'),
+        ],
+    },
+    'Shimozono Saki': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Y487Mxa.png', 'Lunacria'),
+        ],
+    },
     # '': {
     #     'chibi': [
     #         ('', ''),

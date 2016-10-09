@@ -14,7 +14,7 @@ from django.core.validators import RegexValidator
 from django.conf import settings
 from api.raw import STARTERS
 from web.templatetags.choicesToString import skillsIcons
-from web.utils import randomString
+from web.utils import randomString, shrinkImageFromData
 from multiupload.fields import MultiFileField
 from api import models
 

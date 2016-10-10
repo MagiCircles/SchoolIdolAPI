@@ -245,7 +245,7 @@
 		<br>
 		{% endif %}
 	      </div>
-	      {% if user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+	      {% if user.is_authenticated and user.preferences|has_permission:'DATABASE_MAINTAINER' %}
 	      <a href="/staff/editsong/{{ song.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit song" data-trigger="hover"><i class="flaticon-edit"></i></a>
 	      {% endif %}
 	      <div style="display: none" class="itunes">

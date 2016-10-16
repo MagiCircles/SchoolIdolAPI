@@ -147,7 +147,7 @@
     <hr>
       <div class="divform">
 	<h2 id="verify">{% trans 'Get verified' %}</h2>
-	{% if account.rank >= 80 and account.friend_id and not user.preferences.private and user.email %}
+	{% if account.rank >= 100 and account.friend_id and not user.preferences.private and user.email %}
 	<div id="verification-2" style="display: none">
 	  <img src="http://i.schoolido.lu/static/verifications/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
 	  <ul>
@@ -274,8 +274,8 @@
 	{% else %}
 	<div class="alert alert-warning">
 	  <ul>
-	    {% if account.rank < 80 %}
-	    <li>{% trans 'Your rank must be over 80.' %}</li>
+	    {% if account.rank < 100 %}
+	    <li>{% trans 'Your rank must be over 100.' %}</li>
 	    {% endif %}
 	    {% if not account.friend_id %}
 	    <li>{% trans 'You must specify your friend ID in your account.' %} <a href="#editaccount">{% trans 'Edit Account' %}</a></li>

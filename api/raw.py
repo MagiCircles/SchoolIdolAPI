@@ -559,6 +559,11 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/vUjxvCBd.png', 'Marina-chan'),
         ],
     },
+    'Nico\'s Mother': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/X8v7vn1M.png', 'shiroyanagisawa'),
+        ],
+    },
     'Morishima Nanaka': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/QJ_2r35C.png', 'NightSky'),
@@ -682,13 +687,18 @@ raw_information_n = {
     },
     'Yazawa Cotarou': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/g85PVF2c.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/g85PVF2c.png', 'Wei-chan'),
             ('http://i.schoolido.lu/chibi/A9rruIv3.png', 'nishiqueeno'),
         ],
     },
     'Shimozono Saki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Y487Mxa.png', 'Lunacria'),
+        ],
+    },
+    'Yamauchi Nanako': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/tLBWktsK.png', 'walharts'),
         ],
     },
     # '': {

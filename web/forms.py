@@ -22,19 +22,9 @@ from pytz import timezone
 
 class DateInput(forms.DateInput):
     input_type = 'date'
-class DateTimeInput(forms.DateTimeInput):
-    input_type = 'datetime'
 
 def date_input(field):
     field.widget = DateInput()
-    field.widget.attrs.update({
-        'class': 'calendar-widget',
-        'data-role': 'data',
-    })
-    return field
-
-def date_time_input(field):
-    field.widget = DateTimeInput()
     field.widget.attrs.update({
         'class': 'calendar-widget',
         'data-role': 'data',

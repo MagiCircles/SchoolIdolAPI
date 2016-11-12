@@ -17,12 +17,24 @@ from web.templatetags.choicesToString import skillsIcons
 from web.utils import randomString, shrinkImageFromData
 from multiupload.fields import MultiFileField
 from api import models
+from datetime import datetime
+from pytz import timezone
 
 class DateInput(forms.DateInput):
     input_type = 'date'
+class DateTimeInput(forms.DateTimeInput):
+    input_type = 'datetime'
 
 def date_input(field):
     field.widget = DateInput()
+    field.widget.attrs.update({
+        'class': 'calendar-widget',
+        'data-role': 'data',
+    })
+    return field
+
+def date_time_input(field):
+    field.widget = DateTimeInput()
     field.widget.attrs.update({
         'class': 'calendar-widget',
         'data-role': 'data',
@@ -598,9 +610,9 @@ class StaffCard(TinyPngForm):
 
 class StaffEvent(TinyPngForm):
     beginning = forms.DateField(label=_('Beginning'), required=True)
-    beginning_time = forms.TimeField(label=_('Start Time (UTC)'), required=True)
+    beginning_time = forms.TimeField(label=_('Start Time (JST)'), required=True)
     end = forms.DateField(label=_('End'), required=True)
-    end_time = forms.TimeField(label=_('End Time (UTC)'), required=True)
+    end_time = forms.TimeField(label=_('End Time (JST)'), required=True)
     english_beginning = forms.DateField(label=('English version Beginning'), required=False)
     english_beginning_time = forms.TimeField(label=_('English version Start Time (UTC)'), required=False)
     english_end = forms.DateField(label=('English version End'), required=False)
@@ -611,64 +623,66 @@ class StaffEvent(TinyPngForm):
         for field in ['beginning', 'end', 'english_beginning', 'english_end']:
             self.fields[field] = date_input(self.fields[field])
  
-	if self.instance:
-		if getattr(self.instance, "beginning"):
-			beginning = getattr(self.instance, "beginning")
-        		self.fields["beginning_time"].initial = "%02d:%02d" % (beginning.hour, beginning.minute)
-		if getattr(self.instance, "end"):
-			end = getattr(self.instance, "end")
-        		self.fields["end_time"].initial = "%02d:%02d" % (end.hour, end.minute)
-		if getattr(self.instance, "english_beginning"):
-			english_beginning = getattr(self.instance, "english_beginning")
-        		self.fields["english_beginning_time"].initial = "%02d:%02d" % (english_beginning.hour, english_beginning.minute)
-		if getattr(self.instance, "english_end"):
-			english_end = getattr(self.instance, "english_end")
-        		self.fields["english_end_time"].initial = "%02d:%02d" % (english_end.hour, english_end.minute)
-	else:
-        	self.fields["beginning_time"].initial = '07:00'
-        	self.fields["end_time"].initial = '06:00'
-        	self.fields["english_beginning_time"].initial = '09:00'
-        	self.fields["english_end_time"].initial = '08:00'
+        if self.instance:
+            if getattr(self.instance, "beginning"):
+                beginning = getattr(self.instance, "beginning")
+                beginning = beginning.astimezone(timezone('Asia/Tokyo'))
+                self.fields["beginning_time"].initial = "%02d:%02d" % (beginning.hour, beginning.minute)
+            if getattr(self.instance, "end"):
+                end = getattr(self.instance, "end")
+                end = end.astimezone(timezone('Asia/Tokyo'))
+                self.fields["end_time"].initial = "%02d:%02d" % (end.hour, end.minute)
+            if getattr(self.instance, "english_beginning"):
+                english_beginning = getattr(self.instance, "english_beginning")
+                self.fields["english_beginning_time"].initial = "%02d:%02d" % (english_beginning.hour, english_beginning.minute)
+            if getattr(self.instance, "english_end"):
+                english_end = getattr(self.instance, "english_end")
+                self.fields["english_end_time"].initial = "%02d:%02d" % (english_end.hour, english_end.minute)
+        else:
+            self.fields["beginning_time"].initial = '07:00'
+            self.fields["end_time"].initial = '06:00'
+            self.fields["english_beginning_time"].initial = '09:00'
+            self.fields["english_end_time"].initial = '08:00'
 
-       	self.fields['image'].required = True
+        self.fields['image'].required = True
 
     def save(self, commit=True):
         instance = super(StaffEvent, self).save(commit=False)
-	beginning_hour_jst = 7
-	beginning_minute_jst = 0
-	end_hour_jst = 6
-	end_minute_jst = 0
-	begining_hour_utc = 9
-	begining_minute_utc = 0
-	end_hour_utc = 8
-	end_minute_utc = 0
-	if self.cleaned_data['beginning_time']:
-		beginning_time = self.cleaned_data['beginning_time']
-		beginning_hour_jst = beginning_time.hour
-		beginning_minute_jst = beginning_time.minute
-		#print("%d : %d" % (beginning_hour_jst, beginning_minute_jst))
-	if self.cleaned_data['end_time']:
-		end_time = self.cleaned_data['end_time']
-		end_hour_jst = end_time.hour
-		end_minute_jst = end_time.minute
-		#print("%d : %d" % (end_hour_jst, end_minute_jst))
-      	if self.cleaned_data['english_beginning_time']:
-		english_beginning_time = self.cleaned_data['english_beginning_time']
-		beginning_hour_utc = english_beginning_time.hour
-		beginning_minute_utc = english_beginning_time.minute
-		#print("%d : %d" % (beginning_hour_utc, beginning_minute_utc))
-	if self.cleaned_data['english_end_time']:
-		english_end_time = self.cleaned_data['english_end_time']
-		end_hour_utc = english_end_time.hour
-		end_minute_utc = english_end_time.minute
-		#print("%d : %d" % (end_hour_utc, end_minute_utc))
+        beginning_hour_jst = 16
+        beginning_minute_jst = 0
+        end_hour_jst = 15
+        end_minute_jst = 0
+        begining_hour_utc = 9
+        begining_minute_utc = 0
+        end_hour_utc = 8
+        end_minute_utc = 0
+        if self.cleaned_data['beginning_time']:
+            beginning_time = self.cleaned_data['beginning_time']
+            beginning_hour_jst = beginning_time.hour
+            beginning_minute_jst = beginning_time.minute
+            #print("%d : %d" % (beginning_hour_jst, beginning_minute_jst))
+        if self.cleaned_data['end_time']:
+            end_time = self.cleaned_data['end_time']
+            end_hour_jst = end_time.hour
+            end_minute_jst = end_time.minute
+            #print("%d : %d" % (end_hour_jst, end_minute_jst))
+        if self.cleaned_data['english_beginning_time']:
+            english_beginning_time = self.cleaned_data['english_beginning_time']
+            beginning_hour_utc = english_beginning_time.hour
+            beginning_minute_utc = english_beginning_time.minute
+            #print("%d : %d" % (beginning_hour_utc, beginning_minute_utc))
+        if self.cleaned_data['english_end_time']:
+            english_end_time = self.cleaned_data['english_end_time']
+            end_hour_utc = english_end_time.hour
+            end_minute_utc = english_end_time.minute
+            #print("%d : %d" % (end_hour_utc, end_minute_utc))
         
-        instance.beginning = instance.beginning.replace(hour=beginning_hour_jst, minute=beginning_minute_jst)
-        instance.end = instance.end.replace(hour=end_hour_jst, minute=end_minute_jst)
+        instance.beginning = instance.beginning.astimezone(timezone('Asia/Tokyo')).replace(hour=beginning_hour_jst, minute=beginning_minute_jst).astimezone(timezone('UTC'))
+        instance.end = instance.end.astimezone(timezone('Asia/Tokyo')).replace(hour=end_hour_jst, minute=end_minute_jst).astimezone(timezone('UTC'))
         if getattr(instance, "english_beginning"):
-        	instance.english_beginning = instance.english_beginning.replace(hour=beginning_hour_utc, minute=beginning_minute_utc)
+            instance.english_beginning = instance.english_beginning.replace(hour=beginning_hour_utc, minute=beginning_minute_utc)
         if getattr(instance, "english_end"):
-        	instance.english_end = instance.english_end.replace(hour=end_hour_utc, minute=end_minute_utc)
+            instance.english_end = instance.english_end.replace(hour=end_hour_utc, minute=end_minute_utc)
  
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):

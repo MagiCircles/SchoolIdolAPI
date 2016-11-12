@@ -598,20 +598,78 @@ class StaffCard(TinyPngForm):
 
 class StaffEvent(TinyPngForm):
     beginning = forms.DateField(label=_('Beginning'), required=True)
+    beginning_time = forms.TimeField(label=_('Start Time (UTC)'), required=True)
     end = forms.DateField(label=_('End'), required=True)
+    end_time = forms.TimeField(label=_('End Time (UTC)'), required=True)
     english_beginning = forms.DateField(label=('English version Beginning'), required=False)
-    english_end = forms.DateField(label=('English version end'), required=False)
+    english_beginning_time = forms.TimeField(label=_('English version Start Time (UTC)'), required=False)
+    english_end = forms.DateField(label=('English version End'), required=False)
+    english_end_time = forms.TimeField(label=_('English version End Time (UTC)'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
         for field in ['beginning', 'end', 'english_beginning', 'english_end']:
             self.fields[field] = date_input(self.fields[field])
-        self.fields['image'].required = True
+ 
+	if self.instance:
+		if getattr(self.instance, "beginning"):
+			beginning = getattr(self.instance, "beginning")
+        		self.fields["beginning_time"].initial = "%02d:%02d" % (beginning.hour, beginning.minute)
+		if getattr(self.instance, "end"):
+			end = getattr(self.instance, "end")
+        		self.fields["end_time"].initial = "%02d:%02d" % (end.hour, end.minute)
+		if getattr(self.instance, "english_beginning"):
+			english_beginning = getattr(self.instance, "english_beginning")
+        		self.fields["english_beginning_time"].initial = "%02d:%02d" % (english_beginning.hour, english_beginning.minute)
+		if getattr(self.instance, "english_end"):
+			english_end = getattr(self.instance, "english_end")
+        		self.fields["english_end_time"].initial = "%02d:%02d" % (english_end.hour, english_end.minute)
+	else:
+        	self.fields["beginning_time"].initial = '07:00'
+        	self.fields["end_time"].initial = '06:00'
+        	self.fields["english_beginning_time"].initial = '09:00'
+        	self.fields["english_end_time"].initial = '08:00'
+
+       	self.fields['image'].required = True
 
     def save(self, commit=True):
         instance = super(StaffEvent, self).save(commit=False)
-        instance.beginning = instance.beginning.replace(hour=5, minute=59)
-        instance.end = instance.end.replace(hour=11, minute=59)
+	beginning_hour_jst = 7
+	beginning_minute_jst = 0
+	end_hour_jst = 6
+	end_minute_jst = 0
+	begining_hour_utc = 9
+	begining_minute_utc = 0
+	end_hour_utc = 8
+	end_minute_utc = 0
+	if self.cleaned_data['beginning_time']:
+		beginning_time = self.cleaned_data['beginning_time']
+		beginning_hour_jst = beginning_time.hour
+		beginning_minute_jst = beginning_time.minute
+		#print("%d : %d" % (beginning_hour_jst, beginning_minute_jst))
+	if self.cleaned_data['end_time']:
+		end_time = self.cleaned_data['end_time']
+		end_hour_jst = end_time.hour
+		end_minute_jst = end_time.minute
+		#print("%d : %d" % (end_hour_jst, end_minute_jst))
+      	if self.cleaned_data['english_beginning_time']:
+		english_beginning_time = self.cleaned_data['english_beginning_time']
+		beginning_hour_utc = english_beginning_time.hour
+		beginning_minute_utc = english_beginning_time.minute
+		#print("%d : %d" % (beginning_hour_utc, beginning_minute_utc))
+	if self.cleaned_data['english_end_time']:
+		english_end_time = self.cleaned_data['english_end_time']
+		end_hour_utc = english_end_time.hour
+		end_minute_utc = english_end_time.minute
+		#print("%d : %d" % (end_hour_utc, end_minute_utc))
+        
+        instance.beginning = instance.beginning.replace(hour=beginning_hour_jst, minute=beginning_minute_jst)
+        instance.end = instance.end.replace(hour=end_hour_jst, minute=end_minute_jst)
+        if getattr(instance, "english_beginning"):
+        	instance.english_beginning = instance.english_beginning.replace(hour=beginning_hour_utc, minute=beginning_minute_utc)
+        if getattr(instance, "english_end"):
+        	instance.english_end = instance.english_end.replace(hour=end_hour_utc, minute=end_minute_utc)
+ 
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
@@ -621,8 +679,7 @@ class StaffEvent(TinyPngForm):
 
     class Meta:
         model = models.Event
-        fields = ('japanese_name', 'romaji_name', 'beginning', 'end', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_end', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
-
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
 
 class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [

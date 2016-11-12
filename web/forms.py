@@ -628,11 +628,6 @@ class StaffEvent(TinyPngForm):
             if getattr(self.instance, "english_end"):
                 english_end = getattr(self.instance, "english_end")
                 self.fields["english_end_time"].initial = "%02d:%02d" % (english_end.hour, english_end.minute)
-        else:
-            self.fields["beginning_time"].initial = '07:00'
-            self.fields["end_time"].initial = '06:00'
-            self.fields["english_beginning_time"].initial = '09:00'
-            self.fields["english_end_time"].initial = '08:00'
 
         self.fields['image'].required = True
 

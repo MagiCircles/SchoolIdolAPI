@@ -599,14 +599,14 @@ class StaffCard(TinyPngForm):
         fields = ('id', 'game_id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'event', 'other_event', 'is_special', 'japan_only', 'seal_shop', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'transparent_image', 'transparent_idolized_image', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'clean_ur', 'clean_ur_idolized', 'video_story', 'japanese_video_story', 'ur_pair', 'ur_pair_reverse', 'ur_pair_idolized_reverse')
 
 class StaffEvent(TinyPngForm):
-    beginning = forms.DateField(label=_('Beginning'), required=True)
-    beginning_time = forms.TimeField(label=_('Start Time (JST)'), required=True)
-    end = forms.DateField(label=_('End'), required=True)
-    end_time = forms.TimeField(label=_('End Time (JST)'), required=True)
-    english_beginning = forms.DateField(label=('English version Beginning'), required=False)
-    english_beginning_time = forms.TimeField(label=_('English version Start Time (UTC)'), required=False)
-    english_end = forms.DateField(label=('English version End'), required=False)
-    english_end_time = forms.TimeField(label=_('English version End Time (UTC)'), required=False)
+    beginning = forms.DateField(label=_('Japanese Start Date'), required=True)
+    beginning_time = forms.TimeField(label=_('Japanese Start Time (JST)'), required=True)
+    end = forms.DateField(label=_('Japanese End Date'), required=True)
+    end_time = forms.TimeField(label=_('Japanese End Time (JST)'), required=True)
+    english_beginning = forms.DateField(label=('English Start Date'), required=False)
+    english_beginning_time = forms.TimeField(label=_('English Start Time (UTC)'), required=False)
+    english_end = forms.DateField(label=('English End Date'), required=False)
+    english_end_time = forms.TimeField(label=_('English End Time (UTC)'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
@@ -633,34 +633,32 @@ class StaffEvent(TinyPngForm):
 
     def save(self, commit=True):
         instance = super(StaffEvent, self).save(commit=False)
+        # set some reasonable defaults for EN/JP start/end times
+        # (must be in the server's appropriate localtime)
         beginning_hour_jst = 16
         beginning_minute_jst = 0
         end_hour_jst = 15
         end_minute_jst = 0
+        #
         begining_hour_utc = 9
         begining_minute_utc = 0
         end_hour_utc = 8
         end_minute_utc = 0
-        if self.cleaned_data['beginning_time']:
-            beginning_time = self.cleaned_data['beginning_time']
-            beginning_hour_jst = beginning_time.hour
-            beginning_minute_jst = beginning_time.minute
-            #print("%d : %d" % (beginning_hour_jst, beginning_minute_jst))
-        if self.cleaned_data['end_time']:
-            end_time = self.cleaned_data['end_time']
-            end_hour_jst = end_time.hour
-            end_minute_jst = end_time.minute
-            #print("%d : %d" % (end_hour_jst, end_minute_jst))
+        #
+        beginning_time = self.cleaned_data['beginning_time']
+        beginning_hour_jst = beginning_time.hour
+        beginning_minute_jst = beginning_time.minute
+        end_time = self.cleaned_data['end_time']
+        end_hour_jst = end_time.hour
+        end_minute_jst = end_time.minute
         if self.cleaned_data['english_beginning_time']:
             english_beginning_time = self.cleaned_data['english_beginning_time']
             beginning_hour_utc = english_beginning_time.hour
             beginning_minute_utc = english_beginning_time.minute
-            #print("%d : %d" % (beginning_hour_utc, beginning_minute_utc))
         if self.cleaned_data['english_end_time']:
             english_end_time = self.cleaned_data['english_end_time']
             end_hour_utc = english_end_time.hour
             end_minute_utc = english_end_time.minute
-            #print("%d : %d" % (end_hour_utc, end_minute_utc))
         
         instance.beginning = instance.beginning.astimezone(timezone('Asia/Tokyo')).replace(hour=beginning_hour_jst, minute=beginning_minute_jst).astimezone(timezone('UTC'))
         instance.end = instance.end.astimezone(timezone('Asia/Tokyo')).replace(hour=end_hour_jst, minute=end_minute_jst).astimezone(timezone('UTC'))

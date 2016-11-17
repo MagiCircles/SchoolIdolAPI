@@ -600,19 +600,19 @@ class StaffCard(TinyPngForm):
 
 class StaffEvent(TinyPngForm):
     beginning = forms.DateField(label=_('Japanese Start Date'), required=True)
-    beginning_time = forms.TimeField(label=_('Japanese Start Time (JST)'), required=True)
+    beginning_time = forms.TimeField(label='Japanese Start Time (JST)', required=True, initial='16:00')
     end = forms.DateField(label=_('Japanese End Date'), required=True)
-    end_time = forms.TimeField(label=_('Japanese End Time (JST)'), required=True)
+    end_time = forms.TimeField(label='Japanese End Time (JST)', required=True, initial='15:00')
     english_beginning = forms.DateField(label=('English Start Date'), required=False)
-    english_beginning_time = forms.TimeField(label=_('English Start Time (UTC)'), required=False)
+    english_beginning_time = forms.TimeField(label='English Start Time (UTC)', required=False, initial='09:00')
     english_end = forms.DateField(label=('English End Date'), required=False)
-    english_end_time = forms.TimeField(label=_('English End Time (UTC)'), required=False)
+    english_end_time = forms.TimeField(label='English End Time (UTC)', required=False, initial='08:00')
 
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
         for field in ['beginning', 'end', 'english_beginning', 'english_end']:
             self.fields[field] = date_input(self.fields[field])
- 
+
         if self.instance:
             if getattr(self.instance, "beginning"):
                 beginning = getattr(self.instance, "beginning")

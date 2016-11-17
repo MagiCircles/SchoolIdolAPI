@@ -17,6 +17,8 @@ from web.templatetags.choicesToString import skillsIcons
 from web.utils import randomString, shrinkImageFromData
 from multiupload.fields import MultiFileField
 from api import models
+from datetime import datetime
+from pytz import timezone
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -597,21 +599,74 @@ class StaffCard(TinyPngForm):
         fields = ('id', 'game_id', 'idol', 'japanese_collection', 'translated_collection', 'rarity', 'attribute', 'is_promo', 'promo_item', 'promo_link', 'release_date', 'event', 'other_event', 'is_special', 'japan_only', 'seal_shop', 'hp', 'minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool', 'skill', 'japanese_skill', 'skill_details', 'japanese_skill_details', 'center_skill', 'transparent_image', 'transparent_idolized_image', 'card_image', 'card_idolized_image', 'english_card_image', 'english_card_idolized_image', 'round_card_image', 'round_card_idolized_image', 'english_round_card_image', 'english_round_card_idolized_image', 'clean_ur', 'clean_ur_idolized', 'video_story', 'japanese_video_story', 'ur_pair', 'ur_pair_reverse', 'ur_pair_idolized_reverse')
 
 class StaffEvent(TinyPngForm):
-    beginning = forms.DateField(label=_('Beginning'), required=True)
-    end = forms.DateField(label=_('End'), required=True)
-    english_beginning = forms.DateField(label=('English version Beginning'), required=False)
-    english_end = forms.DateField(label=('English version end'), required=False)
+    beginning = forms.DateField(label=_('Japanese Start Date'), required=True)
+    beginning_time = forms.TimeField(label='Japanese Start Time (JST)', required=True, initial='16:00')
+    end = forms.DateField(label=_('Japanese End Date'), required=True)
+    end_time = forms.TimeField(label='Japanese End Time (JST)', required=True, initial='15:00')
+    english_beginning = forms.DateField(label=('English Start Date'), required=False)
+    english_beginning_time = forms.TimeField(label='English Start Time (UTC)', required=False, initial='09:00')
+    english_end = forms.DateField(label=('English End Date'), required=False)
+    english_end_time = forms.TimeField(label='English End Time (UTC)', required=False, initial='08:00')
 
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
         for field in ['beginning', 'end', 'english_beginning', 'english_end']:
             self.fields[field] = date_input(self.fields[field])
+
+        if self.instance:
+            if getattr(self.instance, "beginning"):
+                beginning = getattr(self.instance, "beginning")
+                beginning = beginning.astimezone(timezone('Asia/Tokyo'))
+                self.fields["beginning_time"].initial = "%02d:%02d" % (beginning.hour, beginning.minute)
+            if getattr(self.instance, "end"):
+                end = getattr(self.instance, "end")
+                end = end.astimezone(timezone('Asia/Tokyo'))
+                self.fields["end_time"].initial = "%02d:%02d" % (end.hour, end.minute)
+            if getattr(self.instance, "english_beginning"):
+                english_beginning = getattr(self.instance, "english_beginning")
+                self.fields["english_beginning_time"].initial = "%02d:%02d" % (english_beginning.hour, english_beginning.minute)
+            if getattr(self.instance, "english_end"):
+                english_end = getattr(self.instance, "english_end")
+                self.fields["english_end_time"].initial = "%02d:%02d" % (english_end.hour, english_end.minute)
+
         self.fields['image'].required = True
 
     def save(self, commit=True):
         instance = super(StaffEvent, self).save(commit=False)
-        instance.beginning = instance.beginning.replace(hour=5, minute=59)
-        instance.end = instance.end.replace(hour=11, minute=59)
+        # set some reasonable defaults for EN/JP start/end times
+        # (must be in the server's appropriate localtime)
+        beginning_hour_jst = 16
+        beginning_minute_jst = 0
+        end_hour_jst = 15
+        end_minute_jst = 0
+        #
+        begining_hour_utc = 9
+        begining_minute_utc = 0
+        end_hour_utc = 8
+        end_minute_utc = 0
+        #
+        beginning_time = self.cleaned_data['beginning_time']
+        beginning_hour_jst = beginning_time.hour
+        beginning_minute_jst = beginning_time.minute
+        end_time = self.cleaned_data['end_time']
+        end_hour_jst = end_time.hour
+        end_minute_jst = end_time.minute
+        if self.cleaned_data['english_beginning_time']:
+            english_beginning_time = self.cleaned_data['english_beginning_time']
+            beginning_hour_utc = english_beginning_time.hour
+            beginning_minute_utc = english_beginning_time.minute
+        if self.cleaned_data['english_end_time']:
+            english_end_time = self.cleaned_data['english_end_time']
+            end_hour_utc = english_end_time.hour
+            end_minute_utc = english_end_time.minute
+        
+        instance.beginning = instance.beginning.astimezone(timezone('Asia/Tokyo')).replace(hour=beginning_hour_jst, minute=beginning_minute_jst).astimezone(timezone('UTC'))
+        instance.end = instance.end.astimezone(timezone('Asia/Tokyo')).replace(hour=end_hour_jst, minute=end_minute_jst).astimezone(timezone('UTC'))
+        if getattr(instance, "english_beginning"):
+            instance.english_beginning = instance.english_beginning.replace(hour=beginning_hour_utc, minute=beginning_minute_utc)
+        if getattr(instance, "english_end"):
+            instance.english_end = instance.english_end.replace(hour=end_hour_utc, minute=end_minute_utc)
+ 
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
@@ -621,8 +676,7 @@ class StaffEvent(TinyPngForm):
 
     class Meta:
         model = models.Event
-        fields = ('japanese_name', 'romaji_name', 'beginning', 'end', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_end', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
-
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
 
 class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [

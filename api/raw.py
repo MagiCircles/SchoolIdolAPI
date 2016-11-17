@@ -701,6 +701,31 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/tLBWktsK.png', 'walharts'),
         ],
     },
+    'Sugisaki Aya': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/oTdGZlk3.png', 'dekuoy'),
+        ],
+    },
+    'Sato Yoko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/oX0v-Dm3.png', 'kirisakisun'),
+        ],
+    },
+    'Kazuno Leah': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/7nGz5By.png', 'sayakax'),
+        ],
+    },
+    'Kazuno Sarah': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/navi_1054.png', 'klab'),
+        ],
+    },
+    'Shiitake': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/LCI_NOzq.png', 'Nyanakii'),
+        ],
+    },
     # '': {
     #     'chibi': [
     #         ('', ''),

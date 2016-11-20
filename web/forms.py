@@ -17,7 +17,6 @@ from web.templatetags.choicesToString import skillsIcons
 from web.utils import randomString, shrinkImageFromData
 from multiupload.fields import MultiFileField
 from api import models
-from datetime import datetime
 from pytz import timezone
 
 class DateInput(forms.DateInput):

@@ -30,7 +30,7 @@ from api import models, raw
 from api.management.commands.update_cards_rankings import update_cards_rankings
 from api.management.commands.update_cards_join_cache import update_cards_join_cache
 from contest import models as contest_models
-from web import forms, donations, transfer_code, raw as web_raw
+from web import forms, transfer_code, raw as web_raw
 from web.links import links as links_list
 from web.templatetags.choicesToString import skillsIcons
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl, _imageurl
@@ -2098,7 +2098,7 @@ def avatar_facebook(request, username):
 
 def aboutview(request):
     context = globalContext(request)
-    context['donations'] = donations.donations
+    context['show_paypal'] = 'show_paypal' in request.GET
     if not settings.HIGH_TRAFFIC:
         users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
         users = users.annotate(verifications_done=Count('verificationsdone'))

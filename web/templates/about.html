@@ -328,107 +328,29 @@
     <div id="donate"></div>
     <br><br>
     <h1 class="text-main">{% trans 'Donate' %} <small><i class="flaticon-heart"></i></h1>
-    <div class="row text-center">
-      <div class="col-md-9">
-	<p style="font-size: 30px;" class="text-{{ btnColor }}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
-	<br><br><a href="#donations" class="btn btn-{{ btnColor }} btn-xl page-scroll">{% trans 'Donate' %}</a><br>
-	<a href="#donators" class="btn btn-link btn-lg page-scroll">{% trans 'Donators' %}</a> - <a href="#about" class="page-scroll btn btn-link btn-lg">{% trans 'About us' %}</a> - <a class="btn btn-link btn-lg" target="_blank" href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/pubhtml?gid=753111293&single=true">{% trans 'Budget' %}</a>
+    <div class="row">
+      <div class="col-md-9 text-center ">
+	<p class="big-text" style="padding-top: 30px; font-size: 30px;"><br>{% trans 'If you like the website, please consider' %} {% trans 'donating' %}. {% trans 'This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
       </div>
       <div class="col-md-3">
-	<img src="/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
+	<img src="http://i.schoolido.lu/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
       </div>
     </div>
-
-    <hr class="margin50">
-
-    <div id="donations"></div>
     <br><br>
-
-    {% for donation in donations %}
-    {% if donation.price == 1 %}
-    <div class="row text-center">
-      <div class="col-lg-5">
-	{% elif donation.price == 5 %}
-      </div>
-      <div class="col-lg-2">
-      </div>
-      <div class="col-lg-5">
-	{% elif donation.price == 10 %}
-      </div>
-    </div>
-    {% endif %}
-    <br><br>
-    <div class="row">
-      <div class="col-sm-8 text-left">
-	<h2 id="donation{{ donation.price }}"><strong>${{ donation.price }}</strong> {% trans 'Donation' %}</h2>
-      </div>
-      <div class="col-sm-4 text-right">
-	<br>
-	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-	  <input type="hidden" name="cmd" value="_s-xclick">
-	  <input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
-	  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+    <div class="text-center">
+      {% if show_paypal %}
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
+	<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 	<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
       </form>
-    </div>
-  </div>
-  <br><br>
-  <div class="row donation text-center">
-    {% if donation.thanks %}
-    <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
-      {% if donation.homepage_link %}
-      <img src="/static/hearthome.png" class="img-responsive">
-      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!' %}
-      {% elif donation.link %}
-      <img src="/static/heartlink.png" class="img-responsive">
-      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page.' %}
       {% else %}
-      <img src="/static/heart.png" class="img-responsive">
-      {% trans 'Your name and a link to your profile will be added to this page.' %}
+      <a href="https://www.patreon.com/db0company" target="_blank">
+	<img src="//i.cinderella.pro/static/img/patreon.png" alt="Patreon" style="max-width: 100%">
+      </a>
       {% endif %}
     </div>
-    {% endif %}
-    {% if donation.status %}
-    <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
-      <span class="status" style="color: {{ donation.status|userStatusToColor }}"><i class="flaticon-heart"></i></span>
-      {% with donation.status|userStatusToString as status %}
-      <p>{% blocktrans %}You're an{% endblocktrans %} {{ status }}.</p>
-      {% endwith %}
-      {% with donation.status|userStatusToColorString as color %}
-      <p>{% blocktrans %}With this special status, a lovely {{ color }} heart will be displayed next to your profile picture on your profile and everywhere it appears on the website.{% endblocktrans %}</p>
-      {% endwith %}
-    </div>
-    {% endif %}
-    {% if donation.postcard %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/postcard.png" class="img-responsive">
-      {% trans 'We will send you a cute postcard signed by the 2 developers :)' %}
-    </div>
-    {% endif %}
-    {% if donation.box %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/box.png" class="img-responsive">
-      {% trans 'We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!' %}
-    </div>
-    {% endif %}
-    {% if donation.feature %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/feature.png" class="img-responsive">
-      {% trans 'We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!' %}
-      <small>{% trans 'Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^' %}</small>
-    </div>
-    {% endif %}
-    {% if donation.homepage_character %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/homepagecharacter.png" class="img-responsive">
-      {% with donation.status|userStatusToString as status %}
-      <p>{% blocktrans %}You're an{% endblocktrans %} {{ status }}.</p>
-      {% endwith %}
-      <p>{% blocktrans %}You decide who will be the idol from μ's shown by default on top of the homepage.{% endblocktrans %}</p>
-    </div>
-    {% endif %}
-  </div>
-  {% endfor %}
 
     <hr class="margin50">
 

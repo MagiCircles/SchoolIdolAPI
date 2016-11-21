@@ -38,10 +38,7 @@ def generate_settings(opt={}):
 
         print 'Check the current events'
         try:
-            try:
-                current_jp = models.Event.objects.filter(end__lte=timezone.now()).order_by('-beginning')[0]
-            except IndexError:
-                current_jp = models.Event.objects.order_by('-beginning')[0]
+            current_jp = models.Event.objects.order_by('-beginning')[0]
             current_jp = {
                 'japanese_name': current_jp.japanese_name,
                 'slide_position': len(current_contests) + 1,

@@ -1980,7 +1980,12 @@ def eventparticipations(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
     context['your_participations'] = event.participations.filter(account__owner=request.user).select_related('account')
-    if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name or 'Challenge Festival' in event.japanese_name:
+    # All JP event types now have song score ranking
+    if event.english_name is None or event.english_name == "":
+        context['with_song'] = True
+    # If this event also exists on EN we can't be sure which version the user is editing, so disable the song score for all non-token events for now
+    # When EN gets song score rankings, all of this code can be deleted and replaced with  "context['with_song'] = True"
+    elif 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name or 'Challenge Festival' in event.japanese_name:
         context['with_song'] = False
     else:
         context['with_song'] = True

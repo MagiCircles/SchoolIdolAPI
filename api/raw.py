@@ -78,6 +78,7 @@ raw_information['Minami Kotori'] = {
         ('http://i.schoolido.lu/chibi/Kotori_Cheer.png', 'klab'),
         ('http://i.schoolido.lu/chibi/Kotori_China.png', 'klab'),
         ('http://i.schoolido.lu/chibi/7bfXn5eD.png', 'SushiYeo'),
+        ('http://i.schoolido.lu/chibi/SHjlPmVCnn.png', 'Masumi'),
     ],
 }
 raw_information['Hoshizora Rin'] = {
@@ -399,6 +400,7 @@ raw_information_n = {
     'Kamiya Rika': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/l-IIoh-y.png', 'KomaHina'),
+            ('http://i.schoolido.lu/chibi/0gAuoyx_.png', 'nyiadae'),
         ],
     },
     'Takamagahara Mutsuki': {
@@ -415,6 +417,7 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/pgirlerena.png', 'P-Girl'),
             ('http://i.schoolido.lu/chibi/enjugroveerena.png', 'enjugrove'),
             ('http://i.schoolido.lu/chibi/artflow_201606221314.png', 'anonymous'),
+            ('http://i.schoolido.lu/chibi/BJQPyxQenY.png', 'Toudou'),
         ],
     },
     'Yuuki Anju': {
@@ -476,6 +479,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/coco.png', 'Akiza15'),
             ('http://i.schoolido.lu/chibi/OHKAzzxV.png', 'Glutamine'),
+            ('http://i.schoolido.lu/chibi/muJoZSG0u0.png', 'SquidneyTheSquid'),
         ],
     },
     'Ranpha': {
@@ -491,6 +495,7 @@ raw_information_n = {
     'Midou Yuuri': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/c4pCGPop.png', 'KomaHina'),
+            ('http://i.schoolido.lu/chibi/tMV4X37JU7.png', 'SquidneyTheSquid'),
         ],
     },
     'Kurosaki Shun': {
@@ -589,16 +594,19 @@ raw_information_n = {
     'Konoe Kanata': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/kanata.png', 'punpun'),
+            ('http://i.schoolido.lu/chibi/8Ant1cm1ic.png', 'SquidneyTheSquid'),
         ],
     },
     'Konoe Haruka': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/zpssd9utuxr.png', 'a-chan'),
+            ('http://i.schoolido.lu/chibi/AiGpPK8RnP.png', 'SquidneyTheSquid'),
         ],
     },
     'Christina': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/christina1.png', 'cerecalin'),
+            ('http://i.schoolido.lu/chibi/0ZaUojGSp1.png', 'SquidneyTheSquid'),
         ],
     },
     'Fukuhara Mikoto': {
@@ -724,6 +732,16 @@ raw_information_n = {
     'Shiitake': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/LCI_NOzq.png', 'Nyanakii'),
+        ],
+    },
+    'Honoka\'s Mother': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Jusn4fW4.png', 'yangxiaolong'),
+        ],
+    },
+    'Yuuki Sana': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/jtzQlSlDwg.png', 'SquidneyTheSquid'),
         ],
     },
     # '': {

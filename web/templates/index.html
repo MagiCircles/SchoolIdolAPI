@@ -45,14 +45,14 @@
 </div>
 
 <div id="home" class="text-center" style="background-image: url('{{ static_url }}backgrounds/background{# 0|random_int:total_backgrounds #}_christmas.png');">
-  <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message">
+  <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message hidden-xs hidden-sm">
     <span style="color: #a94442!important">{% trans 'Merry Christmas!' %}&nbsp;&nbsp;&nbsp;&nbsp;
       <audio controls="" id="player" class="hidden">
 	<source src="http://i.schoolido.lu/special/{{ audio }}.mp3" type="audio/mpeg" />
 	<source src="http://i.schoolido.lu/special/{{ audio }}.m4a" type="audio/mp4" />
 	<source src="http://i.schoolido.lu/special/{{ audio }}.ogg" type="audio/ogg" />
       </audio>
-      <a href="#" onClick="document.getElementById('player').play(); return false;" class="fontx2 a-nodifference" id="christmasplay" style="color: #a94442!important"><i class="flaticon-play"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <a href="#" onClick="document.getElementById('player').volume = 0.6; document.getElementById('player').play(); return false;" class="fontx2 a-nodifference" id="christmasplay" style="color: #a94442!important"><i class="flaticon-play"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>
@@ -137,8 +137,11 @@
       <div id="carousel-index" class="carousel slide" data-ride="carousel" data-interval="3000">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
+	  {% for news in important_news %}
+	  <li data-target="#carousel-index" data-slide-to="{{ news.slide_position }}"{% if news.slide_position == 0 %} class="active"{% endif %}></li>
+	  {% endfor %}
 	  {% for contest in current_contests %}
-	  <li data-target="#carousel-index" data-slide-to="{{ forloop.counter0 }}"{% if forloop.counter0 == 0 %} class="active"{% endif %}></li>
+	  <li data-target="#carousel-index" data-slide-to="{{ contest.slide_position }}"{% if contest.slide_position == 0 %} class="active"{% endif %}></li>
 	  {% endfor %}
 	  {% if current_en %}
 	  <li data-target="#carousel-index" data-slide-to="{{ current_en.slide_position }}"></li>
@@ -150,8 +153,15 @@
 	<!-- Wrapper for slides -->
 	<div class="carousel-inner" role="listbox">
 
+	  {% for news in important_news %}
+	  <a href="{{ news.url }}" class="item{% if news.slide_position == 0 %} active{% endif %}"
+	     style="background-image: url('{{ news.image }}')">
+	    <span class="hidden">{{ news.name }}</span>
+	  </a>
+	  {% endfor %}
+
 	  {% for contest in current_contests %}
-	  <a href="{{ contest.url }}" class="item{% if forloop.counter0 == 0 %} active{% endif %}"
+	  <a href="{{ contest.url }}" class="item{% if contest.slide_position == 0 %} active{% endif %}"
 	     style="background-image: url('{{ contest.homepage_image }}')">
 	    <span class="hidden">{{ contest.name }}</span>
 	  </a>

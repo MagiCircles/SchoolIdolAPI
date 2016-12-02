@@ -59,6 +59,7 @@ def globalContext(request):
         'current_contests': settings.CURRENT_CONTESTS,
         'last_update': settings.GENERATED_DATE,
         'high_traffic': settings.HIGH_TRAFFIC,
+        'static_url': '//i.schoolido.lu/',
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
@@ -285,6 +286,18 @@ def index(request):
     context['character'] = None
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
+    if bool(random.getrandbits(1)):
+        if bool(random.getrandbits(1)):
+            card = models.Card.objects.filter(translated_collection='Christmas', idol_main_unit='μ\'s')
+        else:
+            context['character'] = 'special/767cropped.png'
+        context['audio'] = 'MerryChristmas'
+    else:
+        context['audio'] = 'aqours_merrychristmas'
+        card = models.Card.objects.filter(translated_collection='Christmas', idol_main_unit='Aqours')
+    if not context['character']:
+        try: context['character'] = card.order_by('?')[0].transparent_idolized_image
+        except: pass
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:

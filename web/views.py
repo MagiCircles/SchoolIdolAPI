@@ -275,9 +275,45 @@ def index(request):
     """
     context = globalContext(request)
 
+    context['important_news'] = []
+    # context['important_news'] = [
+    #     {
+    #         'url': '',
+    #         'image': '',
+    #         'name': '',
+    #     },
+    # ]
+    context['important_news'] = [
+        {
+            'url': '//schoolido.lu/activities/4371896/',
+            'image': '//i.schoolido.lu/special/banner_patreon_giveaway.png',
+            'name': 'Patreon Giveaway',
+        },
+        {
+            'url': 'http://schoolido.lu/activities/3725177/',
+            'image': 'https://pbs.twimg.com/media/CsTH87vVMAAoOXy.jpg:large',
+            'name': 'Secret Santa 2016',
+        },
+    ]
+
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
+    context['current_en']['slide_position'] = len(context['current_contests'])
+    context['current_jp']['slide_position'] = len(context['current_contests']) + 1
     context['trivia_slide_position'] = len(context['current_contests']) + 2
+    if context['important_news']:
+        pad = len(context['important_news'])
+        for i, news in enumerate(context['important_news']):
+            news['slide_position'] = i
+        for i, contest in enumerate(context['current_contests']):
+            contest['slide_position'] = i + pad
+        context['current_en']['slide_position'] += pad
+        context['current_jp']['slide_position'] += pad
+        context['trivia_slide_position'] += pad
+    else:
+        for i, contest in enumerate(context['current_contests']):
+            contest['slide_position'] = i
+
     context['total_donators'] = settings.TOTAL_DONATORS
 
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS

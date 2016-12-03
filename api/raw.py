@@ -401,6 +401,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/l-IIoh-y.png', 'KomaHina'),
             ('http://i.schoolido.lu/chibi/0gAuoyx_.png', 'nyiadae'),
+            ('http://i.schoolido.lu/chibi/49ooPu535o.png', 'SquidneyTheSquid'),
         ],
     },
     'Takamagahara Mutsuki': {
@@ -594,7 +595,7 @@ raw_information_n = {
     'Konoe Kanata': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/kanata.png', 'punpun'),
-            ('http://i.schoolido.lu/chibi/8Ant1cm1ic.png', 'SquidneyTheSquid'),
+            ('http://i.schoolido.lu/chibi/cdBPtjXiEz.png', 'SquidneyTheSquid'),
         ],
     },
     'Konoe Haruka': {
@@ -639,6 +640,7 @@ raw_information_n = {
     'Kikkawa Mizuki': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/dotpict_20160325_215011.png', 'YurikaT'),
+            ('http://i.schoolido.lu/chibi/oZShkWxbIe.png', 'SquidneyTheSquid'),
         ],
     },
     'Torii Ayumi': {
@@ -742,6 +744,11 @@ raw_information_n = {
     'Yuuki Sana': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/jtzQlSlDwg.png', 'SquidneyTheSquid'),
+        ],
+    },
+    'Yamada Hiroko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/byr411Dw.png', 'Nyanakii'),
         ],
     },
     # '': {

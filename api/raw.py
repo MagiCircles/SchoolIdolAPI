@@ -538,6 +538,7 @@ raw_information_n = {
     'Hasekura Kasane': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/P_hhw9f2.png', 'celestacat'),
+            ('http://i.schoolido.lu/chibi/8HoiJkGYcU.png', 'SquidneyTheSquid'),
         ]
     },
     'Shiga Hitomi': {
@@ -728,7 +729,7 @@ raw_information_n = {
     },
     'Kazuno Sarah': {
         'chibi': [
-            ('http://i.schoolido.lu/chibi/navi_1054.png', 'klab'),
+            ('http://i.schoolido.lu/chibi/Cj1nKvJk.png', 'Nightvale'),
         ],
     },
     'Shiitake': {

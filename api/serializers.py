@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
+from web.utils import shrinkImageFromData
 from django.db import IntegrityError
 from web.utils import chibiimage, singlecardurl
 from api.raw import STARTERS
@@ -18,6 +20,7 @@ import datetime
 import markdown_deux
 import pytz
 import re
+import os
 
 class DateTimeJapanField(serializers.DateTimeField):
     def to_representation(self, value):
@@ -397,6 +400,23 @@ class CardSerializer(serializers.ModelSerializer):
             'round_card_image': _get_image('cards/' + str(card[0]) + 'Round' + card[1] + '.png'),
         } for card in obj.skill_up_cards]
 
+    def _tinypng_images(self, validated_data):
+        idolName = self.context['request'].data.get('idol', None)
+        if not idolName:
+            idolName = self.instance.idol
+        idolId = validated_data['id'] if 'id' in validated_data else self.instance.id
+        for (field, value) in validated_data.items():
+            if value and (isinstance(value, InMemoryUploadedFile) or isinstance(value, TemporaryUploadedFile)):
+                filename = value.name
+                value = shrinkImageFromData(value.read(), filename)
+                validated_data[field] = value
+                if field in models.cardsImagesToName:
+                    value.name = models.cardsImagesToName[field]({
+                        'id': idolId,
+                        'firstname': idolName.split(' ')[-1] if idolName else 'Unknown',
+                    })
+        return validated_data
+
     def _save_fk(self, card):
         changed = False
         event = self.context['request'].data.get('event', None)
@@ -409,7 +429,10 @@ class CardSerializer(serializers.ModelSerializer):
                 card.event = event
             changed = True
         if idol:
-            idol = models.Idol.objects.get(name=idol)
+            try:
+                idol = models.Idol.objects.get(name=idol)
+            except ObjectDoesNotExist:
+                idol = models.Idol.objects.create(name=idol)
             card.idol = idol
             card.name = idol.name
             changed = True
@@ -420,17 +443,26 @@ class CardSerializer(serializers.ModelSerializer):
         return card
 
     def validate(self, data):
-        if self.context['request'].method == 'POST' and 'idol' not in self.context['request'].data:
+        if self.context['request'].method == 'POST' and ('idol' not in self.context['request'].data or not self.context['request'].data['idol']):
             raise serializers.ValidationError({
                 'idol': ['This field is required.'],
             })
+        for (field, value) in data.items():
+            if value and (isinstance(value, InMemoryUploadedFile) or isinstance(value, TemporaryUploadedFile)):
+                _, extension = os.path.splitext(value.name)
+                if extension.lower() != '.png':
+                    raise serializers.ValidationError({
+                        field: ['Only png images are accepted.'],
+                    })
         return data
 
     def create(self, validated_data):
+        validated_data = self._tinypng_images(validated_data)
         card = super(CardSerializer, self).create(validated_data)
         return self._save_fk(card)
 
     def update(self, instance, validated_data):
+        validated_data = self._tinypng_images(validated_data)
         card = super(CardSerializer, self).update(instance, validated_data)
         return self._save_fk(card)
 

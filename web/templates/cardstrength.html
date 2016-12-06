@@ -84,7 +84,7 @@ angular.module('cardStrength', ['ui.bootstrap'])
 
 <div ng-app="{% block ng_app %}cardStrength{% endblock %}" ng-controller="FormController" class="container">
 
-<div class="col-sm-2 nomargin"
+<div class="col-sm-2" style="margin: 0; padding: 0">
 <form method="GET" action="/cards/" class="form-horizontal">
     <!-- idol -->
     <div class="form-group">
@@ -95,8 +95,8 @@ angular.module('cardStrength', ['ui.bootstrap'])
     </div>
     <!-- server -->
     <div class="row form-group">
-      <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
       <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
+      <input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}>
 	  </div>
     <!-- collection -->
     <div class="form-group">

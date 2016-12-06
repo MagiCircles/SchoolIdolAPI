@@ -428,6 +428,22 @@ def japanese_attribute(attribute):
         return u'クール'
     return u'❤'
 
+# Take a dictionary that contains id and firstname
+cardsImagesToName = {
+    'card_image': lambda info: u'{id}{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'card_idolized_image': lambda info: u'{id}idolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_card_image': lambda info: u'{id}{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_card_idolized_image': lambda info: u'{id}idolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'round_card_image': lambda info: u'{id}Round{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'round_card_idolized_image': lambda info: u'{id}RoundIdolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_round_card_image': lambda info: u'{id}Round{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_round_card_idolized_image': lambda info: u'{id}RoundIdolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'transparent_image': lambda info: u'{id}Transparent.png'.format(id=info['id']),
+    'transparent_idolized_image': lambda info: u'{id}idolizedTransparent.png'.format(id=info['id']),
+    'clean_ur': lambda info: u'{id}{firstname}CleanUR.png'.format(id=info['id'], firstname=info['firstname']),
+    'clean_ur_idolized': lambda info: u'{id}{firstname}CleanURIdolized.png'.format(id=info['id'], firstname=info['firstname']),
+}
+
 def event_EN_upload_to(instance, filename):
     name, extension = os.path.splitext(filename)
     return 'events/EN/' + (instance.english_name if instance.english_name else instance.japanese_name) + randomString(16) + extension

@@ -9,31 +9,27 @@
 {% block content %}
 <script src="../static/bower/angular/angular.min.js" type="text/javascript"></script>
 <script src="../static/bower/angular-bootstrap/ui-bootstrap-tpls.min.js" type="text/javascript"> </script>
-<script src="../static/js/cardstrength.js" type="text/javascript"></script>
+{% comment %}<script src="../static/js/cardstrength.js" type="text/javascript"></script>{% endcomment %}
+<link rel="stylesheet" type="text/css" href="../static/bower/tr-ng-grid/trNgGrid.min.css" type="text/javascript"></script>
+<script src="../static/bower/tr-ng-grid/trNgGrid.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-angular.module('cardStrength', ['ui.bootstrap'])
-  .controller('FormController', function($scope) {
-
-    // idol name typeahead
-    $scope.selected_idol = undefined;
-    $scope.idols = [{% for idol,str in filters.idols %} "{{str}}" {% if not forloop.last %},{% endif %} {% endfor %}]
-
-    // collections typeahead
-    $scope.selected_collection = undefined;
-    $scope.collections = [
-      //{% for japanese_collection in filters.japanese_collection %} "{{japanese_collection}}", {% endfor %} 
-    {% for translated_collection in filters.translated_collections %} "{{translated_collection.translated_collection}} {{total.translated_collection}}" {% if not forloop.last %},{% endif %} {% endfor %}
-    ]
-  })
+angular.module('cardStrength', ['ui.bootstrap', 'trNgGrid'])
   .config(function($interpolateProvider) {
-      
-        $interpolateProvider.startSymbol('[[');
-        $interpolateProvider.endSymbol(']]');
-      
-    });
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+  })
+  .controller('TableController', function($scope, $http){
+    
+    $scope.cards = {
+      {% for card in cards %}
+      {{card}},
+      {% endfor %}
+    }
+    console.log($scope.cards)
+  });
 </script>
-<script src="/static/bower/CuteForm/cuteform.js"></script>
-<script>
+{% comment %}<script src="/static/bower/CuteForm/cuteform.js" type="text/javascript"></script>
+<script type="text/javascript">
   cuteform($('#id_attribute'), {
     'images': {
       '': 'http://i.schoolido.lu/static/empty.png',
@@ -75,162 +71,195 @@ angular.module('cardStrength', ['ui.bootstrap'])
       {% endfor %}
     }
   });
-</script>
+</script>{% endcomment %}
 
-{% comment %}<script src="/web/static/bower/bootstrap-table/dist/bootstrap-table.min.js"></script>
-<link rel="stylesheet" href="../static/bower/bootstrap-table/dist/bootstrap-table.min.css" type="stylesheet"/>
-<script src="../static/bower/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js" type="text/javascript"></script>
-<script src="../static/bower/bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.min.js" type="text/javascript"></script>{% endcomment %}
+<div ng-app="{% block ng_app %}cardStrength{% endblock %}" class="container">
+  <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+    <form method="GET" action="/cards/" class="form-horizontal">
+      <!-- FILTER CARDS -->
+      <h4>{% trans 'Filter' %}</h4>
+      <div class="section filters">
+        <!-- idol -->
+        <label for="id_name" class="control-label">{% trans 'Idol' %}</label>
+        <select id="id_name" name="name">
+          <optgroup>
+            {% for idol, str in filters.idols %}
+            <option value="{{ idol }}"{% if request_get.name == idol %} selected{% endif %}>{{ str }}</option>
+            {% if forloop.counter == 1 or forloop.counter == 10 %}
+          </optgroup>
+          <optgroup>
+            {% endif %}
+            {% endfor %}
+          </optgroup>
+        </select>
 
-<div ng-app="{% block ng_app %}cardStrength{% endblock %}" ng-controller="FormController" class="container">
-
-<nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
-
-<form method="GET" action="/cards/" class="form-horizontal">
-
-    <h4>{% trans 'Filter' %}</h4>
-    <div class="section filters">
-      <!-- idol -->
-      <label for="id_name" class="control-label">{% trans 'Idol' %}</label>
-      <select id="id_name" name="name">
-        <optgroup>
-          {% for idol, str in filters.idols %}
-          <option value="{{ idol }}"{% if request_get.name == idol %} selected{% endif %}>{{ str }}</option>
-          {% if forloop.counter == 1 or forloop.counter == 10 %}
-        </optgroup>
-        <optgroup>
-          {% endif %}
+        <!-- collection -->
+        <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
+        <select id="id_translated_collection" name="translated_collection">
+          <option value=""></option>
+          {% for translated_collection in filters.translated_collections %}
+          <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{% trans translated_collection.translated_collection %} ({{ translated_collection.total }})</option>
           {% endfor %}
-        </optgroup>
-      </select>
+        </select>     
+          
+        <!-- server -->
+        <div style="margin-top: 10px">
+          <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
+          <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
+        </div>
 
-      <!-- collection -->
-      <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
-      <select id="id_translated_collection" name="translated_collection">
-        <option value=""></option>
-        {% for translated_collection in filters.translated_collections %}
-        <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{% trans translated_collection.translated_collection %} ({{ translated_collection.total }})</option>
-        {% endfor %}
-      </select>     
+        <!-- attribute -->
+        <label class="control-label" for="id_attribute">{% trans 'Attribute' %}</label>
+        <div>
+        <select id="id_attribute" name="attribute">
+          <option value=""></option>
+          {% for i, attribute in filters.attribute_choices %}
+          <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
+          {% endfor %}
+        </select>
+        </div>
+
+        <!-- skill -->
+        <label class="control-label" for="id_skill">{% trans 'Skill' %}</label>
+        <select id="id_skill" name="skill">
+          <option value=""></option>
+          {% for idol in filters.skills %}
+          <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
+          {% endfor %}
+        </select>
+
+        <!-- rarity -->
+        <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
+        <select id="id_rarity" name="rarity">
+          <option value=""></option>
+          {% for i, rarity in filters.rarity_choices %}
+          <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- main unit -->
+        <div id="main_unit_wrapper">
+          <label  class="control-label"for="id_main_unit">{% trans 'Main Unit' %}</label>
+          <div>
+            <select id="id_main_unit" name="main_unit">
+            <option value=""></option>
+            {% for main_unit in filters.main_units %}
+            <option value="{{ main_unit }}"{% if request_get.main_unit == main_unit %} selected{% endif %}>{{ main_unit }}</option>
+            {% endfor %}
+          </select>
+          </div>
+        </div>
+
+        <!-- sub unit -->
+        <div id="sub_unit_wrapper">
+          <label  class="control-label"for="id_sub_unit">{% trans 'Sub Unit' %}</label>
+          <select id="id_sub_unit" name="sub_unit">
+            <option value=""></option>
+            {% for sub_unit in filters.sub_units %}
+            <option value="{{ sub_unit }}"{% if request_get.sub_unit == sub_unit %} selected{% endif %}>{{ sub_unit }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- year -->
+        <label class="control-label" for="id_idol_year">{% trans 'Year' %}</label>
+        <select id="id_idol_year" name="idol_year" data-cuteform="true">
+          <option value="" data-cuteform-html="{% trans 'All' %}"></option>
+          {% for idol_year in filters.idol_year_choices %}
+          <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}"{% if request_get.idol_year == idol_year %} selected{% endif %}>{{ idol_year }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- release date -->
+        <label for="id_release_after">{% trans 'Release date' %} ({% trans 'after' %}):</label>
+        <input id="id_release_after" type="month" name="release_after" value="{{ request_get.release_after }}" class="form-control">
+        <label for="id_release_before">{% trans 'Release date' %} ({% trans 'before' %}):</label>
+        <input id="id_release_before" type="month" name="release_before" value="{{ request_get.release_before }}" class="form-control">
+
+      </div>
+
+
+
+      <!-- USER ACCOUNT -->
+      <h4>{% trans 'View' %}</h4>
+      <div class="section view">
         
-      <!-- server -->
-      <div style="margin-top: 10px">
-        <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
-        <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
+        {% comment %}{% if not high_traffic and user.is_authenticated %}{% endcomment %}
+          <!-- game account -->
+          <label for="id_select_account">{% trans 'Account' %}</label>
+          <select id="id_select_account" name="account">
+            <option value=""></option>
+            {% for account in accounts %}
+            <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
+            {% endfor %}
+          </select>
+
+          <!-- stored in  -->
+          <label for="id_stored">{% trans 'Stored' %}</label>
+          <select id="id_stored" name="stored">
+            <option value=""></option>
+            {% for i, stored in filters.stored_choices %}
+            <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
+            {% endfor %}
+          </select>
+
+          <!-- max leveled -->
+          <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
+          <select id="id_max_level" name="max_level">
+            <option value=""></option>
+            <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
+            <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
+          </select>
+
+          <!-- max bonded -->
+          <label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
+          <select id="id_max_bond" name="max_bond">
+            <option value=""></option>
+            <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
+            <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
+          </select>
+          {% comment %}{% endif %}{% endcomment %}
+
+      </div>
+      
+      <!-- SUBMIT -->
+      <div class="section submit">
+        <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
       </div>
 
-      <!-- attribute -->
-      <label class="control-label" for="id_attribute">{% trans 'Attribute' %}</label>
-      <div>
-      <select id="id_attribute" name="attribute">
-        <option value=""></option>
-        {% for i, attribute in filters.attribute_choices %}
-        <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
-        {% endfor %}
-      </select>
-      </div>
+    </form>
+  </nav>
 
-    <!-- skill -->
-    <label class="control-label" for="id_skill">{% trans 'Skill' %}</label>
-    <select id="id_skill" name="skill">
-      <option value=""></option>
-      {% for idol in filters.skills %}
-      <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
-      {% endfor %}
-    </select>
-
-    <!-- rarity -->
-    <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
-    <select id="id_rarity" name="rarity">
-      <option value=""></option>
-      {% for i, rarity in filters.rarity_choices %}
-      <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
-      {% endfor %}
-    </select>
-
-    <!-- main unit -->
-	  <div id="main_unit_wrapper">
-	    <label  class="control-label"for="id_main_unit">{% trans 'Main Unit' %}</label>
-	    <div>
-        <select id="id_main_unit" name="main_unit">
-	      <option value=""></option>
-	      {% for main_unit in filters.main_units %}
-	      <option value="{{ main_unit }}"{% if request_get.main_unit == main_unit %} selected{% endif %}>{{ main_unit }}</option>
-	      {% endfor %}
-	    </select>
-	    </div>
-	  </div>
-
-    <!-- sub unit -->
-    <div id="sub_unit_wrapper">
-	    <label  class="control-label"for="id_sub_unit">{% trans 'Sub Unit' %}</label>
-	    <select id="id_sub_unit" name="sub_unit">
-	      <option value=""></option>
-	      {% for sub_unit in filters.sub_units %}
-	      <option value="{{ sub_unit }}"{% if request_get.sub_unit == sub_unit %} selected{% endif %}>{{ sub_unit }}</option>
-	      {% endfor %}
-	    </select>
-	  </div>
-
-    <!-- year -->
-    <label class="control-label" for="id_idol_year">{% trans 'Year' %}</label>
-	  <select id="id_idol_year" name="idol_year" data-cuteform="true">
-	    <option value="" data-cuteform-html="{% trans 'All' %}"></option>
-	    {% for idol_year in filters.idol_year_choices %}
-	    <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}"{% if request_get.idol_year == idol_year %} selected{% endif %}>{{ idol_year }}</option>
-	    {% endfor %}
-	  </select>
+  <div class="col-sm-10 nomargin" ng-controller="TableController">
+    <table class="table table-striped" id="card_table" tr-ng-grid items='[[cards]]'>
+        {% comment %}<thead>
+            <tr>
+                <th data-field="rarity">{% trans 'Rarity' %}</th>
+                <th data-field="attribute">{% trans 'Attribute' %} </th> 
+                <th data-field="collection">{% trans 'Collection'%} </th>
+                <th data-field="idol">{% trans 'Idol' %}</th>
+                <th data-field="id">ID</th>
+                <th data-field="smile">{% trans 'Smile' %}</th>
+                <th data-field="pure">{% trans 'Pure' %}</th>
+                <th data-field="cool">{% trans 'Cool' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for card in cards %}
+            <tr>
+            <td>{{ card.rarity }}</td>
+            <td>{{ card.attribute }}</td>
+            <td>{{ card.translated_collection }}</td>
+            <td>{{ card.name }}</td>
+            <td>{{ card.id }}</td>
+            <td>{{ card.non_idolized_maximum_statistics_smile }}</td>
+            <td>{{ card.non_idolized_maximum_statistics_pure }}</td>
+            <td>{{ card.non_idolized_maximum_statistics_cool }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>{% endcomment %}
+    </table>
   </div>
-
-  <div class="section submit">
-    <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
-  </div>
-
-</form>
-</nav>
-
-<!-- TODO: idol year/main unit/subunit/center skill? -->
-<div class="col-sm-10 nomargin">
-<table class="table table-striped" id="card_table" data-toggle="table"
-       data-show-refresh="true"
-       data-show-columns="true"
-       data-search="true"
-       data-pagination="true"
-       data-page-size="50"
-       data-page-list="[5, 10, 20, 50, 100, 200]"
-       data-cookie="true"
-       data-cookie-id-table="cardstrength"
-       data-multiple-search="true"
-       data-filter-show-clear="true">
-    <thead>
-        <tr>
-            <th data-field="rarity">{% trans 'Rarity' %}</th>
-            <th data-field="attribute">{% trans 'Attribute' %} </th> 
-            <th data-field="collection">{% trans 'Collection'%} </th>
-            <th data-field="idol">{% trans 'Idol' %}</th>
-            <th data-field="id" data-sortable="true">ID</th>
-            <th data-field="smile">{% trans 'Smile' %}</th>
-            <th data-field="pure">{% trans 'Pure' %}</th>
-            <th data-field="cool">{% trans 'Cool' %}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for card in cards %}
-        <tr>
-        <td>{{ card.rarity }}</td>
-        <td>{{ card.attribute }}</td>
-        <td>{{ card.translated_collection }}</td>
-        <td>{{ card.name }}</td>
-        <td>{{ card.id }}</td>
-        <td>{{ card.non_idolized_maximum_statistics_smile }}</td>
-        <td>{{ card.non_idolized_maximum_statistics_pure }}</td>
-        <td>{{ card.non_idolized_maximum_statistics_cool }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 </div>
-</div>
-
 
 {% endblock %}

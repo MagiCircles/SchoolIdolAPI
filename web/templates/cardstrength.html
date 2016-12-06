@@ -1,8 +1,36 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'List of URs' %}{% endblock %}
+{% block title %}{% trans 'Card Strength Analysis' %}{% endblock %}
 
 {% block content %}
-<p>Hello world</p>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/sc-1.4.2/datatables.min.js"></script>
+<script type="text/javascript">
+$(document).ready( function () {
+    $('#card_table').DataTable();
+} );
+</script>
+<table id="card_table">
+    <thead>
+        <tr>
+            <th>Card Name</th>
+            <th>Max Smile</th>
+            <th>Max Pure</th>
+            <th>Max Cool</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for card in cards %}
+        <tr>
+        <td>{{ card.rarity }} {{ card.translated_collection }} {{ card.name }}</td>
+        <td>{{ card.non_idolized_maximum_statistics_smile }}</td>
+        <td>{{ card.non_idolized_maximum_statistics_pure }}</td>
+        <td>{{ card.non_idolized_maximum_statistics_cool }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

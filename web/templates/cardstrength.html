@@ -84,32 +84,44 @@ angular.module('cardStrength', ['ui.bootstrap'])
 
 <div ng-app="{% block ng_app %}cardStrength{% endblock %}" ng-controller="FormController" class="container">
 
-<div class="col-sm-2" style="margin: 0; padding: 0">
-<form method="GET" action="/cards/" class="form-horizontal">
-    <!-- idol -->
-    <div class="form-group">
-      <label for="id_name" class="col-sm-2 control-label">{% trans 'Idol' %}</label>
-      <div class="col-sm-10">
-        <input id="id_name" name="name" type="text" ng-model="selected_idol" uib-typeahead="idol for idol in idols | filter:$viewValue | limitTo:8" placeholder="Idol Name"class="form-control">
-      </div>
-    </div>
-    <!-- server -->
-    <div class="row form-group">
-      <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
-      <input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}>
-	  </div>
-    <!-- collection -->
-    <div class="form-group">
-      <label  class="col-sm-2 control-label"for="id_collection">{% trans 'Collection' %}</label>
-      <div class="col-sm-10">
-      <input id="id_collection" name="collection" type="text" ng-model="selected_collection" uib-typeahead="collection for collection in collections | filter:$viewValue | limitTo:8" placeholder="Collection"class="form-control">
-      </div>
-    </div>
+<nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
 
-    <!-- attribute -->
-    <div class="form-group">
-      <label  class="col-sm-2 control-label"for="id_attribute">{% trans 'Attribute' %}</label>
-      <div class="col-sm-10">
+<form method="GET" action="/cards/" class="form-horizontal">
+
+    <h4>{% trans 'Filter' %}</h4>
+    <div class="section filters">
+      <!-- idol -->
+      <label for="id_name" class="control-label">{% trans 'Idol' %}</label>
+      <select id="id_name" name="name">
+        <optgroup>
+          {% for idol, str in filters.idols %}
+          <option value="{{ idol }}"{% if request_get.name == idol %} selected{% endif %}>{{ str }}</option>
+          {% if forloop.counter == 1 or forloop.counter == 10 %}
+        </optgroup>
+        <optgroup>
+          {% endif %}
+          {% endfor %}
+        </optgroup>
+      </select>
+
+      <!-- collection -->
+      <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
+      <select id="id_translated_collection" name="translated_collection">
+        <option value=""></option>
+        {% for translated_collection in filters.translated_collections %}
+        <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{% trans translated_collection.translated_collection %} ({{ translated_collection.total }})</option>
+        {% endfor %}
+      </select>     
+        
+      <!-- server -->
+      <div style="margin-top: 10px">
+        <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
+        <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
+      </div>
+
+      <!-- attribute -->
+      <label class="control-label" for="id_attribute">{% trans 'Attribute' %}</label>
+      <div>
       <select id="id_attribute" name="attribute">
         <option value=""></option>
         {% for i, attribute in filters.attribute_choices %}
@@ -117,26 +129,29 @@ angular.module('cardStrength', ['ui.bootstrap'])
         {% endfor %}
       </select>
       </div>
-    </div>
+
+    <!-- skill -->
+    <label class="control-label" for="id_skill">{% trans 'Skill' %}</label>
+    <select id="id_skill" name="skill">
+      <option value=""></option>
+      {% for idol in filters.skills %}
+      <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
+      {% endfor %}
+    </select>
 
     <!-- rarity -->
-    <div class="form-group">
-    <label  class="col-sm-2 control-label"for="id_rarity">{% trans 'Rarity' %}</label>
-    <div class="col-sm-10">
-
-      <select id="id_rarity" name="rarity">
-        <option value=""></option>
-        {% for i, rarity in filters.rarity_choices %}
-        <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    </div>
+    <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
+    <select id="id_rarity" name="rarity">
+      <option value=""></option>
+      {% for i, rarity in filters.rarity_choices %}
+      <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
+      {% endfor %}
+    </select>
 
     <!-- main unit -->
-	  <div class="form-group" id="main_unit_wrapper">
-	    <label  class="col-sm-2 control-label"for="id_main_unit">{% trans 'Main Unit' %}</label>
-	    <div class="col-sm-10">
+	  <div id="main_unit_wrapper">
+	    <label  class="control-label"for="id_main_unit">{% trans 'Main Unit' %}</label>
+	    <div>
         <select id="id_main_unit" name="main_unit">
 	      <option value=""></option>
 	      {% for main_unit in filters.main_units %}
@@ -147,37 +162,32 @@ angular.module('cardStrength', ['ui.bootstrap'])
 	  </div>
 
     <!-- sub unit -->
-    <div class="form-group" id="sub_unit_wrapper">
-	    <label  class="col-sm-2 control-label"for="id_sub_unit">{% trans 'Sub Unit' %}</label>
-      <div class="col-sm-10">
+    <div id="sub_unit_wrapper">
+	    <label  class="control-label"for="id_sub_unit">{% trans 'Sub Unit' %}</label>
 	    <select id="id_sub_unit" name="sub_unit">
 	      <option value=""></option>
 	      {% for sub_unit in filters.sub_units %}
 	      <option value="{{ sub_unit }}"{% if request_get.sub_unit == sub_unit %} selected{% endif %}>{{ sub_unit }}</option>
 	      {% endfor %}
 	    </select>
-      </div>
 	  </div>
 
     <!-- year -->
-    <div class="form-group">
-    <label  class="col-sm-2 control-label"for="id_idol_year">{% trans 'Year' %}</label>
-    <div class="col-sm-10">
+    <label class="control-label" for="id_idol_year">{% trans 'Year' %}</label>
 	  <select id="id_idol_year" name="idol_year" data-cuteform="true">
 	    <option value="" data-cuteform-html="{% trans 'All' %}"></option>
 	    {% for idol_year in filters.idol_year_choices %}
 	    <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}"{% if request_get.idol_year == idol_year %} selected{% endif %}>{{ idol_year }}</option>
 	    {% endfor %}
 	  </select>
-    </div>
-    </div>
+  </div>
 
-    <div class="section submit">
-      <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
-    </div>
+  <div class="section submit">
+    <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
+  </div>
 
 </form>
-</div>
+</nav>
 
 <!-- TODO: idol year/main unit/subunit/center skill? -->
 <div class="col-sm-10 nomargin">
@@ -194,14 +204,14 @@ angular.module('cardStrength', ['ui.bootstrap'])
        data-filter-show-clear="true">
     <thead>
         <tr>
-            <th data-field="rarity">Rarity</th>
-            <th data-field="attribute">Attribute</th>
-            <th data-field="collection">Collection</th>
-            <th data-field="name">Idol Name</th>
+            <th data-field="rarity">{% trans 'Rarity' %}</th>
+            <th data-field="attribute">{% trans 'Attribute' %} </th> 
+            <th data-field="collection">{% trans 'Collection'%} </th>
+            <th data-field="idol">{% trans 'Idol' %}</th>
             <th data-field="id" data-sortable="true">ID</th>
-            <th data-field="smile">Max Smile</th>
-            <th data-field="pure">Max Pure</th>
-            <th data-field="cool">Max Cool</th>
+            <th data-field="smile">{% trans 'Smile' %}</th>
+            <th data-field="pure">{% trans 'Pure' %}</th>
+            <th data-field="cool">{% trans 'Cool' %}</th>
         </tr>
     </thead>
     <tbody>

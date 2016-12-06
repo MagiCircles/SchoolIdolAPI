@@ -1,18 +1,142 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load mod %}
+{% get_current_language as LANGUAGE_CODE %}
+{% load imageurl %}
+{% load choicesToString %}
+
 
 {% block title %}{% trans 'Card Strength Analysis' %}{% endblock %}
 {% block content %}
-<!-- bootstrap-table inclusions -->
-<script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+<script src="../static/bower/angular/angular.min.js" type="text/javascript"></script>
+<script src="../static/bower/angular-bootstrap/ui-bootstrap-tpls.min.js" type="text/javascript"> </script>
+<script src="../static/js/cardstrength.js" type="text/javascript"></script>
+<script type="text/javascript">
+angular.module('cardStrength', ['ui.bootstrap'])
+  .controller('FormController', function($scope) {
+
+    // idol name typeahead
+    $scope.selected_idol = undefined;
+    $scope.idols = [{% for idol,str in filters.idols %} "{{str}}" {% if not forloop.last %},{% endif %} {% endfor %}]
+
+    // collections typeahead
+    $scope.selected_collection = undefined;
+    $scope.collections = [
+      //{% for japanese_collection in filters.japanese_collection %} "{{japanese_collection}}", {% endfor %} 
+    {% for translated_collection in filters.translated_collections %} "{{translated_collection.translated_collection}} {{total.translated_collection}}" {% if not forloop.last %},{% endif %} {% endfor %}
+    ]
+  })
+  .config(function($interpolateProvider) {
+      
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+      
+    });
+</script>
+<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script>
+  cuteform($('#id_attribute'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for i, attribute in filters.attribute_choices %}
+      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_rarity'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for rarity, _ in filters.rarity_choices %}
+      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_sub_unit'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for sub_unit in filters.sub_units %}
+      '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_main_unit'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for main_unit in filters.main_units %}
+      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_name'), {
+    'modal': 'true',
+    'modal-text': 'true',
+    'images': {
+      {% for idol, str in filters.idols %}
+      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% endfor %}
+    }
+  });
+</script>
+
+{% comment %}<script src="/web/static/bower/bootstrap-table/dist/bootstrap-table.min.js"></script>
 <link rel="stylesheet" href="../static/bower/bootstrap-table/dist/bootstrap-table.min.css" type="stylesheet"/>
 <script src="../static/bower/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js" type="text/javascript"></script>
-<script src="../static/bower/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js" type="text/javascript"></script>
-<script src="../static/bower/bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.min.js" type="text/javascript"></script>
-<!--<form method="GET" action="/cards/">
+<script src="../static/bower/bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.min.js" type="text/javascript"></script>{% endcomment %}
 
-</form>-->
+<div ng-app="{% block ng_app %}cardStrength{% endblock %}" ng-controller="FormController">
+
+<form method="GET" action="/cards/">
+    <!-- idol -->
+    <label for="id_name">{% trans 'Idol' %}</label>
+    <input name="id_name" type="text" ng-model="selected_idol" uib-typeahead="idol for idol in idols | filter:$viewValue | limitTo:8" placeholder="Idol Name"class="form-control">
+
+    <!-- collection -->
+    <label for="id_collection">{% trans 'Collection' %}</label>
+    <input type="text" ng-model="selected_collection" uib-typeahead="collection for collection in collections | filter:$viewValue | limitTo:8" placeholder="Collection"class="form-control">
+
+    <!-- rarity -->
+    <label for="id_rarity">{% trans 'Rarity' %}</label>
+    <select id="id_rarity" name="rarity">
+      <option value=""></option>
+      {% for i, rarity in filters.rarity_choices %}
+      <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
+      {% endfor %}
+    </select>
+
+    <!-- main unit -->
+	  <div id="main_unit_wrapper">
+	    <label for="id_main_unit">{% trans 'Main Unit' %}</label>
+	    <select id="id_main_unit" name="main_unit">
+	      <option value=""></option>
+	      {% for main_unit in filters.main_units %}
+	      <option value="{{ main_unit }}"{% if request_get.main_unit == main_unit %} selected{% endif %}>{{ main_unit }}</option>
+	      {% endfor %}
+	    </select>
+	  </div>
+    <!-- sub unit -->
+    <div id="sub_unit_wrapper">
+	    <label for="id_sub_unit">{% trans 'Sub Unit' %}</label>
+	    <select id="id_sub_unit" name="sub_unit">
+	      <option value=""></option>
+	      {% for sub_unit in filters.sub_units %}
+	      <option value="{{ sub_unit }}"{% if request_get.sub_unit == sub_unit %} selected{% endif %}>{{ sub_unit }}</option>
+	      {% endfor %}
+	    </select>
+	  </div>
+    <!-- year -->
+    <label for="id_idol_year">{% trans 'Year' %}</label>
+	  <select id="id_idol_year" name="idol_year" data-cuteform="true">
+	    <option value="" data-cuteform-html="{% trans 'All' %}"></option>
+	    {% for idol_year in filters.idol_year_choices %}
+	    <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}"{% if request_get.idol_year == idol_year %} selected{% endif %}>{{ idol_year }}</option>
+	    {% endfor %}
+	  </select>
+
+    <div class="section submit">
+      <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
+    </div>
+
+</form>
 
 <!-- TODO: idol year/main unit/subunit/center skill? -->
 <table id="card_table" data-toggle="table"
@@ -24,15 +148,14 @@
        data-page-list="[5, 10, 20, 50, 100, 200]"
        data-cookie="true"
        data-cookie-id-table="cardstrength"
-       data-filter-control="true"
        data-multiple-search="true"
        data-filter-show-clear="true">
     <thead>
         <tr>
-            <th data-field="rarity" data-filter-controls="select">Rarity</th>
-            <th data-field="attribute" data-filter-controls="select">Attribute</th>
-            <th data-field="collection" data-filter-control="input">Collection</th>
-            <th data-field="name" data-sortable="true" data-filter-control="input">Idol Name</th>
+            <th data-field="rarity">Rarity</th>
+            <th data-field="attribute">Attribute</th>
+            <th data-field="collection">Collection</th>
+            <th data-field="name">Idol Name</th>
             <th data-field="id" data-sortable="true">ID</th>
             <th data-field="smile">Max Smile</th>
             <th data-field="pure">Max Pure</th>
@@ -54,6 +177,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 
 {% endblock %}

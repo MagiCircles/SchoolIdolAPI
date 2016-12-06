@@ -3251,5 +3251,6 @@ def drown(request):
 
 def cardstrength(request):
    context = globalContext(request)
-   context['cards'] = models.Card.objects.order_by('-id')
+   context['filters'] = get_cards_form_filters(request, settings.CARDS_INFO)
+   context['cards'] = models.Card.objects.filter(idol_year="Second").order_by('-id')
    return render(request, 'cardstrength.html', context)

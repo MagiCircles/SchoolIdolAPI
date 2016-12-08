@@ -730,6 +730,8 @@ raw_information_n = {
     'Kazuno Sarah': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Cj1nKvJk.png', 'Nightvale'),
+            ('http://i.schoolido.lu/chibi/oP2C1E8.png', 'RiniRuby'),
+            ('http://i.schoolido.lu/chibi/1481117134004.png', 'db0'),
         ],
     },
     'Shiitake': {

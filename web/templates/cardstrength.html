@@ -7,73 +7,11 @@
 
 {% block title %}{% trans 'Card Strength Analysis' %}{% endblock %}
 {% block content %}
-<script src="../static/bower/angular/angular.min.js" type="text/javascript"></script>
-<script src="../static/bower/angular-bootstrap/ui-bootstrap-tpls.min.js" type="text/javascript"> </script>
+<script src="../static/bower/jQuery/dist/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="../static/bower/datatables.net/js/jquery.dataTables.js"></script>
 {% comment %}<script src="../static/js/cardstrength.js" type="text/javascript"></script>{% endcomment %}
-<link rel="stylesheet" type="text/css" href="../static/bower/tr-ng-grid/trNgGrid.min.css" type="text/javascript"></script>
-<script src="../static/bower/tr-ng-grid/trNgGrid.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-angular.module('cardStrength', ['ui.bootstrap', 'trNgGrid'])
-  .config(function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-  })
-  .controller('TableController', function($scope, $http){
-    
-    $scope.cards = {
-      {% for card in cards %}
-      {{card}},
-      {% endfor %}
-    }
-    console.log($scope.cards)
-  });
-</script>
-{% comment %}<script src="/static/bower/CuteForm/cuteform.js" type="text/javascript"></script>
-<script type="text/javascript">
-  cuteform($('#id_attribute'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for i, attribute in filters.attribute_choices %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
-      {% endfor %}
-    }
-  });
-  cuteform($('#id_rarity'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for rarity, _ in filters.rarity_choices %}
-      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
-      {% endfor %}
-    }
-  });
-  cuteform($('#id_sub_unit'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for sub_unit in filters.sub_units %}
-      '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
-      {% endfor %}
-    }
-  });
-  cuteform($('#id_main_unit'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for main_unit in filters.main_units %}
-      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
-      {% endfor %}
-    }
-  });
-  cuteform($('#id_name'), {
-    'modal': 'true',
-    'modal-text': 'true',
-    'images': {
-      {% for idol, str in filters.idols %}
-      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
-      {% endfor %}
-    }
-  });
-</script>{% endcomment %}
 
-<div ng-app="{% block ng_app %}cardStrength{% endblock %}" class="container">
+<div id="wrapper">
   <nav id="sidebar-wrapper" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
     <form method="GET" action="/cards/" class="form-horizontal">
       <!-- FILTER CARDS -->
@@ -230,18 +168,23 @@ angular.module('cardStrength', ['ui.bootstrap', 'trNgGrid'])
     </form>
   </nav>
 
-  <div class="col-sm-10 nomargin" ng-controller="TableController">
-    <table class="table table-striped" id="card_table" tr-ng-grid items='[[cards]]'>
-        {% comment %}<thead>
+  <div id="page-content-wrapper">
+    <a href="#" id="togglebutton" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
+      <i class="flaticon-search"></i>
+      <i class="flaticon-toggler hidder"></i>
+    </a>
+
+    <table id="cards_table" class="table table-striped table-hover">
+        <thead>
             <tr>
-                <th data-field="rarity">{% trans 'Rarity' %}</th>
-                <th data-field="attribute">{% trans 'Attribute' %} </th> 
-                <th data-field="collection">{% trans 'Collection'%} </th>
-                <th data-field="idol">{% trans 'Idol' %}</th>
-                <th data-field="id">ID</th>
-                <th data-field="smile">{% trans 'Smile' %}</th>
-                <th data-field="pure">{% trans 'Pure' %}</th>
-                <th data-field="cool">{% trans 'Cool' %}</th>
+              <th>{% trans 'Rarity' %}</th>
+              <th>{% trans 'Attribute' %} </th> 
+              <th>{% trans 'Collection'%} </th>
+              <th>{% trans 'Idol' %}</th>
+              <th>ID</th>
+              <th>{% trans 'Smile' %}</th>
+              <th>{% trans 'Pure' %}</th>
+              <th>{% trans 'Cool' %}</th>
             </tr>
         </thead>
         <tbody>
@@ -257,9 +200,59 @@ angular.module('cardStrength', ['ui.bootstrap', 'trNgGrid'])
             <td>{{ card.non_idolized_maximum_statistics_cool }}</td>
             </tr>
             {% endfor %}
-        </tbody>{% endcomment %}
+        </tbody>
     </table>
-  </div>
-</div>
+  </div> <!-- page-content-wrapper -->
+ </div> <!-- wrapper -->
+
+<script src="../static/bower/CuteForm/cuteform.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+  cuteform($('#id_attribute'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for i, attribute in filters.attribute_choices %}
+      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_rarity'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for rarity, _ in filters.rarity_choices %}
+      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_sub_unit'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for sub_unit in filters.sub_units %}
+      '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_main_unit'), {
+    'images': {
+      '': 'http://i.schoolido.lu/static/empty.png',
+      {% for main_unit in filters.main_units %}
+      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
+      {% endfor %}
+    }
+  });
+  cuteform($('#id_name'), {
+    'modal': 'true',
+    'modal-text': 'true',
+    'images': {
+      {% for idol, str in filters.idols %}
+      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% endfor %}
+    }
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#cards_table').DataTable();
+  });
+</script>
 
 {% endblock %}

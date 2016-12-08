@@ -3249,11 +3249,8 @@ def drown(request):
     models.Activity.objects.filter(pk=activity.pk).update(creation=activity.creation - relativedelta(days=1))
     return HttpResponse('')
 
-import logging
 def cardstrength(request):
    context = globalContext(request)
    context, context['cards'] = get_cards_queryset(request=request, context=context, card=None)
    context['filters'] = get_cards_form_filters(request, settings.CARDS_INFO)
-  
-#    logging.warning(context['cards'])
    return render(request, 'cardstrength.html', context)

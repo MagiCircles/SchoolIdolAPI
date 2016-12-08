@@ -3249,8 +3249,19 @@ def drown(request):
     models.Activity.objects.filter(pk=activity.pk).update(creation=activity.creation - relativedelta(days=1))
     return HttpResponse('')
 
+import pprint 
 def cardstrength(request):
+   pp = pprint.PrettyPrinter(indent=4)
    context = globalContext(request)
-   context, context['cards'] = get_cards_queryset(request=request, context=context, card=None)
+#    request_get_copy = request.GET.copy()
+#    request_get_copy['is_special'] = "off"
+   context, cards = get_cards_queryset(request=request, context=context, card=None, extra_request_get={'is_special': 'off'})
+   for card in cards:
+       if card.is_promo or card.rarity == "Normal":
+           card.display_idolized = True
+
    context['filters'] = get_cards_form_filters(request, settings.CARDS_INFO)
+   context['cards'] = cards
+#    print (context)
+   pp.pprint(request.GET)
    return render(request, 'cardstrength.html', context)

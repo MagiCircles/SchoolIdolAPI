@@ -742,6 +742,7 @@ raw_information_n = {
     'Honoka\'s Mother': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Jusn4fW4.png', 'yangxiaolong'),
+            ('http://i.schoolido.lu/chibi/mbozDh3T.png', 'Nightvale'),
         ],
     },
     'Yuuki Sana': {
@@ -752,6 +753,11 @@ raw_information_n = {
     'Yamada Hiroko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/byr411Dw.png', 'Nyanakii'),
+        ],
+    },
+    'Uchicchi': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/1070idolizedTransparent.png', 'klab'),
         ],
     },
     # '': {

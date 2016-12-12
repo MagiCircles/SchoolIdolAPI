@@ -13,7 +13,14 @@ var calcActivations = function(song,skill) {
     return 0
   }
 }
-angular.module('CardStrength', [])
+angular.module('CardStrength',[])
+  // .factory('resourceCards', function($resource) {
+  //   return $resource('/api/cards')
+  // })
+  .factory('buildAPIQuery', function(filters){
+    // if 
+
+  })
   .controller('SkillController', function($scope) {
     $scope.song = {
       perfects: .85,
@@ -22,9 +29,7 @@ angular.module('CardStrength', [])
       stars: 60
     }
     $scope.calcAvg = function(song,skill) {
-      if (skill) return calcActivations(song,skill) * skill.percent * skill.amount;
-      return 0
-      
+      return calcActivations(song,skill) * skill.percent * skill.amount;      
     }
 
     $scope.calcBest = function(song,skill) {

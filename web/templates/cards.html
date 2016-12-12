@@ -45,7 +45,7 @@
     'modal-text': 'true',
     'images': {
       {% for idol, str in filters.idols %}
-      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True force_artist='shinylyni' force_first=True %}',{% endif %}
       {% endfor %}
     }
   });

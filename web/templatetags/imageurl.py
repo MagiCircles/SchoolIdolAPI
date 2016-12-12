@@ -127,8 +127,8 @@ def linkurl(link):
     return LINK_URLS[link['type']].format(link['value'])
 
 @register.simple_tag(takes_context=True)
-def chibiimage(context, idol, small=True, force_first=False):
-    return _chibiimage(idol, small, force_first=force_first)
+def chibiimage(context, idol, small=True, force_first=False, force_artist=False):
+    return _chibiimage(idol, small, force_first=force_first, force_artist=force_artist)
 
 @register.filter
 def chibioriginal(link):

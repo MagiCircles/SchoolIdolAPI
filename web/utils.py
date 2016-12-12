@@ -14,7 +14,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.http import urlquote
 from tinypng.api import shrink_data
 from django.conf import settings
-from api.raw import raw_information, raw_information_n
+from api.raw import all_chibis
 
 from cStringIO import StringIO
 import sys
@@ -82,14 +82,22 @@ def is_positive_integer(string):
 def concat_args(*args):
     return u'\"' + u'","'.join([unicode(value).replace('"','\"') for value in args]) + u'\"'
 
-def chibiimage(idol, small=True, force_first=False):
+def chibiimage(idol, small=True, force_first=False, force_artist=None):
     prefix = 'small_' if small else ''
     image = None
-    if idol is not None:
-        if idol in raw_information and 'chibi' in raw_information[idol]:
-            image = random.choice(raw_information[idol]['chibi'])[0] if not force_first else raw_information[idol]['chibi'][0][0]
-        elif idol in raw_information_n and 'chibi' in raw_information_n[idol]:
-            image = random.choice(raw_information_n[idol]['chibi'])[0] if not force_first else raw_information_n[idol]['chibi'][0][0]
+    if idol is not None and idol in all_chibis:
+        images = all_chibis[idol]
+        if force_artist:
+            images = [i for i in images if i[1] == force_artist]
+            if not images:
+                images = all_chibis[idol]
+        try:
+            if force_first:
+                image = images[0][0]
+            else:
+                image = random.choice(images)[0]
+        except IndexError:
+            image = None
     if image:
         return (image if not small else image.replace('chibi/', 'chibi/small_'))
     return 'http://i.schoolido.lu/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'

@@ -32,7 +32,7 @@
       {% endif %}
       <div class="col-xs-4 {{ idol.attribute }}">
 	<a class="n" href="/idol/{{ idol.name|urlencode }}/">
-	  <img class="chibi" src="{% chibiimage idol=idol.name small=False force_first=idol.main %}" alt="{{ idol.name }}" style="{% if idol.main %}width: 180%; margin: 0 -40%;{% else %}width: 130%; margin: 0 -15%;{% endif %}">
+	  <img class="chibi" src="{% chibiimage idol=idol.name small=False %}" alt="{{ idol.name }}" style="{% if idol.main %}width: 180%; margin: 0 -40%;{% else %}width: 130%; margin: 0 -15%;{% endif %}">
 	  <br><div class="name">
 	    <img src="http://i.schoolido.lu/static/{{ idol.attribute }}.png" class="attribute" width="20" height="20">
 	    {% if LANGUAGE_CODE == 'ja' and idol.japanese_name %}{{ idol.japanese_name }}{% else %}{{ idol.name }}{% endif %}</div>

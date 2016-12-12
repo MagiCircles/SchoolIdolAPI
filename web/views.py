@@ -3250,18 +3250,68 @@ def drown(request):
     return HttpResponse('')
 
 import pprint 
+import math
+def isnumber(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 def cardstrength(request):
    pp = pprint.PrettyPrinter(indent=4)
    context = globalContext(request)
-#    request_get_copy = request.GET.copy()
-#    request_get_copy['is_special'] = "off"
-   context, cards = get_cards_queryset(request=request, context=context, card=None, extra_request_get={'is_special': 'off'})
+   extra_requests_get = {
+       'is_special': 'off',
+   }
+   context, cards = get_cards_queryset(request=request, context=context, card=None, extra_request_get=extra_requests_get)
    for card in cards:
-       if card.is_promo or card.rarity == "Normal":
+       if card.is_promo or card.rarity == "N":
            card.display_idolized = True
+        
+    
+       # raw skill details
+       # corner case: star note activated
+    #    if "star" in card['skill_details']:
+    #        card['raw_skill']['activation_count'] = 65
+    #        card['raw_skill']['activation_type'] = "star"
+    #        if isnumber(word):
+    #            # 3. skill activation value
+    #            #   ("by ___ points/seconds/stamina")
+    #            card['raw_skill']['activation_value'] = float(word)
+    #        if "%" in word:
+    #            # 4. skill activation percentage
+    #            #   ("there is a __% chance")
+    #            card['raw_skill']['activation_percent'] = float(word.strip("%")) / 100
+
+       skill_words = str(card.skill_details).split()
+       numCount = 0
+       card.raw_skill = {}#{ "interval": 0, "type": "", "amount": 0, "percent": 0}
+       for word in skill_words:
+            if isnumber(word) and numCount < 1:
+                # 1. skill activation interval
+                #   ("for every ## notes/seconds/hit combo/perfects...")
+                card.raw_skill['interval'] = float(word)
+
+                # 2. skill activation type
+                #   ("for every ## notes/seconds/hit combo/perfects...")
+                card.raw_skill['type'] = skill_words[
+                    skill_words.index(word) + 1].strip(',')
+
+                numCount = numCount + 1
+
+            elif isnumber(word) and numCount < 2:
+                # 3. skill activation amount
+                #   ("...by ___ points/seconds/stamina")
+
+                card.raw_skill['amount'] = float(word)
+
+            if "%" in word:
+                # 4. skill activation percent
+                #   ("...there is a ##% chance of...")
+                card.raw_skill['percent'] = float(word.strip("%")) / 100
 
    context['filters'] = get_cards_form_filters(request, settings.CARDS_INFO)
    context['cards'] = cards
-#    print (context)
    pp.pprint(request.GET)
    return render(request, 'cardstrength.html', context)

@@ -82,7 +82,7 @@ def generate_settings(opt={}):
                 'Cool': models.Card.objects.order_by('-idolized_maximum_statistics_cool')[:1][0].idolized_maximum_statistics_cool,
             },
             'songs_max_stats': models.Song.objects.order_by('-expert_notes')[0].expert_notes,
-            'idols': ValuesQuerySetToDict(models.Card.objects.values('name', 'idol__japanese_name').annotate(total=Count('name')).order_by('-total', 'name')),
+            'idols': ValuesQuerySetToDict(models.Card.objects.values('name', 'idol__japanese_name').annotate(total=Count('name')).order_by('-idol__main', 'idol__main_unit', '-idol__sub_unit', '-idol__school', 'idol__year', 'idol__name')),
             'sub_units': [card['sub_unit'] for card in models.Idol.objects.filter(sub_unit__isnull=False).values('sub_unit').distinct()],
             'years': [idol['year'] for idol in models.Idol.objects.filter(year__isnull=False).values('year').distinct()],
             'schools': [idol['school'] for idol in models.Idol.objects.filter(school__isnull=False).values('school').distinct()],

@@ -403,7 +403,7 @@ class CardSerializer(serializers.ModelSerializer):
     def _tinypng_images(self, validated_data):
         idolName = self.context['request'].data.get('idol', None)
         if not idolName:
-            idolName = self.instance.idol
+            idolName = self.instance.idol.name
         idolId = validated_data['id'] if 'id' in validated_data else self.instance.id
         for (field, value) in validated_data.items():
             if value and (isinstance(value, InMemoryUploadedFile) or isinstance(value, TemporaryUploadedFile)):

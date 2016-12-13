@@ -416,6 +416,7 @@ raw_information_n = {
     'Yazawa Cocoa': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/amukagamine2.png', 'amukagamine'),
+            ('http://i.schoolido.lu/chibi/Cocoa1.png', 'shinylyni'),
         ],
     },
     'Suda Iruka': {
@@ -429,16 +430,19 @@ raw_information_n = {
     'Fumiko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/jFSIZc8Q.png', 'ro'), # original not found
+            ('http://i.schoolido.lu/chibi/Fumiko1.png', 'shinylyni'),
         ],
     },
     'Mika': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/rhmEJfsv.png', 'ro'), # original not found
+            ('http://i.schoolido.lu/chibi/Mika1.png', 'shinylyni'),
         ],
     },
     'Hideko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/gRO5xpq-.png', 'ro'), # original not found
+            ('http://i.schoolido.lu/chibi/Hideko1.png', 'shinylyni'),
         ],
     },
     'Tanaka Sachiko': {
@@ -486,6 +490,7 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/enjugroveerena.png', 'enjugrove'),
             ('http://i.schoolido.lu/chibi/artflow_201606221314.png', 'anonymous'),
             ('http://i.schoolido.lu/chibi/BJQPyxQenY.png', 'Toudou'),
+            ('http://i.schoolido.lu/chibi/Erena1.png', 'shinylyni'),
         ],
     },
     'Yuuki Anju': {
@@ -497,6 +502,7 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/EQKSma9H.png', 'gabbi_slayz'),
             ('http://i.schoolido.lu/chibi/Cj9dIZ5UYAALSyO.png', 'ribianey'),
             ('http://i.schoolido.lu/chibi/pgirlanju.png', 'P-Girl'),
+            ('http://i.schoolido.lu/chibi/Anju1.png', 'shinylyni'),
         ],
     },
     'Kira Tsubasa': {
@@ -507,6 +513,7 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/tsubasa.png', 'db0'),
             ('http://i.schoolido.lu/chibi/JXg1NvP6.png', 'sayakax'),
             ('http://i.schoolido.lu/chibi/LjKkSm6f.png', 'mahousho_'),
+            ('http://i.schoolido.lu/chibi/Tsubasa1.png', 'shinylyni'),
         ],
     },
     'Hyoudou Sayuri': {
@@ -604,6 +611,7 @@ raw_information_n = {
     'Sasahara Kyouko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/kyouko.png', 'yuki'),
+            ('http://i.schoolido.lu/chibi/Kyoko1.png', 'shinylyni'),
         ]
     },
     'Kirihara Yuuka': {
@@ -646,16 +654,19 @@ raw_information_n = {
     'Kotori\'s Mother': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/x_XHop6t.png', 'Clay'),
+            ('http://i.schoolido.lu/chibi/KotorisMother1.png', 'shinylyni'),
         ],
     },
     'Maki\'s Mother': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/vUjxvCBd.png', 'Marina-chan'),
+            ('http://i.schoolido.lu/chibi/MakisMother1.png', 'shinylyni'),
         ],
     },
     'Nico\'s Mother': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/X8v7vn1M.png', 'shiroyanagisawa'),
+            ('http://i.schoolido.lu/chibi/NicosMother1.png', 'shinylyni'),
         ],
     },
     'Morishima Nanaka': {
@@ -683,6 +694,7 @@ raw_information_n = {
     'Alpaca': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/z9VatL18.png', 'navacandi'),
+            ('http://i.schoolido.lu/chibi/Alpaca1.png', 'shinylyni'),
         ],
     },
     'Konoe Kanata': {
@@ -780,6 +792,7 @@ raw_information_n = {
     'Yazawa Cocoro': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/cocoroGwennethThe1st.png', 'GwennethThe1st'),
+            ('http://i.schoolido.lu/chibi/Cocoro1.png', 'shinylyni'),
         ],
     },
     'Maria': {
@@ -813,6 +826,7 @@ raw_information_n = {
         'chibi': [
             ('http://i.schoolido.lu/chibi/g85PVF2c.png', 'Wei-chan'),
             ('http://i.schoolido.lu/chibi/A9rruIv3.png', 'nishiqueeno'),
+            ('http://i.schoolido.lu/chibi/Cotaro1.png', 'shinylyni'),
         ],
     },
     'Shimozono Saki': {
@@ -825,6 +839,7 @@ raw_information_n = {
     'Yamauchi Nanako': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/tLBWktsK.png', 'walharts'),
+            ('http://i.schoolido.lu/chibi/Nanako1.png', 'shinylyni'),
         ],
     },
     'Sugisaki Aya': {
@@ -836,11 +851,13 @@ raw_information_n = {
     'Sato Yoko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/oX0v-Dm3.png', 'kirisakisun'),
+            ('http://i.schoolido.lu/chibi/Yoko1.png', 'shinylyni'),
         ],
     },
     'Kazuno Leah': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/7nGz5By.png', 'sayakax'),
+            ('http://i.schoolido.lu/chibi/Leah1.png', 'shinylyni'),
         ],
     },
     'Kazuno Sarah': {
@@ -848,17 +865,20 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/Cj1nKvJk.png', 'Nightvale'),
             ('http://i.schoolido.lu/chibi/oP2C1E8.png', 'RiniRuby'),
             ('http://i.schoolido.lu/chibi/1481117134004.png', 'db0'),
+            ('http://i.schoolido.lu/chibi/Sarah1.png', 'shinylyni'),
         ],
     },
     'Shiitake': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/LCI_NOzq.png', 'Nyanakii'),
+            ('http://i.schoolido.lu/chibi/Shiitake1.png', 'shinylyni'),
         ],
     },
     'Honoka\'s Mother': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/Jusn4fW4.png', 'yangxiaolong'),
             ('http://i.schoolido.lu/chibi/mbozDh3T.png', 'Nightvale'),
+            ('http://i.schoolido.lu/chibi/HonokasMother1.png', 'shinylyni'),
         ],
     },
     'Yuuki Sana': {
@@ -870,11 +890,18 @@ raw_information_n = {
     'Yamada Hiroko': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/byr411Dw.png', 'Nyanakii'),
+            ('http://i.schoolido.lu/chibi/Hiroko1.png', 'shinylyni'),
         ],
     },
     'Uchicchi': {
         'chibi': [
             ('http://i.schoolido.lu/chibi/1070idolizedTransparent.png', 'klab'),
+            ('http://i.schoolido.lu/chibi/Uchicchi1.png', 'shinylyni'),
+        ],
+    },
+    'Miyama Satoko': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Satoko1.png', 'shinylyni'),
         ],
     },
     # '': {

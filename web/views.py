@@ -285,14 +285,14 @@ def index(request):
     # ]
     context['important_news'] = [
         {
+            'url': 'https://www.youtube.com/watch?v=8E-WnrjYu3c',
+            'image': 'http://i.imgur.com/hfvz9yA.jpg',
+            'name': 'Thank you! Christmas Month',
+        },
+        {
             'url': '//schoolido.lu/activities/4371896/',
             'image': '//i.schoolido.lu/special/banner_patreon_giveaway.png',
             'name': 'Patreon Giveaway',
-        },
-        {
-            'url': 'http://schoolido.lu/activities/3725177/',
-            'image': 'https://pbs.twimg.com/media/CsTH87vVMAAoOXy.jpg:large',
-            'name': 'Secret Santa 2016',
         },
     ]
 

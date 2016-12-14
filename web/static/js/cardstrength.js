@@ -24,12 +24,11 @@ angular.module('CardStrength',['ngResource'])
   })
   .controller('FiltersController', function($scope){
     $scope.filters = {}
+
     $scope.setCFFilter = function(filter, newValue) {
       var found_key = false;
-      console.log("setting " + filter + " to " + newValue)
       angular.forEach($scope.filters, function(value,key){
         if (key == filter) {
-          console.log()
           $scope.filters[key] = newValue; 
           found_key = true;
           return;
@@ -37,8 +36,8 @@ angular.module('CardStrength',['ngResource'])
       })
       if (!found_key) {
         $scope.filters[filter] = newValue
-      }
-      console.log($scope.filters)
+      };
+      
     }
   })
   .controller('SkillController', function($scope, Cards) {

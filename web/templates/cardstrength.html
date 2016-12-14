@@ -1,26 +1,37 @@
-{% extends "base.html" %}
-{% load i18n %}
-{% load mod %}
-{% get_current_language as LANGUAGE_CODE %}
-{% load imageurl %}
-{% load choicesToString %}
-
-{% block title %}{% trans 'Card Strength Analysis' %}{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% load i18n %} {% load mod %} {% get_current_language as LANGUAGE_CODE %} {% load imageurl %}
+{% load choicesToString %} {% block title %}{% trans 'Card Strength Analysis' %}{% endblock %} {% block content %}
 <script src="../static/bower/angular/angular.min.js" type="text/javascript"></script>
 <script src="../static/bower/angular-resource/angular-resource.min.js" type="text/javascript"></script>
 <script src="../static/js/cardstrength.js" type="text/javascript"></script>
-
+<style type="text/css">
+  .input-group input[type='text'] {
+    border: 1px solid #ccc;
+    margin: 0px;
+  }
+  
+  .input-group-addon {
+    cursor: help
+  }
+  
+  .form-group {
+    margin-bottom: 20px
+  }
+  .section.submit {
+    margin-bottom: 50px
+  }
+</style>
 <div id="wrapper" ng-app="CardStrength">
   <nav id="sidebar-wrapper" ng-controller="FiltersController" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
-    <form class="form-horizontal"> <!-- method="GET" action="/cardstrength/" -->
-    [[filters|json]]
+    <form class="">
+      <!-- method="GET" action="/cardstrength/" -->
+      [[filters|json]]
       <!-- FILTER CARDS -->
       <h4>{% trans 'Filter' %}</h4>
       <div class="section filters">
         <!-- idol -->
-        <label for="id_name" class="control-label">{% trans 'Idol' %}</label>
-        <select id="id_name" name="name" ng-model="filters.name">
+        <div class="form-group">
+          <label for="id_name" class="control-label">{% trans 'Idol' %}</label>
+          <select id="id_name" name="name" ng-model="filters.name">
           <optgroup>
             {% for idol, str in filters.idols %}
             <option value="{{ idol }}"{% if request_get.name == idol %} selected{% endif %}>{{ str }}</option>
@@ -31,136 +42,167 @@
             {% endfor %}
           </optgroup>
         </select>
+        </div>
 
         <!-- collection -->
-        <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
-        <select id="id_translated_collection" name="translated_collection" ng-model="filters.translated_collection">
+        <div class="form-group">
+          <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
+          <select id="id_translated_collection" name="translated_collection" ng-model="filters.translated_collection">
           <option value=""></option>
           {% for translated_collection in filters.translated_collections %}
           <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{% trans translated_collection.translated_collection %} ({{ translated_collection.total }})</option>
           {% endfor %}
-        </select>     
-          
-        <!-- server -->
-        <div style="margin-top: 10px">
-          <div class="pull-right"><input id="id_is_world" name="is_world" ng-model="filters.is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
-          <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
+        </select>
         </div>
 
-        <!-- attribute -->
-        <label for="id_attribute">{% trans 'Attribute' %}</label>
-        <select id="id_attribute" name="attribute">
-          <option value=""></option>
-          {% for i, attribute in filters.attribute_choices %}
-          <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
-          {% endfor %}
-        </select>
-        <br>
-
-        <!-- skill -->
-        <label class="control-label" for="id_skill">{% trans 'Skill' %}</label>
-        <select id="id_skill" name="skill">
-          <option value=""></option>
-          {% for idol in filters.skills %}
-          <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
-          {% endfor %}
-        </select>
-
         <!-- rarity -->
-        <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
-        <select id="id_rarity" name="rarity">
+        <div class="form-group">
+          <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
+          <select id="id_rarity" name="rarity">
           <option value=""></option>
           {% for i, rarity in filters.rarity_choices %}
           <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
           {% endfor %}
         </select>
+        </div>
 
-        <!-- main unit -->
-        <div id="main_unit_wrapper">
-          <label  class="control-label"for="id_main_unit">{% trans 'Main Unit' %}</label>
-          <div>
-            <select id="id_main_unit" name="main_unit">
-            <option value=""></option>
-            {% for main_unit in filters.main_units %}
-            <option value="{{ main_unit }}"{% if request_get.main_unit == main_unit %} selected{% endif %}>{{ main_unit }}</option>
+        <!-- attribute -->
+        <div class="form-group">
+          <label for="id_attribute">{% trans 'Attribute' %}</label>
+          <select id="id_attribute" name="attribute">
+          <option value=""></option>
+          {% for i, attribute in filters.attribute_choices %}
+          <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
+          {% endfor %}
+        </select>
+        </div>
+
+        <!-- server -->
+        <div class="form-group">
+          <div class="pull-right"><input id="id_is_world" name="is_world" ng-model="filters.is_world" type="checkbox"></div>
+          <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
+        </div>
+
+        <hr>
+
+        <!-- skill -->
+        <div class="form-group">
+          <label class="control-label" for="id_skill">{% trans 'Skill' %}</label>
+          <select id="id_skill" name="skill" ng-model="filters.skill">
+          <option value=""></option>
+          {% for idol in filters.skills %}
+          <option value="{{ idol.skill }}"{% if request_get.skill == idol.skill %} selected{% endif %}>{% if LANGUAGE_CODE == 'ja' and idol.japanese_skill %}{{ idol.japanese_skill }}{% else %}{{ idol.skill }}{% endif %} ({{ idol.total }})</option>
+          {% endfor %}
+        </select>
+        </div>
+
+
+        <div class="form-group">
+          <!-- promo -->
+          <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
+          <select id="id_is_promo" name="is_promo" data-cuteform="true" ng-model="filters.is_promo">
+            <option data-cuteform-html="{% trans 'All' %}" value=""></option>
+            <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+            <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+          </select>
+          <!-- event -->
+          <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
+          <select id="id_is_event" name="is_event" data-cuteform="true" ng-model="filters.is_event">
+            <option data-cuteform-html="{% trans 'All' %}" value=""></option>
+            <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
+            <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
+          </select>
+          <!-- year -->
+          <label for="id_idol_year">{% trans 'Year' %}</label>
+          <select id="id_idol_year" name="idol_year" data-cuteform="true" ng-model="filters.year">
+            <option value="" data-cuteform-html="{% trans 'All' %}"></option>
+            {% for idol_year in filters.idol_year_choices %}
+            <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}">{{ idol_year }}</option>
             {% endfor %}
           </select>
-          </div>
+        </div>
+
+        <div class="form-group">
+        <!-- main unit -->
+        <div id="main_unit_wrapper">
+          <label class="control-label" for="id_main_unit">{% trans 'Main Unit' %}</label>
+            <select id="id_main_unit" name="main_unit" ng-model="filters.main_unit">
+            <option value=""></option>
+            {% for main_unit in filters.main_units %}
+            <option value="{{ main_unit }}">{{ main_unit }}</option>
+            {% endfor %}
+          </select>
         </div>
 
         <!-- sub unit -->
         <div id="sub_unit_wrapper">
-          <label  class="control-label"for="id_sub_unit">{% trans 'Sub Unit' %}</label>
-          <select id="id_sub_unit" name="sub_unit">
+          <label class="control-label" for="id_sub_unit">{% trans 'Sub Unit' %}</label>
+          <select id="id_sub_unit" name="sub_unit" ng-model="filters.main_unit">
             <option value=""></option>
             {% for sub_unit in filters.sub_units %}
-            <option value="{{ sub_unit }}"{% if request_get.sub_unit == sub_unit %} selected{% endif %}>{{ sub_unit }}</option>
+            <option value="{{ sub_unit }}">{{ sub_unit }}</option>
             {% endfor %}
           </select>
         </div>
+      </div>
 
-        <!-- year -->
-        <label class="control-label" for="id_idol_year">{% trans 'Year' %}</label>
-        <select id="id_idol_year" name="idol_year" data-cuteform="true">
-          <option value="" data-cuteform-html="{% trans 'All' %}"></option>
-          {% for idol_year in filters.idol_year_choices %}
-          <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}"{% if request_get.idol_year == idol_year %} selected{% endif %}>{{ idol_year }}</option>
-          {% endfor %}
-        </select>
+
 
         <!-- release date -->
         <label for="id_release_after">{% trans 'Release date' %} ({% trans 'after' %}):</label>
-        <input id="id_release_after" type="month" name="release_after" value="{{ request_get.release_after }}" class="form-control">
+        <input id="id_release_after" type="month" name="release_after" value="{{ request_get.release_after }}" class="form-control"
+          ng-model="filters.release_after">
         <label for="id_release_before">{% trans 'Release date' %} ({% trans 'before' %}):</label>
-        <input id="id_release_before" type="month" name="release_before" value="{{ request_get.release_before }}" class="form-control">
+        <input id="id_release_before" type="month" name="release_before" value="{{ request_get.release_before }}" class="form-control"
+          ng-model="filters.release_before">
 
       </div>
 
       <!-- USER ACCOUNT -->
       <h4>{% trans 'View' %}</h4>
       <div class="section view">
-        
+
         {% comment %}{% if not high_traffic and user.is_authenticated %}{% endcomment %}
-          <!-- game account -->
-          <label for="id_select_account">{% trans 'Account' %}</label>
-          <select id="id_select_account" name="account">
+        <!-- game account -->
+        <label for="id_select_account">{% trans 'Account' %}</label>
+        <select id="id_select_account" name="account">
             <option value=""></option>
             {% for account in accounts %}
             <option value="{{ account.id }}"{% if request_get.account == account.id %} selected{% endif %}>{{ account }}</option>
             {% endfor %}
           </select>
 
-          <!-- stored in  -->
-          <label for="id_stored">{% trans 'Stored' %}</label>
-          <select id="id_stored" name="stored">
+        <!-- stored in  -->
+        <label for="id_stored">{% trans 'Stored' %}</label>
+        <select id="id_stored" name="stored">
             <option value=""></option>
             {% for i, stored in filters.stored_choices %}
             <option value="{{ i }}"{% if request_get.stored == i %} selected{% endif %}>{{ stored }}</option>
             {% endfor %}
           </select>
 
-          <!-- max leveled -->
-          <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
-          <select id="id_max_level" name="max_level">
+        <!-- max leveled -->
+        <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
+        <select id="id_max_level" name="max_level">
             <option value=""></option>
             <option value="1"{% if request_get.max_level == '1' %} selected{% endif %}>{% trans 'Max Leveled' %}</option>
             <option value="-1"{% if request_get.max_level == '-1' %} selected{% endif %}>{% trans 'Not Max Leveled' %}</option>
           </select>
 
-          <!-- max bonded -->
-          <label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
-          <select id="id_max_bond" name="max_bond">
+        <!-- max bonded -->
+        <label for="id_max_bond"><i class="flaticon-max-bond"></i> {% trans  'Max Bonded (Kizuna)' %}</label>
+        <select id="id_max_bond" name="max_bond">
             <option value=""></option>
             <option value="1"{% if request_get.max_bond == '1' %} selected{% endif %}>{% trans 'Max Bonded (Kizuna)' %}</option>
             <option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
-          </select>
-          {% comment %}{% endif %}{% endcomment %}
+          </select> {% comment %}{% endif %}{% endcomment %}
 
       </div>
-      
+
       <!-- SUBMIT -->
       <div class="section submit">
-        <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" ng-click="getCards()">{% trans 'Go' %}</button>
+        <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block"
+          ng-click="getCards()">{% trans 'Go' %}</button>
       </div>
 
     </form>
@@ -172,43 +214,35 @@
       <i class="flaticon-toggler hidder"></i>
     </a>
 
-    <style type="text/css">
-      .input-group input[type='text'] {
-        border: 1px solid #ccc;
-        margin: 0px;
-      }
-      .input-group-addon {
-        cursor: help
-      }
-    </style>
+
     <div class="container-fluid" ng-controller="SkillController">
-        <div class="row">
-          <h1 class="text-center">{% trans 'Card Strength' %} <small>how good a card <i>actually</i> is</small></h1>
-          <div class="col-sm-4">
+      <div class="row">
+        <h1 class="text-center">{% trans 'Card Strength' %} <small>how good a card <i>actually</i> is</small></h1>
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-8 form-inline">
+          <h3 class="margin0">Song Details <small>for skill analysis</small></h3>
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" data-toggle="tooltip" title="song length in notes" data-placement="bottom"><i class="flaticon-song"></i></span>
+            <input type="text" ng-model="song.notes" class="form-control" placeholder="total notes">
           </div>
-          <div class="col-sm-8 form-inline">
-            <h3 class="margin0">Song Details <small>for skill analysis</small></h3>
-            <div class="input-group input-group-sm">
-              <span class="input-group-addon" data-toggle="tooltip" title="song length in notes" data-placement="bottom"><i class="flaticon-song"></i></span>
-              <input type="text" ng-model="song.notes" class="form-control" placeholder="total notes"> 
-            </div>
-            <div class="input-group input-group-sm">
-              <span class="input-group-addon" data-toggle="tooltip" title="song length in seconds" data-placement="bottom"><i class="flaticon-times"></i></span>
-              <input type="text" ng-model="song.seconds" class="form-control" placeholder="total seconds"> 
-            </div>
-            <div class="input-group input-group-sm">
-              <span class="input-group-addon" data-toggle="tooltip" title="percentage of perfect notes you get" data-placement="bottom"><i class="flaticon-achievement"></i></span>
-              <input type="text" ng-model="song.perfects" class="form-control" placeholder="% perfects"> 
-            </div>
-            <div class="input-group input-group-sm">
-              <span class="input-group-addon" data-toggle="tooltip" title="number of star notes in song" data-placement="bottom"><i class="flaticon-star"></i></span>
-              <input type="text" ng-model="song.stars" class="form-control" placeholder="total star notes"> 
-            </div>
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" data-toggle="tooltip" title="song length in seconds" data-placement="bottom"><i class="flaticon-times"></i></span>
+            <input type="text" ng-model="song.seconds" class="form-control" placeholder="total seconds">
+          </div>
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" data-toggle="tooltip" title="percentage of perfect notes you get" data-placement="bottom"><i class="flaticon-achievement"></i></span>
+            <input type="text" ng-model="song.perfects" class="form-control" placeholder="% perfects">
+          </div>
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" data-toggle="tooltip" title="number of star notes in song" data-placement="bottom"><i class="flaticon-star"></i></span>
+            <input type="text" ng-model="song.stars" class="form-control" placeholder="total star notes">
           </div>
         </div>
+      </div>
       <table id="cards_table" class="table table-bordered table-striped table-hover sortable">
-        
-          <!--<thead>
+
+        <!--<thead>
               <tr>
                 <th>ID</th>
                 <th>Icon</th>
@@ -255,9 +289,12 @@
               {% endfor %}
           </tbody>-->
       </table>
-    </div> <!--container-fluid-->
-  </div> <!-- page-content-wrapper -->
-</div> <!-- wrapper -->
+    </div>
+    <!--container-fluid-->
+  </div>
+  <!-- page-content-wrapper -->
+</div>
+<!-- wrapper -->
 
 <script src="../static/bower/jQuery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="../static/bower/CuteForm/cuteform.js"></script>
@@ -316,6 +353,4 @@
         { "orderable": false, "targets": [1,5] },
       ],
     });
-</script>
-
-{% endblock %}
+</script> {% endblock %}

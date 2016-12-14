@@ -13,20 +13,48 @@ var calcActivations = function(song,skill) {
     return 0
   }
 }
-angular.module('CardStrength',[])
-  // .factory('resourceCards', function($resource) {
-  //   return $resource('/api/cards')
-  // })
-  .factory('buildAPIQuery', function(filters){
+
+angular.module('CardStrength',['ngResource'])
+  .factory('Cards', function($resource) {
+    return $resource('/api/cards')
+  })
+  .factory('BuildAPIQuery', function(filters){
     // if 
 
   })
-  .controller('SkillController', function($scope) {
-    $scope.song = {
-      perfects: .85,
-      notes: 550,
-      seconds: 125,
-      stars: 60
+  .controller('FiltersController', function($scope){
+    $scope.filters = {}
+    $scope.setCFFilter = function(filter, newValue) {
+      var found_key = false;
+      console.log("setting " + filter + " to " + newValue)
+      angular.forEach($scope.filters, function(value,key){
+        if (key == filter) {
+          console.log()
+          $scope.filters[key] = newValue; 
+          found_key = true;
+          return;
+          }
+      })
+      if (!found_key) {
+        $scope.filters[filter] = newValue
+      }
+      console.log($scope.filters)
+    }
+  })
+  .controller('SkillController', function($scope, Cards) {
+    var init = function() {
+      $scope.song = {
+        perfects: .85,
+        notes: 550,
+        seconds: 125,
+        stars: 60
+      }
+      $scope.cards = {}
+    }
+    init();
+
+    $scope.getCards = function() {
+      Cards.query($scope.filters)
     }
     $scope.calcAvg = function(song,skill) {
       return calcActivations(song,skill) * skill.percent * skill.amount;      

@@ -2,7 +2,6 @@
 {% load choicesToString %} {% block title %}{% trans 'Card Strength Analysis' %}{% endblock %} {% block content %}
 <script src="../static/bower/angular/angular.min.js" type="text/javascript"></script>
 <script src="../static/bower/angular-resource/angular-resource.min.js" type="text/javascript"></script>
-<script src="../static/js/cardstrength.js" type="text/javascript"></script>
 <style type="text/css">
   .input-group input[type='text'] {
     border: 1px solid #ccc;
@@ -58,7 +57,7 @@
         <!-- rarity -->
         <div class="form-group">
           <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
-          <select id="id_rarity" name="rarity">
+          <select id="id_rarity" name="rarity" ng-model="filters.rarity">
           <option value=""></option>
           {% for i, rarity in filters.rarity_choices %}
           <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
@@ -69,7 +68,7 @@
         <!-- attribute -->
         <div class="form-group">
           <label for="id_attribute">{% trans 'Attribute' %}</label>
-          <select id="id_attribute" name="attribute">
+          <select id="id_attribute" name="attribute" ng-model="filters.attribute">
           <option value=""></option>
           {% for i, attribute in filters.attribute_choices %}
           <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
@@ -137,7 +136,7 @@
         <!-- sub unit -->
         <div id="sub_unit_wrapper">
           <label class="control-label" for="id_sub_unit">{% trans 'Sub Unit' %}</label>
-          <select id="id_sub_unit" name="sub_unit" ng-model="filters.main_unit">
+          <select id="id_sub_unit" name="sub_unit" ng-model="filters.sub_unit">
             <option value=""></option>
             {% for sub_unit in filters.sub_units %}
             <option value="{{ sub_unit }}">{{ sub_unit }}</option>
@@ -341,6 +340,7 @@
     }
   });
 </script>
+<script src="../static/js/cardstrength.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/fh-3.1.2/sc-1.4.2/datatables.min.js"></script>
 
 <script type="text/javascript">

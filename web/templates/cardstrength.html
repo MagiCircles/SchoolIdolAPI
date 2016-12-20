@@ -57,23 +57,24 @@
         <!-- rarity -->
         <div class="form-group">
           <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
-          <select id="id_rarity" name="rarity" ng-model="filters.rarity">
-          <option value=""></option>
-          {% for i, rarity in filters.rarity_choices %}
-          <option value="{{ i }}"{% if request_get.rarity == i %} selected{% endif %}>{{ rarity }}</option>
-          {% endfor %}
-        </select>
+            <div class="cuteform">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.All}" ng-click="setGroup('rarity','All')" src="http://i.schoolido.lu/static/empty.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.R}" ng-click="setGroup('rarity','R')" src="http://i.schoolido.lu/static/R{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.SR}"  ng-click="setGroup('rarity','SR')" src="http://i.schoolido.lu/static/SR{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.SSR}"  ng-click="setGroup('rarity','SSR')" src="http://i.schoolido.lu/static/SSR{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.UR}"  ng-click="setGroup('rarity','UR')" src="http://i.schoolido.lu/static/UR{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
+          </div>
         </div>
 
         <!-- attribute -->
         <div class="form-group">
           <label for="id_attribute">{% trans 'Attribute' %}</label>
-          <select id="id_attribute" name="attribute" ng-model="filters.attribute">
-          <option value=""></option>
-          {% for i, attribute in filters.attribute_choices %}
-          <option value="{{ i }}"{% if request_get.attribute == i %} selected{% endif %}>{% trans attribute %}</option>
-          {% endfor %}
-        </select>
+            <div class="cuteform">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.All}" ng-click="setGroup('attr','All')" src="http://i.schoolido.lu/static/empty.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.Smile}" ng-click="setGroup('attr','Smile')" src="http://i.schoolido.lu/static/Smile.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.Pure}" ng-click="setGroup('attr','Pure')" src="http://i.schoolido.lu/static/Pure.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.Cool}" ng-click="setGroup('attr','Cool')" src="http://i.schoolido.lu/static/Cool.png">
+          </div>
         </div>
 
         <!-- server -->
@@ -306,14 +307,14 @@
       {% endfor %}
     }
   });
-  cuteform($('#id_rarity'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for rarity, _ in filters.rarity_choices %}
-      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
-      {% endfor %}
-    }
-  });
+  //cuteform($('#id_rarity'), {
+  //  'images': {
+  //    '': 'http://i.schoolido.lu/static/empty.png',
+  //    {% for rarity, _ in filters.rarity_choices %}
+  //    '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+  //    {% endfor %}
+  //  }
+  //});
   cuteform($('#id_sub_unit'), {
     'images': {
       '': 'http://i.schoolido.lu/static/empty.png',

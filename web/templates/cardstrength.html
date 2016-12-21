@@ -56,9 +56,8 @@
         <div class="form-group">
           <label for="id_attribute">{% trans 'Attribute' %}</label>
           <div class="cuteform">
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.All}" ng-click="setGroup('attr','All')" src="http://i.schoolido.lu/static/empty.png">            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.{{attribute}}}" ng-click="setGroup('attr','{{attribute}}')"
-              src="http://i.schoolido.lu/static/{{attribute}}.png"> {% endif %} {% endfor %}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr==''}" ng-click="setString('attr','')" src="http://i.schoolido.lu/static/empty.png">            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr=='{{attribute}}'}" ng-click="setString('attr','{{attribute}}')" src="http://i.schoolido.lu/static/{{attribute}}.png">            {% endif %} {% endfor %}
           </div>
         </div>
 
@@ -66,8 +65,8 @@
         <div class="form-group">
           <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
           <div class="cuteform">
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.All}" ng-click="setGroup('rarity','All')" src="http://i.schoolido.lu/static/empty.png">            {% for rarity, _ in filters.rarity_choices %} {% if rarity != 'N'%}
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.{{rarity}}}" ng-click="setGroup('rarity','{{rarity}}')"
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity==''}" ng-click="setRarity('')" src="http://i.schoolido.lu/static/empty.png">            {% for rarity, _ in filters.rarity_choices %} {% if rarity != 'N'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.split(',').includes('{{rarity}}')}" ng-click="setRarity('{{rarity}}')"
               src="http://i.schoolido.lu/static/{{rarity}}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">            {% endif %} {% endfor %}
           </div>
         </div>
@@ -191,7 +190,7 @@
           ng-model="filters.release_before">
 
       </div>
-	    
+
       {% if not high_traffic and user.is_authenticated %}
       <!-- USER ACCOUNT -->
       <h4>{% trans 'View' %}</h4>
@@ -279,7 +278,11 @@
 
       <!--<pre height=400> [[$root.cards|json]]</pre>-->
       <table id="cards_table" class="table table-bordered table-striped table-hover sortable">
-
+        <tbody>
+          <tr ng-repeat="card in $root.cards">
+            <td>[[card.id]]</td>
+          </tr>
+        </tbody>
         <!--<thead>
               <tr>
                 <th>ID</th>

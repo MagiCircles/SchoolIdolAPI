@@ -2,6 +2,9 @@
 {% load choicesToString %} {% block title %}{% trans 'Card Strength Analysis' %}{% endblock %} {% block content %}
 <script src="../static/bower/angular/angular.min.js" type="text/javascript"></script>
 <script src="../static/bower/angular-resource/angular-resource.min.js" type="text/javascript"></script>
+<script src="../static/bower/jQuery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="../static/bower/CuteForm/cuteform.js"></script>
+<script src="../static/js/cardstrength.js" type="text/javascript"></script>
 <style type="text/css">
   .input-group input[type='text'] {
     border: 1px solid #ccc;
@@ -12,18 +15,24 @@
     cursor: help
   }
   
-  .form-group {
-    margin-bottom: 20px
-  }
   .section.submit {
-    margin-bottom: 50px
+    margin-bottom: 50px;
+  }
+  
+  .table {
+    border-radius: 3px !important;
+  }
+  
+  th,
+  td {
+    text-align: middle;
+    vertical-align: middle !important;
   }
 </style>
 <div id="wrapper" ng-app="CardStrength">
   <nav id="sidebar-wrapper" ng-controller="FiltersController" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
     <form class="">
       <!-- method="GET" action="/cardstrength/" -->
-      [[filters|json]]
       <!-- FILTER CARDS -->
       <h4>{% trans 'Filter' %}</h4>
       <div class="section filters">
@@ -43,37 +52,23 @@
         </select>
         </div>
 
-        <!-- collection -->
+        <!-- attribute -->
         <div class="form-group">
-          <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
-          <select id="id_translated_collection" name="translated_collection" ng-model="filters.translated_collection">
-          <option value=""></option>
-          {% for translated_collection in filters.translated_collections %}
-          <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{% trans translated_collection.translated_collection %} ({{ translated_collection.total }})</option>
-          {% endfor %}
-        </select>
+          <label for="id_attribute">{% trans 'Attribute' %}</label>
+          <div class="cuteform">
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.All}" ng-click="setGroup('attr','All')" src="http://i.schoolido.lu/static/empty.png">            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.{{attribute}}}" ng-click="setGroup('attr','{{attribute}}')"
+              src="http://i.schoolido.lu/static/{{attribute}}.png"> {% endif %} {% endfor %}
+          </div>
         </div>
 
         <!-- rarity -->
         <div class="form-group">
           <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
-            <div class="cuteform">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.All}" ng-click="setGroup('rarity','All')" src="http://i.schoolido.lu/static/empty.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.R}" ng-click="setGroup('rarity','R')" src="http://i.schoolido.lu/static/R{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.SR}"  ng-click="setGroup('rarity','SR')" src="http://i.schoolido.lu/static/SR{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.SSR}"  ng-click="setGroup('rarity','SSR')" src="http://i.schoolido.lu/static/SSR{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.UR}"  ng-click="setGroup('rarity','UR')" src="http://i.schoolido.lu/static/UR{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">
-          </div>
-        </div>
-
-        <!-- attribute -->
-        <div class="form-group">
-          <label for="id_attribute">{% trans 'Attribute' %}</label>
-            <div class="cuteform">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.All}" ng-click="setGroup('attr','All')" src="http://i.schoolido.lu/static/empty.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.Smile}" ng-click="setGroup('attr','Smile')" src="http://i.schoolido.lu/static/Smile.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.Pure}" ng-click="setGroup('attr','Pure')" src="http://i.schoolido.lu/static/Pure.png">
-              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr.Cool}" ng-click="setGroup('attr','Cool')" src="http://i.schoolido.lu/static/Cool.png">
+          <div class="cuteform">
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.All}" ng-click="setGroup('rarity','All')" src="http://i.schoolido.lu/static/empty.png">            {% for rarity, _ in filters.rarity_choices %} {% if rarity != 'N'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.{{rarity}}}" ng-click="setGroup('rarity','{{rarity}}')"
+              src="http://i.schoolido.lu/static/{{rarity}}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">            {% endif %} {% endfor %}
           </div>
         </div>
 
@@ -82,8 +77,33 @@
           <div class="pull-right"><input id="id_is_world" name="is_world" ng-model="filters.is_world" type="checkbox"></div>
           <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
         </div>
+      </div>
+      <!-- section filters -->
 
-        <hr>
+      <div class="text-right">
+        <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm"
+          data-toggle="collapse"><i class="flaticon-more"></i> <span class="fontx1-2">{% trans 'More options' %}</span></a>
+      </div>
+      <div id="morefilters" class="collapse section morefilters">
+        <div class="form-group">
+          <!-- promo -->
+          <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
+          <div class="cuteform">
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': !filters.promo}" ng-click="setString('promo','')">{% trans 'All' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.promo=='on'}" ng-click="setString('promo','on')">{% trans 'Only' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.promo=='off'}" ng-click="setString('promo','off')">{% trans 'None' %}</div>
+          </div>
+        </div>
+
+        <!-- event -->
+        <div class="form-group">
+          <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
+          <div class="cuteform">
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': !filters.event}" ng-click="setString('event','')">{% trans 'All' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.event=='on'}" ng-click="setString('event','on')">{% trans 'Only' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.event=='off'}" ng-click="setString('event','off')">{% trans 'None' %}</div>
+          </div>
+        </div>
 
         <!-- skill -->
         <div class="form-group">
@@ -96,57 +116,71 @@
         </select>
         </div>
 
-
+        <!-- collection -->
         <div class="form-group">
-          <!-- promo -->
-          <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
-          <select id="id_is_promo" name="is_promo" data-cuteform="true" ng-model="filters.is_promo">
-            <option data-cuteform-html="{% trans 'All' %}" value=""></option>
-            <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_promo == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-            <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_promo == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-          </select>
-          <!-- event -->
-          <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
-          <select id="id_is_event" name="is_event" data-cuteform="true" ng-model="filters.is_event">
-            <option data-cuteform-html="{% trans 'All' %}" value=""></option>
-            <option data-cuteform-html="{% trans 'Only' %}" value="on"{% if request_get.is_event == 'on' %} selected{% endif %}>{% trans 'Only' %}</option>
-            <option data-cuteform-html="{% trans 'None' %}" value="off"{% if request_get.is_event == 'off' %} selected{% endif %}>{% trans 'None' %}</option>
-          </select>
-          <!-- year -->
-          <label for="id_idol_year">{% trans 'Year' %}</label>
-          <select id="id_idol_year" name="idol_year" data-cuteform="true" ng-model="filters.year">
-            <option value="" data-cuteform-html="{% trans 'All' %}"></option>
-            {% for idol_year in filters.idol_year_choices %}
-            <option data-cuteform-html="{% trans idol_year %}" value="{{ idol_year }}">{{ idol_year }}</option>
-            {% endfor %}
-          </select>
+          <label for="id_translated_collection">{% trans 'Collection' %} ({% trans 'English Version' %}) <i class="flaticon-EN"></i></label>
+          <select id="id_translated_collection" name="translated_collection" ng-model="filters.translated_collection">
+          <option value=""></option>
+          {% for translated_collection in filters.translated_collections %}
+          <option value="{{ translated_collection.translated_collection }}"{% if request_get.translated_collection == translated_collection.translated_collection %} selected{% endif %}>{% trans translated_collection.translated_collection %} ({{ translated_collection.total }})</option>
+          {% endfor %}
+        </select>
         </div>
 
         <div class="form-group">
-        <!-- main unit -->
-        <div id="main_unit_wrapper">
-          <label class="control-label" for="id_main_unit">{% trans 'Main Unit' %}</label>
-            <select id="id_main_unit" name="main_unit" ng-model="filters.main_unit">
+          <label for="id_collection">{% trans 'Collection' %} ({{ 'JP'|languageToString }}) <i class="flaticon-JP"></i></label>
+          <select id="id_collection" name="collection" ng-model="filters.japanese_collection">
             <option value=""></option>
-            {% for main_unit in filters.main_units %}
-            <option value="{{ main_unit }}">{{ main_unit }}</option>
+            {% for collection in filters.collections %}
+            <option value="{{ collection.japanese_collection }}"{% if request_get.collection == collection.japanese_collection %} selected{% endif %}>{{ collection.japanese_collection }} ({{ collection.total }})</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <div class="form-group">
+          <!-- main unit -->
+          <div id="main_unit_wrapper">
+            <label class="control-label" for="id_main_unit">{% trans 'Main Unit' %}</label>
+            <div class="cuteform">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.main_unit==''}" ng-click="setString('main_unit','')" src="http://i.schoolido.lu/static/empty.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.main_unit=='Aqours'}" ng-click="setString('main_unit','Aqours')"
+                src="http://i.schoolido.lu/static/Aqours.png">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.main_unit=='Muse'}" ng-click="setString('main_unit','Muse')"
+                src="http://i.schoolido.lu/static/μ's.png">
+            </div>
+
+          </div>
+
+          <!-- sub unit -->
+          <div id="sub_unit_wrapper">
+            <label class="control-label" for="id_sub_unit">{% trans 'Sub Unit' %}</label>
+            <div class="cuteform">
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.sub_unit==''}" ng-click="setString('sub_unit','')" src="http://i.schoolido.lu/static/empty.png">              {% for sub_unit in filters.sub_units %}
+              <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.sub_unit=='{{sub_unit}}'}" ng-click="setString('sub_unit','{{sub_unit}}')"
+                src="http://i.schoolido.lu/static/{{sub_unit}}.png">{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- year -->
+        <label for="id_idol_year">{% trans 'Year' %}</label>
+        <div class="cuteform">
+          <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.year==''}" ng-click="setString('year','')">{% trans 'All' %}</div>
+          {% for idol_year in filters.idol_year_choices %}
+          <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.year=='{{idol_year}}'}" ng-click="setString('year','{{idol_year}}')">{% trans idol_year %}</div>
+          {% endfor %}
+        </div>
+
+        <!-- school -->
+        <div class="form-group">
+          <label for="id_idol_school">{% trans 'School' %}</label>
+          <select id="id_idol_school" name="idol_school" ng-model="filters.idol_school">
+            <option value="">{% trans 'All' %}</option>
+            {% for idol_school in filters.idol_school_choices %}
+            <option value="{{ idol_school }}"{% if request_get.idol_school == idol_school %} selected{% endif %}>{{ idol_school }}</option>
             {% endfor %}
           </select>
         </div>
-
-        <!-- sub unit -->
-        <div id="sub_unit_wrapper">
-          <label class="control-label" for="id_sub_unit">{% trans 'Sub Unit' %}</label>
-          <select id="id_sub_unit" name="sub_unit" ng-model="filters.sub_unit">
-            <option value=""></option>
-            {% for sub_unit in filters.sub_units %}
-            <option value="{{ sub_unit }}">{{ sub_unit }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-
-
 
         <!-- release date -->
         <label for="id_release_after">{% trans 'Release date' %} ({% trans 'after' %}):</label>
@@ -157,7 +191,8 @@
           ng-model="filters.release_before">
 
       </div>
-
+	    
+      {% if not high_traffic and user.is_authenticated %}
       <!-- USER ACCOUNT -->
       <h4>{% trans 'View' %}</h4>
       <div class="section view">
@@ -198,13 +233,14 @@
           </select> {% comment %}{% endif %}{% endcomment %}
 
       </div>
+      {% endif %}
 
       <!-- SUBMIT -->
       <div class="section submit">
-        <button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block"
+        <button type="button" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block"
           ng-click="getCards()">{% trans 'Go' %}</button>
       </div>
-
+      <!--<pre>[[cards|json]]</pre>-->
     </form>
   </nav>
 
@@ -240,6 +276,8 @@
           </div>
         </div>
       </div>
+
+      <!--<pre height=400> [[$root.cards|json]]</pre>-->
       <table id="cards_table" class="table table-bordered table-striped table-hover sortable">
 
         <!--<thead>
@@ -296,52 +334,6 @@
 </div>
 <!-- wrapper -->
 
-<script src="../static/bower/jQuery/dist/jquery.min.js" type="text/javascript"></script>
-<script src="../static/bower/CuteForm/cuteform.js"></script>
-<script>
-  cuteform($('#id_attribute'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for i, attribute in filters.attribute_choices %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
-      {% endfor %}
-    }
-  });
-  //cuteform($('#id_rarity'), {
-  //  'images': {
-  //    '': 'http://i.schoolido.lu/static/empty.png',
-  //    {% for rarity, _ in filters.rarity_choices %}
-  //    '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
-  //    {% endfor %}
-  //  }
-  //});
-  cuteform($('#id_sub_unit'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for sub_unit in filters.sub_units %}
-      '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
-      {% endfor %}
-    }
-  });
-  cuteform($('#id_main_unit'), {
-    'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
-      {% for main_unit in filters.main_units %}
-      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
-      {% endfor %}
-    }
-  });
-  cuteform($('#id_name'), {
-    'modal': 'true',
-    'modal-text': 'true',
-    'images': {
-      {% for idol, str in filters.idols %}
-      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
-      {% endfor %}
-    }
-  });
-</script>
-<script src="../static/js/cardstrength.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/fh-3.1.2/sc-1.4.2/datatables.min.js"></script>
 
 <script type="text/javascript">

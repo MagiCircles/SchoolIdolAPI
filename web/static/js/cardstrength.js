@@ -1,6 +1,6 @@
 angular.module('CardStrength', ['ngResource', 'ngStorage'])
     .factory('API', function ($resource, $http) {
-        return $resource("/api/cards/?page_size=100&is_special=False&attribute=:attr&is_promo=:is_promo&is_event=:is_event&main_unit=:main_unit&sub_unit=:sub_unit&year=:idol_year&idol_school=:idol_school&translated_collection=:translated_collection&japanese_collection=:japanese_collection&japan_only=:japan_only", {
+        return $resource("/api/cards/?page_size=100&is_special=False&attribute=:attr&is_promo=:promo&is_event=:event&main_unit=:main_unit&sub_unit=:sub_unit&year=:idol_year&idol_school=:idol_school&translated_collection=:translated_collection&japanese_collection=:japanese_collection&japan_only=:japan_only", {
             attr: "@attr",
             promo: "@promo",
             event: "@event",
@@ -83,7 +83,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
         if ($scope.$storage.filters) $scope.filters = $scope.$storage.filters
         else {
             $scope.filters = {
-                rarity: "",
+                rarity: 'R,SR,SSR,UR',
                 attr: "",
                 promo: "",
                 event: "",
@@ -96,27 +96,53 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
         if ($scope.$storage.cards) $rootScope.cards = $scope.$storage.cards
         /// filter creation functions
         $scope.setRarity = function (rarity) {
-            if (rarity == '') {
-                $scope.filters.rarity = '';
+            if (rarity == 'R,SR,SSR,UR') {
+                $scope.filters.rarity = rarity;
                 return
             }
-            console.log($scope.filters.rarity)
-            var split = $scope.filters.rarity.split(",")
-            var index = split.indexOf(rarity)
+            // console.log($scope.filters.rarity)
+            if ($scope.filters.rarity == "R,SR,SSR,UR") {
 
-            if (index < 0) {
-                split.push(rarity)
-                split = split.filter(function (n) { return n != undefined });
-                if (split.length >= 5) {
-                    $scope.filters.rarity = ""
-                }
-                else $scope.filters.rarity = split.join(",")
+                $scope.filters.rarity = rarity
+                $scope.single_rarity_selected = true
+                // console.log($scope.filters.rarity)
+                return
             }
             else {
-                delete split[index]
-                split = split.filter(function (n) { return n != undefined });
-                $scope.filters.rarity = split.join(",")
+                var split = $scope.filters.rarity.split(",")
+                var index = split.indexOf(rarity)
+                console.debug(split)
+                console.debug("indexOf(" + rarity + "): " + index)
+
+                if (index < 0) {
+                    console.debug("not in filter")
+
+                    split.push(rarity)
+                    split = split.filter(function (n) { return n != undefined });
+                    $scope.filters.rarity = split.join(",")
+                }
+                else {
+                    // split.push(rarity)
+                    // split = split.filter(function (n) { return n != undefined });
+                    // if (split.length >= 5) {
+                    //     $scope.filters.rarity = 'R,SR,SSR,UR'
+                    // }
+                    // else $scope.filters.rarity = split.join(",")
+                    if ($scope.filters.rarity == "R,SR,SSR,UR") {
+                        $scope.filters.rarity = rarity
+                    }
+                    else {
+                        delete split[index]
+                        split = split.filter(function (n) { return n != undefined });
+                        if (split.length >= 4 || split.length <= 0) {
+                            $scope.filters.rarity = 'R,SR,SSR,UR'
+                        }
+                        else $scope.filters.rarity = split.join(",")
+                    }
+                }
             }
+            // $scope.single_rarity_selected = 
+            
             $scope.$storage.filters.rarity = $scope.filters.rarity
         }
         $scope.setString = function (filter, string) {
@@ -138,7 +164,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
                 card.on_attr.base = card.non_idolized_maximum_statistics_cool
                 card.on_attr.idlz = card.idolized_maximum_statistics_cool
             }
-
             if (card.rarity == 'R') {
                 card.on_attr.base += 100
                 card.on_attr.idlz += 200
@@ -155,6 +180,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
                 card.on_attr.base += 500
                 card.on_attr.idlz += 1000
             }
+            if (card.is_promo) card.on_attr.base = card.on_attr.idlz
         }
         var parseSkill = function (card) {
             var skilltype = card.skill
@@ -214,6 +240,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
                 for (var i = 0; i < length; i++) {
                     calcOnAttr($rootScope.cards[i])
                     parseSkill($rootScope.cards[i])
+
                 }
             });
             // $scope.$broadcast("cardsUpdate", { cards: $rootScope.cards })
@@ -314,19 +341,64 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
 
         }
         $rootScope.$watch('cards', function (event, args) {
-            // var length = $scope.cards.length
+            var length = $rootScope.cards.length
             console.log("cardsUpdate")
+            // console.log($rootScope.cards)
             for (var i = 0; i < length; i++) {
                 // card = $rootScope.cards[i]
-                // console.log(card)
+                // console.log($rootScope.cards[i])
                 calcSkill($rootScope.cards[i]);
                 calcSIS($rootScope.cards[i]);
                 calcStatBonus($rootScope.cards[i])
                 $rootScope.cards[i].equippedSIS = $rootScope.cards[i].idlz = false
+                $rootScope.cards[i].on_attr.display = $rootScope.cards[i].on_attr.base
+                $rootScope.cards[i].skill_display = {
+                    avg: $rootScope.cards[i].skill.avg,
+                    best: $rootScope.cards[i].skill.best
+                }
             }
             $scope.$storage.cards = $rootScope.cards
             // console.log($scope.$storage.cards)
         })
+
+        $scope.toggleEquipSIS = function (card) {
+            card.equippedSIS = !card.equippedSIS
+            calcSIS(card)
+            if (card.equippedSIS) {
+                card.skill_display.avg = card.sis.avg;
+                card.skill_display.best = card.sis.best
+            } else {
+                card.skill_display.avg = card.skill.avg;
+                card.skill_display.best = card.skill.best
+            }
+            calcStatBonus(card)
+            $scope.$storage.cards = $rootScope.cards
+        }
+
+        $scope.toggleIdlz = function (card) {
+            if (card.idlz) {
+                if (card.skill.category == "Perfect Lock") calcTrickStatBonus(card);
+                calcStatBonus(card)
+
+                card.on_attr.display = card.on_attr.idlz
+            }
+            else card.on_attr.display = card.on_attr.base
+
+            $scope.$storage.cards = $rootScope.cards
+        }
+
+        $scope.sort = { type: "id", desc: false }
+        $scope.sortBy = function (sorter) {
+            $scope.sort.desc = ($scope.sort.type == sorter) ? !$scope.sort.desc : true
+
+            // if (sorter == "on_attr") {
+
+            // }
+            $scope.sort.type = sorter;
+
+            if ($scope.sort.desc) $scope.sort.chevron = "down"
+            else $scope.sort.chevron = "up"
+        }
 
 
     })
@@ -355,6 +427,23 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
             }
             else if (input == "Perfect Lock" || (split && split.indexOf("Trick") > 0)) {
                 return "perfectlock"
+            }
+        }
+    })
+    .filter('skillToEffect', function () {
+        return function (input, equipped_sis) {
+            if (input) var split = input.split(" ")
+            if (input == "Score Up" || (split && split.indexOf("Charm") > 0) || (input == "Healer" && equipped_sis)) {
+                return "points"
+            }
+            else if (input == "Healer" || (split && split.indexOf("Yell") > 0)) {
+                return "stamina"
+            }
+            else if (input == "Perfect Lock" || (split && split.indexOf("Trick") > 0)) {
+                return "seconds"
+            }
+            else if (input == "Perfect Lock" && equipped_sis) {
+                return ""
             }
         }
     })

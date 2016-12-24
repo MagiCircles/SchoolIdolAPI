@@ -29,6 +29,9 @@
     text-align: middle;
     vertical-align: middle !important;
   }
+  .sort-by {
+    cursor: pointer
+  }
 </style>
 <div id="wrapper" ng-app="CardStrength">
   <nav id="sidebar-wrapper" ng-controller="FiltersController" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
@@ -55,7 +58,7 @@
 
         <!-- attribute -->
         <div class="form-group">
-          <label for="id_attribute">{% trans 'Attribute' %}</label>
+          <label for="id_attribute">{% trans 'Attribute' %}</label><br>
           <div class="cuteform">
             <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr==''}" ng-click="setString('attr','')" src="http://i.schoolido.lu/static/empty.png">            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
             <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr=='{{attribute}}'}" ng-click="setString('attr','{{attribute}}')"
@@ -67,9 +70,9 @@
         <div class="form-group">
           <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
           <div class="cuteform">
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity==''}" ng-click="setRarity('')" src="http://i.schoolido.lu/static/empty.png">            {% for rarity, _ in filters.rarity_choices %} {% if rarity != 'N'%}
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity.split(',').includes('{{rarity}}')}" ng-click="setRarity('{{rarity}}')"
-              src="http://i.schoolido.lu/static/{{rarity}}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">            {% endif %} {% endfor %}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.rarity=='R,SR,SSR,UR'}" ng-click="setRarity('R,SR,SSR,UR')"
+              src="http://i.schoolido.lu/static/empty.png"> {% for rarity, _ in filters.rarity_choices %} {% if rarity != 'N'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': (filters.rarity.split(',').indexOf('{{rarity}}') >= 0) && (filters.rarity != 'R,SR,SSR,UR')}" ng-click="setRarity('{{rarity}}')" src="http://i.schoolido.lu/static/{{rarity}}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">            {% endif %} {% endfor %}
           </div>
         </div>
 
@@ -91,8 +94,8 @@
           <label for="id_is_promo"><i class="flaticon-promo"></i> {% trans 'Promo Cards' %}</label>
           <div class="cuteform">
             <div class="cuteform-elt" ng-class="{'cuteform-selected': !filters.promo}" ng-click="setString('promo','')">{% trans 'All' %}</div>
-            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.promo=='on'}" ng-click="setString('promo','on')">{% trans 'Only' %}</div>
-            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.promo=='off'}" ng-click="setString('promo','off')">{% trans 'None' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.promo=='True'}" ng-click="setString('promo','True')">{% trans 'Only' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.promo=='False'}" ng-click="setString('promo','False')">{% trans 'None' %}</div>
           </div>
         </div>
 
@@ -101,8 +104,8 @@
           <label for="id_is_event"><i class="flaticon-event"></i> {% trans 'Event Cards' %}</label>
           <div class="cuteform">
             <div class="cuteform-elt" ng-class="{'cuteform-selected': !filters.event}" ng-click="setString('event','')">{% trans 'All' %}</div>
-            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.event=='on'}" ng-click="setString('event','on')">{% trans 'Only' %}</div>
-            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.event=='off'}" ng-click="setString('event','off')">{% trans 'None' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.event=='True'}" ng-click="setString('event','True')">{% trans 'Only' %}</div>
+            <div class="cuteform-elt" ng-class="{'cuteform-selected': filters.event=='False'}" ng-click="setString('event','False')">{% trans 'None' %}</div>
           </div>
         </div>
 
@@ -282,31 +285,34 @@
       <table id="cards_table" class="table table-bordered table-striped table-hover sortable">
         <thead>
           <tr>
-            <th>ID</th>
+            <th class="sort-by" ng-click="sortBy('id')">ID <i ng-show="sort.type=='id'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
             <th>{% trans 'Name' %}</th>
-            <th>{% trans 'Skill' %}</th>
             <th>{% trans 'Idolized?' %}</th>
+            <th class="sort-by" ng-click="sortBy('on_attr.display')">{% trans 'On-Attribute Stat' %} <i ng-show="sort.type=='on_attr.display'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
+            <th>{% trans 'Skill' %}</th>
             <th>{% trans 'Equip SIS?' %}</th>
-            <th>{% trans 'On-Attribute Stat' %}</th>
-            <th>Average Skill Contribution</th>
-            <th>Best Skill Contribution</th>
-            <th>{% trans 'Stat + Average Bonus' %}</th>
-            <th>{% trans 'Stat + Best Bonus' %}</th>
+            <th class="sort-by" ng-click="sortBy('skill_display.avg')">Average Skill Contribution <i ng-show="sort.type=='skill_display.avg'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
+            <th class="sort-by" ng-click="sortBy('skill_display.best')">Best Skill Contribution <i ng-show="sort.type=='skill_display.best'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
+            <th class="sort-by" ng-click="sortBy('on_attr.avg')">{% trans 'Stat + Average Bonus' %} <i ng-show="sort.type=='on_attr.avg'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
+            <th class="sort-by" ng-click="sortBy('on_attr.best')">{% trans 'Stat + Best Bonus' %} <i ng-show="sort.type=='on_attr.best'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
+            </th>
           </tr>
-        </thead>        <tbody>
-          <tr ng-repeat="card in $root.cards">
+        </thead>
+        <tbody>
+          <tr ng-repeat="card in $root.cards | orderBy:sort.type:sort.desc:true track by $index">
             <td>[[card.id]]</td>
             <td><span class="text-[[card.attribute]]"><a href="[[card.website_url]]">[[ card.rarity ]] [[ card.is_promo ? '{% trans 'Promo' %}' : card.translated_collection ]]  
-                 [[ card.idol.name ]]</a></span>
+                 [[ card.idol.name ]] <i ng-show="card.event" class="flaticon-event"></i></a></span>
             </td>
+            <td class="text-center"><input type="checkbox" ng-model="card.idlz" ng-disabled="card.is_promo" ng-click="toggleIdlz(card)"></input>
+            </td>
+            <td>[[card.on_attr.display]] <span class="text-[[card.attribute]]">[[card.attribute]]</span> </td>
             <td class="text-center">
               <i class="flaticon-[[card.skill.category | skillToFlaticon]]" title="{% if LANGUAGE_CODE == 'ja' and '[[card.japanese_skill]]' %}[[ card.japanese_skill ]]{% else %}[[card.skill.category]]{% endif %}"
                 data-container="body" data-toggle="popover" data-placement="top" data-content="{% if LANGUAGE_CODE == 'ja' and '[[card.japanese_skill_details]]' %}[[ card.japanese_skill_details ]] {% elif '[[card.skill_details]]' %} [[card.skill_details]]{% endif %}"
                 data-trigger="hover"></i>
             </td>
 
-            <td><input type="checkbox" ng-model="card.idlz" ng-disabled="card.is_promo"></input>
-            </td>
             <td>
               <div class="btn-group">
                 <button type="button" class="btn btn-[[card.attribute]] btn-block" ng-class="{active: card.equippedSIS}" ng-click="toggleEquipSIS(card)"
@@ -315,15 +321,14 @@
                 </button>
               </div>
             </td>
-            <td>[[card.idlz ? card.on_attr.idlz : card.on_attr.base]]</td>
-            <td>[[card.equippedSIS ? card.sis.avg : card.skill.avg | number:0]]
+            <td>[[card.skill_display.avg | number:0]] [[card.skill.category | skillToEffect:card.equippedSIS]]
               <br><small><b>(+[[card.equippedSIS ? card.sis.stat_bonus_avg : card.skill.stat_bonus_avg|number:0]] <span class="text-[[card.attribute]]">[[card.attribute]]</span>)</b></small></td>
-            <td>[[card.equippedSIS ? card.sis.best : card.skill.best | number:0]]
+            <td>[[card.skill_display.best | number:0]] [[card.skill.category | skillToEffect:card.equippedSIS]]
               <br><small><b>(+[[card.equippedSIS ? card.sis.stat_bonus_best : card.skill.stat_bonus_best|number:0]] <span class="text-[[card.attribute]]">[[card.attribute]]</span>)</b></small></td>
 
-            <td>[[on_attr.avg]]</td>
+            <td>[[card.on_attr.avg]]</td>
 
-            <td>[[on_attr.best]]</td>
+            <td>[[card.on_attr.best]]</td>
           </tr>
         </tbody>
         <!--<thead>
@@ -380,16 +385,4 @@
 </div>
 <!-- wrapper -->
 
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/cr-1.3.2/fh-3.1.2/sc-1.4.2/datatables.min.js"></script>
-
-<script type="text/javascript">
-  $('#cards_table').DataTable({
-    order: [[0, "desc"]],
-    //fixedHeader: true,
-    paging: false,
-    scroller: false,
-    "columnDefs": [
-      { "orderable": false, "targets": [1, 5] },
-    ],
-  });
-</script> {% endblock %}
+{% endblock %}

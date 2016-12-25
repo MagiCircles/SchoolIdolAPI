@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load random_int %}
+{% block title %}{% trans 'Love Live! School Idol Memory' %}{% endblock %}
+
+{% block shareimage %}http://i.schoolido.lu/static/screenshots/llmemo.png{% endblock %}
+{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/llmemo.png{% endblock %}
+
+{% block content %}
+<style>
+  #elm-trivia div {
+    display: inline-block;
+    padding: 21px;
+  }
+  #elm-trivia div img {
+    border-radius: 5px;
+  }
+</style>
+<div id="trivia-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div class="container text-center">
+  <h1 class="margin50">LoveLive! Memory</h1>
+  <h3>Find all the matching pairs!</h3>
+  <div id="elm-trivia"></div>
+  <p class="margin50 hidden">
+    Memory is temporarily disabled due to high traffic. Please try again tomorrow.<br>
+    <i>Any help to get more powerful servers is greatly appreciated. <a href="/about/#donate">Donate here!</a></i>
+  </p>
+
+  <br><br><br><hr><br><br>
+  <p class="text-left">
+    This mini-game has been made by <a href="http://schoolido.lu/user/Lamagicien/">Engil</a> for all the School Idol Tomodachi community members.
+  </p>
+  <p class="text-left">
+    Engil was the 1st person who joined School Idol Tomodachi after db0. He then worked closely with db0 to create <a href="http://schoolido.lu/contest/">School Idol Tomodachi</a>, and later <a href="http://schoolido.lu/trivia/">School Idol Trivia</a>, making him the biggest contributor to the code base.
+  </p>
+  <br><br><br><br><br><br>
+  {% include 'disqus.html' %}
+</div>
+{% endblock %}
+{% block js %}
+<script src="//i.schoolido.lu/static/js/llmemo.js"></script>
+<script>
+  Elm.Main.embed($('#elm-trivia')[0]);
+  //var elm = Elm.embed(Elm.Main, $('#elm-trivia')[0], {});
+</script>
+{% endblock %}

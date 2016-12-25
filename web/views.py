@@ -285,14 +285,14 @@ def index(request):
     # ]
     context['important_news'] = [
         {
+            'url': '//schoolido.lu/activities//',
+            'image': '//i.schoolido.lu/special/stafftreasure.png',
+            'name': 'Staff Treasure Hunt',
+        },
+        {
             'url': 'https://www.youtube.com/watch?v=8E-WnrjYu3c',
             'image': 'http://i.imgur.com/hfvz9yA.jpg',
             'name': 'Thank you! Christmas Month',
-        },
-        {
-            'url': '//schoolido.lu/activities/4371896/',
-            'image': '//i.schoolido.lu/special/banner_patreon_giveaway.png',
-            'name': 'Patreon Giveaway',
         },
     ]
 
@@ -2642,6 +2642,12 @@ def trivia(request):
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
     context['total_cards'] = settings.CARDS_INFO['total_cards']
     return render(request, 'trivia.html', context)
+
+def memory(request):
+    context = globalContext(request)
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    context['total_cards'] = settings.CARDS_INFO['total_cards']
+    return render(request, 'memory.html', context)
 
 @csrf_exempt
 def sharetrivia(request):

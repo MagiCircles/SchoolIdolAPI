@@ -178,6 +178,19 @@
       </div>
     </div>
 
+    {% if contest.id == global_contest_id %}
+    <br>
+    <hr>
+    <br>
+    <div class="text-center">
+      <a href="http://imgur.com/a/F2ST1" target="_blank">
+	<img src="http://i.schoolido.lu/special/treasure.png" width="200">
+      </a>
+    </div>
+    <br>
+    <hr>
+    <br>
+    {% endif %}
     {% if contest.id == 33 %}
     {% include 'disqus.html' with disqus_identifier='contestglobal' %}
     {% else %}

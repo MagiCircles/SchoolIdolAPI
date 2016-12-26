@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.conf import settings
 from django_prometheus.models import ExportModelOperationsMixin
 from api.raw import raw_information
-from web.utils import randomString
+from web.utils import randomString, singlecardurl
 import hashlib, urllib
 import csv
 import datetime
@@ -648,6 +648,10 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
         if not self._skill_up_cards:
             return []
         return [(int(s.split('-')[0]), s.split('-')[-1]) for s in self._skill_up_cards.split(',')]
+
+    @property
+    def url(self):
+        return singlecardurl(self)
 
 admin.site.register(Card)
 

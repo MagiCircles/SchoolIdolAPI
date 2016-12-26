@@ -2867,18 +2867,18 @@ def initialsetup(request):
                     card = (card for card in cards if card.id == account.starter_id).next()
                     card.owned = context['starter']
             collections = OrderedDict()
-            collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['ur'] = [collections['ur_idolized'][0], 2, collections['ur_idolized'][2], False]
-            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['ssr'] = [collections['ssr_idolized'][0], 2, collections['ssr_idolized'][2], False]
-            collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
-            collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
-            collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
+            collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
+            collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['sr_smile'] = collections['sr_smile_idolized'][:-1] + [False]
             collections['sr_pure'] = collections['sr_pure_idolized'][:-1] + [False]
             collections['sr_cool'] = collections['sr_cool_idolized'][:-1] + [False]
-            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in card.promo_item and 'event prize' not in card.promo_item], True]
-            collections['r_idolized'] = [string_concat('R', ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in (card.promo_item if card.promo_item else '') and 'event prize' not in (card.promo_item if card.promo_item else '')], True]
+            collections['r_idolized'] = [string_concat('R', ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['r'] = [collections['r_idolized'][0], 9, collections['r_idolized'][2], False]
             context['collections'] = collections
 

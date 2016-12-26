@@ -44,11 +44,11 @@ class Command(BaseCommand):
 		pass
 	    try:
 		card = models.Card.objects.get(id=line[0])
-		if line[4] and not card.clean_ur:
+		if len(line) > 4 and line[4] and not card.clean_ur:
                     print "Download clean UR {}...".format(card),
 		    card.clean_ur.save(str(card.id) + (card.name.split(' ')[-1]) + 'CleanUR.png', downloadShrunkedImage(line[4]))
                     print "Done."
-		if line[5] and not card.clean_ur_idolized:
+                if len(line) > 5 and line[5] and not card.clean_ur_idolized:
                     print "Download clean UR idolized {}...".format(card),
 		    card.clean_ur_idolized.save(str(card.id) + (card.name.split(' ')[-1]) + 'CleanURIdolized.png', downloadShrunkedImage(line[5]))
                     print "Done."

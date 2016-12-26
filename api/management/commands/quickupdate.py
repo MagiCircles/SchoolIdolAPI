@@ -173,6 +173,8 @@ class Command(BaseCommand):
                     data['round_card_idolized_image'] = imageURLToDatabase(card['round_card_idolized_image'])
                     data['english_round_card_image'] = imageURLToDatabase(card['english_round_card_image'])
                     data['english_round_card_idolized_image'] = imageURLToDatabase(card['english_round_card_idolized_image'])
+                    data['clean_ur'] = imageURLToDatabase(card['clean_ur'])
+                    data['clean_ur_idolized'] = imageURLToDatabase(card['clean_ur_idolized'])
                     data['video_story'] = card['video_story']
                     data['japanese_video_story'] = card['japanese_video_story']
                     print '======== Card #{} ========'.format(card['id'])

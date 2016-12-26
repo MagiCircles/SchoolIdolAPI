@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 import math
+from copy import copy
 from django.shortcuts import render, redirect, get_object_or_404
 from django import template
 from django.http import HttpResponse, Http404
@@ -285,7 +286,7 @@ def index(request):
     # ]
     context['important_news'] = [
         {
-            'url': '//schoolido.lu/activities//',
+            'url': '//schoolido.lu/activities/4645909/',
             'image': '//i.schoolido.lu/special/stafftreasure.png',
             'name': 'Staff Treasure Hunt',
         },
@@ -2670,30 +2671,48 @@ def urpairs(request):
     - Cards alone
     """
     context = globalContext(request)
-    cards = models.Card.objects.filter(ur_pair__isnull=False).order_by('idol__name', 'ur_pair__idol__name').select_related('ur_pair')
-    idols = sorted([name for (name, idol) in raw_information.items() if idol['main_unit'] != 'Aqours'])
-    data = OrderedDict()
-    for card in cards:
-        if card.name not in data:
-            show_idolized = False
-            data[card.name] = OrderedDict()
-            for idol_name in idols:
-                if card.name == idol_name:
-                    show_idolized = True
-                data[card.name][idol_name] = [None, show_idolized]
-        data[card.name][card.ur_pair.name][0] = card
-    alone_cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False, ur_pair__isnull=True).exclude(translated_collection='Initial')
-    for c in alone_cards:
-        for idol, card in data[c.name].items():
-            if card[0] is None and idol != c.name:
-                data[c.name][idol][0] = c
-        for idol_name in idols:
-            if data[idol_name][c.name][0] is None and idol_name != c.name:
-                data[idol_name][c.name][0] = c
+    # Get idol names
+    aqours_names = sorted(name for name, info in raw.raw_information.items() if info['main_unit'] == 'Aqours')
+    us_names = sorted(name for name, info in raw.raw_information.items() if info['main_unit'] == 'μ\'s')
+    # Initialize empty data set
+    collections = OrderedDict([
+            ('Aqours', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('2nd μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
+            ('1st μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
+            ])
+    # Get UR cards
+    cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False).exclude(translated_collection='Initial').order_by('name', 'ur_pair__name').select_related('ur_pair')
 
+    def _add_ur_pair_in_collection(card, collection_name):
+        if card.ur_pair:
+            idolized = card.name < card.ur_pair.name
+            card.idolized = idolized
+            card.ur_pair.idolized = idolized
+            collections[collection_name][card.name][card.ur_pair.name] = [card.ur_pair, card] if (card.ur_pair_idolized_reverse if idolized else card.ur_pair_reverse) else [card, card.ur_pair]
+        else:
+            card.idolized = False
+            for idol_name, current_pair in collections[collection_name][card.name].items():
+                if idol_name == card.name:
+                    card = copy(card)
+                    card.idolized = True
+                elif current_pair == [None, None]:
+                    collections[collection_name][card.name][idol_name] = [None, card] if (card.ur_pair_idolized_reverse if card.idolized else card.ur_pair_reverse) else [card, None]
+
+    # Add all cards in data set
+    for card in cards:
+        if raw.raw_information[card.name]['main_unit'] == 'Aqours':
+            _add_ur_pair_in_collection(card, 'Aqours')
+        elif card.id >= 980:
+            _add_ur_pair_in_collection(card, '2nd μ\'s')
+        else:
+            _add_ur_pair_in_collection(card, '1st μ\'s')
+
+    # Remove pairs for same idol
+    for collection_name, collection in collections.items():
+        for idol_name, _ in collection.items():
+            collections[collection_name][idol_name][idol_name] = None
+    context['collections'] = collections
     context['total'] = int(len(cards) / 2)
-    context['data'] = data
-    context['idols'] = idols
     return render(request, 'urpairs.html', context)
 
 def albumbuilder(request):
@@ -2867,18 +2886,18 @@ def initialsetup(request):
                     card = (card for card in cards if card.id == account.starter_id).next()
                     card.owned = context['starter']
             collections = OrderedDict()
-            collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['ur'] = [collections['ur_idolized'][0], 2, collections['ur_idolized'][2], False]
-            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['ssr'] = [collections['ssr_idolized'][0], 2, collections['ssr_idolized'][2], False]
-            collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
-            collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
-            collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
+            collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
+            collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['sr_smile'] = collections['sr_smile_idolized'][:-1] + [False]
             collections['sr_pure'] = collections['sr_pure_idolized'][:-1] + [False]
             collections['sr_cool'] = collections['sr_cool_idolized'][:-1] + [False]
-            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in card.promo_item and 'event prize' not in card.promo_item], True]
-            collections['r_idolized'] = [string_concat('R', ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in (card.promo_item if card.promo_item else '') and 'event prize' not in (card.promo_item if card.promo_item else '')], True]
+            collections['r_idolized'] = [string_concat('R', ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['r'] = [collections['r_idolized'][0], 9, collections['r_idolized'][2], False]
             context['collections'] = collections
 

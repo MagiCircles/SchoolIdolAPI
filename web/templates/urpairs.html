@@ -6,57 +6,31 @@
 {% block title %}{% trans 'UR Pairs' %}{% endblock %}
 {% block content %}
 <div id="ur_pairs" class="margin50">
-  <h1 class="padding50 text-center" style="margin-bottom: 20px"><span class="fontx1-5" style="display: block; margin-bottom: -60px;">{% trans 'UR Pairs' %} <small>{{ total }}</small></span><br><small style="display: inline-block; padding-left: 60px">{% trans 'by' %} <a href="/user/Royal/" target="_blank">Royal</a></small></h1>
-  <table class="table table-bordered">
-    <tr>
-      <th>
-      </th>
-      {% for idol, pair in data.items %}
-      <th>
-	<img src="{% chibiimage idol=idol small=False %}" alt="{{ idol }}">
-      </th>
+  <h1 class="padding50 text-center" style="margin-bottom: 20px"><span class="fontx1-5" style="display: block;">{% trans 'UR Pairs' %} <small>{{ total }}</small></span></h1>
+  {% for name, collection in collections.items %}
+  <h3>{{ name }}</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      {% for idol_name, cards in collection.items %}
+      <tr>
+	{% for _, pair in cards.items %}
+	<td style="width: 11.1111%; vertical-align: middle; min-width: 100px">
+	  {% if pair %}
+	  {% for card in pair %}{% if card %}<a href="{{ card.url }}" target="_blank"><img src="{% cleanurl card=card small=True idolized=card.idolized %}" alt="{{ card }}" onerror="this.onerror=null;this.src=this.src.replace('small_', '');"></a>{% else %}<img src="//i.schoolido.lu/static/back.png" alt="{% trans 'Unknown' %}" style="width: 50%; opacity: 0.2">{% endif %}{% endfor %}
+	  {% else %}
+	  <div class="text-center">
+	    <a href="/idol/{{ idol_name|urlencode }}/" target="_blank">
+	      <img src="{% chibiimage force_artist='klab' force_first=True idol=idol_name small=False %}">
+	    </a>
+	  </div>
+	  {% endif %}
+	</td>
+	{% endfor %}
+      </tr>
       {% endfor %}
-    </tr>
-    {% for idol, paired_idols in data.items %}
-    <tr>
-      <th>
-	<img src="{% chibiimage idol=idol small=False %}" alt="{{ idol }}">
-      </th>
-      {% for paired_idol, card in paired_idols.items %}
-      {% if idol == paired_idol %}
-      <td style="background-color: {{ idol|idolToColor }}">
-      </td>
-      {% else %}
-      <td style="width: 10%">
-	{% if card.0 %}
-	{% if card.0.ur_pair %}
-	{% if card.1 %}
-	{% if card.0.ur_pair_idolized_reverse %}
-	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=True small=True %}
-	{% else %}
-	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=True small=True %}
-	{% endif %}
-	{% else %}
-	{% if card.0.ur_pair_reverse %}
-	{% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=False small=True %}
-	{% else %}
-	{% include 'include/urpair.html' with left=card.0 right=card.0.ur_pair idolized=False small=True %}
-	{% endif %}
-	{% endif %}
-	{% else %}
-	{% if card.1 %}
-	{% include 'include/urpair.html' with left=card.0 right=None idolized=True small=True %}
-	{% else %}
-	{% include 'include/urpair.html' with left=card.0 right=None idolized=False small=True %}
-	{% endif %}
-	{% endif %}
-	{% endif %}
-      </td>
-      {% endif %}
-      {% endfor %}
-    </tr>
-    {% endfor %}
-  </table>
+    </table>
+  </div>
+  {% endfor %}
 </div>
 <br><br><br>
 <div class="container">

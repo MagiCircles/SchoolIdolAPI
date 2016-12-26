@@ -286,7 +286,7 @@ def index(request):
     # ]
     context['important_news'] = [
         {
-            'url': '//schoolido.lu/activities//',
+            'url': '//schoolido.lu/activities/4645909/',
             'image': '//i.schoolido.lu/special/stafftreasure.png',
             'name': 'Staff Treasure Hunt',
         },

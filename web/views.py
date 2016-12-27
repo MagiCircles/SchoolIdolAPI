@@ -2679,9 +2679,11 @@ def urpairs(request):
             ('Aqours', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
             ('2nd μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
             ('1st μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
+            ('Aqours SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('μ\'s SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
             ])
     # Get UR cards
-    cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False).exclude(translated_collection='Initial').order_by('name', 'ur_pair__name').select_related('ur_pair')
+    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False).exclude(translated_collection='Initial').order_by('name', 'ur_pair__name').select_related('ur_pair')
 
     def _add_ur_pair_in_collection(card, collection_name):
         if card.ur_pair:
@@ -2701,7 +2703,12 @@ def urpairs(request):
     # Add all cards in data set
     for card in cards:
         if raw.raw_information[card.name]['main_unit'] == 'Aqours':
-            _add_ur_pair_in_collection(card, 'Aqours')
+            if card.rarity == 'SSR':
+                _add_ur_pair_in_collection(card, 'Aqours SSRs')
+            else:
+                _add_ur_pair_in_collection(card, 'Aqours')
+        elif card.rarity == 'SSR':
+            _add_ur_pair_in_collection(card, 'μ\'s SSRs')
         elif card.id >= 980:
             _add_ur_pair_in_collection(card, '2nd μ\'s')
         else:

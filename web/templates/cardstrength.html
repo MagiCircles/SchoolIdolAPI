@@ -5,6 +5,7 @@
 <script src="../static/bower/jQuery/dist/jquery.min.js" type="text/javascript"></script>
 <script src="../static/bower/CuteForm/cuteform.js"></script>
 <script src="../static/bower/ngstorage/ngStorage.min.js" type="text/javascript"></script>
+<script src="../static/bower/angular-fixed-table-header/src/fixed-table-header.min.js" type="text/javascript"></script>
 <script src="../static/js/cardstrength.js" type="text/javascript"></script>
 <style type="text/css">
   .input-group input[type='text'] {
@@ -32,7 +33,9 @@
   .sort-by {
     cursor: pointer
   }
+
 </style>
+
 <div id="wrapper" ng-app="CardStrength">
   <nav id="sidebar-wrapper" ng-controller="FiltersController" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
     <form class="">
@@ -256,9 +259,10 @@
 
 
     <div class="container-fluid" ng-controller="SkillController">
-      <div class="row">
+      <div class="row" id="header">
         <h1 class="text-center">{% trans 'Card Strength' %} <small>how good a card <i>actually</i> is</small></h1>
         <div class="col-sm-4">
+          [[headerHeight]]
         </div>
         <div class="col-sm-8 form-inline">
           <h3 class="margin0">Song Details <small>for skill analysis</small></h3>
@@ -281,10 +285,11 @@
         </div>
       </div>
 
-      <!--<pre height=400> [[$root.cards|json]]</pre>-->
-      <table id="cards_table" class="table table-bordered table-striped table-hover sortable">
-        <thead>
+      <div style="overflow: auto; height: calc(100vh - [[headerHeight]] - 50)" id="tbl">
+      <table id="cards_table" class="table table-bordered table-striped table-hover">
+        <thead fix-head>
           <tr>
+            <th> Rank </th>
             <th class="sort-by" ng-click="sortBy('id')">ID <i ng-show="sort.type=='id'" class="glyphicon glyphicon-chevron-[[sort.chevron]]"></i></th>
             <th>{% trans 'Name' %}</th>
             <th>{% trans 'Idolized?' %}</th>
@@ -298,8 +303,12 @@
             </th>
           </tr>
         </thead>
+        <tfoot>
+          <td>Found [[$root.cards.length]] cards.</td>
+        </tfoot>
         <tbody>
           <tr ng-repeat="card in $root.cards | orderBy:sort.type:sort.desc:true track by $index">
+            <td>[[$index+1]]</td>
             <td>[[card.id]]</td>
             <td><span class="text-[[card.attribute]]"><a href="[[card.website_url]]">[[ card.rarity ]] [[ card.is_promo ? '{% trans 'Promo' %}' : card.translated_collection ]]  
                  [[ card.idol.name ]] <i ng-show="card.event" class="flaticon-event"></i></a></span>
@@ -331,58 +340,19 @@
             <td>[[card.on_attr.best]]</td>
           </tr>
         </tbody>
-        <!--<thead>
-              <tr>
-                <th>ID</th>
-                <th>Icon</th>
-                <th>{% trans 'Name' %}</th>
-                <th>{% trans 'Smile' %}</th>
-                <th>{% trans 'Pure' %}</th>
-                <th>{% trans 'Cool' %}</th>
-                <th>{% trans 'Skill' %}</th>
-                <th>Average Case Skill Contribution</th>
-                <th>Best Case Skill Contribution</th>
-              </tr>
-          </thead>
-          <tbody>
-              {% for card in cards %}
-              <tr>
-              <td>{{ card.id }}</td>
-              <td><img src="{{ card.round_card_image }}"></td>
-              <td>
-                <img src={% if card.display_idolized %}"{{card.round_card_image_idolized}}"
-                {% else %}"{{card.round_card_image}}"{% endif %}>
-                <a href="{{card|singlecardurl}}">{{ card.rarity }} {% if card.is_promo %} {% trans 'Promo' %} 
-                {% elif card.translated_collection  %} {{ card.translated_collection }}
-                {% endif %} {{ card.name }}</a></td>
-              <td>
-                {% if card.display_idolized %} {{ card.idolized_maximum_statistics_smile }} 
-                {% else %} {{card.non_idolized_maximum_statistics_smile }}
-                {% endif %}</td>
-              <td>
-                {% if card.display_idolized %}{{ card.idolized_maximum_statistics_pure }}
-                {% else %}{{card.non_idolized_maximum_statistics_pure}}
-                {% endif%}</td>
-              <td>
-                {% if card.display_idolized %}{{ card.idolized_maximum_statistics_cool }}
-                {% else %}{{card.non_idolized_maximum_statistics_cool}}
-                {% endif %}</td>
-              <td class="text-center">
-                {% if card.skill %}
-                <i class="flaticon-{{ card.skill|skillToFlaticon }}" title="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill %}{{ card.japanese_skill }}{% else %}{{ card.skill }}{% endif %}" data-container="body" data-toggle="popover" data-placement="top" data-content="{% if LANGUAGE_CODE == 'ja' and card.japanese_skill_details %}{{ card.japanese_skill_details }}{% elif card.skill_details %}{{ card.skill_details }}{% endif %}" data-trigger="hover"></i>
-                {% endif %}
-              </td>
-              <td>[[calcAvg(song,{{card.raw_skill}}) | number:2]]</td>
-              <td>[[calcBest(song,{{card.raw_skill}}) | number:2]]</td>
-              </tr>
-              {% endfor %}
-          </tbody>-->
       </table>
+      </div>
     </div>
     <!--container-fluid-->
   </div>
   <!-- page-content-wrapper -->
 </div>
 <!-- wrapper -->
-
+{% comment %}<script type="text/javascript">
+var height = window.innerHeight || document.documentElement.clientHeight;
+console.log(height)
+var headerHeight = document.getElementById("header").style.height
+console.log(headerHeight)
+document.getElementById("tbl").style.height = height - headerHeight - 50 + "px";
+</script>{% endcomment %}
 {% endblock %}

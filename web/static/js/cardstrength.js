@@ -1,4 +1,4 @@
-angular.module('CardStrength', ['ngResource', 'ngStorage'])
+angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header'])
     .factory('API', function ($resource, $http) {
         return $resource("/api/cards/?page_size=100&is_special=False&attribute=:attr&is_promo=:promo&is_event=:event&main_unit=:main_unit&sub_unit=:sub_unit&year=:idol_year&idol_school=:idol_school&translated_collection=:translated_collection&japanese_collection=:japanese_collection&japan_only=:japan_only", {
             attr: "@attr",
@@ -55,7 +55,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
             // how much the score changed due to greats -> perfects
             var score_difference = Math.floor(on_attr * 0.0125 * .22 * Math.floor(song.notes / 2) * 1 * 1.1 * 1.1) * transformed_greats_proportion_of_song
 
-            return ret.scoreUpMod(song, score_difference)
+            return Math.floor (score_difference / song.notes / (0.0125 * 1.1 * 1.1 ))
         }
 
         ret.trickStatBonus = function (on_attr, song, pl_time) {
@@ -100,34 +100,21 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
                 $scope.filters.rarity = rarity;
                 return
             }
-            // console.log($scope.filters.rarity)
             if ($scope.filters.rarity == "R,SR,SSR,UR") {
 
                 $scope.filters.rarity = rarity
                 $scope.single_rarity_selected = true
-                // console.log($scope.filters.rarity)
                 return
             }
             else {
                 var split = $scope.filters.rarity.split(",")
                 var index = split.indexOf(rarity)
-                console.debug(split)
-                console.debug("indexOf(" + rarity + "): " + index)
-
                 if (index < 0) {
-                    console.debug("not in filter")
-
                     split.push(rarity)
                     split = split.filter(function (n) { return n != undefined });
                     $scope.filters.rarity = split.join(",")
                 }
                 else {
-                    // split.push(rarity)
-                    // split = split.filter(function (n) { return n != undefined });
-                    // if (split.length >= 5) {
-                    //     $scope.filters.rarity = 'R,SR,SSR,UR'
-                    // }
-                    // else $scope.filters.rarity = split.join(",")
                     if ($scope.filters.rarity == "R,SR,SSR,UR") {
                         $scope.filters.rarity = rarity
                     }
@@ -141,8 +128,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
                     }
                 }
             }
-            // $scope.single_rarity_selected = 
-            
             $scope.$storage.filters.rarity = $scope.filters.rarity
         }
         $scope.setString = function (filter, string) {
@@ -218,32 +203,30 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
             }
         }
         var getNextUrlSuccess = function (response) {
-            if (response.data.next) nextUrl = response.data.next;
-            else nextUrl = null;
             angular.forEach(response.data.results, function (value) {
+                calcOnAttr(value)
+                parseSkill(value)
                 $rootScope.cards.push(value)
             })
-
-            if (nextUrl) HTTP.getUrl(nextUrl).then(getNextUrlSuccess);
+            if (response.data.next) HTTP.getUrl(response.data.next).then(getNextUrlSuccess);
+            $rootScope.$broadcast("cardsUpdate") // broadcast after getting all cards
         }
         $scope.getCards = function () {
             var cards = API.get($scope.filters, function () {
                 $rootScope.cards = []
+                $rootScope.count = cards.count
                 angular.forEach(cards.results, function (value) {
+                    calcOnAttr(value)
+                    parseSkill(value)
                     $rootScope.cards.push(value)
                 })
-
                 if (cards.next) {
                     HTTP.getUrl(cards.next).then(getNextUrlSuccess);
                 }
-                var length = $rootScope.cards.length
-                for (var i = 0; i < length; i++) {
-                    calcOnAttr($rootScope.cards[i])
-                    parseSkill($rootScope.cards[i])
-
+                else {
+                    $rootScope.$broadcast("cardsUpdate") // broadcast after getting all cards
                 }
             });
-            // $scope.$broadcast("cardsUpdate", { cards: $rootScope.cards })
         }
     })
     .controller('SkillController', function ($rootScope, $scope, Calculations, $localStorage) {
@@ -340,13 +323,9 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
             card.on_attr.best = base + bonus.best
 
         }
-        $rootScope.$watch('cards', function (event, args) {
-            var length = $rootScope.cards.length
+        $rootScope.$on('cardsUpdate', function (event, args) {
             console.log("cardsUpdate")
-            // console.log($rootScope.cards)
-            for (var i = 0; i < length; i++) {
-                // card = $rootScope.cards[i]
-                // console.log($rootScope.cards[i])
+            for (var i = 0; i < $rootScope.count; i++) {
                 calcSkill($rootScope.cards[i]);
                 calcSIS($rootScope.cards[i]);
                 calcStatBonus($rootScope.cards[i])
@@ -358,7 +337,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
                 }
             }
             $scope.$storage.cards = $rootScope.cards
-            // console.log($scope.$storage.cards)
         })
 
         $scope.toggleEquipSIS = function (card) {
@@ -390,15 +368,15 @@ angular.module('CardStrength', ['ngResource', 'ngStorage'])
         $scope.sort = { type: "id", desc: false }
         $scope.sortBy = function (sorter) {
             $scope.sort.desc = ($scope.sort.type == sorter) ? !$scope.sort.desc : true
-
-            // if (sorter == "on_attr") {
-
-            // }
             $scope.sort.type = sorter;
 
             if ($scope.sort.desc) $scope.sort.chevron = "down"
             else $scope.sort.chevron = "up"
         }
+
+        $scope.$on('$viewContentLoaded', function(){
+            $scope.headerHeight = angular.element(document.getElementById('#header'))[0].offsetHeight
+        });
 
 
     })

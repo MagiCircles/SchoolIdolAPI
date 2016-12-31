@@ -16,7 +16,7 @@
 	{% for _, pair in cards.items %}
 	<td style="width: 11.1111%; vertical-align: middle; min-width: 100px">
 	  {% if pair %}
-	  {% for card in pair %}{% if card %}<a href="{{ card.url }}" target="_blank"><img src="{% cleanurl card=card small=True idolized=card.idolized %}" alt="{{ card }}" onerror="this.onerror=null;this.src=this.src.replace('small_', '');"></a>{% else %}<img src="//i.schoolido.lu/static/back.png" alt="{% trans 'Unknown' %}" style="width: 50%; opacity: 0.2">{% endif %}{% endfor %}
+	  {% for card in pair %}{% if card %}<a href="{{ card.url }}" target="_blank"><img src="{% cleanurl card=card small=True idolized=card.idolized %}" alt="{{ card }}" onerror="this.onerror=null;this.src=this.src.replace('small_', '');"></a>{% else %}<img src="//i.schoolido.lu/static/small_{% if pair.0 and not pair.1 or pair.1 and not pair.0 %}question_card_{% endif %}back.png" alt="{% trans 'Unknown' %}" style="width: 50%; opacity: 0.2">{% endif %}{% endfor %}
 	  {% else %}
 	  <div class="text-center">
 	    <a href="/idol/{{ idol_name|urlencode }}/" target="_blank">

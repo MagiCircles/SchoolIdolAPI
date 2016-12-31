@@ -2692,6 +2692,7 @@ def urpairs(request):
             card.ur_pair.idolized = idolized
             collections[collection_name][card.name][card.ur_pair.name] = [card.ur_pair, card] if (card.ur_pair_idolized_reverse if idolized else card.ur_pair_reverse) else [card, card.ur_pair]
         else:
+            # Add card without pair where it could be - horizontal
             card.idolized = False
             for idol_name, current_pair in collections[collection_name][card.name].items():
                 if idol_name == card.name:
@@ -2699,6 +2700,16 @@ def urpairs(request):
                     card.idolized = True
                 elif current_pair == [None, None]:
                     collections[collection_name][card.name][idol_name] = [None, card] if (card.ur_pair_idolized_reverse if card.idolized else card.ur_pair_reverse) else [card, None]
+            # Add card without pair where it could be - vertical
+            card = copy(card)
+            card.idolized = True
+            for idol_name, horizontal_pairs in collections[collection_name].items():
+                current_pair = horizontal_pairs[card.name]
+                if idol_name == card.name:
+                    card = copy(card)
+                    card.idolized = False
+                elif current_pair == [None, None]:
+                    collections[collection_name][idol_name][card.name] = [None, card] if (card.ur_pair_idolized_reverse if card.idolized else card.ur_pair_reverse) else [card, None]
 
     # Add all cards in data set
     for card in cards:

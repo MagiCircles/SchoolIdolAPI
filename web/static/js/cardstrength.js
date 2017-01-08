@@ -1,6 +1,6 @@
-angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header'])
-    .factory('API', function ($resource, $http) {
-        return $resource("/api/cards/?page_size=100&is_special=False&attribute=:attr&is_promo=:promo&is_event=:event&main_unit=:main_unit&sub_unit=:sub_unit&year=:idol_year&idol_school=:idol_school&translated_collection=:translated_collection&japanese_collection=:japanese_collection&japan_only=:japan_only", {
+angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',])
+    .factory('cardsAPI', function ($resource, $http) {
+        return $resource("/api/cards/?page_size=100&is_special=False&attribute=:attr&is_promo=:promo&is_event=:event&main_unit=:main_unit&sub_unit=:sub_unit&year=:idol_year&idol_school=:idol_school&translated_collection=:translated_collection&japanese_collection=:japanese_collection&japan_only=:japan_only&rarity=:rarity&skill=:skill", {
             attr: "@attr",
             promo: "@promo",
             event: "@event",
@@ -10,7 +10,19 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
             idol_school: "@idol_school",
             translated_collection: "@translated_collection",
             japanese_collection: "@japanese_collection",
-            japan_only: "@japan_only"
+            japan_only: "@japan_only",
+            rarity: "@rarity",
+            skill: "@skill"
+        })
+    }).factory('ownedcardsAPI', function ($resource, $http) {
+        return $resource("http://schoolido.lu/api/ownedcards/?expand_card&page_size=100&card__is_special=False&owner_account=:account&card__attribute=:attr&card__is_promo=:promo&card__is_event=:event:stored&card__rarity=:rarity&card__skill=:skill", {
+            account: "@account",
+            stored: "@stored",
+            attr: "@attr",
+            promo: "@promo",
+            event: "@event",
+            rarity: "@rarity",
+            skill: "@skill"
         })
     })
     .factory('HTTP', function ($resource, $http) {
@@ -34,6 +46,9 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
             else if (skill.type == "seconds") {
                 return Math.floor(song.seconds / skill.interval)
             }
+            else if (skill.type == "points") {
+                return Math.floor(song.points / skill.interval)
+            }
             else {
                 //TODO: handle Snow Maiden Umi and point-based score up
                 return 0
@@ -55,7 +70,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
             // how much the score changed due to greats -> perfects
             var score_difference = Math.floor(on_attr * 0.0125 * .22 * Math.floor(song.notes / 2) * 1 * 1.1 * 1.1) * transformed_greats_proportion_of_song
 
-            return Math.floor (score_difference / song.notes / (0.0125 * 1.1 * 1.1 ))
+            return Math.floor(score_difference / song.notes / (0.0125 * 1.1 * 1.1))
         }
 
         ret.trickStatBonus = function (on_attr, song, pl_time) {
@@ -78,7 +93,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
         return ret;
     })
 
-    .controller('FiltersController', function ($rootScope, $scope, API, HTTP, $localStorage) {
+    .controller('FiltersController', function ($rootScope, $scope, cardsAPI, ownedcardsAPI, HTTP, $localStorage) {
+        $rootScope.loadingMsg = false;
         $scope.$storage = $localStorage
         if ($scope.$storage.filters) $scope.filters = $scope.$storage.filters
         else {
@@ -90,6 +106,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
                 main_unit: "",
                 sub_unit: "",
                 year: "",
+                account: "",
+                stored: "",
             }
             $scope.$storage.filters = $scope.filters
         }
@@ -133,8 +151,28 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
         $scope.setString = function (filter, string) {
             $scope.filters[filter] = string
         }
+        $scope.setJPOnly = function () {
+            if ($scope.filters.is_world) $scope.filters.japan_only = "False"
+            else $scope.filters.japan_only = "True"
+        }
+        $scope.clearFilters = function () {
+            $scope.filters = {
+                rarity: 'R,SR,SSR,UR',
+                attr: "",
+                promo: "",
+                event: "",
+                main_unit: "",
+                sub_unit: "",
+                year: "",
+                account: "",
+                stored: "",
+            }
+            $scope.$storage.filters = $scope.filters
+        }
 
+        /// retrieve cards
         var nextUrl = "";
+        var fromAccount = false;
         var calcOnAttr = function (card) {
             card.on_attr = {}
             if (card.attribute == "Smile") {
@@ -166,44 +204,55 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
                 card.on_attr.idlz += 1000
             }
             if (card.is_promo) card.on_attr.base = card.on_attr.idlz
+
         }
         var parseSkill = function (card) {
-            var skilltype = card.skill
-            card.skill = {
-                category: skilltype,
-                interval: 0,
-                type: "",
-                amount: 0,
-                percent: 0
-            }
-            card.sis = {}
-
-            var parsedNumbers = 0, i = 0;
-            var skill_words = card.skill_details.split(" ")
-            var length = skill_words.length
-            var word;
-            for (var i = 0; i < length; i++) {
-                word = skill_words[i]
-                var num = parseInt(word)
-
-                if (num && (parsedNumbers == 0)) {
-                    card.skill.interval = word
-                    card.skill.type = skill_words[i + 1].replace(',', '')
-                    ++parsedNumbers
+            // console.log(card)
+            if (card.skill) {
+                var skilltype = card.skill
+                card.skill = {
+                    category: skilltype,
+                    interval: 0,
+                    type: "",
+                    amount: 0,
+                    percent: 0
                 }
-                else if (num && parsedNumbers == 1) {
-                    card.skill.percent = num / 100
-                    ++parsedNumbers
-                }
-                else if (num && parsedNumbers == 2) {
-                    card.skill.amount = word
-                    ++parsedNumbers
-                    break
+                card.sis = {}
+
+                var parsedNumbers = 0, i = 0;
+                var skill_words = card.skill_details.split(" ")
+                var length = skill_words.length
+                var word;
+                for (var i = 0; i < length; i++) {
+                    word = skill_words[i]
+                    var num = parseInt(word)
+
+                    if (num && (parsedNumbers == 0)) {
+                        card.skill.interval = word
+                        card.skill.type = skill_words[i + 1].replace(',', '')
+                        ++parsedNumbers
+                    }
+                    else if (num && parsedNumbers == 1) {
+                        card.skill.percent = num / 100
+                        ++parsedNumbers
+                    }
+                    else if (num && parsedNumbers == 2) {
+                        card.skill.amount = word
+                        ++parsedNumbers
+                        break
+                    }
                 }
             }
         }
         var getNextUrlSuccess = function (response) {
             angular.forEach(response.data.results, function (value) {
+
+                if (fromAccount) {
+                    value.card.idlz = value.idolized;
+                    value = value.card
+                }
+                else value.idlz = false;
+                value.equippedSIS = false;
                 calcOnAttr(value)
                 parseSkill(value)
                 $rootScope.cards.push(value)
@@ -211,31 +260,54 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
             if (response.data.next) HTTP.getUrl(response.data.next).then(getNextUrlSuccess);
             $rootScope.$broadcast("cardsUpdate") // broadcast after getting all cards
         }
+        var populateRootCards = function (response) {
+            $rootScope.cards = []
+            $rootScope.count = response.count
+
+            angular.forEach(response.results, function (value) {
+                if (fromAccount) {
+                    value.card.idlz = value.card.userIdlz = value.idolized;
+                    value = value.card
+                }
+                else value.idlz = false;
+                value.equippedSIS = false;
+                calcOnAttr(value)
+                parseSkill(value)
+                $rootScope.cards.push(value)
+            })
+
+            if (response.next) {
+                HTTP.getUrl(response.next).then(getNextUrlSuccess);
+            }
+            else {
+                $rootScope.$broadcast("cardsUpdate") // broadcast after getting all cards
+            }
+
+            $rootScope.loadingMsg = false;
+        }
         $scope.getCards = function () {
-            var cards = API.get($scope.filters, function () {
-                $rootScope.cards = []
-                $rootScope.count = cards.count
-                angular.forEach(cards.results, function (value) {
-                    calcOnAttr(value)
-                    parseSkill(value)
-                    $rootScope.cards.push(value)
+            $rootScope.loadingMsg = true;
+            if ($scope.filters.account == "" && $scope.filters.stored == "") {
+                var cards = cardsAPI.get($scope.filters, function () {
+                    fromAccount = false
+                    populateRootCards(cards, false)
+                });
+            }
+            else {
+                var cards = ownedcardsAPI.get($scope.filters, function () {
+                    fromAccount = true
+                    populateRootCards(cards)
                 })
-                if (cards.next) {
-                    HTTP.getUrl(cards.next).then(getNextUrlSuccess);
-                }
-                else {
-                    $rootScope.$broadcast("cardsUpdate") // broadcast after getting all cards
-                }
-            });
+            }
         }
     })
-    .controller('SkillController', function ($rootScope, $scope, Calculations, $localStorage) {
+    .controller('SkillController', function ($rootScope, $scope, Calculations, $localStorage, $window) {
         $scope.$storage = $localStorage
         $scope.song = {
             perfects: .85,
             notes: 550,
             seconds: 125,
-            stars: 60
+            points: 1000000
         }
         // calcs
         var activations;
@@ -323,20 +395,31 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
             card.on_attr.best = base + bonus.best
 
         }
+
+
+        $scope.sort = { type: "", desc: false }
+        $scope.sortBy = function (sorter, fromUpdate) {
+            if (fromUpdate) $scope.sort.desc = true
+            else $scope.sort.desc = ($scope.sort.type == sorter) ? !$scope.sort.desc : true
+            $scope.sort.type = sorter;
+
+            if ($scope.sort.desc) $scope.sort.chevron = "down"
+            else $scope.sort.chevron = "up"
+        }
         $rootScope.$on('cardsUpdate', function (event, args) {
-            console.log("cardsUpdate")
             for (var i = 0; i < $rootScope.count; i++) {
                 calcSkill($rootScope.cards[i]);
                 calcSIS($rootScope.cards[i]);
                 calcStatBonus($rootScope.cards[i])
-                $rootScope.cards[i].equippedSIS = $rootScope.cards[i].idlz = false
-                $rootScope.cards[i].on_attr.display = $rootScope.cards[i].on_attr.base
+                if ($rootScope.cards[i].idlz) $rootScope.cards[i].on_attr.display = $rootScope.cards[i].on_attr.idlz
+                else $rootScope.cards[i].on_attr.display = $rootScope.cards[i].on_attr.base
                 $rootScope.cards[i].skill_display = {
                     avg: $rootScope.cards[i].skill.avg,
                     best: $rootScope.cards[i].skill.best
                 }
             }
             $scope.$storage.cards = $rootScope.cards
+            $scope.sortBy("id", true)
         })
 
         $scope.toggleEquipSIS = function (card) {
@@ -354,6 +437,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
         }
 
         $scope.toggleIdlz = function (card) {
+            console.log("toggleIdlz")
+            console.log(card.on_attr)
             if (card.idlz) {
                 if (card.skill.category == "Perfect Lock") calcTrickStatBonus(card);
                 calcStatBonus(card)
@@ -361,23 +446,23 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header']
                 card.on_attr.display = card.on_attr.idlz
             }
             else card.on_attr.display = card.on_attr.base
+            calcStatBonus(card)
+
+            console.log(card.idlz)
+            console.log(card.on_attr.display)
 
             $scope.$storage.cards = $rootScope.cards
         }
 
-        $scope.sort = { type: "id", desc: false }
-        $scope.sortBy = function (sorter) {
-            $scope.sort.desc = ($scope.sort.type == sorter) ? !$scope.sort.desc : true
-            $scope.sort.type = sorter;
 
-            if ($scope.sort.desc) $scope.sort.chevron = "down"
-            else $scope.sort.chevron = "up"
-        }
+        var headerHeight = angular.element(document.querySelector("#row-header"))[0].offsetHeight;
+        var tblHdHeight = angular.element(document.querySelector("#tbl-header"))[0].offsetHeight;
+        var navbarHeight = angular.element(document.querySelector(".navbar-fixed-top"))[0].offsetHeight;
+        $scope.tableHeight = $window.innerHeight - headerHeight - tblHdHeight - navbarHeight - 3;
 
-        $scope.$on('$viewContentLoaded', function(){
-            $scope.headerHeight = angular.element(document.getElementById('#header'))[0].offsetHeight
+        angular.element($window).bind('resize', function () {
+            $scope.tableHeight = $window.innerHeigh - headerHeight - 50;
         });
-
 
     })
     .filter('skillToSIS', function () {

@@ -206,12 +206,11 @@
       <h4>{% trans 'View' %}</h4>
       <div class="section view">
 
-        {% comment %}{% if not high_traffic and user.is_authenticated %}{% endcomment %}
+        {% if not high_traffic and user.is_authenticated %}
         <!-- game account -->
         <label for="id_select_account">{% trans 'Account' %}</label>
         <select id="id_select_account" name="account" ng-model="filters.account">
             <option value=""></option>
-            <option value="430">jo EN</option>
             {% for account in accounts %}
             <option value="{{ account.id }}">{{ account }}</option>
             {% endfor %}
@@ -227,7 +226,7 @@
           </select>
 
       </div>
-      {% comment %}{% endif %}{% endcomment %}
+      {% endif %}
 
       <!-- SUBMIT -->
       <div class="section submit">

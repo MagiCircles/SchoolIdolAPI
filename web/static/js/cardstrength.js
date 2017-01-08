@@ -207,7 +207,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
 
         }
         var parseSkill = function (card) {
-            // console.log(card)
             if (card.skill) {
                 var skilltype = card.skill
                 card.skill = {
@@ -266,7 +265,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
 
             angular.forEach(response.results, function (value) {
                 if (fromAccount) {
-                    value.card.idlz = value.card.userIdlz = value.idolized;
+                    value.card.idlz = value.idolized;
+                    value.card.userIdlz = value.idolized && (value.stored == "Album")
                     value = value.card
                 }
                 else value.idlz = false;
@@ -314,8 +314,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
 
         var calcSkill = function (card) {
             card.skill.avg = card.skill.best = "Loading..."
-            // console.log(card.rarity)
-
             if (!card.skill) return;
 
             card.skill.activations = Calculations.activations($scope.song, card.skill);
@@ -338,7 +336,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
         // sis calculations 
         var calcTrickStatBonus = function (card) {
             var stat;
-            // console.log(card.on_attr)
             if (card.idlz) stat = card.on_attr.idlz
             else stat = card.on_attr.base
 
@@ -437,8 +434,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
         }
 
         $scope.toggleIdlz = function (card) {
-            console.log("toggleIdlz")
-            console.log(card.on_attr)
             if (card.idlz) {
                 if (card.skill.category == "Perfect Lock") calcTrickStatBonus(card);
                 calcStatBonus(card)
@@ -447,10 +442,6 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             }
             else card.on_attr.display = card.on_attr.base
             calcStatBonus(card)
-
-            console.log(card.idlz)
-            console.log(card.on_attr.display)
-
             $scope.$storage.cards = $rootScope.cards
         }
 

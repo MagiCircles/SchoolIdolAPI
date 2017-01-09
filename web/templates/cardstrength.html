@@ -40,7 +40,7 @@
 </style>
 <div id="wrapper" ng-app="CardStrength">
   <nav id="sidebar-wrapper" ng-controller="FiltersController" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
-    <form class="">
+    <form>
       <!-- FILTER CARDS -->
       <h4>{% trans 'Filter' %}</h4>
       <div class="section filters">
@@ -201,12 +201,11 @@
 
       </div>
 
-      {% comment %}{% if not high_traffic and user.is_authenticated %}{% endcomment %}
+      {% if not high_traffic and user.is_authenticated %}
       <!-- USER ACCOUNT -->
       <h4>{% trans 'View' %}</h4>
       <div class="section view">
 
-        {% if not high_traffic and user.is_authenticated %}
         <!-- game account -->
         <label for="id_select_account">{% trans 'Account' %}</label>
         <select id="id_select_account" name="account" ng-model="filters.account">
@@ -249,7 +248,11 @@
       <div class="row" id="row-header">
         <h1 class="text-center">{% trans 'Card Strength' %} <small>how good a card <i>actually</i> is</small></h1>
         <div class="col-sm-4">
-          Hello! Here, we focus on calculating the effect of a card's skill on its strength.
+          <p>Hello! Here, we focus on calculating the effect of a card's skill on its strength.</p>
+          <div class="btn-group">
+            <button type="button" ng-class="{'active': allIdlz}" ng-click="toggleAllIdlz()" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm">Idolize All Cards</button>
+            <button type="button" ng-class="{'active': allSIS}" ng-click="toggleAllSIS()" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm">Equip SIS to All Cards</button>
+          </div>
         </div>
         <div class="col-sm-8 form-inline">
           <h3 style="margin: 0 0 5 0">Song Details <small>for skill analysis</small></h3>

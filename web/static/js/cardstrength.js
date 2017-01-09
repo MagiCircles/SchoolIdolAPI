@@ -269,7 +269,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
                     value.card.userIdlz = value.idolized && (value.stored == "Album")
                     value = value.card
                 }
-                else value.idlz = false;
+                else value.idlz = value.userIdlz = false;
                 value.equippedSIS = false;
                 calcOnAttr(value)
                 parseSkill(value)
@@ -393,8 +393,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
 
         }
 
-
-        $scope.sort = { type: "", desc: false }
+        if ($scope.$storage.sort) $scope.sort = $scope.$storage.sort
+        else $scope.sort = { type: "", desc: false }
         $scope.sortBy = function (sorter, fromUpdate) {
             if (fromUpdate) $scope.sort.desc = true
             else $scope.sort.desc = ($scope.sort.type == sorter) ? !$scope.sort.desc : true
@@ -402,6 +402,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
 
             if ($scope.sort.desc) $scope.sort.chevron = "down"
             else $scope.sort.chevron = "up"
+
+            $scope.$storage.sort = $scope.sort
         }
         $rootScope.$on('cardsUpdate', function (event, args) {
             for (var i = 0; i < $rootScope.count; i++) {
@@ -419,6 +421,8 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             $scope.sortBy("id", true)
         })
 
+        $scope.allSIS = false;
+        $scope.allIdlz = false;
         $scope.toggleEquipSIS = function (card) {
             card.equippedSIS = !card.equippedSIS
             calcSIS(card)
@@ -432,16 +436,36 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             calcStatBonus(card)
             $scope.$storage.cards = $rootScope.cards
         }
+        $scope.toggleAllEquipSIS = function () {
+            $scope.allSIS = !$scope.allSIS
+            angular.forEach($rootScope.cards, function (card) {
+                card.equippedSIS = $scope.allSIS
+                calcSIS(card)
+                card.skill_display.avg = card.sis.avg;
+                card.skill_display.best = card.sis.best
+                calcStatBonus(card)
+            })
+            $scope.$storage.cards = $rootScope.cards
+        }
 
         $scope.toggleIdlz = function (card) {
             if (card.idlz) {
                 if (card.skill.category == "Perfect Lock") calcTrickStatBonus(card);
-                calcStatBonus(card)
-
                 card.on_attr.display = card.on_attr.idlz
             }
             else card.on_attr.display = card.on_attr.base
+
             calcStatBonus(card)
+            $scope.$storage.cards = $rootScope.cards
+        }
+        $scope.toggleAllIdlz = function () {
+            $scope.allIdlz = !$scope.allIdlz
+            angular.forEach($rootScope.cards, function (card) {
+                card.idlz = $scope.allIdlz;
+                if (card.skill.category == "Perfect Lock") calcTrickStatBonus(card);
+                calcStatBonus(card)
+                card.on_attr.display = card.on_attr.idlz
+            })
             $scope.$storage.cards = $rootScope.cards
         }
 

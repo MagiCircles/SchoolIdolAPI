@@ -276,12 +276,12 @@ class MultiImageField(MultiFileField, forms.ImageField):
 class _Activity(ModelForm):
     def clean_message_data(self):
         if 'message_data' in self.cleaned_data:
-            if len(self.cleaned_data['message_data']) > 8000:
+            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH:
                 raise forms.ValidationError(
                     message=_('Ensure this value has at most %(max)d characters (it has %(length)d).'),
                     code='max',
                     params={
-                        'max': 8000,
+                        'max': settings.CUSTOM_ACTIVITY_MAX_LENGTH,
                         'length': len(self.cleaned_data['message_data']),
                     })
         return self.cleaned_data['message_data']

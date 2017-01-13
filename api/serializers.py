@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 from web.utils import shrinkImageFromData
 from django.db import IntegrityError
-from web.utils import chibiimage, singlecardurl
+from web.utils import chibiimage, singlecardurl, activity_cacheaccount, get_imgur_code
 from api.raw import STARTERS
 from api.management.commands.update_cards_rankings import update_cards_rankings
 from api.management.commands.update_cards_join_cache import update_cards_join_cache
@@ -762,6 +762,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_liked_by(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('activity-'):
             if 'expand_liked_by' in self.context['request'].query_params:
+                # When an activity is created, the get_queryset is not called and liked_by is not populated but we can assume that it's an empty list
+                if self.context['request'].method == 'POST':
+                    return []
                 serializer = UserNotExpandableSerializer(obj.liked_by, many=True, context=self.context)
                 return serializer.data
             return note_to_expand('liked_by', multiple=True)
@@ -770,6 +773,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_total_likes(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('activity-'):
             if 'expand_total_likes' in self.context['request'].query_params:
+                # When an activity is created, the get_queryset is not called and total_likes is not populated but we can assume that it's 0
+                if self.context['request'].method == 'POST':
+                    return 0
                 if 'expand_liked_by' in self.context['request'].query_params:
                     return len(obj.liked_by)
                 else:
@@ -780,6 +786,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_liked(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('activity-'):
             if 'expand_liked' in self.context['request'].query_params:
+                # When an activity is created, the get_queryset is not called and get_liked is not populated but owners can't like their own so it's always going to be False in that case
+                if self.context['request'].method == 'POST':
+                    return False
                 if hasattr(obj, 'liked'):
                     return bool(obj.liked)
                 if 'expand_liked_by' in self.context['request'].query_params:
@@ -792,6 +801,42 @@ class ActivitySerializer(serializers.ModelSerializer):
 
     def get_website_url(self, obj):
         return 'http://schoolido.lu/activities/{}/'.format(obj.id)
+
+    def validate(self, data):
+        errors = {}
+        new_data = {}
+        request = self.context['request']
+        if request.method == 'POST':
+            new_data.update({
+                'message': 'Custom',
+                'message_type': models.ACTIVITY_TYPE_CUSTOM,
+            })
+            for required_field in ['account', 'message']:
+                if required_field not in request.POST or not request.POST[required_field]:
+                    errors[required_field] = ['This field is required']
+            if 'account' in request.POST and 'account' not in errors:
+                try:
+                    new_data['account'] = models.Account.objects.get(pk=request.POST['account'], owner=request.user)
+                except ObjectDoesNotExist:
+                    errors['account'] = ['This account doesn\'t exist or isn\'t yours']
+        if 'message' in request.data and 'message' not in errors:
+            if self.instance and self.instance.message_type != models.ACTIVITY_TYPE_CUSTOM:
+                errors['message'] = ['Editing the message of an activity that is not "Custom" is prohibited.']
+            else:
+                if len(request.data['message']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH:
+                    errors['message'] = ['Exceeds maximum length of {} characters (you have {})'.format(settings.CUSTOM_ACTIVITY_MAX_LENGTH, len(request.data['message']))]
+                else:
+                    new_data['message_data'] = request.data['message']
+        if 'imgur_image' in request.data and request.data['imgur_image']:
+            if not re.search(settings.IMGUR_REGEXP, request.data['imgur_image']):
+                errors['imgur_image'] = ['Invalid imgur image URL. Format is: {}'.format(settings.IMGUR_REGEXP)]
+            else:
+                new_data['right_picture'] = get_imgur_code(request.data['imgur_image'])
+        if errors:
+            raise serializers.ValidationError(errors)
+        if 'account' in new_data:
+            new_data.update(activity_cacheaccount(new_data['account'], account_owner=request.user))
+        return new_data
 
     class Meta:
         model = models.Activity

@@ -164,6 +164,8 @@ HIGH_TRAFFIC = False
 
 IMGUR_REGEXP = '^https?:\/\/(\w+\.)?imgur.com\/(?P<imgur>[\w\d]+)(\.[a-zA-Z]{3})?$'
 
+CUSTOM_ACTIVITY_MAX_LENGTH = 8000
+
 TOTAL_BACKGROUNDS = 84
 
 CONTEST_MAX_SESSIONS = 9

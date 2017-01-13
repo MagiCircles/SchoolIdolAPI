@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'web',
     'django.contrib.auth',
     'django_prometheus',
+    'django_bouncy',
     'contest'
 )
 

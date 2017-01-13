@@ -383,7 +383,9 @@ class ActivityViewSet(viewsets.ModelViewSet):
     def like(self, request, pk=None):
         if not request.user.is_authenticated():
             raise PermissionDenied()
-        activity = get_object_or_404(models.Activity, pk=pk)
+        activity = get_object_or_404(models.Activity.objects.select_related('account'), pk=pk)
+        if request.user.id == activity.account.owner_id:
+            raise serializers.serializers.ValidationError({'like': 'You can\'t like/dislike your own activities.'})
         if request.method == 'POST':
             activity.likes.add(request.user)
             request.user.preferences.save()

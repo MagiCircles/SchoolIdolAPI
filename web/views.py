@@ -152,13 +152,7 @@ def pushNotification_FOLLOW(user, follower, preferences=None):
     return pushNotification(user, models.NOTIFICATION_FOLLOW, [follower.username], preferences=preferences)
 
 def _pushActivity_cacheaccount(account, account_owner=None):
-    if not account_owner:
-        account_owner = account.owner
-    return {
-        'account_link': '/user/' + account_owner.username + '/#' + str(account.id),
-        'account_picture': account_owner.preferences.avatar(size=100),
-        'account_name': unicode(account),
-    }
+    return activity_cacheaccount(account, account_owner=account_owner)
 
 def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, message_data=None, right_picture=None,
                  # Prefetch:

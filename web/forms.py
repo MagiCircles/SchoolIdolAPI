@@ -276,12 +276,12 @@ class MultiImageField(MultiFileField, forms.ImageField):
 class _Activity(ModelForm):
     def clean_message_data(self):
         if 'message_data' in self.cleaned_data:
-            if len(self.cleaned_data['message_data']) > 8000:
+            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH:
                 raise forms.ValidationError(
                     message=_('Ensure this value has at most %(max)d characters (it has %(length)d).'),
                     code='max',
                     params={
-                        'max': 8000,
+                        'max': settings.CUSTOM_ACTIVITY_MAX_LENGTH,
                         'length': len(self.cleaned_data['message_data']),
                     })
         return self.cleaned_data['message_data']
@@ -582,7 +582,7 @@ class StaffCard(TinyPngForm):
         self.fields['promo_link'].help_text = '[PROMO CARDS ONLY] --- Go to CDJapan, find the product. In this field, the URL should look like "http://www.cdjapan.co.jp/aff/click.cgi/PytJTGW7Lok/5590/A364348/product%2F{product code}" but replace "{product code}" with the code you can see on the CDJapan URL. Example: "BCXA-840"'
         self.fields['other_event'].help_text = 'If a card was in a certain event in JP, but has been merge in another event in EN, use this field to specify the event in which it has been merged.'
         self.fields['japan_only'].help_text = 'Uncheck this box if the card is available in English version.'
-        self.fields['cleanx4'].help_text = 'Use http://waifu2x.udp.jp/ with "Artwork", "Highest" and "2x", download the file and do the same thing again to get it 4 times bigger.'
+        #self.fields['cleanx4'].help_text = 'Use http://waifu2x.udp.jp/ with "Artwork", "Highest" and "2x", download the file and do the same thing again to get it 4 times bigger.'
         for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
             self.fields[field].required = False
         for field in ['idol']:

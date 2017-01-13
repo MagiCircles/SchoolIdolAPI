@@ -935,6 +935,13 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     right_picture_link = models.CharField(max_length=200, blank=True, null=True)
     right_picture = models.CharField(max_length=100, blank=True, null=True)
 
+    @property
+    def owner(self):
+        """
+        It's recommended to use select_related with account and account__owner when accessing this
+        """
+        return self.account.owner
+
     def utf_8_encoder(self, unicode_csv_data):
         for line in unicode_csv_data:
             yield line.encode('utf-8')

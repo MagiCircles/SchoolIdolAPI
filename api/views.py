@@ -351,9 +351,12 @@ class ActivityFilter(django_filters.FilterSet):
         model = models.Activity
         fields = ('message_type', 'account', 'card', 'followed_by')
 
-class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
+class ActivityViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = models.Activity.objects.all()
+        if self.request.method not in permissions.SAFE_METHODS:
+            # To check for permission
+            queryset = queryset.select_related('account', 'account__owner')
         if 'expand_account' in self.request.query_params:
             queryset = queryset.select_related('account')
         if 'expand_liked_by' in self.request.query_params:
@@ -374,12 +377,15 @@ class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     filter_class = ActivityFilter
     ordering_fields = ('creation', 'total_likes')
     ordering = ('-creation',)
+    permission_classes = (api_permissions.IsStaffOrSelf, )
 
     @detail_route(methods=['POST', 'DELETE'])
     def like(self, request, pk=None):
         if not request.user.is_authenticated():
             raise PermissionDenied()
-        activity = get_object_or_404(models.Activity, pk=pk)
+        activity = get_object_or_404(models.Activity.objects.select_related('account'), pk=pk)
+        if request.user.id == activity.account.owner_id:
+            raise serializers.serializers.ValidationError({'like': 'You can\'t like/dislike your own activities.'})
         if request.method == 'POST':
             activity.likes.add(request.user)
             request.user.preferences.save()

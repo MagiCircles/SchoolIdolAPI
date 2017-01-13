@@ -123,3 +123,12 @@ def singlecardurl(card):
         '-promo' if card.is_promo else '',
         '-event' if card.event_id else '',
         card.attribute))
+
+def activity_cacheaccount(account, account_owner=None):
+    if not account_owner:
+        account_owner = account.owner
+    return {
+        'account_link': '/user/' + account_owner.username + '/#' + str(account.id),
+        'account_picture': account_owner.preferences.avatar(size=100),
+        'account_name': unicode(account),
+    }

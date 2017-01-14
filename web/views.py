@@ -278,19 +278,6 @@ def index(request):
     #         'name': '',
     #     },
     # ]
-    context['important_news'] = [
-        {
-            'url': '//schoolido.lu/activities/4645909/',
-            'image': '//i.schoolido.lu/special/stafftreasure.png',
-            'name': 'Staff Treasure Hunt',
-        },
-        {
-            'url': 'https://www.youtube.com/watch?v=8E-WnrjYu3c',
-            'image': 'http://i.imgur.com/hfvz9yA.jpg',
-            'name': 'Thank you! Christmas Month',
-        },
-    ]
-
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
     context['current_en']['slide_position'] = len(context['current_contests'])
@@ -317,18 +304,6 @@ def index(request):
     context['character'] = None
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
-    if bool(random.getrandbits(1)):
-        if bool(random.getrandbits(1)):
-            card = models.Card.objects.filter(translated_collection='Christmas', idol_main_unit='μ\'s')
-        else:
-            context['character'] = 'special/767cropped.png'
-        context['audio'] = 'MerryChristmas'
-    else:
-        context['audio'] = 'aqours_merrychristmas'
-        card = models.Card.objects.filter(translated_collection='Christmas', idol_main_unit='Aqours')
-    if not context['character']:
-        try: context['character'] = card.order_by('?')[0].transparent_idolized_image
-        except: pass
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:

@@ -1911,7 +1911,7 @@ def events(request):
 
     context['filter_form'] = forms.FilterEventForm(form_data, request=request)
 
-    queryset = queryset.order_by(('' if 'reverse_order' in request.GET and request.GET['reverse_order'] else '-') + 'end')
+    queryset = queryset.order_by(('' if 'reverse_order' in request.GET and request.GET['reverse_order'] else '-') + ('english_end' if form_data.get('is_world', False) else 'end'))
 
     context['events'] = queryset
     context['show_english_banners'] = not onlyJP(context)

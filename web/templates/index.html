@@ -44,15 +44,10 @@
   </div>
 </div>
 
-<div id="home" class="text-center" style="background-image: url('{{ static_url }}backgrounds/background{# 0|random_int:total_backgrounds #}_christmas.png');">
+<div id="home" class="text-center" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message hidden-xs hidden-sm">
-    <span style="color: #a94442!important">{% trans 'Merry Christmas!' %}&nbsp;&nbsp;&nbsp;&nbsp;
-      <audio controls="" id="player" class="hidden">
-	<source src="http://i.schoolido.lu/special/{{ audio }}.mp3" type="audio/mpeg" />
-	<source src="http://i.schoolido.lu/special/{{ audio }}.m4a" type="audio/mp4" />
-	<source src="http://i.schoolido.lu/special/{{ audio }}.ogg" type="audio/ogg" />
-      </audio>
-      <a href="#" onClick="document.getElementById('player').volume = 0.6; document.getElementById('player').play(); return false;" class="fontx2 a-nodifference" id="christmasplay" style="color: #a94442!important"><i class="flaticon-play"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span>
+    </span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>

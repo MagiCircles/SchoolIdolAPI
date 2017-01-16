@@ -709,7 +709,7 @@ def idol(request, idol):
 
 def _addaccount_savecenter(account):
     if account.starter:
-        center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck')
+        center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck', skill_slots=account.starter.min_skill_slot)
         account.center = center
         account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
         account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
@@ -1096,7 +1096,9 @@ def ajaxaddcard(request):
                                  owner_account=account,
                                  stored='Deck',
                                  skill=1,
-                                 idolized=card.is_promo)
+                                 idolized=card.is_promo,
+                                 skill_slots=card.min_skill_slot,
+    )
     ownedcard.save()
     if not settings.HIGH_TRAFFIC:
         pushActivity(message="Added a card",
@@ -1106,6 +1108,7 @@ def ajaxaddcard(request):
                      account=account,
                      account_owner=request.user)
     context = {
+        'card': card,
         'owned': ownedcard,
         'owner_account': account,
         'withcenter': True,
@@ -1184,6 +1187,7 @@ def ajaxeditcard(request, ownedcard):
                 pushActivity("Update card", ownedcard=owned_card,
                              # prefetch
                              account_owner=request.user)
+            context['card'] = owned_card.card
             context['owned'] = owned_card
             context['withcenter'] = True
             context['owner_account'] = owned_card.owner_account
@@ -2766,6 +2770,7 @@ def ajax_albumbuilder_addcard(request, card_id):
                                                 idolized=idolized,
                                                 max_level=max_level,
                                                 max_bond=max_bond,
+                                                skill_slots=card.min_skill_slot,
                                                 skill=1)
     if not settings.HIGH_TRAFFIC:
         pushActivity(message="Added a card",

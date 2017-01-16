@@ -1,3 +1,4 @@
+{# card, owned, owner_account, withcenter, nolink #}
 {% load i18n %}
 {% load imageurl %}
 	      {% if not nolink %}<a href="#editCard" data-id="{{ owned.pk }}" class="ownedcardonbottom">{% endif %}
@@ -26,5 +27,8 @@
 		{% endif %}
 		{% if owned.skill > 1 %}
 		<span data-content="{% trans 'Skill' %} {% trans 'Level' %} <b>{{ owned.skill }}</b>" {% if not nolink %} data-html="true" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}><i class="flaticon-skill"></i><small><span class="tiny">{{ owned.skill }}</span></small></span>
+		{% endif %}
+		{% if owned.skill_slots != card.min_skill_slot %}
+		<span data-content="{% trans 'Skill' %} {% trans 'Slots' %} <b>{{ owned.skill_slots }}</b>" {% if not nolink %} data-html="true" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover"{% endif %}><i class="flaticon-combo"></i><small><span class="tiny">{{ owned.skill_slots }}</span></small></span>
 		{% endif %}
 	      {% if not nolink %}</a>{% endif %}

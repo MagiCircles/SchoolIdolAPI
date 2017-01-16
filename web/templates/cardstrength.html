@@ -38,7 +38,6 @@
 </style>
 <div id="wrapper" ng-app="CardStrength">
   <nav id="sidebar-wrapper" ng-controller="FiltersController" class="{% if interfaceColor %}{{ interfaceColor }}{% else %}default{% endif %}">
-    [[filters|json]]
     <form>
       <!-- FILTER CARDS -->
       <h4>{% trans 'Filter' %}</h4>
@@ -264,25 +263,25 @@
           <div class="col-xs-3">
           <div class="input-group input-group-sm">
             <span class="input-group-addon" data-toggle="tooltip" title="song length in notes" data-placement="bottom"><i class="flaticon-song"></i></span>
-            <input type="text" ng-model="song.notes" class="form-control" placeholder="total notes">
+            <input type="text" ng-blur="recalcSkill()" ng-keypress="onEnter($event)" ng-model="song.notes" class="form-control" placeholder="total notes">
           </div>
           </div>
           <div class="col-xs-3">
           <div class="input-group input-group-sm">
             <span class="input-group-addon" data-toggle="tooltip" title="song length in seconds" data-placement="bottom"><i class="flaticon-times"></i></span>
-            <input type="text" ng-model="song.seconds" class="form-control" placeholder="total seconds">
+            <input type="text" ng-blur="recalcSkill()" ng-keypress="onEnter($event)" ng-model="song.seconds" class="form-control" placeholder="total seconds">
           </div>
           </div>
           <div class="col-xs-3">
           <div class="input-group input-group-sm">
             <span class="input-group-addon" data-toggle="tooltip" title="percentage of perfect notes achieved" data-placement="bottom"><i class="flaticon-achievement"></i></span>
-            <input type="text" ng-model="song.perfects" class="form-control" placeholder="% perfects">
+            <input type="text" ng-blur="recalcSkill()" ng-keypress="onEnter($event)" ng-model="song.perfects" class="form-control" placeholder="% perfects">
           </div>
           </div>
           <div class="col-xs-3">
           <div class="input-group input-group-sm">
             <span class="input-group-addon" data-toggle="tooltip" title="score achieved on clear" data-placement="bottom"><i class="flaticon-scoreup"></i></span>
-            <input type="text" ng-model="song.points" class="form-control" placeholder="total score">
+            <input type="text" ng-blur="recalcSkill()" ng-keypress="onEnter($event)" ng-model="song.points" class="form-control" placeholder="total score">
           </div>
           </div>
         </div>
@@ -307,10 +306,9 @@
     </tr>
   </thead>
   <tfoot>
-    <tr ng-show="$root.loadingMsg">
-      <td colspan="20" class="loader">Loading...</td>
-    </tr>
-    <td ng-hide="$root.loadingMsg" class="ng-cloak" colspan="20">Found [[$root.cards.length]] cards.</td>
+    <tr><td ng-show="$root.cards && $root.loadingMsg" colspan="20" class="loader">Loading...</td></tr>
+    <tr><td ng-hide="!$root.cards || $root.loadingMsg" class="ng-cloak" colspan="20">Found [[$root.cards.length]] cards.</td></tr>
+    <tr><td ng-show="!$root.cards && !$root.loadingMsg" colspan="20">To get started, choose some filters to the right.</td></tr>
   </tfoot>
   <tbody>
     <tr class="ng-cloak" ng-repeat="card in $root.cards | orderBy:sort.type:sort.desc:true track by $index">

@@ -483,6 +483,27 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             card.on_attr.best = base + bonus.best
         }
 
+        $scope.recalcSkill = function () {
+            $scope.$storage.song = $scope.song
+            angular.forEach($rootScope.cards, function (card) {
+                calcSkill(card)
+                calcSIS(card)
+                calcStatBonus(card)
+
+                if (card.equippedSIS) {
+                    card.skill_display.avg = card.sis.avg;
+                    card.skill_display.best = card.sis.best
+                } else {
+                    card.skill_display.avg = card.skill.avg;
+                    card.skill_display.best = card.skill.best
+                }                // console.log(card.skill)
+            })
+
+        }
+        $scope.onEnter = function (keyEvent) {
+            if (keyEvent.which == 13) $scope.recalcSkill()
+        }
+
         if ($scope.$storage.sort) $scope.sort = $scope.$storage.sort
         else $scope.sort = { type: "", desc: false }
         $scope.sortBy = function (sorter, fromUpdate) {

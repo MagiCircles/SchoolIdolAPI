@@ -542,6 +542,15 @@ class Idol(ExportModelOperationsMixin('Idol'), models.Model):
 
 admin.site.register(Idol)
 
+# minimum, maximum, promo
+SKILL_SLOTS_MINMAX = {
+    'N': [0, 1, 0],
+    'R': [1, 2, 1],
+    'SR': [2, 4, 1],
+    'SSR': [3, 6, 2],
+    'UR': [4, 8, 2],
+}
+
 class Card(ExportModelOperationsMixin('Card'), models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
     game_id = models.PositiveIntegerField(unique=True, null=True)
@@ -614,6 +623,18 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     ur_pair_name = models.CharField(max_length=100, blank=True)
     ur_pair_round_card_image = models.CharField(max_length=200, null=True, blank=True)
     ur_pair_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
+
+    @property
+    def min_skill_slot(self):
+        if self.is_promo:
+            return SKILL_SLOTS_MINMAX[self.rarity][2]
+        return SKILL_SLOTS_MINMAX[self.rarity][0]
+
+    @property
+    def max_skill_slot(self):
+        if self.is_promo:
+            return SKILL_SLOTS_MINMAX[self.rarity][2]
+        return SKILL_SLOTS_MINMAX[self.rarity][1]
 
     @property
     def short_name(self):
@@ -749,6 +770,7 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
     max_level = models.BooleanField(_("Max Leveled"), default=False)
     max_bond = models.BooleanField(_("Max Bonded (Kizuna)"), default=False)
     skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
+    skill_slots = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Slots'), ')'), default=0, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(0)])
     origin = models.PositiveIntegerField(choices=OWNEDCARD_ORIGIN_CHOICES, null=True)
 
     @property

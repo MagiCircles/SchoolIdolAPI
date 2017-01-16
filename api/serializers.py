@@ -7,8 +7,9 @@ from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError as DjangoCoreValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
+from django.core.validators import MinValueValidator, MaxValueValidator
 from web.utils import shrinkImageFromData
 from django.db import IntegrityError
 from web.utils import chibiimage, singlecardurl, activity_cacheaccount, get_imgur_code
@@ -633,9 +634,11 @@ class OwnedCardSerializer(serializers.ModelSerializer):
     def validate(self, data):
         errors = {}
         request = self.context['request']
+        card = None
         if request.method == 'POST':
             try:
                 data['card'] = models.Card.objects.get(pk=request.POST['card'])
+                card = data['card']
             except (ObjectDoesNotExist, KeyError):
                 if 'card' not in request.POST:
                     errors['card'] = 'This field is required'
@@ -648,6 +651,17 @@ class OwnedCardSerializer(serializers.ModelSerializer):
                     errors['owner_account'] = 'This field is required'
                 else:
                     errors['owner_account'] = 'This account does\'t exist or isn\'t yours'
+        else:
+            card = self.instance.card
+        # Check for skill slots
+        if 'skill_slots' in data and card:
+            for validator in [MinValueValidator(card.min_skill_slot), MaxValueValidator(card.max_skill_slot)]:
+                try:
+                    validator(data['skill_slots'])
+                except DjangoCoreValidationError as e:
+                    errors['skill_slots'] = e.messages
+        elif card:
+            data['skill_slots'] = card.min_skill_slot
         if errors:
             raise serializers.ValidationError(errors)
         return data
@@ -676,7 +690,7 @@ class OwnedCardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OwnedCard
-        fields = ('id', 'owner_account', 'card', 'stored', 'idolized', 'max_level', 'max_bond', 'expiration', 'skill')
+        fields = ('id', 'owner_account', 'card', 'stored', 'idolized', 'max_level', 'max_bond', 'expiration', 'skill', 'skill_slots')
 
 class ActivitySerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()

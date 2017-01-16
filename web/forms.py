@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 from django.utils.translation import ugettext_lazy as _, string_concat, ungettext_lazy
 from django.db.models.fields import BLANK_CHOICE_DASH
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.conf import settings
 from api.raw import STARTERS
 from web.templatetags.choicesToString import skillsIcons
@@ -166,6 +166,12 @@ class _OwnedCardForm(ModelForm):
                 self.fields['idolized'].widget = forms.HiddenInput()
         if 'origin' in self.fields:
             self.fields['origin'].required = False
+        if 'skill_slots' in self.fields and self.instance and hasattr(self.instance, 'card'):
+            self.fields['skill_slots'].required = False
+            self.fields['skill_slots'].validators = [
+                MinValueValidator(self.instance.card.min_skill_slot),
+                MaxValueValidator(self.instance.card.max_skill_slot),
+            ]
 
     def save(self, commit=True):
         instance = super(_OwnedCardForm, self).save(commit=False)
@@ -173,6 +179,8 @@ class _OwnedCardForm(ModelForm):
             instance.idolized = False
         if instance.card.is_promo:
             instance.idolized = True
+        if not instance.skill_slots:
+            instance.skill_slots = instance.card.min_skill_slot
         if commit:
             instance.save()
         return instance
@@ -189,7 +197,7 @@ class EditQuickOwnedCardForm(_OwnedCardForm):
         model = models.OwnedCard
         fields = ('idolized',)
 
-class StaffAddCardForm(ModelForm):
+class StaffAddCardForm(_OwnedCardForm):
     card = forms.IntegerField()
     owner_account = forms.IntegerField()
 
@@ -210,12 +218,12 @@ class StaffAddCardForm(ModelForm):
 class OwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill', 'origin')
+        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 class EditOwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill', 'origin')
+        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 def getOwnedCardForm(form, accounts, owned_card=None):
     form.fields['owner_account'].queryset = accounts

@@ -283,6 +283,7 @@ def index(request):
     context['current_en']['slide_position'] = len(context['current_contests'])
     context['current_jp']['slide_position'] = len(context['current_contests']) + 1
     context['trivia_slide_position'] = len(context['current_contests']) + 2
+    context['memory_slide_position'] = len(context['current_contests']) + 3
     if context['important_news']:
         pad = len(context['important_news'])
         for i, news in enumerate(context['important_news']):
@@ -292,6 +293,7 @@ def index(request):
         context['current_en']['slide_position'] += pad
         context['current_jp']['slide_position'] += pad
         context['trivia_slide_position'] += pad
+        context['memory_slide_position'] += pad
     else:
         for i, contest in enumerate(context['current_contests']):
             contest['slide_position'] = i

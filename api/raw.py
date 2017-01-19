@@ -904,6 +904,11 @@ raw_information_n = {
             ('http://i.schoolido.lu/chibi/Satoko1.png', 'shinylyni'),
         ],
     },
+    'Chika\'s Mother': {
+        'chibi': [
+            ('http://i.schoolido.lu/chibi/Chikas_Mother.png', 'shinylyni'),
+        ],
+    },
     # '': {
     #     'chibi': [
     #         ('', ''),

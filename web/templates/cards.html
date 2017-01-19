@@ -6,37 +6,37 @@
 
 {% block title %}{% if view == 'albumbuilder' %}{% trans 'Album Builder' %}{% else %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endif %}{% endblock %}
 {% block js %}
-<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script src="//i.schoolido.lu/static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '//i.schoolido.lu/static/empty.png',
       {% for i, attribute in filters.attribute_choices %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      '{{ i }}': '//i.schoolido.lu/static/{{ i }}.png',
       {% endfor %}
     }
   });
   cuteform($('#id_rarity'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '//i.schoolido.lu/static/empty.png',
       {% for rarity, _ in filters.rarity_choices %}
-      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+      '{{ rarity }}': '//i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
       {% endfor %}
     }
   });
   cuteform($('#id_sub_unit'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '//i.schoolido.lu/static/empty.png',
       {% for sub_unit in filters.sub_units %}
-      '{{ sub_unit }}': 'http://i.schoolido.lu/static/{{ sub_unit }}.png',
+      '{{ sub_unit }}': '//i.schoolido.lu/static/{{ sub_unit }}.png',
       {% endfor %}
     }
   });
   cuteform($('#id_main_unit'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '//i.schoolido.lu/static/empty.png',
       {% for main_unit in filters.main_units %}
-      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
+      '{{ main_unit|escapejs }}': '//i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
       {% endfor %}
     }
   });
@@ -45,7 +45,7 @@
     'modal-text': 'true',
     'images': {
       {% for idol, str in filters.idols %}
-      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True force_artist='shinylyni' force_first=True %}',{% endif %}
+      {% if idol == '' %}'': '//i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True force_artist='shinylyni' force_first=True %}',{% endif %}
       {% endfor %}
     }
   });
@@ -53,9 +53,9 @@
 <script>
   var get_parameters = {% if get_parameters %}'{{ get_parameters }}'{% else %}location.search{% endif %};
 </script>
-<script src="/static/js/cards.js?11"></script>
+<script src="//i.schoolido.lu/static/js/cards.js?11"></script>
 {% if view == 'albumbuilder' %}
-<script src="/static/js/albumbuilder.js"></script>
+<script src="//i.schoolido.lu/static/js/albumbuilder.js"></script>
 <script>
   var deck_disable_title = "{% trans 'You can only have one in your album.' %}";
   var deck_enable_title = "{% trans 'Click to switch Deck/Album' %}";

@@ -693,7 +693,7 @@ class StaffEvent(TinyPngForm):
 
     class Meta:
         model = models.Event
-        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t3_points', 'japanese_t1_rank', 'japanese_t2_rank', 'japanese_t3_rank', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_points', 'english_t2_points', 'english_t3_points', 'english_t1_rank', 'english_t2_rank', 'english_t3_rank', 'english_image', 'note')
 
 class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [

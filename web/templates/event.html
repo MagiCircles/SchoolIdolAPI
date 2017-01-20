@@ -185,6 +185,18 @@
 	  <td class="text-right">{{ event.japanese_t2_rank }}</td>
 	</tr>
 	{% endif %}
+  {% if event.japanese_t3_points %}
+  <tr>
+    <th>T3 {% trans 'Points' %}</th>
+    <td class="text-right">{{ event.japanese_t3_points }}</td>
+  </tr>
+  {% endif %}
+  {% if event.japanese_t3_rank %}
+  <tr>
+    <th>T3 {% trans 'Rank' %}</th>
+    <td class="text-right">{{ event.japanese_t3_rank }}</td>
+  </tr>
+  {% endif %}
 	{% if event.note %}
 	<tr>
 	  <th>{% trans 'Note' %}</th>
@@ -250,6 +262,18 @@
 	  <td class="text-right">{{ event.english_t2_rank }}</td>
 	</tr>
 	{% endif %}
+  {% if event.english_t3_points %}
+  <tr>
+    <th>T3 {% trans 'Points' %}</th>
+    <td class="text-right">{{ event.english_t3_points }}</td>
+  </tr>
+  {% endif %}
+  {% if event.english_t3_rank %}
+  <tr>
+    <th>T3 {% trans 'Rank' %}</th>
+    <td class="text-right">{{ event.english_t3_rank }}</td>
+  </tr>
+  {% endif %}
       </table>
     </div>
     {% else %}

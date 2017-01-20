@@ -657,8 +657,8 @@ class StaffEvent(TinyPngForm):
         end_hour_jst = 15
         end_minute_jst = 0
         #
-        begining_hour_utc = 9
-        begining_minute_utc = 0
+        beginning_hour_utc = 9
+        beginning_minute_utc = 0
         end_hour_utc = 8
         end_minute_utc = 0
         #
@@ -676,14 +676,14 @@ class StaffEvent(TinyPngForm):
             english_end_time = self.cleaned_data['english_end_time']
             end_hour_utc = english_end_time.hour
             end_minute_utc = english_end_time.minute
-        
+
         instance.beginning = instance.beginning.astimezone(timezone('Asia/Tokyo')).replace(hour=beginning_hour_jst, minute=beginning_minute_jst).astimezone(timezone('UTC'))
         instance.end = instance.end.astimezone(timezone('Asia/Tokyo')).replace(hour=end_hour_jst, minute=end_minute_jst).astimezone(timezone('UTC'))
         if getattr(instance, "english_beginning"):
             instance.english_beginning = instance.english_beginning.replace(hour=beginning_hour_utc, minute=beginning_minute_utc)
         if getattr(instance, "english_end"):
             instance.english_end = instance.english_end.replace(hour=end_hour_utc, minute=end_minute_utc)
- 
+
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
@@ -693,7 +693,7 @@ class StaffEvent(TinyPngForm):
 
     class Meta:
         model = models.Event
-        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_rank', 'japanese_t1_points', 'japanese_t2_rank', 'japanese_t2_points', 'japanese_t3_rank', 'japanese_t3_points', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_rank', 'english_t1_points', 'english_t2_rank', 'english_t2_points', 'english_t3_rank', 'english_t3_points', 'english_image', 'note')
 
 class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [

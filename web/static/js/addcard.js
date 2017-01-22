@@ -51,6 +51,7 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
 	  }
 	    } else {
 		$('#addCardModal #id_prefer_unidolized_image').parent().hide();
+        $('#addCardModal #id_prefer_unidolized_image').prop('checked', false);
 		$('#addCardModal #id_max_level').parent().hide();
 		$('#addCardModal #id_max_bond').parent().hide();
 		$('#addCardModal #id_max_level').prop('checked', false);

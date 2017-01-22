@@ -776,6 +776,7 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
     skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
     skill_slots = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Slots'), ')'), default=0, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(0)])
     origin = models.PositiveIntegerField(choices=OWNEDCARD_ORIGIN_CHOICES, null=True)
+    prefer_unidolized_image = models.BooleanField(_("Prefer unidolized card image"), default=False)
 
     @property
     def owner(self):

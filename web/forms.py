@@ -218,12 +218,12 @@ class StaffAddCardForm(_OwnedCardForm):
 class OwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
+        fields = ('owner_account', 'stored', 'idolized', 'prefer_unidolized_image', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 class EditOwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
+        fields = ('stored', 'idolized', 'prefer_unidolized_image', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 def getOwnedCardForm(form, accounts, owned_card=None):
     form.fields['owner_account'].queryset = accounts

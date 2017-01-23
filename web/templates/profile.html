@@ -275,7 +275,7 @@
 	      {% if not preferences.private or is_me %}
 	      <tr>
 		<th>{% trans 'Significant Cards' %}</th>
-		<td><strong>{{ account.deck_total_sr }} SR</strong> {% trans 'and' %} <strong>{{ account.deck_total_ur }} UR</strong><span class="hidden deck_total_value">{{ account.deck_total }}</span></td>
+		<td><strong>{{ account.deck_total_sr }} SR</strong> {% trans ',' %} <strong>{{ account.deck_total_ssr }} SSR</strong> {% trans 'and' %} <strong>{{ account.deck_total_ur }} UR</strong><span class="hidden deck_total_value">{{ account.deck_total }}</span></td>
 	      </tr>
 	      {% endif %}
 	      <tr>

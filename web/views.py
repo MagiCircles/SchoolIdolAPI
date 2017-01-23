@@ -880,6 +880,8 @@ def profile(request, username):
             # Set stats
             try: account.deck_total_sr = (s[2] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_sr = 0
+            try: account.deck_total_ssr = (s[2] for s in deck_stats if s[0] == 'SSR' and s[1] == account.id).next()
+            except StopIteration: account.deck_total_ssr = 0
             try: account.deck_total_ur = (s[2] for s in deck_stats if s[0] == 'UR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_ur = 0
             account.deck_total = sum([s[2] for s in deck_stats if s[1] == account.id])

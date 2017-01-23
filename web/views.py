@@ -2172,6 +2172,7 @@ def staff_verifications_side_stories(request):
         if oc:
             v.good_cards = oc
             context['good_verifications'].append(v)
+    context['good_verifications'] = sorted(context['good_verifications'], key=lambda v: len(v.good_cards), reverse=True)
     return render(request, 'staff_verifications_side_stories.html', context)
 
 def staff_verifications(request):

@@ -2157,6 +2157,23 @@ def aboutview(request):
                 context['graphic_designers'].append((_imageurl(contest.result_image), contest.result_image_by.username))
     return render(request, 'about.html', context)
 
+def staff_verifications_side_stories(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
+        raise PermissionDenied()
+    context = globalContext(request)
+    context['good_verifications'] = []
+    if 'JP' in request.GET:
+        missing = [c.id for c in models.Card.objects.filter(is_special=False, video_story__isnull=True, japanese_video_story__isnull=True)]
+    else:
+        missing = [c.id for c in models.Card.objects.filter(japan_only=False, is_special=False, video_story__isnull=True)]
+    for v in models.VerificationRequest.objects.filter(account__ownedcards__card__id__in=missing, verification=2, status=1, account__language='EN').order_by('account__rank').values('id').distinct():
+        v = models.VerificationRequest.objects.select_related('account', 'account__owner').get(id=v['id'])
+        oc = v.account.ownedcards.filter(card__id__in=missing, stored__in=['Deck', 'Album'], idolized=True).select_related('card')
+        if oc:
+            v.good_cards = oc
+            context['good_verifications'].append(v)
+    return render(request, 'staff_verifications_side_stories.html', context)
+
 def staff_verifications(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
         raise PermissionDenied()

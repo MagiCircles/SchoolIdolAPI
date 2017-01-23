@@ -6,14 +6,14 @@
 {% block back_button %}0{% endblock %}
 {% block js %}
 {% if not high_traffic %}
-<script src="http://i.schoolido.lu/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
-<script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="http://i.schoolido.lu/static/js/loadactivities.js?2"></script>
-<script src="http://i.schoolido.lu/static/js/index.js?13"></script>
+<script src="//i.schoolido.lu/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="//i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="//i.schoolido.lu/static/js/loadactivities.js?2"></script>
 <script>
   var follow_sentence = "{% trans 'Start following players to see their activities!' %}";
   var logged_in = {% if user.is_authenticated %}true{% else %}false{% endif %};
 </script>
+<script src="//i.schoolido.lu/static/js/index.js?13"></script>
 {% endif %}
 {% endblock %}
 
@@ -44,15 +44,10 @@
   </div>
 </div>
 
-<div id="home" class="text-center" style="background-image: url('{{ static_url }}backgrounds/background{# 0|random_int:total_backgrounds #}_christmas.png');">
+<div id="home" class="text-center" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message hidden-xs hidden-sm">
-    <span style="color: #a94442!important">{% trans 'Merry Christmas!' %}&nbsp;&nbsp;&nbsp;&nbsp;
-      <audio controls="" id="player" class="hidden">
-	<source src="http://i.schoolido.lu/special/{{ audio }}.mp3" type="audio/mpeg" />
-	<source src="http://i.schoolido.lu/special/{{ audio }}.m4a" type="audio/mp4" />
-	<source src="http://i.schoolido.lu/special/{{ audio }}.ogg" type="audio/ogg" />
-      </audio>
-      <a href="#" onClick="document.getElementById('player').volume = 0.6; document.getElementById('player').play(); return false;" class="fontx2 a-nodifference" id="christmasplay" style="color: #a94442!important"><i class="flaticon-play"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span>
+    </span>
   </div>
   <div class="row">
     <div class="col-md-1"></div>
@@ -66,9 +61,9 @@
       <br>
       {% else %}
       {% if LANGUAGE_CODE == 'ja' %}
-      <img src="http://i.schoolido.lu/static/roburaibu_shadow.png" class="logo" alt="Logo">
+      <img src="//i.schoolido.lu/static/roburaibu_shadow.png" class="logo" alt="Logo">
       {% else %}
-      <img src="http://i.schoolido.lu/static/logo_shadow.png" class="logo" alt="Logo">
+      <img src="//i.schoolido.lu/static/logo_shadow.png" class="logo" alt="Logo">
       {% endif %}
       {% endif %}
 
@@ -94,8 +89,8 @@
 		  </div>
 		</div>
 		<div class="col-xs-3">
-		  <a href="/user/nicoahegao/" target="_blank"><img src="http://i.schoolido.lu/static/donators/producer.png" width="45" style="margin: -5px -30px -10px 0;" /></a><br>
-		  <a href="/user/Nyaaaaa/" target="_blank"><img src="http://i.schoolido.lu/static/donators/devotee.png" width="50" style="margin: -5px 30px 0 0;" /></a>
+		  <a href="/user/nicoahegao/" target="_blank"><img src="//i.schoolido.lu/static/donators/producer.png" width="45" style="margin: -5px -30px -10px 0;" /></a><br>
+		  <a href="/user/Nyaaaaa/" target="_blank"><img src="//i.schoolido.lu/static/donators/devotee.png" width="50" style="margin: -5px 30px 0 0;" /></a>
 		  <a href="/user/OtakuReborn/" target="_blank"><img src="http://www.gravatar.com/avatar/f6d909922d16dc1d79c8a45b568c1bc7?s=200&d=https%3A%2F%2Fi.schoolido.lu%2Fstatic%2Fkotori.jpg" width="50" style="margin: -28px -17px 0 0;" /></a>
 		</div>
 	      </div>
@@ -105,18 +100,18 @@
 	{% else %}
 	<div class="col-sm-4 text-left">
 	  <a href="#aboutllsifModal" data-toggle="ajaxmodal" data-modal-size="lg">
-	    <img src="http://i.schoolido.lu/static/about.png" class="">
+	    <img src="//i.schoolido.lu/static/about.png" class="">
 	  </a>
 	</div>
 	<div class="col-sm-4 text-center">
 	  <a href="#aboutsukutomoModal" data-toggle="ajaxmodal" data-modal-size="lg">
-	    <img src="http://i.schoolido.lu/static/aboutschoolidoltomodachi.png" class="">
+	    <img src="//i.schoolido.lu/static/aboutschoolidoltomodachi.png" class="">
 	  </a>
 	</div>
 	{% endif %}
 	<div class="col-sm-4 text-{% if user.is_authenticated %}center{% else %}right{% endif %}">
 	  <a href="/links/">
-	    <img src="http://i.schoolido.lu/static/links.png" class="">
+	    <img src="//i.schoolido.lu/static/links.png" class="">
 	  </a>
 	</div>
       </div>
@@ -147,6 +142,7 @@
 	  <li data-target="#carousel-index" data-slide-to="{{ current_en.slide_position }}"></li>
 	  <li data-target="#carousel-index" data-slide-to="{{ current_jp.slide_position }}"></li>
 	  <li data-target="#carousel-index" data-slide-to="{{ trivia_slide_position }}"></li>
+	  <li data-target="#carousel-index" data-slide-to="{{ memory_slide_position }}"></li>
 	  {% endif %}
 	</ol>
 
@@ -177,7 +173,11 @@
 	  </a>
 
 	  <a href="/trivia/" class="item"
-	     style="background-image: url('http://i.schoolido.lu/static/lltriviabanner.png');">
+	     style="background-image: url('//i.schoolido.lu/static/lltriviabanner.png');">
+	  </a>
+
+	  <a href="/memory/" class="item"
+	     style="background-image: url('//i.schoolido.lu/static/llmemory.png');">
 	  </a>
 	  {% endif %}
 

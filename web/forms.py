@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+import datetime, os
 from django.shortcuts import get_object_or_404
 from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
 from django.utils.translation import ugettext_lazy as _, string_concat, ungettext_lazy
 from django.db.models.fields import BLANK_CHOICE_DASH
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.conf import settings
 from api.raw import STARTERS
 from web.templatetags.choicesToString import skillsIcons
@@ -31,7 +31,7 @@ def date_input(field):
     return field
 
 class TinyPngForm(ModelForm):
-    def save(self, commit=True):
+    def save(self, commit=True, use_card_filenames=False):
         instance = super(TinyPngForm, self).save(commit=False)
         for field in self.fields.keys():
             if (hasattr(instance, field)
@@ -40,7 +40,16 @@ class TinyPngForm(ModelForm):
                 image = self.cleaned_data[field]
                 if image and (isinstance(image, InMemoryUploadedFile) or isinstance(image, TemporaryUploadedFile)):
                     filename = image.name
-                    image = shrinkImageFromData(image.read(), filename)
+                    _, extension = os.path.splitext(filename)
+                    if extension.lower() == '.png':
+                        image = shrinkImageFromData(image.read(), filename)
+                    if use_card_filenames and field in models.cardsImagesToName:
+                        image.name = models.cardsImagesToName[field]({
+                            'id': instance.id,
+                            'firstname': instance.idol.name.split(' ')[-1] if instance.idol and instance.idol.name else 'Unknown',
+                        })
+                    else:
+                        image.name = randomString(32) + extension
                     setattr(instance, field, image)
         if commit:
             instance.save()
@@ -157,6 +166,12 @@ class _OwnedCardForm(ModelForm):
                 self.fields['idolized'].widget = forms.HiddenInput()
         if 'origin' in self.fields:
             self.fields['origin'].required = False
+        if 'skill_slots' in self.fields and self.instance and hasattr(self.instance, 'card'):
+            self.fields['skill_slots'].required = False
+            self.fields['skill_slots'].validators = [
+                MinValueValidator(self.instance.card.min_skill_slot),
+                MaxValueValidator(self.instance.card.max_skill_slot),
+            ]
 
     def save(self, commit=True):
         instance = super(_OwnedCardForm, self).save(commit=False)
@@ -164,6 +179,8 @@ class _OwnedCardForm(ModelForm):
             instance.idolized = False
         if instance.card.is_promo:
             instance.idolized = True
+        if not instance.skill_slots:
+            instance.skill_slots = instance.card.min_skill_slot
         if commit:
             instance.save()
         return instance
@@ -180,7 +197,7 @@ class EditQuickOwnedCardForm(_OwnedCardForm):
         model = models.OwnedCard
         fields = ('idolized',)
 
-class StaffAddCardForm(ModelForm):
+class StaffAddCardForm(_OwnedCardForm):
     card = forms.IntegerField()
     owner_account = forms.IntegerField()
 
@@ -201,12 +218,12 @@ class StaffAddCardForm(ModelForm):
 class OwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill', 'origin')
+        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 class EditOwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill', 'origin')
+        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 def getOwnedCardForm(form, accounts, owned_card=None):
     form.fields['owner_account'].queryset = accounts
@@ -267,12 +284,12 @@ class MultiImageField(MultiFileField, forms.ImageField):
 class _Activity(ModelForm):
     def clean_message_data(self):
         if 'message_data' in self.cleaned_data:
-            if len(self.cleaned_data['message_data']) > 8000:
+            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH:
                 raise forms.ValidationError(
                     message=_('Ensure this value has at most %(max)d characters (it has %(length)d).'),
                     code='max',
                     params={
-                        'max': 8000,
+                        'max': settings.CUSTOM_ACTIVITY_MAX_LENGTH,
                         'length': len(self.cleaned_data['message_data']),
                     })
         return self.cleaned_data['message_data']
@@ -573,13 +590,14 @@ class StaffCard(TinyPngForm):
         self.fields['promo_link'].help_text = '[PROMO CARDS ONLY] --- Go to CDJapan, find the product. In this field, the URL should look like "http://www.cdjapan.co.jp/aff/click.cgi/PytJTGW7Lok/5590/A364348/product%2F{product code}" but replace "{product code}" with the code you can see on the CDJapan URL. Example: "BCXA-840"'
         self.fields['other_event'].help_text = 'If a card was in a certain event in JP, but has been merge in another event in EN, use this field to specify the event in which it has been merged.'
         self.fields['japan_only'].help_text = 'Uncheck this box if the card is available in English version.'
+        #self.fields['cleanx4'].help_text = 'Use http://waifu2x.udp.jp/ with "Artwork", "Highest" and "2x", download the file and do the same thing again to get it 4 times bigger.'
         for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
             self.fields[field].required = False
         for field in ['idol']:
             self.fields[field].required = True
 
     def save(self, commit=True):
-        instance = super(StaffCard, self).save(commit=False)
+        instance = super(StaffCard, self).save(commit=False, use_card_filenames=True)
         for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
             if not getattr(instance, field):
                 setattr(instance, field, 0)
@@ -639,8 +657,8 @@ class StaffEvent(TinyPngForm):
         end_hour_jst = 15
         end_minute_jst = 0
         #
-        begining_hour_utc = 9
-        begining_minute_utc = 0
+        beginning_hour_utc = 9
+        beginning_minute_utc = 0
         end_hour_utc = 8
         end_minute_utc = 0
         #
@@ -658,14 +676,14 @@ class StaffEvent(TinyPngForm):
             english_end_time = self.cleaned_data['english_end_time']
             end_hour_utc = english_end_time.hour
             end_minute_utc = english_end_time.minute
-        
+
         instance.beginning = instance.beginning.astimezone(timezone('Asia/Tokyo')).replace(hour=beginning_hour_jst, minute=beginning_minute_jst).astimezone(timezone('UTC'))
         instance.end = instance.end.astimezone(timezone('Asia/Tokyo')).replace(hour=end_hour_jst, minute=end_minute_jst).astimezone(timezone('UTC'))
         if getattr(instance, "english_beginning"):
             instance.english_beginning = instance.english_beginning.replace(hour=beginning_hour_utc, minute=beginning_minute_utc)
         if getattr(instance, "english_end"):
             instance.english_end = instance.english_end.replace(hour=end_hour_utc, minute=end_minute_utc)
- 
+
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
@@ -675,7 +693,7 @@ class StaffEvent(TinyPngForm):
 
     class Meta:
         model = models.Event
-        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_points', 'japanese_t2_points', 'japanese_t1_rank', 'japanese_t2_rank', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_points', 'english_t2_points', 'english_t1_rank', 'english_t2_rank', 'english_image', 'note')
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_rank', 'japanese_t1_points', 'japanese_t2_rank', 'japanese_t2_points', 'japanese_t3_rank', 'japanese_t3_points', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_rank', 'english_t1_points', 'english_t2_rank', 'english_t2_points', 'english_t3_rank', 'english_t3_points', 'english_image', 'note')
 
 class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [

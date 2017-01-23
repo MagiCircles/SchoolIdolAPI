@@ -14,11 +14,13 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
     expirationHandler();
 
     var storedOnChange = function() {
-	if ($('#addCardModal #id_stored').val() == 'Album') {
+	if ($('#addCardModal #id_stored').val() != 'Deck') {
 	    $('#addCardModal #id_skill').closest('.form-group').hide();
 	    $('#addCardModal #id_skill').val(1);
+	    $('#addCardModal #id_skill_slots').closest('.form-group').hide();
 	} else {
 	    $('#addCardModal #id_skill').closest('.form-group').show();
+	    $('#addCardModal #id_skill_slots').closest('.form-group').show();
 	}
     };
     storedOnChange();

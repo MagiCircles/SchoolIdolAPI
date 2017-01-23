@@ -31,6 +31,26 @@ class Command(BaseCommand):
 	for card in cards:
 	    print card.id, card.ur_pair_id
 
+	cards = models.Card.objects.filter(rarity='SSR', is_promo=False, is_special=False).exclude(translated_collection='')
+	collections = []
+	for card in cards:
+	    if card.translated_collection not in collections:
+		collections.append(card.translated_collection)
+	for collection in collections:
+	    if collection !=  'Initial':
+		cards = models.Card.objects.filter(translated_collection=collection, rarity='SSR').order_by('id')
+		if len(cards) % 2 == 0:
+		    i = 0
+		    while i < len(cards):
+			cards[i].ur_pair = cards[i+1]
+			cards[i].save()
+			cards[i+1].ur_pair = cards[i]
+			cards[i+1].save()
+			i += 2
+	cards = models.Card.objects.filter(rarity='SSR', is_promo=False, is_special=False)
+	for card in cards:
+	    print card.id, card.ur_pair_id
+
 	print "# Get order of UR pairs from drive document"
 	if local:
 	    f = open('urpairs.csv', 'r')
@@ -44,11 +64,11 @@ class Command(BaseCommand):
 		pass
 	    try:
 		card = models.Card.objects.get(id=line[0])
-		if line[4] and not card.clean_ur:
+		if len(line) > 4 and line[4] and not card.clean_ur:
                     print "Download clean UR {}...".format(card),
 		    card.clean_ur.save(str(card.id) + (card.name.split(' ')[-1]) + 'CleanUR.png', downloadShrunkedImage(line[4]))
                     print "Done."
-		if line[5] and not card.clean_ur_idolized:
+                if len(line) > 5 and line[5] and not card.clean_ur_idolized:
                     print "Download clean UR idolized {}...".format(card),
 		    card.clean_ur_idolized.save(str(card.id) + (card.name.split(' ')[-1]) + 'CleanURIdolized.png', downloadShrunkedImage(line[5]))
                     print "Done."

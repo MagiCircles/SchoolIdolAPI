@@ -25,14 +25,19 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
     };
     storedOnChange();
 
+console.log("HI");
     if (typeof non_idolized_card_url == 'undefined') {
 	$('#addCardModal #id_idolized').prop('checked', true);
 	$('#addCardModal #id_max_level').parent().show();
 	$('#addCardModal #id_max_bond').parent().show();
 	$('#addCardModal #id_idolized').parent().hide();
+    $('#addCardModal #id_prefer_unidolized_image').prop('checked', false);
+	$('#addCardModal #id_prefer_unidolized_image').parent().hide();
+console.log("BYE");
 	$('#addCardModal img.non_idolized').hide();
 	$('#addCardModal img.idolized').prop('src', idolized_card_url);
     } else {
+console.log("HUM");
 	$('#addCardModal #id_idolized').parent().show();
 	$('#addCardModal img.non_idolized').prop('src', non_idolized_card_url);
 	$('#addCardModal img.idolized').prop('src', idolized_card_url).hide();

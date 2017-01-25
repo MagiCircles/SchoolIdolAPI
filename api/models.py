@@ -332,6 +332,7 @@ OWNEDCARD_ORIGIN_EVENT = 3
 OWNEDCARD_ORIGIN_SHOP = 4
 OWNEDCARD_ORIGIN_TICKET = 5
 OWNEDCARD_ORIGIN_LIVE = 6
+OWNEDCARD_ORIGIN_LBONUS = 7
 
 OWNEDCARD_ORIGIN_CHOICES = (
     (OWNEDCARD_ORIGIN_10, _('Honor Scouting (10+1, 50 love gems)')),
@@ -341,6 +342,7 @@ OWNEDCARD_ORIGIN_CHOICES = (
     (OWNEDCARD_ORIGIN_EVENT, _('Event Reward')),
     (OWNEDCARD_ORIGIN_SHOP, _('Sticker Shop')),
     (OWNEDCARD_ORIGIN_LIVE, _('At the end of a live')),
+    (OWNEDCARD_ORIGIN_LBONUS, _('Login Bonus')),
 )
 
 def triviaScoreToSentence(score):

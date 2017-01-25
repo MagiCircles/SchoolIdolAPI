@@ -2160,19 +2160,31 @@ def aboutview(request):
 def staff_verifications_side_stories(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
         raise PermissionDenied()
+    def card_to_importance(card):
+        if card.is_promo or card.is_special or card.rarity == 'N': return 0
+        elif card.rarity == 'UR': return 4
+        elif card.rarity == 'SSR': return 3
+        elif card.rarity == 'SR': return 2
+        return 1
     context = globalContext(request)
     context['good_verifications'] = []
     if 'JP' in request.GET:
         missing = [c.id for c in models.Card.objects.filter(is_special=False, video_story__isnull=True, japanese_video_story__isnull=True)]
     else:
         missing = [c.id for c in models.Card.objects.filter(japan_only=False, is_special=False, video_story__isnull=True)]
-    for v in models.VerificationRequest.objects.filter(account__ownedcards__card__id__in=missing, verification=2, status=1, account__language='EN').order_by('account__rank').values('id').distinct():
+    for v in models.VerificationRequest.objects.filter(account__ownedcards__card__id__in=missing, verification=2, status=1, account__language=('JP' if 'JP' in request.GET else 'EN')).order_by('account__rank').values('id').distinct():
         v = models.VerificationRequest.objects.select_related('account', 'account__owner').get(id=v['id'])
         oc = v.account.ownedcards.filter(card__id__in=missing, stored__in=['Deck', 'Album'], idolized=True).select_related('card')
+        if 'all' not in request.GET:
+            oc = oc.exclude(card__rarity='N').filter(card__is_promo=False)
         if oc:
-            v.good_cards = oc
+            # remove duplicates
+            tmpdict = {}
+            for o in oc:
+                tmpdict[o.card.id] = o
+            v.good_cards = sorted(tmpdict.values(), key=lambda o: card_to_importance(o.card), reverse=True)
             context['good_verifications'].append(v)
-    context['good_verifications'] = sorted(context['good_verifications'], key=lambda v: len(v.good_cards), reverse=True)
+    context['good_verifications'] = sorted(context['good_verifications'], key=lambda v: sum([card_to_importance(oc.card) for oc in v.good_cards]), reverse=True)
     return render(request, 'staff_verifications_side_stories.html', context)
 
 def staff_verifications(request):

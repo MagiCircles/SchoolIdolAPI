@@ -12,7 +12,7 @@
   {% for verification in good_verifications %}
   <div class="text-center">
     <h3><a href="/user/{{ verification.account.owner.username }}/#{{ verification.account.id }}">
-	{{ verification.account }} - {{ verification.account.os }} - {{ verification.account.rank }}
+	{{ verification.account }} - {{ verification.account.os }} - {{ verification.account.rank }}{% if verification.allow_during_events %} - Allow during events{% endif %}
     </a></h3>
     {% for owned in verification.good_cards %}
     {% include 'ownedcard.html' with no_details=True card=owned %}

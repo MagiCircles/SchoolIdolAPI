@@ -164,6 +164,8 @@ class _OwnedCardForm(ModelForm):
         if self.instance and hasattr(self.instance, 'card'):
             if self.instance.card.is_special or self.instance.card.is_promo:
                 self.fields['idolized'].widget = forms.HiddenInput()
+                if "prefer_unidolized_image" in self.fields:
+                    self.fields['prefer_unidolized_image'].widget = forms.HiddenInput()
         if 'origin' in self.fields:
             self.fields['origin'].required = False
         if 'skill_slots' in self.fields and self.instance and hasattr(self.instance, 'card'):
@@ -218,12 +220,12 @@ class StaffAddCardForm(_OwnedCardForm):
 class OwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('owner_account', 'stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
+        fields = ('owner_account', 'stored', 'idolized', 'prefer_unidolized_image', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 class EditOwnedCardForm(_OwnedCardForm):
     class Meta:
         model = models.OwnedCard
-        fields = ('stored', 'idolized', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
+        fields = ('stored', 'idolized', 'prefer_unidolized_image', 'max_level', 'max_bond', 'skill', 'skill_slots', 'origin')
 
 def getOwnedCardForm(form, accounts, owned_card=None):
     form.fields['owner_account'].queryset = accounts

@@ -66,3 +66,6 @@ web/static/events
 web/static/css/style.css
 schoolidolapi/local_settings.py
 schoolidolapi/generated_settings.py
+
+*~
+#*#

@@ -30,6 +30,8 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
 	$('#addCardModal #id_max_level').parent().show();
 	$('#addCardModal #id_max_bond').parent().show();
 	$('#addCardModal #id_idolized').parent().hide();
+    $('#addCardModal #id_prefer_unidolized_image').prop('checked', false);
+	$('#addCardModal #id_prefer_unidolized_image').parent().hide();
 	$('#addCardModal img.non_idolized').hide();
 	$('#addCardModal img.idolized').prop('src', idolized_card_url);
     } else {
@@ -39,11 +41,19 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
 
 	var idolizedCheckBoxHandler = function() {
 	    if($('#addCardModal #id_idolized').is(":checked") || $('#addCardModal #id_idolized').val() == 'True') {
+		$('#addCardModal #id_prefer_unidolized_image').parent().show();
 		$('#addCardModal #id_max_level').parent().show();
 		$('#addCardModal #id_max_bond').parent().show();
-		$('#addCardModal img.idolized').show();
-		$('#addCardModal img.non_idolized').hide();
+    if($('#addCardModal #id_prefer_unidolized_image').is(":checked") || $('#addCardModal #id_prefer_unidolized_image').val() == 'True') {
+			$('#addCardModal img.idolized').hide();
+			$('#addCardModal img.non_idolized').show();
+		} else {
+			$('#addCardModal img.idolized').show();
+			$('#addCardModal img.non_idolized').hide();
+	  }
 	    } else {
+		$('#addCardModal #id_prefer_unidolized_image').parent().hide();
+        $('#addCardModal #id_prefer_unidolized_image').prop('checked', false);
 		$('#addCardModal #id_max_level').parent().hide();
 		$('#addCardModal #id_max_bond').parent().hide();
 		$('#addCardModal #id_max_level').prop('checked', false);
@@ -54,8 +64,24 @@ function addCardFormHandler(non_idolized_card_url, idolized_card_url, card) {
 	};
 	idolizedCheckBoxHandler();
 
+	var cardImagePreferenceHandler = function() {
+	    if($('#addCardModal #id_idolized').is(":checked") || $('#addCardModal #id_idolized').val() == 'True') {
+		    if($('#addCardModal #id_prefer_unidolized_image').is(":checked") || $('#addCardModal #id_prefer_unidolized_image').val() == 'True') {
+					$('#addCardModal img.idolized').hide();
+					$('#addCardModal img.non_idolized').show();
+		    } else {
+					$('#addCardModal img.idolized').show();
+					$('#addCardModal img.non_idolized').hide();
+		    }
+		  }
+	};
+	cardImagePreferenceHandler();
+
 	$('#addCardModal #id_idolized').unbind('change');
 	$('#addCardModal #id_idolized').change(idolizedCheckBoxHandler);
+
+	$('#addCardModal #id_prefer_unidolized_image').unbind('change');
+	$('#addCardModal #id_prefer_unidolized_image').change(cardImagePreferenceHandler);
     }
 
     $('#addCardModal #id_stored').unbind('change');

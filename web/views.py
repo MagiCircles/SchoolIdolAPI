@@ -2161,11 +2161,16 @@ def staff_verifications_side_stories(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
         raise PermissionDenied()
     def card_to_importance(card):
-        if card.is_promo or card.is_special or card.rarity == 'N': return 0
-        elif card.rarity == 'UR': return 4
-        elif card.rarity == 'SSR': return 3
-        elif card.rarity == 'SR': return 2
-        return 1
+        # In JP, we're interested in recent cards first. In EN, we're interested in older cards first.
+        multiply = card.id if 'JP' in request.GET else settings.CARDS_INFO['total_cards'] - card.id
+        # EN, promo, N and event cards are not as important
+        if 'JP' not in request.GET and (card.is_promo or card.rarity == 'N' or card.event_id): return 0
+        # JP, only N are not as important
+        elif 'JP' in request.GET and card.rarity == 'N': return 0
+        elif card.rarity == 'UR': return 4 * multiply
+        elif card.rarity == 'SSR': return 3 * multiply
+        elif card.rarity == 'SR': return 2 * multiply
+        return 1 * multiply
     context = globalContext(request)
     context['good_verifications'] = []
     if 'JP' in request.GET:

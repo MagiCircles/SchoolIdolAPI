@@ -3304,3 +3304,7 @@ def drown(request):
     activity = get_object_or_404(models.Activity, pk=activity)
     models.Activity.objects.filter(pk=activity.pk).update(creation=activity.creation - relativedelta(days=1))
     return HttpResponse('')
+
+def cardstrength(request):
+   context = globalContext(request)
+   return render(request, 'cardstrength.html', context)

@@ -117,4 +117,6 @@ urlpatterns = patterns('',
     url(r'^avatar/facebook/(?P<username>[\w.@+-]+)[/]+$', views.avatar_facebook, name='avatar_facebook'),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    
+    url(r'^cardstrength[/]+$', views.cardstrength, name='cardstrength'),
 )

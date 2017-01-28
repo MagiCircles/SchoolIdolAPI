@@ -2,28 +2,27 @@
 {% load i18n %}
 {% load gravatar %}
 {% load choicesToString %}
-
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
     <meta charset="UTF-8">
     <title>{% trans "School Idol Tomodachi" %} - {% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="//i.schoolido.lu/static/favicon.ico" />
-    <link rel="stylesheet" href="//i.schoolido.lu/static/bower/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ static_url }}static/favicon.ico" />
+    <link rel="stylesheet" href="{{ static_url }}static/bower/bootstrap/dist/css/bootstrap.min.css">
     {% if debug and not high_traffic %}
     <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" />
-    <script src="/static/bower/less/dist/less.min.js"></script>
+    <script src="{{ static_url }}static/bower/less/dist/less.min.js"></script>
     {% else %}
-    <link rel="stylesheet" href="//i.schoolido.lu/static/css/style.css?30">
+    <link rel="stylesheet" href="{{ static_url }}static/css/style.css?31">
     {% endif %}
 
-    <meta property="og:image" content="{% block shareimage %}http://schoolido.lu/static/screenshots/home.png{% endblock %}"/>
+    <meta property="og:image" content="{% block shareimage %}{{ static_sharing_url }}static/screenshots/home.png{% endblock %}"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="description" content="{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %} {% trans 'Browse & track your cards. Vote for the best girl.' %}">
     <meta name="keywords" content="LLSIF, Love Live, LoveLive, School Idol Festival, School Idol, School Idol Project, Android game, rhythm game, ラブライブ, cards, card, tracker, スクールアイドルフェスティバル">
     <meta name="twitter:card" value="LLSIF Cards Browser & Tracker + Vote for the BEST girl">
-    <meta name="twitter:image" content="{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/home.png{% endblock %}">
+    <meta name="twitter:image" content="{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/home.png{% endblock %}">
     <meta name="twitter:creator" content="@db0company">
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
@@ -55,15 +54,15 @@
 	      <a href="/contest/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 		<i class="flaticon-promo"></i><span class="hidden-sm hidden-md"> &nbsp; {% trans 'Fun' %}</span>
 		<ul class="dropdown-menu drop-contest-menu" role="menu">
-		  <li class="drop-contest"><a href="/contest/"><img src="//i.schoolido.lu/static/currentcontest_no.png" alt="Global Contest"></a></li>
+		  <li class="drop-contest"><a href="/contest/"><img src="{{ static_url }}static/currentcontest_no.png" alt="Global Contest"></a></li>
 		  {% if current_contests.0.name %}{# means it's not just the global #}
 		  {% for contest in current_contests %}
 		  <li class="drop-contest"><a href="{{ contest.url }}"><img src="{{ contest.image }}" alt="{{ contest.name }}"></a></li>
 		  {% endfor %}
 		  {% endif %}
 		  <li class="active"><a href="/contest/results/" class="text-center fontx1-5">{% trans 'Past Contests' %}</a></li>
-		  <li class="drop-contest"><a href="/trivia/"><img src="//i.schoolido.lu/static/lltriviabanner.png"></a></li>
-		  <li class="drop-contest"><a href="/memory/"><img src="//i.schoolido.lu/static/llmemorybanner.png"></a></li>
+		  <li class="drop-contest"><a href="/trivia/"><img src="{{ static_url }}static/lltriviabanner.png"></a></li>
+		  <li class="drop-contest"><a href="/memory/"><img src="{{ static_url }}static/llmemorybanner.png"></a></li>
 		</ul>
 	      </a>
 	    </li>
@@ -188,10 +187,10 @@
     var disqus_shortname = '{% if disqus_shortname %}{{ disqus_shortname }}{% else %}schoolidol{% endif %}';
     </script>
 
-    <script src="//i.schoolido.lu/static/bower/jquery/dist/jquery.min.js"></script>
-    <script src="//i.schoolido.lu/static/js/jquery.form.min.js"></script>
-    <script src="//i.schoolido.lu/static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="//i.schoolido.lu/static/js/main.js?13"></script>
+    <script src="{{ static_url }}static/bower/jquery/dist/jquery.min.js"></script>
+    <script src="{{ static_url }}static/js/jquery.form.min.js"></script>
+    <script src="{{ static_url }}static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{ static_url }}static/js/main.js?13"></script>
     {% block js %}{% endblock %}
 
     <script>

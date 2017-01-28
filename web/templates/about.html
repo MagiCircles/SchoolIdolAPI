@@ -2,13 +2,13 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 
-{% block shareimage %}http://fr.gl/static/img/engildeby.gif{% endblock %}
-{% block shareimagetwitter %}http://fr.gl/static/img/engildeby.gif{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/engildeby.gif{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/engildeby.gif{% endblock %}
 
 {% block title %}{% trans 'About' %}{% endblock %}
 {% block js %}
-<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
-<script src="http://i.schoolido.lu/static/js/links.js"></script>
+<script src="{{ static_url }}static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ static_url }}static/js/links.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -104,7 +104,7 @@
 	</p>
       </div>
       <div class="col-md-4">
-	<img src="http://fr.gl/static/img/engildeby.gif" class="img-circle img-responsive img-thumbnail">
+	<img src="{{ static_url }}static/engildeby.gif" class="img-circle img-responsive img-thumbnail">
       </div>
     </div>
 
@@ -120,7 +120,7 @@
 	  {% trans 'We reply faster if you send us an direct message on Twitter:' %}
 	</p>
 	<a href="https://twitter.com/schoolidolu" class="btn btn-Cool btn-xl">
-	  <img src="http://i.schoolido.lu/static/twitter.png" alt="twitter" />
+	  <img src="{{ static_url }}static/twitter.png" alt="twitter" />
 	  Twitter
 	</a>
       </div>
@@ -141,11 +141,11 @@
 	  {% trans 'You can also contact us with a private message on:' %}
 	</p>
 	<a href="https://www.reddit.com/user/db0company" class="btn btn-{{ btnColor }} btn-lg">
-	  <img src="http://i.schoolido.lu/static/reddit.png" alt="reddit" />
+	  <img src="{{ static_url }}static/reddit.png" alt="reddit" />
 	  Reddit
 	</a>
 	<a href="https://www.facebook.com/db0company" class="btn btn-{{ btnColor }} btn-lg">
-	  <img src="http://i.schoolido.lu/static/facebook.png" alt="facebook" />
+	  <img src="{{ static_url }}static/facebook.png" alt="facebook" />
 	  Facebook
 	</a>
       </div>
@@ -236,7 +236,7 @@
     <br>
     <div class="text-center">
       <a href="http://imgur.com/a/kuDrD" target="_blank">
-	<img src="http://i.schoolido.lu/special/treasure.png" width="200">
+	<img src="{{ static_url }}special/treasure.png" width="200">
       </a>
     </div>
 
@@ -324,7 +324,7 @@
 	<p class="margin50">
 	  {% blocktrans %}If you're a developer and you would like to get the cards of the game in a convenient format, we provide a public REST API to get the cards, events, idols, and more!{% endblocktrans %}
 	  <div class="text-right">
-	    <a href="http://schoolido.lu/api/" class="btn btn-{{ btnColor }} btn-lg" target="_blank">
+	    <a href="/api/" class="btn btn-{{ btnColor }} btn-lg" target="_blank">
 	      {% trans 'Get Started' %}
 	    </a>
 	  </div>
@@ -342,7 +342,7 @@
 	<p class="big-text" style="padding-top: 30px; font-size: 30px;"><br>{% trans 'If you like the website, please consider' %} {% trans 'donating' %}. {% trans 'This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
       </div>
       <div class="col-md-3">
-	<img src="http://i.schoolido.lu/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
+	<img src="{{ static_url }}static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
       </div>
     </div>
     <br><br>
@@ -469,19 +469,19 @@
     <div class="row">
       <div class="col-md-1"></div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/4NHR4Bu.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_4NHR4Bu.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/4NHR4Bu.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_4NHR4Bu.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/TMVsQgs.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_TMVsQgs.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/TMVsQgs.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_TMVsQgs.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/jciG0GC.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_jciG0GC.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/jciG0GC.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_jciG0GC.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/HIVSyO0.png" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_HIVSyO0.png" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/HIVSyO0.png" target="_blank"><img src="{{ static_url }}static/postcards/small_HIVSyO0.png" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/4Rwo3Bx.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_4Rwo3Bx.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/4Rwo3Bx.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_4Rwo3Bx.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-1"></div>
     </div>

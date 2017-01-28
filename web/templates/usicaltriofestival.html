@@ -5,12 +5,12 @@
 
 {% block title %}μ'sical Trio Festival{% endblock %}
 
-{% block shareimage %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/usicaltriofestival.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/usicaltriofestival.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/usicaltriofestival.png{% endblock %}
 
 {% block js %}
 {% if not ended %}
-<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="{{ static_url }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
 <script>
   var countdowndate = "{{ end|torfc2822 }}";
   function countdownRender(data) {
@@ -25,13 +25,13 @@
 {% endblock %}
 
 {% block content %}
-<div id="contest-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="contest-page" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container text-center">
     <h1 class="margin50">
       {% if is_fes_staff and not ended %}
       <small>Staff only: <a href="?{% if not view_ranking %}view_ranking{% endif %}">{% if view_ranking %}Hide{% else %}View{% endif %} ranking</a></small>
       {% endif %}
-      <img src="/static/usicaltriofestival.png" class="img-responsive">
+      <img src="{{ static_url }}static/usicaltriofestival.png" class="img-responsive">
       <span class="hidden">μ'sical Trio Festival</span>
     </h1>
     <iframe style="width: 100%" height="550" src="http://www.youtube.com/embed/pBDwATvNk3s?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>

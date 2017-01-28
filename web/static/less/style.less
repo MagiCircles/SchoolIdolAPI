@@ -85,7 +85,7 @@ dt, dd {
     }
     &[data-user-raw-status="DATABASE"] {
 	&:after {
-	    content: url('/static/zombie.png');
+	    content: url('//i.schoolido.lu/static/zombie.png');
 	    width: 30px;
 	    height: 30px;
 	    bottom: 5px;
@@ -387,7 +387,7 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 	height: 145px;
 	padding: 10px;
 	padding-top: 45px;
-	background-image: url('http://i.schoolido.lu/static/speech.png');
+	background-image: url('//i.schoolido.lu/static/speech.png');
 	background-size: 100%;
 	.twitter-text {
 	    height: 111px;
@@ -1385,6 +1385,24 @@ h1#donators {
         .progress {
             width: 100%;
         }
+    }
+}
+
+#error-page {
+    @height: 300px;
+    .jumbotron {
+	min-height: @height + (2*48);
+	background-position: bottom right;
+	background-size: auto (@height * 1.5);
+	background-repeat: no-repeat;
+	padding-right: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    #error-page .jumbotron {
+	background-image: none!important;
+	padding-right: 15px;
     }
 }
 

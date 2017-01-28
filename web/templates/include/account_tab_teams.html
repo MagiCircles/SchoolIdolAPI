@@ -14,7 +14,7 @@
   <br><br>
   {% endfor %}
   {% if member.virtual %}
-  <img src="http://i.schoolido.lu/static/empty.png" height="100" alt="empty">
+  <img src="{{ static_url }}static/empty.png" height="100" alt="empty">
   {% else %}
   {% include 'ownedcard.html' with card=member.ownedcard owner_account=team.owner_account %}
   {% endif %}

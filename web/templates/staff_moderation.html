@@ -4,8 +4,8 @@
 
 {% block js %}
 <script>var disqus_api_key = '{{ disqus_api_key }}';</script>
-<script src="/static/bower/jquery-timeago/jquery.timeago.js"></script>
-<script src="/static/js/staff_moderation.js"></script>
+<script src="{{ static_url }}static/bower/jquery-timeago/jquery.timeago.js"></script>
+<script src="{{ static_url }}static/js/staff_moderation.js"></script>
 {% endblock %}
 
 {% block content %}

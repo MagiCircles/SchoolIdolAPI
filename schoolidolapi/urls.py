@@ -1,8 +1,11 @@
 from django.conf.urls import url, include
+from django.conf.urls import handler500
 from django.contrib import admin
 from rest_framework import routers
 import api.views as api_views
 from django.views.generic.base import RedirectView
+
+handler500 = 'web.views.server_error'
 
 admin.autodiscover()
 

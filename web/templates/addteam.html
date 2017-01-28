@@ -57,14 +57,14 @@
 {% endblock %}
 
 {% block js %}
-<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   {% for field_name in form.fields %}
   {% if field_name != 'name' %}
   cuteform($('#id_{{ field_name }}'), {
     'modal': 'true',
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for ownedcard in account.deck %}
       '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
       {% endfor %}

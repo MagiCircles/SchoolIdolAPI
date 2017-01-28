@@ -3332,4 +3332,5 @@ def drown(request):
 
 def cardstrength(request):
    context = globalContext(request)
+   context['filters'] = get_cards_form_filters(request, settings.CARDS_INFO)
    return render(request, 'cardstrength.html', context)

@@ -35,7 +35,7 @@ deck_links = [
     },
     {
         'name': _('Your top Smile cards'),
-        'background': 'http://i.schoolido.lu/static/Smile.png',
+        'background': settings.STATIC_FILES_URL + u'static/Smile.png',
         'color': '#e6006f',
         'link': 'ordering=idolized_maximum_statistics_smile&reverse_order=on',
         'background_size': 80,
@@ -43,7 +43,7 @@ deck_links = [
     },
     {
         'name': _('Your top Pure cards'),
-        'background': 'http://i.schoolido.lu/static/Pure.png',
+        'background': settings.STATIC_FILES_URL + u'static/Pure.png',
         'color': '#20ab53',
         'link': 'ordering=idolized_maximum_statistics_pure&reverse_order=on',
         'background_size': 80,
@@ -51,7 +51,7 @@ deck_links = [
     },
     {
         'name': _('Your top Cool cards'),
-        'background': 'http://i.schoolido.lu/static/Cool.png',
+        'background': settings.STATIC_FILES_URL + u'static/Cool.png',
         'color': '#0098eb',
         'link': 'ordering=idolized_maximum_statistics_cool&reverse_order=on',
         'background_size': 80,

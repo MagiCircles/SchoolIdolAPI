@@ -249,15 +249,15 @@ LINK_URLS = {
 }
 
 LINK_IMAGES = {
-    'reddit': 'http://i.schoolido.lu/static/reddit.png',
-    'twitter': 'http://i.schoolido.lu/static/twitter.png',
-    'facebook': 'http://i.schoolido.lu/static/facebook.png',
-    'instagram': 'http://i.schoolido.lu/static/instagram.png',
-    'line': 'http://i.schoolido.lu/static/line.png',
-    'twitch': 'http://i.schoolido.lu/static/twitch.png',
-    'mal': 'http://i.schoolido.lu/static/mal.png',
-    'steam': 'http://i.schoolido.lu/static/steam.png',
-    'tumblr': 'http://i.schoolido.lu/static/tumblr.png',
+    'reddit': settings.STATIC_FILES_URL + 'static/reddit.png',
+    'twitter': settings.STATIC_FILES_URL + 'static/twitter.png',
+    'facebook': settings.STATIC_FILES_URL + 'static/facebook.png',
+    'instagram': settings.STATIC_FILES_URL + 'static/instagram.png',
+    'line': settings.STATIC_FILES_URL + 'static/line.png',
+    'twitch': settings.STATIC_FILES_URL + 'static/twitch.png',
+    'mal': settings.STATIC_FILES_URL + 'static/mal.png',
+    'steam': settings.STATIC_FILES_URL + 'static/steam.png',
+    'tumblr': settings.STATIC_FILES_URL + 'static/tumblr.png',
 }
 
 LINK_RELEVANCE_CHOICES = (
@@ -886,10 +886,10 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     invalid_email = models.BooleanField(default=False)
 
     def avatar(self, size):
-        default = 'https://i.schoolido.lu/static/kotori.jpg'
+        default = settings.STATIC_FILES_URL + 'static/kotori.jpg'
         if self.twitter:
-            default = 'http://schoolido.lu/avatar/twitter/' + self.twitter
-        return ("http://www.gravatar.com/avatar/"
+            default = settings.STATIC_FILES_URL + 'avatar/twitter/' + self.twitter
+        return ("//www.gravatar.com/avatar/"
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 

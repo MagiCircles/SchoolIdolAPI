@@ -24,15 +24,15 @@ def generate_settings(opt={}):
         if not current_contests:
             current_contests = [{
                 'url': 'http://schoolido.lu/contest/',
-                'image': 'http://i.schoolido.lu/static/currentcontest_no.png',
-                'homepage_image': 'http://i.schoolido.lu/static/currentcontest_no.png',
+                'image': settings.STATIC_FILES_URL + 'static/currentcontest_no.png',
+                'homepage_image': settings.STATIC_FILES_URL + 'static/currentcontest_no.png',
                 'name': None,
             }]
         else:
             current_contests = [{
-                'url': 'http://schoolido.lu/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
+                'url': '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
                 'image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)),
-                'homepage_image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else 'http://i.schoolido.lu/static/currentcontest.png'),
+                'homepage_image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else settings.STATIC_FILES_URL + 'static/currentcontest.png'),
                 'name': current_contest.name,
             } for current_contest in current_contests if current_contest.image]
 

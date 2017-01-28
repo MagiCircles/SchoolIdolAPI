@@ -130,7 +130,7 @@ def onlyJP(context):
 
 def nopreferencesAvatar(user, size):
     default = settings.STATIC_FILES_URL + 'static/kotori.jpg'
-    return ("http://www.gravatar.com/avatar/"
+    return ("//www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 

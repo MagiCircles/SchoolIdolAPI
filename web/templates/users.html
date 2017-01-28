@@ -6,35 +6,35 @@
 {% block title %}{% trans 'Players' %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/users.js?1"></script>
-<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script src="{{ static_url }}static/js/users.js?1"></script>
+<script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for i, attribute in filter_form.fields.attribute.choices %}
       {% if i != '' %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      '{{ i }}': '{{ static_url }}static/{{ i }}.png',
       {% endif %}
       {% endfor %}
     }
   });
   cuteform($('#id_center_attribute'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for i, attribute in filter_form.fields.attribute.choices %}
       {% if i != '' %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      '{{ i }}': '{{ static_url }}static/{{ i }}.png',
       {% endif %}
       {% endfor %}
     }
   });
   cuteform($('#id_center_rarity'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for rarity, _ in filter_form.fields.center_rarity.choices %}
       {% if rarity != '' %}
-      '{{ rarity }}': 'http://i.schoolido.lu/static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
+      '{{ rarity }}': '{{ static_url }}static/{{ rarity }}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png',
       {% endif %}
       {% endfor %}
     }
@@ -44,7 +44,7 @@
     'modal-text': 'true',
     'images': {
       {% for idol, str in filter_form.fields.best_girl.choices %}
-      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% if idol == '' %}'': '{{ static_url }}static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
   }
   });
@@ -122,8 +122,8 @@
 </script>
 {% endblock %}
 
-{% block shareimage %}http://i.schoolido.lu/static/screenshots/players.png{% endblock %}
-{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/players.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/screenshots/players.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/players.png{% endblock %}
 
 {% block content %}
 

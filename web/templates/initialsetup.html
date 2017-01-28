@@ -5,14 +5,14 @@
 {% block title %}{% trans 'Initial Setup' %}{% endblock %}
 
 {% block js %}
-<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
-<script src="http://i.schoolido.lu/static/js/links.js"></script>
+<script src="{{ static_url }}static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ static_url }}static/js/links.js"></script>
 <script>
   var current_seen_cards = [{{ hidden_cards }}];
   var bookmark_message = '{{ bookmark_message|addslashes }}';
   var btnColor = '{{ btnColor }}';
 </script>
-<script src="/static/js/initialsetup.js?1"></script>
+<script src="{{ static_url }}static/js/initialsetup.js?1"></script>
 {% endblock %}
 
 {% block content %}
@@ -85,8 +85,8 @@
 	  <a target="_blank" href="https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/Why-my-cards-are-not-automatically-imported%3F"><i class="flaticon-about"></i> {% trans 'Why my cards are not automatically imported?' %}</a>
 	</div>
 	<div class="col-md-6">
-	  <video width="100%" autoplay loop poster="http://i.schoolido.lu/static/OrderByRarity.png">
-	    <source src="http://i.schoolido.lu/static/OrderByRarity.mp4" type="video/mp4" />
+	  <video width="100%" autoplay loop poster="{{ static_url }}static/OrderByRarity.png">
+	    <source src="{{ static_url }}static/OrderByRarity.mp4" type="video/mp4" />
 	    Your browser does not support the video tag.
 	  </video>
 	</div>
@@ -151,7 +151,7 @@
 	{% endif %}
 	<tr>
 	  <th class="text-right">
-	    <span class="fontx2"><img src="/static/{{ card.attribute }}.png" height="60">{% trans card.attribute %}</span>
+	    <span class="fontx2"><img src="{{ static_url }}static/{{ card.attribute }}.png" height="60">{% trans card.attribute %}</span>
 	  </th>
 	<td>
 	  {% endifchanged %}
@@ -186,8 +186,8 @@
 	    {% trans 'Simply click "+" to add cards to your account' %}
 	  </small>
 	</h1>
-	<video autoplay loop poster="http://i.schoolido.lu/static/AddCardHowTo.png" class="video80">
-	  <source src="http://i.schoolido.lu/static/AddCardHowTo.mp4" type="video/mp4" />
+	<video autoplay loop poster="{{ static_url }}static/AddCardHowTo.png" class="video80">
+	  <source src="{{ static_url }}static/AddCardHowTo.mp4" type="video/mp4" />
 	  Your browser does not support the video tag.
 	</video>
 	<div class="text-center">

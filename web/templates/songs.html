@@ -6,14 +6,14 @@
 {% block title %}{% trans 'Songs' %}{% if single %}: {{ single }}{% endif %}{% endblock %}
 {% block js %}
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for i, attribute in filter_form.fields.attribute.choices %}
       {% if i != '' %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      '{{ i }}': '{{ static_url }}static/{{ i }}.png',
       {% endif %}
       {% endfor %}
     }
@@ -27,10 +27,10 @@
   });
   cuteform($('#id_main_unit'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for main_unit, _ in filter_form.fields.main_unit.choices %}
       {% if main_unit != '' %}
-      '{{ main_unit|escapejs }}': 'http://i.schoolido.lu/static/{{ main_unit|escapejs }}.png',
+      '{{ main_unit|escapejs }}': '{{ static_url }}static/{{ main_unit|escapejs }}.png',
       {% endif %}
       {% endfor %}
     }
@@ -65,11 +65,11 @@ function songs_stats_buttons() {
 }
 
 </script>
-<script src="/static/js/songs.js?4"></script>
+<script src="{{ static_url }}static/js/songs.js?4"></script>
 {% endblock %}
 
-{% block shareimage %}{% if single %}{% songimageurl song=single %}{% else %}http://i.schoolido.lu/static/screenshots/songs.png{% endif %}{% endblock %}
-{% block shareimagetwitter %}{% if single %}{% songimageurl song=single %}{% else %}http://i.schoolido.lu/static/screenshots/songs.png{% endif %}{% endblock %}
+{% block shareimage %}{% if single %}{% songimageurl song=single %}{% else %}{{ static_sharing_url }}static/screenshots/songs.png{% endif %}{% endblock %}
+{% block shareimagetwitter %}{% if single %}{% songimageurl song=single %}{% else %}{{ static_sharing_url }}static/screenshots/songs.png{% endif %}{% endblock %}
 
 {% block content %}
 {% if not single %}

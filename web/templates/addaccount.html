@@ -7,13 +7,13 @@
 {% load imageurl %}
 {% load choicesToString %}
 {% if edit %}
-<script src="/static/js/editaccount.js?2"></script>
+<script src="{{ static_url }}static/js/editaccount.js?2"></script>
 {% endif %}
-<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_starter'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for card in form.starter.field.queryset %}
       '{{ card.id }}': '{% imageurl card=card image='round_card_image' %}',
       {% endfor %}
@@ -37,7 +37,7 @@
   cuteform($('#id_center'), {
     'modal': 'true',
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for ownedcard in form.center.field.queryset %}
       '{{ ownedcard.id }}': '{% ownedcardimageurl ownedcard=ownedcard %}',
       {% endfor %}
@@ -53,14 +53,14 @@
   cuteform($('#id_play_with'), {
     'html': {
       {% for play_with, string in form.play_with.field.choices %}
-      {% if play_with == '' %}'': '<img src="http://i.schoolido.lu/static/empty.png" height="20">',{% else %}
+      {% if play_with == '' %}'': '<img src="{{ static_url }}static/empty.png" height="20">',{% else %}
       '{{ play_with }}': '<i class="flaticon-{{ play_with|playWithToIcon }}"></i> {{ string }}',
       {% endif %}{% endfor %}
     }
   });
   cuteform($('#id_accept_friend_requests'), {
     'html': {
-      '1': '<img src="http://i.schoolido.lu/static/empty.png" height="20">',
+      '1': '<img src="{{ static_url }}static/empty.png" height="20">',
       '2': '{% trans 'Yes' %}',
       '3': '{% trans 'No' %}',
     }
@@ -149,7 +149,7 @@
 	<h2 id="verify">{% trans 'Get verified' %}</h2>
 	{% if account.rank >= 100 and account.friend_id and not user.preferences.private and user.email %}
 	<div id="verification-2" style="display: none">
-	  <img src="http://i.schoolido.lu/static/verifications/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
+	  <img src="{{ static_url }}static/verifications/4YUFGyt.png" alt="Gold" class="img-responsive img-rounded" /><br>
 	  <ul>
 	    <li>{% trans 'Open the game you want to get verified' %}<br><br></li>
 	    <li>{% trans 'Go to "Other" (その他) then "Profile" (プロフィール), tap "Change" (変更する) and add a link to your profile on School Idol Tomodachi to support the community' %}: <span class="text-muted">schoolido.lu/user/{{ user.username }}/</span> ({% trans 'Optional' %})<br><br></li>
@@ -166,7 +166,7 @@
 	  </ul>
 	</div>
 	<div id="verification-1" style="display: none">
-	  <img src="http://i.schoolido.lu/static/verifications/mA3mh0G.png" alt="Silver" class="img-responsive img-rounded" /><br>
+	  <img src="{{ static_url }}static/verifications/mA3mh0G.png" alt="Silver" class="img-responsive img-rounded" /><br>
 	  <ul>
 	    <li>{% trans 'Open the game you want to get verified' %}<br><br></li>
 	    <li>{% trans 'Go to "Other" (その他) then "Profile" (プロフィール), tap "Change" (変更する) and add a link to your profile on School Idol Tomodachi to support the community' %}: <span class="text-muted">schoolido.lu/user/{{ user.username }}/</span> ({% trans 'Optional' %})<br><br></li>

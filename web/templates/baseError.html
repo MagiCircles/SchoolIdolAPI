@@ -4,9 +4,10 @@
 {% block title %}{% trans 'Page not found' %}{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" id="error-page">
   <br><br>
-  <div class="jumbotron">
+  <div class="jumbotron" style="background-image: url('{{ static_url }}cards/transparent/{% block error_code %}404{% endblock %}Transparent.png')">
+    <br><br>
     <h1>{% block titlepage %}{% trans 'Page not found' %}{% endblock %}</h1>
     <p>{% block details %}{% blocktrans %}404. This is not the page you are looking for.{% endblocktrans %}{% endblock %}</p>
     <p class="text-right"><a class="btn btn-Smile btn-lg" href="/" role="button">{% trans 'Back to homepage' %}</a></p>

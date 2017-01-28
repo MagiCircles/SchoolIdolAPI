@@ -44,6 +44,19 @@ import re
 import json
 import operator
 
+def minimumContext(request):
+    return {
+        'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
+        'debug': settings.DEBUG,
+        'static_url': settings.STATIC_FILES_URL,
+        'static_sharing_url': settings.STATIC_FILES_SHARING_URL,
+        'btnColor': 'Smile',
+        'interfaceColor': 'default',
+    }
+
+def server_error(request):
+    return render(request, '500.html', minimumContext(request))
+
 def contextAccounts(request):
     accounts = request.user.accounts_set.all().order_by('-rank')
     return accounts
@@ -52,15 +65,12 @@ def globalContext(request):
     context ={
         'hide_back_button': False,
         'show_filter_button': False,
-        'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
         'interfaceColor': 'default',
         'btnColor': 'Smile',
-        'debug': settings.DEBUG,
         'hidenavbar': 'hidenavbar' in request.GET,
         'current_contests': settings.CURRENT_CONTESTS,
         'last_update': settings.GENERATED_DATE,
         'high_traffic': settings.HIGH_TRAFFIC,
-        'static_url': '//i.schoolido.lu/',
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
@@ -119,7 +129,7 @@ def onlyJP(context):
     return True
 
 def nopreferencesAvatar(user, size):
-    default = 'https://i.schoolido.lu/static/kotori.jpg'
+    default = settings.STATIC_FILES_URL + 'static/kotori.jpg'
     return ("http://www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
@@ -1968,7 +1978,7 @@ def event(request, event):
         context['event_links_card'] = list_cards[-1]
     else:
         context['event_links_card'] = {
-            'transparent_idolized_image': 'http://i.schoolido.lu/cards/transparent/886idolizedTransparent.png',
+            'transparent_idolized_image': settings.STATIC_FILES_URL + 'cards/transparent/886idolizedTransparent.png',
             'raw_url': '/cards/886/SR-Minami-Kotori-Idol-Outfit-Smile/',
         }
     total_elements = 0
@@ -2938,12 +2948,12 @@ def initialsetup(request):
             context['collections'] = collections
 
             context['collections_links'] = OrderedDict()
-            context['collections_links']['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), context['collections']['ur_idolized'][1], 'http://i.schoolido.lu/static/URSmile.png']
-            context['collections_links']['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), context['collections']['ssr'][1], 'http://i.schoolido.lu/static/SSRSmile.png']
-            context['collections_links']['sr_smile_idolized'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Idolized')), 4, 'http://i.schoolido.lu/static/SRPure.png']
-            context['collections_links']['sr_smile'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Not Idolized')), 5, 'http://i.schoolido.lu/static/SRCool.png']
+            context['collections_links']['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), context['collections']['ur_idolized'][1], settings.STATIC_FILES_URL + 'static/URSmile.png']
+            context['collections_links']['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), context['collections']['ssr'][1], settings.STATIC_FILES_URL + 'static/SSRSmile.png']
+            context['collections_links']['sr_smile_idolized'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Idolized')), 4, settings.STATIC_FILES_URL + 'static/SRPure.png']
+            context['collections_links']['sr_smile'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Not Idolized')), 5, settings.STATIC_FILES_URL + 'static/SRCool.png']
             context['collections_links']['promo'] = [context['collections']['promo'][0], context['collections']['promo'][1], 'flaticon-promo']
-            context['collections_links']['r_idolized'] = [context['collections']['r_idolized'][0], 8, 'http://i.schoolido.lu/static/RSmile.png']
+            context['collections_links']['r_idolized'] = [context['collections']['r_idolized'][0], 8, settings.STATIC_FILES_URL + 'static/RSmile.png']
             context['bookmark_message'] = _('Add this link to your bookmarks and come back to it whenever you want to finish entering the cards in your collection.')
         context['account'] = account
     if 'next' in request.GET:

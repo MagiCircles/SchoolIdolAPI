@@ -1,5 +1,12 @@
 {% extends "baseError.html" %}
 {% load i18n %}
 {% block title %}{% trans 'Forbidden' %}{% endblock %}
+{% block error_code %}403{% endblock %}
 {% block titlepage %}{% trans 'Forbidden' %}{% endblock %}
-{% block details %}{% blocktrans %}You are not supposed to do this, so we blocked you. Sorry!{% endblocktrans %}{% endblock %}
+{% block details %}
+{% blocktrans %}
+You don't have permission to access this page.{% endblocktrans %}
+{% if not user.is_authenticated %}
+<br><a href="/login/">{% trans 'Try again after logging in.' %}</a>
+{% endif %}
+{% endblock %}

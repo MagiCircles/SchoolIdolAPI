@@ -111,7 +111,7 @@
 		      <th>{% trans 'Attribute' %}</th>
 		      <td>
 			<div class="pull-right">
-			  <img src="/static/{{ song.attribute }}.png" class="attribute" width="20px">
+			  <img src="{{ static_url }}static/{{ song.attribute }}.png" class="attribute" width="20px">
 			</div>
 			{{ song.japanese_attribute }}
 			{{ song.attribute }}
@@ -213,7 +213,7 @@
 			  <img src="" alt="{{ song.name }}" class="album img-rounded">
 			</div>
 			<a href="" target="_blank">
-			  <img src="/static/get_itunes.svg" alt="Get it on iTunes">
+			  <img src="{{ static_url }}static/get_itunes.svg" alt="Get it on iTunes">
 			</a>
 		      </td>
 		    </tr>
@@ -251,7 +251,7 @@
 	      <div style="display: none" class="itunes">
 		<img src="" alt="{{ song.name }}" class="album img-rounded" height="31">
 		<a href="" target="_blank">
-		  <img src="/static/get_itunes.svg" alt="Get it on iTunes" height="31">
+		  <img src="{{ static_url }}static/get_itunes.svg" alt="Get it on iTunes" height="31">
 		</a>
 	      </div>
 	    </div>

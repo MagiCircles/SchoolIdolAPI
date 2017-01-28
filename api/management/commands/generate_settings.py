@@ -31,8 +31,8 @@ def generate_settings(opt={}):
         else:
             current_contests = [{
                 'url': '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
-                'image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)),
-                'homepage_image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else settings.STATIC_FILES_URL + 'static/currentcontest.png'),
+                'image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image)),
+                'homepage_image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image)) if current_contest.image else settings.STATIC_FILES_URL + 'static/currentcontest.png'),
                 'name': current_contest.name,
             } for current_contest in current_contests if current_contest.image]
 
@@ -42,7 +42,7 @@ def generate_settings(opt={}):
             current_jp = {
                 'japanese_name': current_jp.japanese_name,
                 'slide_position': len(current_contests) + 1,
-                'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_jp.image),
+                'image': '{}{}'.format(settings.STATIC_FILES_URL, current_jp.image),
             }
         except:
             current_jp = None
@@ -54,7 +54,7 @@ def generate_settings(opt={}):
             current_en = {
                 'japanese_name': current_en.japanese_name,
                 'slide_position': len(current_contests),
-                'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_en.english_image if current_en.english_image else current_en.image),
+                'image': '{}{}'.format(settings.STATIC_FILES_URL, current_en.english_image if current_en.english_image else current_en.image),
             }
         except:
             current_en = None

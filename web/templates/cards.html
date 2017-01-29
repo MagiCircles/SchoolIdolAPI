@@ -6,7 +6,7 @@
 
 {% block title %}{% if view == 'albumbuilder' %}{% trans 'Album Builder' %}{% else %}{% trans 'Cards Album' %}{% if single %}: {{ single }}{% elif request_get.name %}: {{ request_get.name }}{% endif %}{% endif %}{% endblock %}
 {% block js %}
-<script src="//i.schoolido.lu/static/bower/CuteForm/cuteform.js"></script>
+<script src="/static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
     'images': {
@@ -43,6 +43,7 @@
   cuteform($('#id_name'), {
     'modal': 'true',
     'modal-text': 'true',
+    'add-title': 'true',
     'images': {
       {% for idol, str in filters.idols %}
       {% if idol == '' %}'': '//i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True force_artist='shinylyni' force_first=True %}',{% endif %}

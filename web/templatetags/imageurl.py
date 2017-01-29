@@ -98,7 +98,7 @@ def ownedcardimageurl(context, ownedcard, card=None, english_version=False):
     if not card:
         card = ownedcard.card
     idolized = True if card.is_special or card.is_promo else ownedcard.idolized
-    return cardidolizedimageurl(card, idolized, english_version=english_version)
+    return cardidolizedimageurl(context, card, idolized, english_version=english_version)
 
 @register.simple_tag(takes_context=True)
 def eventimageurl(context, event, english=False):

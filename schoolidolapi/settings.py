@@ -41,11 +41,11 @@ INSTALLED_APPS = (
     'dal',
     'dal_select2',
     'django.contrib.admin',
-    'oauth2_provider',
     'rest_framework',
     'api',
     'storages',
     'web',
+    'oauth2_provider',
     'django.contrib.auth',
     'django_prometheus',
     'django_bouncy',
@@ -93,6 +93,11 @@ ROOT_URLCONF = 'schoolidolapi.urls'
 
 WSGI_APPLICATION = 'schoolidolapi.wsgi.application'
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'web.views.minimumContext',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -146,6 +151,9 @@ LOCALE_PATHS = (
 
 STATIC_URL = '/static/'
 
+STATIC_FILES_URL = '/' if DEBUG else '//i.schoolido.lu/'
+STATIC_FILES_SHARING_URL = 'http://i.schoolido.lu/'
+
 IMAGES_HOSTING_PATH = '/'
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -158,6 +166,8 @@ AWS_PASSWORD_EMAIL = 'password@schoolido.lu'
 LOG_EMAIL = 'emails-log@schoolido.lu'
 
 DISQUS_STAFF = 'sukutomostaff'
+
+DISQUS_API_KEY = 'set me in local settings'
 
 RANDOM_ORDERING_DATABASE = 'RANDOM'
 

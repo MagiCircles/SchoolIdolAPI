@@ -17,7 +17,7 @@
 
   <br><hr><br>
   <div class="clearfix">
-    <img src="/static/screenshots/collection.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
+    <img src="{{ static_url }}static/screenshots/collection.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
     <a class="btn btn-xl btn-block btn-{{ btnColor }}" href="#addCard" data-toggle="collapse">Add Card</a>
   </div>
   {% if added_card %}
@@ -36,7 +36,7 @@
   </form>
   <br><hr><br>
   <div class="clearfix">
-    <img src="/static/screenshots/events.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
+    <img src="{{ static_url }}static/screenshots/events.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
     <a class="btn btn-xl btn-block btn-{{ btnColor }}" href="#addEvent" data-toggle="collapse">Add Event</a>
   </div>
   {% if added_event %}
@@ -55,7 +55,7 @@
   </form>
   <br><hr><br>
   <div class="clearfix">
-    <img src="/static/screenshots/songs.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
+    <img src="{{ static_url }}static/screenshots/songs.png" width="120" class="pull-left margin20" style="margin: -10px 0;">
     <a class="btn btn-xl btn-block btn-{{ btnColor }}" href="#addSong" data-toggle="collapse">Add Song</a>
   </div>
   {% if added_song %}
@@ -81,7 +81,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/map.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/map.png" width="200" class="pull-left margin20">
     <h4>Update locations</h4>
     <ul>
       <li>Update missing locations on <a href="/map/" target="_blank">the map</a>.</li>
@@ -94,7 +94,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/collection.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/collection.png" width="200" class="pull-left margin20">
     <h4>Update total owners of cards and total wishlist for each card</h4>
     <ul>
       <li>Store a cache to easily find the most popular or most wished cards</li>
@@ -107,7 +107,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/contest.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/contest.png" width="200" class="pull-left margin20">
     <h4>Update generated settings</h4>
     <ul>
       <li>Update current contests and events (banners in homepage)</li>
@@ -122,7 +122,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/cards.png" width="200" class="pull-left margin20">
     <h4>Generate release dates</h4>
     <ul>
       <li>Promo cards don't have a release date in the wiki, so this script fills the missing release date by assuming it's the same than the previous card that has a release date.</li>
@@ -134,7 +134,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/medal1.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/medal1.png" width="200" class="pull-left margin20">
     <h4>Generate Cards rankings</h4>
     <ul>
       <li>Generate the ranking position compared to the other cards with:
@@ -183,7 +183,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/songs.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/songs.png" width="200" class="pull-left margin20">
     <h4>Import Songs</h4>
     <ul>
       <li>External service source to edit: <a href="http://www59.atwiki.jp/lovelive-sif/pages/115.html" target="_blank">Japanese Wiki</a> + <a href="http://decaf.kouhi.me/lovelive/index.php">Images in each songs pages</a></li>
@@ -214,7 +214,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/cards.png" width="200" class="pull-left margin20">
     <h4>Update Cards Stats</h4>
     <ul>
       <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=List_of_Cards&action=edit" target="_blank">Decaf wiki list of cards</a></li>
@@ -230,7 +230,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/events.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/events.png" width="200" class="pull-left margin20">
     <h4>Import Japanese events information</h4>
     <ul>
       <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=List_of_Events&action=edit" target="_blank">Decaf wiki list of events</a></li>
@@ -244,7 +244,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/events.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/events.png" width="200" class="pull-left margin20">
     <h4>Import English events information + Cards worldwide available</h4>
     <ul>
       <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info&action=edit" target="_blank">Decaf English version information</a></li>
@@ -260,7 +260,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/idols.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/idols.png" width="200" class="pull-left margin20">
     <h4>Import idols trivia + collections in cards</h4>
     <ul>
       <li>External service source to edit: <a href="http://decaf.kouhi.me/lovelive/index.php?title=Category:Other_Characters" target="_blank">Each different page for each character</a></li>
@@ -276,7 +276,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/cards.png" width="200" class="pull-left margin20">
     <h4>Import skill details from Wikia</h4>
     <ul>
       <li>External service source to edit: <a href="http://love-live.wikia.com/wiki/Love_Live!_School_Idol_Festival_Card_List" target="_blank">Wikia list of cards</a></li>
@@ -290,7 +290,7 @@
 
   <hr>
   <div class="clearfix">
-    <img src="/static/screenshots/cards.png" width="200" class="pull-left margin20">
+    <img src="{{ static_url }}static/screenshots/cards.png" width="200" class="pull-left margin20">
     <h4>Import Japanese skill details and collections</h4>
     <ul>
       <li>External service source to edit: <a href="http://www59.atwiki.jp/lovelive-sif/pages/210.html" target="_blank">Japanese wiki</a> + <a href="http://www59.atwiki.jp/lovelive-sif/pages/378.html" target="_blank">Japanese wiki</a> + <a href="http://www59.atwiki.jp/lovelive-sif/pages/379.html" target="_blank">Japanese wiki</a> + <a href="http://www59.atwiki.jp/lovelive-sif/pages/321.html" target="_blank">Japanese wiki</a></li>
@@ -303,7 +303,7 @@
 
   <!-- <hr> -->
   <!-- <div class="clearfix"> -->
-  <!--   <img src="/static/screenshots/ABC.png" width="200" class="pull-left margin20"> -->
+  <!--   <img src="{{ static_url }}static/screenshots/ABC.png" width="200" class="pull-left margin20"> -->
   <!--   <h4>ABC</h4> -->
   <!--   <ul> -->
   <!--     <li>External service source to edit: <a href="ABC" target="_blank">ABC</a></li> -->

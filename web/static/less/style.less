@@ -1,5 +1,5 @@
 
-@import url(http://fonts.googleapis.com/css?family=Maven+Pro:400,700);
+@import url(//fonts.googleapis.com/css?family=Maven+Pro:400,700);
 
 @import "../css/flaticon.css?3";
 @import "../bower/css-hexagon/hexagon.less";
@@ -85,7 +85,7 @@ dt, dd {
     }
     &[data-user-raw-status="DATABASE"] {
 	&:after {
-	    content: url('/static/zombie.png');
+	    content: url('//i.schoolido.lu/static/zombie.png');
 	    width: 30px;
 	    height: 30px;
 	    bottom: 5px;
@@ -387,7 +387,7 @@ tr.All { td { background-color: lighten(@AllColor, 30%); .a-variant(#fff) }}
 	height: 145px;
 	padding: 10px;
 	padding-top: 45px;
-	background-image: url('http://i.schoolido.lu/static/speech.png');
+	background-image: url('//i.schoolido.lu/static/speech.png');
 	background-size: 100%;
 	.twitter-text {
 	    height: 111px;
@@ -986,7 +986,7 @@ a.panel {
     text-align: center;
     margin: 0 5px;
     margin-bottom: 10px;
-    background: url('http://i.schoolido.lu/static/empty.png');
+    background: url('//i.schoolido.lu/static/empty.png');
     background-size: 100px;
 }
 
@@ -1385,6 +1385,24 @@ h1#donators {
         .progress {
             width: 100%;
         }
+    }
+}
+
+#error-page {
+    @height: 300px;
+    .jumbotron {
+	min-height: @height + (2*48);
+	background-position: bottom right;
+	background-size: auto (@height * 1.5);
+	background-repeat: no-repeat;
+	padding-right: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    #error-page .jumbotron {
+	background-image: none!important;
+	padding-right: 15px;
     }
 }
 
@@ -1804,7 +1822,7 @@ h1#donators {
 }
 .modal-aboutsukutomo {
     h3 {
-	background: no-repeat center center url('http://i.schoolido.lu/backgrounds/background0.png');
+	background: no-repeat center center url('//i.schoolido.lu/backgrounds/background0.png');
 	padding: 30px;
 	margin: 0;
 	border-radius: 5px;
@@ -1874,7 +1892,7 @@ h1#donators {
 
 .toplistbanner {
     display: block;
-    background-image: url('http://i.schoolido.lu/cards/transparent/444idolizedTransparent.png');
+    background-image: url('//i.schoolido.lu/cards/transparent/444idolizedTransparent.png');
     background-color: orange;
     background-size: 60%;
     background-position: 130% 35%;

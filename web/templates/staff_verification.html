@@ -4,8 +4,8 @@
 {% block title %}Verification{% endblock %}
 
 {% block js %}
-<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="/static/js/staff_verification.js?1"></script>
+<script src="{{ static_url }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="{{ static_url }}static/js/staff_verification.js?1"></script>
 {% endblock %}
 {% block content %}
 {% load choicesToString %}

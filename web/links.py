@@ -1,5 +1,6 @@
  # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _, string_concat
+from django.conf import settings
 
 links = [
         {
@@ -553,7 +554,7 @@ links = [
                 },
                 {
                     'name': _('Community Artists'),
-                    'url': 'http://schoolido.lu/about/#communityartists',
+                    'url': '/about/#communityartists',
                     'description': _('Discover the artists behind the chibi drawings of all the idols!'),
                     'type': 'info',
                     'language': 'world',
@@ -574,7 +575,7 @@ links = [
                 {
                     'name': _('LoveLive! Wikia'),
                     'url': 'http://love-live.wikia.com/wiki/Main_Page',
-                    'image': '/static/links/wikia.png',
+                    'image': settings.STATIC_FILES_URL +  'static/links/wikia.png',
                     'type': 'info',
                     'language': 'world',
                     'size': 'big',

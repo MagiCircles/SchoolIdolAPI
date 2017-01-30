@@ -2,15 +2,15 @@
 {% load i18n %}
 {% load random_int %}
 
-{% block shareimage %}http://schoolido.lu/static/screenshots/cards.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/cards.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/screenshots/cards.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/cards.png{% endblock %}
 
 {% block title %}{% trans 'Album Builder' %}{% endblock %}
 
 {% block content %}
-<div id="contest-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="contest-page" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container text-center">
-    <h1><img src="http://i.schoolido.lu/static/default_event.png" style="max-width: 100%; border-radius: 10px;" alt="{% trans 'Album Builder' %}"></h1>
+    <h1><img src="{{ static_url }}static/default_event.png" style="max-width: 100%; border-radius: 10px;" alt="{% trans 'Album Builder' %}"></h1>
     <p class="margin50 fontx1-5">
       The album builder is temporarily disabled due to high traffic. Please try again tomorrow.<br>
       <i>Any help to get more powerful servers is greatly appreciated. <a href="/about/#donate">Donate here!</a></i>

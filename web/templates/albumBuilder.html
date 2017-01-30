@@ -53,7 +53,7 @@
     <tr class="tr_card text-{{ card.attribute }}" data-id="{{ card.id }}" data-rarity="{{ card.rarity }}" data-attribute="{{ card.attribute }}" data-is-special="{{ card.is_special }}" data-is-promo="{{ card.is_promo }}">
       <td rowspan="{{ card.owned_cards|length|add:1 }}" width="150">
 	<a href="{{ card|singlecardurl }}" target="_blank" class="images-link">
-	  <img src="{% if card.is_promo or card.is_special %}http://i.schoolido.lu/static/empty.png{% else %}{% imageurl card=card image='round_card_image' %}{% endif %}" alt="{{ card }}" height="60" width="60">
+	  <img src="{% if card.is_promo or card.is_special %}{{ static_url }}static/empty.png{% else %}{% imageurl card=card image='round_card_image' %}{% endif %}" alt="{{ card }}" height="60" width="60">
 	  <img src="{% imageurl card=card image='round_card_idolized_image' %}" alt="{{ card }}" height="60" width="60">
 	</a>
       </td>

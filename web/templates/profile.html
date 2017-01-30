@@ -8,10 +8,10 @@
 {% block shareimagetwitter %}{{ profile_user|gravatar:200 }}{% endblock %}
 
 {% block js %}
-<script src="//i.schoolido.lu/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="{{ static_url }}static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 
-<script src="//i.schoolido.lu/static/js/loadactivities.js?1"></script>
-<script src="//i.schoolido.lu/static/js/profile.js?4"></script>
+<script src="{{ static_url }}static/js/loadactivities.js?1"></script>
+<script src="{{ static_url }}static/js/profile.js?4"></script>
 <script>
   var imgurClientID = '{{ imgurClientID }}';
 </script>
@@ -255,14 +255,14 @@
 	      <tr>
 		<th>{% trans 'Items' %}</th>
 		<td class="profile-items">
-                  {% if account.loveca %}{{ account.loveca }} <img src="//i.schoolido.lu/static/items/loveca.png" alt="loveca">{% endif %}
-                  {% if account.friend_points %}{{ account.friend_points }} <img src="//i.schoolido.lu/static/items/friend_points.png" alt="friend_points">{% endif %}
-                  {% if account.g %}{{ account.g }} <img src="//i.schoolido.lu/static/items/g.png" alt="g">{% endif %}
-                  {% if account.tickets %}{{ account.tickets }} <img src="//i.schoolido.lu/static/items/tickets.png" alt="tickets">{% endif %}
-                  {% if account.vouchers %}{{ account.vouchers }} <img src="//i.schoolido.lu/static/items/vouchers.png" alt="vouchers">{% endif %}
+                  {% if account.loveca %}{{ account.loveca }} <img src="{{ static_url }}static/items/loveca.png" alt="loveca">{% endif %}
+                  {% if account.friend_points %}{{ account.friend_points }} <img src="{{ static_url }}static/items/friend_points.png" alt="friend_points">{% endif %}
+                  {% if account.g %}{{ account.g }} <img src="{{ static_url }}static/items/g.png" alt="g">{% endif %}
+                  {% if account.tickets %}{{ account.tickets }} <img src="{{ static_url }}static/items/tickets.png" alt="tickets">{% endif %}
+                  {% if account.vouchers %}{{ account.vouchers }} <img src="{{ static_url }}static/items/vouchers.png" alt="vouchers">{% endif %}
                   {% if account.bought_loveca %}
                   <br>
-                  <strong>{% trans 'Total love gems bought' %}: </strong>{{ account.bought_loveca }} <img src="//i.schoolido.lu/static/items/loveca.png" alt="loveca">
+                  <strong>{% trans 'Total love gems bought' %}: </strong>{{ account.bought_loveca }} <img src="{{ static_url }}static/items/loveca.png" alt="loveca">
                   (~${{ account.money_spent }} {% trans 'spent' %})
                   {% endif %}
 		  {% if not account.show_items and is_me %}
@@ -294,7 +294,7 @@
 		  <a href="/users/?language={{ account.language }}&verified=3&reverse_order=on">
 		    <h3 style="margin-top: 0">
 		      {% if account.ranking < 4 %}
-		       <img src="//i.schoolido.lu/static/medal{{ account.ranking }}.png" alt="{{ account.ranking }}" height="60">
+		       <img src="{{ static_url }}static/medal{{ account.ranking }}.png" alt="{{ account.ranking }}" height="60">
 		       {% else %}
 		       # {{ account.ranking }}
 		       {% endif %}
@@ -355,7 +355,7 @@
 	  <div class="well post-activity collapse" id="postActivity{{ account.pk }}">
 	    <form method="POST">
 	      <h3>{% trans 'Post your own activity' %}
-		<small><a href="http://schoolido.lu/activities/1743972/" target="_blank">{% trans 'What is this?' %}</a></small>
+		<small><a href="/activities/1743972/" target="_blank">{% trans 'What is this?' %}</a></small>
 	      </h3>
 	      {% csrf_token %}
 	      {% include "bootstrap_form_horizontal.html" with form=account.form_custom_activity wrap=0 %}

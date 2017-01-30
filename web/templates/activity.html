@@ -3,11 +3,11 @@
 {% block title %}{{ activity }}{% endblock %}
 
 {% block js %}
-<script src="/static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
-<script src="/static/js/loadactivities.js"></script>
+<script src="{{ static_url }}static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="{{ static_url }}static/js/loadactivities.js"></script>
 {% if is_mine %}
 {% endif %}
-<script src="/static/js/feed.js"></script>
+<script src="{{ static_url }}static/js/feed.js"></script>
 {% endblock %}
 
 {% block content %}

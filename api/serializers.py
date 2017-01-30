@@ -228,7 +228,7 @@ class IdolSerializer(serializers.ModelSerializer):
 
 def _get_image(image):
     if image:
-        base_url = settings.IMAGES_HOSTING_PATH
+        base_url = settings.STATIC_FILES_URL
         return u'%s%s' % (base_url, image)
     return None
 
@@ -243,7 +243,7 @@ class CardIdSerializer(serializers.ModelSerializer):
 class ImageField(serializers.ImageField):
     def to_representation(self, value):
         if value:
-            return u'%s%s' % (settings.IMAGES_HOSTING_PATH, value.name)
+            return u'%s%s' % (settings.STATIC_FILES_URL, value.name)
         return None
 
 class CardSerializer(serializers.ModelSerializer):

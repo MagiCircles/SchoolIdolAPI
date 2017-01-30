@@ -5,8 +5,8 @@
 {% block title %}{% trans 'The Ultimate Resource For LoveLive! School Idol Festival players' %}{% endblock %}
 
 {% block js %}
-<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
-<script src="http://i.schoolido.lu/static/js/links.js"></script>
+<script src="{{ static_url }}static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ static_url }}static/js/links.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -35,7 +35,7 @@
     <br>
     <div class="text-center">
       <a href="http://imgur.com/a/pKOvg" target="_blank">
-	<img src="http://i.schoolido.lu/special/treasure.png" width="200">
+	<img src="{{ static_url }}special/treasure.png" width="200">
       </a>
     </div>
     <br>

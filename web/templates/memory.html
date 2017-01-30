@@ -3,8 +3,8 @@
 {% load random_int %}
 {% block title %}{% trans 'Love Live! School Idol Memory' %}{% endblock %}
 
-{% block shareimage %}http://i.schoolido.lu/static/screenshots/llmemo.png{% endblock %}
-{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/llmemo.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/screenshots/llmemo.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/llmemo.png{% endblock %}
 
 {% block content %}
 <style>
@@ -17,9 +17,9 @@
     width: 140px;
   }
 </style>
-<div id="trivia-page" style="background-image: url('//i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="trivia-page" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
 <div class="container text-center">
-  <h1 style="padding20"><img src="//i.schoolido.lu/static/llmemoryname.png" alt="Love Live! School Idol Memory" style="width: 500px; max-width: 100%;"></h1>
+  <h1 style="padding20"><img src="{{ static_url }}static/llmemoryname.png" alt="Love Live! School Idol Memory" style="width: 500px; max-width: 100%;"></h1>
   <h3>Find all the matching pairs!</h3>
   <div id="elm-trivia"></div>
   <p class="margin50 hidden">
@@ -29,17 +29,17 @@
 
   <br><br><br><hr><br><br>
   <p class="text-left">
-    This mini-game has been made by <a href="http://schoolido.lu/user/Lamagicien/">Engil</a> for all the School Idol Tomodachi community members.
+    This mini-game has been made by <a href="/user/Lamagicien/">Engil</a> for all the School Idol Tomodachi community members.
   </p>
   <p class="text-left">
-    Engil was the 1st person who joined School Idol Tomodachi after db0. He then worked closely with db0 to create <a href="http://schoolido.lu/contest/">School Idol Tomodachi</a>, and later <a href="http://schoolido.lu/trivia/">School Idol Trivia</a>, making him the biggest contributor to the code base.
+    Engil was the 1st person who joined School Idol Tomodachi after db0. He then worked closely with db0 to create <a href="/contest/">School Idol Tomodachi</a>, and later <a href="/trivia/">School Idol Trivia</a>, making him the biggest contributor to the code base.
   </p>
   <br><br><br><br><br><br>
   {% include 'disqus.html' %}
 </div>
 {% endblock %}
 {% block js %}
-<script src="//i.schoolido.lu/static/js/llmemo.js"></script>
+<script src="{{ static_url }}static/js/llmemo.js?2"></script>
 <script>
   Elm.Main.embed($('#elm-trivia')[0]);
   //var elm = Elm.embed(Elm.Main, $('#elm-trivia')[0], {});

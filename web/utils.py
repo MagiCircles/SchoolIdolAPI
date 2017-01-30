@@ -100,7 +100,7 @@ def chibiimage(idol, small=True, force_first=False, force_artist=None):
             image = None
     if image:
         return (image if not small else image.replace('chibi/', 'chibi/small_'))
-    return 'http://i.schoolido.lu/static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
+    return settings.STATIC_FILES_URL + u'static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
 
 def randomString(length, choice=(string.ascii_letters + string.digits)):
     return ''.join(random.SystemRandom().choice(choice) for _ in range(length))

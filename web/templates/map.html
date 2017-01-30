@@ -6,8 +6,8 @@
 {% load imageurl %}
 {% block title %}Map{% endblock %}
 
-{% block shareimage %}http://schoolido.lu/static/screenshots/map.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/map.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/screenshots/map.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/map.png{% endblock %}
 
 {% block content %}
 <div class="container text-center" id="map">
@@ -34,7 +34,7 @@
 {% block js %}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHtAPFTmOCQZrKSjZlIeoZrZYLJjKLupE"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-<script src="/static/js/oms.min.js"></script>
+<script src="{{ static_url }}static/js/oms.min.js"></script>
 {% localize off %}
 <script>
   {% if you %}
@@ -65,5 +65,5 @@
   };
 </script>
 {% endlocalize %}
-<script src="/static/js/map.js?1"></script>
+<script src="{{ static_url }}static/js/map.js?1"></script>
 {% endblock %}

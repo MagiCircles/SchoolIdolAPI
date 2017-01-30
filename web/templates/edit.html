@@ -87,7 +87,7 @@
     <br>
     <div class="text-center">
       <a href="http://imgur.com/a/sYQ1v" target="_blank">
-	<img src="http://i.schoolido.lu/special/treasure.png" width="200">
+	<img src="{{ static_url }}special/treasure.png" width="200">
       </a>
     </div>
     <br>
@@ -155,14 +155,14 @@
 
 {% endblock %}
 {% block js %}
-<script src="/static/js/edit.js?1"></script>
-<script src="/static/bower/CuteForm/cuteform.js"></script>
+<script src="{{ static_url }}static/js/edit.js?1"></script>
+<script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_color'), {
     'images': {
-      '': 'http://i.schoolido.lu/static/empty.png',
+      '': '{{ static_url }}static/empty.png',
       {% for i, attribute in attribute_choices %}
-      '{{ i }}': 'http://i.schoolido.lu/static/{{ i }}.png',
+      '{{ i }}': '{{ static_url }}static/{{ i }}.png',
       {% endfor %}
     }
   });
@@ -171,7 +171,7 @@
     'modal-text': 'true',
     'images': {
       {% for idol, str in form_preferences.best_girl.field.choices %}
-      {% if idol == '' %}'': 'http://i.schoolido.lu/static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
+      {% if idol == '' %}'': '{{ static_url }}static/empty.png',{% else %}'{{ idol|escapejs }}': '{% chibiimage idol=idol small=True %}',{% endif %}
       {% endfor %}
     }
   });

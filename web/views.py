@@ -429,34 +429,36 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
                                      | Q(event__japanese_name__icontains=request_get_copy['search'])
                 )
         if 'name' in request_get_copy and request_get_copy['name']:
-            cards = cards.filter(name__exact=request_get_copy['name'])
-            request_get['name'] = request_get_copy['name']
+            names = request_get_copy['name'].split(',')
+            cards = cards.filter(name__in=names)
+            if len(names) == 1:
+                request_get['name'] = names[0]
         if 'collection' in request_get_copy and request_get_copy['collection']:
-            cards = cards.filter(japanese_collection__exact=request_get_copy['collection'])
+            cards = cards.filter(japanese_collection__in=request_get_copy['collection'].split(','))
             request_get['collection'] = request_get_copy['collection']
         if 'translated_collection' in request_get_copy and request_get_copy['translated_collection']:
-            cards = cards.filter(translated_collection__exact=request_get_copy['translated_collection'])
+            cards = cards.filter(translated_collection__in=request_get_copy['translated_collection'].split(','))
             request_get['translated_collection'] = request_get_copy['translated_collection']
         if 'sub_unit' in request_get_copy and request_get_copy['sub_unit']:
-            cards = cards.filter(idol__sub_unit__exact=request_get_copy['sub_unit'])
+            cards = cards.filter(idol__sub_unit__in=request_get_copy['sub_unit'].split(','))
             request_get['sub_unit'] = request_get_copy['sub_unit']
         if 'main_unit' in request_get_copy and request_get_copy['main_unit']:
-            cards = cards.filter(idol__main_unit__exact=request_get_copy['main_unit'])
+            cards = cards.filter(idol__main_unit__in=request_get_copy['main_unit'].split(','))
             request_get['main_unit'] = request_get_copy['main_unit']
         if 'idol_year' in request_get_copy and request_get_copy['idol_year']:
-            cards = cards.filter(idol__year__exact=request_get_copy['idol_year'])
+            cards = cards.filter(idol__year__in=request_get_copy['idol_year'].split(','))
             request_get['idol_year'] = request_get_copy['idol_year']
         if 'idol_school' in request_get_copy and request_get_copy['idol_school']:
-            cards = cards.filter(idol__school__exact=request_get_copy['idol_school'])
+            cards = cards.filter(idol__school__in=request_get_copy['idol_school'].split(','))
             request_get['idol_school'] = request_get_copy['idol_school']
         if 'rarity' in request_get_copy and request_get_copy['rarity']:
-            cards = cards.filter(rarity__exact=request_get_copy['rarity'])
+            cards = cards.filter(rarity__in=request_get_copy['rarity'].split(','))
             request_get['rarity'] = request_get_copy['rarity']
         if 'attribute' in request_get_copy and request_get_copy['attribute']:
-            cards = cards.filter(attribute__exact=request_get_copy['attribute'])
+            cards = cards.filter(attribute__in=request_get_copy['attribute'].split(','))
             request_get['attribute'] = request_get_copy['attribute']
         if 'skill' in request_get_copy and request_get_copy['skill']:
-            cards = cards.filter(skill__exact=request_get_copy['skill'])
+            cards = cards.filter(skill__in=request_get_copy['skill'].split(','))
             request_get['skill'] = request_get_copy['skill']
 
         if 'ids' in request_get_copy and request_get_copy['ids']:

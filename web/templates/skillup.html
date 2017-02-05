@@ -5,13 +5,13 @@
 {% load skillup %}
 {% load random_int %}
 
-{% block shareimage %}http://i.schoolido.lu/static/SkillUp.png{% endblock %}
-{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/SkillUp.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/SkillUp.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/SkillUp.png{% endblock %}
 
 {% block title %}{% trans 'Level up the skill of your cards' %}{% endblock %}
 
 {% block js %}
-<script src="/static/js/skillup.js?1"></script>
+<script src="{{ static_url }}static/js/skillup.js?1"></script>
 <script>
   var message_skill_level = '{% trans 'Skill' %} {% trans 'Level' %}';
   var message_in_deck = '{% trans 'In deck' %}';
@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="skillup-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="skillup-page" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container">
   <h1 class="text-center margin50">{% trans 'Level up the skill of your cards' %}</h1>
   <iframe width="100%" height="550px" src="https://www.youtube.com/embed/oT_Cxxy4pWw?rel=0&amp;showinfo=0&start=122&aaautoplay=1" frameborder="0" volume="0" allowfullscreen></iframe>

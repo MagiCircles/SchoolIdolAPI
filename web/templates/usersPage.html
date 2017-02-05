@@ -32,7 +32,7 @@
 	<div class="pull-right">
 	  {% include 'include/avatar.html' with av_user=user av_size=30 av_image_size=50 %}
 	</div>
-	<h3 class="padding-novertical margin-novertical"><div class="text"> <a href="/user/{{ user.username }}/">{% if ordering == 'rank' %}{% if page == 1 and forloop.counter <= 3 %}<img src="/static/medal{{ forloop.counter }}.png" class="img-responsive" style="height: 100px; margin: -38px;" alt="{{ forloop.counter }}">{% else %}# {% globalposition position=forloop.counter %}{% endif %}{% else %}{{ account }}{% endif %}</a></div></h3>
+	<h3 class="padding-novertical margin-novertical"><div class="text"> <a href="/user/{{ user.username }}/">{% if ordering == 'rank' %}{% if page == 1 and forloop.counter <= 3 %}<img src="{{ static_url }}static/medal{{ forloop.counter }}.png" class="img-responsive" style="height: 100px; margin: -38px;" alt="{{ forloop.counter }}">{% else %}# {% globalposition position=forloop.counter %}{% endif %}{% else %}{{ account }}{% endif %}</a></div></h3>
       </div>
       <div class="panel-body">
 	<div class="padding10"{% if account.verified > 0 and account.verified < 3%} data-content="{{ account.verified|verifiedToString }}" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover"{% endif %}>

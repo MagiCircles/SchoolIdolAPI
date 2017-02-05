@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Staff{% endblock %}
+
+{% block content %}
+<div class="container">
+  <br><br>
+  <h1 class="text-center">Staff Verifications with side stories to record <small>{{ good_verifications|length }}</small></h1>
+  <h4 class="text-center"><a href="?EN">EN</a> - <a href="?JP">JP</a></h4>
+  <br>
+  {% for verification in good_verifications %}
+  <div class="text-center">
+    <h3><a href="/user/{{ verification.account.owner.username }}/#{{ verification.account.id }}">
+	{{ verification.account }} - {{ verification.account.os }} - {{ verification.account.rank }}{% if verification.allow_during_events %} - Allow during events{% endif %}
+    </a></h3>
+    {% for owned in verification.good_cards %}
+    {% include 'ownedcard.html' with no_details=True card=owned %}
+    {% endfor %}
+    <br><br>
+    <a href="/staff/verification/{{ verification.id }}/" class="btn btn-Smile btn-lg">Verify</a>
+  </div>
+  <hr>
+  {% endfor %}
+</div>
+{% endblock %}

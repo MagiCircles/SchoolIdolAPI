@@ -82,7 +82,7 @@
 			{% if card|getattribute:valuenow %}
 			<div class="row">
 			  <div class="col-xs-1 text-right">
-			    <img src="http://i.schoolido.lu/static/{{ attribute }}.png" class="attribute" width="20px">
+			    <img src="{{ static_url }}static/{{ attribute }}.png" class="attribute" width="20px">
 			  </div>
 			  <div class="col-xs-2 text-{{ attribute }}">
 			    {{ card|getattribute:valuenow }}
@@ -385,7 +385,7 @@
 			    {% with transattribute=card.attribute|trans %}
 			    {% if card.ranking_attribute %}
 			    {% if card.ranking_attribute <= 3 %}
-			    <img src="http://i.schoolido.lu/static/medal{{ card.ranking_attribute }}.png" alt="{{ card.ranking_attribute }}" height="34">
+			    <img src="{{ static_url }}static/medal{{ card.ranking_attribute }}.png" alt="{{ card.ranking_attribute }}" height="34">
 			    {% else %}
 			    <b>#{{ card.ranking_attribute }}</b>
 			    {% endif %}
@@ -399,7 +399,7 @@
 			    {% if card.ranking_rarity %}
 			    <small>
 			    {% if card.ranking_rarity <= 3 %}
-			    <img src="http://i.schoolido.lu/static/medal{{ card.ranking_rarity }}.png" alt="{{ card.ranking_rarity }}" height="24">
+			    <img src="{{ static_url }}static/medal{{ card.ranking_rarity }}.png" alt="{{ card.ranking_rarity }}" height="24">
 			    {% else %}
 			    <b>#{{ card.ranking_rarity }}</b>
 			    {% endif %}
@@ -414,7 +414,7 @@
 			    {% if card.ranking_special %}
 			    <small>
 			    {% if card.ranking_special <= 3 %}
-			    <img src="http://i.schoolido.lu/static/medal{{ card.ranking_special }}.png" alt="{{ card.ranking_special }}" height="24">
+			    <img src="{{ static_url }}static/medal{{ card.ranking_special }}.png" alt="{{ card.ranking_special }}" height="24">
 			    {% else %}
 			    <b>#{{ card.ranking_special }}</b>
 			    {% endif %}
@@ -519,9 +519,12 @@
 	      {% endif %}
 	    </div> <!-- panel-body -->
 	    <div class="panel-footer clearfix">
+	      {% if user.is_authenticated and user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+	      <a href="/staff/editcard/{{ card.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit card" data-trigger="hover"><i class="flaticon-edit"></i></a>
+	      {% endif %}
 	      {% if not high_traffic %}
 	      {% for owned in card.owned_cards %}
-	      {% include "ownedCardOnBottomCard.html" with owned=owned owner_account=accounts|findModelId:owned.owner_account_id withcenter=True %}
+	      {% include "ownedCardOnBottomCard.html" with card=card owned=owned owner_account=accounts|findModelId:owned.owner_account_id withcenter=True %}
 	      {% endfor %}
 	      <a href="{% if user.is_authenticated %}{% if accounts %}#quickAddCard{% else %}/addaccount/{% endif %}{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 	      {% else %}

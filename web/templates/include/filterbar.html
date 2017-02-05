@@ -56,5 +56,18 @@
 	<button type="submit" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-block" data-form-loader="true">{% trans 'Go' %}</button>
 	<br><br><br><br><br>
       </div>
+{% if current == 'songs' %}
+    <br>
+    <hr>
+    <br>
+    <div class="text-center">
+      <a href="http://imgur.com/a/3MQBP" target="_blank">
+	<img src="{{ static_url }}special/treasure.png" width="200">
+      </a>
+    </div>
+    <br>
+    <hr>
+    <br>
+{% endif %}
     </form>
   </nav>

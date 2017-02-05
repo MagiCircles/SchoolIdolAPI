@@ -2,13 +2,13 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 
-{% block shareimage %}http://fr.gl/static/img/engildeby.gif{% endblock %}
-{% block shareimagetwitter %}http://fr.gl/static/img/engildeby.gif{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/engildeby.gif{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/engildeby.gif{% endblock %}
 
 {% block title %}{% trans 'About' %}{% endblock %}
 {% block js %}
-<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
-<script src="http://i.schoolido.lu/static/js/links.js"></script>
+<script src="{{ static_url }}static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="{{ static_url }}static/js/links.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -104,7 +104,7 @@
 	</p>
       </div>
       <div class="col-md-4">
-	<img src="http://fr.gl/static/img/engildeby.gif" class="img-circle img-responsive img-thumbnail">
+	<img src="{{ static_url }}static/engildeby.gif" class="img-circle img-responsive img-thumbnail">
       </div>
     </div>
 
@@ -120,7 +120,7 @@
 	  {% trans 'We reply faster if you send us an direct message on Twitter:' %}
 	</p>
 	<a href="https://twitter.com/schoolidolu" class="btn btn-Cool btn-xl">
-	  <img src="http://i.schoolido.lu/static/twitter.png" alt="twitter" />
+	  <img src="{{ static_url }}static/twitter.png" alt="twitter" />
 	  Twitter
 	</a>
       </div>
@@ -141,11 +141,11 @@
 	  {% trans 'You can also contact us with a private message on:' %}
 	</p>
 	<a href="https://www.reddit.com/user/db0company" class="btn btn-{{ btnColor }} btn-lg">
-	  <img src="http://i.schoolido.lu/static/reddit.png" alt="reddit" />
+	  <img src="{{ static_url }}static/reddit.png" alt="reddit" />
 	  Reddit
 	</a>
 	<a href="https://www.facebook.com/db0company" class="btn btn-{{ btnColor }} btn-lg">
-	  <img src="http://i.schoolido.lu/static/facebook.png" alt="facebook" />
+	  <img src="{{ static_url }}static/facebook.png" alt="facebook" />
 	  Facebook
 	</a>
       </div>
@@ -231,6 +231,15 @@
     <h1 class="margin50">{% trans 'Icon Credits' %}</h1>
     <div>Icons made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, <a href="http://www.flaticon.com/authors/yannick" title="Yannick">Yannick</a>, <a href="http://www.flaticon.com/authors/icomoon" title="Icomoon">Icomoon</a>, <a href="http://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a>, <a href="http://www.flaticon.com/authors/icons8" title="Icons8">Icons8</a>, <a href="http://www.flaticon.com/authors/catalin-fertu" title="Catalin Fertu">Catalin Fertu</a>, <a href="http://www.flaticon.com/authors/google" title="Google">Google</a>, <a href="http://www.flaticon.com/authors/sergiu-bagrin" title="Sergiu Bagrin">Sergiu Bagrin</a>, <a href="http://www.flaticon.com/authors/bogdan-rosu" title="Bogdan Rosu">Bogdan Rosu</a>, <a href="http://www.flaticon.com/authors/egor-rumyantsev" title="Egor Rumyantsev">Egor Rumyantsev</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></div>
 
+    <br>
+    <hr>
+    <br>
+    <div class="text-center">
+      <a href="http://imgur.com/a/kuDrD" target="_blank">
+	<img src="{{ static_url }}special/treasure.png" width="200">
+      </a>
+    </div>
+
     <hr class="margin50">
 
     <div id="staff"></div>
@@ -315,7 +324,7 @@
 	<p class="margin50">
 	  {% blocktrans %}If you're a developer and you would like to get the cards of the game in a convenient format, we provide a public REST API to get the cards, events, idols, and more!{% endblocktrans %}
 	  <div class="text-right">
-	    <a href="http://schoolido.lu/api/" class="btn btn-{{ btnColor }} btn-lg" target="_blank">
+	    <a href="/api/" class="btn btn-{{ btnColor }} btn-lg" target="_blank">
 	      {% trans 'Get Started' %}
 	    </a>
 	  </div>
@@ -328,107 +337,29 @@
     <div id="donate"></div>
     <br><br>
     <h1 class="text-main">{% trans 'Donate' %} <small><i class="flaticon-heart"></i></h1>
-    <div class="row text-center">
-      <div class="col-md-9">
-	<p style="font-size: 30px;" class="text-{{ btnColor }}"><br>{% trans 'If you like the website, please consider donating. This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
-	<br><br><a href="#donations" class="btn btn-{{ btnColor }} btn-xl page-scroll">{% trans 'Donate' %}</a><br>
-	<a href="#donators" class="btn btn-link btn-lg page-scroll">{% trans 'Donators' %}</a> - <a href="#about" class="page-scroll btn btn-link btn-lg">{% trans 'About us' %}</a> - <a class="btn btn-link btn-lg" target="_blank" href="https://docs.google.com/spreadsheets/d/18dwZyE37SKFRXDG3hWd7O7JpQv41CSINg_904S96T1M/pubhtml?gid=753111293&single=true">{% trans 'Budget' %}</a>
+    <div class="row">
+      <div class="col-md-9 text-center ">
+	<p class="big-text" style="padding-top: 30px; font-size: 30px;"><br>{% trans 'If you like the website, please consider' %} {% trans 'donating' %}. {% trans 'This will help us cover the costs of the servers and allow us to keep it running for free and without ads.' %}</p>
       </div>
       <div class="col-md-3">
-	<img src="/static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
+	<img src="{{ static_url }}static/honoka.png" class="img-responsive" style="border-bottom-right-radius: 50%; border-bottom-left-radius: 50%">
       </div>
     </div>
-
-    <hr class="margin50">
-
-    <div id="donations"></div>
     <br><br>
-
-    {% for donation in donations %}
-    {% if donation.price == 1 %}
-    <div class="row text-center">
-      <div class="col-lg-5">
-	{% elif donation.price == 5 %}
-      </div>
-      <div class="col-lg-2">
-      </div>
-      <div class="col-lg-5">
-	{% elif donation.price == 10 %}
-      </div>
-    </div>
-    {% endif %}
-    <br><br>
-    <div class="row">
-      <div class="col-sm-8 text-left">
-	<h2 id="donation{{ donation.price }}"><strong>${{ donation.price }}</strong> {% trans 'Donation' %}</h2>
-      </div>
-      <div class="col-sm-4 text-right">
-	<br>
-	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-	  <input type="hidden" name="cmd" value="_s-xclick">
-	  <input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
-	  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+    <div class="text-center">
+      {% if show_paypal %}
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="text-center">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="hosted_button_id" value="VJPSFRC2ZQSKS">
+	<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 	<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
       </form>
-    </div>
-  </div>
-  <br><br>
-  <div class="row donation text-center">
-    {% if donation.thanks %}
-    <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
-      {% if donation.homepage_link %}
-      <img src="/static/hearthome.png" class="img-responsive">
-      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to the HOMEPAGE of School Idol Tomodachi!' %}
-      {% elif donation.link %}
-      <img src="/static/heartlink.png" class="img-responsive">
-      {% trans 'Your name, your profile picture, a link to your profile, and a link to whatever you would like to advertise (your Twitter, Tumblr, Twitch or any other website!) will be added to this page.' %}
       {% else %}
-      <img src="/static/heart.png" class="img-responsive">
-      {% trans 'Your name and a link to your profile will be added to this page.' %}
+      <a href="https://www.patreon.com/db0company" target="_blank">
+	<img src="//i.cinderella.pro/static/img/patreon.png" alt="Patreon" style="max-width: 100%">
+      </a>
       {% endif %}
     </div>
-    {% endif %}
-    {% if donation.status %}
-    <div class="col-md-{% if donation.price == 500 %}3{% else %}{{ donation.col_size }}{% endif %}">
-      <span class="status" style="color: {{ donation.status|userStatusToColor }}"><i class="flaticon-heart"></i></span>
-      {% with donation.status|userStatusToString as status %}
-      <p>{% blocktrans %}You're an{% endblocktrans %} {{ status }}.</p>
-      {% endwith %}
-      {% with donation.status|userStatusToColorString as color %}
-      <p>{% blocktrans %}With this special status, a lovely {{ color }} heart will be displayed next to your profile picture on your profile and everywhere it appears on the website.{% endblocktrans %}</p>
-      {% endwith %}
-    </div>
-    {% endif %}
-    {% if donation.postcard %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/postcard.png" class="img-responsive">
-      {% trans 'We will send you a cute postcard signed by the 2 developers :)' %}
-    </div>
-    {% endif %}
-    {% if donation.box %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/box.png" class="img-responsive">
-      {% trans 'We will send you a very cute hand-crafted box with 10+1 envelopes that will contain random paper cards from the game!' %}
-    </div>
-    {% endif %}
-    {% if donation.feature %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/feature.png" class="img-responsive">
-      {% trans 'We will discuss then implement a feature you would like to see on the website. You decide what you want, and we will make it come true!' %}
-      <small>{% trans 'Note that it has to be in the range of our abilities and in accordance with the spirit of the website ^_^' %}</small>
-    </div>
-    {% endif %}
-    {% if donation.homepage_character %}
-    <div class="col-md-{{ donation.col_size }}">
-      <img src="/static/homepagecharacter.png" class="img-responsive">
-      {% with donation.status|userStatusToString as status %}
-      <p>{% blocktrans %}You're an{% endblocktrans %} {{ status }}.</p>
-      {% endwith %}
-      <p>{% blocktrans %}You decide who will be the idol from μ's shown by default on top of the homepage.{% endblocktrans %}</p>
-    </div>
-    {% endif %}
-  </div>
-  {% endfor %}
 
     <hr class="margin50">
 
@@ -538,19 +469,19 @@
     <div class="row">
       <div class="col-md-1"></div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/4NHR4Bu.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_4NHR4Bu.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/4NHR4Bu.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_4NHR4Bu.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/TMVsQgs.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_TMVsQgs.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/TMVsQgs.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_TMVsQgs.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/jciG0GC.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_jciG0GC.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/jciG0GC.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_jciG0GC.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/HIVSyO0.png" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_HIVSyO0.png" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/HIVSyO0.png" target="_blank"><img src="{{ static_url }}static/postcards/small_HIVSyO0.png" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-2">
-	<a href="http://i.schoolido.lu/static/postcards/4Rwo3Bx.jpg" target="_blank"><img src="http://i.schoolido.lu/static/postcards/small_4Rwo3Bx.jpg" alt="postcard preview" style="width: 100%"></a>
+	<a href="{{ static_url }}static/postcards/4Rwo3Bx.jpg" target="_blank"><img src="{{ static_url }}static/postcards/small_4Rwo3Bx.jpg" alt="postcard preview" style="width: 100%"></a>
       </div>
       <div class="col-md-1"></div>
     </div>

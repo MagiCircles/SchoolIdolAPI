@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.conf import settings
 from django_prometheus.models import ExportModelOperationsMixin
 from api.raw import raw_information
-from web.utils import randomString
+from web.utils import randomString, singlecardurl
 import hashlib, urllib
 import csv
 import datetime
@@ -249,15 +249,15 @@ LINK_URLS = {
 }
 
 LINK_IMAGES = {
-    'reddit': 'http://i.schoolido.lu/static/reddit.png',
-    'twitter': 'http://i.schoolido.lu/static/twitter.png',
-    'facebook': 'http://i.schoolido.lu/static/facebook.png',
-    'instagram': 'http://i.schoolido.lu/static/instagram.png',
-    'line': 'http://i.schoolido.lu/static/line.png',
-    'twitch': 'http://i.schoolido.lu/static/twitch.png',
-    'mal': 'http://i.schoolido.lu/static/mal.png',
-    'steam': 'http://i.schoolido.lu/static/steam.png',
-    'tumblr': 'http://i.schoolido.lu/static/tumblr.png',
+    'reddit': settings.STATIC_FILES_URL + 'static/reddit.png',
+    'twitter': settings.STATIC_FILES_URL + 'static/twitter.png',
+    'facebook': settings.STATIC_FILES_URL + 'static/facebook.png',
+    'instagram': settings.STATIC_FILES_URL + 'static/instagram.png',
+    'line': settings.STATIC_FILES_URL + 'static/line.png',
+    'twitch': settings.STATIC_FILES_URL + 'static/twitch.png',
+    'mal': settings.STATIC_FILES_URL + 'static/mal.png',
+    'steam': settings.STATIC_FILES_URL + 'static/steam.png',
+    'tumblr': settings.STATIC_FILES_URL + 'static/tumblr.png',
 }
 
 LINK_RELEVANCE_CHOICES = (
@@ -332,6 +332,7 @@ OWNEDCARD_ORIGIN_EVENT = 3
 OWNEDCARD_ORIGIN_SHOP = 4
 OWNEDCARD_ORIGIN_TICKET = 5
 OWNEDCARD_ORIGIN_LIVE = 6
+OWNEDCARD_ORIGIN_LBONUS = 7
 
 OWNEDCARD_ORIGIN_CHOICES = (
     (OWNEDCARD_ORIGIN_10, _('Honor Scouting (10+1, 50 love gems)')),
@@ -341,6 +342,7 @@ OWNEDCARD_ORIGIN_CHOICES = (
     (OWNEDCARD_ORIGIN_EVENT, _('Event Reward')),
     (OWNEDCARD_ORIGIN_SHOP, _('Sticker Shop')),
     (OWNEDCARD_ORIGIN_LIVE, _('At the end of a live')),
+    (OWNEDCARD_ORIGIN_LBONUS, _('Login Bonus')),
 )
 
 def triviaScoreToSentence(score):
@@ -428,6 +430,22 @@ def japanese_attribute(attribute):
         return u'クール'
     return u'❤'
 
+# Take a dictionary that contains id and firstname
+cardsImagesToName = {
+    'card_image': lambda info: u'{id}{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'card_idolized_image': lambda info: u'{id}idolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_card_image': lambda info: u'{id}{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_card_idolized_image': lambda info: u'{id}idolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'round_card_image': lambda info: u'{id}Round{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'round_card_idolized_image': lambda info: u'{id}RoundIdolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_round_card_image': lambda info: u'{id}Round{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'english_round_card_idolized_image': lambda info: u'{id}RoundIdolized{firstname}.png'.format(id=info['id'], firstname=info['firstname']),
+    'transparent_image': lambda info: u'{id}Transparent.png'.format(id=info['id']),
+    'transparent_idolized_image': lambda info: u'{id}idolizedTransparent.png'.format(id=info['id']),
+    'clean_ur': lambda info: u'{id}{firstname}CleanUR.png'.format(id=info['id'], firstname=info['firstname']),
+    'clean_ur_idolized': lambda info: u'{id}{firstname}CleanURIdolized.png'.format(id=info['id'], firstname=info['firstname']),
+}
+
 def event_EN_upload_to(instance, filename):
     name, extension = os.path.splitext(filename)
     return 'events/EN/' + (instance.english_name if instance.english_name else instance.japanese_name) + randomString(16) + extension
@@ -444,10 +462,14 @@ class Event(ExportModelOperationsMixin('Event'), models.Model):
     english_t1_rank = models.PositiveIntegerField(null=True, blank=True)
     english_t2_points = models.PositiveIntegerField(null=True, blank=True)
     english_t2_rank = models.PositiveIntegerField(null=True, blank=True)
+    english_t3_points = models.PositiveIntegerField(null=True, blank=True)
+    english_t3_rank = models.PositiveIntegerField(null=True, blank=True)
     japanese_t1_points = models.PositiveIntegerField(null=True, blank=True)
     japanese_t1_rank = models.PositiveIntegerField(null=True, blank=True)
     japanese_t2_points = models.PositiveIntegerField(null=True, blank=True)
     japanese_t2_rank = models.PositiveIntegerField(null=True, blank=True)
+    japanese_t3_points = models.PositiveIntegerField(null=True, blank=True)
+    japanese_t3_rank = models.PositiveIntegerField(null=True, blank=True)
     note = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to='events/', null=True, blank=True)
     english_image = models.ImageField(upload_to=event_EN_upload_to, null=True, blank=True)
@@ -526,6 +548,15 @@ class Idol(ExportModelOperationsMixin('Idol'), models.Model):
 
 admin.site.register(Idol)
 
+# minimum, maximum, promo
+SKILL_SLOTS_MINMAX = {
+    'N': [0, 1, 0],
+    'R': [1, 2, 1],
+    'SR': [2, 4, 1],
+    'SSR': [3, 6, 2],
+    'UR': [4, 8, 2],
+}
+
 class Card(ExportModelOperationsMixin('Card'), models.Model):
     id = models.PositiveIntegerField(unique=True, help_text="Number of the card in the album", primary_key=3)
     game_id = models.PositiveIntegerField(unique=True, null=True)
@@ -600,6 +631,18 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     ur_pair_attribute = models.CharField(choices=ATTRIBUTE_CHOICES, max_length=6, blank=True, null=True)
 
     @property
+    def min_skill_slot(self):
+        if self.is_promo:
+            return SKILL_SLOTS_MINMAX[self.rarity][2]
+        return SKILL_SLOTS_MINMAX[self.rarity][0]
+
+    @property
+    def max_skill_slot(self):
+        if self.is_promo:
+            return SKILL_SLOTS_MINMAX[self.rarity][2]
+        return SKILL_SLOTS_MINMAX[self.rarity][1]
+
+    @property
     def short_name(self):
         return self.name.split(' ')[-1]
 
@@ -632,6 +675,10 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
         if not self._skill_up_cards:
             return []
         return [(int(s.split('-')[0]), s.split('-')[-1]) for s in self._skill_up_cards.split(',')]
+
+    @property
+    def url(self):
+        return singlecardurl(self)
 
 admin.site.register(Card)
 
@@ -729,7 +776,9 @@ class OwnedCard(ExportModelOperationsMixin('OwnedCard'), models.Model):
     max_level = models.BooleanField(_("Max Leveled"), default=False)
     max_bond = models.BooleanField(_("Max Bonded (Kizuna)"), default=False)
     skill = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Level'), ')'), default=1, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(1)])
+    skill_slots = models.PositiveIntegerField(string_concat(_('Skill'), ' (', _('Slots'), ')'), default=0, validators=[validators.MaxValueValidator(8), validators.MinValueValidator(0)])
     origin = models.PositiveIntegerField(choices=OWNEDCARD_ORIGIN_CHOICES, null=True)
+    prefer_unidolized_image = models.BooleanField(_("Prefer unidolized card image"), default=False)
 
     @property
     def owner(self):
@@ -837,10 +886,10 @@ class UserPreferences(ExportModelOperationsMixin('UserPreferences'), models.Mode
     invalid_email = models.BooleanField(default=False)
 
     def avatar(self, size):
-        default = 'https://i.schoolido.lu/static/kotori.jpg'
+        default = settings.STATIC_FILES_URL + 'static/kotori.jpg'
         if self.twitter:
-            default = 'http://schoolido.lu/avatar/twitter/' + self.twitter
-        return ("http://www.gravatar.com/avatar/"
+            default = settings.STATIC_FILES_URL + 'avatar/twitter/' + self.twitter
+        return ("//www.gravatar.com/avatar/"
                 + hashlib.md5(self.user.email.lower()).hexdigest()
                 + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 
@@ -914,6 +963,13 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     account_name = models.CharField(max_length=100)
     right_picture_link = models.CharField(max_length=200, blank=True, null=True)
     right_picture = models.CharField(max_length=100, blank=True, null=True)
+
+    @property
+    def owner(self):
+        """
+        It's recommended to use select_related with account and account__owner when accessing this
+        """
+        return self.account.owner
 
     def utf_8_encoder(self, unicode_csv_data):
         for line in unicode_csv_data:

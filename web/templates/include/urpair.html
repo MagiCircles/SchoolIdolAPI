@@ -1,4 +1,0 @@
-{% load imageurl %}
-{% load mod %}
-{% load choicesToString %}
-{% if not nolink %}<a href="{{ left|singlecardurl }}" target="_blank">{% endif %}<img src="{% if idolized %}{% cleanurl card=left idolized=True small=small|default_if_none:True %}{% else %}{% cleanurl card=left idolized=False small=small|default_if_none:True %}{% endif %}" alt="{{ left }}">{% if not nolink %}</a>{% endif %}{% if right %}{% if not nolink %}<a href="{{ right|singlecardurl }}" target="_blank">{% endif %}<img src="{% if idolized %}{% cleanurl card=right idolized=True small=small|default_if_none:True %}{% else %}{% cleanurl card=right idolized=False small=small|default_if_none:True %}{% endif %}" alt="{{ right }}">{% if not nolink %}</a>{% endif %}{% else %}<span class="question" style="color: {{ left.name|idolToColor }}">?</span>{% endif %}

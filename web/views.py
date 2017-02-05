@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
 import math
+from copy import copy
 from django.shortcuts import render, redirect, get_object_or_404
 from django import template
 from django.http import HttpResponse, Http404
@@ -27,8 +28,10 @@ from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from web import bouncy
 from api import models, raw
+from api.management.commands.update_cards_rankings import update_cards_rankings
+from api.management.commands.update_cards_join_cache import update_cards_join_cache
 from contest import models as contest_models
-from web import forms, donations, transfer_code, raw as web_raw
+from web import forms, transfer_code, raw as web_raw
 from web.links import links as links_list
 from web.templatetags.choicesToString import skillsIcons
 from web.templatetags.imageurl import ownedcardimageurl, eventimageurl, _imageurl
@@ -41,6 +44,19 @@ import re
 import json
 import operator
 
+def minimumContext(request):
+    return {
+        'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
+        'debug': settings.DEBUG,
+        'static_url': settings.STATIC_FILES_URL,
+        'static_sharing_url': settings.STATIC_FILES_SHARING_URL,
+        'btnColor': 'Smile',
+        'interfaceColor': 'default',
+    }
+
+def server_error(request):
+    return render(request, '500.html', minimumContext(request))
+
 def contextAccounts(request):
     accounts = request.user.accounts_set.all().order_by('-rank')
     return accounts
@@ -49,10 +65,8 @@ def globalContext(request):
     context ={
         'hide_back_button': False,
         'show_filter_button': False,
-        'current_url': request.get_full_path() + ('?' if request.get_full_path()[-1] == '/' else '&'),
         'interfaceColor': 'default',
         'btnColor': 'Smile',
-        'debug': settings.DEBUG,
         'hidenavbar': 'hidenavbar' in request.GET,
         'current_contests': settings.CURRENT_CONTESTS,
         'last_update': settings.GENERATED_DATE,
@@ -115,8 +129,8 @@ def onlyJP(context):
     return True
 
 def nopreferencesAvatar(user, size):
-    default = 'https://i.schoolido.lu/static/kotori.jpg'
-    return ("http://www.gravatar.com/avatar/"
+    default = settings.STATIC_FILES_URL + 'static/kotori.jpg'
+    return ("//www.gravatar.com/avatar/"
             + hashlib.md5(user.email.lower()).hexdigest()
             + "?" + urllib.urlencode({'d': default, 's': str(size)}))
 
@@ -148,13 +162,7 @@ def pushNotification_FOLLOW(user, follower, preferences=None):
     return pushNotification(user, models.NOTIFICATION_FOLLOW, [follower.username], preferences=preferences)
 
 def _pushActivity_cacheaccount(account, account_owner=None):
-    if not account_owner:
-        account_owner = account.owner
-    return {
-        'account_link': '/user/' + account_owner.username + '/#' + str(account.id),
-        'account_picture': account_owner.preferences.avatar(size=100),
-        'account_name': unicode(account),
-    }
+    return activity_cacheaccount(account, account_owner=account_owner)
 
 def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, message_data=None, right_picture=None,
                  # Prefetch:
@@ -272,9 +280,34 @@ def index(request):
     """
     context = globalContext(request)
 
+    context['important_news'] = []
+    # context['important_news'] = [
+    #     {
+    #         'url': '',
+    #         'image': '',
+    #         'name': '',
+    #     },
+    # ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
+    context['current_en']['slide_position'] = len(context['current_contests'])
+    context['current_jp']['slide_position'] = len(context['current_contests']) + 1
     context['trivia_slide_position'] = len(context['current_contests']) + 2
+    context['memory_slide_position'] = len(context['current_contests']) + 3
+    if context['important_news']:
+        pad = len(context['important_news'])
+        for i, news in enumerate(context['important_news']):
+            news['slide_position'] = i
+        for i, contest in enumerate(context['current_contests']):
+            contest['slide_position'] = i + pad
+        context['current_en']['slide_position'] += pad
+        context['current_jp']['slide_position'] += pad
+        context['trivia_slide_position'] += pad
+        context['memory_slide_position'] += pad
+    else:
+        for i, contest in enumerate(context['current_contests']):
+            contest['slide_position'] = i
+
     context['total_donators'] = settings.TOTAL_DONATORS
 
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
@@ -396,34 +429,36 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
                                      | Q(event__japanese_name__icontains=request_get_copy['search'])
                 )
         if 'name' in request_get_copy and request_get_copy['name']:
-            cards = cards.filter(name__exact=request_get_copy['name'])
-            request_get['name'] = request_get_copy['name']
+            names = request_get_copy['name'].split(',')
+            cards = cards.filter(name__in=names)
+            if len(names) == 1:
+                request_get['name'] = names[0]
         if 'collection' in request_get_copy and request_get_copy['collection']:
-            cards = cards.filter(japanese_collection__exact=request_get_copy['collection'])
+            cards = cards.filter(japanese_collection__in=request_get_copy['collection'].split(','))
             request_get['collection'] = request_get_copy['collection']
         if 'translated_collection' in request_get_copy and request_get_copy['translated_collection']:
-            cards = cards.filter(translated_collection__exact=request_get_copy['translated_collection'])
+            cards = cards.filter(translated_collection__in=request_get_copy['translated_collection'].split(','))
             request_get['translated_collection'] = request_get_copy['translated_collection']
         if 'sub_unit' in request_get_copy and request_get_copy['sub_unit']:
-            cards = cards.filter(idol__sub_unit__exact=request_get_copy['sub_unit'])
+            cards = cards.filter(idol__sub_unit__in=request_get_copy['sub_unit'].split(','))
             request_get['sub_unit'] = request_get_copy['sub_unit']
         if 'main_unit' in request_get_copy and request_get_copy['main_unit']:
-            cards = cards.filter(idol__main_unit__exact=request_get_copy['main_unit'])
+            cards = cards.filter(idol__main_unit__in=request_get_copy['main_unit'].split(','))
             request_get['main_unit'] = request_get_copy['main_unit']
         if 'idol_year' in request_get_copy and request_get_copy['idol_year']:
-            cards = cards.filter(idol__year__exact=request_get_copy['idol_year'])
+            cards = cards.filter(idol__year__in=request_get_copy['idol_year'].split(','))
             request_get['idol_year'] = request_get_copy['idol_year']
         if 'idol_school' in request_get_copy and request_get_copy['idol_school']:
-            cards = cards.filter(idol__school__exact=request_get_copy['idol_school'])
+            cards = cards.filter(idol__school__in=request_get_copy['idol_school'].split(','))
             request_get['idol_school'] = request_get_copy['idol_school']
         if 'rarity' in request_get_copy and request_get_copy['rarity']:
-            cards = cards.filter(rarity__exact=request_get_copy['rarity'])
+            cards = cards.filter(rarity__in=request_get_copy['rarity'].split(','))
             request_get['rarity'] = request_get_copy['rarity']
         if 'attribute' in request_get_copy and request_get_copy['attribute']:
-            cards = cards.filter(attribute__exact=request_get_copy['attribute'])
+            cards = cards.filter(attribute__in=request_get_copy['attribute'].split(','))
             request_get['attribute'] = request_get_copy['attribute']
         if 'skill' in request_get_copy and request_get_copy['skill']:
-            cards = cards.filter(skill__exact=request_get_copy['skill'])
+            cards = cards.filter(skill__in=request_get_copy['skill'].split(','))
             request_get['skill'] = request_get_copy['skill']
 
         if 'ids' in request_get_copy and request_get_copy['ids']:
@@ -688,7 +723,7 @@ def idol(request, idol):
 
 def _addaccount_savecenter(account):
     if account.starter:
-        center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck')
+        center = models.OwnedCard.objects.create(card=account.starter, owner_account=account, stored='Deck', skill_slots=account.starter.min_skill_slot)
         account.center = center
         account.center_card_transparent_image = account.center.card.transparent_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.transparent_image
         account.center_card_round_image = account.center.card.round_card_idolized_image if account.center.idolized or account.center.card.is_special else account.center.card.round_card_image
@@ -857,6 +892,8 @@ def profile(request, username):
             # Set stats
             try: account.deck_total_sr = (s[2] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_sr = 0
+            try: account.deck_total_ssr = (s[2] for s in deck_stats if s[0] == 'SSR' and s[1] == account.id).next()
+            except StopIteration: account.deck_total_ssr = 0
             try: account.deck_total_ur = (s[2] for s in deck_stats if s[0] == 'UR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_ur = 0
             account.deck_total = sum([s[2] for s in deck_stats if s[1] == account.id])
@@ -1075,7 +1112,9 @@ def ajaxaddcard(request):
                                  owner_account=account,
                                  stored='Deck',
                                  skill=1,
-                                 idolized=card.is_promo)
+                                 idolized=card.is_promo,
+                                 skill_slots=card.min_skill_slot,
+    )
     ownedcard.save()
     if not settings.HIGH_TRAFFIC:
         pushActivity(message="Added a card",
@@ -1085,6 +1124,7 @@ def ajaxaddcard(request):
                      account=account,
                      account_owner=request.user)
     context = {
+        'card': card,
         'owned': ownedcard,
         'owner_account': account,
         'withcenter': True,
@@ -1163,6 +1203,7 @@ def ajaxeditcard(request, ownedcard):
                 pushActivity("Update card", ownedcard=owned_card,
                              # prefetch
                              account_owner=request.user)
+            context['card'] = owned_card.card
             context['owned'] = owned_card
             context['withcenter'] = True
             context['owner_account'] = owned_card.owner_account
@@ -1890,7 +1931,7 @@ def events(request):
 
     context['filter_form'] = forms.FilterEventForm(form_data, request=request)
 
-    queryset = queryset.order_by(('' if 'reverse_order' in request.GET and request.GET['reverse_order'] else '-') + 'end')
+    queryset = queryset.order_by(('' if 'reverse_order' in request.GET and request.GET['reverse_order'] else '-') + ('english_end' if form_data.get('is_world', False) else 'end'))
 
     context['events'] = queryset
     context['show_english_banners'] = not onlyJP(context)
@@ -1939,7 +1980,7 @@ def event(request, event):
         context['event_links_card'] = list_cards[-1]
     else:
         context['event_links_card'] = {
-            'transparent_idolized_image': 'http://i.schoolido.lu/cards/transparent/886idolizedTransparent.png',
+            'transparent_idolized_image': settings.STATIC_FILES_URL + 'cards/transparent/886idolizedTransparent.png',
             'raw_url': '/cards/886/SR-Minami-Kotori-Idol-Outfit-Smile/',
         }
     total_elements = 0
@@ -1978,7 +2019,12 @@ def eventparticipations(request, event):
     context = globalContext(request)
     event = get_object_or_404(models.Event, japanese_name=event)
     context['your_participations'] = event.participations.filter(account__owner=request.user).select_related('account')
-    if 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name or 'Challenge Festival' in event.japanese_name:
+    # All JP event types now have song score ranking
+    if event.english_name is None or event.english_name == "":
+        context['with_song'] = True
+    # If this event also exists on EN we can't be sure which version the user is editing, so disable the song score for all non-token events for now
+    # When EN gets song score rankings, all of this code can be deleted and replaced with  "context['with_song'] = True"
+    elif 'Score Match' in event.japanese_name or 'Medley Festival' in event.japanese_name or 'Challenge Festival' in event.japanese_name:
         context['with_song'] = False
     else:
         context['with_song'] = True
@@ -2096,7 +2142,7 @@ def avatar_facebook(request, username):
 
 def aboutview(request):
     context = globalContext(request)
-    context['donations'] = donations.donations
+    context['show_paypal'] = 'show_paypal' in request.GET
     if not settings.HIGH_TRAFFIC:
         users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
         users = users.annotate(verifications_done=Count('verificationsdone'))
@@ -2122,6 +2168,41 @@ def aboutview(request):
             if contest.result_image_by and contest.result_image:
                 context['graphic_designers'].append((_imageurl(contest.result_image), contest.result_image_by.username))
     return render(request, 'about.html', context)
+
+def staff_verifications_side_stories(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
+        raise PermissionDenied()
+    def card_to_importance(card):
+        # In JP, we're interested in recent cards first. In EN, we're interested in older cards first.
+        multiply = card.id if 'JP' in request.GET else settings.CARDS_INFO['total_cards'] - card.id
+        # EN, promo, N and event cards are not as important
+        if 'JP' not in request.GET and (card.is_promo or card.rarity == 'N' or card.event_id): return 0
+        # JP, only N are not as important
+        elif 'JP' in request.GET and card.rarity == 'N': return 0
+        elif card.rarity == 'UR': return 4 * multiply
+        elif card.rarity == 'SSR': return 3 * multiply
+        elif card.rarity == 'SR': return 2 * multiply
+        return 1 * multiply
+    context = globalContext(request)
+    context['good_verifications'] = []
+    if 'JP' in request.GET:
+        missing = [c.id for c in models.Card.objects.filter(is_special=False, video_story__isnull=True, japanese_video_story__isnull=True)]
+    else:
+        missing = [c.id for c in models.Card.objects.filter(japan_only=False, is_special=False, video_story__isnull=True)]
+    for v in models.VerificationRequest.objects.filter(account__ownedcards__card__id__in=missing, verification=2, status=1, account__language=('JP' if 'JP' in request.GET else 'EN')).order_by('account__rank').values('id').distinct():
+        v = models.VerificationRequest.objects.select_related('account', 'account__owner').get(id=v['id'])
+        oc = v.account.ownedcards.filter(card__id__in=missing, stored__in=['Deck', 'Album'], idolized=True).select_related('card')
+        if 'all' not in request.GET:
+            oc = oc.exclude(card__rarity='N').filter(card__is_promo=False)
+        if oc:
+            # remove duplicates
+            tmpdict = {}
+            for o in oc:
+                tmpdict[o.card.id] = o
+            v.good_cards = sorted(tmpdict.values(), key=lambda o: card_to_importance(o.card), reverse=True)
+            context['good_verifications'].append(v)
+    context['good_verifications'] = sorted(context['good_verifications'], key=lambda v: sum([card_to_importance(oc.card) for oc in v.good_cards]), reverse=True)
+    return render(request, 'staff_verifications_side_stories.html', context)
 
 def staff_verifications(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_verification_permissions:
@@ -2253,33 +2334,30 @@ def staff_database(request):
     if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
         raise PermissionDenied()
     context = globalContext(request)
-    if 'englishEvent' in request.POST:
-        context['english_event_form'] = forms.StaffEnglishBannerForm(request.POST, request.FILES)
-        if context['english_event_form'].is_valid():
-            event = context['english_event_form'].cleaned_data['event']
-            image = context['english_event_form'].cleaned_data['english_image']
-            filename = image.name
-            image = shrinkImageFromData(image.read())
-            event.english_image.save(models.event_EN_upload_to(event, filename), image)
-            context['uploaded_event'] = event
-    else:
-        context['english_event_form'] = forms.StaffEnglishBannerForm()
     if 'add_card' in request.POST:
         context['form_card'] = forms.StaffCard(request.POST, request.FILES)
         if context['form_card'].is_valid():
             context['added_card'] = context['form_card'].save()
+            update_cards_rankings({})
+            update_cards_join_cache(card_ids=[context['added_card'].id])
+        else:
+            context['card_has_error'] = True
     else:
         context['form_card'] = forms.StaffCard()
     if 'add_event' in request.POST:
         context['form_event'] = forms.StaffEvent(request.POST, request.FILES)
         if context['form_event'].is_valid():
             context['added_event'] = context['form_event'].save()
+        else:
+            context['event_has_error'] = True
     else:
         context['form_event'] = forms.StaffEvent()
     if 'add_song' in request.POST:
         context['form_song'] = forms.StaffSong(request.POST, request.FILES)
         if context['form_song'].is_valid():
             context['added_song'] = context['form_song'].save()
+        else:
+            context['song_has_error'] = True
     else:
         context['form_song'] = forms.StaffSong()
     return render(request, 'staff_database.html', context)
@@ -2448,6 +2526,53 @@ def ajaxreport(request, report_id, status):
             report.save()
     return HttpResponse(status)
 
+def staff_editcard(request, id):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    card = get_object_or_404(models.Card, id=id)
+    if 'editcard' in request.POST:
+        context['form'] = forms.StaffCard(request.POST, request.FILES, instance=card)
+        if context['form'].is_valid():
+            card = context['form'].save()
+            update_cards_rankings({})
+            update_cards_join_cache(card_ids=[card.id])
+            return redirect(singlecardurl(card))
+    else:
+        context['form'] = forms.StaffCard(instance=card)
+    context['card'] = card
+    return render(request, 'staff_editcard.html', context)
+
+def staff_editevent(request, id):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    event = get_object_or_404(models.Event, id=id)
+    if 'editevent' in request.POST:
+        context['form'] = forms.StaffEvent(request.POST, request.FILES, instance=event)
+        if context['form'].is_valid():
+            event = context['form'].save()
+            return redirect(u'/events/{}/'.format(event.japanese_name))
+    else:
+        context['form'] = forms.StaffEvent(instance=event)
+    context['event'] = event
+    return render(request, 'staff_editevent.html', context)
+
+def staff_editsong(request, id):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff or not request.user.preferences.has_permission('DATABASE_MAINTAINER'):
+        raise PermissionDenied()
+    context = globalContext(request)
+    song = get_object_or_404(models.Song, id=id)
+    if 'editsong' in request.POST:
+        context['form'] = forms.StaffSong(request.POST, request.FILES, instance=song)
+        if context['form'].is_valid():
+            song = context['form'].save()
+            return redirect(u'/songs/{}/'.format(song.name))
+    else:
+        context['form'] = forms.StaffSong(instance=song)
+    context['song'] = song
+    return render(request, 'staff_editsong.html', context)
+
 def songs(request, song=None, ajax=False):
     page = 0
     context = globalContext(request)
@@ -2548,6 +2673,12 @@ def trivia(request):
     context['total_cards'] = settings.CARDS_INFO['total_cards']
     return render(request, 'trivia.html', context)
 
+def memory(request):
+    context = globalContext(request)
+    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    context['total_cards'] = settings.CARDS_INFO['total_cards']
+    return render(request, 'memory.html', context)
+
 @csrf_exempt
 def sharetrivia(request):
     if request.method == 'POST' and 'score' in request.POST:
@@ -2569,30 +2700,66 @@ def urpairs(request):
     - Cards alone
     """
     context = globalContext(request)
-    cards = models.Card.objects.filter(ur_pair__isnull=False).order_by('idol__name', 'ur_pair__idol__name').select_related('ur_pair')
-    idols = sorted([name for (name, idol) in raw_information.items() if idol['main_unit'] != 'Aqours'])
-    data = OrderedDict()
-    for card in cards:
-        if card.name not in data:
-            show_idolized = False
-            data[card.name] = OrderedDict()
-            for idol_name in idols:
-                if card.name == idol_name:
-                    show_idolized = True
-                data[card.name][idol_name] = [None, show_idolized]
-        data[card.name][card.ur_pair.name][0] = card
-    alone_cards = models.Card.objects.filter(rarity='UR', is_promo=False, is_special=False, ur_pair__isnull=True).exclude(translated_collection='Initial')
-    for c in alone_cards:
-        for idol, card in data[c.name].items():
-            if card[0] is None and idol != c.name:
-                data[c.name][idol][0] = c
-        for idol_name in idols:
-            if data[idol_name][c.name][0] is None and idol_name != c.name:
-                data[idol_name][c.name][0] = c
+    # Get idol names
+    aqours_names = sorted(name for name, info in raw.raw_information.items() if info['main_unit'] == 'Aqours')
+    us_names = sorted(name for name, info in raw.raw_information.items() if info['main_unit'] == 'μ\'s')
+    # Initialize empty data set
+    collections = OrderedDict([
+            ('Aqours', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('2nd μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
+            ('1st μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
+            ('Aqours SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('μ\'s SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
+            ])
+    # Get UR cards
+    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False).exclude(translated_collection='Initial').order_by('name', 'ur_pair__name').select_related('ur_pair')
 
+    def _add_ur_pair_in_collection(card, collection_name):
+        if card.ur_pair:
+            idolized = card.name < card.ur_pair.name
+            card.idolized = idolized
+            card.ur_pair.idolized = idolized
+            collections[collection_name][card.name][card.ur_pair.name] = [card.ur_pair, card] if (card.ur_pair_idolized_reverse if idolized else card.ur_pair_reverse) else [card, card.ur_pair]
+        else:
+            # Add card without pair where it could be - horizontal
+            card.idolized = False
+            for idol_name, current_pair in collections[collection_name][card.name].items():
+                if idol_name == card.name:
+                    card = copy(card)
+                    card.idolized = True
+                elif current_pair == [None, None]:
+                    collections[collection_name][card.name][idol_name] = [None, card] if (card.ur_pair_idolized_reverse if card.idolized else card.ur_pair_reverse) else [card, None]
+            # Add card without pair where it could be - vertical
+            card = copy(card)
+            card.idolized = True
+            for idol_name, horizontal_pairs in collections[collection_name].items():
+                current_pair = horizontal_pairs[card.name]
+                if idol_name == card.name:
+                    card = copy(card)
+                    card.idolized = False
+                elif current_pair == [None, None]:
+                    collections[collection_name][idol_name][card.name] = [None, card] if (card.ur_pair_idolized_reverse if card.idolized else card.ur_pair_reverse) else [card, None]
+
+    # Add all cards in data set
+    for card in cards:
+        if raw.raw_information[card.name]['main_unit'] == 'Aqours':
+            if card.rarity == 'SSR':
+                _add_ur_pair_in_collection(card, 'Aqours SSRs')
+            else:
+                _add_ur_pair_in_collection(card, 'Aqours')
+        elif card.rarity == 'SSR':
+            _add_ur_pair_in_collection(card, 'μ\'s SSRs')
+        elif card.id >= 980:
+            _add_ur_pair_in_collection(card, '2nd μ\'s')
+        else:
+            _add_ur_pair_in_collection(card, '1st μ\'s')
+
+    # Remove pairs for same idol
+    for collection_name, collection in collections.items():
+        for idol_name, _ in collection.items():
+            collections[collection_name][idol_name][idol_name] = None
+    context['collections'] = collections
     context['total'] = int(len(cards) / 2)
-    context['data'] = data
-    context['idols'] = idols
     return render(request, 'urpairs.html', context)
 
 def albumbuilder(request):
@@ -2659,6 +2826,7 @@ def ajax_albumbuilder_addcard(request, card_id):
                                                 idolized=idolized,
                                                 max_level=max_level,
                                                 max_bond=max_bond,
+                                                skill_slots=card.min_skill_slot,
                                                 skill=1)
     if not settings.HIGH_TRAFFIC:
         pushActivity(message="Added a card",
@@ -2766,28 +2934,28 @@ def initialsetup(request):
                     card = (card for card in cards if card.id == account.starter_id).next()
                     card.owned = context['starter']
             collections = OrderedDict()
-            collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'UR' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['ur'] = [collections['ur_idolized'][0], 2, collections['ur_idolized'][2], False]
-            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), 1, [card for card in cards if card.rarity == 'SSR' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['ssr'] = [collections['ssr_idolized'][0], 2, collections['ssr_idolized'][2], False]
-            collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
-            collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
-            collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['sr_smile_idolized'] = [string_concat('SR', ' ', _('Smile'), ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Smile' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
+            collections['sr_pure_idolized'] = [string_concat('SR', ' ', _('Pure'), ' ', _('Cards')), 4, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Pure' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
+            collections['sr_cool_idolized'] = [string_concat('SR', ' ', _('Cool'), ' ', _('Cards')), 5, [card for card in cards if card.rarity == 'SR' and card.attribute == 'Cool' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['sr_smile'] = collections['sr_smile_idolized'][:-1] + [False]
             collections['sr_pure'] = collections['sr_pure_idolized'][:-1] + [False]
             collections['sr_cool'] = collections['sr_cool_idolized'][:-1] + [False]
-            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in card.promo_item and 'event prize' not in card.promo_item], True]
-            collections['r_idolized'] = [string_concat('R', ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in card.promo_item or 'event prize' in card.promo_item)], True]
+            collections['promo'] = [_('Promo Cards'), 7, [card for card in cards if card.is_promo and 'login bonus' not in (card.promo_item if card.promo_item else '') and 'event prize' not in (card.promo_item if card.promo_item else '')], True]
+            collections['r_idolized'] = [string_concat('R', ' ', _('Cards')), 8, [card for card in cards if card.rarity == 'R' and (not card.is_promo or 'login bonus' in (card.promo_item if card.promo_item else '') or 'event prize' in (card.promo_item if card.promo_item else ''))], True]
             collections['r'] = [collections['r_idolized'][0], 9, collections['r_idolized'][2], False]
             context['collections'] = collections
 
             context['collections_links'] = OrderedDict()
-            context['collections_links']['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), context['collections']['ur_idolized'][1], 'http://i.schoolido.lu/static/URSmile.png']
-            context['collections_links']['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), context['collections']['ssr'][1], 'http://i.schoolido.lu/static/SSRSmile.png']
-            context['collections_links']['sr_smile_idolized'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Idolized')), 4, 'http://i.schoolido.lu/static/SRPure.png']
-            context['collections_links']['sr_smile'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Not Idolized')), 5, 'http://i.schoolido.lu/static/SRCool.png']
+            context['collections_links']['ur_idolized'] = [string_concat('UR', ' ', _('Cards')), context['collections']['ur_idolized'][1], settings.STATIC_FILES_URL + 'static/URSmile.png']
+            context['collections_links']['ssr_idolized'] = [string_concat('SSR', ' ', _('Cards')), context['collections']['ssr'][1], settings.STATIC_FILES_URL + 'static/SSRSmile.png']
+            context['collections_links']['sr_smile_idolized'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Idolized')), 4, settings.STATIC_FILES_URL + 'static/SRPure.png']
+            context['collections_links']['sr_smile'] = [string_concat('SR', ' ', _('Cards'), ' - ', _('Not Idolized')), 5, settings.STATIC_FILES_URL + 'static/SRCool.png']
             context['collections_links']['promo'] = [context['collections']['promo'][0], context['collections']['promo'][1], 'flaticon-promo']
-            context['collections_links']['r_idolized'] = [context['collections']['r_idolized'][0], 8, 'http://i.schoolido.lu/static/RSmile.png']
+            context['collections_links']['r_idolized'] = [context['collections']['r_idolized'][0], 8, settings.STATIC_FILES_URL + 'static/RSmile.png']
             context['bookmark_message'] = _('Add this link to your bookmarks and come back to it whenever you want to finish entering the cards in your collection.')
         context['account'] = account
     if 'next' in request.GET:
@@ -3153,3 +3321,7 @@ def drown(request):
     activity = get_object_or_404(models.Activity, pk=activity)
     models.Activity.objects.filter(pk=activity.pk).update(creation=activity.creation - relativedelta(days=1))
     return HttpResponse('')
+
+def cardstrength(request):
+   context = globalContext(request)
+   return render(request, 'cardstrength.html', context)

@@ -8,8 +8,8 @@
 {% block shareimagetwitter %}{% eventimageurl event=event %}{% endblock %}
 
 {% block js %}
-<script src="/static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="/static/js/event.js?3"></script>
+<script src="{{ static_url }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="{{ static_url }}static/js/event.js?3"></script>
 {% endblock %}
 {% block content %}
 {% load getattribute %}
@@ -25,6 +25,9 @@
   <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
   {% endif %}
   <br><br>
+  {% if user.is_authenticated and user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+  <a href="/staff/editevent/{{ event.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit event" data-trigger="hover"><i class="flaticon-edit"></i> Staff: Edit event</a>
+  {% endif %}
   <div class="row">
     {% for card in event.all_cards %}
     <div class="col-md-{{ col_size }}">
@@ -92,7 +95,7 @@
 	    {% if event.song.translated_name and event.song.translated_name != event.song.romaji_name %}<small><i>{% trans event.song.translated_name %}</i></small><br>{% endif %}
 	    {% if LANGUAGE_CODE != 'en' and not event.song.translated_name and not event.song.romaji_name %}<small><i>{% trans event.song.name %}</i></small><br>{% endif %}
 	    {% endif %}
-	    <img src="/static/{{ event.song.attribute }}.png" class="attribute" width="20px">
+	    <img src="{{ static_url }}static/{{ event.song.attribute }}.png" class="attribute" width="20px">
 	    {{ event.song.japanese_attribute }}
 	    {{ event.song.attribute }}
 	  </a>
@@ -105,7 +108,7 @@
 	  <i class="flaticon-loading"></i>
 	  <a href="#play" data-itunes-id="{{ event.song.itunes_id }}" class="fontx4 a-nodifference" style="display: none;"><i class="flaticon-play"></i></a>
 	  <br><a href="" target="_blank" class="itunes-link" style="display: none;">
-	    <img src="/static/get_itunes.svg" alt="Get it on iTunes" height="31">
+	    <img src="{{ static_url }}static/get_itunes.svg" alt="Get it on iTunes" height="31">
 	  </a>
 	  {% endif %}
 	</div>
@@ -182,6 +185,18 @@
 	  <td class="text-right">{{ event.japanese_t2_rank }}</td>
 	</tr>
 	{% endif %}
+  {% if event.japanese_t3_points %}
+  <tr>
+    <th>T3 {% trans 'Points' %}</th>
+    <td class="text-right">{{ event.japanese_t3_points }}</td>
+  </tr>
+  {% endif %}
+  {% if event.japanese_t3_rank %}
+  <tr>
+    <th>T3 {% trans 'Rank' %}</th>
+    <td class="text-right">{{ event.japanese_t3_rank }}</td>
+  </tr>
+  {% endif %}
 	{% if event.note %}
 	<tr>
 	  <th>{% trans 'Note' %}</th>
@@ -247,6 +262,18 @@
 	  <td class="text-right">{{ event.english_t2_rank }}</td>
 	</tr>
 	{% endif %}
+  {% if event.english_t3_points %}
+  <tr>
+    <th>T3 {% trans 'Points' %}</th>
+    <td class="text-right">{{ event.english_t3_points }}</td>
+  </tr>
+  {% endif %}
+  {% if event.english_t3_rank %}
+  <tr>
+    <th>T3 {% trans 'Rank' %}</th>
+    <td class="text-right">{{ event.english_t3_rank }}</td>
+  </tr>
+  {% endif %}
       </table>
     </div>
     {% else %}

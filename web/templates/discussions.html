@@ -5,8 +5,8 @@
 
 {% block title %}{% trans 'Discussions' %}{% endblock %}
 
-{% block shareimage %}http://schoolido.lu/static/screenshots/discussions.png{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/static/screenshots/discussions.png{% endblock %}
+{% block shareimage %}{{ static_sharing_url }}static/screenshots/discussions.png{% endblock %}
+{% block shareimagetwitter %}{{ static_sharing_url }}static/screenshots/discussions.png{% endblock %}
 
 {% block content %}
 <div class="container text-center" id="discussions">
@@ -20,7 +20,7 @@
     <div class="col-md-{% if discussion.full_size %}12{% else %}4{% endif %}">
       <a href="{% if discussion.link %}{{ discussion.link }}{% else %}/discussion/{{ discussion.code }}/{% endif %}"
 	 class="topbutton" style="background-image: url('{{ discussion.image }}'); background-color: {{ discussion.color }};{% if '/static/screenshots' in discussion.image %} background-size: 100%; background-position: 0 0;{% elif '/static/' in discussion.image %} background-size: 80%; background-position-x: -90%;{% endif %}{% if discussion.full_size %}font-size: 4em;{% elif discussion.big %}font-size: 1.4em;{% endif %}">
-	<img src="/static/topbutton.png" style="max-height: 400px;">
+	<img src="{{ static_url }}static/topbutton.png" style="max-height: 400px;">
 	<span{% if '/static/screenshots' in discussion.image %} style="padding-right: 25%; padding-left: 25%;"{% endif %}{% if discussion.full_size %} style="padding-top: 10%;"{% endif %}>
 	  {% if discussion.big %}<br>{% endif %}
 	  {% if discussion.not_translate_name %}
@@ -33,6 +33,17 @@
     </div>
     {% endfor %}
   </div>
+    <br>
+    <hr>
+    <br>
+    <div class="text-center">
+      <a href="http://imgur.com/a/34J2f" target="_blank">
+	<img src="{{ static_url }}special/treasure.png" width="200">
+      </a>
+    </div>
+    <br>
+    <hr>
+    <br>
   <br><br>
   <h2>{% trans 'We' %} <i class="flaticon-heart color-Smile"></i> {% trans 'the LoveLive! community' %}</h2>
 

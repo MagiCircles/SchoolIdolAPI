@@ -7,15 +7,21 @@ from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils import translation
 from django.core.urlresolvers import reverse as django_reverse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError as DjangoCoreValidationError
+from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
+from django.core.validators import MinValueValidator, MaxValueValidator
+from web.utils import shrinkImageFromData
 from django.db import IntegrityError
-from web.utils import chibiimage, singlecardurl
+from web.utils import chibiimage, singlecardurl, activity_cacheaccount, get_imgur_code
 from api.raw import STARTERS
+from api.management.commands.update_cards_rankings import update_cards_rankings
+from api.management.commands.update_cards_join_cache import update_cards_join_cache
 import urllib
 import datetime
 import markdown_deux
 import pytz
 import re
+import os
 
 class DateTimeJapanField(serializers.DateTimeField):
     def to_representation(self, value):
@@ -222,7 +228,7 @@ class IdolSerializer(serializers.ModelSerializer):
 
 def _get_image(image):
     if image:
-        base_url = settings.IMAGES_HOSTING_PATH
+        base_url = settings.STATIC_FILES_URL
         return u'%s%s' % (base_url, image)
     return None
 
@@ -237,7 +243,7 @@ class CardIdSerializer(serializers.ModelSerializer):
 class ImageField(serializers.ImageField):
     def to_representation(self, value):
         if value:
-            return u'%s%s' % (settings.IMAGES_HOSTING_PATH, value.name)
+            return u'%s%s' % (settings.STATIC_FILES_URL, value.name)
         return None
 
 class CardSerializer(serializers.ModelSerializer):
@@ -395,6 +401,23 @@ class CardSerializer(serializers.ModelSerializer):
             'round_card_image': _get_image('cards/' + str(card[0]) + 'Round' + card[1] + '.png'),
         } for card in obj.skill_up_cards]
 
+    def _tinypng_images(self, validated_data):
+        idolName = self.context['request'].data.get('idol', None)
+        if not idolName:
+            idolName = self.instance.idol.name
+        idolId = validated_data['id'] if 'id' in validated_data else self.instance.id
+        for (field, value) in validated_data.items():
+            if value and (isinstance(value, InMemoryUploadedFile) or isinstance(value, TemporaryUploadedFile)):
+                filename = value.name
+                value = shrinkImageFromData(value.read(), filename)
+                validated_data[field] = value
+                if field in models.cardsImagesToName:
+                    value.name = models.cardsImagesToName[field]({
+                        'id': idolId,
+                        'firstname': idolName.split(' ')[-1] if idolName else 'Unknown',
+                    })
+        return validated_data
+
     def _save_fk(self, card):
         changed = False
         event = self.context['request'].data.get('event', None)
@@ -407,19 +430,40 @@ class CardSerializer(serializers.ModelSerializer):
                 card.event = event
             changed = True
         if idol:
-            idol = models.Idol.objects.get(name=idol)
+            try:
+                idol = models.Idol.objects.get(name=idol)
+            except ObjectDoesNotExist:
+                idol = models.Idol.objects.create(name=idol)
             card.idol = idol
             card.name = idol.name
             changed = True
         if changed:
             card.save()
+        update_cards_join_cache(cards=[card])
+        update_cards_rankings({})
         return card
 
+    def validate(self, data):
+        if self.context['request'].method == 'POST' and ('idol' not in self.context['request'].data or not self.context['request'].data['idol']):
+            raise serializers.ValidationError({
+                'idol': ['This field is required.'],
+            })
+        for (field, value) in data.items():
+            if value and (isinstance(value, InMemoryUploadedFile) or isinstance(value, TemporaryUploadedFile)):
+                _, extension = os.path.splitext(value.name)
+                if extension.lower() != '.png':
+                    raise serializers.ValidationError({
+                        field: ['Only png images are accepted.'],
+                    })
+        return data
+
     def create(self, validated_data):
+        validated_data = self._tinypng_images(validated_data)
         card = super(CardSerializer, self).create(validated_data)
         return self._save_fk(card)
 
     def update(self, instance, validated_data):
+        validated_data = self._tinypng_images(validated_data)
         card = super(CardSerializer, self).update(instance, validated_data)
         return self._save_fk(card)
 
@@ -590,9 +634,11 @@ class OwnedCardSerializer(serializers.ModelSerializer):
     def validate(self, data):
         errors = {}
         request = self.context['request']
+        card = None
         if request.method == 'POST':
             try:
                 data['card'] = models.Card.objects.get(pk=request.POST['card'])
+                card = data['card']
             except (ObjectDoesNotExist, KeyError):
                 if 'card' not in request.POST:
                     errors['card'] = 'This field is required'
@@ -605,6 +651,17 @@ class OwnedCardSerializer(serializers.ModelSerializer):
                     errors['owner_account'] = 'This field is required'
                 else:
                     errors['owner_account'] = 'This account does\'t exist or isn\'t yours'
+        else:
+            card = self.instance.card
+        # Check for skill slots
+        if 'skill_slots' in data and card:
+            for validator in [MinValueValidator(card.min_skill_slot), MaxValueValidator(card.max_skill_slot)]:
+                try:
+                    validator(data['skill_slots'])
+                except DjangoCoreValidationError as e:
+                    errors['skill_slots'] = e.messages
+        elif card:
+            data['skill_slots'] = card.min_skill_slot
         if errors:
             raise serializers.ValidationError(errors)
         return data
@@ -633,7 +690,7 @@ class OwnedCardSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.OwnedCard
-        fields = ('id', 'owner_account', 'card', 'stored', 'idolized', 'max_level', 'max_bond', 'expiration', 'skill')
+        fields = ('id', 'owner_account', 'card', 'stored', 'idolized', 'max_level', 'max_bond', 'expiration', 'skill', 'skill_slots')
 
 class ActivitySerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
@@ -719,6 +776,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_liked_by(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('activity-'):
             if 'expand_liked_by' in self.context['request'].query_params:
+                # When an activity is created, the get_queryset is not called and liked_by is not populated but we can assume that it's an empty list
+                if self.context['request'].method == 'POST':
+                    return []
                 serializer = UserNotExpandableSerializer(obj.liked_by, many=True, context=self.context)
                 return serializer.data
             return note_to_expand('liked_by', multiple=True)
@@ -727,6 +787,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_total_likes(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('activity-'):
             if 'expand_total_likes' in self.context['request'].query_params:
+                # When an activity is created, the get_queryset is not called and total_likes is not populated but we can assume that it's 0
+                if self.context['request'].method == 'POST':
+                    return 0
                 if 'expand_liked_by' in self.context['request'].query_params:
                     return len(obj.liked_by)
                 else:
@@ -737,6 +800,9 @@ class ActivitySerializer(serializers.ModelSerializer):
     def get_liked(self, obj):
         if self.context['request'].resolver_match.url_name.startswith('activity-'):
             if 'expand_liked' in self.context['request'].query_params:
+                # When an activity is created, the get_queryset is not called and get_liked is not populated but owners can't like their own so it's always going to be False in that case
+                if self.context['request'].method == 'POST':
+                    return False
                 if hasattr(obj, 'liked'):
                     return bool(obj.liked)
                 if 'expand_liked_by' in self.context['request'].query_params:
@@ -749,6 +815,42 @@ class ActivitySerializer(serializers.ModelSerializer):
 
     def get_website_url(self, obj):
         return 'http://schoolido.lu/activities/{}/'.format(obj.id)
+
+    def validate(self, data):
+        errors = {}
+        new_data = {}
+        request = self.context['request']
+        if request.method == 'POST':
+            new_data.update({
+                'message': 'Custom',
+                'message_type': models.ACTIVITY_TYPE_CUSTOM,
+            })
+            for required_field in ['account', 'message']:
+                if required_field not in request.POST or not request.POST[required_field]:
+                    errors[required_field] = ['This field is required']
+            if 'account' in request.POST and 'account' not in errors:
+                try:
+                    new_data['account'] = models.Account.objects.get(pk=request.POST['account'], owner=request.user)
+                except ObjectDoesNotExist:
+                    errors['account'] = ['This account doesn\'t exist or isn\'t yours']
+        if 'message' in request.data and 'message' not in errors:
+            if self.instance and self.instance.message_type != models.ACTIVITY_TYPE_CUSTOM:
+                errors['message'] = ['Editing the message of an activity that is not "Custom" is prohibited.']
+            else:
+                if len(request.data['message']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH:
+                    errors['message'] = ['Exceeds maximum length of {} characters (you have {})'.format(settings.CUSTOM_ACTIVITY_MAX_LENGTH, len(request.data['message']))]
+                else:
+                    new_data['message_data'] = request.data['message']
+        if 'imgur_image' in request.data and request.data['imgur_image']:
+            if not re.search(settings.IMGUR_REGEXP, request.data['imgur_image']):
+                errors['imgur_image'] = ['Invalid imgur image URL. Format is: {}'.format(settings.IMGUR_REGEXP)]
+            else:
+                new_data['right_picture'] = get_imgur_code(request.data['imgur_image'])
+        if errors:
+            raise serializers.ValidationError(errors)
+        if 'account' in new_data:
+            new_data.update(activity_cacheaccount(new_data['account'], account_owner=request.user))
+        return new_data
 
     class Meta:
         model = models.Activity

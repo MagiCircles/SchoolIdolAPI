@@ -4,17 +4,17 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% block title %}{% trans 'Idol' %}: {{ idol.name }}{% endblock %}
 
-{% block shareimage %}http://schoolido.lu{% chibiimage idol=idol.name small=False %}{% endblock %}
-{% block shareimagetwitter %}http://schoolido.lu/{% chibiimage idol=idol.name small=False %}{% endblock %}
+{% block shareimage %}{% chibiimage idol=idol.name small=False %}{% endblock %}
+{% block shareimagetwitter %}{% chibiimage idol=idol.name small=False %}{% endblock %}
 
 {% block js %}
 {% if tab == 'idol' %}
 <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 {% endif %}
 {% if tab == 'pictures' %}
-<script src="/static/bower/jquery-visible/jquery.visible.min.js"></script>
+<script src="{{ static_url }}static/bower/jquery-visible/jquery.visible.min.js"></script>
 <script>var idol_tag = '{{ idol.tag }}'; var idol_attribute = '{{ idol.attribute }}';</script>
-<script src="/static/js/idol_pictures.js"></script>
+<script src="{{ static_url }}static/js/idol_pictures.js"></script>
 {% endif %}
 {% endblock %}
 
@@ -68,7 +68,7 @@
 	  <th>{% trans 'Main Unit' %}</th>
 	  <td>
 	    <div class="pull-right text-right">
-	      <img src="http://i.schoolido.lu/static/{{ idol.main_unit }}.png" alt="{{ idol.main_unit }}">
+	      <img src="{{ static_url }}static/{{ idol.main_unit }}.png" alt="{{ idol.main_unit }}">
 	    </div>
 	    {{ idol.main_unit }}</td>
 	</tr>
@@ -78,7 +78,7 @@
 	  <th>{% trans 'Sub Unit' %}</th>
 	  <td>
 	    <div class="pull-right text-right">
-	      <img src="http://i.schoolido.lu/static/{{ idol.sub_unit }}.png" alt="{{ idol.sub_unit }}">
+	      <img src="{{ static_url }}static/{{ idol.sub_unit }}.png" alt="{{ idol.sub_unit }}">
 	    </div>
 	    {{ idol.sub_unit }}</td>
 	</tr>
@@ -88,7 +88,7 @@
 	  <th>{% trans 'Astrological Sign' %}</th>
 	  <td>
 	    <div class="pull-right text-right">
-	      <img src="http://i.schoolido.lu/static/astrology/{{ idol.astrological_sign }}.png" alt="{{ idol.astrological_sign }}">
+	      <img src="{{ static_url }}static/astrology/{{ idol.astrological_sign }}.png" alt="{{ idol.astrological_sign }}">
 	    </div>
 	    {{ idol.astrological_sign }}
 	  </td>

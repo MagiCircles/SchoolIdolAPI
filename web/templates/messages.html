@@ -4,7 +4,7 @@
 {% block title %}{{ profile_user.username }}: {% trans 'Private Messages' %}{% endblock %}
 
 {% block content %}
-<div id="private-messages" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="private-messages" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
 <div class="container text-center">
   <h1 class="margin50">
     {% trans 'Private Messages' %}:
@@ -29,5 +29,5 @@
 <script>
   var receiver_username = '{{ receiver.username }}';
 </script>
-<script src="/static/js/messages.js"></script>
+<script src="{{ static_url }}static/js/messages.js"></script>
 {% endblock %}

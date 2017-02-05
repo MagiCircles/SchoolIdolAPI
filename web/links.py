@@ -1,5 +1,6 @@
  # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext_lazy as _, string_concat
+from django.conf import settings
 
 links = [
         {
@@ -539,10 +540,23 @@ links = [
                     'language': 'world',
                 },
                 {
+                    'name': _('Waifu Simulator'),
+                    'url': 'https://llsif-waifu-sim.github.io/',
+                    'description': _('Let your favorite idol talks to you the same way she does on the School Idol Festival home screen!'),
+                    'language': 'world',
+                },
+                {
                     'name': _('Personal Idols Ranking Generator'),
                     'url': 'http://kouhi.me/idol/',
                     'description': _('Check "Love Live!" and press "Music Start!".'),
                     'type': 'tool',
+                    'language': 'world',
+                },
+                {
+                    'name': _('Community Artists'),
+                    'url': '/about/#communityartists',
+                    'description': _('Discover the artists behind the chibi drawings of all the idols!'),
+                    'type': 'info',
                     'language': 'world',
                 },
                 {
@@ -561,7 +575,7 @@ links = [
                 {
                     'name': _('LoveLive! Wikia'),
                     'url': 'http://love-live.wikia.com/wiki/Main_Page',
-                    'image': '/static/links/wikia.png',
+                    'image': settings.STATIC_FILES_URL +  'static/links/wikia.png',
                     'type': 'info',
                     'language': 'world',
                     'size': 'big',

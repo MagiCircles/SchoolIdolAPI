@@ -5,6 +5,7 @@ from contest.utils import get_current_contests
 from collections import OrderedDict
 from web.templatetags.mod import tourldash
 from django.db.models import Count
+from django.utils import timezone
 from django.conf import settings
 import sys
 import urllib2, json
@@ -23,17 +24,17 @@ def generate_settings(opt={}):
         if not current_contests:
             current_contests = [{
                 'url': 'http://schoolido.lu/contest/',
-                'image': 'http://i.schoolido.lu/static/currentcontest_no.png',
-                'homepage_image': 'http://i.schoolido.lu/static/currentcontest_no.png',
+                'image': settings.STATIC_FILES_URL + 'static/currentcontest_no.png',
+                'homepage_image': settings.STATIC_FILES_URL + 'static/currentcontest_no.png',
                 'name': None,
             }]
         else:
             current_contests = [{
-                'url': 'http://schoolido.lu/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
-                'image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else 'http://i.schoolido.lu/static/currentcontest.png',
-                'homepage_image': (u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.IMAGES_HOSTING_PATH, current_contest.image)) if current_contest.image else 'http://i.schoolido.lu/static/currentcontest.png'),
+                'url': '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
+                'image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image)),
+                'homepage_image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image)) if current_contest.image else settings.STATIC_FILES_URL + 'static/currentcontest.png'),
                 'name': current_contest.name,
-            } for current_contest in current_contests]
+            } for current_contest in current_contests if current_contest.image]
 
         print 'Check the current events'
         try:
@@ -41,17 +42,22 @@ def generate_settings(opt={}):
             current_jp = {
                 'japanese_name': current_jp.japanese_name,
                 'slide_position': len(current_contests) + 1,
-                'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_jp.image),
+                'image': '{}{}'.format(settings.STATIC_FILES_URL, current_jp.image),
             }
-        except: pass
+        except:
+            current_jp = None
         try:
-            current_en = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
+            try:
+                current_en = models.Event.objects.filter(english_beginning__isnull=False).filter(end__lte=timezone.now()).order_by('-english_beginning')[0]
+            except IndexError:
+                current_en = models.Event.objects.filter(english_beginning__isnull=False).order_by('-english_beginning')[0]
             current_en = {
                 'japanese_name': current_en.japanese_name,
                 'slide_position': len(current_contests),
-                'image': '{}{}'.format(settings.IMAGES_HOSTING_PATH, current_en.english_image if current_en.english_image else current_en.image),
+                'image': '{}{}'.format(settings.STATIC_FILES_URL, current_en.english_image if current_en.english_image else current_en.image),
             }
-        except: pass
+        except:
+            current_en = None
 
         print 'Get ages'
         ages = {}
@@ -76,7 +82,7 @@ def generate_settings(opt={}):
                 'Cool': models.Card.objects.order_by('-idolized_maximum_statistics_cool')[:1][0].idolized_maximum_statistics_cool,
             },
             'songs_max_stats': models.Song.objects.order_by('-expert_notes')[0].expert_notes,
-            'idols': ValuesQuerySetToDict(models.Card.objects.values('name', 'idol__japanese_name').annotate(total=Count('name')).order_by('-total', 'name')),
+            'idols': ValuesQuerySetToDict(models.Card.objects.values('name', 'idol__japanese_name').annotate(total=Count('name')).order_by('-idol__main', 'idol__main_unit', '-idol__sub_unit', '-idol__school', 'idol__year', 'idol__name')),
             'sub_units': [card['sub_unit'] for card in models.Idol.objects.filter(sub_unit__isnull=False).values('sub_unit').distinct()],
             'years': [idol['year'] for idol in models.Idol.objects.filter(year__isnull=False).values('year').distinct()],
             'schools': [idol['school'] for idol in models.Idol.objects.filter(school__isnull=False).values('school').distinct()],

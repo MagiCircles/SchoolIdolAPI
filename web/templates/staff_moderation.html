@@ -4,8 +4,8 @@
 
 {% block js %}
 <script>var disqus_api_key = '{{ disqus_api_key }}';</script>
-<script src="/static/bower/jquery-timeago/jquery.timeago.js"></script>
-<script src="/static/js/staff_moderation.js"></script>
+<script src="{{ static_url }}static/bower/jquery-timeago/jquery.timeago.js"></script>
+<script src="{{ static_url }}static/js/staff_moderation.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -23,7 +23,7 @@
          target="_blank" style="white-space: normal"
          class="btn btn-block btn-{{ btnColor }} btn-lg">
         <h1>Check the ranking of the latest JP event</h1>
-        <p>Check the ranking and points. Share a screenshot to proove that it's wrong.</p>
+        <p>Check the ranking and points. Share a screenshot to prove that it's wrong.</p>
         <img src="{% eventimageurl event=latest_jp english=False %}" class="img-responsive">
       </a>
     </div>
@@ -32,7 +32,7 @@
          target="_blank" style="white-space: normal"
          class="btn btn-block btn-{{ btnColor }} btn-lg">
         <h1>Check the ranking of the latest EN event</h1>
-        <p>Check the ranking and points. Share a screenshot to proove that it's wrong.</p>
+        <p>Check the ranking and points. Share a screenshot to prove that it's wrong.</p>
         <img src="{% eventimageurl event=latest_en english=True %}" class="img-responsive">
       </a>
     </div>

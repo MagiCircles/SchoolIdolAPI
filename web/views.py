@@ -1291,6 +1291,9 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
     #     activities = activities.extra(select={
     #         'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id = api_activity.id AND user_id = {}'.format(request.user.id),
     #     })
+    if 'search' in request.GET:
+        for term in request.GET['search'].split(' '):
+            activities = activities.filter(message_data__icontains=term)
     if account is not None:
         activities = activities.filter(account=account)
     if user is not None:

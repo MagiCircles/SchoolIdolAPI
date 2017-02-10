@@ -24,7 +24,7 @@ function loadActivities() {
     container.find('.activities').html('<div class="loader">Loading...</div>');
     var followHTML = '<a href="/users/" target="_blank" class="fontx3 padding50" style="display: block">' + follow_sentence + '</a>';
     $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
-	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size + (all ? '&all' : '') + (new_ ? '&new' : ''), function(data) {
+	  + '/?avatar_size=' + avatar_size + '&card_size=' + card_size + (all ? '&all' : '') + (new_ ? '&new' : '') + (window.location.hash.indexOf('#search=') == 0 ? '&search=' + window.location.hash.substr(8) : ''), function(data) {
 	      container.find('.activities').html(data);
 	      if (container.find('.activities .alert-warning').length > 0) {
 		  container.find('.activities .alert-warning').replaceWith(followHTML);

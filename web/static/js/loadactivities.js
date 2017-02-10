@@ -10,6 +10,7 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, c
     $.get('/ajax/' + (typeof feed == 'undefined' ? 'activities' : 'feed')
 	  + '/?page=' + page
 	  + (typeof account == 'undefined' ? '' : ('&account=' + account))
+	  + (window.location.hash.indexOf('#search=') == 0 ? '&search=' + window.location.hash.substr(8) : '')
 	  + (typeof user == 'undefined' ? '' : ('&user=' + user))
 	  + (typeof avatar_size == 'undefined' ? '' : ('&avatar_size=' + avatar_size))
 	  + (typeof card_size == 'undefined' ? '' : ('&card_size=' + card_size))

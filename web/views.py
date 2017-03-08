@@ -885,18 +885,22 @@ def profile(request, username):
         accounts_ids = ','.join([str(account.id) for account in context['user_accounts']])
         if accounts_ids:
             cursor = connection.cursor()
-            query = 'SELECT c.rarity, o.owner_account_id, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + accounts_ids + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id'
+            query = 'SELECT c.rarity, o.owner_account_id, c.is_promo, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + accounts_ids + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id, c.is_promo'
             cursor.execute(query)
             deck_stats = cursor.fetchall()
         for account in context['user_accounts']:
             # Set stats
-            try: account.deck_total_sr = (s[2] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()
+            try: account.deck_total_sr = (s[3] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_sr = 0
-            try: account.deck_total_ssr = (s[2] for s in deck_stats if s[0] == 'SSR' and s[1] == account.id).next()
+            try: account.deck_total_ssr = (s[3] for s in deck_stats if s[0] == 'SSR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_ssr = 0
-            try: account.deck_total_ur = (s[2] for s in deck_stats if s[0] == 'UR' and s[1] == account.id).next()
+            try: account.deck_total_ur = (s[3] for s in deck_stats if s[0] == 'UR' and s[1] == account.id).next()
             except StopIteration: account.deck_total_ur = 0
-            account.deck_total = sum([s[2] for s in deck_stats if s[1] == account.id])
+            try: account.deck_non_promo_ur = (s[3] for s in deck_stats if s[0] == 'UR' and s[1] == account.id and not s[2]).next()
+            except StopIteration: account.deck_non_promo_ur = 0
+            try: account.deck_promo_ur = (s[3] for s in deck_stats if s[0] == 'UR' and s[1] == account.id and s[2]).next()
+            except StopIteration: account.deck_promo_ur = 0
+            account.deck_total = sum([s[3] for s in deck_stats if s[1] == account.id])
             # Get opened tab
             if 'show' + str(account.id) in request.GET and request.GET['show' + str(account.id)] in models.ACCOUNT_TAB_DICT:
                 account.opened_tab = request.GET['show' + str(account.id)]

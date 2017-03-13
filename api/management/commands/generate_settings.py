@@ -20,6 +20,7 @@ def generate_settings(opt={}):
         total_donators = unicode(models.UserPreferences.objects.filter(status__isnull=False).exclude(status__exact='').count())
 
         print 'Check the current contest'
+        default = 'static/default_contest.png'
         current_contests = get_current_contests()
         if not current_contests:
             current_contests = [{
@@ -31,10 +32,11 @@ def generate_settings(opt={}):
         else:
             current_contests = [{
                 'url': '/contest/' + str(current_contest.id) + '/' + tourldash(current_contest.name) + '/',
-                'image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image)),
-                'homepage_image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.homepage_image)) if current_contest.homepage_image else ((u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image)) if current_contest.image else settings.STATIC_FILES_URL + 'static/currentcontest.png'),
+                'image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.image if current_contest.image else default)),
+                'homepage_image': (u'%s%s' % (settings.STATIC_FILES_URL, current_contest.homepage_image if current_contest.homepage_image else (current_contest.image if current_contest.image else default))),
                 'name': current_contest.name,
-            } for current_contest in current_contests if current_contest.image]
+                'show_title': not current_contest.image and not current_contest.homepage_image,
+            } for current_contest in current_contests]
 
         print 'Check the current events'
         try:

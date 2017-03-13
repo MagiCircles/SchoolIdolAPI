@@ -159,7 +159,7 @@
 	  {% for contest in current_contests %}
 	  <a href="{{ contest.url }}" class="item{% if contest.slide_position == 0 %} active{% endif %}"
 	     style="background-image: url('{{ contest.homepage_image }}')">
-	    <span class="hidden">{{ contest.name }}</span>
+	    <span style="font-size: 3em; padding: 25px; max-width: 80%; margin: auto; display: inline-block;" {% if not contest.show_title %}class="hidden"{% endif %}>{{ contest.name }}</span>
 	  </a>
 	  {% endfor %}
 

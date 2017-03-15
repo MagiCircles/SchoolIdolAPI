@@ -281,13 +281,13 @@ def index(request):
     context = globalContext(request)
 
     context['important_news'] = []
-    # context['important_news'] = [
-    #     {
-    #         'url': 'http://schoolido.lu/activities/5232853/',
-    #         'image': 'http://i.imgur.com/zRGxWNb.png',
-    #         'name': 'Hanamaru\'s Birthday Giveaway',
-    #     },
-    # ]
+    context['important_news'] = [
+        {
+            'url': 'http://schoolido.lu/activities/5347821/',
+            'image': 'http://i.imgur.com/BRGHYO4.png',
+            'name': 'Umi\'s Birthday Giveaway',
+        },
+    ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
     context['current_en']['slide_position'] = len(context['current_contests'])

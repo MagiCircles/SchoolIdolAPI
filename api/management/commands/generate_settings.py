@@ -21,7 +21,7 @@ def generate_settings(opt={}):
 
         print 'Check the current contest'
         default = 'static/default_contest.png'
-        current_contests = get_current_contests()
+        current_contests = get_current_contests().order_by('-image')
         if not current_contests:
             current_contests = [{
                 'url': 'http://schoolido.lu/contest/',

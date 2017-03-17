@@ -57,7 +57,7 @@
 		  <li class="drop-contest"><a href="/contest/"><img src="{{ static_url }}static/currentcontest_no.png" alt="Global Contest"></a></li>
 		  {% if current_contests.0.name %}{# means it's not just the global #}
 		  {% for contest in current_contests %}
-		  <li class="drop-contest"><a href="{{ contest.url }}"><img src="{{ contest.image }}" alt="{{ contest.name }}"></a></li>
+		  <li class="drop-contest"><a href="{{ contest.url }}">{% if contest.show_title %}<div class="padding20 text-center fontx1-5 text-{{ btnColor }}" style="width: 300px; white-space: normal; background-image: url('{{ contest.image }}'); background-size: 120%; background-position: center center;">{{ contest.name }}</div>{% else %}<img src="{{ contest.image }}" alt="{{ contest.name }}">{% endif %}</a></li>
 		  {% endfor %}
 		  {% endif %}
 		  <li class="active"><a href="/contest/results/" class="text-center fontx1-5">{% trans 'Past Contests' %}</a></li>

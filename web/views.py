@@ -71,6 +71,7 @@ def globalContext(request):
         'current_contests': settings.CURRENT_CONTESTS,
         'last_update': settings.GENERATED_DATE,
         'high_traffic': settings.HIGH_TRAFFIC,
+        'aprilfool': 'you' if bool(random.getrandbits(1)) else 'kotori',
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)
@@ -281,13 +282,6 @@ def index(request):
     context = globalContext(request)
 
     context['important_news'] = []
-    context['important_news'] = [
-        {
-            'url': 'http://schoolido.lu/activities/5347821/',
-            'image': 'http://i.imgur.com/BRGHYO4.png',
-            'name': 'Umi\'s Birthday Giveaway',
-        },
-    ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
     context['current_en']['slide_position'] = len(context['current_contests'])
@@ -314,6 +308,7 @@ def index(request):
 
     # Get random character
     context['character'] = None
+    context['character'] = models.Card.objects.filter(name__in=['Shiitake', 'Uchicchi', 'Alpaca'], transparent_idolized_image__isnull=False).order_by('?')[0].transparent_idolized_image
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):

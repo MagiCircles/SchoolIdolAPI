@@ -307,7 +307,6 @@ def index(request):
 
     # Get random character
     context['character'] = None
-    context['character'] = models.Card.objects.filter(name__in=['Shiitake', 'Uchicchi', 'Alpaca'], transparent_idolized_image__isnull=False).order_by('?')[0].transparent_idolized_image
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):

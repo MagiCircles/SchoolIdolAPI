@@ -71,7 +71,6 @@ def globalContext(request):
         'current_contests': settings.CURRENT_CONTESTS,
         'last_update': settings.GENERATED_DATE,
         'high_traffic': settings.HIGH_TRAFFIC,
-        'aprilfool': 'you' if bool(random.getrandbits(1)) else 'kotori',
     }
     if request.user.is_authenticated() and not request.user.is_anonymous():
         context['accounts'] = contextAccounts(request)

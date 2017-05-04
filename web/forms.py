@@ -93,6 +93,10 @@ class UserPreferencesForm(ModelForm):
         super(UserPreferencesForm, self).__init__(*args, **kwargs)
         self.fields['best_girl'].choices = getGirls(with_japanese_name=(request and request.LANGUAGE_CODE == 'ja'))
         self.fields['birthdate'] = date_input(self.fields['birthdate'])
+        self.fields['default_tab'].choices = [
+            ('following', _('Following')),
+            ('hot', _('Hot')),
+        ]
 
     class Meta:
         model = models.UserPreferences

@@ -1419,7 +1419,7 @@ def ajaxlikeactivity(request, activity):
         raise PermissionDenied()
     if 'like' in request.POST and not activity.liked:
         activity.likes.add(request.user)
-        if activity.total_likes + 2 >= 30:
+        if activity.total_likes + 2 >= 8:
             activity.hot = True
         activity.save()
         pushNotification_LIKE(activity.account.owner, request.user, activity)

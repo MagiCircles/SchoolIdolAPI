@@ -286,7 +286,7 @@ raw_information['Watanabe You'] = {
     'year': 'Second',
     'main_unit': 'Aqours',
     'sub_unit': 'CYaRon!',
-    'cv_nickname': 'Arisha',
+    'cv_nickname': 'Shukashuu',
     'cv_twitter': 'Saito_Shuka',
     'cv_instagram': None,
     'starter': 790,
@@ -299,6 +299,7 @@ raw_information['Watanabe You'] = {
         (settings.STATIC_FILES_URL + 'chibi/You_Summer.png', 'shinylyni'),
         (settings.STATIC_FILES_URL + 'chibi/You_Cheer.png', 'shinylyni'),
         (settings.STATIC_FILES_URL + 'chibi/You_Winter.png', 'shinylyni'),
+        (settings.STATIC_FILES_URL + 'chibi/Z17KbS-g.png', 'Crysire'),
     ],
 }
 raw_information['Tsushima Yoshiko'] = {
@@ -346,7 +347,7 @@ raw_information['Ohara Mari'] = {
     'year': 'Third',
     'main_unit': 'Aqours',
     'sub_unit': 'Guilty Kiss',
-    'cv_nickname': 'Ainyan',
+    'cv_nickname': 'Ai-nya',
     'cv_twitter': 'aina_suzuki723',
     'cv_instagram': None,
     'starter': 793,
@@ -873,6 +874,7 @@ raw_information_n = {
         'chibi': [
             (settings.STATIC_FILES_URL + 'chibi/LCI_NOzq.png', 'Nyanakii'),
             (settings.STATIC_FILES_URL + 'chibi/Shiitake1.png', 'shinylyni'),
+            (settings.STATIC_FILES_URL + 'chibi/faeewwrfgwrger.png', 'princesskris'),
         ],
     },
     'Honoka\'s Mother': {
@@ -898,6 +900,7 @@ raw_information_n = {
         'chibi': [
             (settings.STATIC_FILES_URL + 'chibi/1070idolizedTransparent.png', 'klab'),
             (settings.STATIC_FILES_URL + 'chibi/Uchicchi1.png', 'shinylyni'),
+            (settings.STATIC_FILES_URL + 'chibi/jkuikhjnfgbJKA.png', 'princesskris'),
         ],
     },
     'Miyama Satoko': {

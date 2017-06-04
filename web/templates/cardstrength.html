@@ -61,7 +61,8 @@
         <div class="form-group">
           <label for="id_attribute">{% trans 'Attribute' %}</label><br>
           <div class="cuteform">
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr==''}" ng-click="setString('attr','')" src="{{ static_url }}static/empty.png">            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr==''}" ng-click="setString('attr','')" src="{{ static_url }}static/empty.png">
+            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
             <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr=='{{attribute}}'}" ng-click="setString('attr','{{attribute}}')"
               src="{{ static_url }}static/{{attribute}}.png"> {% endif %} {% endfor %}
           </div>

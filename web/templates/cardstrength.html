@@ -53,17 +53,6 @@
         </select>
         </div>
 
-        <!-- attribute -->
-        <div class="form-group">
-          <label for="id_attribute">{% trans 'Attribute' %}</label><br>
-          <div class="cuteform">
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr==''}" ng-click="setString('attr','')" src="{{ static_url }}static/empty.png">
-            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
-            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr=='{{attribute}}'}" ng-click="setString('attr','{{attribute}}')"
-              src="{{ static_url }}static/{{attribute}}.png"> {% endif %} {% endfor %}
-          </div>
-        </div>
-
         <!-- rarity -->
         <div class="form-group">
           <label class="control-label" for="id_rarity">{% trans 'Rarity' %}</label>
@@ -73,6 +62,17 @@
               {% for rarity, _ in filters.rarity_choices %}
               {% if rarity != 'N'%}<img class="cuteform-elt" ng-class="{'cuteform-selected': (filters.rarity.split(',').indexOf('{{rarity}}') >= 0) && (filters.rarity != 'R,SR,SSR,UR')}"
               ng-click="setRarity('{{rarity}}')" src="http://i.schoolido.lu/static/{{rarity}}{% if interfaceColor %}{% if interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %}{% else %}Smile{% endif %}.png">            {% endif %} {% endfor %}
+          </div>
+        </div>
+
+        <!-- attribute -->
+        <div class="form-group">
+          <label for="id_attribute">{% trans 'Attribute' %}</label><br>
+          <div class="cuteform">
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr==''}" ng-click="setString('attr','')" src="{{ static_url }}static/empty.png">
+            {% for attribute, _ in filters.attribute_choices %} {% if attribute != 'All'%}
+            <img class="cuteform-elt" ng-class="{'cuteform-selected': filters.attr=='{{attribute}}'}" ng-click="setString('attr','{{attribute}}')"
+              src="{{ static_url }}static/{{attribute}}.png"> {% endif %} {% endfor %}
           </div>
         </div>
 

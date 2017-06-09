@@ -27,7 +27,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             skill: "@skill"
         })
     }).factory('ownedcardsAPI', function ($resource, $http) {
-        return $resource("/api/ownedcards/?expand_card&page_size=100&card__is_special=False&owner_account=:account&card__attribute=:attr&card__is_promo=:promo&card__is_event=:event:stored&card__rarity=:rarity&card__skill=:skill", {
+        return $resource("/api/ownedcards/?page_size=100&card__is_special=False&owner_account=:account&card__attribute=:attr&card__is_promo=:promo&card__is_event=:event:stored&card__rarity=:rarity&card__skill=:skill", {
             account: "@account",
             stored: "@stored",
             attr: "@attr",
@@ -62,7 +62,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
                 return Math.floor(song.points / skill.interval)
             }
             else {
-                //TODO: handle Snow Maiden Umi and point-based score up
+                //TODO: handle Snow Maiden Umi
                 return 0
             }
         };
@@ -95,7 +95,7 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             var bonus = Math.floor(on_attr * 0.33)
             // how many more points greats give
             var trick_greats_bonus = Math.floor(bonus * 0.0125 * .22 * Math.floor(song.notes / 2) * 1 * 1.1 * 1.1) * greats_during_pl
-            // how many more points perfects give 
+            // how many more points perfects give
             var trick_perfects_bonus = Math.floor(bonus * 0.0125 * 1 * Math.floor(song.notes / 2) * 1 * 1.1 * 1.1) * perfects_during_pl
 
             return ret.scoreUpMod(song, trick_greats_bonus + trick_perfects_bonus)
@@ -282,15 +282,20 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
 
             $rootScope.loadingMsg = false;
         }
+
+        // TODO: figure out why this isn't printing
         $scope.getCards = function () {
+            console.log("getCards()")
             $rootScope.loadingMsg = true;
             if ($scope.filters.account == "" && $scope.filters.stored == "") {
+              console.log("calling from cards");
                 var cards = cardsAPI.get($scope.filters, function () {
                     fromAccount = false
                     populateRootCards(cards, false)
                 });
             }
             else {
+              console.log("calling from ownedcards");
                 var cards = ownedcardsAPI.get($scope.filters, function () {
                     fromAccount = true
                     populateRootCards(cards)
@@ -298,100 +303,100 @@ angular.module('CardStrength', ['ngResource', 'ngStorage', 'fixed.table.header',
             }
         }
     })
-    .controller('SkillController', function ($rootScope, $scope, Calculations, $localStorage, $window) {
-        var calcOnAttr = function (card) {
-            card.on_attr = {}
-            if (card.attribute == "Smile") {
-                card.on_attr.base = card.non_idolized_maximum_statistics_smile
-                card.on_attr.idlz = card.idolized_maximum_statistics_smile
-            }
-            else if (card.attribute == "Pure") {
-                card.on_attr.base = card.non_idolized_maximum_statistics_pure
-                card.on_attr.idlz = card.idolized_maximum_statistics_pure
-            }
-            else if (card.attribute == "Cool") {
-                card.on_attr.base = card.non_idolized_maximum_statistics_cool
-                card.on_attr.idlz = card.idolized_maximum_statistics_cool
-            }
-
-            if (card.rarity == 'R') {
-                card.on_attr.base += 100
-                card.on_attr.idlz += 200
-            }
-            else if (card.rarity == "SR") {
-                card.on_attr.base += 250
-                card.on_attr.idlz += 500
-            }
-            else if (card.rarity == "SSR") {
-                card.on_attr.base += 375
-                card.on_attr.idlz += 750
-            }
-            else if (card.rarity == "UR") {
-                card.on_attr.base += 500
-                card.on_attr.idlz += 1000
-            }
-        }
-        var parseSkill = function (card) {
-            var skilltype = card.skill
-            card.skill = {
-                category: skilltype,
-                interval: 0,
-                type: "",
-                amount: 0,
-                percent: 0
-            }
-            card.sis = {}
-
-            var parsedNumbers = 0, i = 0;
-            var skill_words = card.skill_details.split(" ")
-            var length = skill_words.length
-            var word;
-            for (var i = 0; i < length; i++) {
-                word = skill_words[i]
-                var num = parseInt(word)
-
-                if (num && (parsedNumbers == 0)) {
-                    card.skill.interval = word
-                    card.skill.type = skill_words[i + 1].replace(',', '')
-                    ++parsedNumbers
-                }
-                else if (num && parsedNumbers == 1) {
-                    card.skill.percent = num / 100
-                    ++parsedNumbers
-                }
-                else if (num && parsedNumbers == 2) {
-                    card.skill.amount = word
-                    ++parsedNumbers
-                    break
-                }
-            }
-        }
-        $scope.getCards = function () {
-            var cardsQuery = API.get($scope.filters, function () {
-                console.log($scope.filters)
-                $scope.cards = []
-                angular.forEach(cardsQuery.results, function (value) {
-                    $scope.cards.push(value)
-                })
-
-                if (cardsQuery.next) {
-                    console.debug(cardsQuery.next)
-                    HTTP.getUrl(cardsQuery.next).then(getNextUrlSuccess);
-                }
-
-                var length = $scope.cards.length
-                for (var i = 0; i < length; i++) {
-                    card = $scope.cards[i]
-                    calcOnAttr(card)
-                    parseSkill(card)
-                }
-                $rootScope.cards = $scope.cards
-                $scope.$storage.cards = $rootScope.cards
-            });
-
-            $scope.$broadcast("cardsUpdate", { cards: $scope.$storage.cards })
-        }
-    })
+    // .controller('SkillController', function ($rootScope, $scope, Calculations, $localStorage, $window) {
+    //     var calcOnAttr = function (card) {
+    //         card.on_attr = {}
+    //         if (card.attribute == "Smile") {
+    //             card.on_attr.base = card.non_idolized_maximum_statistics_smile
+    //             card.on_attr.idlz = card.idolized_maximum_statistics_smile
+    //         }
+    //         else if (card.attribute == "Pure") {
+    //             card.on_attr.base = card.non_idolized_maximum_statistics_pure
+    //             card.on_attr.idlz = card.idolized_maximum_statistics_pure
+    //         }
+    //         else if (card.attribute == "Cool") {
+    //             card.on_attr.base = card.non_idolized_maximum_statistics_cool
+    //             card.on_attr.idlz = card.idolized_maximum_statistics_cool
+    //         }
+    //
+    //         if (card.rarity == 'R') {
+    //             card.on_attr.base += 100
+    //             card.on_attr.idlz += 200
+    //         }
+    //         else if (card.rarity == "SR") {
+    //             card.on_attr.base += 250
+    //             card.on_attr.idlz += 500
+    //         }
+    //         else if (card.rarity == "SSR") {
+    //             card.on_attr.base += 375
+    //             card.on_attr.idlz += 750
+    //         }
+    //         else if (card.rarity == "UR") {
+    //             card.on_attr.base += 500
+    //             card.on_attr.idlz += 1000
+    //         }
+    //     }
+    //     var parseSkill = function (card) {
+    //         var skilltype = card.skill
+    //         card.skill = {
+    //             category: skilltype,
+    //             interval: 0,
+    //             type: "",
+    //             amount: 0,
+    //             percent: 0
+    //         }
+    //         card.sis = {}
+    //
+    //         var parsedNumbers = 0, i = 0;
+    //         var skill_words = card.skill_details.split(" ")
+    //         var length = skill_words.length
+    //         var word;
+    //         for (var i = 0; i < length; i++) {
+    //             word = skill_words[i]
+    //             var num = parseInt(word)
+    //
+    //             if (num && (parsedNumbers == 0)) {
+    //                 card.skill.interval = word
+    //                 card.skill.type = skill_words[i + 1].replace(',', '')
+    //                 ++parsedNumbers
+    //             }
+    //             else if (num && parsedNumbers == 1) {
+    //                 card.skill.percent = num / 100
+    //                 ++parsedNumbers
+    //             }
+    //             else if (num && parsedNumbers == 2) {
+    //                 card.skill.amount = word
+    //                 ++parsedNumbers
+    //                 break
+    //             }
+    //         }
+    //     }
+    //     $scope.getCards = function () {
+    //         var cardsQuery = API.get($scope.filters, function () {
+    //             console.log($scope.filters)
+    //             $scope.cards = []
+    //             angular.forEach(cardsQuery.results, function (value) {
+    //                 $scope.cards.push(value)
+    //             })
+    //
+    //             if (cardsQuery.next) {
+    //                 console.debug(cardsQuery.next)
+    //                 HTTP.getUrl(cardsQuery.next).then(getNextUrlSuccess);
+    //             }
+    //
+    //             var length = $scope.cards.length
+    //             for (var i = 0; i < length; i++) {
+    //                 card = $scope.cards[i]
+    //                 calcOnAttr(card)
+    //                 parseSkill(card)
+    //             }
+    //             $rootScope.cards = $scope.cards
+    //             $scope.$storage.cards = $rootScope.cards
+    //         });
+    //
+    //         $scope.$broadcast("cardsUpdate", { cards: $scope.$storage.cards })
+    //     }
+    // })
     .controller('CalculationsController', function ($rootScope, $scope, $localStorage, Calculations, $window) {
         $scope.$storage = $localStorage
         $scope.song = {

@@ -283,14 +283,9 @@ def index(request):
     context['important_news'] = []
     context['important_news'] = [
         {
-            'url': 'http://schoolido.lu/activities/5642070/',
-            'image': 'http://i.imgur.com/0sZ8dvp.jpg',
-            'name': 'You\'s Birthday Giveaway',
-        },
-        {
-            'url': 'http://schoolido.lu/activities/5672699/',
-            'image': 'http://i.imgur.com/YbAqslD.jpg',
-            'name': 'Maki\'s Birthday Giveaway',
+            'url': 'http://schoolido.lu/activities/6120956/',
+            'image': 'http://i.imgur.com/gqSExKn.png',
+            'name': 'Nozomi\'s Birthday Giveaway',
         },
     ]
     context['current_jp'] = settings.CURRENT_EVENT_JP

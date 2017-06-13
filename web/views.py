@@ -283,6 +283,11 @@ def index(request):
     context['important_news'] = []
     context['important_news'] = [
         {
+            'url': 'http://schoolido.lu/activities/6156072/',
+            'image': 'http://i.imgur.com/mygQYwY.png',
+            'name': 'Mari\'s Birthday Giveaway',
+        },
+        {
             'url': 'http://schoolido.lu/activities/6120956/',
             'image': 'http://i.imgur.com/gqSExKn.png',
             'name': 'Nozomi\'s Birthday Giveaway',

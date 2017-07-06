@@ -1418,6 +1418,11 @@ def ajaxlikeactivity(request, activity):
     if activity.account.owner.id == request.user.id:
         raise PermissionDenied()
     if 'like' in request.POST and not activity.liked:
+        if request.user.date_joined > (timezone.now() - relativedelta(days=5)):
+            return JsonResponse({
+                'total_likes': activity.total_likes + 2,
+                'result': 'liked',
+            })
         activity.likes.add(request.user)
         if activity.total_likes + 2 >= 8:
             activity.hot = True

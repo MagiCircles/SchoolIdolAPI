@@ -13,9 +13,9 @@ class Command(BaseCommand):
         notifications = models.Notification.objects.filter(email_sent=False).select_related('owner', 'owner__preferences')
         for notification in notifications:
             preferences = notification.owner.preferences
+            print time.strftime("%Y-%m-%d %H:%M"),
             if preferences.is_notification_email_allowed(notification.message):
                 notification_sent = notification.owner.email + notification.english_message + notification.website_url
-                print time.strftime("%Y-%m-%d %H:%M"),
                 if notification_sent in sent:
                     print u' Duplicate not sent to {}: {}'.format(notification.owner.username, notification.english_message)
                 elif notification.message == models.NOTIFICATION_LIKE:

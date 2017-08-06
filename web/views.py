@@ -283,14 +283,14 @@ def index(request):
     context['important_news'] = []
     context['important_news'] = [
         {
-            'url': 'http://schoolido.lu/activities/5642070/',
-            'image': 'http://i.imgur.com/0sZ8dvp.jpg',
-            'name': 'You\'s Birthday Giveaway',
+            'url': 'http://schoolido.lu/activities/6156072/',
+            'image': 'http://i.imgur.com/mygQYwY.png',
+            'name': 'Mari\'s Birthday Giveaway',
         },
         {
-            'url': 'http://schoolido.lu/activities/5672699/',
-            'image': 'http://i.imgur.com/YbAqslD.jpg',
-            'name': 'Maki\'s Birthday Giveaway',
+            'url': 'http://schoolido.lu/activities/6120956/',
+            'image': 'http://i.imgur.com/gqSExKn.png',
+            'name': 'Nozomi\'s Birthday Giveaway',
         },
     ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
@@ -1418,6 +1418,11 @@ def ajaxlikeactivity(request, activity):
     if activity.account.owner.id == request.user.id:
         raise PermissionDenied()
     if 'like' in request.POST and not activity.liked:
+        if request.user.date_joined > (timezone.now() - relativedelta(days=5)):
+            return JsonResponse({
+                'total_likes': activity.total_likes + 2,
+                'result': 'liked',
+            })
         activity.likes.add(request.user)
         if activity.total_likes + 2 >= 8:
             activity.hot = True

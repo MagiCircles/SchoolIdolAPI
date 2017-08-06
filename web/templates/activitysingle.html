@@ -77,7 +77,7 @@
 	    {% else %}
 	    <a href="#removehot" class="btn btn-link btn-sm">Remove from Hot</a>
 	    {% endif %}
-	    {% if user.is_superuser %}
+	    {% if user.is_superuser or user.preferences|has_permission:'ACTIVE_MODERATOR' or user.preferences|has_permission:'DECISIVE_MODERATOR' %}
 	    <a href="#bump" class="btn btn-link btn-sm">Bump</a>
 	    <a href="#drown" class="btn btn-link btn-sm">Drown</a>
 	    {% endif %}

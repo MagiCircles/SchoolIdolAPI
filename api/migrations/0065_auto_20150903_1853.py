@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='account',
             name='transfer_code',
-            field=models.CharField(help_text="It's important to always have an active transfer code, since it will allow you to retrieve your account in case you loose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.", max_length=100, verbose_name='Transfer Code', blank=True),
+            field=models.CharField(help_text="It's important to always have an active transfer code, since it will allow you to retrieve your account in case you lose your device. We can store it for you here: only you will be able to see it. To generate it, go to the settings and use the first button below the one to change your name in the first tab.", max_length=100, verbose_name='Transfer Code', blank=True),
             preserve_default=True,
         ),
         migrations.AlterField(

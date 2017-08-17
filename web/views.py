@@ -409,7 +409,7 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
     request_get_copy.update(extra_request_get)
     # Set defaults
     request_get = {
-        'ordering': 'id',
+        'ordering': 'release_date',
         'reverse_order': True,
     }
 

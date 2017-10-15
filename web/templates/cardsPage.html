@@ -528,7 +528,7 @@
 	      {% endfor %}
 	      <a href="{% if user.is_authenticated %}{% if accounts %}#quickAddCard{% else %}/addaccount/{% endif %}{% else %}/create/{% endif %}"><i class="flaticon-add" {% if not user.is_authenticated %}data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans 'Create an account to add this card to your collection' %}" data-trigger="hover"{% endif %}></i></a>
 	      {% else %}
-	      <a href="#"><i class="flaticon-add" data-container="body" data-toggle="popover" data-placement="top" data-content="Cards collections are temporarily disabled due to high traffic. Please try again tomorrow.<br><i>Any help to get more powerful servers is greatly appreciated. <a href='/about/#donate'>Donate here!</a></i>" data-trigger="click" data-html="true"></i></a>
+	      <a href="#"><i class="flaticon-add" data-container="body" data-toggle="popover" data-placement="top" data-content="Cards collections are temporarily disabled due to high traffic. Please try again tomorrow.<br><i>Any help to get more powerful servers is greatly appreciated. <a href='https://www.patreon.com/db0company'>Donate here!</a></i>" data-trigger="click" data-html="true"></i></a>
 	      {% endif %}
 	      <div class="pull-right">
 		{% if card.skill %}

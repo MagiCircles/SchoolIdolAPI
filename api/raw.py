@@ -545,7 +545,7 @@ raw_information_n = {
             (settings.STATIC_FILES_URL + 'chibi/Isabella1.png', 'shinylyni'),
         ],
     },
-    'Emma': {
+    'Emma Verde': {
         'chibi': [
             (settings.STATIC_FILES_URL + 'chibi/chibi-emma.png', 'shellshark'),
             (settings.STATIC_FILES_URL + 'chibi/fM2PY9qF.png', 'hatsunemimu'),

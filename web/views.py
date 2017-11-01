@@ -319,6 +319,12 @@ def index(request):
 
     # Get random character
     context['character'] = None
+
+    now = timezone.now()
+    if now >= datetime.datetime(2017, 11, 4, 12, 0, 0, 0, pytz.UTC):
+        context['show_stream'] = 'umidah'
+        context['character'] = 'cards/transparent/852idolizedTransparent.png'
+
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):

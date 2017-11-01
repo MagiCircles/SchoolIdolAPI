@@ -22,8 +22,22 @@
 {% load random_int %}
 {% load colorStringToHex %}
 {% load mod %}
-
-<div class="talking-character hidden-sm hidden-xs" style="background-image: url('{{ static_url }}{% if character %}{{ character }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}');"></div>
+<div class="talking-character hidden-sm hidden-xs" style="{% if not show_stream %}background-image: url('{{ static_url }}{% if character %}{{ character }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}');{% endif %}">
+  {% if show_stream %}
+  {{ show_stream }}
+  ferwfrwegv
+  <div id="twitch-embed" style="margin-top: 30px;"></div>
+  <script src="https://embed.twitch.tv/embed/v1.js"></script>
+  <script type="text/javascript">
+    new Twitch.Embed("twitch-embed", {
+    width: '100%',
+    height: 480,
+    channel: "{{ show_stream }}"
+    });
+  </script>
+  <h3 class="text-right" style="padding-right: 20px;"><a href="https://www.extra-life.org/participant/lovelive" target="_blank">Donate now!</a></h3>
+  {% endif %}
+</div>
 <div class="dialog hidden-sm hidden-xs">
   <div class="dialog-background">
     <div class="row">

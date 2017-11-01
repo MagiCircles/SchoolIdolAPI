@@ -1,0 +1,21 @@
+{
+  "name": "sukutomowebsite",
+  "version": "0.0.0",
+  "authors": [
+    "db0company <db0company@gmail.com>"
+  ],
+  "description": "Database and community for Sample Game players.",
+  "license": "Simple non code license (SNCL)",
+  "dependencies": {
+    "Autolinker.js": "0.15.2",
+    "CuteForm": "~0.0.3",
+    "bootstrap": "~3.3.5",
+    "css-hexagon": "0.0.0",
+    "github-wiki": "js-github-wiki#*",
+    "jquery-visible": "1.2.0",
+    "less": "~2.0.0",
+    "navbar-variant": "~0.0.0",
+      "jquery-easing": "*",
+    "jquery-timeago": "timeago#^1.5.4"
+  }
+}

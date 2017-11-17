@@ -9,10 +9,18 @@ class AccountCollection(_AccountCollection):
         'accept_friend_requests': {
             'type': CuteFormType.YesNo,
         },
-        # 'i_version': {
-        #     'to_cuteform': lambda k, v: models.Account.PLAY_WITH_ICONS[k]],
-        #     'transform': CuteFormTransform.Flaticon,
-        # },
-        # 'i_play_with'
-        # 'i_os'
+        'i_play_with': {
+            'to_cuteform': lambda k, v: models.Account.PLAY_WITH[models.Account.get_reverse_i('play_with', k)]['icon'],
+            'transform': CuteFormTransform.FlaticonWithText,
+        },
+        'i_version': {
+            'to_cuteform': lambda k, v: models.Account.VERSIONS[models.Account.get_reverse_i('version', k)]['icon'],
+            'transform': CuteFormTransform.FlaticonWithText,
+        },
+        'i_os': {
+            'transform': CuteFormTransform.FlaticonWithText,
+        },
     }
+
+    class ListView(_AccountCollection.ListView):
+        pass

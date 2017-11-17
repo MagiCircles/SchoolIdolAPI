@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.db import models
 from magi.utils import PastOnlyValidator
-from magi.item_model import MagiModel, i_choices
+from magi.item_model import MagiModel, CacheOwner, i_choices
 from sukutomo.django_translated import t
 
-class Account(MagiModel):
+class Account(CacheOwner):
     collection_name = 'account'
 
     # Foreign keys
@@ -23,13 +23,14 @@ class Account(MagiModel):
     nickname = models.CharField(_('Nickname'), max_length=20)
     rank = models.PositiveIntegerField(_('Rank'), null=True)
 
-    VERSION_CHOICES = (
-        ('JP', t['Japanese']),
-        ('WW', _('Worldwide')),
-        ('KR', t['Korean']),
-        ('CN', t['Chinese']),
-        ('TW', t['Taiwanese']),
-    )
+    VERSIONS = OrderedDict((
+        ('JP', { 'translation': t['Japanese'], 'icon': 'JP' }),
+        ('WW', { 'translation': _('Worldwide'), 'icon': 'world' }),
+        ('KR', { 'translation': t['Korean'], 'icon': 'KR' }),
+        ('CN', { 'translation': t['Chinese'], 'icon': 'CN' }),
+        ('TW', { 'translation': t['Taiwanese'], 'icon': 'TW' }),
+    ))
+    VERSION_CHOICES = [(name, info['translation']) for name, info in VERSIONS.items()]
 
     i_version = models.PositiveIntegerField(_('Version'), choices=i_choices(VERSION_CHOICES), default=1)
 
@@ -76,7 +77,7 @@ class Account(MagiModel):
             'icon': 'sausage'
         }),
     ])
-    PLAY_WITH_CHOICES = { name: info['translation'] for name, info in PLAY_WITH.items() }
+    PLAY_WITH_CHOICES = [(name, info['translation']) for name, info in PLAY_WITH.items()]
 
     i_play_with = models.PositiveIntegerField(_('Play with'), choices=i_choices(PLAY_WITH_CHOICES), null=True)
 
@@ -94,5 +95,39 @@ class Account(MagiModel):
     #verified = models.PositiveIntegerField(_('Verified'), default=0, choices=VERIFIED_CHOICES)
     #default_tab = models.CharField(_('Default tab'), max_length=30, choices=ACCOUNT_TAB_CHOICES, help_text=_('What people see first when they take a look at your account.'), default='deck')
 
+    # Cache: leaderboard position
+
+    _cache_leaderboards_days = 1
+    _cache_leaderboards_last_update = models.DateTimeField(null=True)
+    _cache_leaderboard = models.PositiveIntegerField(null=True)
+    _cache_leaderboard_version = models.PositiveIntegerField(null=True)
+
+    def update_cache_leaderboards(self):
+        self._cache_leaderboards_last_update = timezone.now()
+        self._cache_leaderboard = getAccountLeaderboard(self)
+        self._cache_leaderboard_version = getAccountLeaderboardForVersion(self)
+
+    def force_cache_leaderboards(self):
+        self.update_cache_leaderboards()
+        self.save()
+
+    @property
+    def cached_leaderboard(self):
+        if not self._cache_leaderboards_last_update or self._cache_leaderboards_last_update < timezone.now() - datetime.timedelta(days=self._cache_leaderboards_days):
+            self.force_cache_leaderboards()
+        return self._cache_leaderboard
+
+    @property
+    def cached_leaderboard_team(self):
+        if not self._cache_leaderboards_last_update or self._cache_leaderboards_last_update < timezone.now() - datetime.timedelta(days=self._cache_leaderboards_days):
+            self.force_cache_leaderboards()
+        return self._cache_leaderboard_team
+
     def __unicode__(self):
         return u'{} {} '.format(self.nickname, self.version)
+
+def getAccountLeaderboard(account):
+    return Account.objects.filter(rank__gt=account.rank).values('rank').distinct().count() + 1
+
+def getAccountLeaderboardForVersion(account):
+    return Account.objects.filter(i_version=account.i_version, rank__gt=account.rank).values('rank').distinct().count() + 1

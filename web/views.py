@@ -283,14 +283,14 @@ def index(request):
     context['important_news'] = []
     context['important_news'] = [
         {
-            'url': 'http://schoolido.lu/activities/6156072/',
-            'image': 'http://i.imgur.com/mygQYwY.png',
-            'name': 'Mari\'s Birthday Giveaway',
+            'url': 'http://schoolido.lu/activities/6523113/',
+            'image': 'http://i.imgur.com/pApldos.png',
+            'name': 'Chika\'s Birthday Giveaway',
         },
         {
-            'url': 'http://schoolido.lu/activities/6120956/',
-            'image': 'http://i.imgur.com/gqSExKn.png',
-            'name': 'Nozomi\'s Birthday Giveaway',
+            'url': 'http://schoolido.lu/activities/6542796/',
+            'image': 'http://i.imgur.com/06v3HuF.png',
+            'name': 'Honoka\'s Birthday Giveaway',
         },
     ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
@@ -409,7 +409,7 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
     request_get_copy.update(extra_request_get)
     # Set defaults
     request_get = {
-        'ordering': 'id',
+        'ordering': 'release_date',
         'reverse_order': True,
     }
 

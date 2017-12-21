@@ -28,8 +28,13 @@
   <div class="dialog-background">
     <div class="row">
       <div class="col-md-8">
-	<div class="twitter-text fontx1-5">
-	  <a href="https://twitter.com/schoolidolu" target="_blank" style="display: block; padding: 10px;">{% trans 'Follow School Idol Tomodachi on Twitter' %}</a>
+	<div class="twitter-text fontx1-5 text-center">
+          <span style="font-size: 1.4em">{% trans 'Merry Christmas!' %}&nbsp;&nbsp;&nbsp;&nbsp;
+            <audio controls="" id="player" class="hidden">
+	      <source src="http://i.schoolido.lu/special/christmas/{{ audio }}.mp3" type="audio/mpeg" />
+	      <source src="http://i.schoolido.lu/special/christmas/{{ audio }}.m4a" type="audio/mp4" />
+	      <source src="http://i.schoolido.lu/special/christmas/{{ audio }}.ogg" type="audio/ogg" />
+            </audio>
 	</div>
 	<!-- <div class="text-right"> -->
 	<!--   <a href="https://twitter.com/schoolidolu" target="_blank"> -->
@@ -38,13 +43,14 @@
 	<!-- </div> -->
       </div>
       <div class="col-md-4">
-	<div class="twitter-image" style="background-image: url('{{ static_url }}android/icon.png')"></div>
+        <a href="#" onClick="document.getElementById('player').play(); return false;" class="fontx2 a-nodifference" id="christmasplay" style="color: #a94442!important; font-size: 58px;"><i class="flaticon-play"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
       </div>
     </div>
   </div>
 </div>
 
-<div id="home" class="text-center" style="background-image: url('{{ static_url }}backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div class="home-wrapper" style="background-image: url('{{ static_url }}backgrounds/b_st_{{ random_background }}.png'); background-size: 100%; background-attachment: fixed;">
+<div id="home" class="text-center" style="background-image: linear-gradient(110deg,rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0.8),rgba(255,255,255,0.99),rgba(255,255,255,0.8),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0)); background-attachment: unset;">
   <div style="position: fixed; top: 50px; right: 20px; margin-top: 0;" class="special-message hidden-xs hidden-sm">
     <span>
     </span>

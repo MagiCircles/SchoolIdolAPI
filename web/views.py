@@ -315,12 +315,156 @@ def index(request):
 
     context['total_donators'] = settings.TOTAL_DONATORS
 
-    context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
+    context['random_background'] = random.choice(settings.BACKGROUNDS)
 
     # Get random character
     context['character'] = None
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
+
+    r = random.randint(0, 4)
+    if r == 0: # u's 1
+        context['character'] = random.choice([
+            'cards/transparent/192Transparent.png',
+            'cards/transparent/192idolizedTransparent.png',
+            'cards/transparent/193Transparent.png',
+            'cards/transparent/193idolizedTransparent.png',
+            'cards/transparent/194Transparent.png',
+            'cards/transparent/194idolizedTransparent.png',
+            'cards/transparent/195Transparent.png',
+            'cards/transparent/195idolizedTransparent.png',
+            'cards/transparent/196Transparent.png',
+            'cards/transparent/196idolizedTransparent.png',
+            'cards/transparent/198Transparent.png',
+            'cards/transparent/198idolizedTransparent.png',
+            'cards/transparent/200Transparent.png',
+            'cards/transparent/200idolizedTransparent.png',
+            'cards/transparent/201Transparent.png',
+            'cards/transparent/201idolizedTransparent.png',
+            'cards/transparent/202Transparent.png',
+            'cards/transparent/202idolizedTransparent.png',
+            'cards/transparent/203Transparent.png',
+            'cards/transparent/203idolizedTransparent.png',
+            'cards/transparent/204idolizedTransparent.png',
+            'cards/transparent/206Transparent.png',
+            'cards/transparent/206idolizedTransparent.png',
+            'cards/transparent/207idolizedTransparent.png',
+            'cards/transparent/216idolizedTransparent.png',
+            'cards/transparent/465idolizedTransparent.png',
+            'cards/transparent/472Transparent.png',
+            'cards/transparent/472idolizedTransparent.png',
+            'cards/transparent/473Transparent.png',
+            'cards/transparent/473idolizedTransparent.png',
+            'cards/transparent/474Transparent.png',
+            'cards/transparent/474idolizedTransparent.png',
+            'cards/transparent/475Transparent.png',
+            'cards/transparent/475idolizedTransparent.png',
+            'cards/transparent/476Transparent.png',
+            'cards/transparent/476idolizedTransparent.png',
+            'cards/transparent/478Transparent.png',
+            'cards/transparent/478idolizedTransparent.png',
+            'cards/transparent/480Transparent.png',
+            'cards/transparent/480idolizedTransparent.png',
+            'cards/transparent/481Transparent.png',
+            'cards/transparent/481idolizedTransparent.png',
+            'cards/transparent/482Transparent.png',
+            'cards/transparent/482idolizedTransparent.png',
+            'cards/transparent/483Transparent.png',
+            'cards/transparent/483idolizedTransparent.png',
+            'cards/transparent/484idolizedTransparent.png',
+            'cards/transparent/740Transparent.png',
+            'cards/transparent/740idolizedTransparent.png',
+            'cards/transparent/741Transparent.png',
+            'cards/transparent/741idolizedTransparent.png',
+            'cards/transparent/742Transparent.png',
+            'cards/transparent/742idolizedTransparent.png',
+            'cards/transparent/743Transparent.png',
+            'cards/transparent/743idolizedTransparent.png',
+            'cards/transparent/744Transparent.png',
+            'cards/transparent/744idolizedTransparent.png',
+            'cards/transparent/758Transparent.png',
+            'cards/transparent/758idolizedTransparent.png',
+            'cards/transparent/759Transparent.png',
+            'cards/transparent/759idolizedTransparent.png',
+            'cards/transparent/760Transparent.png',
+            'cards/transparent/760idolizedTransparent.png',
+            'cards/transparent/761Transparent.png',
+            'cards/transparent/761idolizedTransparent.png',
+            'cards/transparent/1080Transparent.png',
+            'cards/transparent/1080idolizedTransparent.png',
+            'cards/transparent/1081Transparent.png',
+            'cards/transparent/1081idolizedTransparent.png',
+            'cards/transparent/1371Transparent.png',
+            'cards/transparent/1371idolizedTransparent.png',
+            'cards/transparent/1372Transparent.png',
+            'cards/transparent/1372idolizedTransparent.png',
+        ])
+        context['audio'] = 'us_merry_christmas'
+    if r == 1: # u's all
+        context['character'] = 'special/christmas/us_christmas.png'
+        context['audio'] = 'us_merry_christmas'
+    if r == 2: # aqours 1
+        context['character'] = random.choice([
+            'cards/transparent/1062Transparent.png',
+            'cards/transparent/1062idolizedTransparent.png',
+            'cards/transparent/1063Transparent.png',
+            'cards/transparent/1063idolizedTransparent.png',
+            'cards/transparent/1064Transparent.png',
+            'cards/transparent/1064idolizedTransparent.png',
+            'cards/transparent/1065Transparent.png',
+            'cards/transparent/1065idolizedTransparent.png',
+            'cards/transparent/1066Transparent.png',
+            'cards/transparent/1066idolizedTransparent.png',
+            'cards/transparent/1075Transparent.png',
+            'cards/transparent/1075idolizedTransparent.png',
+            'cards/transparent/1076Transparent.png',
+            'cards/transparent/1076idolizedTransparent.png',
+            'cards/transparent/1077Transparent.png',
+            'cards/transparent/1077idolizedTransparent.png',
+            'cards/transparent/1078Transparent.png',
+            'cards/transparent/1078idolizedTransparent.png',
+            'cards/transparent/1082idolizedTransparent.png',
+            'cards/transparent/1365Transparent.png',
+            'cards/transparent/1365idolizedTransparent.png',
+            'cards/transparent/1366Transparent.png',
+            'cards/transparent/1366idolizedTransparent.png',
+            'cards/transparent/1367Transparent.png',
+            'cards/transparent/1367idolizedTransparent.png',
+            'cards/transparent/1368Transparent.png',
+            'cards/transparent/1368idolizedTransparent.png',
+            'cards/transparent/1369Transparent.png',
+            'cards/transparent/1369idolizedTransparent.png',
+            'cards/transparent/1382Transparent.png',
+            'cards/transparent/1382idolizedTransparent.png',
+            'cards/transparent/1383Transparent.png',
+            'cards/transparent/1383idolizedTransparent.png',
+            'cards/transparent/1384Transparent.png',
+            'cards/transparent/1384idolizedTransparent.png',
+            'cards/transparent/1385Transparent.png',
+            'cards/transparent/1385idolizedTransparent.png',
+        ])
+        context['audio'] = 'aqours_merry_christmas'
+    if r == 3: # aqours all
+        context['character'] = 'special/christmas/aqours_christmas.png'
+        context['audio'] = 'aqours_merry_christmas'
+    if r == 4: # special
+        context['character'] = random.choice([
+            'cards/transparent/748idolizedTransparent.png',
+            'cards/transparent/739idolizedTransparent.png',
+            'cards/transparent/485idolizedTransparent.png',
+            'cards/transparent/477idolizedTransparent.png',
+            'cards/transparent/199idolizedTransparent.png',
+            'cards/transparent/191idolizedTransparent.png',
+            'cards/transparent/1377idolizedTransparent.png',
+            'cards/transparent/1376idolizedTransparent.png',
+            'special/christmas/wataame_christmas.png',
+            'special/christmas/alpaca_christmas.png',
+            'special/christmas/shiitake_christmas.png',
+            'special/christmas/uchicchi_christmas.png',
+        ])
+        context['audio'] = 'aqours_song_merrychristmas'
+    context['random_background'] = random.choice(['014','017','038','040','130'])
+
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:

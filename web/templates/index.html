@@ -26,26 +26,16 @@
 <div class="talking-character hidden-sm hidden-xs" style="background-image: url('{{ static_url }}{% if character %}{{ character }}{% else %}/static/honokoto{{ 0|random_int:6 }}.png{% endif %}');"></div>
 <div class="dialog hidden-sm hidden-xs">
   <div class="dialog-background">
-    <div class="row">
-      <div class="col-md-8">
-	<div class="twitter-text fontx1-5 text-center">
-          <span style="font-size: 1.4em">{% trans 'Merry Christmas!' %}&nbsp;&nbsp;&nbsp;&nbsp;
-            <audio controls="" id="player" class="hidden">
-	      <source src="http://i.schoolido.lu/special/christmas/{{ audio }}.mp3" type="audio/mpeg" />
-	      <source src="http://i.schoolido.lu/special/christmas/{{ audio }}.m4a" type="audio/mp4" />
-	      <source src="http://i.schoolido.lu/special/christmas/{{ audio }}.ogg" type="audio/ogg" />
-            </audio>
-	</div>
-	<!-- <div class="text-right"> -->
-	<!--   <a href="https://twitter.com/schoolidolu" target="_blank"> -->
-	<!--     {% trans 'Follow School Idol Tomodachi on Twitter' %} -->
-	<!--   </a> -->
-	<!-- </div> -->
-      </div>
-      <div class="col-md-4">
-        <a href="#" onClick="document.getElementById('player').volume = 0.6; document.getElementById('player').play(); return false;" class="fontx2 a-nodifference" id="christmasplay" style="color: #a94442!important; font-size: 58px;"><i class="flaticon-play"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-      </div>
+    <div class="twitter-text text-center" style="font-size: 1.3em;">
+      Nozomi is the winner of our <a href="https://twitter.com/schoolidolu/">@schoolidolu</a> 20K followers campaign tournament!<br />
+      <small><a href="https://goo.gl/8uce7i">See full ranking</a></small> —
+      <b style="font-size: 1.2em;">Thank you!</b>
     </div>
+    <!-- <div class="text-right"> -->
+    <!--   <a href="https://twitter.com/schoolidolu" target="_blank"> -->
+    <!--     {% trans 'Follow School Idol Tomodachi on Twitter' %} -->
+    <!--   </a> -->
+    <!-- </div> -->
   </div>
 </div>
 

@@ -1,0 +1,46 @@
+@import "main.less";
+@import "mixins/buttons.less";
+@import "mixins/a.less";
+
+@mainColor: #e10b80;
+@secondaryColor: #00b0e3;
+
+@mainColor: grey;
+
+@SmileColor: #e6006f;
+@PureColor: #20ab53;
+@CoolColor: #0098eb;
+@AllColor: #8f56cc;
+
+@import url(//fonts.googleapis.com/css?family=Maven+Pro:400,700);
+
+html {
+    .setup-sidebar(@mainColor);
+    .magicircles(@mainColor, @secondaryColor);
+}
+
+body {
+    font-family:'Maven Pro', sans-serif;
+}
+
+// Page: Leaderboard
+
+.leaderboard-account {
+    display: block;
+    padding: 30px 20px;
+    border-radius: 10px;
+    background: no-repeat center top;
+    background-size: 101%;
+    border: 2px solid fade(@SmileColor, 10%);
+    color: white;
+    -webkit-text-stroke: 1px fade(@SmileColor, 30%);
+    text-shadow: -1px 4px 0 fade(@SmileColor, 30%);
+    h3.username {
+        font-weight: bold;
+        font-size: 3em;
+    }
+    h3.rank {
+        font-size: 80px;
+        line-height: 100px;
+    }
+}

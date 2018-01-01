@@ -152,6 +152,7 @@ LOCALE_PATHS = (
 STATIC_URL = '/static/'
 
 STATIC_FILES_URL = '/' if DEBUG else '//i.schoolido.lu/'
+STATIC_FILES_URL = '//i.schoolido.lu/'
 STATIC_FILES_SHARING_URL = 'http://i.schoolido.lu/'
 
 IMAGES_HOSTING_PATH = '/'

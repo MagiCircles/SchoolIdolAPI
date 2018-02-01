@@ -689,6 +689,9 @@ def cards(request, card=None, ajax=False, extra_request_get={}, extra_context={}
         sentence, data = card.get_center_skill_details()
         if sentence and data:
             card.center_skill_details = _(sentence).format(*[_(d) for d in data])
+            extra = card.center_skill_extra
+            if extra:
+                card.center_skill_details += extra
         if card.center_skill:
             try:
                 card.center_skill = string_concat(_(card.center_skill.split(' ')[0]), ' ', _(card.center_skill.split(' ')[1]))

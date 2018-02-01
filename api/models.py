@@ -303,6 +303,23 @@ CENTER_SKILL_SENTENCES = {
     'differentUR':  _('{} increases based on {}'),
 }
 
+EXTRA_CENTER_SKILL_SENTENCE = _(u' and {type} members {attribute} points up by {points}%')
+
+CENTER_SKILL_TYPE_CHOICES = [
+    ('main_unit', _(u'Main Unit')),
+    ('sub_unit', _(u'Sub Unit')),
+    ('year', _(u'Year')),
+]
+
+CENTER_EXTRA_POINTS = {
+    ('SSR', 'main_unit'): 1,
+    ('SSR', 'sub_unit'): 2,
+    ('SSR', 'year'): 2,
+    ('UR', 'main_unit'): 3,
+    ('UR', 'sub_unit'): 6,
+    ('UR', 'year'): 6,
+}
+
 CENTER_SKILL_UR = {
     'Princess': 'Smile',
     'Angel': 'Pure',
@@ -590,6 +607,7 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     skill_details = models.TextField(null=True, blank=True)
     japanese_skill_details = models.TextField(null=True, blank=True)
     center_skill = models.TextField(null=True, blank=True)
+    center_skill_extra_type = models.CharField(choices=CENTER_SKILL_TYPE_CHOICES, null=True, blank=True, max_length=20)
     transparent_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     transparent_idolized_image = models.ImageField(upload_to='cards/transparent/', null=True, blank=True)
     card_image = models.ImageField(upload_to='c/', null=True, blank=True)
@@ -665,6 +683,24 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
             return CENTER_SKILL_SENTENCES[skill], [attribute]
         except (ValueError, AttributeError, KeyError):
             return None, None
+
+    @property
+    def center_skill_extra_type_sentence(self):
+        if self.center_skill_extra_type == 'main_unit':
+            return self.idol_main_unit
+        elif self.center_skill_extra_type == 'sub_unit':
+            return self.idol_sub_unit
+        elif self.center_skill_extra_type == 'year':
+            return _(u'{} years').format(self.idol_year)
+
+    @property
+    def center_skill_extra(self):
+        if not self.center_skill_extra_type: return None
+        return EXTRA_CENTER_SKILL_SENTENCE.format(
+            type=self.center_skill_extra_type_sentence,
+            attribute=self.attribute,
+            points=CENTER_EXTRA_POINTS[(self.rarity, self.center_skill_extra_type)],
+        )
 
     @property
     def ur_pair_japanese_attribute(self):

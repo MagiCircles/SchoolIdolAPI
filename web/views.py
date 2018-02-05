@@ -322,11 +322,6 @@ def index(request):
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
 
-    context['character'] = random.choice([
-        'special/20k_nozomi/nozomi_20k.png',
-        'special/20k_nozomi/NozomiSign.png',
-    ])
-
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:

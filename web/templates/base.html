@@ -28,20 +28,6 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
     </script>
     <![endif]-->
-    <style>
-      .navbar {
-        background-color: #d42426!important;
-      }
-      .navbar .active > a {
-        background-color: #176100!important;
-      }
-      #sidebar-wrapper {
-        background-color: #d42426!important;
-      }
-      #sidebar-wrapper h4, #togglebutton, #sidebar-wrapper .btn {
-        background-color: #176100!important;
-      }
-    </style>
   </head>
   <body class="interface-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
 
@@ -56,8 +42,8 @@
 	    <span class="icon-bar"></span>
 	  </button>
 	  <a class="navbar-brand" href="/">
-            <img src="http://www.carlswebgraphics.com/christmas/bells-holly-ribbon.gif" style="position: absolute; top: -8px; height: 84px;" />
-	    <span style="margin-left: 75px;">{% trans "School Idol Tomodachi" %}</span></a>
+      {% trans "School Idol Tomodachi" %}
+    </a>
 	</div>
 	<div class="collapse navbar-collapse collapse">
 	  <ul class="nav navbar-nav navbar-right">

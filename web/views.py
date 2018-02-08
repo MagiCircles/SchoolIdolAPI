@@ -283,14 +283,19 @@ def index(request):
     context['important_news'] = []
     context['important_news'] = [
         {
-            'url': 'http://schoolido.lu/activities/6523113/',
-            'image': 'http://i.imgur.com/pApldos.png',
-            'name': 'Chika\'s Birthday Giveaway',
+            'url': 'http://schoolido.lu/activities/7873132/',
+            'image': 'https://i.imgur.com/uP2UPt3.png',
+            'name': 'Hanayo Koizumi Sukutomo Birthday Giveaway'
         },
         {
-            'url': 'http://schoolido.lu/activities/6542796/',
-            'image': 'http://i.imgur.com/06v3HuF.png',
-            'name': 'Honoka\'s Birthday Giveaway',
+            'url': 'https://bit.ly/sukutomo-survey',
+            'image': 'https://i.imgur.com/fbbjd6r.png',
+            'name': 'Sukutomo new version survey: fill a 5min survey and win a AZALEA folder giveaway!',
+        },
+        {
+            'url': 'http://patreon.com/db0company',
+            'image': 'https://i.imgur.com/CtyeBHa.png',
+            'name': 'Consider supporting us on Patreon!',
         },
     ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
@@ -1295,7 +1300,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         if page < 0:
             page = 0
     activities = models.Activity.objects.all().order_by('-creation')
-    activities = activities.annotate(likers_count=Count('likes'))
+    #activities = activities.annotate(likers_count=Count('likes'))
     # if request.user.is_authenticated():
     #     activities = activities.extra(select={
     #         'liked': 'SELECT COUNT(*) FROM api_activity_likes WHERE activity_id = api_activity.id AND user_id = {}'.format(request.user.id),
@@ -2729,7 +2734,7 @@ def urpairs(request):
             ('μ\'s SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
             ])
     # Get UR cards
-    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False).exclude(translated_collection='Initial').order_by('name', 'ur_pair__name').select_related('ur_pair')
+    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False).exclude(translated_collection='Initial').exclude(id__gte=1387, id__lte=1395).order_by('name', 'ur_pair__name').select_related('ur_pair')
 
     def _add_ur_pair_in_collection(card, collection_name):
         if card.ur_pair:

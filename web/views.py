@@ -322,11 +322,6 @@ def index(request):
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'
 
-    context['character'] = random.choice([
-        'special/20k_nozomi/nozomi_20k.png',
-        'special/20k_nozomi/NozomiSign.png',
-    ])
-
     if not context['character'] and request.user.is_authenticated() and context['accounts'] and bool(random.getrandbits(1)):
         random_account = random.choice(context['accounts'])
         if random_account.center_id:
@@ -689,6 +684,9 @@ def cards(request, card=None, ajax=False, extra_request_get={}, extra_context={}
         sentence, data = card.get_center_skill_details()
         if sentence and data:
             card.center_skill_details = _(sentence).format(*[_(d) for d in data])
+            extra = card.center_skill_extra
+            if extra:
+                card.center_skill_details += extra
         if card.center_skill:
             try:
                 card.center_skill = string_concat(_(card.center_skill.split(' ')[0]), ' ', _(card.center_skill.split(' ')[1]))

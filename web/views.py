@@ -283,9 +283,19 @@ def index(request):
     context['important_news'] = []
     context['important_news'] = [
         {
-            'url': 'http://schoolido.lu/activities/7873132/',
-            'image': 'https://i.imgur.com/uP2UPt3.png',
-            'name': 'Hanayo Koizumi Sukutomo Birthday Giveaway'
+            'url': 'https://schoolido.lu/activities/8041166/',
+            'image': 'https://i.imgur.com/F1UlU70.jpg',
+            'name': 'Love letters & Live idols - A worldwide Valentine’s Day Love Live! writing + cosplay double competition',
+        },
+        {
+            'url': 'http://schoolido.lu/activities/8036303/',
+            'image': 'https://i.imgur.com/rpa8Bsw.png',
+            'name': 'Kanan Matsuura Sukutomo Birthday Giveaway'
+        },
+        {
+            'url': 'http://schoolido.lu/activities/8007292/',
+            'image': 'https://i.imgur.com/ZTYDnfH.png',
+            'name': 'Emma Verde Sukutomo Birthday Giveaway'
         },
         {
             'url': 'https://bit.ly/sukutomo-survey',

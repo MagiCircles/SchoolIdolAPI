@@ -62,6 +62,7 @@ urlpatterns = patterns('',
     url(r'^staff/editsong/(?P<id>\d+)[/]$', views.staff_editsong, name='staff_editsong'),
     url(r'^urpairs[/]+$', views.urpairs, name='urpairs'),
     url(r'^english_future[/]+$', views.english_future, name='english_future'),
+    url(r'^backgrounds[/]+$', views.backgrounds, name='backgrounds'),
     url(r'^.sicaltriofestival[/]+$', views.usicaltriofestival, name='usicaltriofestival'),
 
     url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset', {
@@ -117,6 +118,6 @@ urlpatterns = patterns('',
     url(r'^avatar/facebook/(?P<username>[\w.@+-]+)[/]+$', views.avatar_facebook, name='avatar_facebook'),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    
+
     url(r'^cardstrength[/]+$', views.cardstrength, name='cardstrength'),
 )

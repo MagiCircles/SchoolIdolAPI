@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans 'Backgrounds' %}{% endblock %}
+{% block content %}
+<div class="container text-center">
+  <br><br>
+  {% for background in backgrounds %}
+  <a href="{{ static_url }}backgrounds/{{ background }}.png?1" target="_blank">
+    <img src="{{ static_url }}backgrounds/{{ background }}.png?2" width="210" style="margin: 10px 5px;">
+  </a>
+  {% endfor %}
+  <br><br>
+</div>
+{% endblock %}

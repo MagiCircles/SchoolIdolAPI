@@ -3171,6 +3171,11 @@ def trades_or_giveaways_submit(request, type, account):
     return render(request, 'trades_or_giveaways_submit.html', context)
 
 
+def backgrounds(request):
+    context = globalContext(request)
+    context['backgrounds'] = settings.BACKGROUNDS
+    return render(request, 'backgrounds.html', context)
+
 def english_future(request):
     context = globalContext(request)
     future_events = models.Event.objects.filter(Q(english_beginning=None) | Q(english_end__gte=timezone.now())).extra(select={'english_is_null': 'english_beginning IS NULL'}).order_by('english_is_null', 'english_beginning', 'beginning')

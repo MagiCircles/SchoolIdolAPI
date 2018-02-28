@@ -913,6 +913,56 @@ raw_information_n = {
             (settings.STATIC_FILES_URL + 'chibi/Chikas_Mother.png', 'shinylyni'),
         ],
     },
+    'Itsuki': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/Itsuki.png', 'klabbb'),
+        ],
+    },
+    'Mutsu': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/Mutsu.png', 'klabbb'),
+        ],
+    },
+    'Riko\'s Mother': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/RikoM.png', 'klabbb'),
+        ],
+    },
+    'Takami Mito': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/TakamiMito.png', 'klabbb'),
+        ],
+    },
+    'Takami Shima': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/TakamiShima.png', 'klabbb'),
+        ],
+    },
+    'Wataame': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/Wataame.png', 'klabbb'),
+        ],
+    },
+    'Yoshimi': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/Yoshimi.png', 'klabbb'),
+        ],
+    },
+    'Miyashita Ai': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/MiyashitaAi.png', 'klabbb'),
+        ],
+    },
+    'Uehara Ayumu': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/UeharaAyumu.png', 'klabbb'),
+        ],
+    },
+    'Yuki Setsuna': {
+        'chibi': [
+            (settings.STATIC_FILES_URL + 'chibi/YukiSetsuna.png', 'klabbb'),
+        ],
+    },
     # '': {
     #     'chibi': [
     #         ('', ''),

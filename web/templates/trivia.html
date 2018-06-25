@@ -21,7 +21,7 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="{{ static_url }}static/bower/lltrivia/dist/trivia.js?5"></script>
+<script src="{{ static_url }}static/bower/lltrivia/dist/trivia.js?7"></script>
 <script>
   var elm = Elm.embed(Elm.Main, $('#elm-trivia')[0], {randomSeed: Math.floor((Math.random() - 0.5) * 4294967295), btnColor: '{{ btnColor }}', cardTotal: {{ total_cards }}, songInfo: {}});
 </script>

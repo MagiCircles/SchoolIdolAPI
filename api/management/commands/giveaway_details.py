@@ -17,8 +17,13 @@ class Command(BaseCommand):
         banner_author = args[2] if args[2] != 'NONE' else None
         pixel_idols = args[3] if args[3] != 'NONE' else None
 
+        today = datetime.date.today()
+        in_300_days = today + relativedelta(days=300)
+
         idol = models.Idol.objects.filter(name__icontains=idol_name)[0]
         end_of_giveaway = get_next_birthday(idol.birthday) + relativedelta(days=16)
+        if end_of_giveaway >= in_300_days:
+            end_of_giveaway = end_of_giveaway.replace(end_of_giveaway.year - 1)
 
         countdown_url = 'https://www.timeanddate.com/countdown/birthday?iso={}T00&p0=%3A&msg=End+of+School+Idol+Tomodachi+{}+Birthday+Giveaway&font=sanserif&csz=1'.format(
             dateformat.format(end_of_giveaway, "Ymd"),

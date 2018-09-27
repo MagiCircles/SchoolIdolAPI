@@ -96,14 +96,29 @@ def print_top(hashtag, winners, id, print_message_between=False):
     if print_message_between:
         sys.stdout.flush()
 
-
-
         print ''
         print ''
         print '***'
         print ''
+
+        print '# FAQ'
+        print ''
+        print '- **I won and I didn\'t hear from you?**'
+        print '    - Check [private messages from db0](https://schoolido.lu/user/db0/messages/). You may have to wait up to 24 hours after announcement.'
+        print '- **Do I have to pay for shipping?**'
+        print '    - No'
+        print '- **When can I expect to get my prize?**'
+        print '    - It can take between 2 weeks and 4 months after the announcement.'
+        print '- **I didn\'t win and I\'m sad ;_;**'
+        print '    - Sorry :( Regardless, the staff and the community loved your entry so your efforts didn\'t go to waste at all <3 Please join our next giveaway to try again!'
+        print '- **How can  I thank you for your amazing work organizing these giveaways?**'
+        print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
+
+        print '***'
+        print ''
         print '[See giveaway details](https://schoolido.lu/activities/{}/)'.format(id)
         print ''
+        print '###### {}'.format(hashtag)
 
         print '--------- END OF POST TO COPY'
         print ''
@@ -129,10 +144,10 @@ class Command(BaseCommand):
 
         birthday_idols = models.Idol.objects.filter(
             main=True,
-        ).filter(birthdays_within(days_after=15, days_before=30))
+        ).filter(birthdays_within(days_after=50, days_before=16))
 
         today = datetime.date.today()
-        in_31_days = today + relativedelta(days=31)
+        in_51_days = today + relativedelta(days=51)
         ended_recently = []
         still_running_giveaways = []
         coming_soon_giveaways = []
@@ -160,7 +175,7 @@ class Command(BaseCommand):
                 coming_soon_giveaways.append(idol)
 
             next_birthday = get_next_birthday(idol.birthday)
-            if next_birthday >= in_31_days and not giveaway_details:
+            if next_birthday >= in_51_days and not giveaway_details:
                 print '!! Warning:', idol.name, 'giveaway should have been organized already!'
 
         print_top(hashtag, winners, id)
@@ -205,13 +220,12 @@ class Command(BaseCommand):
         if still_running_giveaways:
             print ''
             print 'Stay tuned for the winners of',
-            for idol, giveaway in still_running_giveaways:
-                print u'{} that will be announced soon!'.format(u' and '.join([
-                    u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
-                        idol.name, giveaway.id,
-                    )
-                    for idol, giveaway in still_running_giveaways
-                ]))
+            print u'{} that will be announced soon!'.format(u' and '.join([
+                u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
+                    idol_name=idol.name, id=giveaway.id,
+                )
+                for idol, giveaway in still_running_giveaways
+            ]))
             print ''
 
         if coming_soon_giveaways:

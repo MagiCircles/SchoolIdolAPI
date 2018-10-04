@@ -109,6 +109,8 @@ class Command(BaseCommand):
         print '    - Yes! The staff team picks a winner based on effort, creativity, originality and passion so do your best, you can do it~'
         print '- **Can I enter multiple times or combine multiple giveaway entries into one?**'
         print '    - Yes, but you\'ll only get one prize if you win.'
+        print '- **Can I re-use something I didn\'t make specifically for this contest?**'
+        print '    - Yes, but only if you didn\'t use it in a Circles contest before.'
         print '- **How can I include images, audio and videos in my entry?**'
         print '    - For images, [follow this guide](https://github.com/MagiCircles/Circles/wiki/Activity-images). For anything else, include an external link.'
         print '- **Do I have to post in English?**'

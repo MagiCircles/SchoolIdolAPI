@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, datetime, operator
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand, CommandError
@@ -100,6 +101,14 @@ def print_top(hashtag, winners, id, print_message_between=False):
         print ''
         print '***'
         print ''
+        print '# **Support our giveaways!**'
+        print ''
+        print 'These giveaways are made possible thanks to the support of our warm-hearted donators. If you wish to support School Idol Tomodachi for both our future giveaways and to cover the cost of our expensive servers in which our site run, please consider [donating on Patreon](http://patreon.com/db0company).'
+        print ''
+        print '[![Support us on Patreon](https://i.imgur.com/YYwkEhP.png)](http://patreon.com/db0company)'
+        print ''
+        print '***'
+        print ''
 
         print '# FAQ'
         print ''
@@ -113,13 +122,27 @@ def print_top(hashtag, winners, id, print_message_between=False):
         print '    - Sorry :( Regardless, the staff and the community loved your entry so your efforts didn\'t go to waste at all <3 Please join our next giveaway to try again!'
         print '- **How can  I thank you for your amazing work organizing these giveaways?**'
         print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
-
+        print ''
+        print '***'
+        print ''
+        print '## What did you think about this contest?'
+        print ''
+        print 'We want to hear from you! Based on your opinion, we may or may not organize a similar contest next year.'
+        print ''
+        print u'→ [Take the survey!](https://goo.gl/forms/PVErf176nH0LX9go2)'
+        print ''
+        print u'Thank you ♥️'
+        print ''
+        print '***'
+        print ''
+        print 'We\'re looking for judges. [Learn more](https://goo.gl/forms/42sCU6SXnKbqnag23)'
+        print ''
         print '***'
         print ''
         print '[See giveaway details](https://schoolido.lu/activities/{}/)'.format(id)
         print ''
         print '###### {}'.format(hashtag)
-
+        print ''
         print '--------- END OF POST TO COPY'
         print ''
         print ''

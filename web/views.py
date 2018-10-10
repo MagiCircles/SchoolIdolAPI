@@ -3054,7 +3054,7 @@ def giveaways(request):
                     activities = models.Activity.objects.filter(
                         message_data__icontains=tag,
                         account__owner_id__in=[1, 63752, 25142],
-                    ).order_by('id')
+                    ).order_by('id').select_related('account', 'account__owner')
                 except IndexError:
                     activities = []
                 for activity in activities:
@@ -3065,14 +3065,16 @@ def giveaways(request):
                     if activity.id not in already:
                         giveaway = (
                             real_tag,
-                            activity.id,
+                            activity,
                             activity.message_data.split('![')[1].split('](')[1].split(')')[0],
+                            idol,
+                            year,
                             tag,
                         )
                         giveaways.append(giveaway)
                         already.append(activity.id)
                         break
-    context['giveaways'] = sorted(giveaways, key=lambda g: g[1])
+    context['giveaways'] = sorted(giveaways, key=lambda g: g[1].id, reverse=True)
     return render(request, 'giveaways.html', context)
 
 _skillup_skills = [skill for skill in skillsIcons.keys() if skill != 'Score Up' and skill != 'Healer' and skill != 'Perfect Lock']

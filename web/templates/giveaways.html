@@ -4,19 +4,23 @@
 {% block content %}
 <div class="container text-center">
   <br><br>
-  {% for tag, url, image, found_with in backgrounds %}
-  <a href="{{ url }}" target="_blank">
-    {% if image %}
-    <img src="{{ image }}" class="image-responsive">
-    {% else %}
-    Open giveaway
-    {% endif %}
-  </a><br>
-  Tag: {{ tag }}<br>
-  <a href="https://schoolido.lu/activities/#search={{ tag }}">
-    See entries
-  </a>
-  <br><hr><br>
+  {% for tag, activity, image, idol, year, found_with in giveaways %}
+  <div style="display: inline-block;">
+    <a href="/activities/{{ activity.id }}/" target="_blank">
+      {% if image %}
+      <img src="{{ image }}" class="img-responsive" style="max-height: 200px;">
+      {% else %}
+      Open giveaway
+      {% endif %}
+    </a><br>
+    <a href="/idol/{{ idol.name }}">{{ idol.name }}</a> {{ year }}<br>
+    Organized by: <a href="/user/{{ activity.owner.username }}">{{ activity.account.owner.username }}</a><br>
+    Tag: {{ tag }}<br>
+    <a href="/#search={{ tag }}">
+      See entries
+    </a>
+    <br><hr><br>
+  </div>
   {% endfor %}
   <br><br>
 </div>

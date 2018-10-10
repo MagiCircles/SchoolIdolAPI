@@ -64,6 +64,7 @@ urlpatterns = patterns('',
     url(r'^english_future[/]+$', views.english_future, name='english_future'),
     url(r'^backgrounds[/]+$', views.backgrounds, name='backgrounds'),
     url(r'^.sicaltriofestival[/]+$', views.usicaltriofestival, name='usicaltriofestival'),
+    url(r'^giveaways[/]+$', views.giveaways, name='giveaways'),
 
     url(r'^password_reset[/]+$', 'django.contrib.auth.views.password_reset', {
         'template_name': 'password/password_reset_form.html',

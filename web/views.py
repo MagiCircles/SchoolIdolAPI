@@ -281,6 +281,7 @@ def index(request):
     context = globalContext(request)
 
     context['important_news'] = []
+<<<<<<< HEAD
     context['important_news'] = [
         {
             'url': 'https://schoolido.lu/activities/8041166/',
@@ -308,6 +309,8 @@ def index(request):
             'name': 'Consider supporting us on Patreon!',
         },
     ]
+=======
+>>>>>>> 55dc4eabce0b4bc59e95f0696058171093794ae2
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
     context['current_en']['slide_position'] = len(context['current_contests'])
@@ -2744,7 +2747,7 @@ def urpairs(request):
             ('μ\'s SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
             ])
     # Get UR cards
-    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False).exclude(translated_collection='Initial').exclude(id__gte=1387, id__lte=1395).order_by('name', 'ur_pair__name').select_related('ur_pair')
+    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False, idol__main=True).exclude(translated_collection='Initial').exclude(id__gte=1387, id__lte=1395).exclude(id__gte=1478, id__lte=1480).exclude(id__in=[1504,1503,1502,1538,1537,1539]).exclude(id__in=[1552,1554,1553,1574,1576,1575,1589,1588,1590,1591,1592,1607,1606]).order_by('name', 'ur_pair__name').select_related('ur_pair')
 
     def _add_ur_pair_in_collection(card, collection_name):
         if card.ur_pair:
@@ -3043,6 +3046,64 @@ def usicaltriofestival(request):
         random.shuffle(context['entries'])
     context['end'] = end
     return render(request, 'usicaltriofestival.html', context)
+
+PDP_IDOLS = [
+    'Tennoji Rina',
+    'Yuki Setsuna',
+    'Nakasu Kasumi',
+    'Uehara Ayumu',
+    'Asaka Karin',
+    'Osaka Shizuku',
+    'Emma Verde',
+    'Konoe Kanata',
+    'Miyashita Ai',
+]
+
+class Yohane():
+    name = 'Yohane'
+
+def giveaways(request):
+    context = globalContext(request)
+    already = []
+    giveaways = []
+    idols = list(models.Idol.objects.filter(Q(main=True) | Q(name__in=PDP_IDOLS)).order_by('-birthday')) + [Yohane()]
+    for year in [2020, 2019, 2018, 2017, 2016, 2015, '']:
+        for idol in idols:
+            name = idol.name.split(' ')[-1] if idol.name != 'Emma Verde' else 'Emma'
+            tags = [
+                '{name}BirthdayGiveaway{year}'.format(name=name, year=year),
+            ] if year != '' else [
+                '{name}BirthdayGiveaway{year}'.format(name=name, year=year),
+                'happy birthday {name}'.format(name=name),
+                'Let\'s celebrate {}\'s birthday together!'.format(name),
+                'Write "{}'.format(name),
+                '{}" somewhere in your activity'.format(name),
+            ]
+            for tag in tags:
+                try:
+                    activities = models.Activity.objects.filter(
+                        message_data__icontains=tag,
+                        account__owner_id__in=[1, 63752, 25142],
+                    ).order_by('id')
+                except IndexError:
+                    activities = []
+                for activity in activities:
+                    try:
+                    	real_tag = activity.message_data.split('Write "')[1].split('" somewhere in your activity')[0]
+                    except IndexError:
+                        real_tag = tag
+                    if activity.id not in already:
+                        giveaway = (
+                            real_tag,
+                            activity.id,
+                            activity.message_data.split('![')[1].split('](')[1].split(')')[0],
+                            tag,
+                        )
+                        giveaways.append(giveaway)
+                        already.append(activity.id)
+                        break
+    context['giveaways'] = sorted(giveaways, key=lambda g: g[1])
+    return render(request, 'giveaways.html', context)
 
 _skillup_skills = [skill for skill in skillsIcons.keys() if skill != 'Score Up' and skill != 'Healer' and skill != 'Perfect Lock']
 

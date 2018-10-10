@@ -281,36 +281,6 @@ def index(request):
     context = globalContext(request)
 
     context['important_news'] = []
-<<<<<<< HEAD
-    context['important_news'] = [
-        {
-            'url': 'https://schoolido.lu/activities/8041166/',
-            'image': 'https://i.imgur.com/F1UlU70.jpg',
-            'name': 'Love letters & Live idols - A worldwide Valentine’s Day Love Live! writing + cosplay double competition',
-        },
-        {
-            'url': 'http://schoolido.lu/activities/8036303/',
-            'image': 'https://i.imgur.com/rpa8Bsw.png',
-            'name': 'Kanan Matsuura Sukutomo Birthday Giveaway'
-        },
-        {
-            'url': 'http://schoolido.lu/activities/8007292/',
-            'image': 'https://i.imgur.com/ZTYDnfH.png',
-            'name': 'Emma Verde Sukutomo Birthday Giveaway'
-        },
-        {
-            'url': 'https://bit.ly/sukutomo-survey',
-            'image': 'https://i.imgur.com/fbbjd6r.png',
-            'name': 'Sukutomo new version survey: fill a 5min survey and win a AZALEA folder giveaway!',
-        },
-        {
-            'url': 'http://patreon.com/db0company',
-            'image': 'https://i.imgur.com/CtyeBHa.png',
-            'name': 'Consider supporting us on Patreon!',
-        },
-    ]
-=======
->>>>>>> 55dc4eabce0b4bc59e95f0696058171093794ae2
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
     context['current_en']['slide_position'] = len(context['current_contests'])

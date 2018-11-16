@@ -7,6 +7,7 @@ from django.db.models import Count, Q
 from django.utils.formats import date_format
 from django.utils import timezone
 from api import models
+from web.views import PDP_IDOLS
 
 def birthdays_within(days_after, days_before=0, field_name='birthday'):
     now = timezone.now()
@@ -48,6 +49,46 @@ def get_next_birthday(birthday):
 
     return birthday
 
+def get_other_giveaways(hashtag):
+
+    birthday_idols = models.Idol.objects.filter(
+        Q(main=True) | Q(name__in=PDP_IDOLS),
+    ).filter(birthdays_within(days_after=50, days_before=16))
+
+    today = datetime.date.today()
+    in_51_days = today + relativedelta(days=51)
+    ended_recently = []
+    still_running_giveaways = []
+    coming_soon_giveaways = []
+
+    for idol in birthday_idols:
+        giveaway_tag = u'{}BirthdayGiveaway2018'.format(idol.short_name)
+        if giveaway_tag == hashtag:
+            # Current giveaway idol
+            continue
+        giveaway_posts = models.Activity.objects.filter(message_data__icontains=giveaway_tag, account_id__in=[1]).order_by('id')
+        try:
+            giveaway_details = giveaway_posts.filter(message_data__icontains='How to enter?')[0]
+        except IndexError:
+            giveaway_details = None
+        try:
+            giveaway_ended_post = giveaway_posts.filter(message_data__icontains='See giveaway details')[0]
+            ended_recently.append((idol, giveaway_ended_post))
+        except IndexError:
+            giveaway_ended_post = None
+
+        if giveaway_details and not giveaway_ended_post:
+            still_running_giveaways.append((idol, giveaway_details))
+
+        if not giveaway_details:
+            coming_soon_giveaways.append(idol)
+
+        next_birthday = get_next_birthday(idol.birthday)
+        if next_birthday >= in_51_days and not giveaway_details:
+            print '!! Warning:', idol.name, 'giveaway should have been organized already!'
+
+    return still_running_giveaways, coming_soon_giveaways
+
 def print_top(hashtag, winners, id, print_message_between=False):
     activities = models.Activity.objects.filter(id__gt=id, message_data__icontains=hashtag).annotate(total_likes=Count('likes')).select_related('account', 'account__owner').order_by('-total_likes')
     top = 0
@@ -66,7 +107,7 @@ def print_top(hashtag, winners, id, print_message_between=False):
                 print ''
                 print '***'
                 print ''
-                print 'Participants:'
+                print 'Other participants:'
                 print ''
                 has_printed = True
             if print_message_between:
@@ -114,14 +155,12 @@ def print_top(hashtag, winners, id, print_message_between=False):
         print ''
         print '- **I won and I didn\'t hear from you?**'
         print '    - Check [private messages from db0](https://schoolido.lu/user/db0/messages/). You may have to wait up to 24 hours after announcement.'
-        print '- **Do I have to pay for shipping?**'
-        print '    - No'
-        print '- **When can I expect to get my prize?**'
-        print '    - It can take between 2 weeks and 4 months after the announcement.'
         print '- **I didn\'t win and I\'m sad ;_;**'
         print '    - Sorry :( Regardless, the staff and the community loved your entry so your efforts didn\'t go to waste at all <3 Please join our next giveaway to try again!'
         print '- **How can  I thank you for your amazing work organizing these giveaways?**'
         print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
+        print '- **More questions?**'
+        print '    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ)'
         print ''
         print '***'
         print ''
@@ -165,41 +204,7 @@ class Command(BaseCommand):
         id = int(args[2])
         current_giveaway = models.Activity.objects.get(id=id)
 
-        birthday_idols = models.Idol.objects.filter(
-            main=True,
-        ).filter(birthdays_within(days_after=50, days_before=16))
-
-        today = datetime.date.today()
-        in_51_days = today + relativedelta(days=51)
-        ended_recently = []
-        still_running_giveaways = []
-        coming_soon_giveaways = []
-
-        for idol in birthday_idols:
-            giveaway_tag = u'{}BirthdayGiveaway2018'.format(idol.short_name)
-            if giveaway_tag == hashtag:
-                # Current giveaway idol
-                continue
-            giveaway_posts = models.Activity.objects.filter(message_data__icontains=giveaway_tag, account_id__in=[1]).order_by('id')
-            try:
-                giveaway_details = giveaway_posts.filter(message_data__icontains='How to enter?')[0]
-            except IndexError:
-                giveaway_details = None
-            try:
-                giveaway_ended_post = giveaway_posts.filter(message_data__icontains='See giveaway details')[0]
-                ended_recently.append((idol, giveaway_ended_post))
-            except IndexError:
-                giveaway_ended_post = None
-
-            if giveaway_details and not giveaway_ended_post:
-                still_running_giveaways.append((idol, giveaway_details))
-
-            if not giveaway_details:
-                coming_soon_giveaways.append(idol)
-
-            next_birthday = get_next_birthday(idol.birthday)
-            if next_birthday >= in_51_days and not giveaway_details:
-                print '!! Warning:', idol.name, 'giveaway should have been organized already!'
+        still_running_giveaways, coming_soon_giveaways = get_other_giveaways(hashtag)
 
         print_top(hashtag, winners, id)
         activities = models.Activity.objects.filter(id__gt=id, message_data__icontains=hashtag).annotate(total_likes=Count('likes'))
@@ -242,8 +247,7 @@ class Command(BaseCommand):
         print 'Thanks to everyone who participated and helped make this contest a success!'
         if still_running_giveaways:
             print ''
-            print 'Stay tuned for the winners of',
-            print u'{} that will be announced soon!'.format(u' and '.join([
+            print u'{} are currently running! Take your chance and enter!'.format(u' and '.join([
                 u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
                 )

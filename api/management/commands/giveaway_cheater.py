@@ -57,12 +57,17 @@ def get_other_giveaways(hashtag):
 
     today = datetime.date.today()
     in_51_days = today + relativedelta(days=51)
+    in_300_days = today + relativedelta(days=300)
     ended_recently = []
     still_running_giveaways = []
     coming_soon_giveaways = []
 
     for idol in birthday_idols:
-        giveaway_tag = u'{}BirthdayGiveaway2018'.format(idol.short_name)
+        next_birthday = get_next_birthday(idol.birthday)
+        if next_birthday >= in_300_days:
+            next_birthday = next_birthday.replace(next_birthday.year - 1)
+
+        giveaway_tag = u'{}BirthdayGiveaway{}'.format(idol.short_name, next_birthday)
         if giveaway_tag == hashtag:
             # Current giveaway idol
             continue
@@ -83,7 +88,6 @@ def get_other_giveaways(hashtag):
         if not giveaway_details:
             coming_soon_giveaways.append(idol)
 
-        next_birthday = get_next_birthday(idol.birthday)
         if next_birthday >= in_51_days and not giveaway_details:
             print '!! Warning:', idol.name, 'giveaway should have been organized already!'
 
@@ -247,12 +251,14 @@ class Command(BaseCommand):
         print 'Thanks to everyone who participated and helped make this contest a success!'
         if still_running_giveaways:
             print ''
-            print u'{} are currently running! Take your chance and enter!'.format(u' and '.join([
-                u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
-                    idol_name=idol.name, id=giveaway.id,
-                )
-                for idol, giveaway in still_running_giveaways
-            ]))
+            print u'{} {} currently running! Take your chance and enter!'.format(
+                'is' if len(still_running_giveaways) == 1 else 'are',
+                u' and '.join([
+                    u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
+                        idol_name=idol.name, id=giveaway.id,
+                    )
+                    for idol, giveaway in still_running_giveaways
+                ]))
             print ''
 
         if coming_soon_giveaways:

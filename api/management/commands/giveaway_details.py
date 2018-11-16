@@ -130,12 +130,14 @@ class Command(BaseCommand):
         print ''
         if still_running_giveaways:
             print ''
-            print u'{} are currently running! Take your chance and enter!'.format(u' and '.join([
-                u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
-                    idol_name=idol.name, id=giveaway.id,
-                )
-                for idol, giveaway in still_running_giveaways
-            ]))
+            print u'{} {} currently running! Take your chance and enter!'.format(
+                'is' if len(still_running_giveaways) == 1 else 'are',
+                u' and '.join([
+                    u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
+                        idol_name=idol.name, id=giveaway.id,
+                    )
+                    for idol, giveaway in still_running_giveaways
+                ]))
             print ''
 
         if coming_soon_giveaways:

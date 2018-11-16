@@ -1,8 +1,8 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand, CommandError
-from django.utils.formats import dateformat
-from giveaway_cheater import get_next_birthday
+from django.utils.formats import dateformat, date_format
+from giveaway_cheater import get_next_birthday, get_other_giveaways
 from api import models
 
 class Command(BaseCommand):
@@ -22,9 +22,14 @@ class Command(BaseCommand):
         in_300_days = today + relativedelta(days=300)
 
         idol = models.Idol.objects.filter(name__icontains=idol_name)[0]
-        end_of_giveaway = get_next_birthday(idol.birthday) + relativedelta(days=16)
-        if end_of_giveaway >= in_300_days:
-            end_of_giveaway = end_of_giveaway.replace(end_of_giveaway.year - 1)
+        next_birthday = get_next_birthday(idol.birthday)
+        if next_birthday >= in_300_days:
+            next_birthday = next_birthday.replace(next_birthday.year - 1)
+
+        hashtag = u'{}BirthdayGiveaway{}'.format(idol.short_name, next_birthday.year)
+        still_running_giveaways, coming_soon_giveaways = get_other_giveaways(hashtag)
+
+        end_of_giveaway = next_birthday + relativedelta(days=16)
 
         countdown_url = 'https://www.timeanddate.com/countdown/birthday?iso={}T00&p0=%3A&msg=End+of+School+Idol+Tomodachi+{}+Birthday+Giveaway&font=sanserif&csz=1'.format(
             dateformat.format(end_of_giveaway, "Ymd"),
@@ -46,9 +51,7 @@ class Command(BaseCommand):
         print '## Let\'s celebrate {}\'s birthday together!'.format(idol.short_name)
         print ''
         print '# -> [Countdown before the end of the giveaway]({})'.format(countdown_url)
-        print '# -> [See all entries](http://schoolido.lu/#search={}BirthdayGiveaway2018)'.format(
-            idol.short_name,
-        )
+        print '# -> [See all entries](http://schoolido.lu/#search={})'.format(hashtag)
         print ''
         print '# Enter our giveaway to win:'
         print ''
@@ -81,8 +84,8 @@ class Command(BaseCommand):
         print '1. [Create an activity on School Idol Tomodachi](https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-post-an-activity%3F)'
         print '1. Do something to celebrate {}\'s birthday: it can be a photo, cosplay, your figures, a song cover, a drawing, a poem, a story or anything else! It can be very short or very long. The only rule is that it has to be about {}!'.format(idol.short_name, idol.short_name)
         print '1. If you post artworks, only post official artworks, artworks you own, or fan artworks that are approved by the artist and credited.'
-        print '1. Write "{}BirthdayGiveaway2018" somewhere in your activity, without spaces (this is how we\'ll know you\'re entering the giveaway!)'.format(idol.short_name)
-        print '1. To confirm that your entry is in, [check this link](http://schoolido.lu/#search={}BirthdayGiveaway2018) (you may need to wait a few days to get it approved by either our staff teams or by the community by getting enough likes)'.format(idol.short_name)
+        print '1. Write "{}" somewhere in your activity, without spaces (this is how we\'ll know you\'re entering the giveaway!)'.format(hashtag)
+        print '1. To confirm that your entry is in, [check this link](http://schoolido.lu/#search={}) (you may need to wait a few days to get it approved by either our staff teams or by the community by getting enough likes)'.format(hashtag)
         print ''
         print '# **How to win?**'
         print ''
@@ -97,7 +100,7 @@ class Command(BaseCommand):
         print '1. We will send you a private message on School Idol Tomodachi to ask for your address to send you the prize.'
         print ''
         print ''
-        print '# FAQ'
+        print '# **FAQ**'
         print ''
         print '- **Is it international?**'
         print '    - Yes'
@@ -119,3 +122,32 @@ class Command(BaseCommand):
         print '    - After posting, scroll back to the form to post to get the direct link (or see errors if any). For your safety, only 18+ y/o users can see non-moderated activities on the homepage (in "new" tab). Wait for it to be approved by either our staff teams or by the community by getting enough likes.'
         print '- **How can  I thank you for your amazing work organizing these giveaways?**'
         print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
+        print '- **More questions?**'
+        print '    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ)'
+
+        print ''
+        print '***'
+        print ''
+        if still_running_giveaways:
+            print ''
+            print u'{} are currently running! Take your chance and enter!'.format(u' and '.join([
+                u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
+                    idol_name=idol.name, id=giveaway.id,
+                )
+                for idol, giveaway in still_running_giveaways
+            ]))
+            print ''
+
+        if coming_soon_giveaways:
+            print ''
+            print 'The birthday{} of {} {} coming soon, so look forward to that as well!'.format(
+                '' if len(coming_soon_giveaways) == 1 else 's',
+                ' and '.join([
+                    u'{} ({})'.format(
+                        idol.name,
+                        date_format(idol.birthday, format='MONTH_DAY_FORMAT', use_l10n=True),
+                    )
+                    for idol in coming_soon_giveaways
+                ]),
+                'is' if len(coming_soon_giveaways) == 1 else 'are'
+            )

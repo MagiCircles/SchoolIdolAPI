@@ -67,7 +67,7 @@ def get_other_giveaways(hashtag):
         if next_birthday >= in_300_days:
             next_birthday = next_birthday.replace(next_birthday.year - 1)
 
-        giveaway_tag = u'{}BirthdayGiveaway{}'.format(idol.short_name, next_birthday)
+        giveaway_tag = u'{}BirthdayGiveaway{}'.format(idol.short_name, next_birthday.year)
         if giveaway_tag == hashtag:
             # Current giveaway idol
             continue

@@ -217,10 +217,10 @@ class IdolSerializer(serializers.ModelSerializer):
         }
 
     def get_chibi(self, obj):
-        return chibiimage(obj.name, small=False)
+        return chibiimage(obj.name, small=False, force_artist='shinylyni', force_first=True, force_https=True)
 
     def get_chibi_small(self, obj):
-        return chibiimage(obj.name, small=True)
+        return chibiimage(obj.name, small=True, force_artist='shinylyni', force_first=True, force_https=True)
 
     class Meta:
         model = models.Idol

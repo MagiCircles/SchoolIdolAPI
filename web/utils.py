@@ -82,7 +82,7 @@ def is_positive_integer(string):
 def concat_args(*args):
     return u'\"' + u'","'.join([unicode(value).replace('"','\"') for value in args]) + u'\"'
 
-def chibiimage(idol, small=True, force_first=False, force_artist=None):
+def chibiimage(idol, small=True, force_first=False, force_artist=None, force_https=False):
     prefix = 'small_' if small else ''
     image = None
     if idol is not None and idol in all_chibis:
@@ -99,8 +99,14 @@ def chibiimage(idol, small=True, force_first=False, force_artist=None):
         except IndexError:
             image = None
     if image:
-        return (image if not small else image.replace('chibi/', 'chibi/small_'))
-    return settings.STATIC_FILES_URL + u'static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
+        image = (image if not small else image.replace('chibi/', 'chibi/small_'))
+    else:
+        image = settings.STATIC_FILES_URL + u'static/idols/chibi/' + prefix + idol.replace(' ', '_').replace('\'', '-') + '.png'
+    return (
+        image.replace('//', 'https://')
+        if not image.startswith('http') and force_https
+        else image
+    )
 
 def randomString(length, choice=(string.ascii_letters + string.digits)):
     return ''.join(random.SystemRandom().choice(choice) for _ in range(length))

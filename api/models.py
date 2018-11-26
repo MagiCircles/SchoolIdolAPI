@@ -516,13 +516,13 @@ class Event(ExportModelOperationsMixin('Event'), models.Model):
     def soon_happen_world(self):
         return (self.english_beginning is not None
                 and self.english_end is not None
-                and timezone.now() > (self.english_beginning - relativedelta(days=3))
+                and timezone.now() > (self.english_beginning - relativedelta(days=60))
                 and timezone.now() < self.english_beginning)
 
     def soon_happen_japan(self):
         return (self.beginning is not None
                 and self.end is not None
-                and timezone.now() > (self.beginning - relativedelta(days=3))
+                and timezone.now() > (self.beginning - relativedelta(days=60))
                 and timezone.now() < self.beginning)
 
     def __unicode__(self):

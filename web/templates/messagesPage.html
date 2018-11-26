@@ -40,7 +40,7 @@
       <h4 class="text-left">
 	    {% if message.from_user_id != user.id %}
         <div style="float: left; margin-right: 20px;">
-	      {% include 'include/avatar.html' with av_user=message.from_user av_size=20 av_image_size=100 av_fixed=True %}
+	      {% include 'include/avatar.html' with av_user=message.from_user av_size=20 av_image_size=60 av_fixed=True %}
         </div>
         {{ message.from_user.username }}
 	    {% else %}

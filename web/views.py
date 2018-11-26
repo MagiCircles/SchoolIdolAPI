@@ -3346,9 +3346,9 @@ def messages(request, username=None, ajax=False):
                 db_table=models.PrivateMessage._meta.db_table,
                 user_id=request.user.id,
             )],
-        ).select_related('to_user', 'from_user')
+        ).select_related('to_user', 'from_user').order_by('-creation')
 
-    page_size = 10
+    page_size = 30
     page = 0
     context['total_results'] = context['messages'].count()
     context['total_pages'] = int(math.ceil(context['total_results'] / page_size))

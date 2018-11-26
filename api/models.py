@@ -1169,6 +1169,18 @@ class PrivateMessage(models.Model):
     to_user = models.ForeignKey(User, related_name='messages_received', null=True, on_delete=models.SET_NULL, db_index=True)
     message = models.CharField(max_length=300, null=False, blank=False)
 
+    PREVIEW_MAX_LENGTH = 50
+
+    @property
+    def message_preview(self):
+        lines = self.message.split('\n')
+        message = lines[0]
+        if len(message) > self.PREVIEW_MAX_LENGTH:
+            message = u' '.join(message[:self.PREVIEW_MAX_LENGTH+1].split(' ')[0:-1]) + u'...'
+        elif len(lines) > 1:
+            message += u'...'
+        return message
+
     def __unicode__(self):
         return self.message
 

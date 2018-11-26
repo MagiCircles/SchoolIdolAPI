@@ -3304,28 +3304,50 @@ def english_future(request):
 
     return render(request, 'english_future.html', context)
 
-def messages(request, username, ajax=False):
+def messages(request, username=None, ajax=False):
     if not request.user.is_authenticated():
-        return redirect('/create/?next=/user/{}/messages/'.format(username))
-    if request.user.username == username:
+        if username:
+            return redirect('/create/?next=/user/{}/messages/'.format(username))
+        else:
+            return redirect('/create/?next=/messages/')
+    if username and request.user.username == username:
         raise PermissionDenied()
     context = globalContext(request)
-    receiver = get_object_or_404(models.User.objects.select_related('preferences'), username=username)
-    if not ajax and not receiver.preferences.private:
-        if request.method == 'POST':
-            context['form'] = forms.PrivateMessageForm(request.POST)
-            if context['form'].is_valid():
-                message = context['form'].save(commit=False)
-                message.from_user = request.user
-                message.to_user = receiver
-                message.save()
-                pushNotification_PM(receiver, request.user)
+    if username:
+        receiver = get_object_or_404(models.User.objects.select_related('preferences'), username=username)
+        if not ajax and not receiver.preferences.private:
+            if request.method == 'POST':
+                context['form'] = forms.PrivateMessageForm(request.POST)
+                if context['form'].is_valid():
+                    message = context['form'].save(commit=False)
+                    message.from_user = request.user
+                    message.to_user = receiver
+                    message.save()
+                    pushNotification_PM(receiver, request.user)
+                    context['form'] = forms.PrivateMessageForm()
+            else:
                 context['form'] = forms.PrivateMessageForm()
-        else:
-            context['form'] = forms.PrivateMessageForm()
-    context['receiver'] = receiver
-    context['messages'] = models.PrivateMessage.objects.filter(Q(from_user=receiver, to_user=request.user)
-                                                               | Q(from_user=request.user, to_user=receiver)).order_by('-creation')
+        context['receiver'] = receiver
+        context['messages'] = models.PrivateMessage.objects.filter(Q(from_user=receiver, to_user=request.user)
+                                                                   | Q(from_user=request.user, to_user=receiver)).order_by('-creation')
+    else:
+        context['messages'] = models.PrivateMessage.objects.filter(
+            Q(from_user=request.user) | Q(to_user=request.user)
+        ).extra(
+            where=['{db_table}.id IN (SELECT MAX(threads.id) \
+            FROM (SELECT id, \
+            (CASE WHEN to_user_id = {user_id} THEN from_user_id ELSE to_user_id END) AS thread_id \
+            FROM {db_table} \
+            WHERE to_user_id = {user_id} OR from_user_id = {user_id} \
+            ORDER BY creation DESC \
+            ) threads \
+            GROUP BY thread_id \
+            )'.format(
+                db_table=models.PrivateMessage._meta.db_table,
+                user_id=request.user.id,
+            )],
+        ).select_related('to_user', 'from_user')
+
     page_size = 10
     page = 0
     context['total_results'] = context['messages'].count()

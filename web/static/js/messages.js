@@ -3,10 +3,13 @@ function load_more_function() {
     var button = $("#load_more");
     button.html('<div class="loader">Loading...</div>');
     var next_page = button.attr('data-next-page');
-    $.get('/ajax/messages/' + receiver_username + '/' + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {
-	button.replaceWith(data);
-	pagination();
-    });
+    $.get((typeof(receiver_username) == 'undefined' ?
+           '/ajax/messages/'
+           : '/ajax/messages/' + receiver_username + '/')
+          + location.search + (location.search == '' ? '?' : '&') + 'page=' + next_page, function(data) {
+	          button.replaceWith(data);
+	          pagination();
+          });
 }
 
 function pagination() {

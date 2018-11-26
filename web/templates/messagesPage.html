@@ -3,6 +3,7 @@
 {% load times %}
   <div class="messages">
     {% for message in messages %}
+    {% if receiver %}
     <div class="message {% if message.from_user_id == user.id %}right{% else %}left{% endif %} {% if message.from_user_id == user.id %}{{ user.preferences.color|default_if_none:"grey" }}{% else %}{{ receiver.preferences.color|default_if_none:"grey" }}{% endif %}">
       <div class="row">
 	<div class="col-xs-1 col-sm-2">
@@ -34,6 +35,28 @@
 	</div>
       </div>
     </div>
+    {% else %}
+    <a href="/user/{% if message.from_user_id != user.id %}{{ message.from_user.username }}{% else %}{{ message.to_user.username }}{% endif %}/messages/">
+      <h4 class="text-left">
+	    {% if message.from_user_id != user.id %}
+        <div style="float: left; margin-right: 20px;">
+	      {% include 'include/avatar.html' with av_user=message.from_user av_size=20 av_image_size=100 %}
+        </div>
+        {{ message.from_user.username }}
+	    {% else %}
+        <div style="float: left; margin-right: 20px;">
+	      {% include 'include/avatar.html' with av_user=message.to_user av_size=20 av_image_size=60 av_fixed=True %}
+        </div>
+	    {{ message.to_user.username }}
+	    {% endif %}
+	    <small>
+	      {{ message.creation }}
+	    </small>
+        <br>
+        <small>{{ message.message_preview }}</small>
+      </h4>
+    </a>
+    {% endif %}
     {% endfor %}
     {% if messages %}
     <div id="load_more" class="margin20 text-center text-Smile" data-next-page="{{ page|add:1 }}">

@@ -516,13 +516,13 @@ class Event(ExportModelOperationsMixin('Event'), models.Model):
     def soon_happen_world(self):
         return (self.english_beginning is not None
                 and self.english_end is not None
-                and timezone.now() > (self.english_beginning - relativedelta(days=10))
+                and timezone.now() > (self.english_beginning - relativedelta(days=60))
                 and timezone.now() < self.english_beginning)
 
     def soon_happen_japan(self):
         return (self.beginning is not None
                 and self.end is not None
-                and timezone.now() > (self.beginning - relativedelta(days=3))
+                and timezone.now() > (self.beginning - relativedelta(days=60))
                 and timezone.now() < self.beginning)
 
     def __unicode__(self):
@@ -1168,6 +1168,18 @@ class PrivateMessage(models.Model):
     from_user = models.ForeignKey(User, related_name='messages_sent', null=True, on_delete=models.SET_NULL, db_index=True)
     to_user = models.ForeignKey(User, related_name='messages_received', null=True, on_delete=models.SET_NULL, db_index=True)
     message = models.CharField(max_length=300, null=False, blank=False)
+
+    PREVIEW_MAX_LENGTH = 50
+
+    @property
+    def message_preview(self):
+        lines = self.message.split('\n')
+        message = lines[0]
+        if len(message) > self.PREVIEW_MAX_LENGTH:
+            message = u' '.join(message[:self.PREVIEW_MAX_LENGTH+1].split(' ')[0:-1]) + u'...'
+        elif len(lines) > 1:
+            message += u'...'
+        return message
 
     def __unicode__(self):
         return self.message

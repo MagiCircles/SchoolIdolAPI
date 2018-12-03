@@ -2,7 +2,14 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.formats import dateformat, date_format
-from giveaway_cheater import get_next_birthday, get_other_giveaways
+from giveaway_winners import (
+    get_birthday,
+    get_other_giveaways,
+    get_days,
+    get_countdown_url,
+    print_still_running_and_coming_soon,
+    print_support_us,
+)
 from api import models
 
 class Command(BaseCommand):
@@ -18,40 +25,39 @@ class Command(BaseCommand):
         banner_author = args[2] if args[2] != 'NONE' else None
         pixel_idols = args[3] if args[3] != 'NONE' else None
 
-        today = datetime.date.today()
-        in_300_days = today + relativedelta(days=300)
+        idol = models.Idol.objects.filter(name__contains=' {}'.format(idol_name))[0]
+        birthday = get_birthday(idol)
+        hashtag = u'{}BirthdayGiveaway{}'.format(idol.short_name, birthday.year)
+        _idol, still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways = get_other_giveaways(hashtag)
+        days_to_enter, days_to_vote = get_days(idol)
 
-        idol = models.Idol.objects.filter(name__icontains=idol_name)[0]
-        next_birthday = get_next_birthday(idol.birthday)
-        if next_birthday >= in_300_days:
-            next_birthday = next_birthday.replace(next_birthday.year - 1)
+        end_date, countdown_url = get_countdown_url(
+            birthday, days_to_enter,
+            title='End of {} Birthday Giveaway'.format(idol.short_name),
+        )
 
-        hashtag = u'{}BirthdayGiveaway{}'.format(idol.short_name, next_birthday.year)
-        still_running_giveaways, coming_soon_giveaways = get_other_giveaways(hashtag)
-
-        end_of_giveaway = next_birthday + relativedelta(days=16)
-
-        countdown_url = 'https://www.timeanddate.com/countdown/birthday?iso={}T00&p0=%3A&msg=End+of+School+Idol+Tomodachi+{}+Birthday+Giveaway&font=sanserif&csz=1'.format(
-            dateformat.format(end_of_giveaway, "Ymd"),
-            idol.short_name,
+        vote_end_date, countdown_vote_url = get_countdown_url(
+            birthday, days_to_enter + days_to_vote,
+            title='{} Birthday Giveaway - Votes closing in'.format(idol.short_name),
         )
 
         print '![{} Birthday Giveaway]({})'.format(idol.name, banner_url)
         if banner_author:
             print '###### Banner by [{}](https://schoolido.lu/user/{}/)'.format(banner_author, banner_author)
         print ''
-        print '# **Support our giveaways!**'
-        print ''
-        print 'These giveaways are made possible thanks to the support of our warm-hearted donators. If you wish to support School Idol Tomodachi for both our future giveaways and to cover the cost of our expensive servers in which our site run, please consider [donating on Patreon](http://patreon.com/db0company).'
-        print ''
-        print '[![Support us on Patreon](https://i.imgur.com/YYwkEhP.png)](http://patreon.com/db0company)'
+        print_support_us()
         print ''
         print '***'
         print ''
         print '## Let\'s celebrate {}\'s birthday together!'.format(idol.short_name)
         print ''
-        print '# -> [Countdown before the end of the giveaway]({})'.format(countdown_url)
-        print '# -> [See all entries](http://schoolido.lu/#search={})'.format(hashtag)
+        print '{} - {}'.format(
+            dateformat.format(birthday, 'F jS Y' if birthday.year != end_date.year else 'F jS'),
+            dateformat.format(end_date, 'F jS Y' if birthday.month != end_date.month else 'jS Y'),
+        )
+        print ''
+        print '### -> [Countdown before the end of the giveaway]({})'.format(countdown_url)
+        print '### -> [See all entries](http://schoolido.lu/#search={})'.format(hashtag)
         print ''
         print '# Enter our giveaway to win:'
         print ''
@@ -79,26 +85,36 @@ class Command(BaseCommand):
         print '- Digital art or edit: [Join our Discord](https://discord.gg/mehDTsv) and in the channel #ask_permissions_to_join, say "Graphic designer" or "Artist"'
         print '- Physical hand-made gift or official merch: [Join our Discord](https://discord.gg/fmc6fef) and in the channel #chat_lovelive, mention @db0 (note: we cover shipping costs for you!)'
         print ''
+        print '***'
+        print ''
         print '# **How to enter?**'
         print ''
         print '1. [Create an activity on School Idol Tomodachi](https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-post-an-activity%3F)'
         print '1. Do something to celebrate {}\'s birthday: it can be a photo, cosplay, your figures, a song cover, a drawing, a poem, a story or anything else! It can be very short or very long. The only rule is that it has to be about {}!'.format(idol.short_name, idol.short_name)
         print '1. If you post artworks, only post official artworks, artworks you own, or fan artworks that are approved by the artist and credited.'
         print '1. Write "{}" somewhere in your activity, without spaces (this is how we\'ll know you\'re entering the giveaway!)'.format(hashtag)
-        print '1. To confirm that your entry is in, [check this link](http://schoolido.lu/#search={}) (you may need to wait a few days to get it approved by either our staff teams or by the community by getting enough likes)'.format(hashtag)
+        print '1. After submitting your entry, scroll back to where you posted it to open it.'
+        print ''
+        print '***'
         print ''
         print '# **How to win?**'
         print ''
-        print '1. The judges are going to be all of you, the members of the site!'
-        print '    - You have until the end of the [countdown]({}) to get as many "likes" as you can on your activity.'.format(countdown_url)
-        print '1. At the end of the [countdown]({}), the top 3 activities with the most likes will be the winners!'.format(countdown_url)
-        print '    - #1 and #2 winners get a physical prize. #3 winner gets a digital prize.'
-        print '1. Our staff and contributors will also hand pick 1 extra winner who gets a physical prize, regardless of likes. They will pay attention to:'
-        print '    - Creativity & Originality'
-        print '    - Effort'
-        print '    - Passion'
-        print '1. We will send you a private message on School Idol Tomodachi to ask for your address to send you the prize.'
+        print '- **Most popular**'
+        print '    - The power is in the end of the community! Make everyone fall in love with {} thanks to your entry and they\'ll leave a like! The most liked entries at the end of the giveaway will be the winners!'.format(idol.short_name)
+        print '- **Staff picks**'
+        print '    - The members of our [judges panel](https://goo.gl/forms/42sCU6SXnKbqnag23) will pick a winner, regardless of likes. They will pay attention to:'
+        print '        - Creativity & Originality'
+        print '        - Effort'
+        print '        - Passion'
         print ''
+        print 'Likes will close and winners will be announced **[{} days after the end of the giveaway]({})**.'.format(
+            days_to_vote,
+            countdown_vote_url,
+        )
+        print ''
+        print 'Winners are eligible for digital or physical prizes based on their rank.'
+        print ''
+        print '***'
         print ''
         print '# **FAQ**'
         print ''
@@ -109,7 +125,7 @@ class Command(BaseCommand):
         print '- **I can\'t give you my address, can I join?**'
         print '    - Yes. If you win a physical prize, we will give you a digital prize instead.'
         print '- **I\'m not popular, can I win?**'
-        print '    - Yes! The staff team picks a winner based on effort, creativity, originality and passion so do your best, you can do it~'
+        print '    - Yes! The staff team picks a winner based on effort, creativity, originality and passion so do your best, you can do it :)'
         print '- **Can I enter multiple times or combine multiple giveaway entries into one?**'
         print '    - Yes, but you\'ll only get one prize if you win.'
         print '- **Can I re-use something I didn\'t make specifically for this contest?**'
@@ -123,34 +139,18 @@ class Command(BaseCommand):
         print '- **How can  I thank you for your amazing work organizing these giveaways?**'
         print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
         print '- **More questions?**'
-        print '    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ)'
+        print '    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ) and ask your questions in the comments.'
 
         print ''
         print '***'
+        print '***'
+        print '***'
         print ''
-        if still_running_giveaways:
+        if still_running_giveaways or voting_ongoing_giveaways or coming_soon_giveaways:
+            print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol)
             print ''
-            print u'{} {} currently running! Take your chance and enter!'.format(
-                u' and '.join([
-                    u'[{idol_name}\'s Birthday giveaway](https://schoolido.lu/activities/{id}/)'.format(
-                        idol_name=idol.name, id=giveaway.id,
-                    )
-                    for idol, giveaway in still_running_giveaways
-                ]),
-                'is' if len(still_running_giveaways) == 1 else 'are',
-            )
+            print '***'
             print ''
-
-        if coming_soon_giveaways:
-            print ''
-            print 'The birthday{} of {} {} coming soon, so look forward to that as well!'.format(
-                '' if len(coming_soon_giveaways) == 1 else 's',
-                ' and '.join([
-                    u'{} ({})'.format(
-                        idol.name,
-                        date_format(idol.birthday, format='MONTH_DAY_FORMAT', use_l10n=True),
-                    )
-                    for idol in coming_soon_giveaways
-                ]),
-                'is' if len(coming_soon_giveaways) == 1 else 'are'
-            )
+        print '###### {}'.format(hashtag)
+        print ''
+        print ''

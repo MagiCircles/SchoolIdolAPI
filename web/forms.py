@@ -95,7 +95,8 @@ class UserPreferencesForm(ModelForm):
         self.fields['birthdate'] = date_input(self.fields['birthdate'])
         self.fields['default_tab'].choices = [
             ('following', _('Following')),
-            ('hot', _('Hot')),
+            ('hot', _('Popular')),
+            ('all', _('Hot')),
         ]
 
     class Meta:

@@ -1338,7 +1338,10 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         page = int(request.GET['page']) - 1
         if page < 0:
             page = 0
-    activities = models.Activity.objects.all().order_by('-creation')
+    if new:
+        activities = models.Activity.objects.all().order_by('-id')
+    else:
+        activities = models.Activity.objects.all().order_by('-creation')
     activities = activities.annotate(likers_count=Count('likes'))
     # if request.user.is_authenticated():
     #     activities = activities.extra(select={
@@ -1360,9 +1363,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         ids = [account.id for account in accounts_followed]
         activities = activities.filter(account_id__in=ids)
     if not account and not follower and not user:
-        if new:
-            activities = activities.filter(hot=False)
-        elif not all:
+        if not new and not all:
             activities = activities.filter(hot=True)
         activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
     activities = activities[(page * page_size):((page * page_size) + page_size)]

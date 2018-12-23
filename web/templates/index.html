@@ -204,7 +204,6 @@
       <div id="activities">{% include 'cacheactivities.html' %}</div>
       {% else %}
       <div id="{% if user.is_authenticated %}{% if user.preferences.default_tab == 'hot' %}hot{% elif user.preferences.default_tab == 'following' %}my{% endif %}{% else %}hot{% endif %}activities" class="activities-wrapper">
-	{% if user.is_authenticated %}
 	<div style="margin-bottom: 20px;" id="activities-buttons">
 	  <div class="btn-group btn-group-justified" data-toggle="buttons">
 	    <label class="btn btn-{{ btnColor }} hot{% if user.preferences.default_tab == 'hot' %} active{% endif %}">
@@ -214,18 +213,19 @@
 	    <label class="btn btn-{{ btnColor }} all{% if user.preferences.default_tab == 'all' %} active{% endif %}" data-toggle="tooltip" data-container="body" title="<strong>You might be the first person who sees these activities!</strong><br>If you see anything that doesn't follow our rules, please help us by reporting it." data-html="true">
 	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'Hot' %}
-	    </label>{% endif %}
-	    {% if user.is_staff or user.preferences.age >= 18 %}<label class="btn btn-{{ btnColor }} new{% if user.preferences.default_tab == 'new' %} active{% endif %}" data-toggle="tooltip" data-container="body" title="<strong>You might be the first person who sees these activities!</strong><br>If you see anything that doesn't follow our rules, please help us by reporting it." data-html="true">
+	    </label>
+	    <label class="btn btn-{{ btnColor }} new{% if user.preferences.default_tab == 'new' %} active{% endif %}" data-toggle="tooltip" data-container="body" title="<strong>You might be the first person who sees these activities!</strong><br>If you see anything that doesn't follow our rules, please help us by reporting it." data-html="true">
 	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'New' %}
 	    </label>
+	    {% if user.is_authenticated %}
 	    <label class="btn btn-{{ btnColor }} following{% if user.preferences.default_tab == 'following' %} active{% endif %}">
 	      <input type="radio" name="options" autocomplete="off">
 	      {% trans 'Following' %}
 	    </label>
+        {% endif %}
 	  </div>
 	</div>
-	{% endif %}
 	<div class="activities"></div>
       </div>
       {% endif %}

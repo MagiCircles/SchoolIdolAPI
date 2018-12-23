@@ -175,5 +175,13 @@
       {% endfor %}
     }
   });
+  $(document).ready(function() {
+  $('#id_default_tab').change(function() {
+    $('#warning_first').remove();
+    if ($(this).val() == 'all') {
+      $(this).after('<div id="warning_first" class="alert alert-warning"><strong>You might be the first person who sees these activities!</strong><br>If you see anything that doesn\'t follow our rules, please help us by reporting it.</div>');
+    }
+    })
+  });
 </script>
 {% endblock %}

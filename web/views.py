@@ -303,65 +303,11 @@ def index(request):
 
     context['total_donators'] = settings.TOTAL_DONATORS
 
-    #context['random_background'] = random.choice(settings.BACKGROUNDS)
-    context['random_background'] = random.choice(([
-        'b_st_014',
-        'b_st_130',
-        'fs_002',
-        'fs_003',
-        'ms_003',
-    ] * 3) + [
-        'b_st_017',
-        'b_st_038',
-        'b_st_040',
-        'b_st_124',
-        'bg_87_6',
-    ])
+    context['random_background'] = random.choice(settings.BACKGROUNDS)
 
     # Get random character
     context['character'] = None
-    character = random.choice(([
-        ('Eli', '1st', s) for s in [
-            'cards/transparent/196Transparent.png',
-            'cards/transparent/196idolizedTransparent.png',
-            'cards/transparent/361idolizedTransparent.png',
-            'cards/transparent/744Transparent.png',
-            'cards/transparent/744idolizedTransparent.png',
-            'cards/transparent/1371Transparent.png',
-            'cards/transparent/1371idolizedTransparent.png',
-        ]] * 10) + ([
-            ('Eli', '1st', s) for s in [
-                'cards/transparent/1745idolizedTransparent.png',
-                'cards/transparent/967idolizedTransparent.png',
-                'cards/transparent/885idolizedTransparent.png',
-                'cards/transparent/802idolizedTransparent.png',
-                'cards/transparent/495idolizedTransparent.png',
-                'cards/transparent/480Transparent.png',
-                'cards/transparent/480idolizedTransparent.png',
-                'cards/transparent/129Transparent.png',
-                'cards/transparent/129idolizedTransparent.png',
-            ]] * 3) + ([
-                ('Ruby', '2nd', s) for s in [
-                    'cards/transparent/1186idolizedTransparent.png',
-                    'cards/transparent/1076idolizedTransparent.png',
-                ]] * 2) + [
-                    ('Ruby', '2nd', s) for s in [
-                        'cards/transparent/1076Transparent.png',
-                        'cards/transparent/1369Transparent.png',
-                        'cards/transparent/1186Transparent.png',
-                        'cards/transparent/1186idolizedTransparent.png',
-                    ]] + ([
-                        ('Emma', '3rd', s) for s in [
-                            'cards/transparent/739idolizedTransparent.png',
-                        ]] * 2) + [
-                            ('Emma', '3rd', s) for s in [
-                                'cards/transparent/739Transparent.png',
-                            ]
-                        ])
-    context['message'] = u'{} is the {} winner of the Christmas Girl Election 2018!'.format(
-        character[0], character[1],
-    )
-    context['character'] = character[2]
+    context['message'] = _('Follow School Idol Tomodachi on Twitter')
 
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, datetime, operator
+import sys, datetime, operator, urllib
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User, Group
@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.six.moves import input
 from api import models
 from web.views import PDP_IDOLS
+from web.utils import chibiimage
 
 def birthdays_within(days_after, days_before=0, field_name='birthday'):
     now = timezone.now()
@@ -52,8 +53,11 @@ def get_next_birthday(birthday):
 
 def get_days(idol):
     if idol.name in PDP_IDOLS:
-        return 3, 7
+        return 3, 3
     return 7, 7
+
+def get_with_staff_picks(idol):
+    return idol.name not in PDP_IDOLS
 
 def get_birthday(idol):
     today = datetime.date.today()
@@ -91,13 +95,20 @@ def get_other_giveaways(hashtag):
     for idol in birthday_idols:
         birthday = get_birthday(idol)
 
-        giveaway_tag = u'{}BirthdayGiveaway{}'.format(idol.short_name, birthday.year)
-        if giveaway_tag == hashtag:
+        giveaway_tags = [
+                u'{}BirthdayGiveaway{}'.format(idol.short_name, birthday.year),
+                u'{}FanElection{}'.format(idol.short_name, birthday.year),
+        ]
+        if hashtag in giveaway_tags:
             # Current giveaway idol
             current_idol = idol
             continue
+
+        filter_tag = Q()
+        for giveaway_tag in giveaway_tags:
+            filter_tag |= Q(message_data__icontains=giveaway_tag)
         giveaway_posts = models.Activity.objects.filter(
-            message_data__icontains=giveaway_tag,
+            filter_tag,
             account_id=1,
         ).order_by('id')
 
@@ -129,10 +140,16 @@ def get_other_giveaways(hashtag):
         if birthday >= in_51_days and not giveaway_details:
             print '!! Warning:', idol.name, 'giveaway should have been organized already!'
 
+    coming_soon_giveaways.sort(key=lambda i: i.birthday)
     return current_idol, still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways
 
 def get_image(current_giveaway):
-    return current_giveaway.message_data.split('\n# **Support our giveaways!**')[0]
+    return current_giveaway.message_data.split(')')[0] + ')'
+
+def get_small_image(current_giveaway):
+    if not '#small' in current_giveaway.message_data:
+        return None
+    return current_giveaway.message_data.split('#small')[0].split('(')[-1]
 
 def get_entry_image_url(activity):
     try:
@@ -143,16 +160,25 @@ def get_entry_image_url(activity):
 def print_support_us():
     print '# **Support our giveaways!**'
     print ''
-    print 'These giveaways are made possible thanks to the support of our warm-hearted donators. If you wish to support School Idol Tomodachi for both our future giveaways and to cover the cost of our expensive servers in which our site run, please consider [donating on Patreon](http://patreon.com/db0company).'
-    print ''
     print '[![Support us on Patreon](https://i.imgur.com/VNqYEXt.png)](http://patreon.com/db0company)'
+    print ''
+    print 'These giveaways are made possible thanks to the support of our warm-hearted donators. If you wish to support School Idol Tomodachi for both our future giveaways and to cover the cost of our expensive servers in which our site run, please consider [donating on Patreon](http://patreon.com/db0company).'
 
-def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol):
+def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=False):
     if still_running_giveaways:
         print ''
+        if with_icons:
+            for idol, giveaway in still_running_giveaways:
+                small_image = get_small_image(giveaway)
+                if small_image:
+                    print '![{idol_name} Fan Election]({url})'.format(
+                        idol_name=idol.name,
+                        url=small_image,
+                    )
+                    print ''
         print u'{} {} currently running! Take your chance and enter!'.format(
             u' and '.join([
-                u'[{idol_name} Birthday Giveaway](https://schoolido.lu/activities/{id}/)'.format(
+                u'[{idol_name} Fan Election](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
                 )
                 for idol, giveaway in still_running_giveaways
@@ -163,30 +189,43 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
 
     if voting_ongoing_giveaways:
         print ''
-        print u'{} {} just ended! Go check out all the entries and like your favorites!'.format(
+        print u'{} {} entry period just closed! Go check out all the entries and like your favorites!'.format(
             u' and '.join([
-                u'[{idol_name} Birthday Giveaway](https://schoolido.lu/activities/{id}/)'.format(
+                u'[{idol_name} Fan Election](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
                 )
                 for idol, giveaway, hashtag in still_running_giveaways
             ]),
         )
         for idol, giveaway, hashtag in still_running_giveaways:
-            print u'- [See {idol_name} Birthday Giveaway entries](https://schoolido.lu/#search={hashtag})'.format(
+            print u'- [See {idol_name} Fan Election entries](https://schoolido.lu/#search={hashtag})'.format(
                     idol_name=idol.name, hashtag=hashtag,
                 )
         print ''
 
     if coming_soon_giveaways:
+        if with_icons:
+            print ''
+            for idol in coming_soon_giveaways:
+                print '[![{name}]({icon_url})](https://schoolido.lu/idol/{url_name})'.format(
+                    name=idol.name,
+                    icon_url=chibiimage(idol.name, small=True, force_artist='shinylyni', force_first=True, force_https=True),
+                    url_name=urllib.quote(idol.name),
+                )
         print ''
-        print 'The birthday{} of {} {} coming soon, so look forward to that as well!'.format(
+        print_idol = lambda idol: u'[{}](https://schoolido.lu/idol/{}/) ({})'.format(
+            idol.name,
+            urllib.quote(idol.name),
+            date_format(idol.birthday, format='MONTH_DAY_FORMAT', use_l10n=True),
+        )
+        print 'The birthday{} of {} {} coming soon, so look forward to their #1 fan elections as well!'.format(
             '' if len(coming_soon_giveaways) == 1 else 's',
             ' and '.join([
-                u'{} ({})'.format(
-                    idol.name,
-                    date_format(idol.birthday, format='MONTH_DAY_FORMAT', use_l10n=True),
-                )
-                for idol in coming_soon_giveaways
+                u', '.join([
+                    print_idol(idol)
+                    for idol in coming_soon_giveaways[:-1]
+                ]),
+                print_idol(coming_soon_giveaways[-1]),
             ]),
             'is' if len(coming_soon_giveaways) == 1 else 'are'
         )
@@ -313,9 +352,18 @@ class Command(BaseCommand):
             print ''
             print 'Operation cancelled.'
             sys.exit(1)
-        staff_pick_winners = [int(id) for id in staff_pick_winners.split(',')]
+        honorable_mentions = None
+        try:
+            honorable_mentions = input('Enter list of honorable mentions: ')
+        except KeyboardInterrupt:
+            print ''
+            print 'Operation cancelled.'
+            sys.exit(1)
+        honorable_mentions = [int(id) for id in honorable_mentions.split(',')]
 
-        other_entries = queryset.exclude(id__in=[w.id for w in winners]).exclude(id__in=staff_pick_winners).order_by('?')
+        winners = queryset.exclude(id__in=staff_pick_winners).order_by('-total_likes')[:total_winners]
+
+        other_entries = queryset.exclude(id__in=[w.id for w in winners]).exclude(id__in=staff_pick_winners).exclude(id__in=honorable_mentions).order_by('?')
 
         print ''
         print '--------- START OF POST TO COPY'

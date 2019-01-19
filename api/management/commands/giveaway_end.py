@@ -42,20 +42,20 @@ class Command(BaseCommand):
         print ''
         print get_image(giveaway)
         print ''
-        print '{} Birthday Giveaway just ended.'.format(idol.short_name)
+        print '{} #1 Fan Election just reached its last phase.'.format(idol.short_name)
         print ''
-        print 'You are not allowed to enter anymore, however, you still have {} days to vote for your favorite entries!'.format(days_to_vote)
+        print 'You are not allowed to enter anymore, however, you still have {} days to vote for your favorite entries and support whom you think is {}\'s #1 fan!'.format(days_to_vote, idol.short_name)
         print ''
         print '***'
         print ''
-        print '# Vote for your favorite entries'
+        print '# Vote for {}\'s #1 fan'.format(idol.short_name)
         print ''
         print '![](https://i.imgur.com/Scvsqw6.png)'
         print ''
         print '1. Make sure you have an account on [School Idol Tomodachi](http://schoolido.lu/) and you\'re logged in'
         print '2. **[See all the entries here!](http://schoolido.lu/#search={})** *right click to open in new tab*'.format(hashtag)
         print '3. Hit the "Like" button to support your favorite entries. You can like as many entries as you want!'
-        print '4. To see the total number of likes an entry has, click "Write comment", which will take you to the view of the entry only and you\'ll see the likes and comments there.'
+        print '4. To see the total number of likes an entry has, click "Write comment", which will take you to the entry only and you\'ll see the likes and comments there.'
         print ''
         print '***'
         print ''
@@ -67,13 +67,13 @@ class Command(BaseCommand):
         print ''
         print '***'
         print ''
-        print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol)
+        print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=True)
         print ''
         print '***'
         print ''
-        print '[Read the giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ)'
+        print '[See election details and prizes](https://schoolido.lu/activities/{}/)'.format(id)
         print ''
-        print '[See giveaway details](https://schoolido.lu/activities/{}/)'.format(id)
+        print '[Read our giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ)'
         print ''
         print '###### {}'.format(hashtag)
         print ''

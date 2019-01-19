@@ -124,14 +124,14 @@ def get_other_giveaways(hashtag):
             giveaway_winners_post = None
 
         giveaway_ended_post = None
-        if not giveaway_winners_post:
-            try:
-                giveaway_ended_post = giveaway_posts.filter(message_data__icontains='You are not allowed to enter anymore')[0]
+        try:
+            giveaway_ended_post = giveaway_posts.filter(message_data__icontains='You are not allowed to enter anymore')[0]
+            if not giveaway_winners_post:
                 voting_ongoing_giveaways.append((idol, giveaway_ended_post, hashtag))
-            except IndexError:
-                pass
+        except IndexError:
+            pass
 
-        if giveaway_details and not giveaway_ended_post:
+        if giveaway_details and not giveaway_ended_post and not giveaway_winners_post:
             still_running_giveaways.append((idol, giveaway_details))
 
         if not giveaway_details:
@@ -158,7 +158,7 @@ def get_entry_image_url(activity):
         return None
 
 def print_support_us():
-    print '# **Support our giveaways!**'
+    print '# **![Support our giveaways!](https://i.imgur.com/2hI2BLn.png)**'
     print ''
     print '[![Support us on Patreon](https://i.imgur.com/VNqYEXt.png)](http://patreon.com/db0company)'
     print ''
@@ -209,7 +209,7 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
             for idol in coming_soon_giveaways:
                 print '[![{name}]({icon_url})](https://schoolido.lu/idol/{url_name})'.format(
                     name=idol.name,
-                    icon_url=chibiimage(idol.name, small=True, force_artist='shinylyni', force_first=True, force_https=True),
+                    icon_url=chibiimage(idol.name, small=True, force_artist='klab', force_first=False, force_https=True),
                     url_name=urllib.quote(idol.name),
                 )
         print ''
@@ -234,10 +234,14 @@ def delete_cheat_likes(hashtag, id_details, id_end):
     activities = models.Activity.objects.filter(
         message_data__icontains=hashtag,
         id__gt=id_details,
+    ).exclude(
+        message_data__icontains='Congratulations to our winners!',
     )
     if id_end:
         activities = activities.filter(
             id__lt=id_end,
+        ).exclude(
+            id=id_end,
         )
     activities = activities.annotate(total_likes=Count('likes'))
     for activity in activities:
@@ -271,21 +275,25 @@ def print_top(winners):
         if activity.total_likes != prev:
             rank += 1
             prev = activity.total_likes
-        print '### #{} [{}](http://schoolido.lu/user/{}/)'.format(
-            rank,
+        if rank == 1:
+            print '# ![#1 Crowd\'s Favorite Winner - elected by the community](https://i.imgur.com/g1k2p9A.png)'
+        if rank == 2:
+            print '# ![Runner up Crowd\'s Favorite Winner](https://i.imgur.com/jPZp57t.png)'
+        print '### {}[{}](http://schoolido.lu/user/{}/)'.format(
+            u'#{} '.format(rank) if rank not in [1,2] else '',
             activity.account.owner.username,
             activity.account.owner.username,
         )
         print ''
         print '    {} likes'.format(activity.total_likes + 1)
         print ''
-        print '[See original activity](http://schoolido.lu/activities/{}/)'.format(
+        print '[See entry](http://schoolido.lu/activities/{}/)'.format(
             activity.id,
         )
         image = get_entry_image_url(activity)
         if image:
             print ''
-            print image
+            print u'[{}](http://schoolido.lu/activities/{}/)'.format(image, activity.id)
             print ''
         print ''
 
@@ -326,6 +334,8 @@ class Command(BaseCommand):
 
         queryset = models.Activity.objects.exclude(
             id=giveaway_details_id,
+        ).exclude(
+            message_data__icontains='Congratulations to our winners!',
         ).filter(
             message_data__icontains=hashtag,
             id__gt=giveaway_details_id,
@@ -371,26 +381,13 @@ class Command(BaseCommand):
 
         print get_image(giveaway)
         print ''
-        print '# Congratulations to our winners!'
+        print '## The winners of {} {} #1 Fan Election are...'.format(hashtag[-4:], idol.name, )
         print ''
-        print 'They will receive a prize of their choice among the {current_idol}-themed goodies we offer. You can see the list of prizes with pictures in [the original giveaway post](https://schoolido.lu/activities/{current_giveaway_id}/).'.format(
-            current_idol=idol.short_name if idol else 'Love Live',
-            current_giveaway_id=giveaway_details_id,
-        )
-        print ''
-        print 'Thanks to everyone who participated and helped make this contest a success! We loved your entries!'
-        print ''
-        print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol)
-        print ''
-        print '***'
-        print ''
-        print '## Winners'
+        print '--------- COPY STAFF PICKS WINNERS HERE'
         print ''
 
         print_top(winners)
 
-        print ''
-        print '--------- COPY STAFF PICKS WINNERS HERE'
         print ''
         if other_entries:
             print '***'
@@ -406,17 +403,32 @@ class Command(BaseCommand):
             print ''
         print '***'
         print ''
+        print '--------- COPY HONORABLE MENTIONS HERE'
+        print ''
+        print '# **Congratulations to our winners!**'
+        print ''
+        print 'They will receive a prize of their choice among the {current_idol}-themed goodies we offer. You can see the list of prizes with pictures in [the original election details post](https://schoolido.lu/activities/{current_giveaway_id}/).'.format(
+            current_idol=idol.short_name if idol else 'Love Live',
+            current_giveaway_id=giveaway_details_id,
+        )
+        print ''
+        print 'Thanks to everyone who participated and helped make this contest a success! We loved your entries!'
+        print ''
+        print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=True)
+        print ''
+        print '***'
+        print ''
         print_support_us()
         print ''
         print '***'
         print ''
-        print '# FAQ'
+        print '# **![F.A.Q.](https://i.imgur.com/vghSFuS.png)**'
         print ''
         print '- **I won and I didn\'t hear from you?**'
-        print '    - Check [private messages from db0](https://schoolido.lu/user/db0/messages/). You may have to wait up to 24 hours after announcement.'
+        print '    - Check [your private messages](https://schoolido.lu/messages/). You may have to wait up to 24 hours after announcement.'
         print '- **I didn\'t win and I\'m sad ;_;**'
         print '    - Sorry :( Regardless, the staff and the community loved your entry so your efforts didn\'t go to waste at all <3 Please join our next giveaway to try again!'
-        print '- **How can  I thank you for your amazing work organizing these giveaways?**'
+        print '- **How can  I thank you for your amazing work organizing these contests?**'
         print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
         print '- **More questions?**'
         print '    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ) and ask your questions in the comments.'
@@ -437,7 +449,7 @@ class Command(BaseCommand):
         print ''
         print '***'
         print ''
-        print '[See giveaway details](https://schoolido.lu/activities/{}/)'.format(id)
+        print '[See election details and prizes](https://schoolido.lu/activities/{}/)'.format(id)
         print ''
         print '###### {}'.format(hashtag)
         print ''

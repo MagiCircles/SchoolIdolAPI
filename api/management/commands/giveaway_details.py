@@ -63,9 +63,12 @@ class Command(BaseCommand):
         print '# **How to enter?**'
         print ''
         print '1. [Create an activity on School Idol Tomodachi](https://github.com/SchoolIdolTomodachi/SchoolIdolAPI/wiki/How-to-post-an-activity%3F)'
-        print '1. Do something to **show your love for {}** and celebrate her birthday! It can be a photo, cosplay, your figures, a song cover, a drawing, a poem, a story or anything else! It can be very short or very long. The only rule is that it has to be about {}!'.format(idol.short_name, idol.short_name)
-        print '1. If you post artworks, only post official artworks, artworks you own, or fan artworks that are approved by the artist and credited.'
-        print '1. Write "**{}**" somewhere in your activity, without spaces (this is how we\'ll know you\'re entering the election)'.format(hashtag)
+        print '1. Do something to **show your love for {}** and celebrate her birthday!'.format(idol.short_name)
+        print '    - *It can be a photo, cosplay, your figures, a song cover, a drawing, a poem, a story or anything else! It can be very short or very long. The only rule is that it has to be about {}!*'.format(idol.short_name)
+        print '1. If you post artworks, only post official artworks or artworks you own.'
+        print '    - *Fan artworks by other artists are not allowed.*'
+        print '1. Write "**{}**" somewhere in your activity, without spaces.'.format(hashtag)
+        print '    - *This is how we\'ll know you\'re entering the election.*'
         print '1. After submitting your entry, scroll back to where you posted it to open it.'
         print ''
         print '### Entering period: {} - {} - *[Countdown]({})*'.format(
@@ -156,7 +159,7 @@ class Command(BaseCommand):
             print ''
             print '***'
             print ''
-        print '# **F.A.Q.**'
+        print '# **![F.A.Q.](https://i.imgur.com/vghSFuS.png)**'
         print ''
         print '- **Is it international?**'
         print '    - Yes'

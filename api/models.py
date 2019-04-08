@@ -569,9 +569,9 @@ admin.site.register(Idol)
 SKILL_SLOTS_MINMAX = {
     'N': [0, 1, 0],
     'R': [1, 2, 1],
-    'SR': [2, 4, 1],
-    'SSR': [3, 6, 2],
-    'UR': [4, 8, 2],
+    'SR': [2, 4, 4],
+    'SSR': [3, 6, 6],
+    'UR': [4, 8, 8],
 }
 
 class Card(ExportModelOperationsMixin('Card'), models.Model):
@@ -650,13 +650,11 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
 
     @property
     def min_skill_slot(self):
-        if self.is_promo:
-            return SKILL_SLOTS_MINMAX[self.rarity][2]
         return SKILL_SLOTS_MINMAX[self.rarity][0]
 
     @property
     def max_skill_slot(self):
-        if self.is_promo:
+        if self.is_promo: 
             return SKILL_SLOTS_MINMAX[self.rarity][2]
         return SKILL_SLOTS_MINMAX[self.rarity][1]
 

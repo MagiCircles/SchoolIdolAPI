@@ -300,7 +300,7 @@ CENTER_SKILL_SENTENCES = {
     'Heart': _('{} increases (+6%)'),
     'Star': _('{} increases (+7%)'),
     'UR': _('{} increases drastically (+9%)'),
-    'differentUR':  _('{} increases based on {}'),
+    'differentUR':  _('{} increases drastically based on {} ()'),
 }
 
 EXTRA_CENTER_SKILL_SENTENCE = _(u' and {type} members {attribute} points up by {points}%')
@@ -1038,7 +1038,13 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.account, self.message)
 
-admin.site.register(Activity)
+class ActivityAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        self.exclude = ('account', 'ownedcard', 'eventparticipation', 'number', 'likes')
+        form = super(ActivityAdmin, self).get_form(request, obj, **kwargs)
+        return form
+
+admin.site.register(Activity, ActivityAdmin)
 
 class UserImage(ExportModelOperationsMixin('UserImage'), models.Model):
     image = models.ImageField(upload_to='user_images/', null=True, blank=True)

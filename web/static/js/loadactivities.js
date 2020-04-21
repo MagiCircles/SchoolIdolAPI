@@ -22,7 +22,7 @@ function loadMoreActivitiesOnClick(button, parent, account, feed, avatar_size, c
 	      updateActivities();
 	      // Reload disqus comments count
 	      window.DISQUSWIDGETS = undefined;
-	      $.getScript("http://schoolidol.disqus.com/count.js");
+	      $.getScript("https://schoolidol.disqus.com/count.js");
 	  });
 }
 
@@ -31,7 +31,7 @@ function loadMoreActivities(parent, account, feed, avatar_size, card_size) {
     updateActivities();
     // Reload disqus comments count
     window.DISQUSWIDGETS = undefined;
-    $.getScript("http://schoolidol.disqus.com/count.js");
+    $.getScript("https://schoolidol.disqus.com/count.js");
     var button = getButton(parent);
     button.click(function(e) {
 	e.preventDefault();

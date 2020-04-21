@@ -3367,15 +3367,16 @@ def messages(request, username=None, ajax=False):
 
 def ajaxnotifications(request):
     context = {}
+    # Get notifications
     context['notifications'] = models.Notification.objects.filter(owner=request.user)[:5]
-    total = len(context['notifications'])
-    request.user.preferences.unread_notifications -= total
-    if request.user.preferences.unread_notifications < 0:
-        request.user.preferences.unread_notifications = 0
+    # Render notifications
+    result = render(request, 'notifications.html', context)
+    # Delete the ones that were just seen
+    models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
+    # Update count
+    request.user.preferences.unread_notifications = models.Notification.objects.filter(owner=request.user).count()
     request.user.preferences.save()
     context['remaining'] = request.user.preferences.unread_notifications
-    result = render(request, 'notifications.html', context)
-    models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
     return result
 
 @csrf_exempt

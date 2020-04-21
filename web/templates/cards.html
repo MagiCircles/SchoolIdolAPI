@@ -36,7 +36,7 @@
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for main_unit in filters.main_units %}
-      '{{ main_unit|escapejs }}': '{{ static_url }}static/{{ main_unit|escapejs }}.png',
+      '{{ main_unit|escapejs }}': '{{ static_url }}static/{{ main_unit|escapejs }}.png?1',
       {% endfor %}
     }
   });
@@ -53,7 +53,7 @@
 <script>
   var get_parameters = {% if get_parameters %}'{{ get_parameters }}'{% else %}location.search{% endif %};
 </script>
-<script src="{{ static_url }}static/js/cards.js?11"></script>
+<script src="{{ static_url }}static/js/cards.js?13"></script>
 {% if view == 'albumbuilder' %}
 <script src="{{ static_url }}static/js/albumbuilder.js"></script>
 <script>
@@ -63,8 +63,7 @@
   var go_message = "{% trans 'Go' %}";
 </script>
 {% else %}
-<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-<script src="{{ static_url }}static/js/addcard.js?5"></script>
+<script src="{{ static_url }}static/js/addcard.js?5-1"></script>
 {% endif %}
 {% endblock %}
 

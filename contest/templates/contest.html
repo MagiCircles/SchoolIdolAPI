@@ -5,14 +5,14 @@
 {% load random_int %}
 {% load mod %}
 
-{% block shareimage %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
-{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimage %}https://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimagetwitter %}https://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
 
 {% block title %}{% if contest.id != global_contest_id %}{% trans contest.name %}{% else %}{% trans 'The ultimate battle between School Idols' %}{% endif %}{% endblock %}
 
 {% block js %}
-<script src="http://i.schoolido.lu/static/js/contest_vote.js?1"></script>
-<script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="//i.schoolido.lu/static/js/contest_vote.js?1"></script>
+<script src="//i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id %}
 <script>
   $(function() {
@@ -31,7 +31,7 @@
 
 {% block content %}
 
-<div id="contest-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="contest-page" style="background-image: url('//i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container">
     <h1 class="text-{{ btnColor }}">
       {% trans contest.name %}

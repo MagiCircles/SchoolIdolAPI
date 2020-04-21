@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from api.management.commands.importbasics import *
+from django.db.utils import IntegrityError
 
 def import_songs(opt):
     local, redownload, noimages = opt['local'], opt['redownload'], opt['noimages']
@@ -44,9 +45,19 @@ def import_songs(opt):
                         except ValueError:
                             if daily_rotation:
                                 song['daily_rotation'], song['daily_rotation_position'] = clean(tds[0].text).split('-')
-                song['name'] = cleanwithquotes(tds[1].find('a').text).replace('♥', '♡').replace('！', '!').replace('‼︎', '!!')
+                try:
+                    song['name'] = cleanwithquotes(tds[1].find('a').text)
+                except AttributeError:
+                    # No link
+                    song['name'] = cleanwithquotes(tds[1].text)
+                if not song['name']:
+                    print 'Name not found'
+                song['name'] = song['name'].replace('♥', '♡').replace('！', '!').replace('‼︎', '!!')
                 print 'Import {}...'.format(song['name']),
-                song['attribute'] = attribute_jphexcolors[tds[1]['style'].replace(';', '').split(':')[-1]]
+                color = tds[1]['style'].replace(' ', '').replace('text-align:center;', '').replace(';', '').split(':')[-1]
+                if color == '':
+                    continue
+                song['attribute'] = attribute_jphexcolors[color]
                 try:
                     song['BPM'] = int(clean(tds[2].text).split('-')[-1].replace('bpm', '0'))
                 except:
@@ -72,7 +83,11 @@ def import_songs(opt):
                     song['event'] = events[event_index]
                     event_index += 1
                 song['rank'] = rank
-                song, created = models.Song.objects.update_or_create(name=song['name'], defaults=song)
+                try:
+                    song, created = models.Song.objects.update_or_create(name=song['name'], defaults=song)
+                except IntegrityError as e:
+                    print 'Duplicate integrity error', e
+                    continue
                 print 'Done.'
                 if not local and (redownload or not song.image or not song.romaji_name):
                     print "  Import song image and/or song name...",

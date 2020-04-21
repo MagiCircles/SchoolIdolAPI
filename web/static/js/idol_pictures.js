@@ -9,7 +9,7 @@ function picturesJSONToHTML(json, page) {
 }
 
 function loadPicturesJSON(page, callback) {
-    $.get('http://danbooru.donmai.us/posts.json?tags=' + idol_tag + '%20rating:s&page=' + page + '&limit=27', callback);
+    $.get('http://danbooru.donmai.us/posts.json?tags=official_art%20' + idol_tag + '%20rating:s&page=' + page + '&limit=27', callback);
 }
 
 function loadMorePictures() {

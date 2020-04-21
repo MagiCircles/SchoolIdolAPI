@@ -5,13 +5,13 @@
 {% load i18n %}
 {% load mod %}
 
-{% block shareimage %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
-{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimage %}https://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimagetwitter %}https://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
 
 {% block title %}{% trans 'Ranking' %} - {% trans contest.name %}{% endblock %}
 
 {% block js %}
-<script src="http://i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
+<script src="//i.schoolido.lu/static/bower/countdown/dest/jquery.countdown.min.js"></script>
 {% if contest.id != global_contest_id and is_current %}
 <script>
   $(function() {
@@ -27,12 +27,12 @@
 </script>
 {% endif %}
 {% if contest.result_image %}
-<script src="http://i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
+<script src="//i.schoolido.lu/static/bower/jquery-easing/jquery.easing.min.js"></script>
 {% endif %}
 {% endblock %}
 
 {% block content %}
-<div id="contest-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="contest-page" style="background-image: url('//i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container">
     <h1 class="text-{{ btnColor }}">
       {% if contest.homepage_image and not contest.result_image %}
@@ -183,8 +183,8 @@
     <hr>
     <br>
     <div class="text-center">
-      <a href="http://imgur.com/a/F2ST1" target="_blank">
-	<img src="http://i.schoolido.lu/special/treasure.png" width="200">
+      <a href="//imgur.com/a/F2ST1" target="_blank">
+	<img src="//i.schoolido.lu/special/treasure.png" width="200">
       </a>
     </div>
     <br>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load random_int %}
+
+{% block title %}{% trans 'Profile' %}{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+  <h1><img src="{{ static_url }}static/default_event.png" style="max-width: 100%; border-radius: 10px;" alt="{% trans 'Profile' %}"></h1>
+  <p class="margin50 fontx1-5">
+    The list of users is temporarily disabled due to high traffic. Please try again tomorrow.<br>
+    <i>Any help to get more powerful servers is greatly appreciated. <a href="https://www.patreon.com/db0company">Donate here!</a></i>
+  </p>
+</div>
+{% endblock %}

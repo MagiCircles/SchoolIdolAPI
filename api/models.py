@@ -650,13 +650,13 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
 
     @property
     def min_skill_slot(self):
-        if self.is_promo:
+        if self.is_promo and False:
             return SKILL_SLOTS_MINMAX[self.rarity][2]
         return SKILL_SLOTS_MINMAX[self.rarity][0]
 
     @property
     def max_skill_slot(self):
-        if self.is_promo:
+        if self.is_promo and False:
             return SKILL_SLOTS_MINMAX[self.rarity][2]
         return SKILL_SLOTS_MINMAX[self.rarity][1]
 

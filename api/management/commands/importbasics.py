@@ -32,7 +32,7 @@ japantz = pytz.timezone('Asia/Tokyo')
 types = {'Normals': 'N', 'Rares': 'R', 'Super Rares': 'SR', 'Super Super Rares': 'SSR', 'Ultra Rares': 'UR'}
 specials = {'None': 0, 'Promo Cards': 1, 'Special Cards': 2}
 attribute_colors = {'blue': 'Cool', 'red': 'Smile', 'green': 'Pure', 'purple': 'All'}
-attribute_jphexcolors = {'#7EF': 'Cool', '#FCE': 'Smile', '#7FA': 'Pure', '#d8bff8': 'All'}
+attribute_jphexcolors = {'#7DF': 'Cool', '#FCC': 'Smile', '#7F7': 'Pure', '#d8bff8': 'All'}
 
 local = False
 redownload = False

@@ -60,7 +60,7 @@ class Command(BaseCommand):
             next_birthday = get_next_birthday(idol.birthday)
 
             name = u'What\'s your favorite {idol_name} card? {year} ed.'.format(
-                idol_name=idol.name.split(' ')[-1],
+                idol_name=idol.name.split(' ')[-1] if idol.name != 'Emma Verde' else 'Emma',
                 year=next_birthday.year,
             )
 

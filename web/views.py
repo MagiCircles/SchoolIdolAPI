@@ -303,7 +303,11 @@ def index(request):
 
     context['total_donators'] = settings.TOTAL_DONATORS
 
+    # TODO HALLOWEEN
     context['random_background'] = random.choice(settings.BACKGROUNDS)
+    # context['random_background'] = random.choice([
+    #     'b_st_124', 'b_st_173', 'b_st_172', 'bg_62_1',
+    # ])
 
     # Get random character
     context['character'] = None
@@ -317,11 +321,13 @@ def index(request):
         if random_account.center_id:
             context['character'] = random_account.center_card_transparent_image
     if not context['character']:
-        card = models.Card.objects.filter(transparent_idolized_image__isnull=False).exclude(transparent_idolized_image='').order_by('?')
-        if request.user.is_authenticated() and request.user.preferences.best_girl:
-            card = card.filter(name=request.user.preferences.best_girl)
+        all_cards = models.Card.objects.filter(transparent_idolized_image__isnull=False).exclude(transparent_idolized_image='').order_by('?')
+        if request.user.is_authenticated() and request.user.preferences.best_girl and bool(random.getrandbits(1)):
+            card = all_cards.filter(name=request.user.preferences.best_girl)
         else:
-            card = card.filter(idol__main=True)
+            card = all_cards.filter(idol__main=True)
+        if not card:
+            card = all_cards
         if card:
             card = card[0]
             context['character'] = card.transparent_idolized_image
@@ -1115,13 +1121,13 @@ def ajaxaddcard(request):
                                  skill_slots=card.min_skill_slot,
     )
     ownedcard.save()
-    if not settings.HIGH_TRAFFIC:
-        pushActivity(message="Added a card",
-                     ownedcard=ownedcard,
-                     # prefetch:
-                     card=card,
-                     account=account,
-                     account_owner=request.user)
+    # if not settings.HIGH_TRAFFIC:
+    #     pushActivity(message="Added a card",
+    #                  ownedcard=ownedcard,
+    #                  # prefetch:
+    #                  card=card,
+    #                  account=account,
+    #                  account_owner=request.user)
     context = {
         'card': card,
         'owned': ownedcard,
@@ -1194,14 +1200,14 @@ def ajaxeditcard(request, ownedcard):
             if account_changed and owned_card.card.rarity != 'R' and owned_card.card.rarity != 'N':
                 models.Activity.objects.filter(ownedcard=owned_card).update(account=account)
             # Push/update activity on card idolized
-            if not was_idolized and owned_card.idolized:
-                pushActivity("Idolized a card", ownedcard=owned_card,
-                             # prefetch
-                             account_owner=request.user)
-            else:
-                pushActivity("Update card", ownedcard=owned_card,
-                             # prefetch
-                             account_owner=request.user)
+            # if not was_idolized and owned_card.idolized:
+            #     pushActivity("Idolized a card", ownedcard=owned_card,
+            #                  # prefetch
+            #                  account_owner=request.user)
+            # else:
+            #     pushActivity("Update card", ownedcard=owned_card,
+            #                  # prefetch
+            #                  account_owner=request.user)
             context['card'] = owned_card.card
             context['owned'] = owned_card
             context['withcenter'] = True
@@ -1311,6 +1317,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
     if not account and not follower and not user:
         if not new and not all:
             activities = activities.filter(hot=True)
+        activities = activities.exclude(id__in=[10409176,10409218,10409217,10409090,10409227,10409105,10409100,10407895,10409097])
         activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
     activities = activities[(page * page_size):((page * page_size) + page_size)]
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []
@@ -1412,7 +1419,9 @@ def ajaxlikeactivity(request, activity):
     }).annotate(total_likes=Count('likes')).select_related('account', 'account__owner', 'account__owner__preferences'), pk=activity)
     if activity.account.owner.id == request.user.id:
         raise PermissionDenied()
-    if 'like' in request.POST and not activity.liked:
+    if ('like' in request.POST
+        and not activity.liked
+        and activity.id >= models.Activity.objects.order_by('-id')[200].id):
         if request.user.date_joined > (timezone.now() - relativedelta(days=5)):
             return JsonResponse({
                 'total_likes': activity.total_likes + 2,
@@ -1716,16 +1725,16 @@ def editaccount(request, account):
                 account = form.save(commit=False)
                 if old_center != account.center_id:
                     account = _editaccount_savecenter(account)
-                if account.rank >= 200 and account.verified <= 0:
+                if account.rank >= 200 and account.verified <= 0 and False: # verifications disabled
                     account.rank = 195
                     account.save()
                     return redirect('/user/' + request.user.username + '/?notification=ADDACCOUNTRANK200&notification_link_variables=' + str(account.pk))
                 else:
                     account.save()
-                    if old_rank < account.rank:
-                        pushActivity('Rank Up', number=account.rank, account=account,
-                                     # prefetch:
-                                     account_owner=request.user)
+                    # if old_rank < account.rank:
+                    #     pushActivity('Rank Up', number=account.rank, account=account,
+                    #                  # prefetch:
+                    #                  account_owner=request.user)
                     return redirect('/user/' + request.user.username)
     form.fields['center'].queryset = models.OwnedCard.objects.filter(owner_account=owned_account, stored='Deck').order_by('card__id').select_related('card')
     context['form'] = form
@@ -1747,6 +1756,7 @@ def editaccount(request, account):
             if context['verification_days'] == 0:
                 context['verification_days'] = 1
     except: pass
+    context['show_delete_form'] = not bool(models.Activity.objects.filter(account=context['account'], message_type=models.ACTIVITY_TYPE_CUSTOM).count())
     return render(request, 'addaccount.html', context)
 
 def users(request, ajax=False):
@@ -1758,6 +1768,10 @@ def users(request, ajax=False):
     - Users
     - Preferences
     """
+    if ajax:
+        return render(request, 'ajaxcacheusers.html')
+    if settings.HIGH_TRAFFIC or True:
+        return render(request, 'cacheusers.html')
     if len(request.GET.getlist('page')) > 1:
         raise PermissionDenied()
     if ajax:
@@ -1829,24 +1843,24 @@ def users(request, ajax=False):
                 queryset = queryset.filter(accept_friend_requests=False)
         if 'play_with' in request.GET and request.GET['play_with']:
             queryset = queryset.filter(play_with=request.GET['play_with'])
-        if (('owns' in request.GET and request.GET['owns'].isdigit())
-            or ('wish' in request.GET and request.GET['wish'].isdigit())):
-            wish = 'owns' not in request.GET
-            context['wish'] = wish
-            card_id = request.GET['wish' if wish else 'owns']
-            try:
-                context['owns_card'] = models.Card.objects.get(pk=card_id)
-                context['owns_card_string'] = unicode(context['owns_card'])
-            except: pass
-            ownedcards = models.OwnedCard.objects.filter(card_id=card_id)
-            if not wish:
-                ownedcards = ownedcards.filter(Q(stored='Deck') | Q(stored='Album'))
-            else:
-                ownedcards = ownedcards.filter(stored='Favorite')
-            if 'owns_idolized' in request.GET:
-                ownedcards = ownedcards.filter(idolized=(request.GET['owns_idolized'] == 'on'))
-                context['owns_card_idolized'] = request.GET['owns_idolized']
-            queryset = queryset.filter(ownedcards__in=ownedcards)
+        # if (('owns' in request.GET and request.GET['owns'].isdigit())
+        #     or ('wish' in request.GET and request.GET['wish'].isdigit())):
+        #     wish = 'owns' not in request.GET
+        #     context['wish'] = wish
+        #     card_id = request.GET['wish' if wish else 'owns']
+        #     try:
+        #         context['owns_card'] = models.Card.objects.get(pk=card_id)
+        #         context['owns_card_string'] = unicode(context['owns_card'])
+        #     except: pass
+        #     ownedcards = models.OwnedCard.objects.filter(card_id=card_id)
+        #     if not wish:
+        #         ownedcards = ownedcards.filter(Q(stored='Deck') | Q(stored='Album'))
+        #     else:
+        #         ownedcards = ownedcards.filter(stored='Favorite')
+        #     if 'owns_idolized' in request.GET:
+        #         ownedcards = ownedcards.filter(idolized=(request.GET['owns_idolized'] == 'on'))
+        #         context['owns_card_idolized'] = request.GET['owns_idolized']
+        #     queryset = queryset.filter(ownedcards__in=ownedcards)
 
     queryset = queryset.distinct()
     queryset = queryset.prefetch_related('owner', 'owner__preferences')
@@ -2051,12 +2065,12 @@ def eventparticipations(request, event):
                         eventparticipation = form.save(commit=False)
                         _cache_eventparticipation(eventparticipation, account_owner=request.user)
                         eventparticipation.save()
-                        pushActivity('Ranked in event',
-                                     eventparticipation=participation,
-                                     # Prefetch:
-                                     account=findAccount(participation.account_id, context['accounts']),
-                                     event=event,
-                                     account_owner=request.user)
+                        # pushActivity('Ranked in event',
+                        #              eventparticipation=participation,
+                        #              # Prefetch:
+                        #              account=findAccount(participation.account_id, context['accounts']),
+                        #              event=event,
+                        #              account_owner=request.user)
         # add
         else:
             form = forms.EventParticipationForm(request.POST)
@@ -2068,12 +2082,12 @@ def eventparticipations(request, event):
                     participation.event = event
                     _cache_eventparticipation(participation, account=account, account_owner=request.user)
                     participation.save()
-                    pushActivity('Ranked in event',
-                                 eventparticipation=participation,
-                                 # Prefetch:
-                                 account=findAccount(participation.account_id, context['accounts']),
-                                 event=event,
-                                 account_owner=request.user)
+                    # pushActivity('Ranked in event',
+                    #              eventparticipation=participation,
+                    #              # Prefetch:
+                    #              account=findAccount(participation.account_id, context['accounts']),
+                    #              event=event,
+                    #              account_owner=request.user)
 
     # get forms to add or edit
     add_form_accounts_queryset = request.user.accounts_set.all()
@@ -2152,7 +2166,7 @@ def aboutview(request):
     context = globalContext(request)
     context['show_paypal'] = 'show_paypal' in request.GET
     if not settings.HIGH_TRAFFIC:
-        users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', '-preferences__donation_link', '-preferences__donation_link_title').select_related('preferences')
+        users = models.User.objects.filter(Q(is_staff=True) | Q(preferences__status__isnull=False)).exclude(is_staff=False, preferences__status='').order_by('-is_superuser', 'preferences__status', 'username').select_related('preferences')
         users = users.annotate(verifications_done=Count('verificationsdone'))
 
         context['staff'] = []
@@ -2713,14 +2727,16 @@ def urpairs(request):
     us_names = sorted(name for name, info in raw.raw_information.items() if info['main_unit'] == 'μ\'s')
     # Initialize empty data set
     collections = OrderedDict([
-            ('Aqours', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('2nd Aqours', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('1st Aqours', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
             ('2nd μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
             ('1st μ\'s', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
-            ('Aqours SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('2nd Aqours SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
+            ('1st Aqours SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in aqours_names])) for name in aqours_names])),
             ('μ\'s SSRs', OrderedDict([(name, OrderedDict([(_name, [None, None]) for _name in us_names])) for name in us_names])),
             ])
     # Get UR cards
-    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False, idol__main=True).exclude(translated_collection='Initial').exclude(id__gte=1387, id__lte=1395).exclude(id__gte=1478, id__lte=1480).exclude(id__in=[1504,1503,1502,1538,1537,1539]).exclude(id__in=[1552,1554,1553,1574,1576,1575,1589,1588,1590,1591,1592,1607,1606]).order_by('name', 'ur_pair__name').select_related('ur_pair')
+    cards = models.Card.objects.filter(rarity__in=['UR', 'SSR'], is_promo=False, is_special=False, idol__main=True).exclude(translated_collection='Initial').exclude(id__gte=1387, id__lte=1395).exclude(id__gte=1478, id__lte=1480).exclude(id__in=[1504,1503,1502,1538,1537,1539]).exclude(id__in=[1552,1554,1553,1574,1576,1575,1589,1588,1590,1591,1592,1607,1606,1953,1952,1951,1987,1988,1989,2007,2006,2005,2053,2052,2051,2036,2035,2034,2023,2022,2021,2007,2006,200]).order_by('name', 'ur_pair__name').select_related('ur_pair')
 
     def _add_ur_pair_in_collection(card, collection_name):
         if card.ur_pair:
@@ -2751,10 +2767,14 @@ def urpairs(request):
     # Add all cards in data set
     for card in cards:
         if raw.raw_information[card.name]['main_unit'] == 'Aqours':
-            if card.rarity == 'SSR':
-                _add_ur_pair_in_collection(card, 'Aqours SSRs')
+            if card.rarity == 'SSR' and card.id >= 2104:
+                _add_ur_pair_in_collection(card, '2nd Aqours SSRs')
+            elif card.rarity == 'SSR':
+                _add_ur_pair_in_collection(card, '1st Aqours SSRs')
+            elif card.id >= 2104:
+                _add_ur_pair_in_collection(card, '2nd Aqours')
             else:
-                _add_ur_pair_in_collection(card, 'Aqours')
+                _add_ur_pair_in_collection(card, '1st Aqours')
         elif card.rarity == 'SSR':
             _add_ur_pair_in_collection(card, 'μ\'s SSRs')
         elif card.id >= 980:
@@ -2836,13 +2856,13 @@ def ajax_albumbuilder_addcard(request, card_id):
                                                 max_bond=max_bond,
                                                 skill_slots=card.min_skill_slot,
                                                 skill=1)
-    if not settings.HIGH_TRAFFIC:
-        pushActivity(message="Added a card",
-                     ownedcard=ownedcard,
-                     # prefetch:
-                     card=card,
-                     account=account,
-                     account_owner=request.user)
+    # if not settings.HIGH_TRAFFIC:
+    #     pushActivity(message="Added a card",
+    #                  ownedcard=ownedcard,
+    #                  # prefetch:
+    #                  card=card,
+    #                  account=account,
+    #                  account_owner=request.user)
     if 'json' in request.POST:
         return JsonResponse(model_to_dict(ownedcard))
     return render(request, 'albumBuilder_ownedCard.html', {
@@ -2893,14 +2913,14 @@ def ajax_albumbuilder_editcard(request, ownedcard_id):
         ownedcard.skill = 1
     ownedcard.save()
     # Push/update activity on card idolized
-    if 'idolized' in request.POST and ownedcard.idolized:
-        pushActivity("Idolized a card", ownedcard=ownedcard,
-                     # prefetch
-                     account_owner=request.user)
-    elif 'stored' in request.POST or 'idolized' in request.POST:
-        pushActivity("Update card", ownedcard=ownedcard,
-                     # prefetch
-                     account_owner=request.user)
+    # if 'idolized' in request.POST and ownedcard.idolized:
+    #     pushActivity("Idolized a card", ownedcard=ownedcard,
+    #                  # prefetch
+    #                  account_owner=request.user)
+    # elif 'stored' in request.POST or 'idolized' in request.POST:
+    #     pushActivity("Update card", ownedcard=ownedcard,
+    #                  # prefetch
+    #                  account_owner=request.user)
     return JsonResponse(model_to_dict(ownedcard))
 
 def initialsetup(request):
@@ -3028,6 +3048,7 @@ PDP_IDOLS = [
     'Asaka Karin',
     'Osaka Shizuku',
     'Emma Verde',
+    'Verde Emma',
     'Konoe Kanata',
     'Miyashita Ai',
 ]
@@ -3313,8 +3334,13 @@ def messages(request, username=None, ajax=False):
             return redirect('/create/?next=/user/{}/messages/'.format(username))
         else:
             return redirect('/create/?next=/messages/')
-    if username and request.user.username == username:
-        raise PermissionDenied()
+    if username:
+        if request.user.username == username:
+            raise PermissionDenied()
+        if request.user.username == 'stagestart' and username == 'Ultimate_fuzzy_pickles':
+            raise PermissionDenied()
+        if request.user.username in ['DemonZura', 'BuuWaa']:
+            raise PermissionDenied()
     context = globalContext(request)
     if username:
         receiver = get_object_or_404(models.User.objects.select_related('preferences'), username=username)
@@ -3367,16 +3393,30 @@ def messages(request, username=None, ajax=False):
 
 def ajaxnotifications(request):
     context = {}
+    # Get notifications
     context['notifications'] = models.Notification.objects.filter(owner=request.user)[:5]
-    total = len(context['notifications'])
-    request.user.preferences.unread_notifications -= total
-    if request.user.preferences.unread_notifications < 0:
-        request.user.preferences.unread_notifications = 0
+    # Render notifications
+    result = render(request, 'notifications.html', context)
+    # Delete the ones that were just seen
+    models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
+    # Update count
+    request.user.preferences.unread_notifications = models.Notification.objects.filter(owner=request.user).count()
     request.user.preferences.save()
     context['remaining'] = request.user.preferences.unread_notifications
-    result = render(request, 'notifications.html', context)
-    models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
     return result
+
+# def ajaxnotifications(request):
+#     context = {}
+#     context['notifications'] = models.Notification.objects.filter(owner=request.user)[:5]
+#     total = len(context['notifications'])
+#     request.user.preferences.unread_notifications -= total
+#     if request.user.preferences.unread_notifications < 0:
+#         request.user.preferences.unread_notifications = 0
+#     request.user.preferences.save()
+#     context['remaining'] = request.user.preferences.unread_notifications
+#     result = render(request, 'notifications.html', context)
+#     models.Notification.objects.filter(pk__in=[n.pk for n in context['notifications']]).delete()
+#     return result
 
 @csrf_exempt
 def markhot(request):

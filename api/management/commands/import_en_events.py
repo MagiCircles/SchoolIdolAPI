@@ -10,6 +10,7 @@ def import_en_events(opt):
         f = urllib2.urlopen('http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info&action=edit')
 
     cards_section = False
+    set_to_worldwide = []
     for line in f.readlines():
         line = h.unescape(line)
         if line.startswith('=== '):
@@ -20,9 +21,7 @@ def import_en_events(opt):
         data = str(line).split('||')
         if cards_section and len(data) > 1:
             card_id = int(data[0].split('|')[-1].strip())
-            print 'Set card #', card_id, ' as worldwide available...',
-            models.Card.objects.filter(pk=card_id).update(japan_only=False)
-            print 'Done'
+            set_to_worldwide.append(card_id)
         elif len(data) >= 5 and len(data) <= 8:
             dates = data[0].replace('|', '').split(' - ')
             beginning = eventDateFromString(dates[0])
@@ -58,6 +57,10 @@ def import_en_events(opt):
             event, created = models.Event.objects.update_or_create(japanese_name=japanese_name, defaults=defaults)
 
             print 'Done'
+    
+    print 'Set card {} cards as worldwide available...'.format(len(set_to_worldwide)),
+    models.Card.objects.filter(pk__in=set_to_worldwide).update(japan_only=False)
+    print 'Done'
     f.close()
 
 class Command(BaseCommand):
@@ -66,5 +69,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         opt = opt_parse(args)
-        import_en_events(args)
+        import_en_events(opt)
         import_raw_db()

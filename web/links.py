@@ -221,14 +221,6 @@ links = [
                     'language': 'english',
                 },
                 {
-                    'name': 'Twitter @loveliveconfess',
-                    'url': 'https://twitter.com/loveliveconfess',
-                    'type': '',
-                    'description': _('Funny quotes from frustrated players.'),
-                    'language': 'english',
-                    'size': 'small',
-                },
-                {
                     'name': _('English In Game Updates'),
                     'url': 'http://decaf.kouhi.me/lovelive/index.php?title=English_Version_Info',
                     'type': 'info',

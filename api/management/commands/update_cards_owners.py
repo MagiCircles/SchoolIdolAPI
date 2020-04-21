@@ -1,7 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import F, Q
 from api import models
+from django.db import transaction
 
+@transaction.atomic
 def update_cards_owners(opt):
     print '## Total number of cards owners'
     cards = models.Card.objects.all()

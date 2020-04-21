@@ -650,13 +650,13 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
 
     @property
     def min_skill_slot(self):
-        if self.is_promo:
+        if self.is_promo and False:
             return SKILL_SLOTS_MINMAX[self.rarity][2]
         return SKILL_SLOTS_MINMAX[self.rarity][0]
 
     @property
     def max_skill_slot(self):
-        if self.is_promo:
+        if self.is_promo and False:
             return SKILL_SLOTS_MINMAX[self.rarity][2]
         return SKILL_SLOTS_MINMAX[self.rarity][1]
 
@@ -1038,7 +1038,13 @@ class Activity(ExportModelOperationsMixin('Activity'), models.Model):
     def __unicode__(self):
         return u'%s %s' % (self.account, self.message)
 
-admin.site.register(Activity)
+class ActivityAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        self.exclude = ('account', 'ownedcard', 'eventparticipation', 'number', 'likes')
+        form = super(ActivityAdmin, self).get_form(request, obj, **kwargs)
+        return form
+
+admin.site.register(Activity, ActivityAdmin)
 
 class UserImage(ExportModelOperationsMixin('UserImage'), models.Model):
     image = models.ImageField(upload_to='user_images/', null=True, blank=True)

@@ -52,12 +52,15 @@ def get_next_birthday(birthday):
     return birthday
 
 def get_days(idol):
-    if idol.name in PDP_IDOLS:
-        return 3, 3
-    return 7, 7
+    if idol.name in PDP_IDOLS or not idol.main:
+        return 6, 5
+    if idol.main_unit == 'Aqours':
+        return 6, 6
+    # muse
+    return 8, 5
 
 def get_with_staff_picks(idol):
-    return idol.name not in PDP_IDOLS
+    return idol.name not in PDP_IDOLS and idol.main
 
 def get_birthday(idol):
     today = datetime.date.today()
@@ -71,7 +74,7 @@ def get_countdown_url(date, days, title):
     new_date = date + relativedelta(days=days)
     return (
         new_date,
-        'https://www.timeanddate.com/countdown/birthday?iso={}T03&p0=%3A&msg={}&font=sanserif&csz=1'.format(
+        'https://www.timeanddate.com/countdown/birthday?iso={}T11&p0=%3A&msg={}&font=sanserif&csz=1'.format(
             dateformat.format(new_date, "Ymd"),
             title.replace(' ', '+')
         )
@@ -93,11 +96,15 @@ def get_other_giveaways(hashtag):
     current_idol = None
 
     for idol in birthday_idols:
+        if idol.name == 'Emma Verde':
+            idol.name = 'Verde Emma'
+        if idol.name == 'Tsushima Yoshiko':
+            idol.name = 'Tsushima Yohane'
         birthday = get_birthday(idol)
 
         giveaway_tags = [
                 u'{}BirthdayGiveaway{}'.format(idol.short_name, birthday.year),
-                u'{}FanElection{}'.format(idol.short_name, birthday.year),
+                u'{}FanAwards{}'.format(idol.short_name, birthday.year),
         ]
         if hashtag in giveaway_tags:
             # Current giveaway idol
@@ -106,7 +113,7 @@ def get_other_giveaways(hashtag):
 
         filter_tag = Q()
         for giveaway_tag in giveaway_tags:
-            filter_tag |= Q(message_data__icontains=giveaway_tag)
+            filter_tag |= Q(message_data__contains=giveaway_tag)
         giveaway_posts = models.Activity.objects.filter(
             filter_tag,
             account_id=1,
@@ -125,9 +132,13 @@ def get_other_giveaways(hashtag):
 
         giveaway_ended_post = None
         try:
-            giveaway_ended_post = giveaway_posts.filter(message_data__icontains='You are not allowed to enter anymore')[0]
+            giveaway_ended_post = giveaway_posts.filter(message_data__icontains='We\'re entering the last phase of')[0]
             if not giveaway_winners_post:
-                voting_ongoing_giveaways.append((idol, giveaway_ended_post, hashtag))
+                giveaway_hashtag = None
+                for tag in giveaway_tags:
+                    if tag in giveaway_tags:
+                        giveaway_hashtag = tag
+                voting_ongoing_giveaways.append((idol, giveaway_ended_post, giveaway_details, tag))
         except IndexError:
             pass
 
@@ -171,14 +182,14 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
             for idol, giveaway in still_running_giveaways:
                 small_image = get_small_image(giveaway)
                 if small_image:
-                    print '![{idol_name} Fan Election]({url})'.format(
+                    print '![{idol_name} Fan Awards]({url})'.format(
                         idol_name=idol.name,
                         url=small_image,
                     )
                     print ''
         print u'{} {} currently running! Take your chance and enter!'.format(
             u' and '.join([
-                u'[{idol_name} Fan Election](https://schoolido.lu/activities/{id}/)'.format(
+                u'[{idol_name} Fan Awards](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
                 )
                 for idol, giveaway in still_running_giveaways
@@ -189,16 +200,27 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
 
     if voting_ongoing_giveaways:
         print ''
-        print u'{} {} entry period just closed! Go check out all the entries and like your favorites!'.format(
+        if with_icons:
+            for idol, giveaway, giveaway_details, hashtag in voting_ongoing_giveaways:
+                small_image = get_small_image(giveaway_details)
+                if small_image:
+                    print '![{idol_name} Fan Awards]({url})'.format(
+                        idol_name=idol.name,
+                        url=small_image,
+                    )
+                    print ''
+        print u'{} entry period{} just closed! Go check out all the entries and like your favorites!'.format(
             u' and '.join([
-                u'[{idol_name} Fan Election](https://schoolido.lu/activities/{id}/)'.format(
+                u'[{idol_name} Fan Awards](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
                 )
-                for idol, giveaway, hashtag in still_running_giveaways
+                for idol, giveaway, giveaway_details, hashtag in voting_ongoing_giveaways
             ]),
+            's' if len(voting_ongoing_giveaways) > 1 else ''
         )
-        for idol, giveaway, hashtag in still_running_giveaways:
-            print u'- [See {idol_name} Fan Election entries](https://schoolido.lu/#search={hashtag})'.format(
+        for idol, giveaway, giveaway_details, hashtag in voting_ongoing_giveaways:
+            print ''
+            print u'- [See {idol_name} Fan Awards entries](https://schoolido.lu/#search={hashtag}) *right click to open in new tab*'.format(
                     idol_name=idol.name, hashtag=hashtag,
                 )
         print ''
@@ -218,7 +240,7 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
             urllib.quote(idol.name),
             date_format(idol.birthday, format='MONTH_DAY_FORMAT', use_l10n=True),
         )
-        print 'The birthday{} of {} {} coming soon, so look forward to their #1 fan elections as well!'.format(
+        print 'The birthday{} of {} {} coming soon, so look forward to their Fan Awards as well!'.format(
             '' if len(coming_soon_giveaways) == 1 else 's',
             ' and '.join([
                 u', '.join([
@@ -268,7 +290,7 @@ def delete_cheat_likes(hashtag, id_details, id_end):
         print '  Total cheat likes: {}'.format(total_cheat)
         print '  Total remaining likes: {}'.format(activity.total_likes - total_cheat)
 
-def print_top(winners):
+def print_top(winners, lucky=False):
     rank = 0
     prev = -1
     for activity in winners:
@@ -276,7 +298,10 @@ def print_top(winners):
             rank += 1
             prev = activity.total_likes
         if rank == 1:
-            print '# ![#1 Crowd\'s Favorite Winner - elected by the community](https://i.imgur.com/g1k2p9A.png)'
+            if lucky:
+                print '# ![#1 Lucky Winner - elected by the community](https://i.imgur.com/tpQXUQo.png)'
+            else:
+                print '# ![#1 Crowd\'s Favorite Winner - elected by the community](https://i.imgur.com/0jKB10n.png)'
         if rank == 2:
             print '# ![Runner up Crowd\'s Favorite Winner](https://i.imgur.com/jPZp57t.png)'
         print '### {}[{}](http://schoolido.lu/user/{}/)'.format(
@@ -284,8 +309,8 @@ def print_top(winners):
             activity.account.owner.username,
             activity.account.owner.username,
         )
-        print ''
-        print '    {} likes'.format(activity.total_likes + 1)
+        # print ''
+        # print '    {} likes'.format(activity.total_likes + 1)
         print ''
         print '[See entry](http://schoolido.lu/activities/{}/)'.format(
             activity.id,
@@ -303,7 +328,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         if len(args) < 2:
-            print 'Specify id of giveaway details, id of giveaway end post (or NONE), number of likes winners'
+            print 'Specify id of giveaway details, id of giveaway end post (or NONE), number of likes winners (default = 0)'
             return
         giveaway_details_id = int(args[0])
 
@@ -315,20 +340,23 @@ class Command(BaseCommand):
         try:
             total_winners = int(args[2])
         except IndexError:
-            total_winners = 2
+            total_winners = 0
 
         giveaway = models.Activity.objects.get(id=giveaway_details_id)
         if giveaway_end_id:
             end_giveaway = models.Activity.objects.get(id=giveaway_end_id)
-        hashtag = giveaway.message_data.split('[See all entries](http://schoolido.lu/#search=')[1].split(')')[0]
+        hashtag = giveaway.message_data.split('[See all participants](http://schoolido.lu/#search=')[1].split(')')[0]
 
         idol, still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways = get_other_giveaways(hashtag)
         if not idol:
             try:
-                idol = models.Idol.objects.filter(name__contains=u' {}'.format(hashtag.split('Birthday')[0]))[0]
+                idol = models.Idol.objects.filter(name__contains=u' {}'.format(hashtag.split('Fan')[0]))[0]
             except:
-                print 'Can\'t find idol'
-                return
+                try:
+                    idol = models.Idol.objects.filter(name=hashtag.split('Fan')[0])[0]
+                except:
+                    print 'Can\'t find idol'
+                    return
 
         delete_cheat_likes(hashtag, giveaway_details_id, giveaway_end_id)
 
@@ -346,34 +374,58 @@ class Command(BaseCommand):
             ).exclude(
                 id=giveaway_end_id,
             )
+        print queryset
         queryset = queryset.annotate(total_likes=Count('likes')).select_related('account', 'account__owner')
 
         winners = queryset.order_by('-total_likes')[:total_winners]
+        print winners
 
         print ''
         print ''
         print 'Winning entries: {}'.format(','.join([str(w.id) for w in winners]))
         print ''
         # Prompt to ask for staff pick winner(s)
-        staff_pick_winners = None
-        try:
-            staff_pick_winners = input('Enter list of staff pick winner ids: ')
-        except KeyboardInterrupt:
-            print ''
-            print 'Operation cancelled.'
-            sys.exit(1)
-        honorable_mentions = None
-        try:
-            honorable_mentions = input('Enter list of honorable mentions: ')
-        except KeyboardInterrupt:
-            print ''
-            print 'Operation cancelled.'
-            sys.exit(1)
-        honorable_mentions = [int(id) for id in honorable_mentions.split(',')]
 
-        winners = queryset.exclude(id__in=staff_pick_winners).order_by('-total_likes')[:total_winners]
+        if queryset.count() >= 30:
 
-        other_entries = queryset.exclude(id__in=[w.id for w in winners]).exclude(id__in=staff_pick_winners).exclude(id__in=honorable_mentions).order_by('?')
+            staff_pick_winners = None
+            try:
+                staff_pick_winners = input('Enter list of staff pick winner ids: ')
+            except KeyboardInterrupt:
+                print ''
+                print 'Operation cancelled.'
+                sys.exit(1)
+            staff_pick_winners = [int(id) for id in staff_pick_winners.split(',')]
+            honorable_mentions = None
+            try:
+                honorable_mentions = input('Enter list of honorable mentions: ')
+            except KeyboardInterrupt:
+                print ''
+                print 'Operation cancelled.'
+                sys.exit(1)
+            honorable_mentions = [int(id) for id in honorable_mentions.split(',')]
+            
+            has_staff_picks_winners = staff_pick_winners != [0]
+            has_honorable_mentions = honorable_mentions != [0]
+
+        else:
+            staff_pick_winners = []
+            honorable_mentions = []
+            has_staff_picks_winners = False
+            has_honorable_mentions = False
+    
+        remaining_entries = queryset.exclude(id__in=staff_pick_winners)
+
+        if total_winners:
+            likes_winners = remaining_entries.order_by('-total_likes')[:total_winners]
+            remaining_entries = remaining_entries.exclude(id__in=[w.id for w in likes_winners])
+        else:
+            likes_winners = []
+ 
+        random_winners = remaining_entries.order_by('?')[:1]
+        remaining_entries = remaining_entries.exclude(id__in=[w.id for w in random_winners])
+
+        remaining_entries = remaining_entries.exclude(id__in=honorable_mentions).order_by('?')
 
         print ''
         print '--------- START OF POST TO COPY'
@@ -381,38 +433,65 @@ class Command(BaseCommand):
 
         print get_image(giveaway)
         print ''
-        print '## The winners of {} {} #1 Fan Election are...'.format(hashtag[-4:], idol.name, )
+        print '## The winner{} of {} {} Fan Awards {}...'.format('s' if total_winners or has_staff_picks_winners else '', hashtag[-4:], idol.name, 'are' if total_winners else 'is')
         print ''
-        print '--------- COPY STAFF PICKS WINNERS HERE'
-        print ''
-
-        print_top(winners)
-
-        print ''
-        if other_entries:
-            print '***'
+        if has_staff_picks_winners:
+            print '--------- COPY GRAND WINNERS HERE'
             print ''
+            print '***'
+
+        if total_winners:
+            print_top(likes_winners)
+
+        print_top(random_winners, lucky=True)
+
+        print ''
+        print '***'
+        print ''
+        print ''
+        if has_honorable_mentions:
+            print '--------- COPY HONORABLE MENTIONS HERE'
+        print ''
+        if remaining_entries and has_honorable_mentions:
+            print ''
+            for i, activity in enumerate(remaining_entries):
+                if True: # change to True/False based on rds commented on all entries
+                    print u'**[{username}](https://schoolido.lu/user/{username}/)** - [See activity](http://schoolido.lu/activities/{id}/)'.format(
+                        username=activity.account.owner.username,
+                        id=activity.id,
+                    )
+                    # print '    - rdsathene *(School Idol Tomodachi staff;Donator)*: ""'
+                    print '    - ""'
+                    print ''
+                else:
+                    print u'[{}](http://schoolido.lu/activities/{}/){}'.format(
+                        activity.account.owner.username,
+                        activity.id,
+                        ', ' if i + 1 < len(remaining_entries) else '',
+                    )
+            print ''
+        elif remaining_entries:
             print 'Other participants:'
             print ''
-            for i, activity in enumerate(other_entries):
+            for i, activity in enumerate(remaining_entries):
                 print u'[{}](http://schoolido.lu/activities/{}/){}'.format(
                     activity.account.owner.username,
                     activity.id,
-                    ', ' if i + 1 < len(other_entries) else '',
+                    ', ' if i + 1 < len(remaining_entries) else '',
                 )
             print ''
         print '***'
         print ''
-        print '--------- COPY HONORABLE MENTIONS HERE'
+        print '# **Congratulations to our winner{}!**'.format('s' if total_winners or has_staff_picks_winners else '')
         print ''
-        print '# **Congratulations to our winners!**'
-        print ''
-        print 'They will receive a prize of their choice among the {current_idol}-themed goodies we offer. You can see the list of prizes with pictures in [the original election details post](https://schoolido.lu/activities/{current_giveaway_id}/).'.format(
+        print 'They will receive a prize of their choice among the {current_idol}-themed goodies we offer. You can see the list of prizes with pictures in [the original awards details post](https://schoolido.lu/activities/{current_giveaway_id}/).'.format(
             current_idol=idol.short_name if idol else 'Love Live',
             current_giveaway_id=giveaway_details_id,
         )
         print ''
         print 'Thanks to everyone who participated and helped make this contest a success! We loved your entries!'
+        print ''
+        print '***'
         print ''
         print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=True)
         print ''
@@ -449,9 +528,20 @@ class Command(BaseCommand):
         print ''
         print '***'
         print ''
-        print '[See election details and prizes](https://schoolido.lu/activities/{}/)'.format(id)
+        print '[See awards details and prizes](https://schoolido.lu/activities/{}/)'.format(giveaway_details_id)
         print ''
         print '###### {}'.format(hashtag)
         print ''
         print '--------- END OF POST TO COPY'
+        print ''
+        print ''
+        print 'List of entries by like:'
+        print ''
+        for activity in queryset.order_by('-total_likes'):
+            print u'{} likes - {}{} - http://schoolido.lu/activities/{}/'.format(
+                activity.total_likes + 1,
+                activity.account.owner.username,
+                u' ({})'.format(activity.account.nickname) if activity.account.nickname != activity.account.owner.username else '',
+                activity.id)
+        print ''
         print ''

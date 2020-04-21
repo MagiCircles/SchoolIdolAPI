@@ -5,13 +5,13 @@
 {% load mod %}
 {% load i18n %}
 
-{% block shareimage %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
-{% block shareimagetwitter %}http://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimage %}https://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
+{% block shareimagetwitter %}https://i.schoolido.lu/static/screenshots/contest.png{% endblock %}
 
 {% block title %}{% trans 'Past Contests' %}{% endblock %}
 
 {% block content %}
-<div id="contest-page" style="background-image: url('http://i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
+<div id="contest-page" style="background-image: url('//i.schoolido.lu/backgrounds/background{{ 0|random_int:total_backgrounds }}.png');">
   <div class="container">
     <h1 class="text-{{ btnColor }}">{% trans 'Past Contests' %}</h1>
     <div class="panel panel-{{ btnColor }} pastcontests">

@@ -14,7 +14,7 @@
     <link rel="stylesheet/less" type="text/css" href="/static/less/style.less" />
     <script src="{{ static_url }}static/bower/less/dist/less.min.js"></script>
     {% else %}
-    <link rel="stylesheet" href="{{ static_url }}static/css/style.css?32">
+    <link rel="stylesheet" href="{{ static_url }}static/css/style.css?32-2">
     {% endif %}
 
     <meta property="og:image" content="{% block shareimage %}{{ static_sharing_url }}static/screenshots/home.png{% endblock %}"/>
@@ -42,7 +42,7 @@
 	    <span class="icon-bar"></span>
 	  </button>
 	  <a class="navbar-brand" href="/">
-      {% trans "School Idol Tomodachi" %}
+	    {% trans "School Idol Tomodachi" %}
     </a>
 	</div>
 	<div class="collapse navbar-collapse collapse">
@@ -96,6 +96,7 @@
 	      </a>
 	      <ul class="dropdown-menu" role="menu">
 		<li class="{% if current == 'profile' and profile_user.username == user.username %}active{% endif %}"><a href="/user/{{ user.username }}/"><i class="flaticon-profile"></i> {% trans 'Profile' %}</a></li>
+		<li><a href="/messages/"><i class="flaticon-contact"></i> Inbox</a></li>
 		<li class="{% if current == 'edit' %}active{% endif %}"><a href="/edit/"><i class="flaticon-settings"></i> {% trans 'Your Settings' %}</a></li>
 		<li role="presentation" class="divider"></li>
 		{% if not high_traffic and accounts %}
@@ -191,7 +192,7 @@
     <script src="{{ static_url }}static/bower/jquery/dist/jquery.min.js"></script>
     <script src="{{ static_url }}static/js/jquery.form.min.js"></script>
     <script src="{{ static_url }}static/bower/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="{{ static_url }}static/js/main.js?13"></script>
+    <script src="{{ static_url }}static/js/main.js?15-2"></script>
     {% block js %}{% endblock %}
 
     <script>

@@ -101,6 +101,14 @@ def ownedcardimageurl(context, ownedcard, card=None, english_version=False):
     return cardidolizedimageurl(context, card, idolized, english_version=english_version)
 
 @register.simple_tag(takes_context=True)
+def eventimageurlwithreplace(context, event, english=False):
+    if english and event.english_image:
+        return _imageurl(event.english_image, context=context).replace('\'', "\\'")
+    if event.image:
+        return _imageurl(event.image, context=context).replace('\'', "\\'")
+    return _imageurl('static/default_event.png', context=context)
+
+@register.simple_tag(takes_context=True)
 def eventimageurl(context, event, english=False):
     if english and event.english_image:
         return _imageurl(event.english_image, context=context)

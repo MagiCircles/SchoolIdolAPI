@@ -39,7 +39,7 @@ urlpatterns = patterns('',
     url(r'^idols[/]+$', views.idols, name='idols'),
     url(r'^idol[s]?/(?P<idol>[^/]+)[/]+$', views.idol, name='idol'),
     url(r'^collections[/]+$', views.collections, name='collections'),
-    url(r'^collection[s]?/(?P<collection>[^/]+)[/]+$', views.collection, name='collection'),
+    url(r'^collection[s]?/(?P<collection>.+)[/]+$', views.collection, name='collection'),
     url(r'^discussions[/]+$', views.discussions, name='discussions'),
     url(r'^discussion[s]?/(?P<discussion>[\w_]+)[/]$', views.discussion, name='discussion'),
     url(r'^activities/(?P<activity>\d+)[/]+$', views.activity, name='activity'),
@@ -121,6 +121,5 @@ urlpatterns = patterns('',
     url(r'^avatar/facebook/(?P<username>[\w.@+-]+)[/]+$', views.avatar_facebook, name='avatar_facebook'),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
-
-    url(r'^cardstrength[/]+$', views.cardstrength, name='cardstrength'),
+    url(r'^cardstrengthI1t9a2VyDyuSoZ42iTwn[/]+$', views.cardstrength, name='cardstrength'),
 )

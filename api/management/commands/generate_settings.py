@@ -56,7 +56,7 @@ def generate_settings(opt={}):
             current_en = {
                 'japanese_name': current_en.japanese_name,
                 'slide_position': len(current_contests),
-                'image': '{}{}'.format(settings.STATIC_FILES_URL, current_en.english_image if current_en.english_image else current_en.image),
+                'image': '{}{}'.format(settings.STATIC_FILES_URL, current_en.english_image if current_en.english_image else current_en.image).replace(' ', '%20').replace('\'', "\\'"),
             }
         except:
             current_en = None
@@ -109,7 +109,7 @@ GENERATED_DATE = datetime.datetime.fromtimestamp(' + unicode(time.time()) + u')\
 CARDS_INFO = ' + cards_info + u'\n\
 '
         print s
-        f = open('schoolidolapi/generated_settings.py', 'w')
+        f = open('/home/ubuntu/SchoolIdolAPI/schoolidolapi/generated_settings.py', 'w')
         print >> f, s
         f.close()
 

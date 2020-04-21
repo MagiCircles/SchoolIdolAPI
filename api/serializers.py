@@ -195,15 +195,15 @@ class IdolSerializer(serializers.ModelSerializer):
         return None
 
     def get_website_url(self, obj):
-        return 'http://schoolido.lu/idol/' + urllib.quote(obj.name) + '/'
+        return u'http://schoolido.lu/idol/' + urllib.quote(obj.name.encode('utf8')) + '/'
 
     def get_wikia_url(self, obj):
         if obj.main:
-            return 'http://love-live.wikia.com/wiki/' + urllib.quote(obj.name.replace(' ', '_'))
+            return u'http://love-live.wikia.com/wiki/' + urllib.quote(obj.name.encode('utf8').replace(' ', '_'))
         return None
 
     def get_wiki_url(self, obj):
-        return 'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(obj.name)
+        return u'http://decaf.kouhi.me/lovelive/index.php?title=' + urllib.quote(obj.name.encode('utf8'))
 
     def get_cv(self, obj):
         if not obj.cv:

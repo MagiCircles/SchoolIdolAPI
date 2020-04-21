@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django import forms
 from django.forms import Form, ModelForm, ModelChoiceField, ChoiceField
 from django.contrib.auth.models import User, Group
-from django.db.models import Count
+from django.db.models import Count, Q
 from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUploadedFile
@@ -291,7 +291,9 @@ class MultiImageField(MultiFileField, forms.ImageField):
 class _Activity(ModelForm):
     def clean_message_data(self):
         if 'message_data' in self.cleaned_data:
-            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH:
+            if self.cleaned_data['message_data'].count('![') > 5 and (not self.request or self.request.user.username not in ['db0', 'SailorBuneary']):
+                raise forms.ValidationError('Maximum 5 images per activity.')
+            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH and (not self.request or self.request.user.username not in ['db0', 'SailorBuneary']):
                 raise forms.ValidationError(
                     message=_('Ensure this value has at most %(max)d characters (it has %(length)d).'),
                     code='max',
@@ -300,6 +302,19 @@ class _Activity(ModelForm):
                         'length': len(self.cleaned_data['message_data']),
                     })
         return self.cleaned_data['message_data']
+
+    def clean(self):
+        if self.request and self.request.user.is_staff:
+            return self.cleaned_data
+        a_day_ago = datetime.date.today() - relativedelta(hours=24)
+        if (not self.instance or not self.instance.id) and self.request and models.Activity.objects.filter(
+                account__owner=self.request.user,
+        ).filter(
+            Q(id__gte=(models.Activity.objects.order_by('-id')[20].id)),
+            Q(creation__gte=a_day_ago)
+        ).count() > 3:
+            raise forms.ValidationError('You posted too many activities lately. Please wait a bit before posting more')
+        return self.cleaned_data
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -350,7 +365,7 @@ class VerificationRequestForm(ModelForm):
             if account.language != 'JP' and account.language != 'EN':
                 self.fields['verification'].choices = ((0, ''), (1, _('Silver Verified')))
             elif account.rank < 195:
-                self.fields['verification'].choices = ((0, ''), (1, _('Silver Verified')), (2, _('Gold Verified')))
+                self.fields['verification'].choices = ((0, ''), (1, _('Silver Verified')))#, (2, _('Gold Verified')))
 
     class Meta:
         model = models.VerificationRequest

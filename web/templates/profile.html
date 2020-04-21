@@ -10,7 +10,7 @@
 {% block js %}
 <script src="{{ static_url }}static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
 
-<script src="{{ static_url }}static/js/loadactivities.js?3"></script>
+<script src="{{ static_url }}static/js/loadactivities.js?5"></script>
 <script src="{{ static_url }}static/js/profile.js?4"></script>
 <script>
   var imgurClientID = '{{ imgurClientID }}';
@@ -170,9 +170,9 @@
 		<th>{% trans 'Fake' %}</th>
 		<td>
                   <h3 class="text-danger">{% trans 'Reported as a fake account' %}
-                    {% if is_me and account.deck and account.friend_id and account.rank >= 80 %}
-		    <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a>
-		    {% endif %}
+                    <!-- {% if is_me and account.deck and account.friend_id and account.rank >= 80 %} -->
+		    <!-- <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a> -->
+		    <!-- {% endif %} -->
                   </h3>
 		</td>
 	      </tr>
@@ -325,9 +325,9 @@
 	      <tr>
 		<th>{% trans 'Verified' %}</th>
 		<td><h3><span class="verified{{ account.verified }}"><i class="flaticon-star"></i></span> <small>{{ account.verified|verifiedToString }}</small></h3>
-		  {% if not is_me and user.is_authenticated %}
-		  <small><a href="/edit/?verification#editaccounts" target="_blank">{% trans 'Get verified' %}</a></small>
-		  {% endif %}
+		  <!-- {% if not is_me and user.is_authenticated %} -->
+		  <!-- <small><a href="/edit/?verification#editaccounts" target="_blank">{% trans 'Get verified' %}</a></small> -->
+		  <!-- {% endif %} -->
 		</td>
 	      </tr>
 	      {% elif is_me and account.deck and account.friend_id and account.rank >= 80 %}
@@ -337,7 +337,7 @@
 		  {% if account.verified == 3 %}
 		  {% trans 'You are Bronze Verified. Only you can see it.' %}<br>
 		  {% endif %}
-		  <a href="/editaccount/{{ account.pk }}/#verify" target="_blank">{% trans 'Get verified' %}{% if account.verified == 3 %} ({% trans 'Silver' %} / {% trans 'Gold' %}){% endif %}</a>
+		  <!-- <a href="/editaccount/{{ account.pk }}/#verify" target="_blank">{% trans 'Get verified' %}{% if account.verified == 3 %} ({% trans 'Silver' %} / {% trans 'Gold' %}){% endif %}</a> -->
 		</td>
 	      </tr>
 	      {% endif %}
@@ -351,7 +351,7 @@
 		  {% endif %}
 		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#saveTransferCode">{% trans 'Save your transfer code' %}</a>
 		  {% if account.verified == 0 and account.deck and account.friend_id and account.rank >= 80 %}
-		  <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a>
+		  <!-- <a class="btn btn-{{ attribute }} btn-sm" href="/editaccount/{{ account.pk }}/#verify">{% trans 'Get verified' %} <i class="flaticon-star"></i></a> -->
 		  {% endif %}
 		  <br>
 		  <a class="btn btn-link btn-sm" href="/cards/albumbuilder/?albumbuilder_account={{ account.id }}&ordering=id" target="_blank"><i class="flaticon-album"></i> {% trans 'Album Builder' %}</a>

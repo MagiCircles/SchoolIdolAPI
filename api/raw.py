@@ -948,21 +948,21 @@ raw_information_n = {
             (settings.STATIC_FILES_URL + 'chibi/Yoshimi.png', 'klabbb'),
         ],
     },
-    'Miyashita Ai': {
-        'chibi': [
-            (settings.STATIC_FILES_URL + 'chibi/MiyashitaAi.png', 'klabbb'),
-        ],
-    },
-    'Uehara Ayumu': {
-        'chibi': [
-            (settings.STATIC_FILES_URL + 'chibi/UeharaAyumu.png', 'klabbb'),
-        ],
-    },
-    'Yuki Setsuna': {
-        'chibi': [
-            (settings.STATIC_FILES_URL + 'chibi/YukiSetsuna.png', 'klabbb'),
-        ],
-    },
+    # 'Miyashita Ai': {
+    #     'chibi': [
+    #         (settings.STATIC_FILES_URL + 'chibi/MiyashitaAi.png', 'klabbb'),
+    #     ],
+    # },
+    # 'Uehara Ayumu': {
+    #     'chibi': [
+    #         (settings.STATIC_FILES_URL + 'chibi/UeharaAyumu.png', 'klabbb'),
+    #     ],
+    # },
+    # 'Yuki Setsuna': {
+    #     'chibi': [
+    #         (settings.STATIC_FILES_URL + 'chibi/YukiSetsuna.png', 'klabbb'),
+    #     ],
+    # },
     # '': {
     #     'chibi': [
     #         ('', ''),

@@ -9,12 +9,12 @@ class Command(BaseCommand):
     can_import_settings = True
 
     def handle(self, *args, **options):
-        all_cards = models.Card.objects.all()
+        all_cards = models.Card.objects.all().filter(id=1070)
         for card in all_cards:
             for (field, f) in models.cardsImagesToName.items():
-                if ((card.is_special and 'idolized' in field)
-                    or (card.is_promo and 'idolized' not in field)):
-                    continue
+                # if ((card.is_special and 'idolized' in field)
+                #     or (card.is_promo and 'idolized' not in field)):
+                #     continue
                 name = f({
                     'id': card.id,
                     'firstname': card.name.split(' ')[-1] if card.name else 'Unknown',

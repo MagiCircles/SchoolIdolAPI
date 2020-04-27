@@ -300,7 +300,7 @@ CENTER_SKILL_SENTENCES = {
     'Heart': _('{} increases (+6%)'),
     'Star': _('{} increases (+7%)'),
     'UR': _('{} increases drastically (+9%)'),
-    'differentUR':  _('{} increases based on {}'),
+    'differentUR':  _('{} increases drastically based on {} ()'),
 }
 
 EXTRA_CENTER_SKILL_SENTENCE = _(u' and {type} members {attribute} points up by {points}%')

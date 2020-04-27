@@ -46,7 +46,7 @@ function loadActivities() {
 		      if (button.length > 0
 			  && button.find('.loader').length == 0
 			  && ($(window).scrollTop() + $(window).height())
-			  >= ($(document).height() - button.height())) {
+			      >= ($(document).height() - button.height() - 600)) {
 			  new_ = false;
 			  all = false;
 			  if ($('#hotactivities').length > 0) {

@@ -890,18 +890,30 @@ def profile(request, username):
         accounts_ids = ','.join([str(account.id) for account in context['user_accounts']])
         if accounts_ids:
             cursor = connection.cursor()
-            query = 'SELECT c.rarity, o.owner_account_id, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + accounts_ids + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id'
+            query = 'SELECT c.rarity, o.owner_account_id, c.is_promo, COUNT(c.rarity) FROM api_ownedcard AS o JOIN api_card AS c WHERE o.card_id=c.id AND o.owner_account_id IN (' + accounts_ids + ') AND o.stored=\'Deck\' GROUP BY c.rarity, o.owner_account_id, c.is_promo'
             cursor.execute(query)
             deck_stats = cursor.fetchall()
         for account in context['user_accounts']:
             # Set stats
-            try: account.deck_total_sr = (s[2] for s in deck_stats if s[0] == 'SR' and s[1] == account.id).next()
-            except StopIteration: account.deck_total_sr = 0
-            try: account.deck_total_ssr = (s[2] for s in deck_stats if s[0] == 'SSR' and s[1] == account.id).next()
-            except StopIteration: account.deck_total_ssr = 0
-            try: account.deck_total_ur = (s[2] for s in deck_stats if s[0] == 'UR' and s[1] == account.id).next()
-            except StopIteration: account.deck_total_ur = 0
-            account.deck_total = sum([s[2] for s in deck_stats if s[1] == account.id])
+            account.deck_non_promo_r = countCards(deck_stats, account, 'R', False)
+            account.deck_promo_r = countCards(deck_stats, account, 'R', True)
+            account.deck_total_r = account.deck_non_promo_r + account.deck_promo_r
+
+            account.deck_non_promo_sr = countCards(deck_stats, account, 'SR', False)
+            account.deck_promo_sr = countCards(deck_stats, account, 'SR', True)
+            account.deck_total_sr = account.deck_non_promo_sr + account.deck_promo_sr
+
+            account.deck_non_promo_ssr = countCards(deck_stats, account, 'SSR', False)
+            account.deck_promo_ssr = countCards(deck_stats, account, 'SSR', True)
+            account.deck_total_ssr = account.deck_non_promo_ssr + account.deck_promo_ssr
+
+            account.deck_non_promo_ur = countCards(deck_stats, account, 'UR', False)
+            account.deck_promo_ur = countCards(deck_stats, account, 'UR', True)
+            account.deck_total_ur = account.deck_non_promo_ur + account.deck_promo_ur
+
+            account.deck_total = sum([s[3] for s in deck_stats if s[1] == account.id])
+            account.deck_total_n = account.deck_total - account.deck_total_r - account.deck_total_sr - account.deck_total_ssr - account.deck_total_ur
+            
             # Get opened tab
             if 'show' + str(account.id) in request.GET and request.GET['show' + str(account.id)] in models.ACCOUNT_TAB_DICT:
                 account.opened_tab = request.GET['show' + str(account.id)]
@@ -991,6 +1003,11 @@ def profile(request, username):
         context['deck_links'] = web_raw.deck_links
     return render(request, 'profile.html', context)
 
+def countCards(deck_stats, account, rarity, promo):
+    try: ret = (s[3] for s in deck_stats if s[0] == rarity and s[1] == account.id and s[2] == promo).next()
+    except StopIteration: ret = 0
+    return ret
+
 def _ajaxaccounttab_ownedcards(tab, request, account, more):
     """
     SQL Queries
@@ -1028,10 +1045,6 @@ def _ajaxaccounttab_ownedcards(tab, request, account, more):
             account.album = album[:settings.CARDS_LIMIT]
     elif tab == 'deck':
         account.deck = ownedcards.filter(stored='Deck').order_by('-card__rarity', '-idolized', '-card__attribute', '-card__id')
-        if more:
-            account.deck = account.deck[settings.CARDS_LIMIT:]
-        else:
-            account.deck = account.deck[:settings.CARDS_LIMIT]
     elif tab == 'wishlist':
         account.wishlist = ownedcards.filter(stored='Favorite').order_by('-card__rarity', '-idolized', 'card__id')
         account.total_cards = account.wishlist.count()
@@ -3459,4 +3472,3 @@ def drown(request):
 
 def cardstrength(request):
    context = globalContext(request)
-   return render(request, 'cardstrength.html', context)

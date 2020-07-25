@@ -33,5 +33,6 @@
 </div>
 {% endif %}
 {% endif %}
+<div style="max-height:calc(100vh - 92px);overflow-y:auto">
 {% include 'ownedcards.html' with cards=account.deck %}
-{% include 'include/_account_tab_ownedcardsload.html' %}
+</div>

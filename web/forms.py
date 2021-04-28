@@ -291,9 +291,9 @@ class MultiImageField(MultiFileField, forms.ImageField):
 class _Activity(ModelForm):
     def clean_message_data(self):
         if 'message_data' in self.cleaned_data:
-            if self.cleaned_data['message_data'].count('![') > 5 and (not self.request or self.request.user.username not in ['db0', 'SailorBuneary']):
+            if self.cleaned_data['message_data'].count('![') > 5 and (not self.request or self.request.user.username not in ['db0', 'SailorBuneary', 'rinmeikan', 'rdsathene', 'SchoolIdolTomodachi']):
                 raise forms.ValidationError('Maximum 5 images per activity.')
-            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH and (not self.request or self.request.user.username not in ['db0', 'SailorBuneary']):
+            if len(self.cleaned_data['message_data']) > settings.CUSTOM_ACTIVITY_MAX_LENGTH and (not self.request or self.request.user.username not in ['db0', 'SailorBuneary', 'rinmeikan', 'rdsathene', 'SchoolIdolTomodachi']):
                 raise forms.ValidationError(
                     message=_('Ensure this value has at most %(max)d characters (it has %(length)d).'),
                     code='max',

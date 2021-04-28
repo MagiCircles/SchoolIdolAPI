@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
-import math
+import math, csv, urllib2
 from copy import copy
 from django.shortcuts import render, redirect, get_object_or_404
 from django import template
@@ -270,6 +270,10 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
         defaults.update(_pushActivity_cacheaccount(account, account_owner))
         return models.Activity.objects.create(**defaults)
 
+BANNERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsbOHP9SBVItTAtbdyuAL7_F6zjPRCzbFGaQs_gEWHYTCajR7N1bmOZ--caMZIQ4yYUs2_-cIfp7Ik/pub?gid=0&single=true&output=csv'
+_news = None
+_last_news_update = None
+    
 def index(request):
     """
     SQL Queries:
@@ -281,6 +285,34 @@ def index(request):
     context = globalContext(request)
 
     context['important_news'] = []
+    global _news, _last_news_update
+    if not _last_news_update or _last_news_update < (timezone.now() - relativedelta(hours=12)):
+        print 'Redownloading news...', _last_news_update
+        _news = []
+        _last_news_update = timezone.now()
+        try:
+            csv_file = urllib2.urlopen(BANNERS_URL)
+            csv_reader = csv.reader(csv_file)
+            for i, row in enumerate(csv_reader):
+                if i == 0: # Titles
+                    continue
+                if len(row) >= 3 and row[0] and row[1] and row[2]:
+                    _news.append({
+                        'name': row[0],
+                        'url': row[1],
+                        'image': row[2],
+                    })
+            csv_file.close()
+        except:
+            import traceback
+
+            traceback.print_exc()
+            pass
+        print 'Done.'
+    if _news:
+        context['important_news'] += _news
+    context['important_news'] += [
+    ]
     context['current_jp'] = settings.CURRENT_EVENT_JP
     context['current_en'] = settings.CURRENT_EVENT_EN
     context['current_en']['slide_position'] = len(context['current_contests'])
@@ -312,6 +344,109 @@ def index(request):
     # Get random character
     context['character'] = None
     context['message'] = _('Follow School Idol Tomodachi on Twitter')
+
+    # Halloween
+    # context['character'] = random.choice(([
+    #     'ha1.png',
+    # ] * 20) + ([
+    #     'ha2.png',
+    # ] * 20) + [
+    #     'cards/transparent/150idolizedTransparent.png',
+    #     'cards/transparent/150Transparent.png',
+    #     'cards/transparent/398idolizedTransparent.png',
+    #     'cards/transparent/398Transparent.png',
+    #     'cards/transparent/399idolizedTransparent.png',
+    #     'cards/transparent/399Transparent.png',
+    #     'cards/transparent/420idolizedTransparent.png',
+    #     'cards/transparent/420Transparent.png',
+    #     'cards/transparent/422idolizedTransparent.png',
+    #     'cards/transparent/423idolizedTransparent.png',
+    #     'cards/transparent/424idolizedTransparent.png',
+    #     'cards/transparent/425idolizedTransparent.png',
+    #     'cards/transparent/426idolizedTransparent.png',
+    #     'cards/transparent/429idolizedTransparent.png',
+    #     'cards/transparent/429Transparent.png',
+    #     'cards/transparent/439idolizedTransparent.png',
+    #     'cards/transparent/440idolizedTransparent.png',
+    #     'cards/transparent/441idolizedTransparent.png',
+    #     'cards/transparent/442idolizedTransparent.png',
+    #     'cards/transparent/63idolizedTransparent.png',
+    #     'cards/transparent/679idolizedTransparent.png',
+    #     'cards/transparent/680idolizedTransparent.png',
+    #     'cards/transparent/681idolizedTransparent.png',
+    #     'cards/transparent/682idolizedTransparent.png',
+    #     'cards/transparent/683idolizedTransparent.png',
+    #     'cards/transparent/684idolizedTransparent.png',
+    #     'cards/transparent/685idolizedTransparent.png',
+    #     'cards/transparent/686idolizedTransparent.png',
+    #     'cards/transparent/687idolizedTransparent.png',
+    #     'cards/transparent/745idolizedTransparent.png',
+    #     'cards/transparent/745Transparent.png',
+    #     'cards/transparent/746idolizedTransparent.png',
+    #     'cards/transparent/746Transparent.png',
+    #     'cards/transparent/893idolizedTransparent.png',
+    #     'cards/transparent/893Transparent.png',
+    #     'cards/transparent/905idolizedTransparent.png',
+    #     'cards/transparent/905Transparent.png',
+    #     'cards/transparent/906idolizedTransparent.png',
+    #     'cards/transparent/906Transparent.png',
+    #     'cards/transparent/907idolizedTransparent.png',
+    #     'cards/transparent/907Transparent.png',
+    #     'cards/transparent/908idolizedTransparent.png',
+    #     'cards/transparent/908Transparent.png',
+    #     'cards/transparent/909idolizedTransparent.png',
+    #     'cards/transparent/909Transparent.png',
+    #     'cards/transparent/962idolizedTransparent.png',
+    #     'cards/transparent/962Transparent.png',
+    #     'cards/transparent/963idolizedTransparent.png',
+    #     'cards/transparent/963Transparent.png',
+    #     'cards/transparent/964idolizedTransparent.png',
+    #     'cards/transparent/964Transparent.png',
+    #     'cards/transparent/965idolizedTransparent.png',
+    #     'cards/transparent/965Transparent.png',
+    #     'cards/transparent/1014idolizedTransparent.png',
+    #     'cards/transparent/1014Transparent.png',
+    #     'cards/transparent/1015idolizedTransparent.png',
+    #     'cards/transparent/1015Transparent.png',
+    #     'cards/transparent/1016idolizedTransparent.png',
+    #     'cards/transparent/1016Transparent.png',
+    #     'cards/transparent/1017idolizedTransparent.png',
+    #     'cards/transparent/1017Transparent.png',
+    #     'cards/transparent/1018idolizedTransparent.png',
+    #     'cards/transparent/1018Transparent.png',
+    #     'cards/transparent/1027idolizedTransparent.png',
+    #     'cards/transparent/1027Transparent.png',
+    #     'cards/transparent/1028idolizedTransparent.png',
+    #     'cards/transparent/1028Transparent.png',
+    #     'cards/transparent/1029idolizedTransparent.png',
+    #     'cards/transparent/1029Transparent.png',
+    #     'cards/transparent/1030idolizedTransparent.png',
+    #     'cards/transparent/1030Transparent.png',
+    #     'cards/transparent/1310idolizedTransparent.png',
+    #     'cards/transparent/1310Transparent.png',
+    #     'cards/transparent/1311idolizedTransparent.png',
+    #     'cards/transparent/1311Transparent.png',
+    #     'cards/transparent/1312idolizedTransparent.png',
+    #     'cards/transparent/1312Transparent.png',
+    #     'cards/transparent/1313idolizedTransparent.png',
+    #     'cards/transparent/1313Transparent.png',
+    #     'cards/transparent/1314idolizedTransparent.png',
+    #     'cards/transparent/1314Transparent.png',
+    #     'cards/transparent/1325idolizedTransparent.png',
+    #     'cards/transparent/1325Transparent.png',
+    #     'cards/transparent/1326idolizedTransparent.png',
+    #     'cards/transparent/1326Transparent.png',
+    #     'cards/transparent/1327idolizedTransparent.png',
+    #     'cards/transparent/1327Transparent.png',
+    #     'cards/transparent/1328idolizedTransparent.png',
+    #     'cards/transparent/1328Transparent.png',
+    #     'cards/transparent/1732idolizedTransparent.png',
+    #     'cards/transparent/1731idolizedTransparent.png',
+    #     'cards/transparent/1142idolizedTransparent.png',
+    #     'cards/transparent/1175idolizedTransparent.png',
+    #     'cards/transparent/1650idolizedTransparent.png',
+    #     'cards/transparent/1465idolizedTransparent.png',
+    # ])
 
     if settings.HIGH_TRAFFIC:
         context['character'] = 'cards/transparent/852idolizedTransparent.png'

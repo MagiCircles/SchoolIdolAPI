@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Edit Event{% endblock %}
+
+{% block content %}
+<div class="container" id="staff_giveaway_generator">
+  <br><br>
+  <div class="jumbotron">
+    <h1>Giveaway generator</h1>
+
+    {% if form %}
+    <h2 class="text-center">Generate giveaway activity</h2>
+    <form class="form-horizontal" method="post">
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with wrap=0 %}
+      <div class="text-right">
+	    <button type="submit" class="btn btn-Cool" data-form-loader="true" name="generate_giveaway">
+          Generate giveaway activity</button>
+      </div>
+    </form>
+    {% endif %}
+
+    {% if winner_form %}
+    <br><br>
+    <h2 class="text-center">Generate winners activity</h2>
+    <p>If there are more than 30 participants, ask db0 to generate the closure post instead. There will be a vote for staff picks.</p>
+    <form class="form-horizontal" method="post">
+      {% csrf_token %}
+      {% include "bootstrap_form_horizontal.html" with wrap=0 form=winner_form %}
+      <div class="text-right">
+	    <button type="submit" class="btn btn-Cool" data-form-loader="true" name="winners">
+          Generate winners activity</button>
+      </div>
+    </form>
+    {% endif %}
+
+    <br><br>
+
+    {% if post %}
+    <textarea style="width: 100%; height: 300px">{{ post }}</textarea>
+    <br><br>
+    <div class="text-right">
+      <a href="/user/{{ user.username }}/" class="btn btn-Cool" target="_blank">Create activity</a>
+    </div>
+    {% endif %}
+
+    {% if banners %}
+    <h3>Banner to add to Drive</h3>
+    {% for banner in banners %}
+    <input value="{{ banner.name }}" style="width: 100%" /><br>
+    <input value="{{ banner.image }}" style="width: 100%" /><br>
+    <br>
+    {% endfor %}
+    <div class="text-right">
+    <a href="https://docs.google.com/spreadsheets/d/1erTs9QSJatOjAL1gCPwziNrjIN_Z7EEFsmsUPrPMfDM/edit#gid=0" target="_blank"  class="btn btn-Cool">Open Drive link to add banner</a>
+    </div>
+    {% endif %}
+
+    {% if log %}
+    <br><br>
+    <pre>{{ log }}</pre>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

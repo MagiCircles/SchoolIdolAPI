@@ -745,3 +745,23 @@ class StaffSong(TinyPngForm):
     class Meta:
         model = models.Song
         fields = ('name', 'romaji_name', 'translated_name', 'attribute', 'BPM', 'time', 'main_unit', 'event', 'rank', 'daily_rotation', 'daily_rotation_position', 'image', 'easy_difficulty', 'easy_notes', 'normal_difficulty', 'normal_notes', 'hard_difficulty', 'hard_notes', 'expert_difficulty', 'expert_random_difficulty', 'expert_notes', 'master_difficulty', 'master_notes', 'available', 'itunes_id')
+
+class SelectIdol(ModelForm):
+    class Meta:
+        model = models.Card
+        fields = ['idol']
+
+class GiveawayWinnerGenerator(Form):
+    activity_id = forms.IntegerField(label='Activity Id of the giveaway main post')
+    # total_random_winners = forms.IntegerField(initial=1, label='How many random winners?')
+    # total_winners = forms.IntegerField(initial=0, label='How many winners by number of likes?')
+    # staff_picks_winners = forms.CharField(label='List of staff picks winners activity ids, comma separated')
+    # honorable_mentions = forms.CharField(label='List of honorable mentions activity ids, comma separated')
+
+    def clean_activity_id(self):
+        if 'activity_id' in self.cleaned_data:
+            try:
+                activity = models.Activity.objects.filter(id=self.cleaned_data['activity_id'])[0]
+            except IndexError:
+                raise forms.ValidationError('Can\'t find activity')
+        return activity

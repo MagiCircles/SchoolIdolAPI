@@ -3460,3 +3460,26 @@ def drown(request):
 def cardstrength(request):
    context = globalContext(request)
    return render(request, 'cardstrength.html', context)
+
+def staff_giveaway_generator(request):
+    if not request.user.is_authenticated() or request.user.is_anonymous() or not request.user.is_staff:
+        raise PermissionDenied()
+    context = globalContext(request)
+    if request.method == "POST":
+        if 'generate_giveaway' in request.POST:
+            context['form'] = forms.SelectIdol(request.POST)
+            if context['form'].is_valid():
+                from api.management.commands.giveaway_details import giveaway_details
+                context['post'], context['banners'] = giveaway_details(context['form'].cleaned_data['idol'])
+        elif 'winners' in request.POST:
+            context['winner_form'] = forms.GiveawayWinnerGenerator(request.POST)
+            if context['winner_form'].is_valid():
+                from api.management.commands.giveaway_winners import giveaway_winners
+                context['post'], context['log'] = giveaway_winners(
+                    context['winner_form'].cleaned_data['activity_id'],
+                    auto_total_winners=True,
+                )
+    else:
+        context['form'] = forms.SelectIdol()
+        context['winner_form'] = forms.GiveawayWinnerGenerator()
+    return render(request, 'staff_giveaway_generator.html', context)

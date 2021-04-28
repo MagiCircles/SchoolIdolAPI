@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, datetime, operator, urllib
+import sys, datetime, operator, urllib, random
 from dateutil.relativedelta import relativedelta
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User, Group
@@ -116,16 +116,16 @@ def get_other_giveaways(hashtag):
             filter_tag |= Q(message_data__contains=giveaway_tag)
         giveaway_posts = models.Activity.objects.filter(
             filter_tag,
-            account_id=1,
+            account_id__in=[1,179025,111876], # db0, kyky on discord, SchoolIdolTomodachi official profile
         ).order_by('id')
 
         try:
-            giveaway_details = giveaway_posts.filter(message_data__icontains='How to enter?')[0]
+            giveaway_details = giveaway_posts.filter(Q(message_data__icontains='How to enter?') | Q(message_data__icontains='How to join the celebrations?'))[0]
         except IndexError:
             giveaway_details = None
 
         try:
-            giveaway_winners_post = giveaway_posts.filter(message_data__icontains='Congratulations to our winners!')[0]
+            giveaway_winners_post = giveaway_posts.filter(Q(message_data__icontains='Congratulations to our winners!') | Q(message_data__icontains='Congratulations to our winner!'))[0]
             ended_recently.append((idol, giveaway_winners_post))
         except IndexError:
             giveaway_winners_post = None
@@ -169,25 +169,29 @@ def get_entry_image_url(activity):
         return None
 
 def print_support_us():
-    print '# **![Support our giveaways!](https://i.imgur.com/2hI2BLn.png)**'
-    print ''
-    print '[![Support us on Patreon](https://i.imgur.com/VNqYEXt.png)](http://patreon.com/db0company)'
-    print ''
-    print 'These giveaways are made possible thanks to the support of our warm-hearted donators. If you wish to support School Idol Tomodachi for both our future giveaways and to cover the cost of our expensive servers in which our site run, please consider [donating on Patreon](http://patreon.com/db0company).'
+    post = ""
+    post += '\n# **![Support our giveaways!](https://i.imgur.com/2hI2BLn.png)**'
+    post += '\n'
+    post += '\n[![Support us on Patreon](https://i.imgur.com/VNqYEXt.png)](http://patreon.com/db0company)'
+    post += '\n'
+    post += '\nThese giveaways are made possible thanks to the support of our warm-hearted donators. If you wish to support School Idol Tomodachi for both our future giveaways and to cover the cost of our expensive servers in which our site run, please consider [donating on Patreon](http://patreon.com/db0company).'
+    print post
+    return post
 
 def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=False):
+    post = u""
     if still_running_giveaways:
-        print ''
+        post += '\n'
         if with_icons:
             for idol, giveaway in still_running_giveaways:
                 small_image = get_small_image(giveaway)
                 if small_image:
-                    print '![{idol_name} Fan Awards]({url})'.format(
+                    post += '\n![{idol_name} Fan Awards]({url})'.format(
                         idol_name=idol.name,
                         url=small_image,
                     )
-                    print ''
-        print u'{} {} currently running! Take your chance and enter!'.format(
+                    post += '\n'
+        post += u'\n{} {} currently running! Take your chance and enter!'.format(
             u' and '.join([
                 u'[{idol_name} Fan Awards](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
@@ -196,20 +200,20 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
             ]),
             'is' if len(still_running_giveaways) == 1 else 'are',
         )
-        print ''
+        post += '\n'
 
     if voting_ongoing_giveaways:
-        print ''
+        post += '\n'
         if with_icons:
             for idol, giveaway, giveaway_details, hashtag in voting_ongoing_giveaways:
                 small_image = get_small_image(giveaway_details)
                 if small_image:
-                    print '![{idol_name} Fan Awards]({url})'.format(
+                    post += '\n![{idol_name} Fan Awards]({url})'.format(
                         idol_name=idol.name,
                         url=small_image,
                     )
-                    print ''
-        print u'{} entry period{} just closed! Go check out all the entries and like your favorites!'.format(
+                    post += '\n'
+        post += u'\n{} entry period{} just closed! Go check out all the entries and like your favorites!'.format(
             u' and '.join([
                 u'[{idol_name} Fan Awards](https://schoolido.lu/activities/{id}/)'.format(
                     idol_name=idol.name, id=giveaway.id,
@@ -219,28 +223,28 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
             's' if len(voting_ongoing_giveaways) > 1 else ''
         )
         for idol, giveaway, giveaway_details, hashtag in voting_ongoing_giveaways:
-            print ''
-            print u'- [See {idol_name} Fan Awards entries](https://schoolido.lu/#search={hashtag}) *right click to open in new tab*'.format(
+            post += '\n'
+            post += u'\n- [See {idol_name} Fan Awards entries](https://schoolido.lu/#search={hashtag}) *right click to open in new tab*'.format(
                     idol_name=idol.name, hashtag=hashtag,
                 )
-        print ''
+        post += '\n'
 
     if coming_soon_giveaways:
         if with_icons:
-            print ''
+            post += '\n'
             for idol in coming_soon_giveaways:
-                print '[![{name}]({icon_url})](https://schoolido.lu/idol/{url_name})'.format(
+                post += '\n[![{name}]({icon_url})](https://schoolido.lu/idol/{url_name})'.format(
                     name=idol.name,
                     icon_url=chibiimage(idol.name, small=True, force_artist='klab', force_first=False, force_https=True),
                     url_name=urllib.quote(idol.name),
                 )
-        print ''
+        post += '\n'
         print_idol = lambda idol: u'[{}](https://schoolido.lu/idol/{}/) ({})'.format(
             idol.name,
             urllib.quote(idol.name),
             date_format(idol.birthday, format='MONTH_DAY_FORMAT', use_l10n=True),
         )
-        print 'The birthday{} of {} {} coming soon, so look forward to their Fan Awards as well!'.format(
+        post += '\nThe birthday{} of {} {} coming soon, so look forward to their Fan Awards as well!'.format(
             '' if len(coming_soon_giveaways) == 1 else 's',
             ' and '.join([
                 u', '.join([
@@ -251,8 +255,11 @@ def print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_
             ]),
             'is' if len(coming_soon_giveaways) == 1 else 'are'
         )
+    print post
+    return post
 
 def delete_cheat_likes(hashtag, id_details, id_end):
+    post = u''
     activities = models.Activity.objects.filter(
         message_data__icontains=hashtag,
         id__gt=id_details,
@@ -267,9 +274,9 @@ def delete_cheat_likes(hashtag, id_details, id_end):
         )
     activities = activities.annotate(total_likes=Count('likes'))
     for activity in activities:
-        print '## Activity http://schoolido.lu/activities/{}/'.format(activity.id)
-        print '  Total likes: {}'.format(activity.total_likes)
-        print '  Cheat likes: ',
+        post += '\n## Activity http://schoolido.lu/activities/{}/'.format(activity.id)
+        post += '\n  Total likes: {}'.format(activity.total_likes)
+        post += '\n  Cheat likes: '
         sys.stdout.flush()
         total_cheat = 0
         for user in activity.likes.all().select_related('preferences'):
@@ -280,17 +287,20 @@ def delete_cheat_likes(hashtag, id_details, id_end):
                 and not models.Activity.objects.filter(account__owner=user, message_type=models.ACTIVITY_TYPE_CUSTOM).count()
                 and not user.links.all().count()
             ):
-                print user.username, ', ',
+                post += '\n' + user.username, ', ',
                 sys.stdout.flush()
                 activity.likes.remove(user)
                 total_cheat += 1
         if total_cheat:
             activity.save()
-        print ''
-        print '  Total cheat likes: {}'.format(total_cheat)
-        print '  Total remaining likes: {}'.format(activity.total_likes - total_cheat)
+        post += '\n'
+        post += '\n  Total cheat likes: {}'.format(total_cheat)
+        post += '\n  Total remaining likes: {}'.format(activity.total_likes - total_cheat)
+    print post
+    return post
 
 def print_top(winners, lucky=False):
+    post = u''
     rank = 0
     prev = -1
     for activity in winners:
@@ -299,28 +309,30 @@ def print_top(winners, lucky=False):
             prev = activity.total_likes
         if rank == 1:
             if lucky:
-                print '# ![#1 Lucky Winner - elected by the community](https://i.imgur.com/tpQXUQo.png)'
+                post += '\n# ![#1 Lucky Winner - elected by the community](https://i.imgur.com/tpQXUQo.png)'
             else:
-                print '# ![#1 Crowd\'s Favorite Winner - elected by the community](https://i.imgur.com/0jKB10n.png)'
+                post += '\n# ![#1 Crowd\'s Favorite Winner - elected by the community](https://i.imgur.com/0jKB10n.png)'
         if rank == 2:
-            print '# ![Runner up Crowd\'s Favorite Winner](https://i.imgur.com/jPZp57t.png)'
-        print '### {}[{}](http://schoolido.lu/user/{}/)'.format(
+            post += '\n# ![Runner up Crowd\'s Favorite Winner](https://i.imgur.com/jPZp57t.png)'
+        post += '\n### {}[{}](http://schoolido.lu/user/{}/)'.format(
             u'#{} '.format(rank) if rank not in [1,2] else '',
             activity.account.owner.username,
             activity.account.owner.username,
         )
-        # print ''
-        # print '    {} likes'.format(activity.total_likes + 1)
-        print ''
-        print '[See entry](http://schoolido.lu/activities/{}/)'.format(
+        # post += '\n'
+        # post += '\n    {} likes'.format(activity.total_likes + 1)
+        post += '\n'
+        post += '\n[See entry](http://schoolido.lu/activities/{}/)'.format(
             activity.id,
         )
         image = get_entry_image_url(activity)
         if image:
-            print ''
-            print u'[{}](http://schoolido.lu/activities/{}/)'.format(image, activity.id)
-            print ''
-        print ''
+            post += '\n'
+            post += u'\n[{}](http://schoolido.lu/activities/{}/)'.format(image, activity.id)
+            post += '\n'
+        post += '\n'
+    print post
+    return post
 
 class Command(BaseCommand):
     can_import_settings = True
@@ -345,6 +357,35 @@ class Command(BaseCommand):
         giveaway = models.Activity.objects.get(id=giveaway_details_id)
         if giveaway_end_id:
             end_giveaway = models.Activity.objects.get(id=giveaway_end_id)
+        else:
+            end_giveaway = None
+
+        # Prompt to ask for staff pick winner(s)
+        try:
+            staff_pick_winners = input('Enter list of staff pick winner ids: ')
+        except KeyboardInterrupt:
+            print ''
+            print 'Operation cancelled.'
+            sys.exit(1)
+        try:
+            honorable_mentions = input('Enter list of honorable mentions: ')
+        except KeyboardInterrupt:
+            print ''
+            print 'Operation cancelled.'
+            sys.exit(1)
+
+        print giveaway_winners(
+            giveaway, end_giveaway, total_winners,
+            staff_pick_winners=staff_pick_winners, honorable_mentions=honorable_mentions,
+        )
+
+def giveaway_winners(giveaway, end_giveaway=None, total_winners=0, staff_pick_winners=None, honorable_mentions=None, total_random_winners=1, auto_total_winners=False):
+    post = u""
+    log = u""
+    if True:
+        giveaway_details_id = giveaway.id
+        giveaway_end_id = end_giveaway.id if end_giveaway else None
+
         hashtag = giveaway.message_data.split('[See all participants](http://schoolido.lu/#search=')[1].split(')')[0]
 
         idol, still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways = get_other_giveaways(hashtag)
@@ -355,193 +396,205 @@ class Command(BaseCommand):
                 try:
                     idol = models.Idol.objects.filter(name=hashtag.split('Fan')[0])[0]
                 except:
-                    print 'Can\'t find idol'
-                    return
+                    log += 'Can\'t find idol'
+                    idol = None
+                    return post, log
 
-        delete_cheat_likes(hashtag, giveaway_details_id, giveaway_end_id)
+        log += delete_cheat_likes(hashtag, giveaway_details_id, giveaway_end_id)
 
         queryset = models.Activity.objects.exclude(
             id=giveaway_details_id,
         ).exclude(
             message_data__icontains='Congratulations to our winners!',
+        ).exclude(
+            message_data__icontains='Congratulations to our winner!',
         ).filter(
             message_data__icontains=hashtag,
             id__gt=giveaway_details_id,
-        )
+        ).exclude(id=10419194)
         if giveaway_end_id:
             queryset = queryset.filter(
                 id__lt=giveaway_end_id,
             ).exclude(
                 id=giveaway_end_id,
             )
-        print queryset
+        log += unicode(queryset)
         queryset = queryset.annotate(total_likes=Count('likes')).select_related('account', 'account__owner')
 
+        if auto_total_winners:
+            total_entries = len(queryset)
+            total_random_winners = 1
+            total_winners = 0
+            if total_entries > 15:
+                total_winners = 1
+            if total_winners > 30:
+                staff_pick_winners = None
+
         winners = queryset.order_by('-total_likes')[:total_winners]
-        print winners
+        log += unicode(winners)
 
-        print ''
-        print ''
-        print 'Winning entries: {}'.format(','.join([str(w.id) for w in winners]))
-        print ''
-        # Prompt to ask for staff pick winner(s)
+        log += '\n'
+        log += '\n'
 
-        if queryset.count() >= 30:
-
-            staff_pick_winners = None
-            try:
-                staff_pick_winners = input('Enter list of staff pick winner ids: ')
-            except KeyboardInterrupt:
-                print ''
-                print 'Operation cancelled.'
-                sys.exit(1)
+        if staff_pick_winners:
             staff_pick_winners = [int(id) for id in staff_pick_winners.split(',')]
-            honorable_mentions = None
-            try:
-                honorable_mentions = input('Enter list of honorable mentions: ')
-            except KeyboardInterrupt:
-                print ''
-                print 'Operation cancelled.'
-                sys.exit(1)
+        if honorable_mentions:
             honorable_mentions = [int(id) for id in honorable_mentions.split(',')]
-            
-            has_staff_picks_winners = staff_pick_winners != [0]
-            has_honorable_mentions = honorable_mentions != [0]
 
+        has_staff_picks_winners = staff_pick_winners and staff_pick_winners != [0]
+        has_honorable_mentions = honorable_mentions and honorable_mentions != [0]
+
+        if staff_pick_winners:
+            remaining_entries = queryset.exclude(id__in=staff_pick_winners)
         else:
-            staff_pick_winners = []
-            honorable_mentions = []
-            has_staff_picks_winners = False
-            has_honorable_mentions = False
-    
-        remaining_entries = queryset.exclude(id__in=staff_pick_winners)
+            remaining_entries = queryset
 
         if total_winners:
             likes_winners = remaining_entries.order_by('-total_likes')[:total_winners]
             remaining_entries = remaining_entries.exclude(id__in=[w.id for w in likes_winners])
         else:
             likes_winners = []
- 
-        random_winners = remaining_entries.order_by('?')[:1]
+
+        # Exclude those who already won
+        can_win = []
+        for activity in remaining_entries.select_related('account', 'account__owner'):
+            if (models.PrivateMessage.objects.filter(to_user=activity.account.owner, message__contains='Can you fill this form').count() == 0
+                and not activity.account.owner.is_staff):
+                can_win.append(activity)
+        if not can_win:
+            can_win = remaining_entries
+        # random_winners = random_winners.order_by('?')[:1]
+        try:
+            random_winners = random.sample(can_win, total_random_winners)
+        except ValueError: # not enough participants
+            random_winners = []
+
+        log += '\nDidn\'t win before: {} / {}'.format(len(can_win), remaining_entries.count())
+
         remaining_entries = remaining_entries.exclude(id__in=[w.id for w in random_winners])
 
-        remaining_entries = remaining_entries.exclude(id__in=honorable_mentions).order_by('?')
+        if honorable_mentions:
+            remaining_entries = remaining_entries.exclude(id__in=honorable_mentions).order_by('?')
 
-        print ''
-        print '--------- START OF POST TO COPY'
-        print ''
-
-        print get_image(giveaway)
-        print ''
-        print '## The winner{} of {} {} Fan Awards {}...'.format('s' if total_winners or has_staff_picks_winners else '', hashtag[-4:], idol.name, 'are' if total_winners else 'is')
-        print ''
+        post += '\n' + get_image(giveaway)
+        post += '\n'
+        post += '\n## The winner{} of {} {} Fan Awards {}...'.format('s' if total_winners or has_staff_picks_winners else '', hashtag[-4:], idol.name if idol else '', 'are' if total_winners else 'is')
+        post += '\n'
         if has_staff_picks_winners:
-            print '--------- COPY GRAND WINNERS HERE'
-            print ''
-            print '***'
+            post += '\n--------- COPY GRAND WINNERS HERE'
+            post += '\n'
+            post += '\n***'
 
         if total_winners:
-            print_top(likes_winners)
+            post += print_top(likes_winners)
 
-        print_top(random_winners, lucky=True)
+        post += print_top(random_winners, lucky=True)
 
-        print ''
-        print '***'
-        print ''
-        print ''
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += '\n'
         if has_honorable_mentions:
-            print '--------- COPY HONORABLE MENTIONS HERE'
-        print ''
+            post += '\n--------- COPY HONORABLE MENTIONS HERE'
+        post += '\n'
         if remaining_entries and has_honorable_mentions:
-            print ''
+            post += '\n'
             for i, activity in enumerate(remaining_entries):
                 if True: # change to True/False based on rds commented on all entries
-                    print u'**[{username}](https://schoolido.lu/user/{username}/)** - [See activity](http://schoolido.lu/activities/{id}/)'.format(
+                    post += u'\n**[{username}](https://schoolido.lu/user/{username}/)** - [See activity](http://schoolido.lu/activities/{id}/)'.format(
                         username=activity.account.owner.username,
                         id=activity.id,
                     )
-                    # print '    - rdsathene *(School Idol Tomodachi staff;Donator)*: ""'
-                    print '    - ""'
-                    print ''
+                    # post += '\n    - rdsathene *(School Idol Tomodachi staff;Donator)*: ""'
+                    post += '\n    - ""'
+                    post += '\n'
                 else:
-                    print u'[{}](http://schoolido.lu/activities/{}/){}'.format(
+                    post += u'\n[{}](http://schoolido.lu/activities/{}/){}'.format(
                         activity.account.owner.username,
                         activity.id,
                         ', ' if i + 1 < len(remaining_entries) else '',
                     )
-            print ''
+            post += '\n'
         elif remaining_entries:
-            print 'Other participants:'
-            print ''
+            post += '\nOther participants:'
+            post += '\n'
             for i, activity in enumerate(remaining_entries):
-                print u'[{}](http://schoolido.lu/activities/{}/){}'.format(
+                post += u'\n[{}](http://schoolido.lu/activities/{}/){}'.format(
                     activity.account.owner.username,
                     activity.id,
                     ', ' if i + 1 < len(remaining_entries) else '',
                 )
-            print ''
-        print '***'
-        print ''
-        print '# **Congratulations to our winner{}!**'.format('s' if total_winners or has_staff_picks_winners else '')
-        print ''
-        print 'They will receive a prize of their choice among the {current_idol}-themed goodies we offer. You can see the list of prizes with pictures in [the original awards details post](https://schoolido.lu/activities/{current_giveaway_id}/).'.format(
+            post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += '\n# **Congratulations to our winner{}!**'.format('s' if total_winners or has_staff_picks_winners else '')
+        post += '\n'
+        post += '\nThey will receive a prize of their choice among the {current_idol}-themed goodies we offer. You can see the list of prizes with pictures in [the original awards details post](https://schoolido.lu/activities/{current_giveaway_id}/).'.format(
             current_idol=idol.short_name if idol else 'Love Live',
             current_giveaway_id=giveaway_details_id,
         )
-        print ''
-        print 'Thanks to everyone who participated and helped make this contest a success! We loved your entries!'
-        print ''
-        print '***'
-        print ''
-        print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=True)
-        print ''
-        print '***'
-        print ''
-        print_support_us()
-        print ''
-        print '***'
-        print ''
-        print '# **![F.A.Q.](https://i.imgur.com/vghSFuS.png)**'
-        print ''
-        print '- **I won and I didn\'t hear from you?**'
-        print '    - Check [your private messages](https://schoolido.lu/messages/). You may have to wait up to 24 hours after announcement.'
-        print '- **I didn\'t win and I\'m sad ;_;**'
-        print '    - Sorry :( Regardless, the staff and the community loved your entry so your efforts didn\'t go to waste at all <3 Please join our next giveaway to try again!'
-        print '- **How can  I thank you for your amazing work organizing these contests?**'
-        print '    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
-        print '- **More questions?**'
-        print '    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ) and ask your questions in the comments.'
-        print ''
-        print '***'
-        print ''
-        print '## What did you think about this contest?'
-        print ''
-        print 'We want to hear from you! Based on your opinion, we may or may not organize a similar contest next year.'
-        print ''
-        print u'→ [Take the survey!](https://goo.gl/forms/PVErf176nH0LX9go2)'
-        print ''
-        print u'Thank you ♥️'
-        print ''
-        print '***'
-        print ''
-        print 'We\'re looking for judges. [Join us!](https://goo.gl/forms/42sCU6SXnKbqnag23)'
-        print ''
-        print '***'
-        print ''
-        print '[See awards details and prizes](https://schoolido.lu/activities/{}/)'.format(giveaway_details_id)
-        print ''
-        print '###### {}'.format(hashtag)
-        print ''
-        print '--------- END OF POST TO COPY'
-        print ''
-        print ''
-        print 'List of entries by like:'
-        print ''
+        post += '\n'
+        post += '\nThanks to everyone who participated and helped make this contest a success! We loved your entries!'
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += print_still_running_and_coming_soon(still_running_giveaways, voting_ongoing_giveaways, coming_soon_giveaways, idol, with_icons=True)
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += print_support_us()
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += '\n# **![F.A.Q.](https://i.imgur.com/vghSFuS.png)**'
+        post += '\n'
+        post += '\n- **I won and I didn\'t hear from you?**'
+        post += '\n    - Check [your private messages](https://schoolido.lu/messages/). You may have to wait up to 24 hours after announcement.'
+        post += '\n- **I didn\'t win and I\'m sad ;_;**'
+        post += '\n    - Sorry :( Regardless, the staff and the community loved your entry so your efforts didn\'t go to waste at all <3 Please join our next giveaway to try again!'
+        post += '\n- **How can  I thank you for your amazing work organizing these contests?**'
+        post += '\n    - We always appreciate sweet comments below, and if you want to push it a little further, we have a [Patreon](https://patreon.com/db0company/) open for donations <3'
+        post += '\n- **More questions?**'
+        post += '\n    - Read the [Giveaways FAQ](https://github.com/MagiCircles/Circles/wiki/Giveaways-FAQ) and ask your questions in the comments.'
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += '\n## What did you think about this contest?'
+        post += '\n'
+        post += '\nWe want to hear from you! Based on your opinion, we may or may not organize a similar contest next year.'
+        post += '\n'
+        post += u'\n→ [Take the survey!](https://goo.gl/forms/PVErf176nH0LX9go2)'
+        post += '\n'
+        post += u'\nThank you ♥️'
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += '\nWe\'re looking for judges. [Join us!](https://goo.gl/forms/42sCU6SXnKbqnag23)'
+        post += '\n'
+        post += '\n***'
+        post += '\n'
+        post += '\n[See awards details and prizes](https://schoolido.lu/activities/{}/)'.format(giveaway_details_id)
+        post += '\n'
+        post += '\n###### {}'.format(hashtag)
+        post += '\n'
+
+        log += '\nList of entries by like:'
+        log += '\n'
         for activity in queryset.order_by('-total_likes'):
-            print u'{} likes - {}{} - http://schoolido.lu/activities/{}/'.format(
+            log += u'\n{} likes - {}{} - http://schoolido.lu/activities/{}/'.format(
                 activity.total_likes + 1,
                 activity.account.owner.username,
                 u' ({})'.format(activity.account.nickname) if activity.account.nickname != activity.account.owner.username else '',
                 activity.id)
-        print ''
-        print ''
+        log += '\n'
+        log += '\n'
+
+    print log
+
+    print ''
+    print '--------- START OF POST TO COPY'
+    print ''
+    print post
+    print '--------- END OF POST TO COPY'
+
+    return post, log

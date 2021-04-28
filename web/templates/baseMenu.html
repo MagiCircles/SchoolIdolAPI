@@ -1,6 +1,9 @@
 {% load i18n %}
 {% load mod %}
 {% if user.is_staff %}
+{% if user.preferences|has_permission:'COMMUNITY_MANAGER' %}
+<li><a href="/staff/giveaway_generator/"><i class="flaticon-present"></i> Giveaway generator</a></li>
+{% endif %}
 {% if user.preferences|has_permission:'ACTIVE_MODERATOR' %}
 <li><a href="/staff/moderation/"><i class="flaticon-skill"></i> Active Moderation</a></li>
 {% endif %}

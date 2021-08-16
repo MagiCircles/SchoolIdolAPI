@@ -646,7 +646,7 @@ class StaffEvent(TinyPngForm):
     english_beginning_time = forms.TimeField(label='English Start Time (UTC)', required=False, initial='09:00')
     english_end = forms.DateField(label=('English End Date'), required=False)
     english_end_time = forms.TimeField(label='English End Time (UTC)', required=False, initial='08:00')
-    legacy = forms.BooleanField(label="Legacy event (happened before the merge) *Fields below are used only for legacy events", required=False)
+    legacy = forms.BooleanField(label="Legacy event (happened before the merge) *Fields below are used only for legacy events", required=False, initial=False)
 
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
@@ -710,8 +710,6 @@ class StaffEvent(TinyPngForm):
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
-
-        instance.legacy = bool(instance.legacy)
 
         if commit:
             instance.save()

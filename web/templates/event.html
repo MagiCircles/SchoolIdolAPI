@@ -2,318 +2,437 @@
 {% load i18n %}
 {% load imageurl %}
 
-{% block title %}{{ event.japanese_name }}{% if event.english_name != event.japanese_name %} {{ event.english_name }}{% endif %}{% endblock %}
+{% block title %}{{ event.japanese_name }}{% if event.english_name and event.english_name != event.japanese_name %}
+  {{ event.english_name }}{% endif %}{% endblock %}
 
 {% block shareimage %}{% eventimageurl event=event %}{% endblock %}
 {% block shareimagetwitter %}{% eventimageurl event=event %}{% endblock %}
 
 {% block js %}
-<script src="{{ static_url }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
-<script src="{{ static_url }}static/js/event.js?3"></script>
+  <script src="{{ static_url }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
+  <script src="{{ static_url }}static/js/event.js?3"></script>
 {% endblock %}
 {% block content %}
-{% load getattribute %}
-{% load choicesToString %}
-{% load gravatar %}
-{% load mod %}
-{% load tz %}
-<div class="container text-center">
-  <br><br>
-  {% if did_happen_world or soon_happen_world or is_world_current %}
-  <img src="{% eventimageurl event=event english=show_english_banners %}" alt="{{ event.english_name }}" style="max-width: 100%">
-  {% else %}
-  <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
-  {% endif %}
-  <br><br>
-  {% if user.is_authenticated and user.preferences|has_permission:'DATABASE_MAINTAINER' %}
-  <a href="/staff/editevent/{{ event.id }}/"data-container="body" data-toggle="popover" data-placement="top" data-content="Staff: Edit event" data-trigger="hover"><i class="flaticon-edit"></i> Staff: Edit event</a>
-  {% endif %}
-  <div class="row">
-    {% for card in event.all_cards %}
-    <div class="col-md-{{ col_size }}">
-      <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
-	{% if card.round_card_image %}
-	<img src="{% imageurl card=card image='round_card_image' %}" height="{{ card_size }}" />
-	{% elif card.card_image %}
-	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
-	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
-	{% endif %}
-	{% if card.round_card_idolized_image %}
-	<img src="{% imageurl card=card image='round_card_idolized_image' %}" height="{{ card_size }}" />
-	{% elif card.card_image %}
-	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
-	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
-	{% endif %}
-      </a>
-      <br>
-      <h4>{{ card }}</h4>
-      {% if card.skill %}
-      <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
-      {% endif %}
-    </div>
-    {% endfor %}
-
-    {% for card in event.all_other_cards %}
-    <div class="col-md-{{ col_size }}">
-      <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
-	{% if card.round_card_image %}
-	<img src="{% imageurl card=card image='round_card_image' %}" height="{{ card_size }}" />
-	{% elif card.card_image %}
-	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
-	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
-	{% endif %}
-	{% if card.round_card_idolized_image %}
-	<img src="{% imageurl card=card image='round_card_idolized_image' %}" height="{{ card_size }}" />
-	{% elif card.card_image %}
-	<div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
-	     style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
-	{% endif %}
-      </a>
-      {% if not too_old_to_en %}
-      <br>
-      {% trans 'English Version' %} {% trans 'Only' %}
-      {% endif %}
-      <br>
-      <h4>{{ card }}</h4>
-      {% if card.skill %}
-      <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
-      {% endif %}
-    </div>
-    {% endfor %}
-
-    {% if event.song %}
-    <div class="col-md-{{ col_size }}">
-      <div class="text-{{ event.song.attribute }}">
-	<a href="/songs/{{ event.song.name|urlencode }}/" target="_blank" class="a-nodifference inline-block">
-	  <img src="{% songimageurl song=event.song %}" alt="{{ event.song.name }}" height="180" style="border-radius: 5px;" />
-	</a>
-	<div class="itunes-song inline-block text-center" style="vertical-align: middle; padding-left: 10px;">
-	  <a href="/songs/{{ event.song.name|urlencode }}/" target="_blank">
-	    <strong class="song_name">{{ event.song.name }}</strong><br>
-	    {% if LANGUAGE_CODE != 'ja' %}
-	    {% if event.song.romaji_name %}{{ event.song.romaji_name }}<br>{% endif %}
-	    {% if event.song.translated_name and event.song.translated_name != event.song.romaji_name %}<small><i>{% trans event.song.translated_name %}</i></small><br>{% endif %}
-	    {% if LANGUAGE_CODE != 'en' and not event.song.translated_name and not event.song.romaji_name %}<small><i>{% trans event.song.name %}</i></small><br>{% endif %}
-	    {% endif %}
-	    <img src="{{ static_url }}static/{{ event.song.attribute }}.png" class="attribute" width="20px">
-	    {{ event.song.japanese_attribute }}
-	    {{ event.song.attribute }}
-	  </a>
-	  {% if event.song.itunes_id %}
-	  <audio controls="" id="player" class="hidden">
-	    <source src="" type="audio/mp4">
-	      Your browser does not support the audio element.
-	  </audio>
-	  <br><br>
-	  <i class="flaticon-loading"></i>
-	  <a href="#play" data-itunes-id="{{ event.song.itunes_id }}" class="fontx4 a-nodifference" style="display: none;"><i class="flaticon-play"></i></a>
-	  <br><a href="" target="_blank" class="itunes-link" style="display: none;">
-	    <img src="{{ static_url }}static/get_itunes.svg" alt="Get it on iTunes" height="31">
-	  </a>
-	  {% endif %}
-	</div>
-      </div>
-    </div>
-    {% endif %}
-  </div>
-  <br>
-
-  {% if is_japan_current or is_world_current %}
-  <h1 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-    <script>
-      var countdowndate = "{% if is_japan_current %}{{ event.end|torfc2822 }}{% else %}{{ event.english_end|torfc2822 }}{% endif %}";
-      function countdownRender(data) {
-      $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
-      }
-    </script>
-  </h1>
-  {% elif soon_happen_japan or soon_happen_world %}
-  <h1 id="countdown" class="text-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-    <script>
-      var countdowndate = "{% if soon_happen_japan %}{{ event.beginning|torfc2822 }}{% else %}{{ event.english_beginning|torfc2822 }}{% endif %}";
-      function countdownRender(data) {
-      $(this.el).text('{% trans 'Starts in' %} ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
-      }
-    </script>
-  </h1>
-  {% endif %}
-  <br>
-  <div class="row">
-    {% if not soon_happen_world and not did_happen_world and not is_world_current %}<div class="col-lg-3"></div>{% endif %}
-    <div class="col-lg-6">
-      <h1 id="event-title" data-id="{{ event.id }}">{{ event.japanese_name }}<br><small>&nbsp;{% if event.romaji_name and event.romaji_name != event.japanese_name %}{{ event.romaji_name }}{% endif %}</small></h1>
-      <br>
-      <table class="table">
-	{% with 'JP'|languageToString as lang %}
-	<caption class="text-center">{{ lang }}</caption>
-	{% endwith %}
-	{% if event.english_image and event.image %}
-	<tr>
-	  <td colspan="2">
-	    <a href="{% eventimageurl event=event %}" target="_blank">
-	      <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%; height: 80px;">
-	    </a>
-	  </td>
-	</tr>
-	{% endif %}
-	<tr>
-	  <th>{% trans 'Dates' %}</th>
-	  <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }} - {{ event.end|timezone:"Asia/Tokyo" }}<br>
-	    {{ 'JP'|languageToString }} {% trans 'time' %}</td>
-	</tr>
-	{% if event.japanese_t1_points %}
-	<tr>
-	  <th>T1 {% trans 'Points' %}</th>
-	  <td class="text-right">{{ event.japanese_t1_points }}</td>
-	</tr>
-	{% endif %}
-	{% if event.japanese_t1_rank %}
-	<tr>
-	  <th>T1 {% trans 'Rank' %}</th>
-	  <td class="text-right">{{ event.japanese_t1_rank }}</td>
-	</tr>
-	{% endif %}
-	{% if event.japanese_t2_points %}
-	<tr>
-	  <th>T2 {% trans 'Points' %}</th>
-	  <td class="text-right">{{ event.japanese_t2_points }}</td>
-	</tr>
-	{% endif %}
-	{% if event.japanese_t2_rank %}
-	<tr>
-	  <th>T2 {% trans 'Rank' %}</th>
-	  <td class="text-right">{{ event.japanese_t2_rank }}</td>
-	</tr>
-	{% endif %}
-  {% if event.japanese_t3_points %}
-  <tr>
-    <th>T3 {% trans 'Points' %}</th>
-    <td class="text-right">{{ event.japanese_t3_points }}</td>
-  </tr>
-  {% endif %}
-  {% if event.japanese_t3_rank %}
-  <tr>
-    <th>T3 {% trans 'Rank' %}</th>
-    <td class="text-right">{{ event.japanese_t3_rank }}</td>
-  </tr>
-  {% endif %}
-	{% if event.note %}
-	<tr>
-	  <th>{% trans 'Note' %}</th>
-	  <td class="text-right">{% trans event.note %}</td>
-	</tr>
-	{% endif %}
-	<tr>
-	  <th>{% trans 'Wiki' %}</th>
-	  <td class="text-right">
-	    <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ event.japanese_name }}" target="_blank"
-	       class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-	      Wiki
-	    </a>
-	  </td>
-	</tr>
-      </table>
-    </div>
-    {% if soon_happen_world or did_happen_world or is_world_current %}
-    <div class="col-lg-6">
-      <h1>{% if event.english_name %}{{ event.english_name }}{% if LANGUAGE_CODE != 'en' %} <br><small>{% trans event.english_name %}</small>{% endif %}{% else %}{{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
-      <br>
-      <table class="table">
-	{% with 'EN'|languageToString as lang %}
-	<caption class="text-center">{{ lang }}</caption>
-	{% endwith %}
-	{% if event.english_image and event.image %}
-	<tr>
-	  <td colspan="2">
-	    <a href="{% eventimageurl event=event english=True %}" target="_blank">
-	      <img src="{% eventimageurl event=event english=True %}" alt="{{ event.english_name }}" style="max-width: 100%; height: 80px;">
-	    </a>
-	  </td>
-	</tr>
-	{% endif %}
-	{% if event.english_beginning and event.english_end %}
-	<tr>
-	  <th>{% trans 'Dates' %}</th>
-	  <td class="text-right">{{ event.english_beginning }} - {{ event.english_end }}<br>
-	    UTC {% trans 'time' %}</td>
-	</tr>
-	{% endif %}
-	{% if event.english_t1_points %}
-	<tr>
-	  <th>T1 {% trans 'Points' %}</th>
-	  <td class="text-right">{{ event.english_t1_points }}</td>
-	</tr>
-	{% endif %}
-	{% if event.english_t1_rank %}
-	<tr>
-	  <th>T1 {% trans 'Rank' %}</th>
-	  <td class="text-right">{{ event.english_t1_rank }}</td>
-	</tr>
-	{% endif %}
-	{% if event.english_t2_points %}
-	<tr>
-	  <th>T2 {% trans 'Points' %}</th>
-	  <td class="text-right">{{ event.english_t2_points }}</td>
-	</tr>
-	{% endif %}
-	{% if event.english_t2_rank %}
-	<tr>
-	  <th>T2 {% trans 'Rank' %}</th>
-	  <td class="text-right">{{ event.english_t2_rank }}</td>
-	</tr>
-	{% endif %}
-  {% if event.english_t3_points %}
-  <tr>
-    <th>T3 {% trans 'Points' %}</th>
-    <td class="text-right">{{ event.english_t3_points }}</td>
-  </tr>
-  {% endif %}
-  {% if event.english_t3_rank %}
-  <tr>
-    <th>T3 {% trans 'Rank' %}</th>
-    <td class="text-right">{{ event.english_t3_rank }}</td>
-  </tr>
-  {% endif %}
-      </table>
-    </div>
+  {% load getattribute %}
+  {% load choicesToString %}
+  {% load gravatar %}
+  {% load mod %}
+  {% load tz %}
+  <div class="container text-center">
+    <br><br>
+    {% if did_happen_world or soon_happen_world or is_world_current %}
+      <img src="{% eventimageurl event=event english=show_english_banners %}" alt="{{ event.english_name }}"
+           style="max-width: 100%">
     {% else %}
-    <div class="col-lg-3"></div>
+      <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}" style="max-width: 100%">
     {% endif %}
-  </div>
+    <br><br>
+    {% if user.is_authenticated and user.preferences|has_permission:'DATABASE_MAINTAINER' %}
+      <a href="/staff/editevent/{{ event.id }}/" data-container="body" data-toggle="popover" data-placement="top"
+         data-content="Staff: Edit event" data-trigger="hover"><i class="flaticon-edit"></i> Staff: Edit event</a>
+    {% endif %}
+    <div class="row">
+      {% for card in event.all_cards %}
+        <div class="col-md-{{ col_size }}">
+          <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
+            {% if card.round_card_image %}
+              <img src="{% imageurl card=card image='round_card_image' %}" height="{{ card_size }}"/>
+            {% elif card.card_image %}
+              <div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
+                   style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
+            {% endif %}
+            {% if card.round_card_idolized_image %}
+              <img src="{% imageurl card=card image='round_card_idolized_image' %}" height="{{ card_size }}"/>
+            {% elif card.card_image %}
+              <div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
+                   style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
+            {% endif %}
+          </a>
+          <br>
+          <h4>{{ card }}</h4>
+          {% if card.skill %}
+            <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
 
-  <div class="row">
-    {% if not soon_happen_world and not did_happen_world and not is_world_current %}<div class="col-lg-3"></div>{% endif %}
-    <div class="col-lg-6">
-      {% include 'event_ranking.html' with participations=event.japanese_participations loader=True page=1 %}
+      {% for card in event.all_other_cards %}
+        <div class="col-md-{{ col_size }}">
+          <a href="{{ card|singlecardurl }}" class="owned_card a-nodifference">
+            {% if card.round_card_image %}
+              <img src="{% imageurl card=card image='round_card_image' %}" height="{{ card_size }}"/>
+            {% elif card.card_image %}
+              <div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
+                   style="display: inline-block; background-image: url('{% imageurl card=card image='card_image' %}')"></div>
+            {% endif %}
+            {% if card.round_card_idolized_image %}
+              <img src="{% imageurl card=card image='round_card_idolized_image' %}" height="{{ card_size }}"/>
+            {% elif card.card_image %}
+              <div class="circled_card_{{ card_size }} {{ card.attribute }} {{ card.rarity }} hover"
+                   style="display: inline-block; background-image: url('{% imageurl card=card image='card_idolized_image' %}')"></div>
+            {% endif %}
+          </a>
+          {% if not too_old_to_en %}
+            <br>
+            {% trans 'English Version' %} {% trans 'Only' %}
+          {% endif %}
+          <br>
+          <h4>{{ card }}</h4>
+          {% if card.skill %}
+            <small style="font-weight: normal;">{% trans 'Skill' %}: {{ card.skill }}</small>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {% if event.song %}
+        <div class="col-md-{{ col_size }}">
+          <div class="text-{{ event.song.attribute }}">
+            <a href="/songs/{{ event.song.name|urlencode }}/" target="_blank" class="a-nodifference inline-block">
+              <img src="{% songimageurl song=event.song %}" alt="{{ event.song.name }}" height="180"
+                   style="border-radius: 5px;"/>
+            </a>
+            <div class="itunes-song inline-block text-center" style="vertical-align: middle; padding-left: 10px;">
+              <a href="/songs/{{ event.song.name|urlencode }}/" target="_blank">
+                <strong class="song_name">{{ event.song.name }}</strong><br>
+                {% if LANGUAGE_CODE != 'ja' %}
+                  {% if event.song.romaji_name %}{{ event.song.romaji_name }}<br>{% endif %}
+                  {% if event.song.translated_name and event.song.translated_name != event.song.romaji_name %}
+                    <small><i>{% trans event.song.translated_name %}</i></small><br>{% endif %}
+                  {% if LANGUAGE_CODE != 'en' and not event.song.translated_name and not event.song.romaji_name %}
+                    <small><i>{% trans event.song.name %}</i></small><br>{% endif %}
+                {% endif %}
+                <img src="{{ static_url }}static/{{ event.song.attribute }}.png" class="attribute" width="20px">
+                {{ event.song.japanese_attribute }}
+                {{ event.song.attribute }}
+              </a>
+              {% if event.song.itunes_id %}
+                <audio controls="" id="player" class="hidden">
+                  <source src="" type="audio/mp4">
+                  Your browser does not support the audio element.
+                </audio>
+                <br><br>
+                <i class="flaticon-loading"></i>
+                <a href="#play" data-itunes-id="{{ event.song.itunes_id }}" class="fontx4 a-nodifference"
+                   style="display: none;"><i class="flaticon-play"></i></a>
+                <br><a href="" target="_blank" class="itunes-link" style="display: none;">
+                <img src="{{ static_url }}static/get_itunes.svg" alt="Get it on iTunes" height="31">
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
-    {% if soon_happen_world or did_happen_world or is_world_current %}
-    <div class="col-lg-6">
-      {% include 'event_ranking.html' with participations=event.english_participations loader=True page=1 %}
-    </div>
-    {% else %}<div class="col-lg-3"></div>{% endif %}
+    <br>
+
+    {% if is_japan_current or is_world_current %}
+      <h1 id="countdown" class="text-
+          {% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+        <script>
+          var countdowndate = "{% if is_japan_current %}{{ event.end|torfc2822 }}{% else %}{{ event.english_end|torfc2822 }}{% endif %}";
+
+          function countdownRender(data) {
+            $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
+          }
+        </script>
+      </h1>
+    {% elif soon_happen_japan or soon_happen_world %}
+      <h1 id="countdown" class="text-
+          {% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+        <script>
+          var countdowndate = "{% if soon_happen_japan %}{{ event.beginning|torfc2822 }}{% else %}{{ event.english_beginning|torfc2822 }}{% endif %}";
+
+          function countdownRender(data) {
+            $(this.el).text('{% trans 'Starts in' %} ' + data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds' %}');
+          }
+        </script>
+      </h1>
+    {% endif %}
+    <br>
+
+    {% if is_legacy %}
+      <div class="row">
+        {% if not soon_happen_world and not did_happen_world and not is_world_current %}
+          <div class="col-lg-3"></div>
+        {% endif %}
+        <div class="col-lg-6">
+          <h1 id="event-title"
+              data-id="{{ event.id }}">{{ event.japanese_name }}<br><small>&nbsp;
+            {% if event.romaji_name and event.romaji_name != event.japanese_name %}
+              {{ event.romaji_name }}{% endif %}</small></h1>
+          <br>
+          <table class="table">
+            {% with 'JP'|languageToString as lang %}
+              <caption class="text-center">{{ lang }}</caption>
+            {% endwith %}
+            {% if event.english_image and event.image %}
+              <tr>
+                <td colspan="2">
+                  <a href="{% eventimageurl event=event %}" target="_blank">
+                    <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}"
+                         style="max-width: 100%; height: 80px;">
+                  </a>
+                </td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th>{% trans 'Dates' %}</th>
+              <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }}
+                - {{ event.end|timezone:"Asia/Tokyo" }}<br>
+                {{ 'JP'|languageToString }} {% trans 'time' %}</td>
+            </tr>
+            {% if event.japanese_t1_points %}
+              <tr>
+                <th>T1 {% trans 'Points' %}</th>
+                <td class="text-right">{{ event.japanese_t1_points }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t1_rank %}
+              <tr>
+                <th>T1 {% trans 'Rank' %}</th>
+                <td class="text-right">{{ event.japanese_t1_rank }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t2_points %}
+              <tr>
+                <th>T2 {% trans 'Points' %}</th>
+                <td class="text-right">{{ event.japanese_t2_points }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t2_rank %}
+              <tr>
+                <th>T2 {% trans 'Rank' %}</th>
+                <td class="text-right">{{ event.japanese_t2_rank }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t3_points %}
+              <tr>
+                <th>T3 {% trans 'Points' %}</th>
+                <td class="text-right">{{ event.japanese_t3_points }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t3_rank %}
+              <tr>
+                <th>T3 {% trans 'Rank' %}</th>
+                <td class="text-right">{{ event.japanese_t3_rank }}</td>
+              </tr>
+            {% endif %}
+            {% if event.note %}
+              <tr>
+                <th>{% trans 'Note' %}</th>
+                <td class="text-right">{% trans event.note %}</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th>{% trans 'Wiki' %}</th>
+              <td class="text-right">
+                <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ event.japanese_name }}" target="_blank"
+                   class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+                  Wiki
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        {% if soon_happen_world or did_happen_world or is_world_current %}
+          <div class="col-lg-6">
+            <h1>{% if event.english_name %}{{ event.english_name }}{% if LANGUAGE_CODE != 'en' %} <br>
+              <small>{% trans event.english_name %}</small>{% endif %}{% else %}
+              {{ event.japanese_name }}{% endif %}<br><small>&nbsp;</small></h1>
+            <br>
+            <table class="table">
+              {% with 'EN'|languageToString as lang %}
+                <caption class="text-center">{{ lang }}</caption>
+              {% endwith %}
+              {% if event.english_image and event.image %}
+                <tr>
+                  <td colspan="2">
+                    <a href="{% eventimageurl event=event english=True %}" target="_blank">
+                      <img src="{% eventimageurl event=event english=True %}" alt="{{ event.english_name }}"
+                           style="max-width: 100%; height: 80px;">
+                    </a>
+                  </td>
+                </tr>
+              {% endif %}
+              {% if event.english_beginning and event.english_end %}
+                <tr>
+                  <th>{% trans 'Dates' %}</th>
+                  <td class="text-right">{{ event.english_beginning }} - {{ event.english_end }}<br>
+                    UTC {% trans 'time' %}</td>
+                </tr>
+              {% endif %}
+              {% if event.english_t1_points %}
+                <tr>
+                  <th>T1 {% trans 'Points' %}</th>
+                  <td class="text-right">{{ event.english_t1_points }}</td>
+                </tr>
+              {% endif %}
+              {% if event.english_t1_rank %}
+                <tr>
+                  <th>T1 {% trans 'Rank' %}</th>
+                  <td class="text-right">{{ event.english_t1_rank }}</td>
+                </tr>
+              {% endif %}
+              {% if event.english_t2_points %}
+                <tr>
+                  <th>T2 {% trans 'Points' %}</th>
+                  <td class="text-right">{{ event.english_t2_points }}</td>
+                </tr>
+              {% endif %}
+              {% if event.english_t2_rank %}
+                <tr>
+                  <th>T2 {% trans 'Rank' %}</th>
+                  <td class="text-right">{{ event.english_t2_rank }}</td>
+                </tr>
+              {% endif %}
+              {% if event.english_t3_points %}
+                <tr>
+                  <th>T3 {% trans 'Points' %}</th>
+                  <td class="text-right">{{ event.english_t3_points }}</td>
+                </tr>
+              {% endif %}
+              {% if event.english_t3_rank %}
+                <tr>
+                  <th>T3 {% trans 'Rank' %}</th>
+                  <td class="text-right">{{ event.english_t3_rank }}</td>
+                </tr>
+              {% endif %}
+            </table>
+          </div>
+        {% else %}
+          <div class="col-lg-3"></div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          <h1 id="event-title"
+              data-id="{{ event.id }}">{{ event.japanese_name }}<br><small>&nbsp;
+            {% if event.romaji_name and event.romaji_name != event.japanese_name %}
+              {{ event.romaji_name }}{% endif %}</small></h1>
+          <br>
+          <table class="table">
+            <caption class="text-center">{% trans 'Event details' %}</caption>
+            {% if event.image %}
+              <tr>
+                <td colspan="2">
+                  <a href="{% eventimageurl event=event %}" target="_blank">
+                    <img src="{% eventimageurl event=event %}" alt="{{ event.japanese_name }}"
+                         style="max-width: 100%; height: 80px;">
+                  </a>
+                </td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th>{% trans 'Dates' %}</th>
+              <td class="text-right">{{ event.beginning|timezone:"Asia/Tokyo" }}
+                - {{ event.end|timezone:"Asia/Tokyo" }}<br>
+                {{ 'JP'|languageToString }} {% trans 'time' %}</td>
+            </tr>
+            {% if event.japanese_t1_points %}
+              <tr>
+                <th>T1 {% trans 'Points' %}</th>
+                <td class="text-right">{{ event.japanese_t1_points }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t1_rank %}
+              <tr>
+                <th>T1 {% trans 'Rank' %}</th>
+                <td class="text-right">{{ event.japanese_t1_rank }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t2_points %}
+              <tr>
+                <th>T2 {% trans 'Points' %}</th>
+                <td class="text-right">{{ event.japanese_t2_points }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t2_rank %}
+              <tr>
+                <th>T2 {% trans 'Rank' %}</th>
+                <td class="text-right">{{ event.japanese_t2_rank }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t3_points %}
+              <tr>
+                <th>T3 {% trans 'Points' %}</th>
+                <td class="text-right">{{ event.japanese_t3_points }}</td>
+              </tr>
+            {% endif %}
+            {% if event.japanese_t3_rank %}
+              <tr>
+                <th>T3 {% trans 'Rank' %}</th>
+                <td class="text-right">{{ event.japanese_t3_rank }}</td>
+              </tr>
+            {% endif %}
+            {% if event.note %}
+              <tr>
+                <th>{% trans 'Note' %}</th>
+                <td class="text-right">{% trans event.note %}</td>
+              </tr>
+            {% endif %}
+            <tr>
+              <th>{% trans 'Wiki' %}</th>
+              <td class="text-right">
+                <a href="http://decaf.kouhi.me/lovelive/index.php?title={{ event.japanese_name }}" target="_blank"
+                   class="btn btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+                  Wiki
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    {% endif %}
+
+    {% if is_legacy %}
+      <div class="row">
+        {% if not soon_happen_world and not did_happen_world and not is_world_current %}
+          <div class="col-lg-3"></div>{% endif %}
+        <div class="col-lg-6">
+          {% include 'event_ranking.html' with participations=event.japanese_participations loader=True page=1 legacy_event=True %}
+        </div>
+        {% if soon_happen_world or did_happen_world or is_world_current %}
+          <div class="col-lg-6">
+            {% include 'event_ranking.html' with participations=event.english_participations loader=True page=1 legacy_event=True %}
+          </div>
+        {% else %}
+          <div class="col-lg-3"></div>{% endif %}
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          {% include 'event_ranking.html' with participations=event.other_participations legacy_event=True %}
+        </div>
+        <div class="col-lg-3"></div>
+      </div> <!-- row -->
+    {% else %}
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          {% include 'event_ranking.html' with participations=event.all_participations loader=True page=1 %}
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    {% endif %}
+
+    {% if did_happen_world or did_happen_japan %}
+      <a href="{% if not user.is_authenticated %}/create/{% else %}/events/{{ event.japanese_name|urlencode }}/participations/{% endif %}"
+         class="btn btn-lg btn-
+             {% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
+        {% trans 'Share your ranking' %}!
+      </a>
+    {% endif %}
+
+    {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
   </div>
-
-  <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg-6">
-      {% include 'event_ranking.html' with participations=event.other_participations %}
+  <br><br><br>
+  <div class="bg-Rainbow-7 home-section">
+    <div class="container">
+      {% include 'include/links_link.html' with link=event_links with_links_button=True card=event_links_card %}
     </div>
-    <div class="col-lg-3"></div>
-  </div> <!-- row -->
-
-  {% if did_happen_world or did_happen_japan %}
-  <a href="{% if not user.is_authenticated %}/create/{% else %}/events/{{ event.japanese_name|urlencode }}/participations/{% endif %}"
-     class="btn btn-lg btn-{% if interfaceColor and interfaceColor != 'default' %}{{ interfaceColor }}{% else %}Smile{% endif %}">
-    {% trans 'Share your ranking' %}!
-  </a>
-  {% endif %}
-
-  {% include 'disqus.html' with disqus_identifier=event.japanese_name %}
-</div>
-<br><br><br>
-<div class="bg-Rainbow-7 home-section">
-  <div class="container">
-    {% include 'include/links_link.html' with link=event_links with_links_button=True card=event_links_card %}
   </div>
-</div>
 {% endblock %}

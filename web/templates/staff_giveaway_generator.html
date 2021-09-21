@@ -61,6 +61,49 @@
     <pre>{{ log }}</pre>
     {% endif %}
 
+    <br><br>
+    <h2 class="text-center">Generate Discord messages for prize assignment</h2>
+
+    <br>
+
+    {% if generate_giveaway_discord_messages %}
+    <div class="alert alert-info">
+      <i class="flaticon-about"></i>
+      This page generates messages to help with prizes assignment
+      <ul>
+        <li><a href="https://github.com/MagiCircles/Circles/wiki/Community-entertainers-guide/" target="_blank">Full events organizing guide</a></li>
+        <li><a href="{{ sheet_edit_url }}" target="_blank">Winners spreadsheet</a></li>
+        <li><a href="{{ request.path }}?generate_giveaway_discord_messages{% if not backup_prizes %}&backup_prizes{% endif %}">{% if backup_prizes %}See regular prizes{% else %}See backup prizes{% endif %}</a></li>
+      </ul>
+    </div>
+
+    {% if generated_messages %}
+    {% for name, message in generated_messages %}
+    <hr />
+    <div>
+      <h3>{{ name }}</h3>
+      <ol>
+        <li>Go to the <code>#art_sukutomo</code> channel</li>
+        <li>Copy this message:
+          <pre>{{ message }}</pre>
+        </li>
+        <li>Open <a href="{{ sheet_edit_url }}" target="_blank">the spreadsheet</a></li>
+        <li>In the "By" column, change to "Asked"</li>
+        <li>Check <a href="https://github.com/MagiCircles/Circles/wiki/Community-entertainers-guide/" target="_blank">the full guide</a> for follow-up instructions</li>
+      </ol>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-success">
+      <i class="flaticon-check"></i> Looks like all the prizes have been assigned!
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="text-center">
+      <a class="btn btn-lg btn-Cool" href="?generate_giveaway_discord_messages">Generate</a>
+    </div>
+    {% endif %}
+
   </div>
 </div>
 {% endblock %}

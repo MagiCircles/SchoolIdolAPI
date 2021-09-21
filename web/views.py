@@ -3617,4 +3617,161 @@ def staff_giveaway_generator(request):
     else:
         context['form'] = forms.SelectIdol()
         context['winner_form'] = forms.GiveawayWinnerGenerator()
+
+        if 'generate_giveaway_discord_messages' in request.GET:
+            context['generate_giveaway_discord_messages'] = True
+            generate_giveaway_discord_messages(request, context)
+
     return render(request, 'staff_giveaway_generator.html', context)
+
+############################################################
+# Tmp staff page to manage prizes assignment
+
+import csv, datetime, urllib2
+from dateutil.relativedelta import relativedelta
+
+PRIZE_ASSIGNMENT_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOh2odfxzlR0TRRQyo94i95j-owKhubkwMLw0f0p7DX-jjdtBo9hz6u81T8rSM9KiQC3TmsC1jj3LM/pub?gid=985055921&single=true&output=csv'
+PRIZE_ASSIGNMENT_EDIT_URL = 'https://docs.google.com/spreadsheets/d/1r4nWBBgJq-3qg9nyUppiwTtHLpDVm-cKYe58GGm6_m0/edit#gid=985055921'
+BACKUP_PRIZES_ASSIGNMENT_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQwGWoVQbplZpejj5DjJe92ifcOQ9bMUWYk7Wu-6AUMPYeOgKpxXTB_Xv_7TmoAjoOIqODdjwRrIBrR/pub?gid=741881890&single=true&output=csv'
+BACKUP_PRIZES_ASSIGNMENT_EDIT_URL = 'https://docs.google.com/spreadsheets/d/1r0dhkhEOObc0Fm03TkSSDUejfTjpphCwl8o2rhkbCFs/edit?resourcekey#gid=741881890'
+
+def generate_giveaway_discord_messages(request, context):
+    context['backup_prizes'] = 'backup_prizes' in request.GET
+    context['sheet_edit_url'] = BACKUP_PRIZES_ASSIGNMENT_EDIT_URL if context['backup_prizes'] else PRIZE_ASSIGNMENT_EDIT_URL
+
+    discord_username = request.user.username
+
+    generated_messages = []
+
+    cols_drawing = []
+    if not context['backup_prizes']:
+        cols_drawing_offsets = [ # or string value
+            ('Type',  'Commissioned art'),
+            ('Character',  0),
+            ('Pose/style/scene',  1),
+            ('Outfit',  2),
+            ('Custom text',  3),
+            ('Preferences (only if possible / not required)',  4),
+        ]
+    else:
+        cols_drawing_offsets = [ # or string value
+            ('Type',  'Custom drawing / fanart'),
+            ('Character',  0),
+            ('Pose/style/scene',  1),
+            ('Pixel art', 2),
+            ('With a background', 3),
+            ('Outfit',  4),
+            ('Custom text',  5),
+        ]
+
+    cols_edit = []
+    cols_edit_offsets = [
+        ('Commissioned graphic edit', 0),
+        ('Size', 1),
+        ('Description', 2),
+        ('Custom text', 3),
+    ]
+
+    col_username = None
+    col_entry = None
+    col_title = []
+    col_rank = None
+    col_message = None
+    col_event_title = None
+    col_by = None
+    col_shipped = None
+
+    def get_prize_message(row, j, offsets, to_ping):
+        if (col_by is not None and col_shipped is not None
+            and (row[col_by].strip().lower() == 'asked'
+                 or row[col_shipped].strip())):
+            return None, None
+        event_title = (row[col_event_title] if col_event_title is not None else 'Unknown').decode('utf-8')
+        if context['backup_prizes']:
+            event_title += u' (Backup prize)'
+        generated = u''
+        generated += to_ping + u'\n'
+        generated += u'**Interested in making this prize?**' + u'\n'
+        generated += u'1. Make sure your message in #🎨🖼🔗art_links is up to date (see <https://discordapp.com/channels/269845243648540673/502309402611810314/502311570483707904>)' + u'\n'
+        generated += u'2. Reply here with:' + u'\n'
+        recommended_date = datetime.date.today() + relativedelta(days=(2 if to_ping.startswith(u'@🖼') else 6))
+        generated += u'　✩ When you think you can have it done (ex: {}{})'.format(
+            recommended_date.strftime('%b %d'),
+            { 1: 'st', 2: 'nd', 3: 'rd' }.get(recommended_date.day % 10 if recommended_date.day not in [11, 12, 13] else 0, 'th'),
+        ) + u'\n'
+        generated += u'　✩ Mention @{}'.format(discord_username) + u'\n'
+        generated += u'3. Wait for confirmation.' + u'\n'
+        generated += u'' + u'\n'
+        generated += u'Thank you :heartfishy:' + u'\n'
+        generated += u'' + u'\n'
+        generated += u'Details of the prize to make:' + u'\n'
+        for title, offset in offsets:
+            if not isinstance(offset, int) or row[j + offset]:
+                generated += u'✦  **{}:** {}'.format(title, row[j + offset].decode('utf-8') if isinstance(offset, int) else offset) + u'\n'
+        if row[col_message]:
+            generated += u'✦ **Message from the winner to the artist:**' + row[col_message].decode('utf-8') + u'\n'
+        generated += u'' + u'\n'
+        generated += u'Winner of the prize:' + u'\n'
+        generated += u'✦ **Event:**' + event_title + u'\n'
+        generated += u'✦ **Preferred name:**' + row[col_username] + u'\n'
+        if col_entry is not None:
+            generated += u'✦ **Winning entry:**' + row[col_entry] + u'\n'
+        for j in col_title:
+            if row[j]:
+                generated += u'✦ **Winner\'s title**:' + row[j] + u'\n'
+                break
+        if col_rank is not None:
+            generated += u'✦ **Rank**:' + row[col_rank] + u'\n'
+        generated += u'' + u'\n'
+        generated += u'✦ **Assigned to:** …' + u'\n'
+        generated += u'✦ **Due date**: …' + u'\n'
+        return event_title, generated
+
+    csv_file = urllib2.urlopen(BACKUP_PRIZES_ASSIGNMENT_SHEET if context['backup_prizes'] else PRIZE_ASSIGNMENT_SHEET)
+    csv_reader = csv.reader(csv_file)
+    for i, row in enumerate(csv_reader):
+        if i == 0: # Titles
+            for j, col in enumerate(row):
+                if col.strip() == 'Username':
+                    col_username = j
+                elif col.strip() == 'How do you prefer to be called?':
+                    col_username = j
+                elif col.strip() == 'How would you like to be called?':
+                    col_username = j
+                elif col.strip() == 'Entry':
+                    col_entry = j
+                elif col.strip() == 'Username / Winning category':
+                    col_title.append(j)
+                    col_username = j
+                elif col.strip() in ['Winning category', 'Category']:
+                    col_title.append(j)
+                elif col.strip() in ['Rank', 'Your rank']:
+                    col_rank = j
+                elif col.strip() == 'Anything else to say?':
+                    col_message = j
+                elif col.strip() == 'Which character(s) or idolsona?':
+                    cols_drawing.append(j)
+                elif col.strip() == 'Which character(s)?':
+                    cols_drawing.append(j)
+                elif col.strip() == 'What kind of commission?':
+                    cols_edit.append(j)
+                elif col.endswith(' username') and col_username is None:
+                    col_username = j
+                elif col.strip() in ['Event', 'Awards', 'Giveaway']:
+                    col_event_title = j
+                elif col.strip().lower() == 'by':
+                    col_by = j
+                elif col.strip().lower() in ['shipped', 'received']:
+                    col_shipped = j
+        else:
+            for j in cols_drawing:
+                if row[j]:
+                    event_title, message = get_prize_message(row, j, cols_drawing_offsets, u'@🎨 artists ')
+                    if event_title and message:
+                        generated_messages.append((event_title, message))
+            for j in cols_edit:
+                if row[j]:
+                    event_title, message = get_prize_message(row, j, cols_edit_offsets, u'@🖼 designers ')
+                    if event_title and message:
+                        generated_messages.append((event_title, message))
+    context['generated_messages'] = generated_messages

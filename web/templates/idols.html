@@ -10,6 +10,12 @@
 
 {% block content %}
 <div id="idols" class="text-center">
+  <div class="alert alert-info" style="margin: 10px;">
+    <h2><i class="flaticon-about"></i> New!</h2>
+    <p>New and updated list of idols with Nijigasaki, Aqours, Liella and everyone! More details, trivia, videos, images, and more.
+      <small><br>By our friends at <a href="https://idol.st/about/" target="_blank">Idol Story</a>.</small></p>
+    <a href="btn btn-lg btn-Cool" href="https://idol.st/idols/">Check out the new list of idols</a>
+  </div>
   {% for section_name, idols in idols_sections.items %}
   <h1 class="margin50">
     {% if idols.0.main_unit %}

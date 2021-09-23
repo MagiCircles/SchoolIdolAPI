@@ -38,7 +38,7 @@ from web.templatetags.imageurl import ownedcardimageurl, eventimageurl, _imageur
 from utils import *
 from collections import OrderedDict
 import urllib, hashlib
-import datetime, time, pytz
+import datetime, time, pytz, pprint
 import random
 import re
 import json
@@ -273,7 +273,7 @@ def pushActivity(message, number=None, ownedcard=None, eventparticipation=None, 
 BANNERS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRsbOHP9SBVItTAtbdyuAL7_F6zjPRCzbFGaQs_gEWHYTCajR7N1bmOZ--caMZIQ4yYUs2_-cIfp7Ik/pub?gid=0&single=true&output=csv'
 _news = None
 _last_news_update = None
-    
+
 def index(request):
     """
     SQL Queries:
@@ -3182,6 +3182,7 @@ PDP_IDOLS = [
     'Uehara Ayumu',
     'Asaka Karin',
     'Osaka Shizuku',
+    'Ousaka Shizuku',
     'Emma Verde',
     'Verde Emma',
     'Konoe Kanata',
@@ -3190,50 +3191,110 @@ PDP_IDOLS = [
 
 class Yohane():
     name = 'Yohane'
+    birthday = datetime.date(year=2015, day=13, month=7)
 
 def giveaways(request):
+    try:
+        from web.generated_giveaways_archive import archive, has_not_been_organized
+    except ImportError:
+        from web.giveaways_archive import archive, has_not_been_organized
+    
     context = globalContext(request)
-    already = []
+    already = [giveaway['tag'] for year, giveaways in archive.items() for giveaway in giveaways]
     giveaways = []
     idols = list(models.Idol.objects.filter(Q(main=True) | Q(name__in=PDP_IDOLS)).order_by('-birthday')) + [Yohane()]
-    for year in [2020, 2019, 2018, 2017, 2016, 2015, '']:
+    giveaways = OrderedDict()
+    not_been_organized = has_not_been_organized[:]
+    today = datetime.date.today()
+    this_year = today.year
+    force_update = 'force_update' in request.GET and request.user.is_staff
+    archive_needs_update = force_update
+    print archive_needs_update
+    for year in reversed(range(2020, this_year + 1)):
+        giveaways[year] = []
         for idol in idols:
             name = idol.name.split(' ')[-1] if idol.name != 'Emma Verde' else 'Emma'
-            tags = [
-                '{name}BirthdayGiveaway{year}'.format(name=name, year=year),
-            ] if year != '' else [
-                '{name}BirthdayGiveaway{year}'.format(name=name, year=year),
-                'happy birthday {name}'.format(name=name),
-                'Let\'s celebrate {}\'s birthday together!'.format(name),
-                'Write "{}'.format(name),
-                '{}" somewhere in your activity'.format(name),
-            ]
-            for tag in tags:
+            tag = '{name}FanAwards{year}'.format(name=name, year=year)
+            if (not force_update
+                and (tag in already or tag in not_been_organized)):
+                continue
+            # Don't try to fetch the giveaway if it has not happened yet
+            if today < idol.birthday.replace(year=year):
+                continue
+            activities = models.Activity.objects.filter(
+                message_data__contains=tag,
+            )
+            staff_activities = activities.filter(
+                account__owner_id__in=[1, 63752, 25142, 71608, 297843], # db0, Hikari_Dragneel, ryuko, SchoolIdolTomodachi official profile, rinmeikan
+            ).order_by('id').select_related('account', 'account__owner')
+            try:
+                main_activity = staff_activities.filter(message_data__contains='How to join')[0]
+            except IndexError:
+                not_been_organized.append(tag)
+                archive_needs_update = True
+                continue
+            try:
+                winners_activity = staff_activities.filter(message_data__contains='Congratulations to our winner')[0]
+            except IndexError:
+                winners_activity = None
+            giveaway = {
+                'tag': tag,
+                'id': main_activity.id,
+                'username': main_activity.owner.username,
+                'image': main_activity.message_data.split('![')[1].split('](')[1].split(')')[0],
+                'idol_name': idol.name,
+                'winners_id': winners_activity.id if winners_activity else None,
+                # birthday and total_participants set below
+            }
+            giveaways[year].append(giveaway)
+            already.append(main_activity.id)
+            archive_needs_update = True
+
+    for year, l in giveaways.items():
+        tags_in_giveaways = [giveaway['tag'] for giveaway in l]
+        if year in archive:
+            for giveaway in archive[year]:
+                if giveaway['tag'] not in tags_in_giveaways:
+                    giveaways[year].append(giveaway)
+    for year, l in archive.items():
+        if year not in giveaways:
+            giveaways[year] = l
+    for year, l in giveaways.items():
+        for giveaway in l:
+            if 'birthday' not in giveaway:
                 try:
-                    activities = models.Activity.objects.filter(
-                        message_data__icontains=tag,
-                        account__owner_id__in=[1, 63752, 25142],
-                    ).order_by('id').select_related('account', 'account__owner')
-                except IndexError:
-                    activities = []
-                for activity in activities:
-                    try:
-                    	real_tag = activity.message_data.split('Write "')[1].split('" somewhere in your activity')[0]
-                    except IndexError:
-                        real_tag = tag
-                    if activity.id not in already:
-                        giveaway = (
-                            real_tag,
-                            activity,
-                            activity.message_data.split('![')[1].split('](')[1].split(')')[0],
-                            idol,
-                            year,
-                            tag,
-                        )
-                        giveaways.append(giveaway)
-                        already.append(activity.id)
-                        break
-    context['giveaways'] = sorted(giveaways, key=lambda g: g[1].id, reverse=True)
+                    idol = next(idol for idol in idols if idol.name == giveaway['idol_name'])
+                    giveaway['birthday'] = (idol.birthday.month, idol.birthday.day)
+                except StopIteration:
+                    giveaway['birthday'] = None
+                archive_needs_update = True
+            if 'total_participants' not in giveaway or giveaway['total_participants'] is None:
+                if today > datetime.date(month=giveaway['birthday'][0], day=giveaway['birthday'][1], year=year or 2017) + relativedelta(days=30): # event finished
+                    giveaway['total_participants'] = models.Activity.objects.filter(
+                        message_data__icontains=giveaway['tag'],
+                        id__gt=giveaway['id'],
+                        id__lt=(giveaway['winners_id'] if giveaway['winners_id'] else giveaway['id'] + 10000),
+                    ).count()
+                    archive_needs_update = True
+                else:
+                    giveaway['current'] = True
+                    giveaway['total_participants'] = None
+    # Sort by birthday
+    for year, l in giveaways.items():
+        l.sort(key=lambda giveaway: giveaway['birthday'], reverse=True)
+    if archive_needs_update:
+        with open(u'{}/web/generated_giveaways_archive.py'.format(settings.BASE_DIR), 'w') as f:
+            print 'Updating giveaways archive!'
+            f.write(u"""
+from collections import OrderedDict
+
+archive = OrderedDict({})
+has_not_been_organized = {}
+""".format(pprint.pformat(list(giveaways.items())), not_been_organized))
+            f.close()
+
+    context['giveaways'] = giveaways
+    context['not_been_organized'] = not_been_organized
     return render(request, 'giveaways.html', context)
 
 _skillup_skills = [skill for skill in skillsIcons.keys() if skill != 'Score Up' and skill != 'Healer' and skill != 'Perfect Lock']

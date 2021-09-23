@@ -4,24 +4,44 @@
 {% block content %}
 <div class="container text-center">
   <br><br>
-  {% for tag, activity, image, idol, year, found_with in giveaways %}
-  <div style="display: inline-block;">
-    <a href="/activities/{{ activity.id }}/" target="_blank">
-      {% if image %}
-      <img src="{{ image }}" class="img-responsive" style="max-height: 200px;">
+  <h1>Giveaways</h1>
+  <br><br>
+  {% for year, list_of_giveaways in giveaways.items %}
+  <h2>{% if year %}{{ year }}{% else %}Before{% endif %}</h2>
+  {% for giveaway in list_of_giveaways %}
+  <div style="display: inline-block; vertical-align: top;">
+    <a href="/activities/{{ giveaway.id }}/" target="_blank">
+      {% if giveaway.image %}
+      <img src="{{ giveaway.image }}" class="img-responsive" style="max-height: 200px;">
       {% else %}
       Open giveaway
       {% endif %}
     </a><br>
-    <a href="/idol/{{ idol.name }}">{{ idol.name }}</a> {{ year }}<br>
-    Organized by: <a href="/user/{{ activity.owner.username }}">{{ activity.account.owner.username }}</a><br>
-    Tag: {{ tag }}<br>
-    <a href="/#search={{ tag }}">
-      See entries
-    </a>
+    <a href="/idol/{{ giveaway.idol_name }}">{{ giveaway.idol_name }}</a>
+    ({{ giveaway.birthday.0 }}-{{ giveaway.birthday.1 }})<br>
+    Organized by: <a href="/user/{{ giveaway.username }}">{{ giveaway.username }}</a><br>
+    Tag: {{ giveaway.tag }}<br>
+    <a href="/activities/{{ giveaway.id }}">
+      See details of the awards
+    </a><br>
+    {% if giveaway.total_participants or giveaway.total_participants == None or giveaway.winners_id %}<a href="/#search={{ giveaway.tag }}">
+      See entries {% if giveaway.total_participants %}({{ giveaway.total_participants }}){% endif %}
+    </a><br>{% elif giveaway.total_participants == 0%}<small>No one participated :(</small><br>{% endif %}
+    {% if giveaway.winners_id %}<a href="/activities/{{ giveaway.winners_id }}/" target="_blank">See winners</a><br>{% elif giveaway.total_participants and user.is_staff %}<b>Winners NOT announced!</b><br>{% endif %}
     <br><hr><br>
   </div>
   {% endfor %}
+  {% endfor %}
   <br><br>
+  <div class="well text-left">
+    We forgot to organize the following giveaways:
+    <ul>
+      {% for tag in not_been_organized %}
+      {% if 'Yoshiko' not in tag and 'Yohane' not in tag %}<li>{{ tag }}</li>{% endif %}
+      {% endfor %}
+    </ul>
+    <small>Sorry :( We're a small team! Please consider <a href="https://idol.st/help/Roles" target="_blank">joining the team</a> to help!</small>
+  </div>
+  <br><br><br><br><br>
 </div>
 {% endblock %}

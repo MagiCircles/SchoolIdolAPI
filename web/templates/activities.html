@@ -1,5 +1,7 @@
 {% load i18n %}
 {% include 'activitysingle.html' %}
+{% if not user %}
+{% if not user.authenticated or page == 1 or page|divisibleby:3 %}
 <div class="alert alert-info text-center" style="margin: 10px;">
   <h2><i class="flaticon-about"></i> More posts on Idol Story!</h2>
   <p>
@@ -8,6 +10,8 @@
     <a class="btn btn-lg btn-Cool" href="https://idol.st/">Check it out!</a>
   <small><br><a href="https://idol.st/about/" target="_blank">About Idol Story</a>: The home of Love Livers! and source for School Idol Festival ALL STARS, µ's, Aqours, Nijigasaki High School Idol Club and Liella!</small></p>
 </div>
+{% endif %}
+{% endif %}
 {% if activities|length >= page_size %}
 <div class="padding20 text-center" data-page="{{ page|add:1 }}"><a href="#loadMoreActivities">⟱</a></div>
 {% endif %}

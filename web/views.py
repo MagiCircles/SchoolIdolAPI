@@ -1467,7 +1467,7 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         'avatar_size': avatar_size,
         'content_size': 12 - avatar_size,
         'current': 'activities',
-        'user': user,
+        'profile_user': user,
         'card_size': request.GET['card_size'] if 'card_size' in request.GET and request.GET['card_size'] else card_size
     }
     return context

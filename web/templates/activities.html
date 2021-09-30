@@ -1,7 +1,7 @@
 {% load i18n %}
 {% include 'activitysingle.html' %}
-{% if not user %}
-{% if not user.authenticated or page == 1 or page|divisibleby:3 %}
+{% if not profile_user %}
+{% if not user.is_authenticated or page|divisibleby:5 %}
 <div class="alert alert-info text-center" style="margin: 10px;">
   <h2><i class="flaticon-about"></i> More posts on Idol Story!</h2>
   <p>

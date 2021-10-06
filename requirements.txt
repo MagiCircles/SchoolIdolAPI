@@ -1,4 +1,4 @@
-Django==1.7.3
+Django==2.2.24
 Pillow==2.7.0
 argparse==1.2.1
 beautifulsoup4==4.3.2

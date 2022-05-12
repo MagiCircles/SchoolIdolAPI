@@ -611,7 +611,7 @@ class StaffCard(TinyPngForm):
         self.fields['promo_item'].help_text = '[PROMO CARDS ONLY] --- "Special login bonus" or the name of the thing you have to buy to get this card. Example: "limited ed. S2 BD vol. 2"'
         self.fields['promo_link'].help_text = '[PROMO CARDS ONLY] --- Go to CDJapan, find the product. In this field, the URL should look like "http://www.cdjapan.co.jp/aff/click.cgi/PytJTGW7Lok/5590/A364348/product%2F{product code}" but replace "{product code}" with the code you can see on the CDJapan URL. Example: "BCXA-840"'
         self.fields['other_event'].help_text = 'If a card was in a certain event in JP, but has been merge in another event in EN, use this field to specify the event in which it has been merged.'
-        self.fields['japan_only'].help_text = 'Uncheck this box if the card is available in English version.'
+        self.fields['japan_only'].help_text = 'Check this box if the card is not available in English version.'
         #self.fields['cleanx4'].help_text = 'Use http://waifu2x.udp.jp/ with "Artwork", "Highest" and "2x", download the file and do the same thing again to get it 4 times bigger.'
         for field in ['minimum_statistics_smile', 'minimum_statistics_pure', 'minimum_statistics_cool', 'non_idolized_maximum_statistics_smile', 'non_idolized_maximum_statistics_pure', 'non_idolized_maximum_statistics_cool', 'idolized_maximum_statistics_smile', 'idolized_maximum_statistics_pure', 'idolized_maximum_statistics_cool']:
             self.fields[field].required = False
@@ -646,6 +646,7 @@ class StaffEvent(TinyPngForm):
     english_beginning_time = forms.TimeField(label='English Start Time (UTC)', required=False, initial='09:00')
     english_end = forms.DateField(label=('English End Date'), required=False)
     english_end_time = forms.TimeField(label='English End Time (UTC)', required=False, initial='08:00')
+    legacy = forms.BooleanField(label="Legacy event (happened before the merge) *Fields below are used only for legacy events", required=False, initial=False)
 
     def __init__(self, *args, **kwargs):
         super(StaffEvent, self).__init__(*args, **kwargs)
@@ -709,13 +710,14 @@ class StaffEvent(TinyPngForm):
         for field in ['romaji_name', 'english_name']:
             if not getattr(instance, field):
                 setattr(instance, field, None)
+
         if commit:
             instance.save()
         return instance
 
     class Meta:
         model = models.Event
-        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_rank', 'japanese_t1_points', 'japanese_t2_rank', 'japanese_t2_points', 'japanese_t3_rank', 'japanese_t3_points', 'image', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_rank', 'english_t1_points', 'english_t2_rank', 'english_t2_points', 'english_t3_rank', 'english_t3_points', 'english_image', 'note')
+        fields = ('japanese_name', 'romaji_name', 'beginning', 'beginning_time', 'end', 'end_time', 'japanese_t1_rank', 'japanese_t1_points', 'japanese_t2_rank', 'japanese_t2_points', 'japanese_t3_rank', 'japanese_t3_points', 'image', 'note', 'legacy', 'english_name', 'english_beginning', 'english_beginning_time', 'english_end', 'english_end_time', 'english_t1_rank', 'english_t1_points', 'english_t2_rank', 'english_t2_points', 'english_t3_rank', 'english_t3_points', 'english_image')
 
 class StaffSong(TinyPngForm):
     main_unit = ChoiceField(label=_('Main Unit'), choices=BLANK_CHOICE_DASH + [

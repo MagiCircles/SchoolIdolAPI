@@ -2116,6 +2116,7 @@ def event(request, event):
     context['soon_happen_japan'] = event.soon_happen_japan()
     context['is_world_current'] = event.is_world_current()
     context['is_japan_current'] = event.is_japan_current()
+    context['is_legacy'] = event.legacy
 
     # get cards
     event.all_cards = event.cards.all()
@@ -2126,10 +2127,13 @@ def event(request, event):
 
     # get rankings
     if context['did_happen_japan']:
-        event.japanese_participations = event.participations.filter(account_language='JP').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
-        if context['did_happen_world']:
-            event.english_participations = event.participations.filter(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
-            event.other_participations = event.participations.exclude(account_language='JP').exclude(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account_language', 'ranking_is_null', 'ranking'])
+        if event.legacy:
+            event.japanese_participations = event.participations.filter(account_language='JP').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
+            if context['did_happen_world']:
+                event.english_participations = event.participations.filter(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking'])[:10]
+                event.other_participations = event.participations.exclude(account_language='JP').exclude(account_language='EN').extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['account_language', 'ranking_is_null', 'ranking'])
+        else:
+            event.all_participations = event.participations.extra(select={'ranking_is_null': 'ranking IS NULL'}, order_by=['ranking_is_null', 'ranking', 'account_language'])[:10]
 
     context['event'] = event
     context['event_links'] = (link for link in links_list if link['link'] == 'events').next()

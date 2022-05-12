@@ -490,6 +490,7 @@ class Event(ExportModelOperationsMixin('Event'), models.Model):
     note = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(upload_to='events/', null=True, blank=True)
     english_image = models.ImageField(upload_to=event_EN_upload_to, null=True, blank=True)
+    legacy = models.BooleanField(default=True)
 
     def is_japan_current(self):
         return (self.beginning is not None
@@ -590,7 +591,7 @@ class Card(ExportModelOperationsMixin('Card'), models.Model):
     event = models.ForeignKey(Event, related_name='cards', blank=True, null=True, on_delete=models.SET_NULL)
     other_event = models.ForeignKey(Event, related_name='other_cards', blank=True, null=True, on_delete=models.SET_NULL)
     is_special = models.BooleanField(default=False, help_text="Special cards cannot be added in a team but they can be used in training.")
-    japan_only = models.BooleanField(default=True)
+    japan_only = models.BooleanField(default=False)
     seal_shop = models.BooleanField(default=False)
     hp = models.PositiveIntegerField(null=True, default=0, blank=True)
     minimum_statistics_smile = models.PositiveIntegerField(null=True)

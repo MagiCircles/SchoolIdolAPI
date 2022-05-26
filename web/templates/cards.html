@@ -9,6 +9,7 @@
 <script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for i, attribute in filters.attribute_choices %}
@@ -17,6 +18,8 @@
     }
   });
   cuteform($('#id_rarity'), {
+    'tooltip': 'text',
+    'tooltipDefault': 'Empty',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for rarity, _ in filters.rarity_choices %}
@@ -25,6 +28,7 @@
     }
   });
   cuteform($('#id_sub_unit'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for sub_unit in filters.sub_units %}
@@ -33,6 +37,7 @@
     }
   });
   cuteform($('#id_main_unit'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for main_unit in filters.main_units %}
@@ -41,6 +46,7 @@
     }
   });
   cuteform($('#id_name'), {
+    'tooltip': 'text',
     'modal': 'true',
     'modal-text': 'true',
     'images': {

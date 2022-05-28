@@ -730,7 +730,7 @@ def get_cards_form_filters(request, cardsinfo):
         'collections': cardsinfo['collections'],
         'translated_collections': cardsinfo['translated_collections'],
         'sub_units': cardsinfo['sub_units'] if 'sub_units' in cardsinfo else [],
-        'main_units': ['Aqours', 'μ\'s'],
+        'main_units': ['Aqours', 'μ\'s', 'Nijigasaki High Scho', 'Liella!'],
         'skills': cardsinfo['skills'],
         'rarity_choices': models.RARITY_CHOICES,
         'attribute_choices': models.ATTRIBUTE_CHOICES,

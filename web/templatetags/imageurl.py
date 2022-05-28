@@ -132,9 +132,10 @@ def standimage(context, idol, number):
             if number == 5:
                 return raw_information[idol.name]['image'].replace('Transparent', 'idolizedTransparent')
             return raw_information[idol.name]['image']
-        m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
-        member_number = m.group('number')
-        return 'http://www.lovelive-anime.jp/otonokizaka/img/member/member' + member_number + '_0'+ str(number) + '.png'
+        if idol.official_url:
+            m = re.search(r'[^0-9]+(?P<number>[0-9]+)[.]html$', idol.official_url)
+            member_number = m.group('number')
+            return 'http://www.lovelive-anime.jp/otonokizaka/img/member/member' + member_number + '_0'+ str(number) + '.png'
     return ''
 
 @register.simple_tag(takes_context=True)

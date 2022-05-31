@@ -26,7 +26,7 @@
   <div class="row">
     <div class="{% if idols.0.main_unit == 'A-RISE' %}col-sm-offset-4 {% endif %}col-sm-4">
       <div class="row">
-	{% if idols.0.sub_unit %}<img src="{{ static_url }}static/{{ idols.0.sub_unit }}.png" alt="{{ idols.0.sub_unit }}"><br><br>{% endif %}
+	{% if idols.0.sub_unit %}<img src="{{ static_url }}static/{{ idols.0.sub_unit }}.png?1" alt="{{ idols.0.sub_unit }}"><br><br>{% endif %}
       </div>
       {% for idol in idols %}
       {% if forloop.counter0|mod:3 and forloop.counter0 != 0 %}

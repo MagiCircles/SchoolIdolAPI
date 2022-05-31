@@ -32,7 +32,7 @@
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for sub_unit in filters.sub_units %}
-      '{{ sub_unit }}': '{{ static_url }}static/{{ sub_unit }}.png',
+      '{{ sub_unit }}': '{{ static_url }}static/{{ sub_unit }}.png?1',
       {% endfor %}
     }
   });

@@ -306,7 +306,7 @@
 	      <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
 	      <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
 	    </select>
-	    <brf>
+	    <br>
 	      <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
 	      <select id="id_max_level" name="max_level">
 		<option value=""></option>
@@ -321,8 +321,8 @@
 		<option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
 	      </select>
 	  </div>
+      {% endif %}
 	</div>
-	{% endif %}
       </div> <!-- collapse -->
       <br>
       <h4>{% trans 'Order' %}</h4>

@@ -110,7 +110,7 @@ GENERATED_DATE = datetime.datetime.fromtimestamp(' + unicode(time.time()) + u')\
 CARDS_INFO = ' + cards_info + u'\n\
 '
         print s
-        f = open('./schoolidolapi/generated_settings.py', 'w')
+        f = open('/home/ubuntu/SchoolIdolAPI/schoolidolapi/generated_settings.py', 'w')
         print >> f, s
         f.close()
 

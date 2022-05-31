@@ -19,7 +19,6 @@
   });
   cuteform($('#id_rarity'), {
     'tooltip': 'text',
-    'tooltipDefault': 'Empty',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for rarity, _ in filters.rarity_choices %}

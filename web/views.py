@@ -678,16 +678,6 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
 
         if not settings.HIGH_TRAFFIC and (('accounts' in context and not hasJP(context['accounts'])
                                            and 'search' not in request_get_copy
-                                           or 'is_world' in request_get_copy and request_get_copy['is_world'])):
-            if 'is_world' in request_get_copy and request_get_copy['is_world'] == 'off':
-                cards = cards.filter(japan_only=True)
-            else:
-                cards = cards.filter(japan_only=False)
-                context['show_discover_banner'] = True
-            request_get['is_world'] = True
-
-        if not settings.HIGH_TRAFFIC and (('accounts' in context and not hasJP(context['accounts'])
-                                           and 'search' not in request_get_copy
                                            or 'is_promo' in request_get_copy and request_get_copy['is_promo'])):
             if 'is_promo' not in request_get_copy or request_get_copy['is_promo'] == 'off':
                 cards = cards.filter(is_promo=False)
@@ -717,8 +707,6 @@ def get_cards_queryset(request, context, card=None, extra_request_get={}):
         context['total_results'] = 1
         cards = models.Card.objects.filter(pk=int(card))
         context['single'] = cards[0]
-        if 'accounts' in context and not hasJP(context['accounts']):
-            request_get['is_world'] = True
 
     context['request_get'] = request_get
     return context, cards

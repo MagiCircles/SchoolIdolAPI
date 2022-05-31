@@ -155,13 +155,6 @@
 	  {% endfor %}
 	</select>
 	<br>
-	{% if view != 'albumbuilder' %}
-	<br>
-	<div>
-	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
-	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
-	</div>
-	{% endif %}
 	<br>
 	<div class="text-right">
 	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i> <span class="fontx1-2">{% trans 'More options' %}</span></a>

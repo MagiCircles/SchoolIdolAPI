@@ -140,7 +140,12 @@
         </ul>
         <textarea class="form-control" placeholder="Your message to the owner of the reported {% if report.fake_account %}account{% elif report.fake_eventparticipation %}event participation{% elif report.fake_user %}user{% elif report.fake_activity %}activity{% endif %}{% if not report.fake_user %} (optional){% else %} (REQUIRED){% endif %}"></textarea><br>
         <p class="textarea-check" style="display: none">Be friendly and check your grammar and spelling.</p>
-        <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will {% if report.fake_account %}mark this account as fake,<br>notify the reporter<br>and suggest the owner to get verified{% elif report.fake_eventparticipation %} delete this event participation<br>and notify the owner by email{% elif report.fake_user %}send a warning to the user<br>(NOT delete it - if it has to be deleted<br>talk to an admin){% elif report.fake_activity %}delete this activity and all its comments/likes<br>and notify the owner by email{% endif %}</small></button>
+        {% if report.fake_user %}
+        <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-warning accept-report">Accept this report<br><small>Will send a warning to the user<br>(NOT delete it - if it has to be deleted<br>use the other button)</small></button>
+        <button data-href="/ajax/staff/report/{{ report.id }}/accept_and_delete/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will delete this user, all of its accounts, cards, activities, comments, everything. Make sure you only do this if there's nothing else that can be done. Use the ption to send a warning if you can.</small></button>
+        {% else %}
+        <button data-href="/ajax/staff/report/{{ report.id }}/accept/" class="btn btn-block btn-danger accept-report">Accept this report<br><small>Will {% if report.fake_account %}mark this account as fake,<br>notify the reporter<br>and suggest the owner to get verified{% elif report.fake_eventparticipation %} delete this event participation<br>and notify the owner by email{% elif report.fake_activity %}delete this activity and all its comments/likes<br>and notify the owner by email{% endif %}</small></button>
+        {% endif %}
         <button data-href="/ajax/staff/report/{{ report.id }}/reject/" class="btn btn-block btn-success reject-report">Reject this report<br><small>Will reject this report,<br>nobody gets notified</small></button>
         {% endif %}
         {% endif %}

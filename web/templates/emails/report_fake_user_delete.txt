@@ -1,0 +1,13 @@
+Hi {{ report.fake_user.username }},
+
+Your profile, accounts, activities and everything else you owned on our website has been permanently deleted, and we kindly ask you not to re-iterate your actions.
+{% if report.moderation_comment %}
+{{ report.moderation_comment }}
+{% endif %}
+
+Unfortunately, this action is not un-doable.
+If this is a misunderstanding, please don't blame us: we're humans, we make mistakes. Although we won't be able to restore your profile, you can reply to this email and we can discuss it.
+
+Your profile: http://schoolido.lu/user/{{ report.fake_user.username }}/
+
+Moderated by {{ report.moderated_by.username }} (http://schoolido.lu/user/{{ report.moderated_by.username }}/))

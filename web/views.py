@@ -2686,6 +2686,26 @@ def ajaxreport(request, report_id, status):
             for k, v in defaults.items():
                 setattr(report, k, v)
             report.save()
+    elif status == 'accept_and_delete' and report.fake_user:
+        if report.fake_user.email:
+            send_email(subject=(u'School Idol Tomodachi' + u'✨ ' + u' Your profile has been reported'),
+                       template_name='report_fake_user_delete',
+                       to=[report.fake_user.email],
+                       context=context,
+                    )
+        all_reports = models.ModerationReport.objects.filter(fake_user=report.fake_user).select_related('reported_by')
+        for _report in all_reports:
+            if _report.reported_by and _report.reported_by.email:
+                context['reported_by'] = _report.reported_by
+                send_email(
+                    subject=(u'School Idol Tomodachi' + u'✨ ' + u' Thank you for reporting this user! '),
+                    template_name='report_fake_user_accepted',
+                    to=[_report.reported_by.email],
+                    context=context,
+                )
+        all_reports.update(status=3, moderated_by=request.user, moderation_date=timezone.now(), moderation_comment=moderation_comment)
+        report.fake_user.delete()
+
     return HttpResponse(status)
 
 def staff_editcard(request, id):

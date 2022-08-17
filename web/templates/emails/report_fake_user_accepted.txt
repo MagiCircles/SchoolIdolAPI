@@ -1,6 +1,6 @@
 Hi {{ reported_by.username }},
 
-Your report has been reviewed by a moderator and the owner of this profile has been warned. Thank you so much for your help!
+Your report has been reviewed by a moderator and the owner of this profile has been either warned or ejected. Thank you so much for your help!
 {% if report.moderation_comment %}
 Moderator comment:
 {{ report.moderation_comment }}

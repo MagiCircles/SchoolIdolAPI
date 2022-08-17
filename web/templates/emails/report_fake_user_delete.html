@@ -1,0 +1,39 @@
+{% extends 'emails/base.html' %}
+
+{% block subject %}Profile reported: {{ report.fake_user.username}}{% endblock %}
+{% block headersubject %}Profile reported: {{ report.fake_user.username}}{% endblock %}
+
+{% block content %}
+Hi {{ report.fake_user.username }},
+<br><br>
+
+<p>
+  Your profile, accounts, activities and everything else you owned on our website has been permanently deleted, and we kindly ask you not to re-iterate your actions.
+</p>
+{% if report.moderation_comment %}
+<p>
+  {{ report.moderation_comment }}
+</p>
+{% endif %}
+<p>
+  Unfortunately, this action is not un-doable.<br>
+  If this is a misunderstanding, please don't blame us: we're humans, we make mistakes. Although we won't be able to restore your profile, you can reply to this email and we can discuss it.
+</p>
+{% endblock %}
+
+{% block actionbuttontitle %}
+Your profile
+{% endblock %}
+{% block actionbuttonalt %}
+Your profile
+{% endblock %}
+
+{% block actionlink %}
+http://schoolido.lu/user/{{ report.fake_user.username }}/
+{% endblock %}
+
+{% block footersentence %}
+<div style="text-align: right">
+  Moderated by <a href="http://schoolido.lu/user/{{ report.moderated_by.username }}/">{{ report.moderated_by.username }}</a>
+</div>
+{% endblock %}

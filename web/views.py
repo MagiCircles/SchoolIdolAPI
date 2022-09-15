@@ -1409,7 +1409,7 @@ def ajaxfollowing(request, username):
 def _localized_message_activity(activity):
     return activity.localized_message_activity
 
-def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None, all=False, new=False):
+def _activities(request, account=None, follower=None, user=None, avatar_size=3, card_size=None, all=False, new=False, ids=None):
     """
     SQL Queries
     - Django session
@@ -1429,6 +1429,8 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
         activities = models.Activity.objects.all().order_by('-id')
     else:
         activities = models.Activity.objects.all().order_by('-creation')
+    if ids:
+        activities = activities.filter(id__in=ids)
     #activities = activities.annotate(likers_count=Count('likes'))
     # if request.user.is_authenticated():
     #     activities = activities.extra(select={
@@ -1528,6 +1530,11 @@ def activity(request, activity):
     context['activity'].localized_message = _localized_message_activity(context['activity'])
     context['activities'] = [context['activity']]
     return render(request, 'activity.html', context)
+
+def activities_ids(request, ids):
+    if not request.user.is_staff:
+        return redirect('/')
+    return render(request, 'activities_ids.html', _activities(request, all=True, new=True, ids=ids.split(',')))
 
 def _contextfeed(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():

@@ -1,12 +1,11 @@
 Hi {{ report.fake_user.username }},
 
-Your profile, accounts, activities and everything else you owned on our website has been permanently deleted, and we kindly ask you not to re-iterate your actions.
+Your profile has been reported and a moderator decided to contact you. This is just a warning, but if it gets reported again, your profile might get deleted.
 {% if report.moderation_comment %}
 {{ report.moderation_comment }}
 {% endif %}
 
-Unfortunately, this action is not un-doable.
-If this is a misunderstanding, please don't blame us: we're humans, we make mistakes. Although we won't be able to restore your profile, you can reply to this email and we can discuss it.
+If this is a misunderstanding, please don't blame us: we're humans, we make mistakes. Reply to this email and the administrators will be able to help you.
 
 Your profile: http://schoolido.lu/user/{{ report.fake_user.username }}/
 

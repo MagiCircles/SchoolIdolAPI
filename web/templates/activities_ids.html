@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Activities{% endblock %}
+{% block js %}
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script src="{{ static_url }}static/bower/Autolinker.js/dist/Autolinker.min.js"></script>
+<script src="{{ static_url }}static/js/loadactivities.js?5"></script>
+<script src="{{ static_url }}static/js/feed.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+  {% include 'activities.html' %}
+</div>
+{% endblock %}

@@ -1456,7 +1456,8 @@ def _activities(request, account=None, follower=None, user=None, avatar_size=3, 
             activities = activities.filter(hot=True)
         activities = activities.exclude(id__in=[10409176,10409218,10409217,10409090,10409227,10409105,10409100,10407895,10409097])
         activities = activities.filter(message_type=models.ACTIVITY_TYPE_CUSTOM)
-    activities = activities[(page * page_size):((page * page_size) + page_size)]
+    if not ids:
+        activities = activities[(page * page_size):((page * page_size) + page_size)]
     accounts = list(request.user.accounts_set.all()) if request.user.is_authenticated() else []
     for activity in activities:
         activity.localized_message = _localized_message_activity(activity)

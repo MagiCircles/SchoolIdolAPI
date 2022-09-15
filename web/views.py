@@ -1534,7 +1534,7 @@ def activity(request, activity):
 def activities_ids(request, ids):
     if not request.user.is_staff:
         return redirect('/')
-    return render(request, 'activities_ids.html', _activities(request, all=True, new=True, ids=ids.split(',')))
+    return render(request, 'activities_ids.html', _activities(request, all=True, new=True, ids=ids.split(',') + request.GET.get('ids').split(',')))
 
 def _contextfeed(request):
     if not request.user.is_authenticated() or request.user.is_anonymous():

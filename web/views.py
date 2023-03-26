@@ -3353,19 +3353,36 @@ def skillup(request):
 def collections(request):
     context = globalContext(request)
     context['total_backgrounds'] = settings.TOTAL_BACKGROUNDS
-    cards = models.Card.objects.filter(rarity='UR').filter(clean_ur__isnull=False, ur_pair__isnull=False)
+    cards = models.Card.objects.all().order_by('id')
     is_jp = request.LANGUAGE_CODE == 'ja' or 'japanese' in request.GET
     if is_jp:
         cards = cards.exclude(japanese_collection='').exclude(japanese_collection__isnull=True)
     else:
         cards = cards.exclude(translated_collection='').exclude(translated_collection__isnull=True)
-    cards = cards.select_related('ur_pair').order_by('-id')
-    collections = OrderedDict()
+
+    # UR with pairs
+    ur_pairs_collections = OrderedDict()
+    ur_pairs_cards = cards.select_related('ur_pair').filter(rarity='UR').filter(clean_ur__isnull=False, ur_pair__isnull=False)
+    for card in ur_pairs_cards:
+        collection = card.japanese_collection if is_jp else card.translated_collection
+        if collection not in ur_pairs_collections:
+            ur_pairs_collections[collection] = (card, card.release_date, True)
+
+    # Other cards
+    other_collections = OrderedDict()
     for card in cards:
         collection = card.japanese_collection if is_jp else card.translated_collection
-        if collection not in collections:
-            collections[collection] = (card, card.release_date)
-    context['collections'] = collections
+        if collection in ur_pairs_collections:
+            continue
+        if collection not in other_collections:
+            other_collections[collection] = ([], card.release_date, False)
+        other_collections[collection][0].append(card)
+
+    context['collections'] = OrderedDict(sorted([
+        (collection_name, details)
+        for collection_name, details in ur_pairs_collections.items() + other_collections.items()
+        if details[2] or (not details[0][0].event_id or len(details[0]) > 1 )
+    ], key=lambda _details: _details[1][1], reverse=True))
     context['is_jp'] = is_jp
     return render(request, 'collections.html', context)
 

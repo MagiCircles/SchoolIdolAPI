@@ -24,10 +24,35 @@
 	      <strong>{% trans collection %}</strong><br>
 	      <small class="tiny">{{ card.1|date:"F Y" }}</small>
 	    </div>
-	    <div class="panel-body">
+	    <div class="panel-body" style="font-size: 0">
 
-	      {% include 'include/urpair.html' with left=card.0.ur_pair right=card.0 idolized=False nolink=True small=False %}
-	    </div>
+              {% if card.2 and card.0.ur_pair %}
+              {% if card.0.ur_pair_idolized_reverse %}
+
+              {% if card.0.ur_pair %}
+              <img src="{% cleanurl card=card.0.ur_pair idolized=True small=False %}" alt="{{ card.0.ur_pair }}" style="width: 50%;">
+              {% endif %}
+              {% if card.0 %}
+              <img src="{% cleanurl card=card.0 idolized=True small=False %}" alt="{{ card.0 }}" style="width: 50%">
+              {% endif %}
+
+              {% else %}
+              nor reberse
+
+              {% if card.0 %}
+              <img src="{% cleanurl card=card.0 idolized=True small=False %}" alt="{{ card.0 }}" style="width: 50%">
+              {% endif %}
+              {% if card.0.ur_pair %}
+              <img src="{% cleanurl card=card.0.ur_pair idolized=True small=False %}" alt="{{ card.0.ur_pair }}" style="width: 50%;">
+              {% endif %}
+
+              {% endif %}
+              {% else %}
+              {% for card in card.0 %}
+              <img src="{% cleanurl card=card idolized=True small=False %}" alt="{{ card }}" style="width: 33.333%;">
+              {% endfor %}
+              {% endif %}
+            </div>
 	  </a>
 	</div>
 	{% endfor %}

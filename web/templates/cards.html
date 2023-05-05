@@ -65,21 +65,6 @@
 {% else %}
 <script src="{{ static_url }}static/js/addcard.js?5-1"></script>
 {% endif %}
-
-      <script src="{{ static_url }}static/bower/countdown/dest/jquery.countdown.min.js"></script>
-      <script>
-        var countdowndate = "March 31, 2023 07:00:00";
-        function countdownRender(data) {
-            $(this.el).text(data.days + ' {% trans 'days' %}, ' + data.hours + ' {% trans 'hours' %}, ' + data.min + ' {% trans 'minutes' %}, ' + data.sec + ' {% trans 'seconds left' %}');
-        }
-        $('#sif-end-countdown').countdown({
-            date: countdowndate,
-            render: countdownRender
-        });
-      </script>
-
-
-
 {% endblock %}
 
 {% block shareimage %}{% if single %}{% imageurl card=single image='card_idolized_image' %}{% else %}{{ static_sharing_url }}static/screenshots/cards.png{% endif %}{% endblock %}
@@ -366,38 +351,32 @@
       {% else %}
 
       <div class="row">
-        <div class="col-md-5">
-          <div class="alert text-center">
+        <div class="col-md-6">
+          <div class="alert text-center alert-warning">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <img src="https://i.imgur.com/PLsZBVL.png" alt="School Idol Festival termination">
-            <h3>Service termination</h3>
+            <img src="https://i.imgur.com/PLsZBVL.png" alt="School Idol Festival termination" style="max-width: 200px;">
+            <h3>Service terminated</h3>
             <div id="sif-end-countdown"></div>
-            <div class="alert alert-info" style="display: inline-block; max-width: 450px; margin-bottom: 0;">
+            <p>
               <i class="flaticon-about"></i>
-              <b>School Idol Tomodachi</b> will remain open after the closure 🎉
-            </div>
-            <small style="display: block;"><a href="https://schoolido.lu/activities/10425286/" target="_blank">Learn more</a></small>
-            <p>💡 Update your cards collection to keep an archive of your SIF memories!</p>
-            {% if user.is_authenticated %}
-            {% if accounts %}{% for account in accounts %}
-            <a class="btn btn-Smile" style="color: white;" href="/cards/initialsetup/?account={{ account.id }}">{{ account }} <i class="flaticon-link"></i></a>&nbsp;&nbsp;&nbsp;
-            {% endfor %}{% else %}
-            <a class="btn btn-Smile" style="color: white;" href="/addaccount/">Add account</a>
-            {% endif %}
-            {% else %}
-            <a class="btn btn-Smile" style="color: white;" href="/login/">Login</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-Smile" style="color: white;" href="/create/">Sign up</a>
-            {% endif %}
+              After 10 beautiful years, SIF closed down on March 31st, 2023. <b>School Idol Tomodachi</b> remains open after the closure.
+              <a href="https://schoolido.lu/activities/10425286/" target="_blank">Read our statement.</a>
+            </p>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="alert text-center">
+          <div class="alert text-center alert-info">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <img src="https://i.imgur.com/ktXPOHw.png" alt="School Idol Festival 2 - Miracle Live"><br><br>
-            <h4>We're proud to announce that<br><a href="https://idol.st/" target="_blank"><img src="https://i.imgur.com/VX8PgQc.png" alt="Idol Story"></a><br> will have a database of SIF2 cards 🎉</h4>
-            <p>+ songs database + keep track of your SIF1+2 cards + and more!</p>
-            <small style="display: block;"><a href="https://idol.st/activity/10259/Hello-everyone-I-m-db0-and-together-with-Hoshino-and-Memoly-who-has-since-moved-on-we/" target="_blank">Learn more</a></small>
-            <p>You can already follow SIF2 news on Idol Story:</p>
-            <a class="btn btn-Smile" style="color: white;" href="https://idol.st/">App</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-Smile" style="color: white;" href="https://twitter.com/idoldotst">Twitter</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-Smile" style="color: white;" href="https://instagram.com/idoldotst">Instagram</a>
+            <img src="https://i.imgur.com/ktXPOHw.png" alt="School Idol Festival 2 - Miracle Live" style="max-width: 200px;"><br>
+            <h3>New SIF game 🎉</h3>
+            <p>
+              <a href="https://idol.st/wiki/About%20SIF2%20MIRACLE%20LIVE/" target="_blank">Learn more</a>
+              and check out <a href="https://idol.st/" target="_blank"><img src="https://i.imgur.com/VX8PgQc.png" alt="Idol Story"></a> database of SIF2 cards:
+              <a href="https://idol.st/activity/10418/Database-of-cards/" target="_blank">Sneak peek</a>
+              - <a href="https://idol.st/activity/10419/Our-SIF2-database-is-now-ready-to-get-BETA-TESTED/" target="_blank">Join the beta-test</a>
+              - <a href="https://twitter.com/idoldotst" target="_blank">Twitter</a>
+              - <a href="https://instagram.com/idoldotst" target="_blank">Instagram</a>
+            </p>
           </div>
         </div>
       </div>

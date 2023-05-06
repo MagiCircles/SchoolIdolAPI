@@ -367,7 +367,7 @@ raw_information['Kurosawa Ruby'] = {
     'sub_unit': 'CYaRon!',
     'cv_nickname': 'Aiai',
     'cv_twitter': 'furihata_ai',
-    'cv_instagram': 'furihata_ai',
+    'cv_instagram': 'furihatagram',
     'starter': 794,
     'color': '#f273c4',
     'chibi': [

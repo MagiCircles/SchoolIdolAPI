@@ -9,6 +9,7 @@
 <script src="{{ static_url }}static/bower/CuteForm/cuteform.js"></script>
 <script>
   cuteform($('#id_attribute'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for i, attribute in filters.attribute_choices %}
@@ -17,6 +18,7 @@
     }
   });
   cuteform($('#id_rarity'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for rarity, _ in filters.rarity_choices %}
@@ -25,6 +27,7 @@
     }
   });
   cuteform($('#id_sub_unit'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for sub_unit in filters.sub_units %}
@@ -33,6 +36,7 @@
     }
   });
   cuteform($('#id_main_unit'), {
+    'tooltip': 'text',
     'images': {
       '': '{{ static_url }}static/empty.png',
       {% for main_unit in filters.main_units %}
@@ -41,6 +45,7 @@
     }
   });
   cuteform($('#id_name'), {
+    'tooltip': 'text',
     'modal': 'true',
     'modal-text': 'true',
     'images': {
@@ -150,13 +155,6 @@
 	  {% endfor %}
 	</select>
 	<br>
-	{% if view != 'albumbuilder' %}
-	<br>
-	<div>
-	  <div class="pull-right"><input id="id_is_world" name="is_world" type="checkbox"{% if request_get.is_world %} checked{% endif %}></div>
-	  <label for="id_is_world"><i class="flaticon-world"></i> {% trans 'Worldwide only' %}</label>
-	</div>
-	{% endif %}
 	<br>
 	<div class="text-right">
 	  <a href="#morefilters" class="btn btn-{% if not interfaceColor or interfaceColor == 'default' %}Smile{% else %}{{ interfaceColor }}{% endif %} btn-sm" data-toggle="collapse"><i class="flaticon-more"></i> <span class="fontx1-2">{% trans 'More options' %}</span></a>
@@ -300,7 +298,7 @@
 	      <option value="1"{% if request_get.idolized == '1' %} selected{% endif %}>{% trans 'Idolized' %}</option>
 	      <option value="-1"{% if request_get.idolized == '-1' %} selected{% endif %}>{% trans 'Not Idolized' %}</option>
 	    </select>
-	    <brf>
+	    <br>
 	      <label for="id_max_level"><i class="flaticon-max-level"></i> {% trans 'Max Leveled' %}</label>
 	      <select id="id_max_level" name="max_level">
 		<option value=""></option>
@@ -315,8 +313,8 @@
 		<option value="-1"{% if request_get.max_bond == '-1' %} selected{% endif %}>{% trans 'Not Max Bonded' %}</option>
 	      </select>
 	  </div>
+      {% endif %}
 	</div>
-	{% endif %}
       </div> <!-- collapse -->
       <br>
       <h4>{% trans 'Order' %}</h4>
